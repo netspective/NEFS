@@ -39,22 +39,14 @@
  */
 
 /**
- * $Id: EventProvider.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleTemplateSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.provider;
+package com.netspective.commons.schedule.model;
 
-import java.util.Date;
-
-import com.netspective.commons.schedule.model.EventSlot;
-import com.netspective.commons.schedule.model.ScheduleParticipant;
-
-public interface EventProvider
+public interface ScheduleTemplateSlot extends ScheduleSlot
 {
-    /**
-     * Given a date range and a list of participants, get the events associated with the providers
-     * @param participants
-     * @return
-     */
-    public EventSlot[] getEvents(Date beginDate, Date endDate, ScheduleParticipant[] participants);
+    public ScheduleTemplate getScheduleTemplate();
+    public boolean isAvailable();
+    public boolean isUnavailable();
 }

@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: CardinalTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: CardinalTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import com.netspective.commons.set.IntSpan;
 import junit.framework.TestCase;
 
 public class CardinalTest extends TestCase
@@ -79,15 +78,15 @@ public class CardinalTest extends TestCase
 
             // System.out.println(t.runList);
             IntSpan set = new IntSpan(t.runList);
-            metric(t, "cardinality", t.cardinality, set.cardinality());
-            predicate(t, "empty", t.empty, set.empty());
-            predicate(t, "finite", t.finite, set.finite());
-            predicate(t, "negInf", t.negInf, set.negInfite());
-            predicate(t, "posInf", t.posInf, set.posInfite());
-            predicate(t, "infinite", t.infinite, set.infinite());
-            predicate(t, "universal", t.universal, set.universal());
-            metric(t, "min", t.min, set.min());
-            metric(t, "max", t.max, set.max());
+            metric(t, "cardinality", t.cardinality, set.size());
+            predicate(t, "empty", t.empty, set.isEmpty());
+            predicate(t, "finite", t.finite, set.isFinite());
+            predicate(t, "negInf", t.negInf, set.isNegInfite());
+            predicate(t, "posInf", t.posInf, set.isPosInfite());
+            predicate(t, "infinite", t.infinite, set.isInfinite());
+            predicate(t, "universal", t.universal, set.isUniversal());
+            metric(t, "min", t.min, set.getMin());
+            metric(t, "max", t.max, set.getMax());
         }
 
         assertTrue(ok);

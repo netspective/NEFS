@@ -39,12 +39,16 @@
  */
 
 /**
- * $Id: IntSpan.java,v 1.2 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: IntSpan.java,v 1.3 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-public class IntSpan implements Cloneable
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+
+public class IntSpan implements Cloneable, Set
 {
     public static String emptyString = "-";
 
@@ -89,6 +93,109 @@ public class IntSpan implements Cloneable
             else
                 addDouble(run);
         }
+    }
+
+    public IntSpan(int[] elements)
+    {
+        this();
+
+        int[] element = new int[elements.length];
+        System.arraycopy(elements, 0, element, 0, elements.length);
+        java.util.Arrays.sort(element);
+
+        for (int i = 0; i < element.length; i++)
+        {
+            int top = edges.size() - 1;
+            int topEdge = 0;
+            if (top >= 0)
+                topEdge = edges.getI(top);
+
+            if (top >= 0 && topEdge == element[i])
+                continue;    // skip duplicates
+
+            if (top >= 0 && topEdge == element[i] - 1)
+            {
+                edges.set(top, element[i]);
+            }
+            else
+            {
+                edges.add(element[i] - 1);
+                edges.add(element[i]);
+            }
+        }
+    }
+
+    public boolean add(Object o)
+    {
+        add(Integer.parseInt(o.toString()));
+        return true;
+    }
+
+    public void clear()
+    {
+        negInf = false;
+        posInf = false;
+        edges = new IntList();
+    }
+
+    public boolean contains(Object o)
+    {
+        return isMember(Integer.parseInt(o.toString()));
+    }
+
+    public boolean remove(Object o)
+    {
+        remove(Integer.parseInt(o.toString()));
+        return true;
+    }
+
+    public boolean addAll(Collection c)
+    {
+        for(Iterator i = c.iterator(); i.hasNext(); )
+            add(i.next());
+
+        return true;
+    }
+
+    public boolean containsAll(Collection c)
+    {
+        for(Iterator i = c.iterator(); i.hasNext(); )
+        {
+            if(! contains(i.next()));
+                return false;
+        }
+
+        return true;
+    }
+
+    public boolean removeAll(Collection c)
+    {
+        for(Iterator i = c.iterator(); i.hasNext(); )
+            remove(i.next());
+
+        return true;
+    }
+
+    public boolean retainAll(Collection c)
+    {
+        IntSpan removeElems = new IntSpan();
+
+        for(java.util.Iterator i = iterator(); i.hasNext(); )
+        {
+            Object o = i.next();
+            if(! c.contains(o));
+                removeElems.add(o);
+        }
+
+        for(java.util.Iterator i = removeElems.first(); i.hasNext(); )
+            remove(i.next());
+
+        return true;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        return first();
     }
 
     private String StripWhitespace(String s)
@@ -154,36 +261,6 @@ public class IntSpan implements Cloneable
         edges.add(upper);
     }
 
-    public IntSpan(int[] elements)
-    {
-        this();
-
-        int[] element = new int[elements.length];
-        System.arraycopy(elements, 0, element, 0, elements.length);
-        java.util.Arrays.sort(element);
-
-        for (int i = 0; i < element.length; i++)
-        {
-            int top = edges.size() - 1;
-            int topEdge = 0;
-            if (top >= 0)
-                topEdge = edges.getI(top);
-
-            if (top >= 0 && topEdge == element[i])
-                continue;    // skip duplicates
-
-            if (top >= 0 && topEdge == element[i] - 1)
-            {
-                edges.set(top, element[i]);
-            }
-            else
-            {
-                edges.add(element[i] - 1);
-                edges.add(element[i]);
-            }
-        }
-    }
-
     public Object clone()
     {
         IntSpan clone = new IntSpan();
@@ -202,8 +279,8 @@ public class IntSpan implements Cloneable
 
     public String runList()
     {
-        if (empty()) return emptyString;
-        if (universal()) return "(-)";
+        if (isEmpty()) return emptyString;
+        if (isUniversal()) return "(-)";
 
         StringBuffer sb = new StringBuffer();
         int i = 0;
@@ -250,8 +327,8 @@ public class IntSpan implements Cloneable
 
     public String getFormattedRunList(ElementFormatter formatter)
     {
-        if (empty()) return emptyString;
-        if (universal()) return "(-)";
+        if (isEmpty()) return emptyString;
+        if (isUniversal()) return "(-)";
 
         StringBuffer sb = new StringBuffer();
         int i = 0;
@@ -290,12 +367,12 @@ public class IntSpan implements Cloneable
         return sb.toString();
     }
 
-    public int[] elements()
+    public int[] getElements()
     {
         if (negInf || posInf)
             return null;
 
-        int[] list = new int[cardinality()];
+        int[] list = new int[size()];
         int l = 0;
 
         for (int i = 0; i < edges.size(); i += 2)
@@ -310,84 +387,28 @@ public class IntSpan implements Cloneable
         return list;
     }
 
-    public static IntSpan union(IntSpan a, IntSpan b)
+    public Object[] toArray()
     {
-        IntSpan s = new IntSpan();
+        return toArray(new Integer[size()]);
+    }
 
-        s.negInf = a.negInf || b.negInf;
+    public Object[] toArray(Object list[])
+    {
+        if (negInf || posInf)
+            return null;
 
-        boolean inA = a.negInf;
-        boolean inB = b.negInf;
+        int l = 0;
 
-        int iA = 0;
-        int iB = 0;
-
-        while (iA < a.edges.size() && iB < b.edges.size())
+        for (int i = 0; i < edges.size(); i += 2)
         {
-            int xA = a.edges.getI(iA);
-            int xB = b.edges.getI(iB);
+            int lower = edges.getI(i);
+            int upper = edges.getI(i + 1);
 
-            if (xA < xB)
-            {
-                iA++;
-                inA = !inA;
-                if (!inB)
-                    s.edges.add(xA);
-            }
-            else if (xB < xA)
-            {
-                iB++;
-                inB = !inB;
-                if (!inA)
-                    s.edges.add(xB);
-            }
-            else
-            {
-                iA++;
-                iB++;
-                inA = !inA;
-                inB = !inB;
-                if (inA == inB)
-                    s.edges.add(xA);
-            }
+            for (int n = lower + 1; n <= upper; n++)
+                list[l++] = new Integer(n);
         }
 
-        if (iA < a.edges.size() && !inB)
-            for (int i = iA; i < a.edges.size(); i++)
-                s.edges.add(a.edges.getI(i));
-
-        if (iB < b.edges.size() && !inA)
-            for (int i = iB; i < b.edges.size(); i++)
-                s.edges.add(b.edges.getI(i));
-
-        s.posInf = a.posInf || b.posInf;
-
-        return s;
-    }
-
-    public static IntSpan intersect(IntSpan a, IntSpan b)
-    {
-        a.invert();
-        b.invert();
-
-        IntSpan s = union(a, b);
-
-        a.invert();
-        b.invert();
-        s.invert();
-
-        return s;
-    }
-
-    public static IntSpan diff(IntSpan a, IntSpan b)
-    {
-        b.invert();
-
-        IntSpan s = intersect(a, b);
-
-        b.invert();
-
-        return s;
+        return list;
     }
 
     private void invert()
@@ -396,88 +417,7 @@ public class IntSpan implements Cloneable
         posInf = !posInf;
     }
 
-    public static IntSpan xor(IntSpan a, IntSpan b)
-    {
-        IntSpan s = new IntSpan();
-
-        s.negInf = a.negInf ^ b.negInf;
-
-        int iA = 0;
-        int iB = 0;
-
-        while (iA < a.edges.size() && iB < b.edges.size())
-        {
-            int xA = a.edges.getI(iA);
-            int xB = b.edges.getI(iB);
-
-            if (xA < xB)
-            {
-                iA++;
-                s.edges.add(xA);
-            }
-            else if (xB < xA)
-            {
-                iB++;
-                s.edges.add(xB);
-            }
-            else
-            {
-                iA++;
-                iB++;
-            }
-        }
-
-        if (iA < a.edges.size())
-            for (int i = iA; i < a.edges.size(); i++)
-                s.edges.add(a.edges.getI(i));
-
-        if (iB < b.edges.size())
-            for (int i = iB; i < b.edges.size(); i++)
-                s.edges.add(b.edges.getI(i));
-
-        s.posInf = a.posInf ^ b.posInf;
-
-        return s;
-    }
-
-    public static IntSpan complement(IntSpan s)
-    {
-        IntSpan c = (IntSpan) (s.clone());
-        c.invert();
-        return c;
-    }
-
-    public static boolean superset(IntSpan a, IntSpan b)
-    {
-        return diff(b, a).empty();
-    }
-
-    public static boolean subset(IntSpan a, IntSpan b)
-    {
-        return diff(a, b).empty();
-    }
-
-    public static boolean equal(IntSpan a, IntSpan b)
-    {
-        if (a.negInf ^ b.negInf) return false;
-        if (a.posInf ^ b.posInf) return false;
-
-        if (a.edges.size() != b.edges.size())
-            return false;
-
-        for (int i = 0; i < a.edges.size(); i++)
-            if (a.edges.getI(i) != b.edges.getI(i))
-                return false;
-
-        return true;
-    }
-
-    public static boolean equivalent(IntSpan a, IntSpan b)
-    {
-        return a.cardinality() == b.cardinality();
-    }
-
-    public int cardinality()
+    public int size()
     {
         if (negInf || posInf) return -1;
 
@@ -493,37 +433,37 @@ public class IntSpan implements Cloneable
         return cardinality;
     }
 
-    public boolean empty()
+    public boolean isEmpty()
     {
         return !negInf && edges.size() == 0 && !posInf;
     }
 
-    public boolean finite()
+    public boolean isFinite()
     {
         return !negInf && !posInf;
     }
 
-    public boolean negInfite()
+    public boolean isNegInfite()
     {
         return negInf;
     }
 
-    public boolean posInfite()
+    public boolean isPosInfite()
     {
         return posInf;
     }
 
-    public boolean infinite()
+    public boolean isInfinite()
     {
         return negInf || posInf;
     }
 
-    public boolean universal()
+    public boolean isUniversal()
     {
         return negInf && edges.size() == 0 && posInf;
     }
 
-    public boolean member(int n)
+    public boolean isMember(int n)
     {
         boolean inSet = negInf;
 
@@ -546,7 +486,7 @@ public class IntSpan implements Cloneable
         return inSet;
     }
 
-    public void insert(int n)
+    public void add(int n)
     {
         boolean inSet = negInf;
 
@@ -640,15 +580,15 @@ public class IntSpan implements Cloneable
         }
     }
 
-    public Integer min()
+    public Integer getMin()
     {
-        return empty() || negInf ? null : new Integer(edges.getI((0)) + 1);
+        return isEmpty() || negInf ? null : new Integer(edges.getI((0)) + 1);
     }
 
-    public Integer max()
+    public Integer getMax()
     {
         int i = edges.size() - 1;
-        return empty() || posInf ? null : new Integer(edges.getI(i));
+        return isEmpty() || posInf ? null : new Integer(edges.getI(i));
     }
 
     public static interface Testable
@@ -658,7 +598,7 @@ public class IntSpan implements Cloneable
 
     public IntSpan grep(Testable predicate)
     {
-        if (infinite())
+        if (isInfinite())
             return null;
 
         IntSpan s = new IntSpan();
@@ -678,7 +618,7 @@ public class IntSpan implements Cloneable
 
     public IntSpan map(Mappable trans)
     {
-        if (infinite())
+        if (isInfinite())
             return null;
 
         IntSpan s = new IntSpan();
@@ -690,41 +630,207 @@ public class IntSpan implements Cloneable
                 int[] elements = trans.map(n);
 
                 for (int j = 0; j < elements.length; j++)
-                    s.insert(elements[j]);
+                    s.add(elements[j]);
             }
         }
         return s;
     }
 
-    public Iterator first()
+    protected IntSpanIterator constructIterator(boolean empty, Integer start)
+    {
+        return empty ? new IntSpanIterator() : new IntSpanIterator(start);
+    }
+
+    public IntSpanIterator first()
     {
         if (negInf)
             throw new java.util.NoSuchElementException("Set.IntSpan.first");
 
-        return empty() ? new Iterator() : new Iterator(min());
+        return constructIterator(isEmpty(), getMin());
     }
 
-    public Iterator last()
+    public IntSpanIterator last()
     {
         if (posInf)
             throw new java.util.NoSuchElementException("Set.IntSpan.last");
 
-        return empty() ? new Iterator() : new Iterator(max());
+        return constructIterator(isEmpty(), getMax());
     }
 
-    public Iterator start(int n)
+    public IntSpanIterator start(int n)
     {
-        if (!member(n))
+        if (!isMember(n))
             throw new java.util.NoSuchElementException("Set.IntSpan.start");
 
-        return new Iterator(new Integer(n));
+        return constructIterator(false, new Integer(n));
     }
 
-    public class Iterator implements java.util.Iterator
+    public static IntSpan union(IntSpan a, IntSpan b)
+    {
+        IntSpan s = new IntSpan();
+
+        s.negInf = a.negInf || b.negInf;
+
+        boolean inA = a.negInf;
+        boolean inB = b.negInf;
+
+        int iA = 0;
+        int iB = 0;
+
+        while (iA < a.edges.size() && iB < b.edges.size())
+        {
+            int xA = a.edges.getI(iA);
+            int xB = b.edges.getI(iB);
+
+            if (xA < xB)
+            {
+                iA++;
+                inA = !inA;
+                if (!inB)
+                    s.edges.add(xA);
+            }
+            else if (xB < xA)
+            {
+                iB++;
+                inB = !inB;
+                if (!inA)
+                    s.edges.add(xB);
+            }
+            else
+            {
+                iA++;
+                iB++;
+                inA = !inA;
+                inB = !inB;
+                if (inA == inB)
+                    s.edges.add(xA);
+            }
+        }
+
+        if (iA < a.edges.size() && !inB)
+            for (int i = iA; i < a.edges.size(); i++)
+                s.edges.add(a.edges.getI(i));
+
+        if (iB < b.edges.size() && !inA)
+            for (int i = iB; i < b.edges.size(); i++)
+                s.edges.add(b.edges.getI(i));
+
+        s.posInf = a.posInf || b.posInf;
+
+        return s;
+    }
+
+    public static IntSpan intersect(IntSpan a, IntSpan b)
+    {
+        a.invert();
+        b.invert();
+
+        IntSpan s = union(a, b);
+
+        a.invert();
+        b.invert();
+        s.invert();
+
+        return s;
+    }
+
+    public static IntSpan diff(IntSpan a, IntSpan b)
+    {
+        b.invert();
+
+        IntSpan s = intersect(a, b);
+
+        b.invert();
+
+        return s;
+    }
+
+    public static IntSpan xor(IntSpan a, IntSpan b)
+    {
+        IntSpan s = new IntSpan();
+
+        s.negInf = a.negInf ^ b.negInf;
+
+        int iA = 0;
+        int iB = 0;
+
+        while (iA < a.edges.size() && iB < b.edges.size())
+        {
+            int xA = a.edges.getI(iA);
+            int xB = b.edges.getI(iB);
+
+            if (xA < xB)
+            {
+                iA++;
+                s.edges.add(xA);
+            }
+            else if (xB < xA)
+            {
+                iB++;
+                s.edges.add(xB);
+            }
+            else
+            {
+                iA++;
+                iB++;
+            }
+        }
+
+        if (iA < a.edges.size())
+            for (int i = iA; i < a.edges.size(); i++)
+                s.edges.add(a.edges.getI(i));
+
+        if (iB < b.edges.size())
+            for (int i = iB; i < b.edges.size(); i++)
+                s.edges.add(b.edges.getI(i));
+
+        s.posInf = a.posInf ^ b.posInf;
+
+        return s;
+    }
+
+    public static IntSpan complement(IntSpan s)
+    {
+        IntSpan c = (IntSpan) (s.clone());
+        c.invert();
+        return c;
+    }
+
+    public static boolean superset(IntSpan a, IntSpan b)
+    {
+        return diff(b, a).isEmpty();
+    }
+
+    public static boolean subset(IntSpan a, IntSpan b)
+    {
+        return diff(a, b).isEmpty();
+    }
+
+    public static boolean equal(IntSpan a, IntSpan b)
+    {
+        if (a.negInf ^ b.negInf) return false;
+        if (a.posInf ^ b.posInf) return false;
+
+        if (a.edges.size() != b.edges.size())
+            return false;
+
+        for (int i = 0; i < a.edges.size(); i++)
+            if (a.edges.getI(i) != b.edges.getI(i))
+                return false;
+
+        return true;
+    }
+
+    public static boolean equivalent(IntSpan a, IntSpan b)
+    {
+        return a.size() == b.size();
+    }
+
+    public class IntSpanIterator implements Iterator
     {
         int n, nRemove, iLo, iHi;
 
-        private Iterator()
+        private IntSpanIterator()
         {
             n = 0;
             nRemove = 0;
@@ -732,7 +838,7 @@ public class IntSpan implements Cloneable
             iHi = 0;
         }
 
-        private Iterator(Integer start)
+        private IntSpanIterator(Integer start)
         {
             n = start.intValue();
 
@@ -813,65 +919,3 @@ public class IntSpan implements Cloneable
         }
     }
 }
-
-class IntList extends java.util.ArrayList implements Cloneable
-{
-    void add(int n)
-    {
-        add(new Integer(n));
-    }
-
-    void add(int i, int n)
-    {
-        add(i, new Integer(n));
-    }
-
-    void add(String s)
-    {
-        add(new Integer(s));
-    }
-
-    void set(int i, int n)
-    {
-        set(i, new Integer(n));
-    }
-
-    int getI(int i)
-    {
-        if (i < 0)
-            i += size();
-
-        return ((Integer) get(i)).intValue();
-    }
-
-    void inc(int i)
-    {
-        int n = ((Integer) get(i)).intValue();
-        set(i, new Integer(n + 1));
-    }
-
-    void dec(int i)
-    {
-        int n = ((Integer) get(i)).intValue();
-        set(i, new Integer(n - 1));
-    }
-
-    void pop()
-    {
-        int i = size();
-        if (i > 0)
-            remove(i - 1);
-    }
-
-    public Object clone()
-    {
-        IntList clone = new IntList();
-
-        for (int i = 0; i < size(); i++)
-            clone.add(get(i));
-
-        return clone;
-    }
-
-}
-

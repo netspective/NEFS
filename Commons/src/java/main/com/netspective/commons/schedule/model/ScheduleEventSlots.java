@@ -39,19 +39,12 @@
  */
 
 /**
- * $Id: DefaultTemplateSlot.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleEventSlots.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model.impl;
+package com.netspective.commons.schedule.model;
 
-import java.util.Date;
-
-import com.netspective.commons.schedule.model.TemplateSlot;
-
-public class DefaultTemplateSlot extends AbstractScheduleSlot implements TemplateSlot
+public interface ScheduleEventSlots extends ScheduleSlots
 {
-    public DefaultTemplateSlot(Date date, boolean available)
-    {
-        super(date, available);
-    }
+    public ScheduleEventSlot[] getEventSlots();
 }

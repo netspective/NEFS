@@ -39,14 +39,92 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: AbstractScheduleSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.schedule.impl;
 
-import com.netspective.commons.set.DateRangesSet;
+import java.util.Calendar;
+import java.util.Date;
 
-public interface ScheduleTemplate
+import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleSlot;
+import com.netspective.commons.set.IntSpan;
+
+public class AbstractScheduleSlot implements ScheduleSlot
 {
-    public ScheduleTemplateSlots getScheduleTemplateSlots(DateRangesSet dateRanges);
+    private Date beginDate;
+    private int beginJulianDay;
+    private Date endDate;
+    private int endJulianDay;
+    private boolean multipleDays;
+    private IntSpan minutes = new IntSpan();
+
+    public AbstractScheduleSlot(Date beginDate, Date endDate)
+    {
+        this(CalendarUtils.getInstance(), Calendar.getInstance(), beginDate, endDate);
+    }
+
+    public AbstractScheduleSlot(Calendar calendar, Date beginDate, Date endDate)
+    {
+        this(CalendarUtils.getInstance(), calendar, beginDate, endDate);
+    }
+
+    public AbstractScheduleSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate)
+    {
+        this(calendarUtils, Calendar.getInstance(), beginDate, endDate);
+    }
+
+    public AbstractScheduleSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
+    {
+        if(beginDate.getTime() <= endDate.getTime())
+        {
+            this.beginDate = beginDate;
+            this.endDate = endDate;
+        }
+        else
+        {
+            this.beginDate = endDate;
+            this.endDate = beginDate;
+        }
+
+        this.beginJulianDay = calendarUtils.getJulianDay(calendar, this.beginDate);
+        this.endJulianDay = calendarUtils.getJulianDay(calendar, this.endDate);
+        this.multipleDays = endJulianDay > beginJulianDay;
+    }
+
+    public boolean isMultipleDays()
+    {
+        return multipleDays;
+    }
+
+    public Date getDate()
+    {
+        return beginDate;
+    }
+
+    public int getJulianDay()
+    {
+        return beginJulianDay;
+    }
+
+    public Date getBeginDate()
+    {
+        return beginDate;
+    }
+
+    public Date getEndDate()
+    {
+        return endDate;
+    }
+
+    public int getBeginJulianDay()
+    {
+        return beginJulianDay;
+    }
+
+    public int getEndJulianDay()
+    {
+        return endJulianDay;
+    }
 }

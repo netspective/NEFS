@@ -39,24 +39,63 @@
  */
 
 /**
- * $Id: ScheduleTemplateProvider.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: DefaultTemplateSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.provider;
+package com.netspective.commons.schedule.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.schedule.model.ScheduleParticipant;
+import com.netspective.commons.schedule.CalendarUtils;
 import com.netspective.commons.schedule.model.ScheduleTemplate;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
 
-public interface ScheduleTemplateProvider
+public class DefaultTemplateSlot extends AbstractScheduleSlot implements ScheduleTemplateSlot
 {
-    /**
-     * Retrieve the list of templates associated with a given set of attendees (such as a physician) and a
-     * set of resources (like facilities).
-     * @param participants The list of participants for which templates should be retrieved
-     * @return The array of schedule templates associated with the given attendees and resources. The result is always
-     *         non-null but may have a zero length if no templates were located for the associated providers.
-     */
-    public ScheduleTemplate[] getScheduleTemplates(Date beginDate, Date endDate, ScheduleParticipant[] participants);
+    private ScheduleTemplate scheduleTemplate;
+    private boolean available;
+
+    public DefaultTemplateSlot(Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    {
+        super(beginDate, endDate);
+        this.scheduleTemplate = scheduleTemplate;
+        this.available = available;
+    }
+
+    public DefaultTemplateSlot(Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    {
+        super(calendar, beginDate, endDate);
+        this.scheduleTemplate = scheduleTemplate;
+        this.available = available;
+    }
+
+    public DefaultTemplateSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    {
+        super(calendarUtils, beginDate, endDate);
+        this.scheduleTemplate = scheduleTemplate;
+        this.available = available;
+    }
+
+    public DefaultTemplateSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    {
+        super(calendarUtils, calendar, beginDate, endDate);
+        this.scheduleTemplate = scheduleTemplate;
+        this.available = available;
+    }
+
+    public ScheduleTemplate getScheduleTemplate()
+    {
+        return scheduleTemplate;
+    }
+
+    public boolean isAvailable()
+    {
+        return available;
+    }
+
+    public boolean isUnavailable()
+    {
+        return ! available;
+    }
 }

@@ -39,11 +39,68 @@
  */
 
 /**
- * $Id: EventTypeProvider.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: IntList.java,v 1.1 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.provider;
+package com.netspective.commons.set;
 
-public interface EventTypeProvider
+public class IntList extends java.util.ArrayList implements Cloneable
 {
+    void add(int n)
+    {
+        add(new Integer(n));
+    }
+
+    void add(int i, int n)
+    {
+        add(i, new Integer(n));
+    }
+
+    void add(String s)
+    {
+        add(new Integer(s));
+    }
+
+    void set(int i, int n)
+    {
+        set(i, new Integer(n));
+    }
+
+    int getI(int i)
+    {
+        if (i < 0)
+            i += size();
+
+        return ((Integer) get(i)).intValue();
+    }
+
+    void inc(int i)
+    {
+        int n = ((Integer) get(i)).intValue();
+        set(i, new Integer(n + 1));
+    }
+
+    void dec(int i)
+    {
+        int n = ((Integer) get(i)).intValue();
+        set(i, new Integer(n - 1));
+    }
+
+    void pop()
+    {
+        int i = size();
+        if (i > 0)
+            remove(i - 1);
+    }
+
+    public Object clone()
+    {
+        IntList clone = new IntList();
+
+        for (int i = 0; i < size(); i++)
+            clone.add(get(i));
+
+        return clone;
+    }
+
 }

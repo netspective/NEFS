@@ -39,14 +39,12 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleEventSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import com.netspective.commons.set.DateRangesSet;
-
-public interface ScheduleTemplate
+public interface ScheduleEventSlot extends ScheduleSlot
 {
-    public ScheduleTemplateSlots getScheduleTemplateSlots(DateRangesSet dateRanges);
+    public ScheduleEvent getScheduleEvent();
 }

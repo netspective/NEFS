@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: CreationTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: CreationTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import com.netspective.commons.set.IntSpan;
 import junit.framework.TestCase;
 
 public class CreationTest extends TestCase
@@ -102,7 +101,7 @@ public class CreationTest extends TestCase
             if (!expected.equals(actual))
                 report(expected, actual);
 
-            int[] eActual = set.elements();
+            int[] eActual = set.getElements();
             int[] eExpected = t.elements;
 
             if (eActual == null ^ eExpected == null ||

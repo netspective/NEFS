@@ -39,39 +39,12 @@
  */
 
 /**
- * $Id: DefaultScheduleManager.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleSlots.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model.impl;
+package com.netspective.commons.schedule.model;
 
-import java.util.Date;
-
-import com.netspective.commons.schedule.model.EventSlot;
-import com.netspective.commons.schedule.model.ScheduleManager;
-import com.netspective.commons.schedule.model.ScheduleSearchParameters;
-import com.netspective.commons.schedule.model.ScheduleSearchResults;
-import com.netspective.commons.schedule.model.TemplateSlot;
-import com.netspective.commons.schedule.provider.ParticipantProvider;
-
-public class DefaultScheduleManager implements ScheduleManager
+public interface ScheduleSlots
 {
-    public ScheduleSearchResults searchSchedule(ScheduleSearchParameters parameters)
-    {
-        return null;
-    }
-
-    public EventSlot[] getEvents(ParticipantProvider participants)
-    {
-        return new EventSlot[0];
-    }
-
-    public EventSlot createEventSlot(Date date, boolean available)
-    {
-        return new DefaultEventSlot(date, available);
-    }
-
-    public TemplateSlot createTemplateSlot(Date date, boolean available)
-    {
-        return new DefaultTemplateSlot(date, available);
-    }
+    public ScheduleSlot[] getScheduleSlots();
 }

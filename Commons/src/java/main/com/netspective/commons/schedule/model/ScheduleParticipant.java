@@ -39,11 +39,12 @@
  */
 
 /**
- * $Id: ScheduleParticipant.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleParticipant.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 public interface ScheduleParticipant
 {
+    public Object getIdentifier();
 }

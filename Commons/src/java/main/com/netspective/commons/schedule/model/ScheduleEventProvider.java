@@ -39,11 +39,22 @@
  */
 
 /**
- * $Id: EventSlot.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleEventProvider.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-public interface EventSlot extends ScheduleSlot
+import java.util.Date;
+
+public interface ScheduleEventProvider
 {
+    public ScheduleEventSlots getScheduledEvents(Date beginDate, Date endDate, ScheduleParticipants participants);
+
+    public ScheduleEventSlots getScheduledEvents(Date beginDate, Date endDate, ScheduleEventTypeSet eventTypes, ScheduleParticipants participants);
+
+    /**
+     * Get a list of all of the schedule event types allowed
+     * @return A set that represents all event types that may be scheduled by the scheduler
+     */
+    public ScheduleEventTypeSet getScheduleEventTypes();
 }

@@ -39,67 +39,48 @@
  */
 
 /**
- * $Id: DateSet.java,v 1.1 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: DefaultEventSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule;
+package com.netspective.commons.schedule.impl;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.set.IntSpan;
+import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleEvent;
+import com.netspective.commons.schedule.model.ScheduleEventSlot;
 
-public class DateSet
+public class DefaultEventSlot extends AbstractScheduleSlot implements ScheduleEventSlot
 {
-    private IntSpan daysSet = new IntSpan();
+    private ScheduleEvent scheduleEvent;
 
-    public DateSet()
+    public DefaultEventSlot(Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
     {
+        super(beginDate, endDate);
+        this.scheduleEvent = scheduleEvent;
     }
 
-    public void insert(Calendar calendar, Date date)
+    public DefaultEventSlot(Calendar calendar, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
     {
-        insert(CalendarUtils.getInstance().getJulianDay(calendar, date));
+        super(calendar, beginDate, endDate);
+        this.scheduleEvent = scheduleEvent;
     }
 
-    public void insert(int julianDay)
+    public DefaultEventSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
     {
-        daysSet.insert(julianDay);
+        super(calendarUtils, beginDate, endDate);
+        this.scheduleEvent = scheduleEvent;
     }
 
-    public String toString(Calendar calendar, DateFormat format, String delim)
+    public DefaultEventSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
     {
-        return daysSet.getFormattedRunList(new ElementDateFormatter(Calendar.getInstance(), format, delim));
+        super(calendarUtils, calendar, beginDate, endDate);
+        this.scheduleEvent = scheduleEvent;
     }
 
-    public String toString()
+    public ScheduleEvent getScheduleEvent()
     {
-        return toString(Calendar.getInstance(), DateFormat.getDateInstance(), ", ");
-    }
-
-    private class ElementDateFormatter implements IntSpan.ElementFormatter
-    {
-        private Calendar calendar;
-        private DateFormat format;
-        private String delim;
-
-        public ElementDateFormatter(Calendar calendar, DateFormat format, String delim)
-        {
-            this.calendar = calendar;
-            this.format = format;
-            this.delim = delim;
-        }
-
-        public String getElementDelimiter()
-        {
-            return delim;
-        }
-
-        public String getFormattedElement(int element)
-        {
-            Date date = CalendarUtils.getInstance().getDateFromJulianDay(element, calendar);
-            return format.format(date);
-        }
+        return scheduleEvent;
     }
 }

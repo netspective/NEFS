@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: MemberTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: MemberTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import com.netspective.commons.set.IntSpan;
 import junit.framework.TestCase;
 
 public class MemberTest extends TestCase
@@ -115,7 +114,7 @@ public class MemberTest extends TestCase
     {
         IntSpan s = new IntSpan(runList);
 
-        if (s.member(n) ^ isMember == 1)
+        if (s.isMember(n) ^ isMember == 1)
         {
             Object[] args = {runList, new Integer(n)};
             String problem = java.text.MessageFormat.format("{1} element {0}", args);
@@ -149,7 +148,7 @@ public class MemberTest extends TestCase
     {
         public void delta(IntSpan s, int n)
         {
-            s.insert(n);
+            s.add(n);
         }
 
         public String toString()

@@ -39,22 +39,22 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleSlot.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.Date;
 
-import com.netspective.commons.set.IntSpan;
-
 public interface ScheduleSlot
 {
+    public boolean isMultipleDays();
+
     public Date getDate();
+    public int getJulianDay();
 
-    public boolean isAvailable();    
-    public IntSpan getAvailableMinutes();
-
-    public boolean isUnavailable();
-    public IntSpan getUnavailableMinutes();
+    public Date getBeginDate();
+    public Date getEndDate();
+    public int getBeginJulianDay();
+    public int getEndJulianDay();
 }

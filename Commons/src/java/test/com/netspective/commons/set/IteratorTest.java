@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: IteratorTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: IteratorTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import com.netspective.commons.set.IntSpan;
 import junit.framework.TestCase;
 
 public class IteratorTest extends TestCase
@@ -94,7 +93,7 @@ public class IteratorTest extends TestCase
 
         try
         {
-            IntSpan.Iterator actual = c.create(s);
+            IntSpan.IntSpanIterator actual = c.create(s);
             if (!expected)
                 failed = true;
         }
@@ -116,12 +115,12 @@ public class IteratorTest extends TestCase
 
     static interface Creatable
     {
-        public IntSpan.Iterator create(IntSpan s);
+        public IntSpan.IntSpanIterator create(IntSpan s);
     }
 
     static class First implements Creatable
     {
-        public IntSpan.Iterator create(IntSpan s)
+        public IntSpan.IntSpanIterator create(IntSpan s)
         {
             return s.first();
         }
@@ -134,7 +133,7 @@ public class IteratorTest extends TestCase
 
     static class Last implements Creatable
     {
-        public IntSpan.Iterator create(IntSpan s)
+        public IntSpan.IntSpanIterator create(IntSpan s)
         {
             return s.last();
         }
@@ -147,7 +146,7 @@ public class IteratorTest extends TestCase
 
     static class Start implements Creatable
     {
-        public IntSpan.Iterator create(IntSpan s)
+        public IntSpan.IntSpanIterator create(IntSpan s)
         {
             return s.start(0);
         }
@@ -163,14 +162,14 @@ public class IteratorTest extends TestCase
         for (int i = 0; i < sets.length; i++)
         {
             IntSpan s = new IntSpan(sets[i]);
-            if (s.infinite() || !first[i])
+            if (s.isInfinite() || !first[i])
                 continue;
 
-            IntSpan.Iterator it = s.first();
+            IntSpan.IntSpanIterator it = s.first();
             IntSpan s1 = new IntSpan();
 
             while (it.hasNext())
-                s1.insert(((Integer) it.next()).intValue());
+                s1.add(((Integer) it.next()).intValue());
 
             if (!IntSpan.equal(s, s1))
             {
@@ -187,12 +186,12 @@ public class IteratorTest extends TestCase
     {
         IntSpan s = new IntSpan("0-)");
 
-        IntSpan.Iterator it = s.first();
+        IntSpan.IntSpanIterator it = s.first();
         IntSpan s1 = new IntSpan();
         IntSpan s100 = new IntSpan("0-99");
 
         for (int i = 0; i < 100; i++)
-            s1.insert(((Integer) it.next()).intValue());
+            s1.add(((Integer) it.next()).intValue());
 
         if (!IntSpan.equal(s1, s100))
         {
@@ -209,14 +208,14 @@ public class IteratorTest extends TestCase
         for (int i = 0; i < sets.length; i++)
         {
             IntSpan s = new IntSpan(sets[i]);
-            if (s.infinite() || !first[i])
+            if (s.isInfinite() || !first[i])
                 continue;
 
-            IntSpan.Iterator it = s.last();
+            IntSpan.IntSpanIterator it = s.last();
             IntSpan s1 = new IntSpan();
 
             while (it.hasPrevious())
-                s1.insert(((Integer) it.previous()).intValue());
+                s1.add(((Integer) it.previous()).intValue());
 
             if (!IntSpan.equal(s, s1))
             {
@@ -233,12 +232,12 @@ public class IteratorTest extends TestCase
     {
         IntSpan s = new IntSpan("(-0");
 
-        IntSpan.Iterator it = s.last();
+        IntSpan.IntSpanIterator it = s.last();
         IntSpan s1 = new IntSpan();
         IntSpan s100 = new IntSpan("-99-0");
 
         for (int i = 0; i < 100; i++)
-            s1.insert(((Integer) it.previous()).intValue());
+            s1.add(((Integer) it.previous()).intValue());
 
         if (!IntSpan.equal(s1, s100))
         {
@@ -256,11 +255,11 @@ public class IteratorTest extends TestCase
         IntSpan sPos = IntSpan.intersect(s, new IntSpan(" 0-20"));
         IntSpan sNeg = IntSpan.intersect(s, new IntSpan("-20-0"));
 
-        IntSpan.Iterator itPos = s.start(0);
+        IntSpan.IntSpanIterator itPos = s.start(0);
         IntSpan s1Pos = new IntSpan();
 
         while (itPos.hasNext())
-            s1Pos.insert(((Integer) itPos.next()).intValue());
+            s1Pos.add(((Integer) itPos.next()).intValue());
 
         if (!IntSpan.equal(sPos, s1Pos))
         {
@@ -271,11 +270,11 @@ public class IteratorTest extends TestCase
             ok = false;
         }
 
-        IntSpan.Iterator itNeg = s.start(0);
+        IntSpan.IntSpanIterator itNeg = s.start(0);
         IntSpan s1Neg = new IntSpan();
 
         while (itNeg.hasPrevious())
-            s1Neg.insert(((Integer) itNeg.previous()).intValue());
+            s1Neg.add(((Integer) itNeg.previous()).intValue());
 
         if (!IntSpan.equal(sNeg, s1Neg))
         {
@@ -301,7 +300,7 @@ public class IteratorTest extends TestCase
         IntSpan sAll = (IntSpan) s.clone();
         IntSpan sEven = s.grep(new IsEven());
 
-        IntSpan.Iterator it = s.first();
+        IntSpan.IntSpanIterator it = s.first();
 
         while (it.hasNext())
             if ((((Integer) it.next()).intValue() & 1) == 1)

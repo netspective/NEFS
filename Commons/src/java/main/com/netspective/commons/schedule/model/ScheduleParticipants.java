@@ -39,50 +39,16 @@
  */
 
 /**
- * $Id: AbstractScheduleSlot.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleParticipants.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model.impl;
+package com.netspective.commons.schedule.model;
 
-import java.util.Date;
+import java.util.BitSet;
 
-import com.netspective.commons.schedule.model.ScheduleSlot;
-import com.netspective.commons.set.IntSpan;
-
-public class AbstractScheduleSlot implements ScheduleSlot
+public interface ScheduleParticipants
 {
-    private Date date;
-    private boolean available;
-    private IntSpan minutes = new IntSpan();
-
-    public AbstractScheduleSlot(Date date, boolean available)
-    {
-        this.date = date;
-        this.available = available;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public boolean isAvailable()
-    {
-        return available;
-    }
-
-    public IntSpan getAvailableMinutes()
-    {
-        return minutes;
-    }
-
-    public boolean isUnavailable()
-    {
-        return ! available;
-    }
-
-    public IntSpan getUnavailableMinutes()
-    {
-        return minutes;
-    }
+    public ScheduleParticipant[] getScheduleParticipants();
+    public BitSet getRequiredScheduleParticipants();
+    public ScheduleParticipantTypeSet getScheduleParticipantTypes();
 }

@@ -39,14 +39,24 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleParticipantProvider.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import com.netspective.commons.set.DateRangesSet;
+import java.util.List;
 
-public interface ScheduleTemplate
+public interface ScheduleParticipantProvider
 {
-    public ScheduleTemplateSlots getScheduleTemplateSlots(DateRangesSet dateRanges);
+    public ScheduleParticipants getScheduleParticipants(List identifiers);
+    public ScheduleParticipants getScheduleParticipants(Object[] identifiers);
+
+    public ScheduleParticipants getScheduleParticipants(List identifiers, ScheduleParticipantTypeSet participantTypes);
+    public ScheduleParticipants getScheduleParticipants(Object[] identifiers, ScheduleParticipantTypeSet participantTypes);
+
+    /**
+     * Get a list of all of the schedule participants types allowed
+     * @return A set that represents all event types that may be scheduled by the scheduler
+     */
+    public ScheduleParticipantTypeSet getScheduleParticipantTypes();
 }

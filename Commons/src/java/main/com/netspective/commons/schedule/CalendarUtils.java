@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CalendarUtils.java,v 1.1 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: CalendarUtils.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -48,8 +48,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.apache.commons.discovery.tools.DiscoverClass;
-
-import com.netspective.commons.set.IntSpan;
 
 public class CalendarUtils
 {
@@ -78,39 +76,6 @@ public class CalendarUtils
 
     private CalendarUtils()
     {
-    }
-
-    /**
-     * Calculate a set in which the months of the year, days of the month, and days of the week occur in between
-     * the given begin and end date.
-     * @param beginDate The date to start calculating from
-     * @param endDate The date to end calculation at
-     * @param monthsOfYear A set of month numbers for which to calculate the date set
-     * @param daysOfMonth A set of of day numbers for which to calculate the date set
-     * @param daysOfWeek A set of of days of the week to calculate the date set
-     * @return An IntSpan set which includes only the dates which match the months of the year, the days of the month,
-     *         and days of the week
-     */
-    public DateSet getDaysSet(Calendar calendar, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        DateSet result = new DateSet();
-        final int begin = getJulianDay(calendar, beginDate), end = getJulianDay(calendar, endDate);
-        final boolean haveMonthsOfYear = monthsOfYear != null, haveDaysOfMonth = daysOfMonth != null, haveDaysOfWeek = daysOfWeek != null;
-
-        for (int julianDay = begin; julianDay <= end; julianDay++)
-        {
-            Date activeDate = getDateFromJulianDay(julianDay, calendar);
-            calendar.setTime(activeDate);
-
-            if ((!haveMonthsOfYear || monthsOfYear.member(calendar.get(Calendar.MONTH))) &&
-                (!haveDaysOfMonth || daysOfMonth.member(calendar.get(Calendar.DAY_OF_MONTH))) &&
-                (!haveDaysOfWeek || daysOfWeek.member(calendar.get(Calendar.DAY_OF_WEEK))))
-            {
-                result.insert(julianDay);
-            }
-        }
-
-        return result;
     }
 
     public int getJulianDay(long dateMillis)

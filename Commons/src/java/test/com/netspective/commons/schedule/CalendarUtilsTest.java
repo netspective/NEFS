@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CalendarUtilsTest.java,v 1.1 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: CalendarUtilsTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import com.netspective.commons.set.DateRangesSet;
 import com.netspective.commons.set.IntSpan;
 
 public class CalendarUtilsTest extends ScheduleTestCase
@@ -91,7 +92,7 @@ public class CalendarUtilsTest extends ScheduleTestCase
         Date beginDate = createDate(0, 1, 2004);
         Date endDate = createDate(0, 15, 2004);
 
-        DateSet dateSet = calendarUtils.getDaysSet(calendar, beginDate, endDate, null, null, null);
+        DateRangesSet dateSet = new DateRangesSet(calendar, beginDate, endDate, null, null, null);
         assertEquals("1/1/2004-1/15/2004", dateSet.toString(calendar, dateFormat, ", "));
     }
 
@@ -100,7 +101,7 @@ public class CalendarUtilsTest extends ScheduleTestCase
         Date beginDate = createDate(0, 1, 2004);
         Date endDate = createDate(11, 31, 2004);
 
-        DateSet dateSet = calendarUtils.getDaysSet(calendar, beginDate, endDate, new IntSpan("0-3"), null, null);
+        DateRangesSet dateSet = new DateRangesSet(calendar, beginDate, endDate, new IntSpan("0-3"), null, null);
         assertEquals("1/1/2004-4/30/2004", dateSet.toString(calendar, dateFormat, ", "));
     }
 
@@ -109,7 +110,7 @@ public class CalendarUtilsTest extends ScheduleTestCase
         Date beginDate = createDate(0, 1, 2004);
         Date endDate = createDate(11, 31, 2004);
 
-        DateSet dateSet = calendarUtils.getDaysSet(calendar, beginDate, endDate, new IntSpan("0-3"), new IntSpan("1-5"), null);
+        DateRangesSet dateSet = new DateRangesSet(calendar, beginDate, endDate, new IntSpan("0-3"), new IntSpan("1-5"), null);
         assertEquals("1/1/2004-1/5/2004, 2/1/2004-2/5/2004, 3/1/2004-3/5/2004, 4/1/2004-4/5/2004", dateSet.toString(calendar, dateFormat, ", "));
     }
 
@@ -118,7 +119,7 @@ public class CalendarUtilsTest extends ScheduleTestCase
         Date beginDate = createDate(0, 1, 2004);
         Date endDate = createDate(11, 31, 2004);
 
-        DateSet dateSet = calendarUtils.getDaysSet(calendar, beginDate, endDate, new IntSpan("8-9"), null, new IntSpan(new int[] { Calendar.MONDAY }));
+        DateRangesSet dateSet = new DateRangesSet(calendar, beginDate, endDate, new IntSpan("8-9"), null, new IntSpan(new int[] { Calendar.MONDAY }));
         assertEquals("9/6/2004, 9/13/2004, 9/20/2004, 9/27/2004, 10/4/2004, 10/11/2004, 10/18/2004, 10/25/2004", dateSet.toString(calendar, dateFormat, ", "));
     }
 }

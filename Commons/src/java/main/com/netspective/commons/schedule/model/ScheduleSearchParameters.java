@@ -39,29 +39,19 @@
  */
 
 /**
- * $Id: ScheduleSearchParameters.java,v 1.1 2004-03-26 03:57:42 shahid.shah Exp $
+ * $Id: ScheduleSearchParameters.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.Date;
 
-import com.netspective.commons.schedule.provider.EventProvider;
-import com.netspective.commons.schedule.provider.EventTypeProvider;
-import com.netspective.commons.schedule.provider.ParticipantProvider;
-import com.netspective.commons.schedule.provider.ParticipantTypeProvider;
-import com.netspective.commons.schedule.provider.ScheduleTemplateProvider;
-
 public interface ScheduleSearchParameters
 {
     public Date getBeginDate();
     public Date getEndDate();
 
-    public ParticipantProvider getParticipantProvider();
-    public ParticipantTypeProvider getParticipantTypeProvider();
-
-    public EventProvider getEventProvider();
-    public EventTypeProvider getEventTypeProvider();
-
+    public ScheduleParticipantProvider getParticipantProvider();
+    public ScheduleEventProvider getEventProvider();
     public ScheduleTemplateProvider getScheduleTemplateProvider();
 }
