@@ -12,7 +12,10 @@
     *********************************************************************
     -->
 
+    <classpath id='c:\Projects\Frameworks\Commons\conf'/>
     <classpath id='c:\Projects\Frameworks\Commons\lib\redist' library-dir='true'/>
+    <classpath id='c:\Projects\Frameworks\Axiom\lib\redist' library-dir='true'/>
+    <classpath id='c:\Projects\Frameworks\Sparx\lib\redist' library-dir='true'/>
     <classpath id='c:\Projects\Frameworks\tools\idea\classes'/>
 
 	<path-mapping url-pattern='/sparx/*' real-path='c:\Projects\Frameworks\Sparx\resources'/>
@@ -22,27 +25,45 @@
     * Setup application's execution environment.                        *
     *********************************************************************
     -->
-	<!-- Setup execution environment -->
+
+    <!-- Setup Sparx configuration/specifications root file -->
+    <context-param>
+      <param-name>com.netspective.sparx.CONF_FILE_NAME</param-name>
+      <param-value>/WEB-INF/sparx/project.xml</param-value>
+    </context-param>
+
+	<!-- Setup runtime environment -->
 	<context-param>
-	  <param-name>netspective-runtime-environment</param-name>
-	  <param-value>Development</param-value>
-<!--	  <param-value>Testing</param-value>	-->
-<!--	  <param-value>Training</param-value>	-->
-<!--	  <param-value>Demonstration</param-value>	-->
-<!--	  <param-value>Production</param-value>	-->
+	  <param-name>com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS</param-name>
+	  <param-value>DEVELOPMENT | FRAMEWORK_DEVELOPMENT</param-value>
+	  <!-- the parameter for the environment flags may be combined using
+	       the following vaues:
+	       * DEVELOPMENT
+	       * TESTING
+	       * TRAINING
+	       * DEMONSTRATION
+	       * PRODUCTION
+	       * UNDERGOING_MAINTENANCE
+	       * FRAMEWORK_DEVELOPMENT
+
+	       e.g. "PRODUCTION | UNDERGOING_MAINTENANCE" is valid
+	    -->
 	</context-param>
 
     <!--
     *********************************************************************
-    * Setup application's execution environment mode.                   *
+    * Setup application front-controller servlet                        *
     *********************************************************************
     -->
-	<!-- Setup execution environment mode -->
-	<context-param>
-	  <param-name>netspective-runtime-environment-mode</param-name>
-	  <param-value>Normal</param-value>
-<!--	  <param-value>Maintenance</param-value>	-->
-	</context-param>
+	<servlet>
+		<servlet-name>NavigationController</servlet-name>
+		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>NavigationController</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
 
     <!--
     *********************************************************************
@@ -54,11 +75,6 @@
 		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
 	</servlet>
 
-    <!--
-    *********************************************************************
-    * Setup Netspective Administration Console servlet mapping          *
-    *********************************************************************
-    -->
 	<servlet-mapping>
 		<servlet-name>NetspectiveConsole</servlet-name>
 		<url-pattern>/console/*</url-pattern>
@@ -72,15 +88,15 @@
     *********************************************************************
     -->
 	<context-param>
-	  <param-name>default-data-source</param-name>
-	  <param-value>jdbc/library</param-value>
+	  <param-name>com.netspective.sparx.DEFAULT_DATA_SOURCE</param-name>
+	  <param-value>jdbc/default</param-value>
 	</context-param>
 
 	<resource-ref>
-	  <res-ref-name>jdbc/library</res-ref-name>
+	  <res-ref-name>jdbc/default</res-ref-name>
 	  <res-type>javax.sql.DataSource</res-type>
 	  <init-param driver-name="org.hsqldb.jdbcDriver"/>
-	  <init-param url="jdbc:hsqldb:c:\projects\webapps\library\WEB-INF\Database\library.hsqldb"/>
+	  <init-param url="jdbc:hsqldb:${app.docDir}/WEB-INF/database/instance/library"/>
 	  <init-param user="sa"/>
 	  <init-param password=""/>
 	  <init-param max-connections="20"/>
