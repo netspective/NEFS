@@ -10,7 +10,7 @@
     <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 19:47:42 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 21:41:02 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -1650,6 +1650,11 @@
         </mediaobject>
       </figure>
 
+      <note>
+        <para>For instructions on how to view all available NEF tags along
+        with attributes and descriptions, see <xref linkend="xdm-tags-ref" />.</para>
+      </note>
+
       <section>
         <title>Declaring the Presentation Layer</title>
 
@@ -1827,6 +1832,13 @@ id="declare-nav-tags-eg-10" />
             are in a static XML file, the values of the descriptors are
             capable of being dynamic.</para>
           </note>
+
+          <note>
+            <para>Please see <xref linkend="xdm-tags-ref" /> for instructions
+            on how to use the Console to review tag documentation and use the
+            Tags Tree to get further details on the <sgmltag class="starttag">navigation-tree</sgmltag>
+            and <sgmltag class="starttag">page</sgmltag> tags.</para>
+          </note>
         </section>
 
         <section>
@@ -1986,6 +1998,14 @@ id="declare-form-tags-eg-8" />
             static XML file, the values of the descriptors are capable of
             being dynamic.</para>
           </note>
+
+          <note>
+            <para>Please see <xref linkend="xdm-tags-ref" /> for instructions
+            on how to use the Console to review tag documentation and use the
+            Tags Tree to get further details on the <sgmltag class="starttag">dialogs</sgmltag>,
+            <sgmltag class="starttag">dialog</sgmltag>, <sgmltag
+            class="starttag">field</sgmltag>, and related tags.</para>
+          </note>
         </section>
       </section>
 
@@ -2101,6 +2121,13 @@ id="declare-data-query-static-eg-6" />
             that the programmer only calls the right object and the SQL for
             the proper database will be called.</para>
           </note>
+
+          <note>
+            <para>Please see <xref linkend="xdm-tags-ref" /> for instructions
+            on how to use the Console to review tag documentation and use the
+            Tags Tree to get further details on the <sgmltag class="starttag">queries</sgmltag>
+            and <sgmltag class="starttag">query</sgmltag> tags.</para>
+          </note>
         </section>
 
         <section>
@@ -2210,6 +2237,13 @@ id="declare-data-sp-eg-6" />
               specified in the XML).</para>
             </callout>
           </calloutlist>
+
+          <note>
+            <para>Please see <xref linkend="xdm-tags-ref" /> for instructions
+            on how to use the Console to review tag documentation and use the
+            Tags Tree to get further details on the <sgmltag class="starttag">stored-procedures</sgmltag>
+            and <sgmltag class="starttag">stored-procedure</sgmltag> tags.</para>
+          </note>
         </section>
 
         <section>
@@ -2272,6 +2306,14 @@ id="declare-data-query-defn-eg-3" />
               to which fields.</para>
             </callout>
           </calloutlist>
+
+          <note>
+            <para>Please see <xref linkend="xdm-tags-ref" /> for instructions
+            on how to use the Console to review tag documentation and use the
+            Tags Tree to get further details on the <sgmltag class="starttag">query-defn</sgmltag>,
+            <sgmltag class="starttag">field</sgmltag> and <sgmltag
+            class="starttag">join</sgmltag> tags.</para>
+          </note>
         </section>
 
         <section>
@@ -2661,8 +2703,15 @@ id="declare-security-acl-eg-7" />
     <section>
       <title>Unit Test and User Demonstrations</title>
 
-      <para>Every Sparx XML tag you use to declare your application&#39;s
-      requirements has an automated means to verify and test your declaration
+      <para>Unit testing, in case you are not familiar with the terminology,
+      refers to testing individual components of an application thoroughly
+      before they are integrated with the rest of the application. This allows
+      a developer to run the component through many series of tests to ensure
+      it performs as expected and desired before integrating it into a
+      finished application.</para>
+
+      <para>Every NEF XML tag you use to declare your application&#39;s
+      requirements has an automated means to verify and test the declaration
       within the Console or your application. At this point you may begin to
       involve your customers by demonstrating the forms, validation, pages,
       etc within the Console or application -- before you start writing or
@@ -3239,6 +3288,136 @@ id="project-file-basic-eg-7" />
         </itemizedlist>
       </section>
 
+      <section id="xdm-tags-ref">
+        <title>XDM Tag Reference</title>
+
+        <para>Because the NEF supports dozens of tags and hundreds of
+        attributes spread across dozens of classes, the Enterprise Console has
+        an automated tag reference to help you learn about the tags. The
+        Console can even provide online documentation for your own classes and
+        custom XDM elements. To view the online XDM tag reference, go to your
+        applications&#39; Console and click the <guimenu>XDM Tags Reference</guimenu>
+        tab. If you&#39;d like to see the reference in the NEF Sampler
+        application, go to <ulink
+        url="http://sampler.netspective.com/nefs-sampler/console/reference">http://sampler.netspective.com/nefs-sampler/console/reference</ulink>.
+        The <guimenu>XDM Tags Reference</guimenu> pages provide three
+        different views:</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>Tags Tree</term>
+
+            <listitem>
+              <para>The Tags Tree is a convenient way of looking at all the
+              tags on one screen. There is a dynamic tree that allows you to
+              get a sense of all the tags&#39; hierarchy and when you click on
+              any tag it will show the documentation for a particular tag in a
+              window next to the tree. </para>
+
+              <screenshot>
+                <graphic
+                fileref="./resources/images/screen-console-xdm-tags-ref-tree.gif" />
+              </screenshot>
+
+              <note>
+                <para>The tags that are <emphasis>italicized</emphasis> in the
+                Tags Tree are template producers (meaning they don&#39;t
+                actually perform any actions they mere record information for
+                later use). See <xref linkend="xdm-templates" /> for more
+                information on templates.</para>
+              </note>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Tags Documentation</term>
+
+            <listitem>
+              <para>The Tags Documentation pages provide detailed listings of
+              all support attributes and elements for any tag you choose. This
+              tag documentation page is the same page that appears within the
+              Tags Tree except there is more room to view the documentation
+              because the Tags Tree is not shown.</para>
+
+              <screenshot>
+                <graphic
+                fileref="./resources/images/screen-console-xdm-tags-ref-doc.gif" />
+              </screenshot>
+
+              <para>The tag documentation pages include a great deal of
+              information, including but not limited to:</para>
+
+              <orderedlist>
+                <listitem>
+                  <para>A tag&#39;s ancestors (hierarchy in the tag tree).</para>
+                </listitem>
+
+                <listitem>
+                  <para>The tag&#39;s name.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The class which handles the tag. Every tag is handled
+                  by a plain old Java object (POJO).</para>
+                </listitem>
+
+                <listitem>
+                  <para>The tag&#39;s attributes (all attributes are simply
+                  mutator/setter methods like setXXX).</para>
+                </listitem>
+
+                <listitem>
+                  <para>The attribute type (which class or Java primitive is
+                  used to hold a value) and choices associated with the
+                  attribute type (if any).</para>
+                </listitem>
+
+                <listitem>
+                  <para>The tag&#39;s child elements (these are simply methods
+                  of the form createXXX() and addXXX()).</para>
+                </listitem>
+
+                <listitem>
+                  <para>The class which handles the child method. If there is
+                  a check mark in the &#34;Text&#34; column it means that the
+                  class allows PCDATA in the XML.</para>
+                </listitem>
+
+                <listitem>
+                  <para>If the tag is a template producer or template
+                  consumer, the names of the available templates it has either
+                  produced or consumed is displayed here.</para>
+                </listitem>
+
+                <listitem>
+                  <para>Shows the declaring class. If a checkmark is present
+                  in the &#34;D&#34; column, then the attribute or child
+                  element is declared in the class being shown. If a check
+                  mark is not present it means the attribute/element is
+                  inherited and you can hover in the empty box and the Console
+                  will show you which class the attribute or child element is
+                  declared in.</para>
+                </listitem>
+              </orderedlist>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>Template Catalog</term>
+
+            <listitem>
+              <para>The template catalog shows all the templates defined by
+              template producers.</para>
+
+              <screenshot>
+                <graphic
+                fileref="resources/images/screen-console-xdm-tags-ref-tmpl-catalog.gif" />
+              </screenshot>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
       <section>
         <title>XDM Tag Handlers and Extensibility</title>
 
@@ -3337,12 +3516,6 @@ id="project-file-basic-eg-7" />
       <section>
         <title>How XDM Tags Become Java Class Instances and Mutator Method
         Calls</title>
-
-        <para>TODO: documentation coming soon...</para>
-      </section>
-
-      <section>
-        <title>XDM Tag Reference</title>
 
         <para>TODO: documentation coming soon...</para>
       </section>
@@ -4822,7 +4995,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         towards creating a dialog. Dialogs are defined using the <sgmltag
         class="starttag">dialog</sgmltag> tag and each dialog must belong to a
         package of dialogs represented by the <sgmltag class="starttag">dialogs</sgmltag>
-        tag. For example: </para>
+        tag. For example:</para>
 
         <programlisting role="xml">&#60;project&#62;
     ....
@@ -5650,7 +5823,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
             <para>The following is an example of a dialog containing general
             fields such as integer, float and specialized fields such as
-            currency, social security number and zip code. </para>
+            currency, social security number and zip code.</para>
 
             <programlisting role="xml">&#60;project&#62;
     ....
@@ -6181,7 +6354,7 @@ public class NewField extends DialogField
         has conditions defined based upon the mode of the dialog. When the
         dialog is in edit or delete mode, the <emphasis>unavailable</emphasis>
         flag is applied to the fields. For more information on conditional
-        fields, go to <xref linkend="Dialogs-DataFields" />. </para>
+        fields, go to <xref linkend="Dialogs-DataFields" />.</para>
       </section>
 
       <section>
@@ -6225,7 +6398,7 @@ public class NewField extends DialogField
             <para>In order for a dialog to actually execute, the <sgmltag
             class="starttag">page</sgmltag> defined in the <sgmltag
             class="starttag">navigation-tree</sgmltag> must be visted using a
-            browser (or you can unit test it in the Console). </para>
+            browser (or you can unit test it in the Console).</para>
           </listitem>
 
           <listitem>
