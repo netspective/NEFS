@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>Setting up the Starter Application</title>
+
+  <para>For creation of a new NEF based application, you will need to download
+  the Starter Application. The starter application is just an empty
+  application that contains the minimal set of files required for NEF web
+  applications. It doesn't do anything particularly useful but you can use
+  this sample as your template for the new project.</para>
+
+  <section>
+    <title>Downloading the Starter Application</title>
+
+    <para>You can download the NEF Starter Application file from <ulink
+    url="http://www.netspective.com/corp/downloads/frameworks/samples">http://www.netspective.com/corp/downloads/frameworks/samples</ulink></para>
+  </section>
+
+  <section>
+    <title>Setting up the Starter Application</title>
+
+    <para>Copy the downloaded <filename>nefs-starter-empty.war</filename> file
+    to the <filename class="directory">webapps</filename> folder of your
+    servlet container (application server) and run (or restart) the
+    application server. This will create an Application Directory Structure
+    (see <xref linkend="nef-app-dir-structure" />), containing the necessary
+    NEF files and sub-folders, under the <filename
+    class="directory">webapps</filename> folder of the application
+    server.</para>
+  </section>
+
+  <section>
+    <title>Testing the Starter Application in a Browser</title>
+
+    <para>Use a web browser to access the root of the starter application
+    using the URL of the form
+    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty.
+    If everything worked as it should, you will see the Starter Application
+    Welcome Page.<screenshot>
+        <graphic fileref="./resources/images/screen-starter-home.gif" />
+      </screenshot></para>
+  </section>
+
+  <section>
+    <title>Verifying the Console</title>
+
+    <para>Use a browser to access the Console of the Starter Application. This
+    will ensure not just the proper configuration of the application but also
+    its proper configuration in relax to Sparx. In a web browser, we can go to
+    the following URL:
+    http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty/console.
+    If everything is working, you will see the application Console login
+    screen.<screenshot>
+        <graphic fileref="./resources/images/screen-console-login.gif" />
+      </screenshot></para>
+
+    <para>Congratulations! You now have an empty application upon which you
+    can build. You can log in to your application's Console. The Console's
+    default User Id is <literal>'console</literal>' and the default Password
+    is <literal>'console'</literal>(each without quotes). Unless otherwise
+    specified, that is the User Id and Password combination you should use if
+    the Console prompts you to login.</para>
+  </section>
+</section>
