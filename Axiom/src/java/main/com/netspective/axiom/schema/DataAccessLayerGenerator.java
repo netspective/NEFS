@@ -68,7 +68,6 @@ import org.inxar.jenesis.VirtualMachine;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
@@ -958,16 +957,7 @@ public class DataAccessLayerGenerator
                 method.isFinal(true);
                 method.newStmt(vm.newFree("get" + methodSuffix + "().copyValueByReference(value)"));
 
-
-                if(column instanceof AutoIncColumn)
-                {
-                    // auto incs will be longs in some database, integers in others so we need to check for both
-                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("Object autoInc" + methodSuffix + "Value = values.getByColumnIndex(" + constantId + ").getValue()"));
-                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "(autoInc" + methodSuffix + "Value instanceof Integer ? new Long(((Integer) autoInc" + methodSuffix + "Value).intValue()) : (Long) autoInc" + methodSuffix + "Value)"));
-                }
-                else
-                    recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "((" + valueInstance.getValueHolderClass().getName() + ") values.getByColumnIndex(" + constantId + ").getValue())"));
-
+                recordInnerClassValueObjectAccessorMethod.newStmt(vm.newFree("valueObject.set" + methodSuffix + "((" + valueInstance.getValueHolderClass().getName() + ") values.getByColumnIndex(" + constantId + ").getValue())"));
                 recordInnerClassValueObjectMutatorMethod.newStmt(vm.newFree("values.getByColumnIndex(" + constantId + ").setValue(valueObject.get" + methodSuffix + "())"));
             }
 
