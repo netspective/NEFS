@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.27 2004-01-27 05:06:46 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.28 2004-02-04 23:24:30 min-gu.lee Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -577,7 +577,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(imageUrl == null)
             imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
 
-        return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "'></a>&nbsp;";
+        return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "' alt='pop-up'></a>&nbsp;";
 
     }
 
@@ -736,7 +736,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 			else if(caption.length() > 0)
 			{
 				fieldsHtml.append(
-                    "<tr" + rowAttr + "><td " + getCaptionClass() + ">" + caption + "</td>" +
+                    "<tr" + rowAttr + "><td " + getCaptionClass() + ">" +
+                    "<label for=\"" + field.getHtmlFormControlId() + "\">" +
+                    caption + "</label></td>" +
                     "<td "+ getControlAreaClass() + ">" + controlHtml + hintHtml +
                     "</td></tr>\n");
 			}
