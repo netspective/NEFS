@@ -129,8 +129,8 @@
         <page-type name="entity-view" type="default"/>
 
         <page type="entity-redirector" class="app.navigate.entity.person.PersonRedirectorPage" name="person" caption="Person Entity Redirector" hidden="yes">
-            <entity-subtype id="5" redirect="page-id:/patient"/>
-            <entity-subtype id="6" redirect="page-id:/physician"/>
+            <entity-subtype schema-enum="db.Person_Type,PATIENT" redirect="page-id:/patient"/>
+            <entity-subtype schema-enum="db.Person_Type,PHYSICIAN" redirect="page-id:/physician"/>
 
             <body>Unknown page subtype for page ${vc.activePage.class.name}, id = ${vc.activeState.entitySubtypeId}, name = ${vc.activeState.entitySubtypeName?default('null')}.</body>
         </page>
