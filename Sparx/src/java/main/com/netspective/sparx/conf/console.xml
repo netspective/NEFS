@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.14 2003-04-07 17:13:54 shahid.shah Exp $
+  * $Id: console.xml,v 1.15 2003-04-09 16:57:57 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -83,7 +83,7 @@
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>
         <page name="data-management" caption="Data Management">
-	        <page class="com.netspective.sparx.console.page.StaticQueryPage" name="query" caption="Static Queries" assign-state-params="selected-query-id">
+	        <page name="query" caption="Static Queries">
 
 				<page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
                     <panels>
@@ -92,7 +92,8 @@
                 </page>
                 <page name="detail" caption="Documentation" retain-params="selected-query-id">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.StaticQueryDocumentationPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.QueryDbmsSqlTextsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.QueryParametersPanel"/>
                     </panels>
                 </page>
 				<page name="test" caption="Unit Test" retain-params="selected-query-id"/>
@@ -105,9 +106,6 @@
                     </panels>
                 </page>
                 <page name="detail" caption="Documentation" retain-params="selected-query-defn-id">
-                    <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.StaticQueryDocumentationPanel"/>
-                    </panels>
                 </page>
                 <page name="test" caption="Unit Test" retain-params="selected-query-defn-id"/>
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.3 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.4 2003-04-09 16:57:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -56,7 +56,6 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.page.StaticQueryPage;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -75,7 +74,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
     static
     {
         queryIdColumn.setHeading(new StaticValueSource("Query"));
-        queryIdColumn.setCommand("redirect,detail?"+ StaticQueryDocumentationPanel.REQPARAMNAME_QUERY +"=%{1}");
+        queryIdColumn.setCommand("redirect,detail?"+ QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY +"=%{1}");
         catalogReport.addColumn(queryIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)
@@ -124,7 +123,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        return new CatalogDataSource(vc, nc.getSqlManager(), ((StaticQueryPage.State) nc.getActiveState()).getSelectedQueryId());
+        return new CatalogDataSource(vc, nc.getSqlManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)

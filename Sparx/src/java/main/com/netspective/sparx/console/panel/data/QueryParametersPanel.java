@@ -39,21 +39,10 @@
  */
 
 /**
- * $Id: StaticQueryDocumentationPanel.java,v 1.2 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: QueryParametersPanel.java,v 1.1 2003-04-09 16:57:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Iterator;
-import java.io.StringReader;
-import java.io.Reader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
@@ -61,45 +50,60 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
-import com.netspective.sparx.console.page.StaticQueryPage;
 import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.DbmsSqlTexts;
-import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.QueryParameters;
+import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.text.TextUtils;
 
-public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPanel
+public class QueryParametersPanel extends AbstractHtmlTabularReportPanel
 {
     public static final HtmlTabularReport queryReport = new BasicHtmlTabularReport();
+    public static final String REQPARAMNAME_QUERY_SOURCE = "query-source";
     public static final String REQPARAMNAME_QUERY = "selected-query-id";
     private static final ValueSource noQueryParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_QUERY +"' parameter provided.");
+    private static final ValueSource noParams = new StaticValueSource("Query has no parameters.");
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("DBMS"));
+        column.setHeading(new StaticValueSource("Index"));
         queryReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("SQL Text"));
+        column.setHeading(new StaticValueSource("Name"));
+        queryReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("JDBC Type"));
+        queryReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Java Type"));
+        queryReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Value Source"));
+        queryReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Value Source Class"));
         queryReport.addColumn(column);
     }
 
-    public boolean affectsNavigationContext(NavigationContext nc)
+    public QueryParametersPanel()
     {
-        return true;
+        getFrame().setHeading(new StaticValueSource("Query Parameters"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
         // the query should be automatically assigned to the state using the "assign-state-params" method
-        String queryName = ((StaticQueryPage.State) nc.getActiveState()).getSelectedQueryId();
+        String queryName = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
         if(queryName == null)
             return new NoQueryParameterDataSource(vc);
 
@@ -107,8 +111,7 @@ public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPane
         if(query == null)
             return new QueryNotFoundDataSource(vc, queryName);
 
-        nc.setPageHeading("Static SQL: " + query.getQualifiedName());
-        return new SqlTextDataSource(vc, query);
+        return new SqlParamsDataSource(vc, query);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -145,25 +148,20 @@ public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPane
         }
     }
 
-    public class SqlTextDataSource extends AbstractHtmlTabularReportDataSource
+    public class SqlParamsDataSource extends AbstractHtmlTabularReportDataSource
     {
-        private List rows = new ArrayList();
+        private QueryParameters params;
         private int activeRow = -1;
         private int lastRow;
 
-        public SqlTextDataSource(HtmlTabularReportValueContext vc, Query query)
+        public SqlParamsDataSource(HtmlTabularReportValueContext vc, Query query)
         {
             super(vc);
-            DbmsSqlTexts texts = query.getSqlTexts();
-            Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
-
-            for(Iterator i = availableDbmsIds.iterator(); i.hasNext(); )
-            {
-                String dbmsId = (String) i.next();
-                rows.add(new Object[] { dbmsId, texts.getByDbmsId(dbmsId) });
-            }
-
-            lastRow = rows.size() - 1;
+            params = query.getParams();
+            if(params != null)
+                lastRow = params.size() - 1;
+            else
+                lastRow = -1;
         }
 
         public int getActiveRowNumber()
@@ -184,29 +182,44 @@ public class StaticQueryDocumentationPanel extends AbstractHtmlTabularReportPane
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
+            QueryParameter param = params.get(activeRow);
+
             switch(columnIndex)
             {
                 case 0:
-                    return ((Object[]) rows.get(activeRow))[0];
+                    return new Integer(activeRow + 1);
 
                 case 1:
-                    DbmsSqlText sqlText = (DbmsSqlText) ((Object[]) rows.get(activeRow))[1];
-                    String sql = TextUtils.getUnindentedText(sqlText.getSql());
-                    Reader reader = new StringReader(sql);
-                    Writer writer = new StringWriter();
-                    try
-                    {
-                        HtmlSyntaxHighlightPanel.emitHtml("sql", reader, writer);
-                    }
-                    catch (IOException e)
-                    {
-                        return e.getMessage();
-                    }
-                    return writer.toString();
+                    return param.getName();
+
+                case 2:
+                    return new Integer(param.getSqlTypeCode());
+
+                case 3:
+                    return param.getJavaType();
+
+                case 4:
+                    ValueSource vs = param.getValue();
+                    if(vs != null)
+                        return vs.getSpecification();
+                    else
+                        return null;
+
+                case 5:
+                    vs = param.getValue();
+                    if(vs != null)
+                        return reportValueContext.getSkin().constructClassRef(vs.getClass());
+                    else
+                        return null;
 
                 default:
                     return null;
             }
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return noParams;
         }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.1 2003-04-07 01:03:52 shahid.shah Exp $
+ * $Id: DynamicQueriesCatalogPanel.java,v 1.2 2003-04-09 16:57:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -47,6 +47,8 @@ package com.netspective.sparx.console.panel.data;
 import java.util.TreeSet;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.Iterator;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
@@ -60,6 +62,8 @@ import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.schema.Schemas;
+import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 
@@ -109,20 +113,75 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
     public class CatalogDataSource extends AbstractHtmlTabularReportDataSource
     {
-        private QueryDefinitions queryDefns;
         private QueryDefinition activeRowQueryDefn;
+        private String activeRowHeading;
         private List rows = new ArrayList();
         private int activeRow = -1;
         private int lastRow;
+        private Hierarchy hierarchy = new ActiveHierarchy();
+
+        protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
+        {
+            public int getColumn()
+            {
+                return 0;
+            }
+
+            public int getLevel()
+            {
+                return activeRowQueryDefn != null ? 1 : 0;
+            }
+
+            public int getParentRow()
+            {
+                return -1; //TODO: need to implement this
+            }
+        }
 
         public CatalogDataSource(HtmlTabularReportValueContext vc, SqlManager sqlManager)
         {
             super(vc);
-            queryDefns = sqlManager.getQueryDefns();
 
-            rows.addAll(new TreeSet(queryDefns.getNames()));
+            QueryDefinitions customQueryDefns = sqlManager.getQueryDefns();
+            if(customQueryDefns.size() > 0)
+            {
+                rows.add("Custom");
+                Set sortedNames = new TreeSet(customQueryDefns.getNames());
+                for(Iterator i = sortedNames.iterator(); i.hasNext(); )
+                {
+                    String queryDefnName = (String) i.next();
+                    rows.add(customQueryDefns.get(queryDefnName));
+                }
+            }
+
+            Schemas schemas = sqlManager.getSchemas();
+            for(int i = 0; i < schemas.size(); i++)
+            {
+                Schema schema = schemas.get(i);
+                QueryDefinitions tableQueryDefns = schema.getQueryDefinitions();
+                if(customQueryDefns.size() > 0)
+                {
+                    rows.add("Schema '"+ schema.getName() +"'");
+                    Set sortedNames = new TreeSet(tableQueryDefns.getNames());
+                    for(Iterator iter = sortedNames.iterator(); iter.hasNext(); )
+                    {
+                        String queryDefnName = (String) iter.next();
+                        rows.add(tableQueryDefns.get(queryDefnName));
+                    }
+                }
+            }
 
             lastRow = rows.size() - 1;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHierarchy()
+        {
+            return hierarchy;
+        }
+
+        public boolean isHierarchical()
+        {
+            return true;
         }
 
         public int getActiveRowNumber()
@@ -135,8 +194,17 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             if(activeRow < lastRow)
             {
                 activeRow++;
-                String itemName = (String) rows.get(activeRow);
-                activeRowQueryDefn = queryDefns.get(itemName);
+                Object item = rows.get(activeRow);
+                if(item instanceof QueryDefinition)
+                {
+                    activeRowHeading = null;
+                    activeRowQueryDefn = (QueryDefinition) item;
+                }
+                else
+                {
+                    activeRowHeading = (String) item;
+                    activeRowQueryDefn = null;
+                }
                 return true;
             }
 
@@ -145,6 +213,14 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
+            if(activeRowHeading != null)
+            {
+                if(columnIndex == 0)
+                    return activeRowHeading;
+                else
+                    return null;
+            }
+
             switch(columnIndex)
             {
                 case 0:
