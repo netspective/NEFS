@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.86 2003-08-14 19:15:43 shahid.shah Exp $
+  * $Id: console.xml,v 1.87 2003-08-15 01:54:03 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -44,6 +44,9 @@
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" heading="Console Home" default="yes">
             <body config="console" source="console-page-content:index.ftl"/>
+            <page name="lib-dependencies" caption="Library Dependencies">
+                <body config="console" source="console-page-content:../lib-dependencies.ftl"/>
+            </page>
         </page>
 
         <page name="project" caption="Project" heading="Project Home">

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProjectComponent.java,v 1.2 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: ProjectComponent.java,v 1.3 2003-08-15 01:54:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -51,7 +51,6 @@ import com.netspective.commons.xdm.DefaultXdmComponent;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.metric.Metric;
-import com.netspective.sparx.security.LoginManagersManager;
 
 public class ProjectComponent extends DefaultXdmComponent
 {
@@ -62,7 +61,7 @@ public class ProjectComponent extends DefaultXdmComponent
     {
     }
 
-    public LoginManagersManager createProject()
+    public Project createProject()
     {
         return new Project();
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<netspective>
+    <product id="netspective-sparx" version="7">
+        <dependencies>
+            <product id="netspective-commons"/>
+            <product id="netspective-axiom"/>
+
+            <library>
+                <name>Sun Microsystems Java Servlet API</name>
+                <version>2.3</version>
+                <class-path>servlet.jar</class-path>
+                <source home-uri="http://java.sun.com"
+                        license="Sun Microsystems"/>
+            </library>
+
+            <library>
+                <name>Ostermiller Syntax Highlighting Library</name>
+                <version>1.1.1</version>
+                <class-path>syntax.jar</class-path>
+                <source home-uri="http://ostermiller.org/syntax"
+                        license="GNU GPL"
+                        license-uri="http://ostermiller.org/syntax/license.html"/>
+            </library>
+
+            <library>
+                <name>FreeMarker Templating Library</name>
+                <version>2.3pre11</version>
+                <class-path>freemarker.jar</class-path>
+                <source home-uri="http://www.freemarker.org"
+                        license="BSD, OSI Certified"/>
+            </library>
+        </dependencies>
+    </product>
+</netspective>
