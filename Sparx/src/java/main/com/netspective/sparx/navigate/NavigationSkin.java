@@ -51,13 +51,12 @@
  */
 
 /**
- * $Id: NavigationSkin.java,v 1.3 2003-10-22 18:58:29 shahid.shah Exp $
+ * $Id: NavigationSkin.java,v 1.4 2003-10-22 19:08:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import javax.servlet.jsp.PageContext;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
