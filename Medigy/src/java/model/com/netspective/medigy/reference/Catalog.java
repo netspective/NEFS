@@ -43,7 +43,6 @@
  */
 package com.netspective.medigy.reference;
 
-import com.netspective.medigy.reference.type.CommunicationEventPurposeType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
@@ -63,6 +62,5 @@ public interface Catalog
         PartyRelationshipType.class,
         PartyFacilityRoleType.class,
         PriorityType.class,
-        CommunicationEventPurposeType.class
     };
 }
