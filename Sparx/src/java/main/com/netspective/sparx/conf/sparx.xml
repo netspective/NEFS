@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.78 2004-03-11 13:15:20 aye.thu Exp $
+  * $Id: sparx.xml,v 1.79 2004-03-23 05:23:27 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -51,6 +51,7 @@
 
     <panel-editor-content-element name="report" class="com.netspective.sparx.panel.editor.ReportPanelEditorContentElement"/>
 
+    <dialog-field-type name="section" class="com.netspective.sparx.form.field.type.SectionField"/>
     <dialog-field-type name="composite" class="com.netspective.sparx.form.field.DialogField"/>
     <dialog-field-type name="text" class="com.netspective.sparx.form.field.type.TextField"/>
     <dialog-field-type name="boolean" class="com.netspective.sparx.form.field.type.BooleanField"/>
