@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.16 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.17 2003-08-08 18:50:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -53,7 +53,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.Project;
-import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 
@@ -63,8 +62,6 @@ public class ConsoleServlet extends NavigationControllerServlet
     public static final String REQATTRNAME_INCONSOLE = "in-console";
     public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
 
-    private HttpLoginManager loginManager;
-
     protected Theme getTheme()
     {
         return Themes.getInstance().getTheme(CONSOLE_ID);
@@ -73,13 +70,6 @@ public class ConsoleServlet extends NavigationControllerServlet
     protected NavigationTree getNavigationTree(Project project)
     {
         return project.getConsoleNavigationTree();
-    }
-
-    protected HttpLoginManager getLoginManager(Project project)
-    {
-        if(loginManager == null)
-            loginManager = project.getLoginManagers().getLoginManager("console");
-        return loginManager;
     }
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException

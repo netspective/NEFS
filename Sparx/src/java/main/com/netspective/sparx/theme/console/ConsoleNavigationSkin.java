@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.19 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.20 2003-08-08 18:50:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -64,6 +64,7 @@ import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.io.InheritableFileResources;
 
@@ -155,83 +156,82 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
     {
-        AuthenticatedUser authUser = nc.getActiveLoginManager().getAuthenticatedUser(nc);
-        if (true)
+        HttpLoginManager loginManager = nc.getActiveLoginManager();
+        AuthenticatedUser authUser = loginManager != null ? loginManager.getAuthenticatedUser(nc) : null;
+
+        String personName = authUser != null ? authUser.getUserId() : "Not logged in";
+        String personId = authUser != null ? authUser.getUserName() : "Not logged in";
+
+        if(authUser != null && authUser.isRemembered())
+            personName += " (remembered)";
+
+        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
+
+        writer.write("<!-- Active User Begins -->\n");
+        writer.write("<table class=\"active-user-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+        writer.write("<tr>\n");
+        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
+        writer.write("	<td valign=\"middle\" nowrap >\n");
+        writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+        writer.write("			<tr>\n");
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
+                "/spacer.gif\" alt=\"\" " +
+                "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+        writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
+        writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/person/summary.jsp?person_id=" + personId + "\">&nbsp;&nbsp;" +
+                personName + "</a></td>\n");
+        writer.write("			</tr>\n");
+        writer.write("		</table>\n");
+        writer.write("	</td>\n");
+
+        int errorsCount = nc.getProjectComponent().getErrors().size();
+        boolean haveErrors = errorsCount > 0;
+
+        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
+        writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+        writer.write("			<tr>\n");
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
+                "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+        writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
+        writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
+                nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
+        writer.write("			</tr>\n");
+        writer.write("		</table>\n");
+        writer.write("	</td>\n");
+
+        if(haveErrors)
         {
-            String personName = authUser != null ? authUser.getUserId() : "Not logged in";
-            String personId = authUser != null ? authUser.getUserName() : "Not logged in";
-
-            if(authUser.isRemembered())
-                personName += " (remembered)";
-
-            String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
-
-            writer.write("<!-- Active User Begins -->\n");
-            writer.write("<table class=\"active-user-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-            writer.write("<tr>\n");
-            writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"10\" border=\"0\"></td>\n");
-            writer.write("	<td valign=\"middle\" nowrap >\n");
-            writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-            writer.write("			<tr>\n");
-            writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
-                    "/spacer.gif\" alt=\"\" " +
-                    "height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;User&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/person/summary.jsp?person_id=" + personId + "\">&nbsp;&nbsp;" +
-                    personName + "</a></td>\n");
-            writer.write("			</tr>\n");
-            writer.write("		</table>\n");
-            writer.write("	</td>\n");
-
-            int errorsCount = nc.getProjectComponent().getErrors().size();
-            boolean haveErrors = errorsCount > 0;
-
             writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
-            writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
+            writer.write("	<td width=\"100%\">\n");
+
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
-            writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
+            writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + themeImagesPath +
                     "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
-                    nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
+            writer.write("				<td nowrap><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></td>\n");
+            writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
+                    errorsCount +"</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
-
-            if(haveErrors)
-            {
-                writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
-                writer.write("	<td width=\"100%\">\n");
-
-                writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-                writer.write("			<tr>\n");
-                writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + themeImagesPath +
-                        "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-                writer.write("				<td nowrap><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></td>\n");
-                writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
-                        errorsCount +"</a></td>\n");
-                writer.write("			</tr>\n");
-                writer.write("		</table>\n");
-                writer.write("	</td>\n");
-            }
-
-            writer.write("	<td nowrap width=\"50\" >\n");
-            writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-            writer.write("			<tr>\n");
-            writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
-                    themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
-            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/console?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
-            writer.write("			</tr>\n");
-            writer.write("		</table>\n");
-            writer.write("	</td>\n");
-            writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
-            writer.write("</tr>\n");
-            writer.write("</table>\n");
-
-            writer.write("<!-- Active User Ends -->\n");
         }
+
+        writer.write("	<td nowrap width=\"50\" >\n");
+        writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+        writer.write("			<tr>\n");
+        writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
+                themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+        writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
+        writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/console?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
+        writer.write("			</tr>\n");
+        writer.write("		</table>\n");
+        writer.write("	</td>\n");
+        writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+        writer.write("</tr>\n");
+        writer.write("</table>\n");
+
+        writer.write("<!-- Active User Ends -->\n");
     }
 
     public void renderPageMasthead(Writer writer, NavigationContext nc) throws IOException

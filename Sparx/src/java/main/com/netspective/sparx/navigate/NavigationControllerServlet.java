@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.9 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.10 2003-08-08 18:50:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -75,15 +75,14 @@ public class NavigationControllerServlet extends HttpServlet
 {
     private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
 
-    private boolean secure;
+    private String loginManagerId;
+    private HttpLoginManager loginManager;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
 
-        String secureParamValue = servletConfig.getInitParameter("secure");
-        if(secureParamValue != null)
-            secure = TextUtils.toBoolean(secureParamValue);
+        loginManagerId = servletConfig.getInitParameter("login-manager-id");
 
         File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
         if(! xdmSourceFile.exists())
@@ -93,7 +92,17 @@ public class NavigationControllerServlet extends HttpServlet
 
     public boolean isSecure()
     {
-        return secure;
+        return loginManagerId != null;
+    }
+
+    public String getLoginManagerId()
+    {
+        return loginManagerId;
+    }
+
+    public void setLoginManagerId(String loginManagerId)
+    {
+        this.loginManagerId = loginManagerId;
     }
 
     protected String getLogoutActionReqParamName()
@@ -113,7 +122,9 @@ public class NavigationControllerServlet extends HttpServlet
 
     protected HttpLoginManager getLoginManager(Project project)
     {
-        return project.getLoginManagers().getDefaultManager();
+        if(loginManagerId != null && loginManager == null)
+            loginManager = project.getLoginManagers().getLoginManager(loginManagerId);
+        return loginManager;
     }
 
     protected Project getProject() throws ServletException
