@@ -51,25 +51,24 @@
  */
 
 /**
- * $Id: TextField.java,v 1.21 2003-11-02 17:30:00 shahid.shah Exp $
+ * $Id: TextField.java,v 1.22 2004-03-25 05:01:28 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.rule.TextValueValidationRule;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.validate.rule.TextValueValidationRule;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-
-import org.apache.oro.text.perl.MalformedPerl5PatternException;
-import org.apache.oro.text.perl.Perl5Util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.oro.text.perl.MalformedPerl5PatternException;
+import org.apache.oro.text.perl.Perl5Util;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -421,7 +420,7 @@ public class TextField extends DialogField
         {
             if(textValidationRule.getRegExpr() != null)
             {
-                buf.append("field.text_format_pattern = " + textValidationRule.getRegExpr() + ";\n");
+                buf.append("field.text_format_pattern = /" + textValidationRule.getRegExpr() + "/;\n");
                 if(textValidationRule.getInvalidRegExMessage() != null)
                     buf.append("field.text_format_err_msg = \"" + textValidationRule.getInvalidRegExMessage() + "\";\n");
             }
