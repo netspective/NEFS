@@ -49,6 +49,7 @@ public interface CachedReferenceEntity
 {
     public String getId();
     public String getLabel();
+    public String getDescription();
     public ReferenceEntity getEntity();
     public void setEntity(final ReferenceEntity entity);
 }

@@ -43,12 +43,11 @@
  */
 package com.netspective.medigy.reference;
 
-import java.io.Serializable;
-
-import javax.ejb.Id;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import javax.ejb.Id;
+import java.io.Serializable;
 
 public abstract class AbstractReferenceEntity implements ReferenceEntity, Serializable, Comparable
 {
@@ -56,6 +55,7 @@ public abstract class AbstractReferenceEntity implements ReferenceEntity, Serial
 
     private String typeId;
     private String typeLabel;
+    private String typeDescription;
 
     @Id
     public String getTypeId()
@@ -76,6 +76,16 @@ public abstract class AbstractReferenceEntity implements ReferenceEntity, Serial
     protected void setTypeLabel(final String typeLabel)
     {
         this.typeLabel = typeLabel;
+    }
+
+    public String getTypeDescription()
+    {
+        return typeDescription;
+    }
+
+    protected void setTypeDescription(final String typeDescription)
+    {
+        this.typeDescription = typeDescription;
     }
 
     public int hashCode()

@@ -47,4 +47,5 @@ public interface ReferenceEntity
 {
     public String getTypeId();
     public String getTypeLabel();
+    public String getTypeDescription();
 }
