@@ -212,6 +212,61 @@
                 </summary>
                 <body source="services/methodology.ftl"/>
             </page>
+
+            <page name="neap" caption="Enterprise Architecture">
+                <page name="overview" caption="NEAP Overview" heading="We can Modernize your Enterprise Architecture">
+                    <summary>
+                        A well-designed information architecture can make your business more agile. An aging
+                        one, though, can prevent innovation and limit your growth.
+                    </summary>
+                    <body source="services/neap/overview.ftl"/>
+                </page>
+                <page name="process" caption="NEAP Process" heading="The Architecture Modernization Process">
+                    <summary>
+                        Your staff shouldn't spend months or years mired in an architecture definition
+                        process they might not understand. Instead, you can leverage our extensive expertise
+                        and your business can benefit from rapid delivery.
+                    </summary>
+                    <body source="services/neap/process.ftl"/>
+
+                    <page name="assess" caption="Assess" heading="The Assessment Process">
+                        <summary>
+                            First we assess your current architecture and business processes by conducting detailed
+                            interviews with business and technology stakeholders.
+                        </summary>
+                        <body source="services/neap/process-assess.ftl"/>
+                    </page>
+                    <page name="analyze" caption="Analyze" heading="The Analysis Process">
+                        <summary>
+                            We analyze the data gathered in the assessment phase to document the various themes
+                            that emerge.
+                        </summary>
+                        <body source="services/neap/process-analyze.ftl"/>
+                    </page>
+                    <page name="consolidate" caption="Consolidate" heading="The Consolidation Process">
+                        <summary>
+                            We consolidate the varied themes discovered during the assessment and analysis phases
+                            into a fewer number of visions and business goals that are used as the requirements for the
+                            enterprise architecture blueprints.
+                        </summary>
+                        <body source="services/neap/process-consolidate.ftl"/>
+                    </page>
+                    <page name="plan" caption="Plan" heading="The Planning Process">
+                        <summary>
+                            We use what we learned in the Consolidation Phase to create a thorough but agile Plan that
+                            acts as a road map for how the architecture will be implemented.
+                        </summary>
+                        <body source="services/neap/process-plan.ftl"/>
+                    </page>
+                    <page name="implement" caption="Implement" heading="The Implementation Process">
+                        <summary>
+                            Once we have an agreed-upon plan, we help you implement the plan in various initiatives
+                            throughout your organization or work with your existing IT vendors to do so.
+                        </summary>
+                        <body source="services/neap/process-implement.ftl"/>
+                    </page>
+                </page>
+            </page>
         </page>
 
         <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help" dialog-next-action-url="page-id:/support">

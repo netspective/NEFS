@@ -65,7 +65,21 @@
         <td><img src="${resourcesPath}/images/home/home_27.gif" alt="" height="1" width="600" border="0"></td>
     </tr>
     <tr>
+        <td><img src="${resourcesPath}/images/home/home_38.gif" width="600" height="12" alt=""></td>
+    </tr>
 
+    <tr>
+        <td class="body-content" valign="top" width="556" style="padding-left: 10px; padding-right: 10px; border: 1px solid #999999; font-family: trebuchet ms, arial; font-size: 9pt;">
+        <font color="#666666" style="font-size: 9pt;">
+            <font style="font-size:10pt"><b>Is your information architecture  keeping pace with your business goals?</b></font>
+            <br>Our <a href="services/neap">Enterprise
+            Architecture Planning</a> Turn-key Service can quickly help you reduce duplication of functions across apps and eliminate
+            redundant data across silos of information.
+        </font>
+        </td>
+    </tr>
+
+    <tr>
         <td><img src="${resourcesPath}/images/home/home_28.gif" width="600" height="12" alt=""></td>
     </tr>
     <tr>
@@ -99,7 +113,7 @@
     </tr>
     <tr>
         <td>
-        	<@panel heading="Technology Highlights" skin="tabbed-full">
+        	<@panel heading="NEFS Technology Highlights" skin="tabbed-full">
                 <@reportTable
                         data=[
                           ["Simplify Struts", "<font color='#666666'>Eliminates tedious Java/Struts/JSP code.</font>"],
