@@ -39,15 +39,13 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.5 2003-07-11 17:40:19 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.6 2003-08-01 05:44:13 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,56 +61,72 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.IntegerField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
+import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
-import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.CommandException;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpServletRequest;
-
+/**
+ * Class for handling query report actions such as navigation and selection
+ */
 public class QueryDialog extends Dialog
 {
+    public static final String PARAMNAME_ROWS_PER_PAGE  = ".report_rows_per_page";
+    public static final String PARAMNAME_SELECTABLE     = ".report_selectable";
+    public static final String PARAMNAME_REPORT_PANEL   = ".report_panel";
+    public static final String PARAMNAME_REPORT_SKIN    = ".report_skin";
+    public static final String PARAMNAME_QUERY          = ".query";
+
+
     private static final Log log = LogFactory.getLog(QueryDialog.class);
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_NAME = "rows-per-page";
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION = "Rows per page";
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_VALUE = "10";
+    public static final String REPORT_ACTION_FIELD_NAME =  Dialog.PARAMNAME_CONTROLPREFIX +  "report_action";
+
+    //  declare all the possible report actions
+    public static final int EXECUTE_SELECT_ACTION   = 0;  // this flag will never be used on the server side
+    public static final int EXECUTE_RS_NEXT_ACTION  = 1;
+    public static final int EXECUTE_RS_PREV_ACTION  = 2;
+    public static final int EXECUTE_RS_FIRST_ACTION = 3;
+    public static final int EXECUTE_RS_DONE_ACTION  = 4;
+    public static final int EXECUTE_RS_LAST_ACTION  = 5;
 
     private Query query;
     private HtmlTabularReport report;
     private HtmlTabularReportSkin reportSkin;
     private String[] urlFormats;
-    private int rowsPerPage;
+    private QueryReportPanel reportPanel;
 
     public QueryDialog()
     {
         super();
+        setDialogContextClass(QueryDialogContext.class);
+        createReportActionField();
         createNavigatorField();
         createRowsPerPageField();
+        createSelectedItemsField();
     }
 
     public QueryDialog(DialogsPackage pkg)
     {
         super(pkg);
+        setDialogContextClass(QueryDialogContext.class);
+        createReportActionField();
         createNavigatorField();
         createRowsPerPageField();
+        createSelectedItemsField();
     }
 
     public Query getQuery()
@@ -123,6 +137,31 @@ public class QueryDialog extends Dialog
     public void setQuery(Query query)
     {
         this.query = query;
+    }
+
+    /**
+     * This is the field whose value indicates what time of action should be performed when the dialog is executed
+     * Client side script should set this field to the appropriate value before submitting the form.
+     */
+    public void createReportActionField()
+    {
+        DialogField field = new IntegerField();
+        field.setName(REPORT_ACTION_FIELD_NAME);
+        field.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        addField(field);
+    }
+
+    /**
+     *  Creates the selected item field. By default, the field is hidden.
+     */
+    public void createSelectedItemsField()
+    {
+        ReportSelectedItemsField selectedItemsField = new ReportSelectedItemsField();
+        selectedItemsField.setName("selected_item_list");
+        selectedItemsField.setSize(5);
+        selectedItemsField.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        selectedItemsField.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        addField(selectedItemsField);
     }
 
     /**
@@ -160,9 +199,8 @@ public class QueryDialog extends Dialog
         field.setCaption(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION));
         field.setDefault(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_VALUE));
         // by default, hide the field
-        field.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        field.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
         addField(field);
-        showRowsPerPageField();
     }
 
     /**
@@ -173,12 +211,62 @@ public class QueryDialog extends Dialog
         getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getFlags().clearFlag(DialogField.Flags.INPUT_HIDDEN);
     }
 
+    /**
+     * Creates the dialog context associated with the dialog
+     * @param nc
+     * @param skin
+     * @return
+     */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
     {
         DialogContext dc = super.createContext(nc, skin);
+        // saves  the query associated with this dialog  in the request object
         dc.getRequest().setAttribute(QueryDetailPanel.REQPARAMNAME_QUERY, query.getQualifiedName());
         dc.getDialog().getDialogFlags().setFlag(DialogFlags.HIDE_HEADING_IN_EXEC_MODE);
         return dc;
+    }
+
+    /**
+     * Populate the dialog with field values.
+     * This should be called everytime the dialog is loaded except when it is ready for
+     * execution (validated already)
+     */
+    public void populateValues(DialogContext dc, int formatType)
+    {
+        QueryDialogContext qdc = (QueryDialogContext)dc;
+        super.populateValues(dc, formatType);
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        try
+        {
+            render(writer, dc, false);
+        }
+        catch (DialogExecuteException e)
+        {
+            log.error("Dialog execute error", e);
+            e.printStackTrace();
+            writer.write(e.toString());
+        }
+    }
+
+    /**
+     * Gets the report panel associated with the report
+     * @return
+     */
+    public QueryReportPanel getReportPanel()
+    {
+        return reportPanel;
+    }
+
+    /**
+     * Sets the report panel associated with the report
+     * @param reportPanel
+     */
+    public void setReportPanel(QueryReportPanel reportPanel)
+    {
+        this.reportPanel = reportPanel;
     }
 
     public HtmlTabularReport getReport()
@@ -201,21 +289,6 @@ public class QueryDialog extends Dialog
         this.reportSkin = reportSkin;
     }
 
-    public int getRowsPerPage()
-    {
-        return rowsPerPage;
-    }
-
-    /**
-     * Sets the rows per page for the report
-     * @param rowsPerPage
-     */
-    public void setRowsPerPage(int rowsPerPage)
-    {
-        this.rowsPerPage = rowsPerPage;
-        getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).setDefault(new StaticValueSource(Integer.toString(rowsPerPage)));
-    }
-
     public String[] getUrlFormats()
     {
         return urlFormats;
@@ -226,39 +299,79 @@ public class QueryDialog extends Dialog
         this.urlFormats = urlFormats;
     }
 
+    /**
+     * Gets the name of the dialog field containing the report rows per page value
+     * @return
+     */
+    public String getRowsPerPageParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + getHtmlFormName() + PARAMNAME_ROWS_PER_PAGE;
+    }
+
+    /**
+     * Gets the name of the dialog field containing the selectable report flag
+     * @return
+     */
+    public String getSelectableParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + getHtmlFormName() + PARAMNAME_SELECTABLE;
+    }
+
+    /**
+     * Gets the name of the dialog field containing the report panel name
+     * @return
+     */
+    public String getReportPanelParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + getHtmlFormName() + PARAMNAME_REPORT_PANEL;
+    }
+    /**
+     * Renders the report of the dialog query
+     * @param writer
+     * @param dc
+     * @param reportSkin
+     * @throws IOException
+     * @throws QueryDefinitionException
+     */
     public void renderReport(Writer writer, DialogContext dc, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         QueryReportPanel reportPanel = null;
-
-        HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
-        HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
-
-        /*
-            If the state is not found, then we have not executed at all yet;
-            if the state is found and it's the initial execution then it means
-            that the user has pressed the "back" button -- which means we
-            should reset the state management.
-         */
-        if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+        QueryDialogContext qdc = (QueryDialogContext)dc;
+        if (qdc.getRowsPerPage() > 0)
         {
-            // if our transaction does not have a scroll state, but there is an active scroll state available, then it
-            // means that we need to close the previous one and remove the attribute so that the connection can be
-            // closed and returned to the pool
-            HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
+            HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
+            /*
+                If the state is not found, then we have not executed at all yet;
+                if the state is found and it's the initial execution then it means
+                that the user has pressed the "back" button -- which means we
+                should reset the state management.
+             */
+            if(scrollStateById == null || (scrollStateById != null && dc.isInitialExecute()))
+            {
+                // if our transaction does not have a scroll state, but there is an active scroll state available, then it
+                // means that we need to close the previous one and remove the attribute so that the connection can be
+                // closed and returned to the pool
+                HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
-            if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
-                scrollStatesManager.removeActiveState(dc, activeScrollState);
-
-            reportPanel = new QueryReportPanel();
-            reportPanel.setQuery(query);
-            reportPanel.setScrollable(true);
-            reportPanel.setScrollRowsPerPage(this.getRowsPerPage());
+                if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                    scrollStatesManager.removeActiveState(dc, activeScrollState);
+                reportPanel = qdc.getReportPanel();
+                reportPanel.setScrollRowsPerPage(qdc.getRowsPerPage());
+                reportPanel.setScrollable(true);
+            }
+            else
+            {
+                reportPanel = (QueryReportPanel) scrollStateById.getPanel();
+            }
+            reportPanel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
         else
         {
-            reportPanel = (QueryReportPanel) scrollStateById.getPanel();
+            // no navigation actions are allowed meaning this is a non-scrollable static report
+            reportPanel = qdc.getReportPanel();
+            reportPanel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
-        reportPanel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         //destination.render(reportPanel, reportSkin);
     }
 
@@ -269,12 +382,14 @@ public class QueryDialog extends Dialog
      */
     public void makeStateChanges(DialogContext dc, int stage)
     {
-
+        QueryDialogContext qdc = (QueryDialogContext) dc;
         DialogContext.DialogFieldStates states = dc.getFieldStates();
-
         if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
         {
+            //DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
+            //rowsPerPage =  state.getValue().getIntValue();
 
+            // hide all the dialog fields
             DialogFields fields = getFields();
             for(int i = 0; i < fields.size(); i++)
             {
@@ -285,47 +400,45 @@ public class QueryDialog extends Dialog
 
             // Hide the dialog director(OK/Cancel)
             states.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
             // display the Navigation buttons
-            states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            if (qdc.getRowsPerPage() > 0)
+            {
+                states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            }
         }
         else
         {
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
             // if the dialog isnt in execute mode, do not display the result navigation buttons
-            states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            if (qdc.getRowsPerPage() > 0)
+            {
+                states.getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+                states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            }
         }
     }
 
-
+    /**
+     * Executes the query associated with the dialog and displays the report
+     * @param writer
+     * @param dc
+     * @throws IOException
+     * @throws DialogExecuteException
+     */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         try
         {
-            DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
-            rowsPerPage =  state.getValue().getIntValue();
-
             renderReport(writer, dc, reportSkin);
         }
         catch (Exception e)
         {
             log.error("Exception while trying to render report", e);
+            e.printStackTrace();
             throw new DialogExecuteException(e);
         }
-        /*
-        try
-        {
-            HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
-            command.handleCommand(writer, dc, false);
-        }
-        catch (CommandNotFoundException e)
-        {
-            log.error("Unable to find query command -- this should never happen.", e);
-            throw new DialogExecuteException(e);
-        }
-        catch (CommandException e)
-        {
-            log.error("Error executing query command.", e);
-            throw new DialogExecuteException(e);
-        }
-        */
+
     }
+
 }

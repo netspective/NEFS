@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.8 2003-07-12 02:11:16 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.9 2003-08-01 05:43:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -60,7 +60,7 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogDebugFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.sql.QueryDialogContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.panel.QueryReportPanel;
@@ -68,9 +68,10 @@ import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
-import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.sql.Query;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 import java.util.StringTokenizer;
 import java.util.List;
@@ -260,6 +261,14 @@ public class QueryCommand extends AbstractHttpServletCommand
         return sb.toString();
     }
 
+    /**
+     * Gets the query dialog associated with the query
+     * @param writer
+     * @param sqlManager
+     * @param theme
+     * @return
+     * @throws IOException
+     */
     public com.netspective.sparx.form.sql.QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         Query query = (com.netspective.sparx.sql.Query)sqlManager.getQuery(queryName);
@@ -269,12 +278,20 @@ public class QueryCommand extends AbstractHttpServletCommand
             return null;
         }
 
-        if(queryDialogName.equals("default"))
+        if(queryDialogName == null || queryDialogName.equals("default"))
             return ((com.netspective.sparx.sql.Query) query).getPresentation().getDefaultDialog();
         else
             return ((com.netspective.sparx.sql.Query) query).getPresentation().getDialog(queryDialogName);
     }
 
+    /**
+     * Gets the report panel associated with the query
+     * @param writer
+     * @param sqlManager
+     * @param theme
+     * @return
+     * @throws IOException
+     */
     public QueryReportPanel createQueryReportPanel(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         Query query = (com.netspective.sparx.sql.Query)sqlManager.getQuery(queryName);
@@ -327,6 +344,14 @@ public class QueryCommand extends AbstractHttpServletCommand
         }
     }
 
+    /**
+     * Handles the "query" command based on navigation context
+     * @param writer
+     * @param nc
+     * @param unitTest
+     * @throws CommandException
+     * @throws IOException
+     */
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         SqlManager sqlManager = nc.getSqlManager();
@@ -336,14 +361,16 @@ public class QueryCommand extends AbstractHttpServletCommand
             writer.write("<table><tr valign='top'><td>");
 
         boolean autoExecute = false;
-        if (queryDialogName == null && rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
+        // NOTE: if query dialog name was not specified then the report will be auto-executed without
+        // displaying a dialog.
+        if (queryDialogName == null && (rowsPerPage > 0 && rowsPerPage < UNLIMITED_ROWS))
         {
-            // no query dialog name was given but the rows per page was set so use the default dialog and
-            // auto-execute it
+            // if rows per page was specified without a dialog name, use the default dialog to handle the report
             queryDialogName = "default";
             autoExecute = true;
         }
 
+        // before executing the query dialog, a query report panel MUST be assigned to it
         if (queryDialogName != null)
         {
             // a non-default  query dialog name was specified or the default one was specified (explicitly or implied)
@@ -351,25 +378,36 @@ public class QueryCommand extends AbstractHttpServletCommand
             if(queryDialog != null)
             {
                 if (autoExecute)
-                {
-                    // set the autoexecute flag
                     ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
-                }
+
+                QueryReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
+                // create the context for which the dialog can run in
+                QueryDialogContext qdc = (QueryDialogContext)queryDialog.createContext(nc, theme.getDefaultDialogSkin());
                 if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
-                {
-                    queryDialog.setRowsPerPage(rowsPerPage);
-                }
-                queryDialog.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+                    qdc.setRowsPerPage(rowsPerPage);
+                qdc.setReportPanel(panel);
+                queryDialog.render(writer, qdc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
             }
         }
         else
         {
-            // no query dialog and no rows per page was specified. So produce a full static query report
-            HtmlTabularReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
-            if(panel != null)
+            QueryReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
+            TabularReport.Flags flags = panel.getReport(nc).getFlags();
+            boolean isSelectable = flags != null? flags.flagIsSet(HtmlTabularReport.Flags.SELECTABLE) : false;
+            if (isSelectable)
+            {
+                ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
+                QueryDialogContext qdc = (QueryDialogContext)queryDialog.createContext(nc, theme.getDefaultDialogSkin());
+                qdc.setReportPanel(panel);
+                queryDialog.render(writer, qdc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+            }
+            else
+            {
+                // simple non-pageable, non-selectable report
                 panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+            }
         }
-
 
         if(additionalDialogCommand != null)
         {
