@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.2 2003-06-22 00:27:28 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.3 2003-07-05 02:11:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -49,6 +49,12 @@ import java.io.IOException;
 import java.io.File;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -57,15 +63,35 @@ import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.NoBannerLogger;
 import org.apache.tools.ant.Main;
+import org.apache.tools.ant.Target;
 
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.type.SelectField;
+import com.netspective.sparx.form.field.type.HtmlField;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.sparx.ant.AntProjects;
+import com.netspective.sparx.ant.AntProject;
 import com.netspective.commons.value.Value;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.AbstractValue;
+import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.axiom.ConnectionContext;
 
 public class AntBuildDialog extends ConsoleDialog
 {
     private static final Log log = LogFactory.getLog(AntBuildDialog.class);
+    public static final String REQATTRPARAMNAME_ANT_PROJECT_ID = "ant-project-id";
+
+    private ActiveAntProjectIdValueSource activeAntProjectIdValueSource = new ActiveAntProjectIdValueSource();
+    private ActiveAntProjectFileValueSource activeAntProjectFileValueSource = new ActiveAntProjectFileValueSource();
+    private ActiveAntProjectTargetsValueSource activeAntProjectTargetsValueSource = new ActiveAntProjectTargetsValueSource();
+    private ActiveAntProjectTargetDescriptionsValueSource activeAntProjectTargetDescriptionsValueSource = new ActiveAntProjectTargetDescriptionsValueSource();
 
     public static Project getConfiguredProject(File buildFile)
     {
@@ -77,11 +103,21 @@ public class AntBuildDialog extends ConsoleDialog
         return project;
     }
 
+    public void finalizeContents(NavigationContext nc)
+    {
+        super.finalizeContents(nc);
+        DialogFields fields = getFields();
+        fields.getByName("project-id").setDefault(activeAntProjectIdValueSource);
+        fields.getByName("project-file").setDefault(activeAntProjectFileValueSource);
+        ((SelectField) fields.getByName("target")).setChoices(activeAntProjectTargetsValueSource);
+        ((HtmlField) fields.getByName("target-descriptions")).setHtml(activeAntProjectTargetDescriptionsValueSource);
+    }
+
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         DialogContext.DialogFieldStates states = dc.getFieldStates();
 
-        Value projectValue = states.getState("project").getValue();
+        Value projectValue = states.getState("project-file").getValue();
         Value targetValue = states.getState("target").getValue();
         File projectFile = new File(projectValue.getTextValue());
 
@@ -98,8 +134,233 @@ public class AntBuildDialog extends ConsoleDialog
         project.addBuildListener(logger);
         project.executeTarget(targetValue.getTextValue());
 
-        writer.write("<div class='textbox'>Ant "+ Main.getAntVersion() +"<p><pre>");
+        writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
         writer.write(ostream.toString());
         writer.write("</pre>");
+    }
+
+
+
+    public class ActiveAntProjectIdValueSource extends AbstractValueSource
+    {
+        public PresentationValue getPresentationValue(ValueContext vc)
+        {
+            return new PresentationValue(getValue(vc));
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            final ServletValueContext svc = (ServletValueContext)
+                    (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
+                    vc);
+
+            AntProjects antProjects = svc.getProject().getAntProjects();
+            if(antProjects.size() == 1)
+                return new GenericValue(antProjects.getByIndex(0).getId());
+            else
+            {
+                String id = (String) svc.getRequest().getAttribute(REQATTRPARAMNAME_ANT_PROJECT_ID);
+                if(id == null)
+                    id = svc.getRequest().getParameter(REQATTRPARAMNAME_ANT_PROJECT_ID);
+                if(id != null)
+                {
+                    AntProject antProject = antProjects.getById(id);
+                    if(antProject != null)
+                        return new GenericValue(id);
+                    else
+                        return new GenericValue("Ant project with id '"+ id +"' not registered.");
+                }
+                else
+                    return new GenericValue("No '"+ REQATTRPARAMNAME_ANT_PROJECT_ID +"' request parameter or request attribute found.");
+            }
+        }
+
+        public boolean hasValue(ValueContext vc)
+        {
+            return true;
+        }
+    }
+
+    public class ActiveAntProjectFileValueSource extends AbstractValueSource
+    {
+        public PresentationValue getPresentationValue(ValueContext vc)
+        {
+            return new PresentationValue(getValue(vc));
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            final ServletValueContext svc = (ServletValueContext)
+                    (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
+                    vc);
+
+            AntProjects antProjects = svc.getProject().getAntProjects();
+            if(antProjects.size() == 1)
+                return new GenericValue(antProjects.getByIndex(0).getFile().getTextValue(vc));
+            else
+            {
+                String id = (String) svc.getRequest().getAttribute(REQATTRPARAMNAME_ANT_PROJECT_ID);
+                if(id == null)
+                    id = svc.getRequest().getParameter(REQATTRPARAMNAME_ANT_PROJECT_ID);
+                if(id != null)
+                {
+                    AntProject antProject = antProjects.getById(id);
+                    if(antProject != null)
+                        return new GenericValue(antProject.getFile().getTextValue(vc));
+                    else
+                        return new GenericValue("Ant project with id '"+ id +"' not registered.");
+                }
+                else
+                    return new GenericValue("No '"+ REQATTRPARAMNAME_ANT_PROJECT_ID +"' request parameter or request attribute found.");
+            }
+
+        }
+
+        public boolean hasValue(ValueContext vc)
+        {
+            return true;
+        }
+    }
+
+    public class ActiveAntProjectTargetsValueSource extends AbstractValueSource
+    {
+        public PresentationValue getPresentationValue(ValueContext vc)
+        {
+            PresentationValue result = new PresentationValue();
+            PresentationValue.Items items = result.createItems();
+
+            File projectFile = new File(activeAntProjectFileValueSource.getTextValue(vc));
+            if(!projectFile.exists())
+            {
+                items.addItem(projectFile + " not found.");
+                return result;
+            }
+
+            Project project = AntBuildDialog.getConfiguredProject(projectFile);
+
+            String defaultTargetName = project.getDefaultTarget();
+            Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
+            for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
+            {
+                String targetName = (String) i.next();
+                items.addItem(targetName, targetName.equals(defaultTargetName) ? (targetName + " (default)") : targetName);
+            }
+
+            return result;
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            final File projectFile = new File(activeAntProjectFileValueSource.getTextValue(vc));
+            if(! projectFile.exists())
+            {
+                return new AbstractValue()
+                {
+                    public Object getValue()
+                    {
+                        return getTextValue();
+                    }
+
+                    public String getTextValue()
+                    {
+                        return projectFile + " not found.";
+                    }
+
+                    public String[] getTextValues()
+                    {
+                        return new String[] { getTextValue() };
+                    }
+
+                    public List getListValue()
+                    {
+                        List list = new ArrayList();
+                        list.add(getTextValue());
+                        return list;
+                    }
+                };
+            }
+
+            Project project = getConfiguredProject(projectFile);
+
+            final Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
+            return new AbstractValue()
+            {
+                public Object getValue()
+                {
+                    return getTextValue();
+                }
+
+                public String getTextValue()
+                {
+                    // just return the first one if a single value is requested
+                    return (String) sortedTargetNames.iterator().next();
+                }
+
+                public String[] getTextValues()
+                {
+                    return (String[]) sortedTargetNames.toArray(new String[sortedTargetNames.size()]);
+                }
+
+                public List getListValue()
+                {
+                    List list = new ArrayList();
+                    list.addAll(sortedTargetNames);
+                    return list;
+                }
+            };
+        }
+
+        public boolean hasValue(ValueContext vc)
+        {
+            Value value = getValue(vc);
+            return value.getTextValue() != null;
+        }
+    }
+
+    public class ActiveAntProjectTargetDescriptionsValueSource extends AbstractValueSource
+    {
+        public PresentationValue getPresentationValue(ValueContext vc)
+        {
+            return new PresentationValue(getValue(vc));
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            File projectFile = new File(activeAntProjectFileValueSource.getTextValue(vc));
+            if(! projectFile.exists())
+                return new GenericValue("Project file '"+ projectFile +"' not found.");
+
+            Project project = getConfiguredProject(projectFile);
+            Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
+
+            StringBuffer html = new StringBuffer("<table>\n");
+            html.append("<tr><td class='dialog-entry' style='border-bottom: 1px solid black'>Target</td>" +
+                    "<td class='dialog-entry' style='border-bottom: 1px solid black'>Dependencies</td>" +
+                    "<td class='dialog-entry' style='border-bottom: 1px solid black'>Description</td></tr>");
+            for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
+            {
+                String targetName = (String) i.next();
+                Target target = (Target) project.getTargets().get(targetName);
+
+                html.append("<tr valign=top><td class='dialog-entry'>" + targetName + "</td>");
+                html.append("<td class='dialog-entry'>");
+                for(Enumeration e = target.getDependencies(); e.hasMoreElements(); )
+                {
+                    html.append(e.nextElement());
+                    if(e.hasMoreElements())
+                        html.append(", ");
+                }
+                html.append("</td>");
+                html.append("<td class='dialog-entry'>" + target.getDescription() + "</td></tr>");
+            }
+            html.append("</table>");
+            return new GenericValue(html.toString());
+        }
+
+        public boolean hasValue(ValueContext vc)
+        {
+            Value value = getValue(vc);
+            return value.getTextValue() != null;
+        }
     }
 }

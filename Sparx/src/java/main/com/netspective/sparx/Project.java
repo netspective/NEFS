@@ -39,10 +39,13 @@
  */
 
 /**
- * $Id: Project.java,v 1.6 2003-07-03 22:34:11 aye.thu Exp $
+ * $Id: Project.java,v 1.7 2003-07-05 02:11:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,6 +77,8 @@ import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
+import com.netspective.sparx.ant.AntProjects;
+import com.netspective.sparx.ant.AntProject;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateContentHandler;
@@ -133,7 +138,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private NavigationTrees navigationTrees = new NavigationTrees();
     private Dialogs dialogs = new Dialogs();
     private DialogsPackage activeDialogsNameSpace;
-    //private QueryDefinitionsCollection qdCollection = new QueryDefinitionsCollection();
+    private AntProjects antProjects = new AntProjects();
 
     public Project()
     {
@@ -195,6 +200,23 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addRegisterTheme(Theme theme)
     {
         Themes.getInstance().registerTheme(theme);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public AntProject createRegisterAntProject()
+    {
+        return new AntProject();
+    }
+
+    public void addRegisterAntProject(AntProject antProject)
+    {
+        antProjects.add(antProject);
+    }
+
+    public AntProjects getAntProjects()
+    {
+        return antProjects;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

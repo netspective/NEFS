@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.65 2003-07-03 00:42:43 shahid.shah Exp $
+  * $Id: console.xml,v 1.66 2003-07-05 02:11:43 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -245,8 +245,10 @@
 
         <dialog name="ant-build" class="com.netspective.sparx.console.form.AntBuildDialog">
             <frame heading="Ant Build"/>
-            <field name="project" type="text" caption="Ant Project File" read-only="yes" default="servlet-context-path:/WEB-INF/build.xml"/>
-            <field name="target" type="select" caption="Execute Target" style="radio" choices="ant-build-project-targets:servlet-context-path:/WEB-INF/build.xml" required="yes"/>
+            <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
+            <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
+            <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
+            <field name="target-descriptions" type="html" caption="Target Documentation"/>
         </dialog>
     </dialogs>
 
