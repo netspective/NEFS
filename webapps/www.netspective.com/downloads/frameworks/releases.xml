@@ -200,7 +200,8 @@
 &lt;panel-editors package="X">
     &lt;panel-editor  name="Y" require-request-param="Z">
         &lt;frame heading="Sample Panel Editor"/>
-        &lt;element type="report" name="X" pk-column-index="0">
+        &lt;element type="report" name="X"
+                    pk-column-index="0">
             &lt;dialog>
                 ...
                 ...
