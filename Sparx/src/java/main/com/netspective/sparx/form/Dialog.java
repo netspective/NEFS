@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.26 2003-08-06 05:30:09 aye.thu Exp $
+ * $Id: Dialog.java,v 1.27 2003-08-27 15:20:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -112,7 +112,6 @@ import com.netspective.commons.xml.template.Template;
 public class Dialog extends AbstractPanel implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final Log log = LogFactory.getLog(Dialog.class);
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
@@ -172,6 +171,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         return name != null ? name.toUpperCase() : null;
     }
 
+    private Log log = LogFactory.getLog(Dialog.class);
     private DialogFields fields;
     private DialogFlags dialogFlags;
     private DialogDebugFlags debugFlags;
@@ -249,6 +249,11 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         return new DialogDebugFlags();
     }
 
+    public Log getLog()
+    {
+        return log;
+    }
+
     public String getName()
     {
         return name;
@@ -268,6 +273,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     {
         this.name = name;
         setHtmlFormName(name);
+        log = LogFactory.getLog(getClass() + "." + getQualifiedName());
     }
 
     /**
@@ -740,7 +746,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     public void handlePostExecuteException(Writer writer, DialogContext dc, String message, Exception e) throws IOException
     {
         dc.setExecuteStageHandled(true);
-        log.error("Dialog execute error", e);
+        log.error(message, e);
         dc.setRedirectDisabled(true);
         dc.performDefaultRedirect(writer, null);
         writer.write(message + e.toString());
