@@ -122,28 +122,30 @@
             </td>
         </tr>
         <tr class="report-column-even">
-            <td colspan=2>${schema.description}</td>
+            <td colspan=2>${schema.javaDoc.description?default('&nbsp;')}</td>
         </tr>
     </table>
 
     <p>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
+            <td class="report-column-heading">&nbsp;</td>
             <td class="report-column-heading">Node</td>
             <td class="report-column-heading">Type</td>
-            <td class="report-column-heading">Description</td>
             <td class="report-column-heading">Choices</td>
         </tr>
 
     <#list settableAttributesDetail as attrDetail>
         <tr>
-            <td class="report-column-${classSuffix}">
-                <nobr>
+            <td class="report-column-${classSuffix}" rowspan=2>
                 <#if attrDetail.isRequired()>
                     <img src="${xmlImageSrc}/xml-node-attribute-required.gif" title="Required attribute"/>
                 <#else>
                     <img src="${xmlImageSrc}/xml-node-attribute.gif" title="Attribute"/>
                 </#if>
+            </td>
+            <td class="report-column-${classSuffix}">
+                <nobr>
                 <#if attrDetail.isRequired()>
                     <b>${attrDetail.attrName}</b>
                 <#else>
@@ -161,15 +163,17 @@
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
-                ${attrDetail.description}
-            </td>
-            <td class="report-column-${classSuffix}">
                 <#if attrDetail.hasChoices()>
                     ${attrDetail.choices}
                 <#else>
                     &nbsp;
                 </#if>
             </td>
+        </tr>
+            <td class="report-column-${classSuffix}" colspan=3>
+                <font color=#999999>${attrDetail.javaDoc.description?default('&nbsp;')}</font>
+            </td>
+        <tr>
         </tr>
         <#if classSuffix = 'odd'>
             <#assign classSuffix='even'/>
@@ -180,13 +184,15 @@
 
     <#list childElements as childDetail>
         <tr>
-            <td class="report-column-${classSuffix}">
-                <nobr>
+            <td class="report-column-${classSuffix}" rowspan=2>
                 <#if childDetail.isTemplateProducer()>
                     <img src="${xmlImageSrc}/xml-node-template-producer.gif" title="Template Producer"/>
                 <#else>
                     <img src="${xmlImageSrc}/xml-node-element.gif" title="Element"/>
                 </#if>
+            </td>
+            <td class="report-column-${classSuffix}">
+                <nobr>
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
@@ -198,10 +204,12 @@
                 <@classReference className = childDetail.elemType.name/>
             </td>
             <td class="report-column-${classSuffix}">
-                ${childDetail.description}
-            </td>
-            <td class="report-column-${classSuffix}">
                 &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td class="report-column-${classSuffix}" colspan=3>
+                <font color=#999999>${childDetail.javaDoc.description?default('&nbsp;')}</font>
             </td>
         </tr>
         <#if classSuffix = 'odd'>
@@ -246,7 +254,7 @@
 <#macro classDescription className>
 
     <#assign schema = getXmlDataModelSchema(className)/>
-    ${schema.description}
+    ${schema.javaDoc.descriptionLead?default('')}
 
 </#macro>
 
