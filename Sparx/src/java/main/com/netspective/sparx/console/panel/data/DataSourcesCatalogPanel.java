@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -59,6 +59,7 @@ import com.netspective.commons.value.Value;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.axiom.ConnectionProviderEntries;
 import com.netspective.axiom.ConnectionProviderEntry;
 import com.netspective.axiom.ConnectionProvider;
@@ -110,9 +111,9 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         getBanner().setContent(new ConnectionProviderValueSource());
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new DataSourcesCatalogDataSource(vc);
+        return new DataSourcesCatalogDataSource();
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -126,13 +127,16 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         protected int lastRow = -1;
         protected ConnectionProviderEntry[] entries;
 
-        public DataSourcesCatalogDataSource(HtmlTabularReportValueContext vc)
+        public DataSourcesCatalogDataSource()
         {
-            super(vc);
+            super();
+        }
 
-            ConnectionProviderEntries cpe = vc.getConnectionProvider().getDataSourceEntries();
+        public void setReportValueContext(TabularReportValueContext reportValueContext)
+        {
+            super.setReportValueContext(reportValueContext);
+            ConnectionProviderEntries cpe = ((HtmlTabularReportValueContext) reportValueContext).getConnectionProvider().getDataSourceEntries();
             entries = (ConnectionProviderEntry[]) cpe.values().toArray(new ConnectionProviderEntry[cpe.size()]);
-
             lastRow = entries.length-1;
         }
 

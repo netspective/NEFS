@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldsValidationPanel.java,v 1.2 2003-05-10 21:35:44 shahid.shah Exp $
+ * $Id: DialogFieldsValidationPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -94,13 +94,13 @@ public class DialogFieldsValidationPanel extends DialogDetailPanel
         getFrame().setHeading(new StaticValueSource("Fields Validations"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
+        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
         if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
-            return new DialogFieldsValidationPanelDataSource(vc, selectedDialog);
+            return new DialogFieldsValidationPanelDataSource(selectedDialog);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -166,9 +166,9 @@ public class DialogFieldsValidationPanel extends DialogDetailPanel
 
     protected class DialogFieldsValidationPanelDataSource extends DialogFieldsDataSource
     {
-        public DialogFieldsValidationPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
+        public DialogFieldsValidationPanelDataSource(SelectedDialog selectedDialog)
         {
-            super(vc, selectedDialog);
+            super(selectedDialog);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesInheritancePanel.java,v 1.1 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: SchemaTablesInheritancePanel.java,v 1.2 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -83,20 +83,20 @@ public class SchemaTablesInheritancePanel extends SchemaTablesPanel
         return descrsReport;
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
-        return new DescriptionsDataSource(vc, rows, selectedRow);
+        return new DescriptionsDataSource(rows, selectedRow);
     }
 
     protected class DescriptionsDataSource extends StructureDataSource
     {
         protected StructureRow selectedRow;
 
-        public DescriptionsDataSource(HtmlTabularReportValueContext vc, List structureRows, StructureRow selectedRow)
+        public DescriptionsDataSource(List structureRows, StructureRow selectedRow)
         {
-            super(vc, structureRows, selectedRow);
+            super(structureRows, selectedRow);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

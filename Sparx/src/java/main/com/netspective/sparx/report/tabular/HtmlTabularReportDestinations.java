@@ -39,72 +39,48 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: HtmlTabularReportDestinations.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation.dialogs;
+package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportDownloadableFileDestination;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
+import com.netspective.sparx.form.DialogContext;
+
+public class HtmlTabularReportDestinations
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    private static final HtmlTabularReportDestinations INSTANCE = (HtmlTabularReportDestinations) DiscoverSingleton.find(HtmlTabularReportDataSourceScrollStates.class, HtmlTabularReportDataSourceScrollStates.class.getName());
 
-    static
+    public static HtmlTabularReportDestinations getInstance()
     {
-        TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        return INSTANCE;
     }
 
-    public DialogFieldsPanel()
+    public HtmlTabularReportBrowserDestination createBrowserDestination(DialogContext dc)
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
+        return new HtmlTabularReportBrowserDestination(dc);
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc)
+    public HtmlTabularReportBrowserDestination createBrowserDestination(DialogContext dc, int pageSize)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(selectedDialog);
+        HtmlTabularReportBrowserDestination result = new HtmlTabularReportBrowserDestination(dc);
+        result.setPageSize(pageSize);
+        result.setScrollable(true);
+        return result;
     }
 
-    public HtmlTabularReport getReport(NavigationContext nc)
+    public HtmlTabularReportDownloadableFileDestination createDownloadableFileDestination()
     {
-        return dialogFieldsReport;
+        return new HtmlTabularReportDownloadableFileDestination();
+    }
+
+    public HtmlTabularReportEmailDestination createEmailDestination()
+    {
+        return new HtmlTabularReportEmailDestination();
     }
 }

@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsValidationsPanel.java,v 1.1 2003-05-10 21:35:44 shahid.shah Exp $
+ * $Id: SchemaTableColumnsValidationsPanel.java,v 1.2 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 import org.apache.commons.logging.Log;
@@ -95,7 +95,7 @@ public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
         getFrame().setHeading(new StaticValueSource("Validations"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
         Columns valColumns = new ColumnsCollection();
         for(int i = 0; i < table.getColumns().size(); i++)
@@ -105,7 +105,7 @@ public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
                 valColumns.add(col);
         }
 
-        return new ColumnsValidationsDataSource(nc, vc, valColumns);
+        return new ColumnsValidationsDataSource(nc, valColumns);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -115,9 +115,9 @@ public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
 
     protected class ColumnsValidationsDataSource extends ColumnsDataSource
     {
-        public ColumnsValidationsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsValidationsDataSource(NavigationContext nc, Columns columns)
         {
-            super(nc, vc, columns);
+            super(nc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

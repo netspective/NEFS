@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldsHtmlPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogFieldsHtmlPanel.java,v 1.2 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -87,13 +87,13 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
         getFrame().setHeading(new StaticValueSource("Fields HTML"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
+        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
         if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
-            return new DialogFieldsHtmlPanelDataSource(vc, selectedDialog);
+            return new DialogFieldsHtmlPanelDataSource(selectedDialog);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -103,9 +103,9 @@ public class DialogFieldsHtmlPanel extends DialogDetailPanel
 
     protected class DialogFieldsHtmlPanelDataSource extends DialogFieldsDataSource
     {
-        public DialogFieldsHtmlPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
+        public DialogFieldsHtmlPanelDataSource(SelectedDialog selectedDialog)
         {
-            super(vc, selectedDialog);
+            super(selectedDialog);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.9 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.10 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -107,20 +107,20 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Overview"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
-        return new ColumnsDataSource(nc, vc, table.getColumns());
+        return new ColumnsDataSource(nc, table.getColumns());
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
+            return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return createColumnsDataSource(nc, vc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
+            return createColumnsDataSource(nc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -135,9 +135,9 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         protected int lastRow;
         protected Columns columns;
 
-        public ColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsDataSource(NavigationContext nc, Columns columns)
         {
-            super(vc);
+            super();
             this.nc = nc;
             this.columns = columns;
             lastRow = columns.size() - 1;

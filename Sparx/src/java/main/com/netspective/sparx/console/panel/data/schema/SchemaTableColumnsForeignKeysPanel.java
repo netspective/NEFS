@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.3 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.4 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 import java.io.StringWriter;
@@ -103,16 +103,16 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
         return fKeysReport;
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
-        return new ColumnsFKeysDataSource(nc, vc, table.getForeignKeyColumns());
+        return new ColumnsFKeysDataSource(nc, table.getForeignKeyColumns());
     }
 
     protected class ColumnsFKeysDataSource extends ColumnsDataSource
     {
-        public ColumnsFKeysDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsFKeysDataSource(NavigationContext nc, Columns columns)
         {
-            super(nc, vc, columns);
+            super(nc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

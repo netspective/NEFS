@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Theme.java,v 1.7 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: Theme.java,v 1.8 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -69,6 +69,8 @@ public interface Theme
     public HtmlPanelSkin getTemplatePanelSkin();
 
     public HtmlTabularReportSkin getReportSkin();
+
+    public HtmlTabularReportSkin getReportSkin(String name);
 
     public DialogSkin getDialogSkin();
 

@@ -39,17 +39,12 @@
  */
 
 /**
- * $Id: SchemaTableDataPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: SchemaTableDataPanel.java,v 1.4 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
 
 import java.util.List;
-import java.util.Set;
-import java.util.Iterator;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
@@ -59,17 +54,11 @@ import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.Report;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.Indexes;
-import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.sql.DbmsSqlTexts;
 
 public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
 {
@@ -93,28 +82,28 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(HtmlTabularReportValueContext vc, Table table)
     {
-        return new TableDataSource(vc, table.getData());
+        return new TableDataSource(table.getData());
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
+            return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
         {
             Table table = selectedRow.getTable();
             if(table == null)
-                return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
+                return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
             else
             {
                 Rows data = table.getData();
                 if(data == null)
-                    return new SimpleMessageDataSource(vc, "Table has no static data");
+                    return new SimpleMessageDataSource("Table has no static data");
                 else
-                    return new TableDataSource(vc, data);
+                    return new TableDataSource(data);
             }
         }
     }
@@ -142,9 +131,9 @@ public class SchemaTableDataPanel extends AbstractHtmlTabularReportPanel
         protected int lastRow;
         protected Rows tableData;
 
-        public TableDataSource(HtmlTabularReportValueContext vc, Rows tableData)
+        public TableDataSource(Rows tableData)
         {
-            super(vc);
+            super();
             this.tableData = tableData;
             this.lastRow = tableData.size() - 1;
         }

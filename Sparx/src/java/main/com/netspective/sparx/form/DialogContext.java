@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.10 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.11 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -381,6 +381,8 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             if(ncRetain != null && ncRetain.length() > 0)
                 addRetainRequestParams(TextUtils.split(ncRetain, ",", true));
         }
+
+        nc.setDialogContext(this);
     }
 
     public DialogValidationContext getValidationContext()

@@ -39,72 +39,62 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: HtmlTabularReportBrowserDestination.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation.dialogs;
+package com.netspective.sparx.report.tabular.destination;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import java.io.IOException;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+import com.netspective.sparx.report.tabular.destination.AbstractHtmlTabularReportDestination;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
+import com.netspective.sparx.panel.HtmlPanel;
+
+public class HtmlTabularReportBrowserDestination extends AbstractHtmlTabularReportDestination
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    private boolean scrollable;
+    private int pageSize;
+    private DialogContext dialogContext;
 
-    static
+    public HtmlTabularReportBrowserDestination(DialogContext dialogContext)
     {
-        TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        this.dialogContext = dialogContext;
     }
 
-    public DialogFieldsPanel()
+    public DialogContext getDialogContext()
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
+        return dialogContext;
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc)
+    public void setDialogContext(DialogContext dialogContext)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(selectedDialog);
+        this.dialogContext = dialogContext;
     }
 
-    public HtmlTabularReport getReport(NavigationContext nc)
+    public void render(HtmlTabularReportPanel panel, HtmlTabularReportSkin skin) throws IOException
     {
-        return dialogFieldsReport;
+        panel.render(getWriter(), dialogContext, dialogContext.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+    }
+
+    public boolean isScrollable()
+    {
+        return scrollable;
+    }
+
+    public void setScrollable(boolean scrollable)
+    {
+        this.scrollable = scrollable;
+    }
+
+    public int getPageSize()
+    {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize)
+    {
+        this.pageSize = pageSize;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParametersPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: QueryParametersPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -94,13 +94,13 @@ public class QueryParametersPanel extends QueryDetailPanel
         getFrame().setHeading(new StaticValueSource("Query Parameters"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(vc);
+        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
         if(selectedQuery.getDataSource() != null)
             return selectedQuery.getDataSource();
         else
-            return new SqlParamsDataSource(vc, selectedQuery);
+            return new SqlParamsDataSource(selectedQuery);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -114,9 +114,9 @@ public class QueryParametersPanel extends QueryDetailPanel
         private int activeRow = -1;
         private int lastRow;
 
-        public SqlParamsDataSource(HtmlTabularReportValueContext vc, QueryDetailPanel.SelectedQuery selectedQuery)
+        public SqlParamsDataSource(QueryDetailPanel.SelectedQuery selectedQuery)
         {
-            super(vc);
+            super();
             params = selectedQuery.getQuery().getParams();
             if(params != null)
                 lastRow = params.size() - 1;

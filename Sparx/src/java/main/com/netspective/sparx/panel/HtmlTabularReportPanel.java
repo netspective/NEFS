@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportPanel.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: HtmlTabularReportPanel.java,v 1.2 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -55,5 +55,11 @@ public interface HtmlTabularReportPanel extends HtmlOutputPanel
 {
     public HtmlTabularReport getReport(NavigationContext nc);
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin);
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc);
+    public TabularReportDataSource createDataSource(NavigationContext nc);
+    public boolean isScrollable();
+    public void setScrollable(boolean scrollable);
+
+    int getScrollRowsPerPage();
+
+    void setScrollRowsPerPage(int scrollRowsPerPage);
 }

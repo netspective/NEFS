@@ -39,17 +39,19 @@
  */
 
 /**
- * $Id: QueryDetailPanel.java,v 1.2 2003-05-23 02:18:40 shahid.shah Exp $
+ * $Id: QueryDetailPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.axiom.sql.Query;
+import com.netspective.axiom.sql.Queries;
 
 public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
 {
@@ -62,19 +64,19 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
         private Query query;
         private TabularReportDataSource dataSource;
 
-        public SelectedQuery(HtmlTabularReportValueContext rc, String queryName)
+        public SelectedQuery(Queries queries, String queryName)
         {
             this.queryName= queryName;
 
             if(queryName == null)
             {
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, noQueryParamAvailSource);
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noQueryParamAvailSource);
                 return;
             }
 
-            query = rc.getSqlManager().getQueries().get(queryName);
+            query = queries.get(queryName);
             if(query == null)
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Query '"+ queryName +"' not found.");
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Query '"+ queryName +"' not found.");
         }
 
         public TabularReportDataSource getDataSource()
@@ -93,12 +95,12 @@ public abstract class QueryDetailPanel extends AbstractHtmlTabularReportPanel
         }
     }
 
-    public SelectedQuery getSelectedQuery(HtmlTabularReportValueContext rc)
+    public SelectedQuery getSelectedQuery(NavigationContext nc)
     {
-        String name = (String) rc.getHttpRequest().getAttribute(REQPARAMNAME_QUERY);
+        String name = (String) nc.getHttpRequest().getAttribute(REQPARAMNAME_QUERY);
         if(name == null)
-            name = rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
+            name = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
 
-        return new SelectedQuery(rc, name);
+        return new SelectedQuery(nc.getSqlManager().getQueries(), name);
     }
 }

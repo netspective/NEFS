@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.9 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.10 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -48,24 +48,53 @@ import java.io.Writer;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
+    private boolean scrollable;
+    private int scrollRowsPerPage = 25;
+
     public AbstractHtmlTabularReportPanel()
     {
+    }
+
+    public boolean isScrollable()
+    {
+        return scrollable;
+    }
+
+    public void setScrollable(boolean scrollable)
+    {
+        this.scrollable = scrollable;
+    }
+
+    public int getScrollRowsPerPage()
+    {
+        return scrollRowsPerPage;
+    }
+
+    public void setScrollRowsPerPage(int scrollRowsPerPage)
+    {
+        this.scrollRowsPerPage = scrollRowsPerPage;
     }
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
@@ -73,38 +102,83 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         return new HtmlTabularReportValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
     }
 
+    public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin, TabularReportDataSourceScrollState scrollState)
+    {
+        return new HtmlTabularReportValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this, (HtmlTabularReport) scrollState.getReport(), skin);
+    }
+
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         HtmlTabularReportValueContext vc = createContext(nc, theme.getReportSkin());
         vc.setPanelRenderFlags(flags);
-        TabularReportDataSource ds = createDataSource(nc, vc);
+        TabularReportDataSource ds = createDataSource(nc);
         vc.produceReport(writer, ds);
         ds.close();
     }
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
-        HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
-        vc.setDialogContext(dc);
-        vc.setPanelRenderFlags(flags);
-        TabularReportDataSource ds = createDataSource(dc.getNavigationContext(), vc);
-        vc.produceReport(writer, ds);
-        ds.close();
+        if(isScrollable())
+        {
+            HtmlTabularReportDataSourceScrollStates scrollStates = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollState scrollState = scrollStates.getScrollStateByDialogTransactionId(dc);
+            if(scrollState != null)
+            {
+                HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin(), scrollState);
+                vc.setDialogContext(dc);
+                vc.setPanelRenderFlags(flags);
+                vc.produceReport(writer, scrollState.getDataSource());
+            }
+            else
+            {
+                HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+                vc.setDialogContext(dc);
+                vc.setPanelRenderFlags(flags);
+                TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
+                scrollState = (HtmlTabularReportDataSourceScrollState) ds.createScrollState(dc.getTransactionId());
+                scrollState.setPanel(this);
+                scrollState.setRowsPerPage(getScrollRowsPerPage());
+                scrollStates.setActiveScrollState(dc, scrollState);
+                vc.produceReport(writer, ds);
+                // don't close the data source -- we're scrolling
+            }
+
+            // now that we've got our scroll state, see if the user is requesting us to move to another page
+            HttpServletRequest request = dc.getHttpRequest();
+            if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_NEXT) != null)
+                scrollState.setPageDelta(1);
+            else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_PREV) != null)
+                scrollState.setPageDelta(-1);
+            else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_LAST) != null)
+                scrollState.setPageLast();
+            else if (request.getParameter(DataSourceNavigatorButtonsField.RSNAV_BUTTONNAME_FIRST) != null)
+                scrollState.setPageFirst();
+        }
+        else
+        {
+            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+            vc.setDialogContext(dc);
+            vc.setPanelRenderFlags(flags);
+            TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
+            vc.produceReport(writer, ds);
+            ds.close();
+        }
+
     }
 
     public class SimpleMessageDataSource extends AbstractHtmlTabularReportDataSource
     {
         private ValueSource message;
 
-        public SimpleMessageDataSource(HtmlTabularReportValueContext vc, String message)
+        public SimpleMessageDataSource(String message)
         {
-            super(vc);
+            super();
             this.message = new StaticValueSource(message);
         }
 
-        public SimpleMessageDataSource(HtmlTabularReportValueContext vc, ValueSource message)
+        public SimpleMessageDataSource(ValueSource message)
         {
-            super(vc);
+            super();
             this.message = message;
         }
 
@@ -165,16 +239,14 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         protected int lastRowIndex;
         private List list;
 
-        public ListDataSource(HtmlTabularReportValueContext vc, List list, String noDataMessage)
+        public ListDataSource(String message)
         {
-            super(vc, noDataMessage);
-            setList(list);
+            super(message);
         }
 
-        public ListDataSource(HtmlTabularReportValueContext vc, List list, ValueSource noDataMessage)
+        public ListDataSource(ValueSource message)
         {
-            super(vc, noDataMessage);
-            setList(list);
+            super(message);
         }
 
         public List getList()

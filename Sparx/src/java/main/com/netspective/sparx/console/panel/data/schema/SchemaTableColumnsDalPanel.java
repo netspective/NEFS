@@ -41,17 +41,14 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsDalPanel.java,v 1.2 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsDalPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
  */
-
-import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
@@ -90,9 +87,9 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
         getFrame().setHeading(new StaticValueSource("DAL"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
-        return new ColumnsDescrsDataSource(nc, vc, table.getColumns());
+        return new ColumnsDescrsDataSource(nc, table.getColumns());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -102,9 +99,9 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
 
     protected class ColumnsDescrsDataSource extends ColumnsDataSource
     {
-        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsDescrsDataSource(NavigationContext nc, Columns columns)
         {
-            super(nc, vc, columns);
+            super(nc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.3 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.4 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -242,6 +242,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
 
     public void produceReport(Writer writer, TabularReportDataSource ds) throws IOException
     {
+        ((HtmlTabularReportDataSource) ds).setReportValueContext(this);
         report.makeStateChanges(this, ds);
         skin.render(writer, this, ds);
     }

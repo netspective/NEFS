@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDbmsSqlTextsPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: QueryDbmsSqlTextsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -95,15 +95,15 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
         return true;
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(vc);
+        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
         if(selectedQuery.getDataSource() != null)
             return selectedQuery.getDataSource();
         else
         {
             nc.setPageHeading("Static SQL: " + selectedQuery.getQuery().getQualifiedName());
-            return new SqlTextDataSource(vc, selectedQuery);
+            return new SqlTextDataSource(selectedQuery);
         }
     }
 
@@ -118,9 +118,9 @@ public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
         private int activeRow = -1;
         private int lastRow;
 
-        public SqlTextDataSource(HtmlTabularReportValueContext vc, QueryDetailPanel.SelectedQuery selectedQuery)
+        public SqlTextDataSource(QueryDetailPanel.SelectedQuery selectedQuery)
         {
-            super(vc);
+            super();
             DbmsSqlTexts texts = selectedQuery.getQuery().getSqlTexts();
             Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
 

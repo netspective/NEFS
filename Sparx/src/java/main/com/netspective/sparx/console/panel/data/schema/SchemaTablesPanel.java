@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.4 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: SchemaTablesPanel.java,v 1.5 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -260,19 +260,19 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         return true;
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
 
         if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
-            return new StructureDataSource(vc, createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
+            return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
         else
         {
             if(selectedRow == null)
-                return new SimpleMessageDataSource(vc, noTableSelected);
+                return new SimpleMessageDataSource(noTableSelected);
             else
-                return new StructureDataSource(vc, createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
+                return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
         }
     }
 
@@ -338,9 +338,9 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             return hierarchy;
         }
 
-        public StructureDataSource(HtmlTabularReportValueContext vc, List structureRows, StructureRow selectedRow)
+        public StructureDataSource(List structureRows, StructureRow selectedRow)
         {
-            super(vc);
+            super();
             this.rows = structureRows;
             this.selectedRow = selectedRow;
             lastRow = structureRows.size() - 1;

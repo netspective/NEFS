@@ -90,6 +90,12 @@ public class AbstractTheme implements Theme
         return defaultReportSkin;
     }
 
+    public HtmlTabularReportSkin getReportSkin(String name)
+    {
+        //TODO: fix this
+        return defaultReportSkin;
+    }
+
     public DialogSkin getDialogSkin()
     {
         return defaultDialogSkin;

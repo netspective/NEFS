@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsPriKeysPanel.java,v 1.1 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPriKeysPanel.java,v 1.2 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 import java.util.List;
@@ -66,8 +66,8 @@ public class SchemaTableColumnsPriKeysPanel extends SchemaTableColumnsPanel
         getFrame().setHeading(new StaticValueSource("Primary Keys"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
-        return new ColumnsDataSource(nc, vc, table.getPrimaryKeyColumns());
+        return new ColumnsDataSource(nc, table.getPrimaryKeyColumns());
     }
 }

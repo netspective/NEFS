@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSource.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSource.java,v 1.2 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -48,5 +48,4 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 public interface HtmlTabularReportDataSource extends TabularReportDataSource
 {
-
 }

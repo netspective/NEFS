@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableIndexesPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: SchemaTableIndexesPanel.java,v 1.4 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -92,15 +92,15 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Table Indexes"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
         if(selectedRow == null)
-            return new SimpleMessageDataSource(vc, SchemaTablesPanel.noTableSelected);
+            return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return new IndexesDataSource(vc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
+            return new IndexesDataSource(selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -114,9 +114,9 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         protected int lastRow;
         protected Indexes indexes;
 
-        public IndexesDataSource(HtmlTabularReportValueContext vc, Indexes indexes)
+        public IndexesDataSource(Indexes indexes)
         {
-            super(vc);
+            super();
             this.indexes = indexes;
             this.lastRow = indexes.size() - 1;
         }

@@ -1,3 +1,4 @@
+* Ugrade to FreeMarker 2.3 (has numerous new features that will be useful)
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 * Add ID constants generator to Sparx components (just like Axiom components)
@@ -17,6 +18,8 @@
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
+* Add a 'tip of the day' feature to Console that would get general usage tips for Sparx, Axiom, etc.
+* Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
 * Allow documentation panels in console which borrow ideas form Sparx 2.0 documentation (XSL, etc)
@@ -29,5 +32,6 @@
 * Use XDoclet for generating TLD files -- using appropriate merge points.
 * Consider using XDoclet for generation of DTD files and XSDs.
 * Consider adding struts-style plugins?
+* Implement JavaScript menu system using http://www.cs.ucla.edu/~heng/JSCookMenu/ (free for use)
 * Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
 * Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings

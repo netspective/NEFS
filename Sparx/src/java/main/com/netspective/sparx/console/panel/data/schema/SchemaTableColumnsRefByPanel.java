@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsRefByPanel.java,v 1.2 2003-05-10 21:35:44 shahid.shah Exp $
+ * $Id: SchemaTableColumnsRefByPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 import java.util.Iterator;
@@ -93,7 +93,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
         return fKeysReport;
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
         Columns depColumns = new ColumnsCollection();
         for(int i = 0; i < table.getColumns().size(); i++)
@@ -103,14 +103,14 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                 depColumns.add(col);
         }
 
-        return new ColumnsFKeysDataSource(nc, vc, depColumns);
+        return new ColumnsFKeysDataSource(nc, depColumns);
     }
 
     protected class ColumnsFKeysDataSource extends ColumnsDataSource
     {
-        public ColumnsFKeysDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsFKeysDataSource(NavigationContext nc, Columns columns)
         {
-            super(nc, vc, columns);
+            super(nc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.3 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -110,9 +110,9 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
         getFrame().setHeading(new StaticValueSource("Overview"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new CatalogDataSource(vc, nc.getApplicationManager(), nc.getHttpRequest().getParameter(DialogDetailPanel.REQPARAMNAME_DIALOG));
+        return new CatalogDataSource(nc, nc.getHttpRequest().getParameter(DialogDetailPanel.REQPARAMNAME_DIALOG));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -122,9 +122,9 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 
     public class CatalogDataSource extends DialogsCatalogDataSource
     {
-        public CatalogDataSource(HtmlTabularReportValueContext vc, DialogsManager appManager, String selectedDialogName)
+        public CatalogDataSource(NavigationContext nc, String selectedDialogName)
         {
-            super(vc, appManager, selectedDialogName);
+            super(nc, selectedDialogName);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

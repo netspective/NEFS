@@ -39,72 +39,16 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollState.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation.dialogs;
+package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+public interface HtmlTabularReportDataSourceScrollState extends TabularReportDataSourceScrollState
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
-
-    static
-    {
-        TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
-    }
-
-    public DialogFieldsPanel()
-    {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
-    }
-
-    public TabularReportDataSource createDataSource(NavigationContext nc)
-    {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(selectedDialog);
-    }
-
-    public HtmlTabularReport getReport(NavigationContext nc)
-    {
-        return dialogFieldsReport;
-    }
+    public HtmlTabularReportPanel getPanel();
+    public void setPanel(HtmlTabularReportPanel panel);
 }

@@ -39,72 +39,53 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation.dialogs;
+package com.netspective.sparx.report.tabular;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import javax.servlet.http.HttpSession;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.value.HttpServletValueContext;
+
+public class HtmlTabularReportDataSourceScrollStates
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    private static final HtmlTabularReportDataSourceScrollStates INSTANCE = (HtmlTabularReportDataSourceScrollStates) DiscoverSingleton.find(HtmlTabularReportDataSourceScrollStates.class, HtmlTabularReportDataSourceScrollStates.class.getName());
+    private static final String SESSATTRNAME_ACTIVE_SCROLL_STATE = "active-query-select-scroll-state";
 
-    static
+    public static HtmlTabularReportDataSourceScrollStates getInstance()
     {
-        TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        return INSTANCE;
     }
 
-    public DialogFieldsPanel()
+    public HtmlTabularReportDataSourceScrollStates()
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc)
+    public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(selectedDialog);
+        return (HtmlTabularReportDataSourceScrollState) dc.getHttpRequest().getSession().getAttribute(dc.getTransactionId());
     }
 
-    public HtmlTabularReport getReport(NavigationContext nc)
+    public HtmlTabularReportDataSourceScrollState getActiveScrollState(HttpServletValueContext vc)
     {
-        return dialogFieldsReport;
+        return (HtmlTabularReportDataSourceScrollState) vc.getHttpRequest().getSession().getAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE);
+    }
+
+    public void setActiveScrollState(DialogContext dc, TabularReportDataSourceScrollState state)
+    {
+        HttpSession session = dc.getHttpRequest().getSession();
+        session.setAttribute(state.getIdentifier(), state);
+        session.setAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE, state);
+    }
+
+    public void removeActiveState(HttpServletValueContext vc, TabularReportDataSourceScrollState state)
+    {
+        state.close();
+        vc.getHttpRequest().getSession().removeAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE);
     }
 }

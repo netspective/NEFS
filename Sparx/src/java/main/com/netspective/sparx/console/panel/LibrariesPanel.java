@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LibrariesPanel.java,v 1.2 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: LibrariesPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -94,9 +94,9 @@ public class LibrariesPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Versions"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new LibrariesDataSource(vc);
+        return new LibrariesDataSource();
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -109,9 +109,9 @@ public class LibrariesPanel extends AbstractHtmlTabularReportPanel
         protected int row = -1;
         protected int lastRow = 0;
 
-        public LibrariesDataSource(HtmlTabularReportValueContext vc)
+        public LibrariesDataSource()
         {
-            super(vc);
+            super();
             lastRow = list.size() - 1;
         }
 

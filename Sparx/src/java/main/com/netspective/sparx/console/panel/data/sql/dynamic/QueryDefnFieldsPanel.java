@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnFieldsPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: QueryDefnFieldsPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql.dynamic;
@@ -105,15 +105,15 @@ public class QueryDefnFieldsPanel extends QueryDefnDetailPanel
         return true;
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn = getSelectedQueryDefn(vc);
+        QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn = getSelectedQueryDefn(nc);
         if(selectedQueryDefn.getDataSource() != null)
             return selectedQueryDefn.getDataSource();
         else
         {
             nc.setPageHeading(selectedQueryDefn.getPageHeading());
-            return new QueryDefnJoinsDataSource(vc, selectedQueryDefn);
+            return new QueryDefnJoinsDataSource(selectedQueryDefn);
         }
     }
 
@@ -128,9 +128,9 @@ public class QueryDefnFieldsPanel extends QueryDefnDetailPanel
         private int activeRow = -1;
         private int lastRow;
 
-        public QueryDefnJoinsDataSource(HtmlTabularReportValueContext vc, QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn)
+        public QueryDefnJoinsDataSource(QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn)
         {
-            super(vc);
+            super();
             queryDefnFields = selectedQueryDefn.getQueryDefn().getFields();
             if(queryDefnFields != null)
                 lastRow = queryDefnFields.size() - 1;

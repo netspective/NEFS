@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnDetailPanel.java,v 1.2 2003-04-28 01:10:37 shahid.shah Exp $
+ * $Id: QueryDefnDetailPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql.dynamic;
@@ -51,9 +51,10 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
+import com.netspective.sparx.navigate.NavigationContext;
 
 abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPanel
 {
@@ -69,29 +70,29 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
         private QueryDefinition queryDefn;
         private TabularReportDataSource dataSource;
 
-        public SelectedQueryDefinition(HtmlTabularReportValueContext rc, String queryDefnSource, String queryDefnName)
+        public SelectedQueryDefinition(SqlManager sqlManager, String queryDefnSource, String queryDefnName)
         {
             this.queryDefnSource = queryDefnSource;
             this.queryDefnName= queryDefnName;
 
             if(queryDefnName == null)
             {
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, noQueryDefnParamAvailSource);
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noQueryDefnParamAvailSource);
                 return;
             }
 
             if(queryDefnSource == null || "dynamic".equalsIgnoreCase(queryDefnSource))
             {
-                queryDefn = rc.getSqlManager().getQueryDefns().get(queryDefnName);
+                queryDefn = sqlManager.getQueryDefns().get(queryDefnName);
                 if(queryDefn == null)
-                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Custom query definition '"+ queryDefnName +"' not found.");
+                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Custom query definition '"+ queryDefnName +"' not found.");
                 else
                     pageHeading = "Custom Dynamic Query: " + queryDefn.getName();
             }
             else if(queryDefnSource.startsWith("schema"))
             {
                 String[] querySourceParams = TextUtils.split(queryDefnSource, ",", true);
-                Schema schema = rc.getSqlManager().getSchema(querySourceParams[1]);
+                Schema schema = sqlManager.getSchema(querySourceParams[1]);
                 if(schema != null)
                 {
                     Table table = schema.getTables().getByName(queryDefnName);
@@ -101,13 +102,13 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
                         pageHeading = "Schema Dynamic Query: " + querySourceParams[1] + "." + queryDefnName;
                     }
                     else
-                        dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Table '"+ querySourceParams[1] + "." + queryDefnName +"' not found.");
+                        dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Table '"+ querySourceParams[1] + "." + queryDefnName +"' not found.");
                 }
                 else
-                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Schema '"+ querySourceParams[1] +"' not found. Available: " + rc.getSqlManager().getSchemas().getNames());
+                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Schema '"+ querySourceParams[1] +"' not found. Available: " + sqlManager.getSchemas().getNames());
             }
             else
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Unknown query source.");
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Unknown query source.");
         }
 
         public TabularReportDataSource getDataSource()
@@ -136,17 +137,17 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
         }
     }
 
-    public SelectedQueryDefinition getSelectedQueryDefn(HtmlTabularReportValueContext rc)
+    public SelectedQueryDefinition getSelectedQueryDefn(NavigationContext nc)
     {
-        String schemaTable = rc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
+        String schemaTable = nc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
         if(schemaTable != null)
         {
             String[] items = TextUtils.split(schemaTable, ".", false);
-            return new SelectedQueryDefinition(rc, "schema," + items[0], items[1]);
+            return new SelectedQueryDefinition(nc.getSqlManager(), "schema," + items[0], items[1]);
         }
         else
-            return new SelectedQueryDefinition(rc,
-                            rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
-                            rc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
+            return new SelectedQueryDefinition(nc.getSqlManager(),
+                            nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
+                            nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
     }
 }

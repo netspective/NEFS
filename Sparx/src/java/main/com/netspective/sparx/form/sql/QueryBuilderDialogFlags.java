@@ -39,72 +39,36 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: QueryBuilderDialogFlags.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation.dialogs;
+package com.netspective.sparx.form.sql;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogFlags;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+public class QueryBuilderDialogFlags extends DialogFlags
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    public static final int HIDE_OUTPUT_DESTS = CUSTOM_START;
+    public static final int ALLOW_DEBUG = HIDE_OUTPUT_DESTS * 2;
+    public static final int HIDE_CRITERIA = ALLOW_DEBUG * 2;
+    public static final int ALWAYS_SHOW_DSNAV = HIDE_CRITERIA * 2;
+    public static final int ALLOW_MULTIPLE_SCROLL_STATES = ALWAYS_SHOW_DSNAV * 2; // allow multiple query select scroll states to be active
 
+    public static final FlagDefn[] QBD_FLAG_DEFNS = new FlagDefn[DialogFlags.FLAG_DEFNS.length + 5];
     static
     {
-        TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        for(int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
+            QBD_FLAG_DEFNS[i] = DialogFlags.FLAG_DEFNS[i];
+        QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "HIDE_OUTPUT_DESTS", HIDE_OUTPUT_DESTS);
+        QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "ALLOW_DEBUG", ALLOW_DEBUG);
+        QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 2] = new FlagDefn(ACCESS_XDM, "HIDE_CRITERIA", HIDE_CRITERIA);
+        QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 3] = new FlagDefn(ACCESS_XDM, "ALWAYS_SHOW_DSNAV", ALWAYS_SHOW_DSNAV);
+        QBD_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 4] = new FlagDefn(ACCESS_XDM, "ALLOW_MULTIPLE_SCROLL_STATES", ALLOW_MULTIPLE_SCROLL_STATES);
     }
 
-    public DialogFieldsPanel()
+    public QueryBuilderDialogFlags()
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
-    }
-
-    public TabularReportDataSource createDataSource(NavigationContext nc)
-    {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(selectedDialog);
-    }
-
-    public HtmlTabularReport getReport(NavigationContext nc)
-    {
-        return dialogFieldsReport;
+        setFlag(ALLOW_DEBUG | READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA | ALWAYS_SHOW_DSNAV);
     }
 }
+

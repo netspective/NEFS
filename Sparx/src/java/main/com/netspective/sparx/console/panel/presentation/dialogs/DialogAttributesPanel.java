@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogAttributesPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogAttributesPanel.java,v 1.2 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -57,6 +57,7 @@ import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPane
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
@@ -81,13 +82,13 @@ public class DialogAttributesPanel extends DialogDetailPanel
         getFrame().setHeading(new StaticValueSource("Dialog Attributes"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
+        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(nc);
         if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
-            return new DialogAttributesPanelDataSource(vc, selectedDialog);
+            return new DialogAttributesPanelDataSource(selectedDialog);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -97,9 +98,18 @@ public class DialogAttributesPanel extends DialogDetailPanel
 
     protected class DialogAttributesPanelDataSource extends ListDataSource
     {
-        public DialogAttributesPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
+        private SelectedDialog selectedDialog;
+
+        public DialogAttributesPanelDataSource(SelectedDialog selectedDialog)
         {
-            super(vc, selectedDialog.getDialogAttributes(vc), "No attributes");
+            super("No attributes");
+            this.selectedDialog = selectedDialog;
+        }
+
+        public void setReportValueContext(TabularReportValueContext reportValueContext)
+        {
+            super.setReportValueContext(reportValueContext);
+            setList(selectedDialog.getDialogAttributes((HtmlTabularReportValueContext) reportValueContext));
         }
     }
 }

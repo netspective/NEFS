@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.4 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.5 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -56,6 +56,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsManager;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.RuntimeEnvironmentFlags;
@@ -96,12 +97,12 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public DialogsCatalogDataSource(HtmlTabularReportValueContext vc, DialogsManager appManager, String selectedDialogName)
+        public DialogsCatalogDataSource(NavigationContext nc, String selectedDialogName)
         {
-            super(vc);
-            dialogs = appManager.getDialogs();
+            super();
+            dialogs = nc.getApplicationManager().getDialogs();
             this.selectedDialogName = selectedDialogName;
-            boolean doingFrameworkDeveploment = vc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
+            boolean doingFrameworkDeveploment = nc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT);
 
             //TODO: this does not account for dialogs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());

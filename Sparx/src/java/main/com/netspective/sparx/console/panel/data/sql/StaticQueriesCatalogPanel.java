@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.2 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -122,9 +122,9 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Available Static Queries"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new CatalogDataSource(vc, nc.getSqlManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
+        return new CatalogDataSource(nc.getSqlManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -161,9 +161,9 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public CatalogDataSource(HtmlTabularReportValueContext vc, SqlManager sqlManager, String selectedQueryName)
+        public CatalogDataSource(SqlManager sqlManager, String selectedQueryName)
         {
-            super(vc);
+            super();
             queries = sqlManager.getQueries();
             this.selectedQueryName = selectedQueryName;
 

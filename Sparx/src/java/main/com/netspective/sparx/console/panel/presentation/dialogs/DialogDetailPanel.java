@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.5 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.6 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -51,8 +51,10 @@ import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
@@ -69,19 +71,19 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         private Dialog dialog;
         private TabularReportDataSource dataSource;
 
-        public SelectedDialog(HtmlTabularReportValueContext rc, String dialogName)
+        public SelectedDialog(Dialogs dialogs, String dialogName)
         {
             this.dialogName= dialogName;
 
             if(dialogName == null)
             {
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, noDialogParamAvailSource);
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noDialogParamAvailSource);
                 return;
             }
 
-            dialog = rc.getApplicationManager().getDialogs().get(dialogName);
+            dialog = dialogs.get(dialogName);
             if(dialog == null)
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(rc, "Dialog '"+ dialogName +"' not found.");
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Dialog '"+ dialogName +"' not found. Available: " + dialogs.getNames());
         }
 
         public TabularReportDataSource getDataSource()
@@ -226,9 +228,9 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         }
     }
 
-    public SelectedDialog getSelectedDialog(HtmlTabularReportValueContext rc)
+    public SelectedDialog getSelectedDialog(NavigationContext nc)
     {
-        return new SelectedDialog(rc, rc.getHttpRequest().getParameter(REQPARAMNAME_DIALOG));
+        return new SelectedDialog(nc.getApplicationManager().getDialogs(), nc.getHttpRequest().getParameter(REQPARAMNAME_DIALOG));
     }
 
     protected class DialogFieldsDataSource extends AbstractHtmlTabularReportDataSource
@@ -267,9 +269,9 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
             return hierarchy;
         }
 
-        public DialogFieldsDataSource(HtmlTabularReportValueContext vc, DialogDetailPanel.SelectedDialog selectedDialog)
+        public DialogFieldsDataSource(DialogDetailPanel.SelectedDialog selectedDialog)
         {
-            super(vc);
+            super();
             fieldRows = new DialogDetailPanel.FieldRows(selectedDialog.getDialog());
             lastRowIndex = fieldRows.size() - 1;
         }

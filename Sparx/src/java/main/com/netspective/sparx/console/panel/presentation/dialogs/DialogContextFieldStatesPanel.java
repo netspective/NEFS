@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextFieldStatesPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogContextFieldStatesPanel.java,v 1.2 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -47,7 +47,6 @@ package com.netspective.sparx.console.panel.presentation.dialogs;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
@@ -89,12 +88,25 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
 
     protected class DialogContextSelectedDialog extends SelectedDialog
     {
-        public DialogContextSelectedDialog(HtmlTabularReportValueContext rc)
+        private DialogContext dialogContext;
+
+        public DialogContextSelectedDialog(DialogContext dc)
         {
-            super(rc, null);
-            setDialog(rc.getDialogContext().getDialog());
-            setDialogName(rc.getDialogContext().getDialog().getName());
-            setDataSource(new DialogContextFieldStatesPanelDataSource(rc, this));
+            super(dc.getApplicationManager().getDialogs(), null);
+            setDialog(dc.getDialog());
+            setDialogName(dc.getDialog().getName());
+            setDataSource(new DialogContextFieldStatesPanelDataSource(this));
+            setDialogContext(dc);
+        }
+
+        public DialogContext getDialogContext()
+        {
+            return dialogContext;
+        }
+
+        public void setDialogContext(DialogContext dialogContext)
+        {
+            this.dialogContext = dialogContext;
         }
     }
 
@@ -103,9 +115,9 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
         getFrame().setHeading(new StaticValueSource("Field State Values"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = new DialogContextSelectedDialog(vc);
+        DialogDetailPanel.SelectedDialog selectedDialog = new DialogContextSelectedDialog(nc.getDialogContext());
         return selectedDialog.getDataSource();
     }
 
@@ -116,18 +128,18 @@ public class DialogContextFieldStatesPanel extends DialogDetailPanel
 
     protected class DialogContextFieldStatesPanelDataSource extends DialogFieldsDataSource
     {
-        private DialogContext dialogContext;
+        private DialogContextSelectedDialog selectedDialog;
 
-        public DialogContextFieldStatesPanelDataSource(HtmlTabularReportValueContext vc, DialogContextSelectedDialog selectedDialog)
+        public DialogContextFieldStatesPanelDataSource(DialogContextSelectedDialog selectedDialog)
         {
-            super(vc, selectedDialog);
-            this.dialogContext = vc.getDialogContext();
+            super(selectedDialog);
+            this.selectedDialog = selectedDialog;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
             DialogField activeField = activeRow.getField();
-            DialogField.State activeFieldState = dialogContext.getFieldStates().getState(activeField);
+            DialogField.State activeFieldState = selectedDialog.getDialogContext().getFieldStates().getState(activeField);
 
             switch(columnIndex)
             {

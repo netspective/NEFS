@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.12 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.13 2003-05-30 23:11:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -478,6 +478,9 @@ public class DialogField implements TemplateConsumer
 
     public void addConditional(DialogFieldConditionalAction action)
     {
+        if(conditionalActions == null)
+            conditionalActions = new ArrayList();
+
         conditionalActions.add(action);
         flags.setFlag(Flags.HAS_CONDITIONAL_DATA);
     }
@@ -880,7 +883,7 @@ public class DialogField implements TemplateConsumer
 	 */
 	public boolean isAvailable(DialogContext dc)
 	{
-		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
+		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA) && conditionalActions != null)
 		{
 			Iterator i = conditionalActions.iterator();
 			while (i.hasNext())

@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsInheritancePanel.java,v 1.2 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsInheritancePanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
  */
 
 import java.util.List;
@@ -90,9 +90,9 @@ public class SchemaTableColumnsInheritancePanel extends SchemaTableColumnsPanel
         getFrame().setHeading(new StaticValueSource("Data Type Inheritance"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
-        return new ColumnsDescrsDataSource(nc, vc, table.getColumns());
+        return new ColumnsDescrsDataSource(nc, table.getColumns());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -102,9 +102,9 @@ public class SchemaTableColumnsInheritancePanel extends SchemaTableColumnsPanel
 
     protected class ColumnsDescrsDataSource extends ColumnsDataSource
     {
-        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        public ColumnsDescrsDataSource(NavigationContext nc, Columns columns)
         {
-            super(nc, vc, columns);
+            super(nc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)

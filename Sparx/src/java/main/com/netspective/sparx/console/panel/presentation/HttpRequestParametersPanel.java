@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpRequestParametersPanel.java,v 1.2 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: HttpRequestParametersPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation;
@@ -84,9 +84,9 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Request Parameters"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new HttpRequestParametersDataSource(vc, nc.getHttpRequest());
+        return new HttpRequestParametersDataSource(nc.getHttpRequest());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -197,9 +197,9 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
             return hierarchy;
         }
 
-        public HttpRequestParametersDataSource(HtmlTabularReportValueContext vc, HttpServletRequest request)
+        public HttpRequestParametersDataSource(HttpServletRequest request)
         {
-            super(vc);
+            super();
             this.request = request;
             paramRows = new ParameterRows();
             lastRowIndex = paramRows.size() - 1;

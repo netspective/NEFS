@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.3 2003-05-21 11:10:28 shahid.shah Exp $
+ * $Id: DynamicQueriesCatalogPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -101,9 +101,9 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         getFrame().setHeading(new StaticValueSource("Available Dynamic Queries"));
     }
 
-    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        return new CatalogDataSource(vc, nc.getSqlManager());
+        return new CatalogDataSource(nc.getSqlManager());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -138,9 +138,9 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public CatalogDataSource(HtmlTabularReportValueContext vc, SqlManager sqlManager)
+        public CatalogDataSource(SqlManager sqlManager)
         {
-            super(vc);
+            super();
 
             QueryDefinitions customQueryDefns = sqlManager.getQueryDefns();
             if(customQueryDefns.size() > 0)
