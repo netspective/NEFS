@@ -39,24 +39,38 @@
  */
 
 /**
- * $Id: ResultSetUtils.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: ResultSetUtils.java,v 1.2 2003-08-19 16:08:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
 
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+
 public class ResultSetUtils
 {
+    private static final ResultSetUtils INSTANCE = (ResultSetUtils) DiscoverSingleton.find(ResultSetUtils.class, ResultSetUtils.class.getName());
+
+    public static ResultSetUtils getInstance()
+    {
+        return INSTANCE;
+    }
+
+    public ResultSetUtils()
+    {
+    }
+
     /**
      * Given a ResultSet, return a Map of all the column names in the ResultSet
      * in lowercase as the key and the index of the column as the value.
      */
-    public static Map getColumnNamesIndexMap(ResultSet rs) throws SQLException
+    public Map getColumnNamesIndexMap(ResultSet rs) throws SQLException
     {
         Map map = new HashMap();
         ResultSetMetaData rsmd = rs.getMetaData();
@@ -66,5 +80,143 @@ public class ResultSetUtils
             map.put(rsmd.getColumnName(i).toLowerCase(), new Integer(i));
         }
         return map;
+    }
+
+    public Object getResultSetSingleColumn(ResultSet rs) throws SQLException
+    {
+        if(rs.next())
+            return rs.getObject(1);
+        else
+            return null;
+    }
+
+    public Object[] getResultSetSingleRowArray(ResultSet rs) throws SQLException
+    {
+        if(rs.next())
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colsCount = rsmd.getColumnCount();
+            Object[] result = new Object[colsCount];
+            for(int i = 1; i <= colsCount; i++)
+            {
+                result[i - 1] = rs.getObject(i);
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public Map getResultSetSingleRowAsMap(ResultSet rs) throws SQLException
+    {
+        Map result = new HashMap();
+        if(rs.next())
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colsCount = rsmd.getColumnCount();
+            for(int i = 1; i <= colsCount; i++)
+            {
+                result.put(rsmd.getColumnName(i).toLowerCase(), rs.getObject(i));
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public Map[] getResultSetRowsAsMapArray(ResultSet rs) throws SQLException
+    {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int colsCount = rsmd.getColumnCount();
+        String[] columnNames = new String[colsCount];
+        for(int c = 1; c <= colsCount; c++)
+        {
+            columnNames[c - 1] = rsmd.getColumnName(c).toLowerCase();
+        }
+
+        ArrayList result = new ArrayList();
+        while(rs.next())
+        {
+            Map rsMap = new HashMap();
+            for(int i = 1; i <= colsCount; i++)
+            {
+                rsMap.put(columnNames[i - 1], rs.getObject(i));
+            }
+            result.add(rsMap);
+        }
+
+        if(result.size() > 0)
+            return (Map[]) result.toArray(new Map[result.size()]);
+        else
+            return null;
+    }
+
+    public Object[] getResultSetSingleRowAsArray(ResultSet rs) throws SQLException
+    {
+        if(rs.next())
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colsCount = rsmd.getColumnCount();
+            Object[] result = new Object[colsCount];
+            for(int i = 1; i <= colsCount; i++)
+            {
+                result[i - 1] = rs.getObject(i);
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public String[] getResultSetSingleRowAsStrings(ResultSet rs) throws SQLException
+    {
+        if(rs.next())
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colsCount = rsmd.getColumnCount();
+            String[] result = new String[colsCount];
+            for(int i = 1; i <= colsCount; i++)
+            {
+                result[i - 1] = rs.getString(i);
+            }
+            return result;
+        }
+        else
+            return null;
+    }
+
+    public Object[][] getResultSetRowsAsMatrix(ResultSet rs) throws SQLException
+    {
+        ArrayList result = new ArrayList();
+        while(rs.next())
+        {
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int colsCount = rsmd.getColumnCount();
+            Object[] row = new Object[colsCount];
+            for(int i = 1; i <= colsCount; i++)
+            {
+                row[i - 1] = rs.getObject(i);
+            }
+            result.add(row);
+        }
+
+        if(result.size() > 0)
+            return (Object[][]) result.toArray(new Object[result.size()][]);
+        else
+            return null;
+    }
+
+    public String[] getResultSetRowsAsStrings(ResultSet rs) throws SQLException
+    {
+        ArrayList result = new ArrayList();
+        while(rs.next())
+        {
+            result.add(rs.getString(1));
+        }
+
+        if(result.size() > 0)
+            return (String[]) result.toArray(new String[result.size()]);
+        else
+            return null;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.11 2003-08-17 00:02:04 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.12 2003-08-19 16:08:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -690,7 +690,7 @@ public class SqlManagerQueryTest extends TestCase
         ResultSet rs = qrsOne.getResultSet();
 
         String[] expectedColumns = new String[] { "cr_stamp", "rec_stat_id", "system_id", "column_a", "column_b", "column_c" };
-        Map columnNames = ResultSetUtils.getColumnNamesIndexMap(rs);
+        Map columnNames = ResultSetUtils.getInstance().getColumnNamesIndexMap(rs);
 
         assertEquals(expectedColumns.length, columnNames.size());
         for (int i = 0; i < expectedColumns.length; i ++)
