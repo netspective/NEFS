@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.26 2003-09-10 04:02:19 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.27 2003-09-15 03:58:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -78,8 +78,8 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.form.sql.QueryDialog;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
@@ -151,10 +151,10 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
      */
     public String constructRedirect(TabularReportValueContext rc, ValueSource redirect, String label, String hint, String target)
     {
-        if (redirect instanceof HttpServletRedirectValueSource)
+        if (redirect instanceof RedirectValueSource)
         {
             StringBuffer sb = new StringBuffer();
-            String url = ((HttpServletRedirectValueSource)redirect).getUrl(rc);
+            String url = ((RedirectValueSource)redirect).getUrl(rc);
             if (url.startsWith("javascript"))
             {
                 sb.append("<a href=\"#\" onclick=\"" + url + "\"");
@@ -346,11 +346,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                         state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
-                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) column.getRedirect();
-                if (redirect != null)
+                RedirectValueSource redirect = column.getRedirect();
+                if (data != null && redirect != null)
                 {
-                    data = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
-                    data = defn.replaceOutputPatterns(rc, ds, data);
+                    String newdata = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
+                    data = defn.replaceOutputPatterns(rc, ds, newdata);
                 }
 
                 String style = state.getCssStyleAttrValue();
@@ -474,7 +474,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc) + getRowDecoratorAppendColsCount(rc);
 
                 Theme theme = rc.getActiveTheme();
-                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource)reportAction.getRedirect();
+                RedirectValueSource redirect = (RedirectValueSource)reportAction.getRedirect();
                 if (redirect != null)
                 {
                     String title = reportAction.getTitle().getTextValue(rc);

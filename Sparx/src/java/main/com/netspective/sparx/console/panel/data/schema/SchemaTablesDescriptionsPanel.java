@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesDescriptionsPanel.java,v 1.3 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: SchemaTablesDescriptionsPanel.java,v 1.4 2003-09-15 03:57:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -50,9 +50,8 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.axiom.schema.Table;
@@ -65,7 +64,7 @@ public class SchemaTablesDescriptionsPanel extends SchemaTablesPanel
     static
     {
         schemaTableColumn.setHeading(new StaticValueSource("SQL Table Name"));
-        schemaTableColumn.setRedirect(new HttpServletRedirectValueSource("table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}"));
+        schemaTableColumn.setRedirect(new RedirectValueSource("table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}"));
         descrsReport.addColumn(schemaTableColumn);
 
         GeneralColumn column = new GeneralColumn();

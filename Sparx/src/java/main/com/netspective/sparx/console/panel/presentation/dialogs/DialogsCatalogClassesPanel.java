@@ -39,35 +39,19 @@
  */
 
 /**
- * $Id: DialogsCatalogClassesPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: DialogsCatalogClassesPanel.java,v 1.6 2003-09-15 03:57:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import java.util.TreeSet;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
-import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
-import com.netspective.sparx.form.Dialogs;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogsManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
-import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 
 public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
 {
@@ -77,7 +61,7 @@ public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
     static
     {
         dialogIdColumn.setHeading(new StaticValueSource("Dialog"));
-        dialogIdColumn.setRedirect(new HttpServletRedirectValueSource("detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}"));
+        dialogIdColumn.setRedirect(new RedirectValueSource("detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}"));
         catalogReport.addColumn(dialogIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)

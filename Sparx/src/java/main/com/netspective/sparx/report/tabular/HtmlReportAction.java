@@ -41,6 +41,7 @@ package com.netspective.sparx.report.tabular;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
@@ -49,7 +50,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 /**
  * @author aye
- * $Id: HtmlReportAction.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: HtmlReportAction.java,v 1.6 2003-09-15 04:00:43 aye.thu Exp $
  */
 public class HtmlReportAction
 {
@@ -83,7 +84,7 @@ public class HtmlReportAction
     }
 
     private ValueSource caption;
-    private ValueSource redirect;
+    private RedirectValueSource redirect;
     private ValueSource title;
     private Type type;
 
@@ -146,7 +147,7 @@ public class HtmlReportAction
      * Gets the redirect of the report action
      * @return   Valuesource
      */
-    public ValueSource getRedirect()
+    public RedirectValueSource getRedirect()
     {
         return redirect;
     }
@@ -155,7 +156,7 @@ public class HtmlReportAction
      * Sets the redirect of the report action
      * @param redirect
      */
-    public void setRedirect(ValueSource redirect)
+    public void setRedirect(RedirectValueSource redirect)
     {
         this.redirect = redirect;
     }

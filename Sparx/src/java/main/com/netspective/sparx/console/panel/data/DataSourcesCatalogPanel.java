@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.5 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.6 2003-09-15 03:57:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -50,10 +50,9 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.Value;
@@ -75,7 +74,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
     {
         TabularReportColumn column = catalogReport.createColumn();
         column.setHeading(new StaticValueSource("Identifier"));
-        column.setRedirect(new HttpServletRedirectValueSource("explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}"));
+        column.setRedirect(new RedirectValueSource("explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}"));
         catalogReport.addColumn(column);
 
         column = catalogReport.createColumn();

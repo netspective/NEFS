@@ -10,10 +10,9 @@ import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.sparx.command.RedirectCommand;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.command.Command;
+import com.netspective.commons.value.source.RedirectValueSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.io.Writer;
 
 /**
  * @author aye
- * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.5 2003-09-10 04:02:19 aye.thu Exp $
+ * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.6 2003-09-15 03:58:35 aye.thu Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularReportPanelSkin
 {
@@ -51,7 +50,7 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
             if (reportAction != null)
             {
                 Theme theme = rc.getActiveTheme();
-                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource) reportAction.getRedirect();
+                RedirectValueSource redirect = (RedirectValueSource) reportAction.getRedirect();
                 if (frameActions.size() > 0)
                     writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");

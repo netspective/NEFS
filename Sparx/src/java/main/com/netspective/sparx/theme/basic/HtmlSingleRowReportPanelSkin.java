@@ -48,7 +48,7 @@
  * OF SUCH DAMAGES.
  *
  * @author Shahid N. Shah
- * $Id: HtmlSingleRowReportPanelSkin.java,v 1.5 2003-09-10 04:02:19 aye.thu Exp $
+ * $Id: HtmlSingleRowReportPanelSkin.java,v 1.6 2003-09-15 03:58:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -57,13 +57,11 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.command.Command;
-import com.netspective.sparx.value.source.HttpServletRedirectValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -158,7 +156,7 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
                         state.getFlags().flagIsSet(TabularReportColumn.Flags.HAS_OUTPUT_PATTERN) ?
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_FOR_URL);
-                HttpServletRedirectValueSource redirect = (HttpServletRedirectValueSource)column.getRedirect();
+                RedirectValueSource redirect = (RedirectValueSource)column.getRedirect();
                 if (redirect != null)
                 {
                     data = rc.getSkin().constructRedirect(rc, redirect, data, null, null);
