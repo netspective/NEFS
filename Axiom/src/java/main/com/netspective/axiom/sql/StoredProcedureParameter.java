@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.6 2003-11-06 00:04:01 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.7 2003-11-10 23:02:02 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -58,6 +58,9 @@ import java.sql.CallableStatement;
 import java.sql.Clob;
 import java.sql.Array;
 import java.sql.ResultSet;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Class representing an in or out parameter of a callable statement object
@@ -92,6 +95,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         }
     }
 
+    private Log log = LogFactory.getLog(StoredProcedureParameter.class);
     private StoredProcedureParameters parent;
     private String name;
     private ValueSource value;
@@ -116,7 +120,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         if(paramTypeName != null)
         {
             paramType = QueryParameterType.get(paramTypeName);
-            if(type == null)
+            if(paramType == null)
                 throw new RuntimeException("param type '" + paramTypeName + "' is invalid for param '"+
                         getName() +"' in stored procedure '" + parent.getProcedure().getQualifiedName() + "'");
         }
@@ -129,6 +133,24 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     public QueryParameterType getSqlType()
     {
         return paramType;
+    }
+
+    /**
+     * Gets the parameters java data type name
+     * @return
+     */
+    public String getSqlIdentifierType()
+    {
+        return (paramType != null ? paramType.getIdentifier(): null);
+    }
+
+    /**
+     * Gets the parameter's JDBC data type
+     * @return
+     */
+    public int getSqlJdbcType()
+    {
+        return (paramType != null ? paramType.getJdbcType() : -999999);
     }
 
     /**
@@ -161,14 +183,16 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         // The In, out, or in/out type MUST be defined
         if(type == null)
         {
-            RuntimeException e = new RuntimeException(QueryParameter.class.getName() + " '" +
+            RuntimeException e = new RuntimeException("Parameter '" + getName() +
+                    "'  for stored procedure '" +
                     this.parent.getProcedure().getQualifiedName() + "' has no 'type' attribute.");
             this.parent.getProcedure().getLog().error(e.getMessage(), e);
             throw e;
         }
         if(value == null)
         {
-            RuntimeException e = new RuntimeException(QueryParameter.class.getName() + " '" +
+            RuntimeException e = new RuntimeException("Parameter '" + getName() +
+                    "'  for stored procedure '" +
                     this.parent.getProcedure().getQualifiedName() + "' has no 'value' or 'values' attribute.");
             this.parent.getProcedure().getLog().error(e.getMessage(), e);
             throw e;
@@ -212,12 +236,15 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     break;
                 default:
                     // TODO: Need to handle all the types??
+                    log.warn("Unknown JDBC type for parameter '" + getName() + "' (index=" +
+                            paramNum + ") of stored procedure '" + parent.getProcedure() + "'.");
                     break;
             }
         }
         if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
             // jdbcType MUST be of java.sql.Types value always!
+            System.out.println("OUT>> " + paramNum + " " + jdbcType);
             stmt.registerOutParameter(paramNum, jdbcType);
         }
     }
@@ -247,6 +274,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         int index = this.getIndex();
         QueryParameterType paramType = getSqlType();
         int jdbcType = paramType.getJdbcType();
+        String identifier = paramType.getIdentifier();
 
         switch (jdbcType)
         {
@@ -311,7 +339,16 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                 value.getValue(cc).setValue(stmt.getBigDecimal(index));
                 break;
             case java.sql.Types.OTHER:
-                value.getValue(cc).setValue(stmt.getObject(index));
+                if (identifier.equals(QueryParameterType.RESULTSET_IDENTIFIER))
+                {
+                    ResultSet rs = (ResultSet) stmt.getObject(index);
+                    QueryResultSet qrs = new QueryResultSet(getParent().getProcedure(), cc, rs);
+                    value.getValue(cc).setValue(qrs);
+                }
+                else
+                {
+                    value.getValue(cc).setValue(stmt.getObject(index));
+                }
                 break;
             case java.sql.Types.REAL:
                 value.getValue(cc).setValue(new Float(stmt.getFloat(index)));
@@ -340,7 +377,8 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                  value.getValue(cc).setValue(stmt.getBytes(index));
                 break;
             default:
-                break;
+                throw new RuntimeException("Unknown JDBC Type set for stored procedure parameter '" +
+                        this.getName() + "'.");
         }
     }
 
@@ -407,7 +445,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     }
 
     /**
-     * Gts the name of this parameter
+     * Gets the name of this parameter
      * @return
      */
     public String getName()

@@ -64,7 +64,7 @@ import java.sql.ResultSet;
  * Class for handling stored procedure calls
  *
  * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.5 2003-11-06 00:04:01 aye.thu Exp $
+ * @version $Id: StoredProcedure.java,v 1.6 2003-11-10 23:02:02 aye.thu Exp $
  */
 public class StoredProcedure
 {
@@ -346,7 +346,7 @@ public class StoredProcedure
      * @throws NamingException
      * @throws SQLException
      */
-    protected void executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
+    protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
             throws NamingException, SQLException
     {
         if(log.isTraceEnabled()) trace(cc, overrideParams);
@@ -371,7 +371,10 @@ public class StoredProcedure
             if(parameters != null)
                 parameters.apply(cc, stmt);
             stmt.execute();
-            parameters.extract(cc, stmt);
+
+            StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
+            return (rsParameter != null ? (QueryResultSet) rsParameter.getValue().getValue(cc.getDatabaseValueContext()) : null);
+
         }
         catch(SQLException e)
         {
@@ -391,173 +394,6 @@ public class StoredProcedure
         }
     }
 
-    /**
-     * Executes a stored procedure that returns a result set
-     * @param cc
-     * @param overrideParams
-     * @param scrollable
-     * @return
-     * @throws SQLException
-     * @throws NamingException
-     */
-    protected QueryResultSet executeQueryAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
-        throws SQLException, NamingException
-    {
-        if(log.isTraceEnabled()) trace(cc, overrideParams);
-
-        Connection conn = null;
-        CallableStatement stmt = null;
-        try
-        {
-            conn = cc.getConnection();
-            String sql = StringUtils.strip(getSqlText(cc));
-            if (scrollable)
-                stmt = conn.prepareCall(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            else
-                stmt = conn.prepareCall(sql);
-
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
-
-            if(parameters != null)
-                parameters.apply(cc, stmt);
-            ResultSet rs = stmt.executeQuery();
-            parameters.extract(cc, stmt);
-            return new QueryResultSet(this, cc, rs);
-        }
-        catch(SQLException e)
-        {
-            log.error(createExceptionMessage(cc, overrideParams), e);
-            throw e;
-        }
-
-    }
-
-    /**
-     * Executes a stored procedure that returns a result set
-     * @param cc
-     * @param overrideParams
-     * @param scrollable
-     * @return
-     * @throws SQLException
-     * @throws NamingException
-     */
-    protected QueryResultSet executeQueryAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
-        throws SQLException, NamingException
-    {
-        if(log.isTraceEnabled()) trace(cc, overrideParams);
-        QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
-        Connection conn = null;
-        CallableStatement stmt = null;
-        try
-        {
-            logEntry.registerGetConnectionBegin();
-            conn = cc.getConnection();
-            logEntry.registerGetConnectionEnd(conn);
-            String sql = StringUtils.strip(getSqlText(cc));
-            if (scrollable)
-                stmt = conn.prepareCall(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            else
-                stmt = conn.prepareCall(sql);
-            logEntry.registerBindParamsBegin();
-            if(overrideParams != null)
-            {
-                for(int i = 0; i < overrideParams.length; i++)
-                    stmt.setObject(i + 1, overrideParams[i]);
-            }
-
-            if(parameters != null)
-                parameters.apply(cc, stmt);
-            logEntry.registerBindParamsEnd();
-            logEntry.registerExecSqlBegin();
-            ResultSet rs = stmt.executeQuery();
-            logEntry.registerExecSqlEndSuccess();
-            parameters.extract(cc, stmt);
-            return new QueryResultSet(this, cc, rs);
-        }
-        catch(SQLException e)
-        {
-            logEntry.registerExecSqlEndFailed();
-            log.error(createExceptionMessage(cc, overrideParams), e);
-            throw e;
-        }
-    }
-
-    /**
-     * Executes a stored procedure that returns a result set
-     * @param dbvc
-     * @param overrideParams
-     * @param scrollable
-     * @return
-     * @throws SQLException
-     * @throws NamingException
-     */
-    protected QueryResultSet executeQueryAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
-    {
-        String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        return executeQuery(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
-    }
-
-    /**
-     * Executes the stored procedure and records different statistics such as database connection times,
-     * parameetr binding times, and procedure execution times.
-     * @param dbvc
-     * @param overrideParams
-     * @param scrollable
-     * @throws SQLException
-     * @throws NamingException
-     */
-    protected QueryResultSet executeQueryAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
-    {
-        String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        return executeQueryAndRecordStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                    overrideParams, scrollable);
-    }
-
-
-    /**
-     * Executes a stored procedure that returns a result set. This should be used only when
-     * the stored procedure is known to return a result set not as an OUT parameter.
-     * @param cc
-     * @param overrideParams
-     * @param scrollable
-     * @return
-     * @throws NamingException
-     * @throws SQLException
-     */
-    public QueryResultSet executeQuery(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
-            throws NamingException, SQLException
-    {
-        if (log.isInfoEnabled())
-            return executeQueryAndRecordStatistics(cc, overrideParams, scrollable);
-        else
-            return executeQueryAndIgnoreStatistics(cc, overrideParams, scrollable);
-    }
-
-    /**
-     * Executes a stored procedure that returns a result set. This should be used only when
-     * the stored procedure is known to return a result set not as an OUT parameter.
-     * @param dbvc
-     * @param overrideParams
-     * @param scrollable
-     * @return
-     * @throws NamingException
-     * @throws SQLException
-     */
-    public QueryResultSet executeQuery(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable)
-            throws NamingException, SQLException
-    {
-        if (log.isInfoEnabled())
-            return executeQueryAndRecordStatistics(dbvc, overrideParams, scrollable);
-        else
-            return executeQueryAndIgnoreStatistics(dbvc, overrideParams, scrollable);
-    }
 
     /**
      * NOTE: When using the batch update facility, a CallableStatement object can call only stored
@@ -596,7 +432,7 @@ public class StoredProcedure
      * @throws NamingException
      * @throws SQLException
      */
-    protected void executeAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
+    protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable)
             throws NamingException, SQLException
     {
         if(log.isTraceEnabled()) trace(cc, overrideParams);
@@ -628,6 +464,10 @@ public class StoredProcedure
             stmt.execute();
             logEntry.registerExecSqlEndSuccess();
             parameters.extract(cc, stmt);
+
+            StoredProcedureParameter rsParameter = parameters.getResultSetParameter();
+            return (rsParameter != null ? (QueryResultSet) rsParameter.getValue().getValue(cc.getDatabaseValueContext()) : null);
+
         }
         catch(SQLException e)
         {
@@ -655,10 +495,10 @@ public class StoredProcedure
      * @throws SQLException
      * @throws NamingException
      */
-    public void executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
+    public QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        executeAndIgnoreStatistics(
+        return executeAndIgnoreStatistics(
                     dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
@@ -672,10 +512,10 @@ public class StoredProcedure
      * @throws SQLException
      * @throws NamingException
      */
-    protected void executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
+    protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        executeAndRecordStatistics(
+        return executeAndRecordStatistics(
                     dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
@@ -688,12 +528,12 @@ public class StoredProcedure
      * @throws NamingException
      * @throws SQLException
      */
-    public void execute(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
+    public QueryResultSet execute(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
         if (log.isInfoEnabled())
-            executeAndRecordStatistics(dbvc, overrideParams, scrollable);
+            return executeAndRecordStatistics(dbvc, overrideParams, scrollable);
         else
-            executeAndIgnoreStatistics(dbvc, overrideParams, scrollable);
+            return executeAndIgnoreStatistics(dbvc, overrideParams, scrollable);
     }
 
     /**
@@ -704,12 +544,12 @@ public class StoredProcedure
      * @throws NamingException
      * @throws SQLException
      */
-    public void execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
+    public QueryResultSet execute(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
         if (log.isInfoEnabled())
-            executeAndRecordStatistics(cc, overrideParams, scrollable);
+            return executeAndRecordStatistics(cc, overrideParams, scrollable);
         else
-            executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+            return executeAndIgnoreStatistics(cc, overrideParams, scrollable);
     }
 
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameters.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
+ * $Id: StoredProcedureParameters.java,v 1.4 2003-11-10 23:02:02 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -52,6 +52,9 @@ import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
 
+/**
+ * List class for keeping track of the stored procedure parameters
+ */
 public class StoredProcedureParameters
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -116,6 +119,9 @@ public class StoredProcedureParameters
 
     private StoredProcedure procedure;
     private List params = new ArrayList();
+    private List inParams = new ArrayList();
+    private List outParams = new ArrayList();
+    private int resultsetParamIndex = -1;
 
     public StoredProcedureParameters(StoredProcedure parent)
     {
@@ -150,13 +156,45 @@ public class StoredProcedureParameters
     }
 
     /**
-     * Adds a stored procedure parameter
+     * Adds a stored procedure parameter to the parameter list and if the param is a result set, the
+     * position of the param in the list is saved.
      * @param param
      */
     public void addParam(StoredProcedureParameter param)
     {
         params.add(param);
         param.setIndex(params.size());
+        int inoutType = param.getType().getValueIndex();
+        if (inoutType == StoredProcedureParameter.Type.OUT ||
+            inoutType == StoredProcedureParameter.Type.IN_OUT)
+            outParams.add(param);
+        if (inoutType == StoredProcedureParameter.Type.IN ||
+            inoutType == StoredProcedureParameter.Type.IN_OUT)
+            inParams.add(param);
+        if (inoutType == StoredProcedureParameter.Type.OUT &&
+            param.getSqlIdentifierType().equals(QueryParameterType.RESULTSET_IDENTIFIER))
+            resultsetParamIndex = params.size();
+    }
+
+    /**
+     * Gets the index of an out parameter which is a result set
+     * @return
+     */
+    public int getResultSetPrameterIndex()
+    {
+        return resultsetParamIndex;
+    }
+
+    /**
+     * Gets the result set out parameter
+     * @return Null if there is no result set out parameter
+     */
+    public StoredProcedureParameter getResultSetParameter()
+    {
+        if (resultsetParamIndex > 0)
+            return (StoredProcedureParameter) params.get(resultsetParamIndex);
+        else
+            return null;
     }
 
     /**
@@ -193,12 +231,23 @@ public class StoredProcedureParameters
         if(params.size() == 0)
             return 0;
 
+        /*
         int paramsCount = params.size();
         for(int i = 0; i < paramsCount; i++)
         {
             ((StoredProcedureParameter) params.get(i)).apply(vac, cc, stmt);
         }
+        */
+        for (int i = 0; i < inParams.size(); i++)
+        {
+            ((StoredProcedureParameter) inParams.get(i)).apply(vac, cc, stmt);
 
+        }
+        for (int i = 0; i < outParams.size(); i++)
+        {
+            ((StoredProcedureParameter) outParams.get(i)).apply(vac, cc, stmt);
+
+        }
         return vac.getActiveParamNum();
     }
 

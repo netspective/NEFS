@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameterType.java,v 1.4 2003-11-06 00:04:01 aye.thu Exp $
+ * $Id: QueryParameterType.java,v 1.5 2003-11-10 23:02:02 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -52,8 +52,26 @@ import java.sql.Date;
 import java.sql.Blob;
 import java.sql.ResultSet;
 
+/**
+ * Class for holding the relationship mappings between JDBC SQL data types and Java
+ * data types.
+ */
 public class QueryParameterType
 {
+    public static final String STRING_ARRAY_IDENTIFIER    = "strings";
+    public static final String INTEGER_IDENTIFIER   = "integer";
+    public static final String DOUBLE_IDENTIFIER    = "double";
+    public static final String VARCHAR_IDENTIFIER   = "varchar";
+    public static final String REAL_IDENTIFIER      = "real";
+    public static final String FLOAT_IDENTIFIER     = "float";
+    public static final String CLOB_IDENTIFIER      = "clob";
+    public static final String DECIMAL_IDENTIFIER   = "decimal";
+    public static final String DATE_IDENTIFIER      = "date";
+    public static final String BLOB_IDENTIFIER      = "blob";
+    public static final String SMALLINT_IDENTIFIER  = "smallint";
+    public static final String BIGINT_IDENTIFIER    = "bigint";
+    public static final String RESULTSET_IDENTIFIER = "resultset";
+
     public static final QueryParameterType TEXT = new QueryParameterType("text", Types.VARCHAR, String.class);
     private static final Map typesMapByIdentifier = new HashMap();
     private static final Map typesMapByJdbcType = new HashMap();
@@ -63,27 +81,35 @@ public class QueryParameterType
     private int jdbcType;
     private Class javaClass;
 
+    /**
+     * Static initialization of the mappings between the JDBC types and Java data types
+     */
     static
     {
-        add("strings", Types.ARRAY, String[].class);
-        add("integer", Types.INTEGER, Integer.class);
-        add("double", Types.DOUBLE, Double.class);
-        add("varchar", Types.VARCHAR, String.class);
+        add(STRING_ARRAY_IDENTIFIER, Types.ARRAY, String[].class);
+        add(INTEGER_IDENTIFIER, Types.INTEGER, Integer.class);
+        add(DOUBLE_IDENTIFIER, Types.DOUBLE, Double.class);
+        add(VARCHAR_IDENTIFIER, Types.VARCHAR, String.class);
         add(TEXT);
 
         // added to support stored procedures
-        add("real", Types.REAL, Float.class);
-        add("float", Types.FLOAT, Float.class);
+        add(REAL_IDENTIFIER, Types.REAL, Float.class);
+        add(FLOAT_IDENTIFIER, Types.FLOAT, Float.class);
         //add("char", Types.CHAR, char.class);
-        add("clob", Types.CLOB, Clob.class);
-        add("decimal", Types.DECIMAL, Double.class);
-        add("date", Types.DATE, Date.class);
-        add("blob", Types.BLOB, Blob.class);
-        add("smallint", Types.SMALLINT, Byte.class);
-        add("bigint", Types.BIGINT, Long.class);
-        add("resultset", Types.OTHER, ResultSet.class);
+        add(CLOB_IDENTIFIER, Types.CLOB, Clob.class);
+        add(DECIMAL_IDENTIFIER, Types.DECIMAL, Double.class);
+        add(DATE_IDENTIFIER, Types.DATE, Date.class);
+        add(BLOB_IDENTIFIER, Types.BLOB, Blob.class);
+        add(SMALLINT_IDENTIFIER, Types.SMALLINT, Byte.class);
+        add(BIGINT_IDENTIFIER, Types.BIGINT, Long.class);
+        add(RESULTSET_IDENTIFIER, Types.OTHER, ResultSet.class);
     }
 
+    /**
+     * Add a new query parameter type to the static map holding all the
+     * identifiers
+     * @param type
+     */
     public final static void add(QueryParameterType type)
     {
         typesMapByIdentifier.put(type.getIdentifier(), type);
@@ -91,26 +117,55 @@ public class QueryParameterType
         typeIdentifiers = (String[]) typesMapByIdentifier.keySet().toArray(new String[typesMapByIdentifier.size()]);
     }
 
+    /**
+     * Add a new query parameter type to the static map holding all the
+     * identifiers
+     * @param identifier
+     * @param jdbcType
+     * @param javaClass
+     */
     public final static void add(String identifier, int jdbcType, Class javaClass)
     {
         add(new QueryParameterType(identifier, jdbcType, javaClass));
     }
 
+    /**
+     * Gets a query parameter type by its identifier which is the java data type name
+     * (not the JDBC data type)
+     * @param identifier
+     * @return
+     */
     public final static QueryParameterType get(String identifier)
     {
         return (QueryParameterType) typesMapByIdentifier.get(identifier);
     }
 
+    /**
+     * Gets the query parameter type by its JDBC data type (java.sql.Types)
+     * @param jdbcType
+     * @return
+     */
     public final static QueryParameterType get(int jdbcType)
     {
         return (QueryParameterType) typesMapByJdbcType.get(new Integer(jdbcType));
     }
 
+    /**
+     * Gets all the java data type names
+     * @return
+     */
     public final static String[] getTypeIdentifiers()
     {
         return typeIdentifiers;
     }
 
+    /**
+     * Creates a new QueryParameterType with the java data type identifier string,
+     * the JDBC Sql type, and the actual java data class.
+     * @param identifier
+     * @param jdbcType
+     * @param javaClass
+     */
     public QueryParameterType(String identifier, int jdbcType, Class javaClass)
     {
         this.identifier = identifier;
@@ -118,16 +173,28 @@ public class QueryParameterType
         this.jdbcType = jdbcType;
     }
 
+    /**
+     * Gets the java data type identifier string for this parameter
+     * @return
+     */
     public String getIdentifier()
     {
         return identifier;
     }
 
+    /**
+     * Gets the java data type class for this parameter
+     * @return
+     */
     public Class getJavaClass()
     {
         return javaClass;
     }
 
+    /**
+     * Gets the JDBC Sql type for this parameter
+     * @return
+     */
     public int getJdbcType()
     {
         return jdbcType;
