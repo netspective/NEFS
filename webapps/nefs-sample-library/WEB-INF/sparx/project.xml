@@ -138,11 +138,11 @@
                     <!--action caption="Frame action" hint="This is a hint" style="horizontal" command="redirect,yahoo.com"/-->
                     <report>
                         <actions>
-                            <action type="add" caption="Add Book" command="redirect,add,true"/>
-                            <action type="edit" command="redirect,edit?id=${0},true"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
-                            <action type="delete" command="redirect,delete?id=${0},true"/>
+                            <action type="add" caption="Add Book" redirect="url:add"/>
+                            <action type="edit" redirect="url:edit?id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="url:delete?id=${0}"/>
                             <action type="select" caption="Process selected rows" title="Process the selected rows"
-                                command="redirect,yahoo.com"/>
+                                redirect="url:yahoo.com"/>
                         </actions>
                         <column heading="ID" format="plain"/>
                         <column heading="Name" />
@@ -173,7 +173,7 @@
                     <frame heading="static:Book Information"/>
                     <report>
                         <column heading="ID"/>
-                        <column heading="Name" command="redirect,yahoo.com"/>
+                        <column heading="Name" redirect="url:yahoo.com"/>
                         <column heading="Author"/>
                         <column heading="Genre"/>
                         <column heading="ISBN"/>
@@ -196,7 +196,7 @@
 		<join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/>
 
         <presentation>
-            <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="yes" hide-readonly-hints="yes" >
+            <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
                 <frame heading="Search for Books" />
                 <field type="text" name="book_id" caption="Book ID" />
                 <field type="text" name="name" caption="Book Name"/>
