@@ -62,7 +62,7 @@
                     </presentation>
                 </query>                
             </element>
-            <element type="report" name="address" caption="Address" dialog-ref="schema.db.Person_Address" pk-column-index="0">
+            <element type="report" name="address" caption="Address" dialog-ref="personAttribute.address" pk-column-index="0">
                 <query>
                     select
                     system_id,
