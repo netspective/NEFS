@@ -7,12 +7,12 @@
     </#if>
 </#function>
 
-<!--
+<#comment>
  ******************************************************************************
  ** MACRO: projectFile
  ** PARAMS: none
  ******************************************************************************
--->
+</#comment>
 <#macro projectFile>
     <code>${vc.getConsoleFileBrowserLink(vc.projectComponent.inputSource.identifier, true)}</code>
 </#macro>
@@ -21,12 +21,12 @@
     <code>${vc.getConsoleFileBrowserLink(vc.servlet.servletContext.getRealPath('/WEB-INF/web.xml'), true)}</code>
 </#macro>
 
-<!--
+<#comment>
  ******************************************************************************
  ** MACRO: childrenSummaries
  ** PARAMS: sourcePageType ('parent' | 'active')
  ******************************************************************************
- -->
+ </#comment>
 <#macro childrenSummaries sourcePageType>
 
     <#if sourcePageType = 'parent'>
@@ -75,12 +75,12 @@
 
 </#macro>
 
-<!--
+<#comment>
  ****************************************************************************************
  ** MACRO: templateProducerInstances
  ** PARAMS: templateProducer
  ****************************************************************************************
- -->
+ </#comment>
 <#macro templateProducerInstances templateProducer consumerTag consumerTagNameAttr="type" caption="Type" detail="-" detailUrl="documentation?type-name=" noDetailMessage="-">
 <div class="textbox">
     <#assign instancesMap = templateProducer.instancesMap/>
@@ -123,13 +123,13 @@
 </div>
 </#macro>
 
-<!--
+<#comment>
  ****************************************************************************************
  ** MACRO: xdmChildStructure
  ** PARAMS: parentClassName (the name of the class the structure is being requested for)
  ** PARAMS: childElementName (the name of the child element that should be displayed)
  ****************************************************************************************
- -->
+ </#comment>
 <#macro xdmChildStructure parentClassName childElementName expandFlagAliases>
 
     <#assign parentSchema = getXmlDataModelSchema(parentClassName)/>
@@ -138,13 +138,13 @@
     <@xdmStructure className=childElementClass.name heading="&lt;${childElementName}&gt;" expandFlagAliases=expandFlagAliases/>
 </#macro>
 
-<!--
+<#comment>
  ****************************************************************************************
  ** MACRO: xdmPath
  ** PARAMS: parentTags (the '/' separated names of tags that lead to a XDM child)
  ** PARAMS: parentXdmClasses (the '/' separated names of classes that lead to a XDM child)
  ****************************************************************************************
- -->
+ </#comment>
  <#macro xdmPath tags="" classes="" separator="<code> / </code>">
     <#if tags != "">
         <#assign tagsList=tags?split('/')/>
@@ -155,7 +155,7 @@
         <#assign activeTags = ""/>
         <#assign activeClasses = ""/>
 
-        <!-- start from 1 because of the leading / -->
+        <#comment> start from 1 because of the leading / </#comment>
         <#list 1..tagsList?size-1 as index>
             <#local url = "${vc.servletRootUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}"/>
             ${separator}<code>&lt;<a href="${vc.constructAppUrl(url)}">${tagsList[index]}</a>&gt;</code>
@@ -165,13 +165,13 @@
     </#if>
  </#macro>
 
-<!--
+<#comment>
  ****************************************************************************************
  ** MACRO: xdmStructure
  ** PARAMS: className (the name of the class the structure is being requested for)
  ** PARAMS: heading (the heading to display above the description of the class)
  ****************************************************************************************
- -->
+ </#comment>
 <#macro xdmStructure className tag="" heading="" expandFlagAliases="yes" parentTags="" parentXdmClasses="" inputSourceLocator="-">
 <div class="textbox">
 
@@ -447,7 +447,6 @@
     ${schema.javaDoc.descriptionLead?default('')}
 
 </#macro>
-
 
 <#macro reportTable width="100%" headings=[] data=[] columnAttrs=[] headingAttrs=[] dataMayContainsHtmlCellAttrs="yes">
     <table class="report" border="0" cellspacing="2" cellpadding="0" width="${width}">
