@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.3 2003-03-25 20:57:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -73,6 +73,11 @@ public class XdmComponentFactory
 
     private static DiscoverClass discoverClass = new DiscoverClass();
     private static Map componentsBySystemId = new HashMap();
+
+    public static Map getComponentsBySystemId()
+    {
+        return componentsBySystemId;
+    }
 
     public static XdmComponent getCachedComponent(String systemId, int flags)
     {
