@@ -136,22 +136,39 @@
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
         </dialog>
 
-        <dialog type="input-sample" name="grid-and-composite-fields">
+        <dialog type="input-sample" name="grid-and-composite-fields" generate-dcb="yes">
             <frame heading="Sample Grid and Composite Field"/>
             <field type="separator" heading="Grid" />
             <grid name="grid-01" caption="Grid Test">
                 <row name="row-01" caption="Row 1">
-                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A" default="1"/>
-                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B" default="2"/>
-                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C" default="3"/>
-                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D" default="4"/>
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A" default="1">
+                        <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                    </field>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B" default="2">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field> 
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C" default="3">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field> 
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D" default="4">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field>
+                    <field type="integer" name="integer_field_05" size="3" max-length="3" caption="Total" />
                 </row>
                 <row name="row-02" caption="Row 2">
-                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A"/>
-                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B"/>
-                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C"/>
-                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D"/>
-                    <field type="integer" name="integer_field_05" size="3" max-length="3" caption="E"/>
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A" default="1">
+                        <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                    </field>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B" default="2">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field>
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C" default="3">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field>
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D" default="4">
+                         <client-js event="value-changed" type="extends" js-expr="return testGridRow(field, control);"/>
+                     </field>
+                    <field type="integer" name="integer_field_05" size="3" max-length="3" caption="Total" />
                 </row>
             </grid>
 

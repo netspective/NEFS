@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.2 2003-10-29 13:29:13 shahid.shah Exp $
+ * $Id: dialog.js,v 1.3 2003-12-31 05:08:25 aye.thu Exp $
  */
 
  /**
@@ -1627,6 +1627,21 @@ function padZeros(number, count)
 	if (number.length > count)
 		number = number.substring((number.length - count));
 	return number;
+}
+
+// This method is to demonstrate calculating the total of the first four columns in a grid row and
+// setting the fifth column to the total value
+function testGridRow(field, control)
+{
+    gridRowField = activeDialog.fieldsByQualName[field.parentName];
+    var total = 0;
+
+    // last field is the total field
+    for (var i=0; i < gridRowField.childrenNames.length-1; i++)
+    {
+        total = total + parseInt(activeDialog.getFieldControl(gridRowField.childrenNames[i]).value);
+    }
+    activeDialog.getFieldControl(gridRowField.childrenNames[gridRowField.childrenNames.length-1]).value = total;
 }
 
 function testText(field, control)
