@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.18 2003-12-10 15:04:09 roque.hernandez Exp $
+ * $Id: DialogDirector.java,v 1.19 2004-07-28 22:46:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -118,6 +118,7 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
     private ValueSource pendingActionUrl;
     private DialogDirectorStyle style;
     private DirectorNextActionsSelectField nextActionsField;
+    private boolean showReset = false;
 
     public DialogDirector()
     {
@@ -127,6 +128,16 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
     public DialogDirectorStyle getStyle()
     {
         return style;
+    }
+
+    public boolean isShowReset()
+    {
+        return showReset;
+    }
+
+    public void setShowReset(boolean showReset)
+    {
+        this.showReset = showReset;
     }
 
     /**
@@ -332,6 +343,9 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
             if(caption != null && !nextActionsField.isInputHidden(dc))
                 writer.write("&nbsp;&nbsp;");
         }
+
+        if (showReset)
+            writer.write("<input type=\"reset\" name=\"reset\" class=\"dialog-button\" />&nbsp;&nbsp;");
 
         writer.write("<input type='submit' name='"+ dialog.getSubmitDataParamName() +"' class=\"dialog-button\" value='");
         writer.write(submitCaption);
