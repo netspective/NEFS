@@ -17,6 +17,7 @@
     ** PROJECT (GENERAL) SPECIFICATIONS                                 **
     ********************************************************************** -->
 
+    <!-- setup the data access layer Singleton to point to our schema -->
     <listener class="app.Util"/>
 
 	<!--
@@ -25,7 +26,7 @@
 	********************************************************************** -->
 
     <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor"/>
+        <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor-compressed"/>
 
         <page name="add" caption="Add Book" command="dialog,library.book-info,add">
             <!--conditional action="apply-flags" hidden="yes" has-value="request:abc"/-->
@@ -38,7 +39,7 @@
                Please choose a book to edit from the &lt;a href='home'&gt; books list&lt;/a&gt;.
             </missing-params-body>
         </page>
-        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete"  require-request-param="id">
+        <page name="delete" caption="Delete Book" command="dialog,library.book-info,delete" require-request-param="id">
             <missing-params-body>
                Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
             </missing-params-body>
