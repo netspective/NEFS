@@ -90,9 +90,17 @@
 
         <dialog type="input-sample" name="boolean-fields">
             <frame heading="Sample Boolean Fields"/>
-            <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio"/>
-            <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone" default="true"/>
-            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo" default="No"/>
+            <field type="boolean" name="bool_field_radio_A" caption="Boolean Field 1(Radio)" style="radio"/>
+            <field type="boolean" name="bool_field_radio_B" caption="Boolean Field 2(Radio)" style="radio"
+                default="true" hint="Field with default value of 'true'"/>
+            <field type="boolean" name="bool_field_radio_C" caption="Boolean Field 3(Radio)" style="radio"
+                none-text="None"/>
+            <field type="boolean" name="bool_field_check_alone" caption="Boolean Field (Check Alone)" style="check-alone"
+                default="true" hint="Field with default value of 'true'"/>
+            <field type="boolean" name="bool_field_check" caption="Boolean Field (Check)" style="check"
+                default="true" hint="Field with default value of 'true'"/>
+            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"
+                default="No" hint="Field with default value of 'No'"/>
             <director submit-caption="Submit"/>
         </dialog>
 
