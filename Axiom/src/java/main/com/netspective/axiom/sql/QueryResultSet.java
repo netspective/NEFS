@@ -39,15 +39,25 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryResultSet.java,v 1.2 2003-05-16 20:32:56 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.ResultSetMetaData;
+import java.sql.Types;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportColumns;
+import com.netspective.commons.report.tabular.column.NumericColumn;
+import com.netspective.commons.report.tabular.column.DecimalColumn;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class QueryResultSet
 {
@@ -92,6 +102,58 @@ public class QueryResultSet
     public Query getQuery()
     {
         return query;
+    }
+
+    public void fillReportFromMetaData(TabularReport report) throws SQLException
+    {
+        ResultSetMetaData rsmd = resultSet.getMetaData();
+        int numColumns = rsmd.getColumnCount();
+
+        TabularReportColumns columns = report.getColumns();
+        columns.clear();
+
+        for(int c = 1; c <= numColumns; c++)
+        {
+            TabularReportColumn column = null;
+
+            int dataType = rsmd.getColumnType(c);
+            switch(dataType)
+            {
+                case Types.INTEGER:
+                case Types.SMALLINT:
+                case Types.BIGINT:
+                case Types.TINYINT:
+                case Types.BIT:
+                    column = new NumericColumn();
+                    break;
+
+                case Types.FLOAT:
+                case Types.REAL:
+                    column = new DecimalColumn();
+                    break;
+
+                case Types.NUMERIC:
+                case Types.DECIMAL:
+                    if(rsmd.getScale(c) > 0)
+                        column = new DecimalColumn();
+                    else
+                        column = new NumericColumn();
+                    break;
+
+                default:
+                    column = new GeneralColumn();
+                    break;
+            }
+
+            column.setColIndex(c - 1);
+            column.setHeading(new StaticValueSource(TextUtils.sqlIdentifierToText(rsmd.getColumnName(c), true)));
+            column.setDataType(dataType);
+            column.setWidth(rsmd.getColumnDisplaySize(c));
+
+            columns.add(column);
+        }
+
+        report.finalizeContents();
     }
 
     public QueryExecutionLogEntry getExecutionLogEntry()

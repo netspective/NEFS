@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.6 2003-03-24 13:24:55 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.7 2003-05-16 20:32:56 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -86,7 +86,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     {
         if(connection == null)
         {
-            connection = dbvc.getConnectionProvider().getConnection(dataSourceId);
+            connection = dbvc.getConnectionProvider().getConnection(getDataSourceId());
             if(log.isTraceEnabled())
                 log.trace("Obtained " + connection + " for data source '"+ getDataSourceId() +"'.");
             initializeConnection(connection);
@@ -108,7 +108,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
 
     public String getDataSourceId()
     {
-        return dataSourceId;
+        return dataSourceId == null ? dbvc.getDefaultDataSource() : dataSourceId;
     }
 
     public void close() throws SQLException

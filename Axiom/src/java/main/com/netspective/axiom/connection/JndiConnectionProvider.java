@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JndiConnectionProvider.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: JndiConnectionProvider.java,v 1.2 2003-05-16 20:32:56 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -76,6 +76,9 @@ public class JndiConnectionProvider implements ConnectionProvider
     {
         if(env == null)
             env = (Context) new InitialContext().lookup(JNDIKEY_ENV);
+
+        if(dataSourceId == null)
+            throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
 
         DataSource source = (DataSource) env.lookup(dataSourceId);
         if(source == null)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.5 2003-05-13 03:12:02 shahbaz.javeed Exp $
+ * $Id: Query.java,v 1.6 2003-05-16 20:32:56 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -56,7 +56,6 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -76,7 +75,6 @@ public class Query
     static
     {
         XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] { "sql-dynamic", "sql-text-has-expressions" });
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] { "presentation" } );
         XML_DATA_MODEL_SCHEMA_OPTIONS.setPcDataHandlerMethodName("appendSqlText");
     }
 
