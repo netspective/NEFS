@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.5 2004-04-12 03:53:34 aye.thu Exp $
+ * $Id: PersonPage.java,v 1.6 2004-04-20 13:21:14 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
@@ -119,14 +119,24 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
             TextColumn.TextColumnValue ssn = activePerson.getSsn();
             DateColumn.DateColumnValue birthDate = activePerson.getBirthDate();
 
+
             EnumerationIdRefColumn.EnumerationIdRefValue maritalStatus = activePerson.getMaritalStatusId();
             EnumerationIdRefColumn.EnumerationIdRefValue gender = activePerson.getGenderId();
+            TextColumn.TextColumnValue ethnicityId = activePerson.getEthnicityId();
+            TextColumn.TextColumnValue languageId = activePerson.getLanguageId();
             // ASSUMING one ethnicity and one language
-            String ethnicity = activePerson.getEthnicityId().getReferencedEnumRow().getCaption();
-            String language = activePerson.getLanguageId().getReferencedEnumRow().getCaption();
+            String ethnicity = "";
+            String language = "";
+            /*
+            if (ethnicityId != null && ethnicityId.getReferencedEnumRow() != null)
+                ethnicity = ethnicityId.getReferencedEnumRow().getCaption();
+            if (languageId != null && languageId.getReferencedEnumRow() != null)
+                language = languageId.getReferencedEnumRow().getCaption();
+             */
 
             // TODO: This needs to be moved/changed so that it will be formatted only in the SKIN
-            return new GenericValue("<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">SSN:</span> " +
+            return new GenericValue("<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Category:</span> " + getEntitySubTypeName() + "</span>" +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">SSN:</span> " +
                     ssn.getTextValueOrBlank() + "</span>" +
                     "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Birth Date:</span> " +
                     birthDate.getTextValueOrBlank() + "</span> " +
@@ -134,9 +144,9 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
                     maritalStatus.getReferencedEnumRow().getCaption() + "</span>" +
                     "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
                     gender.getReferencedEnumRow().getCaption() + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Ethnicity:</span> " +
                     ethnicity + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Language:</span> " +
                     language + "</span>");
         }
 
