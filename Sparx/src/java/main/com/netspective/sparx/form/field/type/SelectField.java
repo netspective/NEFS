@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.9 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: SelectField.java,v 1.10 2003-09-07 19:36:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -69,6 +69,7 @@ import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
@@ -236,14 +237,44 @@ public class SelectField extends TextField
 
         public void prepareForPopup(DialogContext dc)
         {
-            ((HttpServletRequest) dc.getRequest()).getSession(true).setAttribute(lvsSessionAttrName, choices);
+            // get the default popup page for this context's navigation tree
+            NavigationPage popupPage = dc.getNavigationContext().getOwnerTree().getPopupPage();
+            if (popupPage != null)
+            {
+                String actionString = "list,instance,session:" + getChoicesSessionAttributeName() + ",report";
+                setAction(new StaticValueSource(popupPage.getUrl(dc)+"?cmd=" + actionString));
+            }
+            else
+            {
+                log.error("Unable to find default popup page");
+            }
+            ((HttpServletRequest) dc.getRequest()).getSession(true).setAttribute(lvsSessionAttrName, choices.getSpecification().getSpecificationText());
         }
 
         public void initialize()
         {
-            setAction(new StaticValueSource("popup-url:cmd=lvs,reference;session:LVSPOPUP_"+ getQualifiedName()+";yes"));
-            setFill(getQualifiedName() + "," + getQualifiedName() + "_adjacent");
-            lvsSessionAttrName = "LVSPOPUP_"+ getQualifiedName();
+            //setAction(new StaticValueSource("popup-url:cmd=lvs,reference;session:LVSPOPUP_"+ getQualifiedName()+";yes"));
+            setFill(getFillFieldName());
+            // set the session variable in which the choices for the select field will be saved.
+            lvsSessionAttrName = getChoicesSessionAttributeName();
+        }
+
+        /**
+         * Gets the name of the html field that will be filled when an item is selected in the popup
+         * @return html field name
+         */
+        public String getFillFieldName()
+        {
+            return getQualifiedName() + "," + getQualifiedName() + "_adjacent";
+        }
+
+        /**
+         * Gets the name of the session attribute that contains the choices for the select field
+         * @return session attribute name
+         */
+        public String getChoicesSessionAttributeName()
+        {
+             return "LVSPOPUP_"+ getQualifiedName();
         }
     }
 
