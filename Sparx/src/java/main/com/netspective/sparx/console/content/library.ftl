@@ -361,7 +361,9 @@
             <#if classJavaSourceFile.absolutePath?exists>
                 <#assign servletRootPath = vc.servlet.servletContext.getRealPath('')/>
                 <#if classJavaSourceFile.absolutePath.startsWith(servletRootPath)>
-                    <#return "<a href='${vc.consoleUrl}/project/files/${classJavaSourceFile.absolutePath.substring(servletRootPath.length())}' title='${class.name} (${classJavaSourceFile})'>${classNameShort}</a>"/>
+                    <#assign relativePath = classJavaSourceFile.absolutePath.substring(servletRootPath.length())/>
+                    <#assign relativePathProperDelims = relativePath?replace('\\', '/')/>
+                    <#return "<a href='${vc.consoleUrl}/project/files/${relativePathProperDelims}' title='${class.name} (${classJavaSourceFile})'>${classNameShort}</a>"/>
                 <#else>
                     <#return "<span title='${class.name} (${classJavaSourceFile})'>${classNameShort}</span>"/>
                 </#if>

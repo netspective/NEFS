@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.42 2003-10-16 14:36:21 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.43 2003-10-17 21:01:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -399,7 +399,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             result.append("<a href=\"");
             result.append(getConsoleUrl());
             result.append("/project/files/");
-            result.append(relativePath);
+            result.append(relativePath.replace('\\', '/'));
             result.append("\">");
             if(showAltPath != null)
             {

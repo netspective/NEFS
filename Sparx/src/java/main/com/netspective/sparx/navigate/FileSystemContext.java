@@ -51,18 +51,13 @@
  */
  
 /**
- * $Id: FileSystemContext.java,v 1.2 2003-10-08 21:14:26 shahid.shah Exp $
+ * $Id: FileSystemContext.java,v 1.3 2003-10-17 21:01:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 public class FileSystemContext implements FilenameFilter
 {

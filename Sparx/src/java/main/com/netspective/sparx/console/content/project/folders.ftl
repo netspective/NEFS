@@ -53,7 +53,7 @@
         <table cellspacing=5>
             <tr>
                 <td class="report-column-heading">Folder</td>
-                <td class="report-column-heading">Files</td>
+                <td class="report-column-heading">Entries</td>
                 <#list allFileTypes as fileType>
                     <td class="report-column-heading">*.${fileType}</td>
                 </#list>

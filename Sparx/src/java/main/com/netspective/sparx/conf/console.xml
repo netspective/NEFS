@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.105 2003-10-13 03:10:26 shahid.shah Exp $
+  * $Id: console.xml,v 1.106 2003-10-17 21:01:16 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -112,15 +112,6 @@
                 </page>
 	        </page>
 
-            <page name="panels" caption="Panels">
-                <page name="catalog" caption="Catalog" heading="Panel Types Catalog" retain-params="type-name">
-                    <body config="console" source="console-page-content:../catalog.ftl"/>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Panel Type Documentation" retain-params="type-name">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
-                </page>
-            </page>
-
 	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
                 <page name="catalog" caption="Catalog" heading="Dialogs Catalog" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
@@ -138,11 +129,23 @@
                 <page name="dialog-execute-handlers" caption="Exec Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
 	        </page>
 
-            <page name="reports" caption="Reports"/>
-	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage">
+            <page name="panels" caption="Panels">
+                <page name="catalog" caption="Catalog" heading="Panel Types Catalog" retain-params="type-name">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Panel Type Documentation" retain-params="type-name">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                </page>
+            </page>
+
+            <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage">
                 <body config="console" source="console-page-content:catalog.ftl"/>
             </page>
+
+<!-- TODO: need to implement these soon
+            <page name="reports" caption="Reports"/> (reports needs to go to all the <presentation> tags in queries, etc)
             <page name="template-engines" caption="Template Engines"/>
+-->
         </page>
 
         <page name="data-management" caption="Data Management" heading="Data Management Layer">
