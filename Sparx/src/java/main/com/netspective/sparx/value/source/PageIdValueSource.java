@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
@@ -48,6 +49,9 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationControllerAuthenticatedUser;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationTree;
@@ -120,7 +124,17 @@ public class PageIdValueSource extends AbstractValueSource
 
         if(treeSource == null || treeSource.length() == 0)
         {
-            navTree = svc.getNavigationContext().getActivePage().getOwner();
+            final NavigationContext navigationContext = svc.getNavigationContext();
+            if(navigationContext != null)
+                navTree = navigationContext.getActivePage().getOwner();
+            else
+            {
+                AuthenticatedUser user = svc.getAuthenticatedUser();
+                if(user instanceof NavigationControllerAuthenticatedUser)
+                    navTree = ((NavigationControllerAuthenticatedUser) user).getUserSpecificNavigationTree((NavigationControllerServlet) svc.getHttpServlet(), svc.getHttpRequest(), svc.getHttpResponse());
+                else
+                    navTree = svc.getProject().getDefaultNavigationTree();
+            }
             if(navTree == null)
                 return new GenericValue("No default NavigationTree found");
         }
