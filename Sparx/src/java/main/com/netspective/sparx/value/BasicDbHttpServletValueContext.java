@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.25 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.26 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -213,12 +213,8 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public AuthenticatedUser getAuthenticatedUser()
     {
-        return (AuthenticatedUser) getHttpRequest().getSession(true).getAttribute("authenticated-user");
-    }
-
-    public void setAuthenticatedUser(AuthenticatedUser user)
-    {
-        getHttpRequest().getSession(true).setAttribute("authenticated-user", user);
+        HttpLoginManager loginManager = getActiveLoginManager();
+        return loginManager != null ? loginManager.getAuthenticatedUser(this) : null;
     }
 
     public ConfigurationsManager getConfigurationsManager()

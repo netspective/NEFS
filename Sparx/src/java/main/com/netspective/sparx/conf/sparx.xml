@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.40 2003-08-12 18:41:36 aye.thu Exp $
+  * $Id: sparx.xml,v 1.41 2003-08-14 17:59:18 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -14,6 +14,7 @@
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.DialogFieldValueSource"/>
+    <register-value-source class="com.netspective.sparx.value.source.AuthenticatedUserValueSource"/>
 
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate">
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.22 2003-08-11 07:16:14 aye.thu Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.23 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -66,7 +66,6 @@ import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.console.ConsoleServlet;
-import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.io.InheritableFileResources;
 
@@ -158,8 +157,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
     {
-        HttpLoginManager loginManager = nc.getActiveLoginManager();
-        AuthenticatedUser authUser = loginManager != null ? loginManager.getAuthenticatedUser(nc) : null;
+        AuthenticatedUser authUser = nc.getAuthenticatedUser();
 
         String personName = authUser != null ? authUser.getUserId() : "Not logged in";
         String personId = authUser != null ? authUser.getUserName() : "Not logged in";

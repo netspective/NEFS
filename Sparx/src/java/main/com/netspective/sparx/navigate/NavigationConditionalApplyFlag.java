@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.3 2003-08-14 13:05:30 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.4 2003-08-14 17:59:18 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -45,13 +45,17 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.acl.PermissionNotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 {
+    private static final Log log = LogFactory.getLog(NavigationConditionalApplyFlag.class);
+
     private String[] hasPermissions;
     private String[] lackPermissions;
     private ValueSource hasValue = ValueSource.NULL_VALUE_SOURCE;
@@ -211,8 +215,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         // handle any configured permissions
         if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
-            HttpServletRequest request = (HttpServletRequest) nc.getRequest();
-            AuthenticatedUser authUser = (AuthenticatedUser) request.getSession().getAttribute("authenticated-user");
+            AuthenticatedUser authUser = nc.getAuthenticatedUser();
             try
             {
                 if(this.hasPermissions != null)
@@ -222,7 +225,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
             }
             catch (PermissionNotFoundException e)
             {
-                e.printStackTrace();
+                log.error("Permission error", e);
             }
 
             // set 'status' to true only if the user lacks certain permissions and

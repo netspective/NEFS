@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.84 2003-08-14 14:23:30 shahid.shah Exp $
+  * $Id: console.xml,v 1.85 2003-08-14 17:59:18 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -234,7 +234,7 @@
     </navigation-tree>
 
     <login-manager name="console">
-        <login-authenticator class="com.netspective.sparx.security.SingleUserServletLoginAuthenticator"/>
+        <login-authenticator class="com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator"/>
         <authenticated-user-session-attr-name>nefs-console-authenticated-user-01</authenticated-user-session-attr-name>
         <allow-remember-user-id>yes</allow-remember-user-id>
         <remember-user-id-cookie-name>nefs-console-user-id-01</remember-user-id-cookie-name>

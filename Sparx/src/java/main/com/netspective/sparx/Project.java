@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.16 2003-08-11 07:14:16 aye.thu Exp $
+ * $Id: Project.java,v 1.17 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -85,6 +85,7 @@ import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.ant.AntProject;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.HttpLoginManagers;
+import com.netspective.sparx.security.LoginManagersManager;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateContentHandler;
@@ -102,7 +103,7 @@ import com.netspective.commons.lang.ClassPath;
  * SQL statement, schema, and other components, all users (requests) of the Servlet reuse the same instances.
  */
 
-public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener
+public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener, LoginManagersManager
 {
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";

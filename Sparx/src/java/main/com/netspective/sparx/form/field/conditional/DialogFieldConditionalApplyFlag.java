@@ -51,16 +51,19 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.7 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.8 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
 
-import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.DialogContext;
@@ -68,6 +71,8 @@ import com.netspective.sparx.form.DialogPerspectives;
 
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
+    private static final Log log = LogFactory.getLog(DialogFieldConditionalApplyFlag.class);
+
     private boolean clear;
     private DialogField.Flags flags;
     private DialogPerspectives perspective = new DialogPerspectives();
@@ -261,14 +266,18 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
                 return;
             }
 
-            HttpServletRequest request = (HttpServletRequest) dc.getRequest();
-            //TODO: AuthenticatedUser user = (AuthenticatedUser) request.getSession().getAttribute(LoginDialog.DEFAULT_ATTRNAME_USERINFO);
-            /*
-            if(this.hasPermissions != null)
-                hasPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.hasPermissions);
-            if(this.lackPermissions != null)
-                lackPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.lackPermissions);
-            */
+            AuthenticatedUser user = dc.getAuthenticatedUser();
+            try
+            {
+                if(this.hasPermissions != null)
+                    hasPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.hasPermissions);
+                if(this.lackPermissions != null)
+                    lackPermissionFlg = user.hasAnyPermission(dc.getAccessControlListsManager(), this.lackPermissions);
+            }
+            catch (PermissionNotFoundException e)
+            {
+                log.error("Permission error", e);
+            }
 
             // set 'status' to true only if the user lacks certain permissions and
             // has certain permissions

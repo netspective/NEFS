@@ -39,53 +39,19 @@
  */
 
 /**
- * $Id: ProjectComponent.java,v 1.2 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: LoginManagersManager.java,v 1.1 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.security;
 
-import java.io.File;
-import java.io.IOException;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.HttpLoginManagers;
 
-import com.netspective.commons.xdm.DefaultXdmComponent;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.metric.MetricsGroup;
-import com.netspective.commons.metric.Metric;
-import com.netspective.sparx.security.LoginManagersManager;
-
-public class ProjectComponent extends DefaultXdmComponent
+public interface LoginManagersManager
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private Project project;
+    HttpLoginManager createLoginManager();
 
-    public ProjectComponent()
-    {
-    }
+    void addLoginManager(HttpLoginManager loginManager);
 
-    public LoginManagersManager createProject()
-    {
-        return new Project();
-    }
-
-    public void addProject(Project manager)
-    {
-        this.project = manager;
-    }
-
-    public Project getProject()
-    {
-        return project;
-    }
-
-    public void produceMetrics(Metric parent)
-    {
-        super.produceMetrics(parent);
-        MetricsGroup managerMetrics = parent.addGroupMetric("Project");
-        project.produceMetrics(managerMetrics);
-    }
-
-    public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException
-    {
-        project.generateIdentifiersConstants(rootPath, rootPkgAndClassName);
-    }
+    HttpLoginManagers getLoginManagers();
 }

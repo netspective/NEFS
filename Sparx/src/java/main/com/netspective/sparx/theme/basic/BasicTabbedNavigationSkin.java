@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.20 2003-08-11 07:15:10 aye.thu Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.21 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -158,7 +158,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
     {
-        AuthenticatedUser authUser = (AuthenticatedUser) nc.getHttpRequest().getSession().getAttribute("authenticated-user");
+        AuthenticatedUser authUser = nc.getAuthenticatedUser();
         if (authUser != null)
         {
             String personName = authUser != null ? authUser.getUserId() : "Not logged in";

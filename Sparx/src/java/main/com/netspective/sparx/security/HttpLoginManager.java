@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.2 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.3 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -55,6 +55,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.BasicAuthenticatedUser;
@@ -63,10 +64,10 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class HttpLoginManager
 {
-    public static final String DEFAULT_AUTHENTICATED_USER_SESS_ATTR_NAME = "authenticated-user";
-    public static final String DEFAULT_REMEMBER_USER_ID_COOKIE_NAME = "sparx-user-id-00";
-    public static final String DEFAULT_REMEMBER_PASSWORD_COOKIE_NAME = "sparx-password-00";
-    public static final ValueSource DEFAULT_INVALID_USER_MESSAGE = new StaticValueSource("Invalid user id or password.");
+    protected static final String DEFAULT_AUTHENTICATED_USER_SESS_ATTR_NAME = "authenticated-user";
+    protected static final String DEFAULT_REMEMBER_USER_ID_COOKIE_NAME = "sparx-user-id-00";
+    protected static final String DEFAULT_REMEMBER_PASSWORD_COOKIE_NAME = "sparx-password-00";
+    protected static final ValueSource DEFAULT_INVALID_USER_MESSAGE = new StaticValueSource("Invalid user id or password.");
 
     private static final Log log = LogFactory.getLog(HttpLoginManager.class);
     private static final String MONITOR_ENTRY_FIELD_SEPARATOR = ",";

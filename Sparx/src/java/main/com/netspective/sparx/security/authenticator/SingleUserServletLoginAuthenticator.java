@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.3 2003-08-10 16:59:08 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.1 2003-08-14 17:59:18 shahid.shah Exp $
  */
 
-package com.netspective.sparx.security;
+package com.netspective.sparx.security.authenticator;
 
 import com.netspective.commons.security.Crypt;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.sparx.security.LoginAuthenticator;
+import com.netspective.sparx.security.LoginDialog;
+import com.netspective.sparx.security.LoginDialogContext;
 
 import javax.servlet.ServletConfig;
 
