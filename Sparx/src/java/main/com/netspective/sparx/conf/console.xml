@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.11 2003-04-06 04:36:42 shahid.shah Exp $
+  * $Id: console.xml,v 1.12 2003-04-06 15:31:31 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -42,12 +42,17 @@
 	        <page name="access-control" caption="Access Control"/>
             <page name="commands" caption="Commands"/>
 	        <page name="value-source" caption="Value Sources">
-                <page name="documentation" caption="Documentation" heading="Value Sources Documentation">
+                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.app.ValueSourcesDocumentationPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.app.ValueSourcesCatalogPanel"/>
                     </panels>
                 </page>
-                <page name="usage" caption="Usage" heading="Value Sources Usage">
+                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.app.ValueSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.app.ValueSourcesUsagePanel"/>
                     </panels>
