@@ -40,7 +40,7 @@
                   <field.text hidden="yes" size="36"/>
                </presentation>
             </column> -->
-            <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
+            <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" descr="The status of a row in the table">
                <!--
                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
                Column triggers, validation, and DAL information must now be placed in Java classes.
