@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.9 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.10 2003-06-25 03:15:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -79,6 +79,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     private boolean defaultPanel;
     protected String panelClassNamePrefix;
     protected String panelResourcesPrefix;
+    protected String contentDivClass = "textbox";
     protected Flags flags;
 
     public BasicHtmlPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
@@ -137,6 +138,16 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         this.flags.copy(flags);
     }
 
+    public String getContentDivClass()
+    {
+        return contentDivClass;
+    }
+
+    public void setContentDivClass(String contentDivClass)
+    {
+        this.contentDivClass = contentDivClass;
+    }
+
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
         HtmlPanelActions actions = frame.getActions();
@@ -177,21 +188,8 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 colCount++;
             }
 
-//            writer.write("<td valign=\"bottom\" class=\""+ panelClassNamePrefix +"-frame-table-action\" bgcolor=\"white\">\n");
-//            writer.write("    <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-//            writer.write("        <tr>\n");
-//            writer.write("            <td bgcolor=\"white\" width=\"18\" colspan=\"" + colCount + "\">" +
-//                    "<img src=\"" + imgPath + "/login/spacer.gif\" height=\"5\" width=\"100%\" border=\"0\"></td>\n");
-//            writer.write("        </tr>\n");
             if (itemBuffer.length() > 0)
-            {
-//                writer.write("        <tr>\n");
                 writer.write(itemBuffer.toString());
-//                writer.write("        </tr>\n");
-            }
-//            writer.write("        </tr>\n  ");
-//            writer.write("    </table>\n");
-//            writer.write("</td>\n");
         }
     }
 
@@ -262,9 +260,9 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         int height = panel.getHeight();
         if(height > 0)
-            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div style=\"height: "+ height +"; overflow: auto;\">\n");
+            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"height: "+ height +"; overflow: auto;\">\n");
         else
-            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div>\n");
+            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"'>\n");
     }
 
     public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException

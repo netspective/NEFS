@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.59 2003-06-24 19:46:23 shahid.shah Exp $
+  * $Id: console.xml,v 1.60 2003-06-25 03:15:20 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -129,12 +129,12 @@
             <page name="commands" caption="Commands">
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
                     </panels>
                 </page>
                 <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.CommandsCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
                     </panels>
                 </page>
             </page>
@@ -149,17 +149,17 @@
 
                 <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
                     </panels>
                 </page>
                 <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
                     </panels>
                 </page>
                 <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.framework.ValueSourcesUsagePanel"/>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesUsagePanel"/>
                     </panels>
                 </page>
             </page>
@@ -381,6 +381,24 @@
                         <panel type="command" command="dynamic,simple-expr:query,${request:selected-query-id},default"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
+                    </panels>
+                </page>
+				<page name="customization" caption="Customization" retain-params="selected-query-id">
+                    <panels>
+                        <panel type="console-page-summary"/>
+
+                        <panel type="console-children-summaries">
+                            <frame heading="Customizing the SQL"/>
+                        </panel>
+                    </panels>
+                </page>
+				<page name="data-source" caption="Data Source" retain-params="selected-query-id">
+                    <panels>
+                        <panel type="console-page-summary"/>
+
+                        <panel type="console-children-summaries">
+                            <frame heading="Managing Query Data Sources"/>
+                        </panel>
                     </panels>
                 </page>
 	        </page>
