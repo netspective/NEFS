@@ -39,10 +39,16 @@
  */
 
 /**
- * $Id: DialogFieldAutoBlur.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFieldAutoBlur.java,v 1.2 2004-03-22 14:31:28 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
+/**
+ * A <code>DialogFieldAutoBlur</code> object represents the auto-blur settings for
+ * a dialog field.  It contains functionalities such as setting the number of characters
+ * after which to leave the field automatically and expressions to exclude while
+ * counting the number of characters entered.
+ */
 
 public class DialogFieldAutoBlur
 {
@@ -58,6 +64,12 @@ public class DialogFieldAutoBlur
         return excludeExpr;
     }
 
+    /**
+     * The expression to be excluded when counting the number of characters enetred
+     * in the field.
+     *
+     * @param excludeExpr the expression to be excluded
+     */
     public void setExcludeExpr(String excludeExpr)
     {
         this.excludeExpr = excludeExpr;
@@ -68,6 +80,11 @@ public class DialogFieldAutoBlur
         return length;
     }
 
+    /**
+     * The number of characters to be entered after which the field will be left automatically.
+     *
+     * @param length the number of characters
+     */
     public void setLength(int length)
     {
         this.length = length;

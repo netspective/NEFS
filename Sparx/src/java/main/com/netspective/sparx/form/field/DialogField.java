@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.50 2004-03-04 05:21:35 aye.thu Exp $
+ * $Id: DialogField.java,v 1.51 2004-03-22 14:31:28 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -580,8 +580,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     }
 
     /**
-     * Sets the flags for the dialog field
-     * @param flags
+     * Sets all the flags for this dialog field.
+     * @param flags flags associated with this dialog field
      */
     public void setFlags(DialogFieldFlags flags)
     {
@@ -840,7 +840,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the simple name of the dialog
+	 * Sets the simple name of this dialog field.
 	 *
 	 * @param newName new simple name
 	 */
@@ -855,7 +855,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the qualified name of the dialog
+	 * Sets the qualified name of this dialog field.
 	 *
 	 * @param newName new qualified name
 	 */
@@ -866,6 +866,12 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 			setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.xmlTextToJavaIdentifier(qualifiedName, false));
 	}
 
+    /**
+     * Sets the HTML form control identifier for this dialog field.  An identifier
+     * is a field whose values may only contain uppercase letters, numbers, and an underscore.
+     *
+     * @param htmlFormControlId name of the HTML control for this dialog field
+     */
     public void setHtmlFormControlId(String htmlFormControlId)
     {
         this.htmlFormControlId = htmlFormControlId;
@@ -882,9 +888,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the cookie name associated with the dialog
+	 * Sets the cookie name associated with this dialog field.
 	 *
-	 * @param name cookie name
+	 * @param name cookie name for this dialog field
 	 */
 	public void setCookieName(String name)
 	{
@@ -902,9 +908,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the caption of the dialog from a value source
+	 * Sets the caption of the dialog field from a value source.
 	 *
-	 * @param value value source object from which the caption is being extracted
+	 * @param value value source object from which the field caption is extracted
 	 */
 	public void setCaption(ValueSource value)
 	{
@@ -918,6 +924,10 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 errorCaption : getCaption();
     }
 
+    /**
+     * Sets the caption for the error message to be displayed when a validation rule fails for this field.
+     * @param errorCaption value source object containing the error message caption
+     */
     public void setErrorCaption(ValueSource errorCaption)
     {
         this.errorCaption = errorCaption;
@@ -935,9 +945,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the hint string associated with the dialog field
+	 * Sets the hint string associated with this dialog field from a value source.
 	 *
-	 * @param value hint string
+	 * @param value value source object containing the hint string for this field
 	 */
 	public void setHint(ValueSource value)
 	{
@@ -955,9 +965,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	}
 
 	/**
-	 * Sets the default value for the field
+	 * Sets the default value for this field from a value source.
 	 *
-	 * @param value value source containing the value
+	 * @param value value source containing the default value for field
 	 */
 	public void setDefault(ValueSource value)
 	{

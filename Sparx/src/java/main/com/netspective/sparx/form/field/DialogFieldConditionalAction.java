@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.9 2003-11-07 17:43:31 shahid.shah Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.10 2004-03-22 14:31:28 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -183,6 +183,10 @@ public class DialogFieldConditionalAction implements TemplateConsumer
         return partnerFieldName;
     }
 
+    /**
+     * Sets the name of the partner field on which the source dialog field is dependent.
+     * @param value name of the partner field
+     */
     public void setPartnerFieldName(String value)
     {
         partnerFieldName = value;
