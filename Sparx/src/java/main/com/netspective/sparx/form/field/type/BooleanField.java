@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.6 2004-02-16 15:40:04 aye.thu Exp $
+ * $Id: BooleanField.java,v 1.7 2004-02-16 19:08:24 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -68,6 +68,22 @@ import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.text.TextUtils;
 
+/**
+ * Custom field class for handling boolean data entry. There are several input styles available for
+ * entering true/false values:
+ * <ul>
+ * <li><i>radio</i>: Draws two radio buttons</li>
+ * <li><i>check</i>: Draws one checkbox</li>
+ * <li><i>check-alone</i>: Draw one checkbox with the caption on the right</li>
+ * <li><i>combo</i>: Draws a pull-down list with two options</li>
+ * </ul>
+ *
+ * Only the <i>radio</i> style allows the user to enter a third option to indicate that
+ * neither True nor False is selected. The third option is only displayed when
+ * the <i>none-text</i> attribute is set.
+ *
+ *
+ */
 public class BooleanField extends DialogField
 {
     public static class Choices extends XdmEnumeratedAttribute
@@ -127,25 +143,66 @@ public class BooleanField extends DialogField
 
     public class BooleanFieldState extends State
     {
+        /**
+         * Value object class to represent a boolean value. The value is actually saved as an Integer
+         * object and translated to a boolean value based on the following: positive integers are considered to be true
+         * while zero and negative integers are considered to be false.
+         *
+         */
         public class BooleanFieldValue extends BasicStateValue
         {
             public BooleanFieldValue()
             {
             }
 
+            /**
+             * Gets the class used to hold the value.
+             *
+             * @return  Integer class
+             */
             public Class getValueHolderClass()
             {
                 return Integer.class;
             }
 
+            /**
+             * Sets the text value for the boolean field. The text string is parsed to obtain an integer
+             * value because positive integers are considered to be true while zero and negative integers
+             * are considered to be false. If the passed in text is null or zero-length string,
+             * a -1 integer value is used.
+             *
+             * @param value     a numeric text
+             * @throws ValueException
+             */
             public void setTextValue(String value) throws ValueException
             {
+                // TODO: convert the neither value to a constant
                 if(value == null || value.length() == 0)
-                    setValue(new Integer(-1));
+                {
+                    // the 'neither' value is the default if the style allows it
+                    if (allowNeither())
+                        setValue(new Integer(2));
+                    else
+                        setValue(new Integer(-1));
+                }
                 else
-                    setValue(new Integer(TextUtils.toBoolean(value) ? 1 : 0));
+                {
+                    if (allowNeither() && value.equals("2"))
+                    {
+                        setValue(new Integer(2));
+                    }
+                    else
+                    {
+                        setValue(new Integer(TextUtils.toBoolean(value) ? 1 : 0));
+                    }
+                }
             }
 
+            /**
+             * Gets the boolean value of the field.
+             *
+             * @return True if the value is greater than zero
+             */
             public boolean getBoolValue()
             {
                 Integer value = (Integer) getValue();
@@ -155,6 +212,39 @@ public class BooleanField extends DialogField
             public void setValue(boolean value)
             {
                 setValue(new Integer(value ? 1 : 0));
+            }
+
+            /**
+             * Checks to seee if the value is neither true nor false
+             *
+             * @return
+             */
+            public boolean isNeither()
+            {
+                if (allowNeither())
+                {
+                    Integer value = (Integer) getValue();
+                    return value == null ? false : (value.intValue() == 2 ? true : false);
+                }
+                return false;
+            }
+
+            /**
+             * Check to see if the field's style allows a value to indicate neither
+             * true nor false.
+             *
+             * @return
+             */
+            public boolean allowNeither()
+            {
+                BooleanField booleanField = (BooleanField)getField();
+                if (booleanField.getStyle().getValueIndex() == Style.RADIO &&
+                    booleanField.getNoneText() != null)
+                {
+                    // the radio buttons have a third option aside from true/false
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -271,8 +361,8 @@ public class BooleanField extends DialogField
         String trueTextStr = trueText.getTextValue(dc);
         String noneTextStr = noneText != null ? noneText.getTextValue(dc) : null;
 
-        BooleanFieldState.BooleanFieldValue dfvalue = (BooleanFieldState.BooleanFieldValue) dc.getFieldStates().getState(this).getValue();
-        int value = ((Integer) dfvalue.getValue()).intValue();
+        BooleanFieldState.BooleanFieldValue bfValue = (BooleanFieldState.BooleanFieldValue) dc.getFieldStates().getState(this).getValue();
+        int value = ((Integer) bfValue.getValue()).intValue();
         String strValue = value == -1 ? "" : Integer.toString(value);
         String boolValueCaption = value == -1 ? "" : (value == 1 ? trueTextStr : falseTextStr);
 
@@ -294,7 +384,11 @@ public class BooleanField extends DialogField
         switch(style.getValueIndex())
         {
             case Style.RADIO:
-                if (noneTextStr != null)
+                // according to HTML 4.01 spec:
+                // At all times, exactly one of the radio buttons in a set is checked. If none of the <INPUT>
+                // elements of a set of radio buttons specifies `CHECKED', then the user agent must check the first
+                // radio button of the set initially.
+                if (bfValue.allowNeither())
                 {
                     String[] val = { "" , "" , "" };
                     setChecked (strValue, val);
@@ -306,8 +400,8 @@ public class BooleanField extends DialogField
                 else
                 {
                     writer.write(
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (value == 0 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
+                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (bfValue.getBoolValue() == false ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (bfValue.getBoolValue() == true ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
                 }
                 break;
 
@@ -342,7 +436,9 @@ public class BooleanField extends DialogField
                 index = Integer.parseInt (strValue);
                 val[index] = " checked ";
             }
-            catch (NumberFormatException e) { }
+            catch (NumberFormatException e)
+            {
+            }
         }
     }
 }
