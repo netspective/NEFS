@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.20 2003-06-20 02:16:43 aye.thu Exp $
+ * $Id: DialogField.java,v 1.21 2003-06-25 07:05:07 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -186,7 +186,10 @@ public class DialogField implements TemplateConsumer
         {
             super.setFlag(flag);
             if (children != null)
+            {
+                // THIS WILL SET  THE CHILDREN FIELDS' FLAG NOT THEIR RESPECTIVE STATE FLAGS!!!!!!!!!!
                 children.setFlags(flag);
+            }
         }
     }
 
@@ -251,6 +254,7 @@ public class DialogField implements TemplateConsumer
         public State(DialogContext dc)
         {
             this.dialogContext = dc;
+            // why do this here also?
             stateFlags.copy(getFlags());
             if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(Flags.PERSIST))
             {
@@ -281,7 +285,7 @@ public class DialogField implements TemplateConsumer
                     stateFlags.setFlag(Flags.READ_ONLY);
                     break;
             }
-
+            // copy the dialog fields's flags into the state flags
             stateFlags.copy(flags);
         }
 
@@ -318,6 +322,23 @@ public class DialogField implements TemplateConsumer
         public Flags getStateFlags()
         {
             return stateFlags;
+        }
+
+        /**
+         * Set the flags for the field's state and its children
+         * @param flag
+         */
+        public void setStateFlags(long flag)
+        {
+            getStateFlags().setFlag(flag);
+            if (children != null)
+            {
+                DialogContext.DialogFieldStates fieldStates = dialogContext.getFieldStates();
+                for (int i=0; i < children.size(); i++)
+                {
+                    fieldStates.getState(children.get(i)).setStateFlags(flag);
+                }
+            }
         }
 
         public DialogField getField()

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.4 2003-06-24 05:08:47 aye.thu Exp $
+ * $Id: QueryBuilderDialog.java,v 1.5 2003-06-25 07:08:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -183,6 +183,7 @@ public class QueryBuilderDialog extends Dialog
             State valueState = dc.getFieldStates().getState(valueText);
             return dc.inExecuteMode() ? valueState.hasRequiredValue() : true;
         }
+
     }
 
     public QueryBuilderDialog()
@@ -384,7 +385,11 @@ public class QueryBuilderDialog extends Dialog
 
             int flag = dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogField.Flags.UNAVAILABLE : DialogField.Flags.READ_ONLY;
             for(int i = 0; i < maxConditions; i++)
-                states.getState("condition_" + i).getStateFlags().setFlag(flag);
+            {
+                // this will also set the flags of all children fields
+                //states.getState("condition_" + i).getStateFlags().setFlag(flag);
+                states.getState("condition_" + i).setStateFlags(flag);
+            }
         }
         else
         {
