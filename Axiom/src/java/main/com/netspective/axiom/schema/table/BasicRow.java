@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicRow.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: BasicRow.java,v 1.3 2003-06-21 21:39:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -150,6 +150,8 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
         StringBuffer str = new StringBuffer();
         str.append("Class = ");
         str.append(this.getClass().getName());
+        str.append(", Table = ");
+        str.append(rowTable.getName());
         str.append(", Primary Key = ");
         str.append(getPrimaryKeyValues());
         str.append("\n");
