@@ -16,6 +16,10 @@
         <xdm:template-param name="parentRef" default="Person.person_id"/>
         <description>Basic information required for an entity that may be related to a person/org combination.</description>
     </table-type>
+    <table-type name="PersonStudy_Relationship" type="Study_Relationship">
+        <xdm:template-param name="parentRef" default="Person.person_id"/>
+        <description>Basic information required for an entity that may be related to a person/org combination.</description>
+    </table-type>
     <table-type name="Person_Preference" type="Preference">
         <xdm:template-param name="parentRef" default="Person.person_id"/>
         <description>

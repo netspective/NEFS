@@ -8,6 +8,9 @@
     <xdm:include file="query/study.xml"/>
 
     <queries package="cts">
+        <query name="get-all-org-classifications">
+            select * from org_classification
+        </query>
         <query name="get-all-studies">
             select
                 *
@@ -206,13 +209,7 @@
         </query>
 
         <query name="get-all-org-adresses">
-            select org_address.parent_id, org_address.address_name from org_address
-            <presentation>
-                <panel>
-                    <frame heading="static:Organization Addresses"/>
-
-                </panel>
-            </presentation>
+            select * from org_address
         </query>
 
 

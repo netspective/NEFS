@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.1 2003-09-17 04:53:33 aye.thu Exp $
+$Id: web.xml,v 1.2 2003-10-26 08:06:35 aye.thu Exp $
 -->
 
 <web-app>
@@ -35,8 +35,12 @@ $Id: web.xml,v 1.1 2003-09-17 04:53:33 aye.thu Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>SparxNavigationController</servlet-name>
-	<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--init-first-time-using-ant=/WEB-INF/sparx/conf/ant-build-project.xml:create-database-hsqldb</param-value>
+        </init-param>
     </servlet>
 
     <servlet>
@@ -54,8 +58,8 @@ $Id: web.xml,v 1.1 2003-09-17 04:53:33 aye.thu Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
             <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
             <param-value>--login-manager=console</param-value>
@@ -84,8 +88,8 @@ $Id: web.xml,v 1.1 2003-09-17 04:53:33 aye.thu Exp $
     *******************************************************************************************************************
     -->
     <servlet-mapping>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<url-pattern>/console/*</url-pattern>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <url-pattern>/console/*</url-pattern>
     </servlet-mapping>
 
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PasswordDialogHandler.java,v 1.4 2003-10-24 05:19:31 aye.thu Exp $
+ * $Id: PasswordDialogHandler.java,v 1.5 2003-10-26 08:06:02 aye.thu Exp $
  */
 package app.cts.form.person;
 
@@ -54,7 +54,6 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.security.Crypt;
-import com.netspective.commons.security.AuthenticatedUser;
 
 import java.io.Writer;
 import java.io.IOException;
@@ -179,8 +178,8 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
     public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
     {
         PageIdValueSource pvs = new PageIdValueSource();
-        pvs.initialize(new ValueSourceSpecification(NEXT_ACTION_URL));
-        System.out.println(pvs.getTextValue(dc));
+        pvs.initialize(new ValueSourceSpecification("page-id:" + NEXT_ACTION_URL));
+        System.out.println("NEXT URL " +  pvs.getTextValue(dc));
         return pvs.getTextValue(dc);
     }
 }

@@ -421,26 +421,18 @@
         </presentation>-->
     </table>
     <table name="PersonOrg_Rel_Status" abbrev="PeORelSt" type="Relationship_Status"/>
+    <table name="PersonStudy_Rel_Status" abbrev="PeStRelSt" type="Relationship_Status"/>
     <table name="PersonOrg_Relationship" abbrev="PeORel" type="PersonOrg_Relationship" xdm:param-recordStatusEnum="PersonOrg_Rel_Status" xdm:param-relationshipTypeEnum="PersonOrg_Rel_Type" xdm:param-relatedEntityFieldCaption="Related Person">
         <description>The relationship between a person and an organization.</description>
         <column name="relationship_name" type="text" size="64" descr="The exact name of the relationship between this org_id and this person_id"/>
         <column name="relationship_code" type="text" size="64" descr="A code (e.g. a Job Code) assigned to this relationship"/>
-        <!--<presentation>
-            <dialog name="personOrgRelationshipTableDialog" retain-params="parent_id,person_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="parent_id"/>
-                <field.separator heading="Relationship Details"/>
-                <field.table-column column="rel_entity_id"/>
-                <field.table-column column="rel_type_id"/>
-                <field.table-column column="rel_type"/>
-                <field.table-column column="rel_begin"/>
-                <field.table-column column="rel_end"/>
-                <field.table-column column="rel_descr"/>
-            </dialog>
-        </presentation>-->
+    </table>
+    <table name="PersonStudy_Relationship" abbrev="PeStRel" type="PersonStudy_Relationship"
+        xdm:param-recordStatusEnum="PersonStudy_Rel_Status" xdm:param-relationshipTypeEnum="PersonStudy_Rel_Type"
+        xdm:param-relatedEntityFieldCaption="Related Person">
+        <description>The relationship between a person and a study.</description>
+        <column name="relationship_name" type="text" size="64" descr="The exact name of the relationship between this org_id and this person_id"/>
+        <column name="relationship_code" type="text" size="64" descr="A code (e.g. a Job Code) assigned to this relationship"/>
     </table>
     <table name="PersonOrg_Relationship_Map" abbrev="PerORelMp" type="Relationship_Map" xdm:param-relationshipTypeTable="PersonOrg_Rel_Type">
         <description>A map between relationships and their inverses for the Person_Relationship_Type table</description>

@@ -26,11 +26,11 @@
 	</table>
     <table name="StudyOrg_Rel_Status" abbrev="StdORelSt" type="Relationship_Status"/>
 
-    <table name="StudyPerson_Relationship" abbrev="StdPerRel" type="StudyPerson_Relationship"
+    <!--table name="StudyPerson_Relationship" abbrev="StdPerRel" type="StudyPerson_Relationship"
         xdm:param-recordStatusEnum="StudyPerson_Rel_Status"
         xdm:param-relationshipTypeEnum="StudyPerson_Relation_Type"
         xdm:param-relatedEntityFieldCaption="Related person">
         <description>Relationship between a Study and a Person </description>
     </table>
-    <table name="StudyPerson_Rel_Status" abbrev="StdPerRelSt" type="Relationship_Status"/>
+    <table name="StudyPerson_Rel_Status" abbrev="StdPerRelSt" type="Relationship_Status"/-->
 </xdm:container>

@@ -55,7 +55,19 @@
 
 	<table name="Person_License_Type" abbrev="PerLicTy" type="Enumeration"><enumerations><enum>DEA</enum><enum>DPS</enum><enum>IRS</enum><enum>Board Certification</enum><enum>BCBS</enum><enum>Nursing License</enum><enum>Memorial Sisters Charity</enum><enum>EPSDT</enum><enum>Medicare</enum><enum>Medicaid</enum><enum>UPIN</enum><enum>Tax ID</enum><enum>Railroad Medicare</enum><enum>Champus</enum><enum>National Provider ID</enum><enum>Other</enum></enumerations></table>
 
-	<table name="Person_Relationship_Type" abbrev="PerRelTy" type="Relationship_Type"><enumerations><enum>Self</enum><enum>Spouse</enum><enum>Mother</enum><enum>Father</enum><enum>Natural/Adopted Child (Insured has Financial Responsibility)</enum><enum>Natural/Adopted Child (Insured does not have Financial Resp.)</enum><enum>Step Child</enum><enum>Foster Child</enum><enum>Ward of the Court</enum><enum>Sister</enum><enum>Brother</enum><enum>Employee</enum><enum>Unknown/Other</enum><enum>Handicapped Dependent</enum><enum>Organ Donor</enum><enum>Cadaver Donor</enum><enum>Grandchild</enum><enum>Niece/Nephew</enum><enum>Injured Plaintiff</enum><enum>Sponsored Dependent</enum><enum>Minor Dependent of a Minor Dependent</enum><enum>Parent</enum><enum>Grandparent</enum><enum>Cousin</enum><enum>Emergency Contact</enum><enum>Care Provider</enum><enum>Other</enum></enumerations></table>
+	<table name="Person_Relationship_Type" abbrev="PerRelTy" type="Relationship_Type">
+        <enumerations>
+            <enum>Self</enum>
+            <enum>Spouse</enum>
+            <enum>Mother</enum>
+            <enum>Father</enum>
+            <enum>Natural/Adopted Child (Insured has Financial Responsibility)</enum>
+            <enum>Natural/Adopted Child (Insured does not have Financial Resp.)</enum>
+            <enum>Step Child</enum>
+            <enum>Foster Child</enum>
+            <enum>Ward of the Court</enum>
+            <enum>Sister</enum>
+            <enum>Brother</enum><enum>Employee</enum><enum>Unknown/Other</enum><enum>Handicapped Dependent</enum><enum>Organ Donor</enum><enum>Cadaver Donor</enum><enum>Grandchild</enum><enum>Niece/Nephew</enum><enum>Injured Plaintiff</enum><enum>Sponsored Dependent</enum><enum>Minor Dependent of a Minor Dependent</enum><enum>Parent</enum><enum>Grandparent</enum><enum>Cousin</enum><enum>Emergency Contact</enum><enum>Care Provider</enum><enum>Other</enum></enumerations></table>
 
 	<table name="PersonOrg_Rel_Type" abbrev="PeORelTy" type="Relationship_Type">
         <enumerations>
@@ -71,7 +83,17 @@
             <enum>Other</enum>
         </enumerations>
     </table>
-
+    <table name="PersonStudy_Rel_Type" abbrev="StdPerRelTy" type="Relationship_Type">
+        <!-- enums for Study/Person relationship -->
+        <enumerations>
+            <enum abbrev="P" >Subject</enum>
+            <enum abbrev="ADMIN" >Coordinator</enum>
+            <enum abbrev="PHY" >Physician</enum>
+            <enum abbrev="PI" >Principal Investigator</enum>
+            <enum abbrev="CO" >Coinvestigator</enum>
+            <enum abbrev="O" >Other</enum>
+        </enumerations>
+	</table>
 	<table name="Person_Role_Type" abbrev="PerRlTy" type="Enumeration">
         <enumerations>
             <enum>Security Role (used for authorization)</enum>

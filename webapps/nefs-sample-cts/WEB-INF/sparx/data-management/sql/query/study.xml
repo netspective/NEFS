@@ -43,8 +43,8 @@
         <query name="get-study-info-by-id">
         	select
         		study.study_id,
-                study.study_name,
-                study.study_code,
+                study.study_name "study_name",
+                study.study_code "study_code",
                 study_descr,
                 study.study_status,
                 study.study_stage,
@@ -64,7 +64,7 @@
                 <panel>
                     <frame heading="static:Clinical Trial Information"/>
                     <banner style="horizontal">
-                        <action caption="Edit" hint="Edit" redirect="vs-expr:${page-id:/admin/edit/trial}?study_id=${request:study_id}"/>
+                        <action caption="Edit Trial Information" hint="Edit" redirect="vs-expr:${page-id:coordinator,/trial/update}?study_id=${request:study_id}"/>
                     </banner>
                     <report>
                         <column heading="ID"/>
@@ -132,10 +132,10 @@
                     <frame heading="static:Trial Sponsors"/>
                     <report>
                         <actions>
-                            <action type="edit" redirect="page-id:/admin/edit/sponsor?org_id=${0}"/>
+                            <action type="add" caption="Add new sponsor" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor/add}?study_id=${request:study_id}"/>
                         </actions>
                         <column heading="ID"/>
-                        <column heading="Name" align="left" redirect="page-id:/home/sponsor?org_id=${0}"/>
+                        <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/trial/summary/sponsor}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         <column heading="Code" />
                         <column heading="Abbrev" />
                         <column heading="Employees" />
@@ -187,15 +187,85 @@
         	</params>
             <presentation>
                 <panel>
-                    <frame heading="static:Trial Sites"/>
+                    <frame heading="static:Cilinical Trial Sites"/>
                     <report>
                         <actions>
-                            <action type="edit" redirect="page-id:/admin/edit/site?org_id=${0}"/>
+                            <action type="add" caption="Add Site" redirect="vs-expr:${page-id:coordinator,/home/trial/site/add}?study_id=${request:study_id}"/>
                         </actions>
                         <column heading="ID"/>
-                        <column heading="Name" align="left" redirect="page-id:/home/site?org_id=${0}"/>
+                        <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/home/trial/site}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         <column heading="Code" />
                         <column heading="Abbrev" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="get-subjects-by-study-id">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                person.ssn
+
+            from
+                personstudy_relationship spr, person
+            where
+                spr.parent_id = person.person_id and
+                spr.rel_entity_id = ? and
+                spr.rel_type_id = 0
+             <params>
+                <param value="request:study_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Trial Subjects"/>
+                    <report >
+                        <actions>
+                            <action type="add" caption="Add subject" redirect="vs-expr:${page-id:coordinator,/home/trial/subject/add}?study_id=${request:study_id}"/>
+                            <action type="edit" caption="Edit" redirect="vs-expr:${page-id:coordinator,/home/trial/subject/edit}?study_id=${request:study_id}&amp;person_id=${0}"/>
+                            <action type="delete" caption="Delete" redirect="vs-expr:${page-id:coordinator,/home/trial/subject/delete}?study_id=${request:study_id}&amp;person_id=${0}"/>
+                        </actions>
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" redirect="vs-expr:${page-id:coordinator,/home/trial/subject?study_id=${request:study_id}&amp;person_id=${0}"/>
+                        <column heading="First Name" />
+                        <column heading="SSN" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="get-personnel-by-study-id">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                spr.rel_type
+
+            from
+                personstudy_relationship spr, person
+            where
+                spr.parent_id = person.person_id and
+                spr.rel_entity_id = ? and
+                spr.rel_type_id != 0
+             <params>
+                <param value="request:study_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Trial Coordinators"/>
+                    <banner style="vertical">
+                        <action caption="Add new coordinator"
+                            redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/add}?study_id=${request:study_id}"/>
+                    </banner>
+                    <report >
+                        <actions>
+                            <action type="add" caption="Add Coordinator" redirect="/contact/edit?id=${0}"/>
+                            <action type="edit" caption="Edit" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/edit}?study_id=${request:study_id}&amp;person_id=${0}"/>
+                            <action type="delete" caption="Delete" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/delete}?study_id=${request:study_id}&amp;person_id=${0}"/>
+                        </actions>
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" redirect="page-id:/home/person?person_id=${0}"/>
+                        <column heading="First Name" />
+                        <column heading="Relationship" />
                     </report>
                 </panel>
             </presentation>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.5 2003-10-24 05:19:31 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.6 2003-10-26 08:06:15 aye.thu Exp $
  */
 
 package app.cts;
@@ -53,6 +53,7 @@ import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.navigate.NavigationControllerAuthenticatedUser;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 
@@ -61,6 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
+import java.io.IOException;
 
 public class AppAuthenticatedUser extends BasicAuthenticatedUser implements NavigationControllerAuthenticatedUser
 {
@@ -156,6 +158,20 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser implements Navi
             throw new RuntimeException("Unknown User Type");
 
         return ncServlet.getProject().getNavigationTree(treeName);
+    }
+
+    public void redirectToUserTree(NavigationContext nc)
+    {
+        NavigationTree userTree = getUserSpecificNavigationTree((NavigationControllerServlet)nc.getHttpServlet(), nc.getHttpRequest(), nc.getHttpResponse());
+        try
+        {
+            nc.getHttpResponse().sendRedirect(userTree.getHomePage().getUrl(nc));
+        }
+        catch (IOException e)
+        {
+            // Failed to redirect
+            e.printStackTrace();
+        }
     }
 
     public String getPersonId()

@@ -92,16 +92,5 @@
         </enumerations>
 	</table>
 
-	<table name="StudyPerson_Relation_Type" abbrev="StdPerRelTy" type="Relationship_Type">
-        <!-- enums for Study/Person relationship -->
-        <enumerations>
-            <enum abbrev="P" >Subject</enum>
-            <enum abbrev="PP" >Subject (Placebo)</enum>
-            <enum abbrev="ADMIN" >Administrator</enum>
-            <enum abbrev="PHY" >Physician</enum>
-            <enum abbrev="PI" >Principal Investigator</enum>
-            <enum abbrev="CO" >Coinvestigator</enum>
-            <enum abbrev="O" >Other</enum>
-        </enumerations>
-	</table>
+
 </xdm:container>

@@ -13,8 +13,8 @@
         <xdm:template-param name="parentRef" default="Study.study_id"/>
         <description>Basic information required for an entity that may be related to a study/org combination.</description>
     </table-type>
-    <table-type name="StudyPerson_Relationship" type="Person_Relationship">
+    <!--table-type name="StudyPerson_Relationship" type="Person_Relationship">
         <xdm:template-param name="parentRef" default="Study.study_id"/>
         <description>Basic information required for an entity that may be related to a study/person combination.</description>
-    </table-type>
+    </table-type-->
 </xdm:container>

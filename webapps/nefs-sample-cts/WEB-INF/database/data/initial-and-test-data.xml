@@ -35,7 +35,28 @@
             line1="345 Park Avenue" city="New York" state-id="New York" />
 		<org-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="546-4000" phone-ac="212"/>
 	</org>
-
+    <study ID="STUDY 0" study-code="AAD" study-name="Acute Anxiety Disorder" study-descr="Acute Anxiety Disorder" rec-stat-id="Active"
+        study-status="Proposed" study-stage="Phase I"
+        irb-name="Johns Hopkins University" irb-number="IRB00000025" start-date="May 10, 2003" target-end-date="July 10, 2004"
+        irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 5" rel-begin="May 10, 2003"/>
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 3" rel-begin="May 10, 2003"/>
+    </study>
+    <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Study of ragweed allergy" rec-stat-id="Active"
+        study-status="Proposed" study-stage="Phase II"
+        irb-name="Northwestern University" irb-number="IRB00000010" start-date="January 10, 2003" target-end-date="January 10, 2004"
+        irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 1" rel-begin="January 10, 2003" />
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 2" rel-begin="January 10, 2003"/>
+    </study>
+    <study ID="STUDY 2" study-code="XXX" study-name="SARX Vaccine" study-descr="Study of effectiveness of SARX vaccine on children under 8 years old"
+        rec-stat-id="Active" study-status="Proposed" study-stage="Phase II"
+        irb-name="Food and Drug Association" irb-number="IRB00000010" start-date="January 10, 2003" target-end-date="January 10, 2004"
+        irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 1" rel-begin="January 10, 2003" />
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 2" rel-begin="January 10, 2003"/>
+        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 3" rel-begin="January 10, 2003"/>
+    </study>
     <person ID="PERSON 0" name-first="David" name-last="Salesman" short-name="David Salesman" simple-name="David Salesman"
         short-sortable-name="Salesman, David" complete-name="David Salesman" complete-sortable-name="Salesman, David"
         complete-name="David Salesman" gender-id="Male" ssn="123-45-6789"  marital-status-id="Single"
@@ -45,6 +66,7 @@
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employee" rel-entity-id="IDREF:ORG 5"/>
         <person-login user-id="person0" password="letmein" quantity="100"/>
         <person-classification person-type-id="Certified Clinical Research Coordinator" person-type="Certified Clinical Research Coordinator" rec-stat-id="Active"/>
+        <personstudy-relationship rec-stat-id="Active" rel-type-id="Coordinator" rel-entity-id="IDREF:STUDY 2" rel-begin="January 10, 2003"/>
 	</person>
     <person ID="PERSON 1" name-first="Mary" name-last="Carpenter" short-name="Mary Carpenter" simple-name="Mary Carpenter"
         short-sortable-name="Carpenter, Mary" complete-name="Mary Carpenter" complete-sortable-name="Carpenter, Mary"
@@ -55,6 +77,7 @@
         <personorg-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="person1" password="letmein" quantity="100"/>
         <person-classification person-type-id="Physician" person-type="Physician" rec-stat-id="Active"/>
+        <personstudy-relationship rec-stat-id="Active" rel-type-id="Coordinator" rel-entity-id="IDREF:STUDY 2" rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 2" name-first="Michael" name-last="Gabriel" short-name="Michael Gabriel" simple-name="Michael Gabriel"
         short-sortable-name="Gabriel, Michael" complete-name="Michael Gabriel" complete-sortable-name="Gabriel, Michael"
@@ -65,6 +88,8 @@
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="subject2" password="letmein" quantity="100"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
+        <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
+            rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 0" name-first="Bubba" name-last="Smith" short-name="Bubba Smith" simple-name="Bubba Smith"
         short-sortable-name="Smith, Bubba" complete-name="Bubba Smith" complete-sortable-name="Smith, Bubba"
@@ -75,6 +100,8 @@
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="subject0" password="letmein" quantity="100"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
+        <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
+            rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 1" name-first="Mack" name-last="Daddy" short-name="Mack Daddy" simple-name="Mack Daddy"
         short-sortable-name="Daddy, Mack" complete-name="Mack Daddy" complete-sortable-name="Daddy, Mack"
@@ -86,30 +113,11 @@
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
         <person-login user-id="subject1" password="letmein" quantity="100"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
+        <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
+            rel-begin="January 10, 2003"/>
 	</person>
 
 
-    <study ID="STUDY 0" study-code="AAD" study-name="Acute Anxiety Disorder" study-descr="Acute Anxiety Disorder" rec-stat-id="Active"
-        study-status="Proposed" study-stage="Phase I"
-        irb-name="Johns Hopkins University" irb-number="IRB00000025" start-date="May 10, 2003" target-end-date="July 10, 2004"
-        irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
-        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 5" rel-begin="May 10, 2003"/>
-        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 3" rel-begin="May 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Administrator" rel-entity-id="IDREF:PERSON 0" rel-begin="May 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1" rel-begin="May 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:SUBJECT 2" rel-begin="May 10, 2003"/>
-    </study>
-    <study ID="STUDY 1" study-code="AL" study-name="Ragweed Allergy" study-descr="Study of ragweed allergy" rec-stat-id="Active"
-        study-status="Proposed" study-stage="Phase II"
-        irb-name="Northwestern University" irb-number="IRB00000010" start-date="January 10, 2003" target-end-date="January 10, 2004"
-        irb-approval-date="December 12, 2002" irb-expiration-date="December 12, 2005">
-        <studyorg-relationship rec-stat-id="Active" rel-type-id="Sponsor" rel-entity-id="IDREF:ORG 1" rel-begin="January 10, 2003" />
-        <studyorg-relationship rec-stat-id="Active" rel-type-id="Site" rel-entity-id="IDREF:ORG 2" rel-begin="January 10, 2003"/>
-        <study-contact rec-stat-id="Active" method-type="Telephone: Office" method-value="111-1234" phone-ac="800"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Administrator" rel-entity-id="IDREF:PERSON 0" rel-begin="January 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:PERSON 1" rel-begin="January 10, 2003"/>
-        <studyperson-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:SUBJECT 2" rel-begin="January 10, 2003"/>
-    </study>
 <!--person ID="PERSON_1">
 		<name-first>Harold</name-first>
 		<name-last>Scotts</name-last>

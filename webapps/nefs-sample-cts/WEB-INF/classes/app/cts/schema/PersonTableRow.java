@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PersonTableRow.java,v 1.1 2003-10-13 05:51:19 aye.thu Exp $
+ * $Id: PersonTableRow.java,v 1.2 2003-10-26 08:06:15 aye.thu Exp $
  */
 
 package app.cts.schema;
@@ -81,12 +81,15 @@ public class PersonTableRow extends BasicRow
 
             String nameFirst = nameFirstValue.getTextValue();
             String nameLast = nameLastValue.getTextValue();
+            String nameMiddle = nameMiddleValue.getTextValue();
+            String nameSuffix = nameSuffixValue.getTextValue();
 
+            System.out.println("first=" + nameFirst + ", last="+ nameLast + " , " + nameMiddle +
+                    " " + nameSuffix);
             if(nameFirst == null || nameLast == null)
                 throw new RuntimeException("Both first and last name are required.");
 
-            String nameMiddle = nameMiddleValue.getTextValue();
-            String nameSuffix = nameSuffixValue.getTextValue();
+
             EnumerationTableRow namePrefixEnum = namePrefixIdValue.getReferencedEnumRow();
 
             String shortName = nameFirst.charAt(0) + " " + nameLast;
