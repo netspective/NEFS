@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.48 2003-11-13 20:42:56 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.49 2003-11-14 19:48:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -71,6 +71,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
+import com.netspective.sparx.util.AlternateOutputDestServletResponse;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
@@ -91,6 +92,7 @@ import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
@@ -104,6 +106,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
+    public static final String REQATTRNAME_NAVIGATION_CONTEXT = "navigationContext";
     private static final int INHERIT_PAGE_FLAGS_FROM_PARENT = NavigationPath.INHERIT_PATH_FLAGS_FROM_PARENT | Flags.REQUIRE_LOGIN | Flags.ALLOW_PAGE_CMD_PARAM;
 
     static
@@ -868,9 +871,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         // see if dynamic commands should be allowed
+        ServletRequest request = nc.getRequest();
+
         if(getFlags().flagIsSet(Flags.ALLOW_PAGE_CMD_PARAM))
         {
-            String commandSpec = nc.getRequest().getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
+            String commandSpec = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
             if(commandSpec != null)
             {
                 HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand(commandSpec);
@@ -928,11 +933,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 break;
 
             case NavigationPageBodyType.INCLUDE:
-                // NOTE: the tricky thing about rd.include is that it has it uses the getReponse().getWriter(), not our writer
-                //       that was passed in -- that may cause some confusion in the output
-                String includeUrl = getInclude().getTextValue(nc);
-                RequestDispatcher rd = nc.getRequest().getRequestDispatcher(includeUrl);
-                rd.include(nc.getRequest(), nc.getResponse());
+                {
+                    String includeUrl = getInclude().getTextValue(nc);
+                    RequestDispatcher rd = request.getRequestDispatcher(includeUrl);
+                    ServletResponse response = nc.getResponse();
+                    if(writer != response.getWriter())
+                        response = new AlternateOutputDestServletResponse(writer, response);
+                    request.setAttribute(REQATTRNAME_NAVIGATION_CONTEXT, nc);
+                    rd.include(request, response);
+                    request.removeAttribute(REQATTRNAME_NAVIGATION_CONTEXT);
+                }
                 break;
 
             default:
@@ -968,7 +978,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             String forwardUrl = getForward().getTextValue(nc);
             ServletRequest req = nc.getRequest();
             RequestDispatcher rd = req.getRequestDispatcher(forwardUrl);
+            req.setAttribute(REQATTRNAME_NAVIGATION_CONTEXT, nc);
             rd.forward(req, nc.getResponse());
+            req.removeAttribute(REQATTRNAME_NAVIGATION_CONTEXT);
         }
         else if(bodyAffectsNavigationContext(nc))
         {
