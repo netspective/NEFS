@@ -47,6 +47,11 @@ public class AbstractThemeSkin implements ThemeSkin
 
     }
 
+    public AbstractThemeSkin(Theme theme)
+    {
+        setTheme(theme);
+    }
+
     public AbstractThemeSkin(Theme theme, String name)
     {
         setTheme(theme);

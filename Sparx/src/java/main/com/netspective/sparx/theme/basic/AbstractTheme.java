@@ -33,6 +33,8 @@
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -414,6 +416,17 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     public NavigationSkin createNavigationSkin()
     {
         return null;
+    }
+
+    public NavigationSkin createNavigationSkin(Class cls) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+    {
+        if(NavigationSkin.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[]{Theme.class});
+            return (NavigationSkin) c.newInstance(new Object[]{this});
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     /**

@@ -62,6 +62,11 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         super(theme, name);
     }
 
+    public BasicTabbedNavigationSkin(Theme theme)
+    {
+        super(theme);
+    }
+
     public int getSidebarWidth()
     {
         return sidebarWidth;
