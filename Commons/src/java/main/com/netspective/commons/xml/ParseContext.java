@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -55,6 +55,8 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -107,6 +109,8 @@ public class ParseContext
     private String sourceText;
     private File sourceFile;
     private Resource sourceResource;
+    private ZipFile sourceJarFile;
+    private ZipEntry sourceJarEntry;
 
     private FileTracker inputFileTracker;
     private InputSource inputSource;
@@ -129,6 +133,11 @@ public class ParseContext
     public ParseContext(Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
         init(createInputSource(resource));
+    }
+
+    public ParseContext(File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
+    {
+        init(createInputSource(jarFile, jarFileEntry));
     }
 
     public String getTransformInstruction()
@@ -176,6 +185,27 @@ public class ParseContext
         }
         else
             throw new IOException("Resource '" + resource.getSystemId() + "' not found. ClassPath is "+ System.getProperty("java.class.path") +".");
+    }
+
+    public InputSource createInputSource(File jarFile, ZipEntry jarFileEntry) throws FileNotFoundException, IOException
+    {
+        this.sourceFile = jarFile;
+        this.sourceJarEntry = jarFileEntry;
+        this.sourceJarFile = new ZipFile(jarFile);
+
+        InputStream stream = sourceJarFile.getInputStream(jarFileEntry);
+        if (stream != null)
+        {
+            InputSource inputSource = new InputSource(stream);
+            inputSource.setSystemId(sourceJarFile.getName() + "!" + jarFileEntry.getName());
+
+            this.inputFileTracker = new FileTracker();
+            this.inputFileTracker.setFile(jarFile);
+
+            return inputSource;
+        }
+        else
+            throw new FileNotFoundException("Zip entry '" + jarFileEntry.getName() + "' not found in zip file '"+ jarFile.getAbsolutePath() +"'.");
     }
 
     public void init(InputSource inputSource) throws ParserConfigurationException, SAXException
@@ -254,12 +284,56 @@ public class ParseContext
         return true;
     }
 
+    public InputSource recreateInputSource() throws FileNotFoundException, IOException
+    {
+        if(sourceFile != null && sourceJarEntry == null)
+            return createInputSource(sourceFile);
+
+        if(sourceText != null)
+            return createInputSource(sourceText);
+
+        if(sourceResource != null)
+            return createInputSource(sourceResource);
+
+        if(sourceFile != null && sourceJarEntry != null)
+            return createInputSource(sourceFile, sourceJarEntry);
+
+        return null;
+    }
+
+    public void closeInputSource() throws IOException
+    {
+        if (inputSource.getCharacterStream() != null)
+        {
+            try
+            {
+                inputSource.getCharacterStream().close();
+            }
+            catch (IOException ioe)
+            {
+                // ignore this
+            }
+        }
+        if (inputSource.getByteStream() != null)
+        {
+            try
+            {
+                inputSource.getByteStream().close();
+            }
+            catch (IOException ioe)
+            {
+                // ignore this
+            }
+        }
+
+        if(sourceJarFile != null)
+            sourceJarFile.close();
+    }
+
     public void doExternalTransformations() throws TransformerConfigurationException, TransformerException, ParserConfigurationException, SAXException, IOException
     {
         // re-create the input source because the original stream is already closed
-        InputSource inputSource = sourceFile != null ?
-                        createInputSource(sourceFile) :
-                        (sourceText != null ? createInputSource(sourceText) : createInputSource(sourceResource));
+        InputSource inputSource = recreateInputSource();
 
         Source activeSource = inputSource.getByteStream() != null ?
                     new StreamSource(inputSource.getByteStream()) :

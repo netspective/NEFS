@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileFind.java,v 1.1 2003-03-17 20:01:40 shahid.shah Exp $
+ * $Id: FileFind.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.io;
@@ -240,6 +240,16 @@ public class FileFind
         public FileFindResults(String searchPaths, String searchPathsDelim, String searchFileName, int flags)
         {
             this(TextUtils.split(searchPaths, searchPathsDelim, false), searchFileName, flags);
+        }
+
+        public String getSearchFileName()
+        {
+            return searchFileName;
+        }
+
+        public String[] getSearchPaths()
+        {
+            return searchPaths;
         }
 
         /**

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmParseContext.java,v 1.1 2003-03-13 18:33:13 shahid.shah Exp $
+ * $Id: XdmParseContext.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -47,6 +47,7 @@ package com.netspective.commons.xdm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -78,6 +79,11 @@ public class XdmParseContext extends ParseContext
         super(resource);
     }
 
+    public XdmParseContext(File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, IOException
+    {
+        super(jarFile, jarFileEntry);
+    }
+
     public void parse(Object parent) throws DataModelException, TransformProcessingInstructionEncounteredException
     {
         XMLReader parser = getParser();
@@ -87,9 +93,7 @@ public class XdmParseContext extends ParseContext
         {
             XdmHandler handler = new XdmHandler(this, parent);
             parser.setContentHandler(handler);
-            parser.parse(getInputSource());
-
-            //System.out.println(((Map) handler.getTemplatCatalog().getTemplatesByNameSpace().get("/schema/db/presentation")).keySet());
+            parser.parse(inputSource);
         }
         catch (SAXParseException exc)
         {
@@ -118,27 +122,12 @@ public class XdmParseContext extends ParseContext
         }
         finally
         {
-            if (inputSource.getCharacterStream() != null)
+            try
             {
-                try
-                {
-                    inputSource.getCharacterStream().close();
-                }
-                catch (IOException ioe)
-                {
-                    // ignore this
-                }
+                closeInputSource();
             }
-            if (inputSource.getByteStream() != null)
+            catch(IOException e)
             {
-                try
-                {
-                    inputSource.getByteStream().close();
-                }
-                catch (IOException ioe)
-                {
-                    // ignore this
-                }
             }
         }
     }
@@ -213,6 +202,38 @@ public class XdmParseContext extends ParseContext
         try
         {
             pc = new XdmParseContext(resource);
+            pc.parse(dm);
+            return pc;
+        }
+        catch (TransformProcessingInstructionEncounteredException exc)
+        {
+            try
+            {
+                pc.doExternalTransformations();
+                pc.parse(dm);
+                return pc;
+            }
+            catch (Exception e)
+            {
+                throw new DataModelException(pc, e);
+            }
+        }
+        catch (ParserConfigurationException exc)
+        {
+            throw new DataModelException(pc, "Parser has not been configured correctly", exc);
+        }
+        catch (SAXException exc)
+        {
+            throw new DataModelException(pc, exc);
+        }
+    }
+
+    public static XdmParseContext parse(XmlDataModel dm, File jarFile, ZipEntry jarFileEntry) throws DataModelException, IOException
+    {
+        XdmParseContext pc = null;
+        try
+        {
+            pc = new XdmParseContext(jarFile, jarFileEntry);
             pc.parse(dm);
             return pc;
         }
