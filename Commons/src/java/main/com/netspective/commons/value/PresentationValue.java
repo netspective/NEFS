@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.5 2003-08-19 04:58:44 aye.thu Exp $
+ * $Id: PresentationValue.java,v 1.6 2003-10-20 04:13:03 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -204,6 +204,11 @@ public class PresentationValue implements Value
     public int getIntValue()
     {
         return value.getIntValue();
+    }
+
+    public long getLongValue()
+    {
+        return value.getLongValue();
     }
 
     public List getListValue()

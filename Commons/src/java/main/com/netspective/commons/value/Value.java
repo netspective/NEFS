@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.5 2003-08-19 04:59:30 aye.thu Exp $
+ * $Id: Value.java,v 1.6 2003-10-20 04:13:03 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -106,6 +106,11 @@ public interface Value
      * Returns the value as an integer.
      */
     public int getIntValue();
+
+    /**
+     * Returns the value as a long.
+     */
+    public long getLongValue();
 
     /**
      * Returns the value as an doube.

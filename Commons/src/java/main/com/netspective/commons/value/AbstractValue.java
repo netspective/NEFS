@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.9 2003-08-19 16:09:22 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.10 2003-10-20 04:13:03 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -127,6 +127,11 @@ public abstract class AbstractValue implements Value
     public int getIntValue()
     {
         return Integer.parseInt(getTextValue());
+    }
+
+    public long getLongValue()
+    {
+        return Long.parseLong(getTextValue());
     }
 
     public double getDoubleValue()
