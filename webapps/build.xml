@@ -191,6 +191,18 @@
         <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
     </target>
 
+    <target name="sparx.setup-all-apps-for-weblogic" depends="nefs.init" description="Performs tasks necessary to setup applications for use under BEA WebLogic app server">
+        <property name="force" value="yes"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+    </target>
+
     <target name="sparx.setup-all-apps-for-other" depends="nefs.init" description="Performs tasks necessary to setup applications for use under any other app server mentioned before">
         <property name="force" value="yes"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
