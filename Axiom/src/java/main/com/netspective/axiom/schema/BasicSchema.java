@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.11 2003-08-28 00:42:01 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.12 2003-10-12 18:08:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -75,6 +75,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.*;
+import com.netspective.commons.io.InputSourceLocator;
 
 public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModelSchema.ConstructionFinalizeListener
 {
@@ -173,6 +174,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
             Template dialogsPackage = new Template(
                     "schema." + getName() + "-tables",
                     handler,
+                    new InputSourceLocator(pc.getInputSrcTracker(), pc.getLocator().getLineNumber()),
                     handler.getTemplatCatalog(),
                     handler.getDynamicTemplatesProducer(),
                     null, "dialogs", "dialogs", dialogsPackageAttrs);
