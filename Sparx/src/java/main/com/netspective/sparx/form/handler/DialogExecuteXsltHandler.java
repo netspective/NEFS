@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.3 2003-10-24 03:24:56 shahid.shah Exp $
+ * $Id: DialogExecuteXsltHandler.java,v 1.4 2003-11-14 19:47:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.util.Map;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
@@ -54,6 +55,7 @@ import com.netspective.commons.text.Transform;
 import com.netspective.commons.text.TextUtils;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
 
 public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
 {
@@ -93,9 +95,19 @@ public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
         transform.setRelativeToClass(relativeToClass);
     }
 
-    public void setStyleSheet(ValueSource styleSheet)
+    public void setSourceResource(ValueSource source)
     {
-        transform.setStyleSheet(styleSheet);
+        transform.setSourceResource(source);
+    }
+
+    public void setSourceFile(ValueSource source)
+    {
+        transform.setSourceFile(source);
+    }
+
+    public void setStyleSheetResource(ValueSource styleSheet)
+    {
+        transform.setStyleSheetResource(styleSheet);
     }
 
     public void setStyleSheetFile(ValueSource styleSheet)
@@ -103,24 +115,22 @@ public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
         transform.setStyleSheetFile(styleSheet);
     }
 
-    public void setStyleSheetIsFile(boolean styleSheetIsFile)
-    {
-        transform.setStyleSheetIsFile(styleSheetIsFile);
-    }
-
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         boolean writeErrors = dc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting();
         try
         {
-            transform.render(writer, dc, new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), writeErrors);
+            Map textValuesMap = dc.getFieldStates().createTextValuesMap("field.");
+            transform.render(writer, dc, transform.getSource() != null ? null :
+                             new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, writeErrors);
         }
         catch (ParserConfigurationException e)
         {
             dc.getDialog().getLog().error("XSLT error in " + dc.getDialog().getQualifiedName(), e);
             if(writeErrors)
                 writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
-            throw new DialogExecuteException(e);
+            else
+                throw new DialogExecuteException(e);
         }
     }
 }
