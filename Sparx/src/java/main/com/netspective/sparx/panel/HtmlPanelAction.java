@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanelAction.java,v 1.3 2004-03-02 07:36:44 aye.thu Exp $
+ * $Id: HtmlPanelAction.java,v 1.4 2004-03-29 14:10:56 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -49,6 +49,9 @@ import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.sparx.form.field.DialogFieldFlags;
 
+/**
+ * Class responsible for handling the action associated with a panel.
+ */
 public class HtmlPanelAction
 {
     public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
@@ -135,6 +138,11 @@ public class HtmlPanelAction
         return caption;
     }
 
+    /**
+     * Sets the caption to be displayed for the action.
+     *
+     * @param caption value source object containing the caption for panel action
+     */
     public void setCaption(ValueSource caption)
     {
         this.caption = caption;
@@ -145,6 +153,11 @@ public class HtmlPanelAction
         return hint;
     }
 
+    /**
+     * Hint to be displayed for the panel action.
+     *
+     * @param hint value source object containing the hint
+     */
     public void setHint(ValueSource hint)
     {
         this.hint = hint;
@@ -155,6 +168,11 @@ public class HtmlPanelAction
         return icon;
     }
 
+    /**
+     * The icon to be displayed for the panel action link(s).
+     *
+     * @param icon value source pointing to the icon for this panel action link(s)
+     */
     public void setIcon(ValueSource icon)
     {
         this.icon = icon;
@@ -165,6 +183,12 @@ public class HtmlPanelAction
         return redirect;
     }
 
+    /**
+     * Sets the URI to redirect to when this action is selected by the user.
+     *
+     * @param redirect value soruce object containing the URI of the page (within
+     *                 application context) to redirect to
+     */
     public void setRedirect(RedirectValueSource redirect)
     {
         this.redirect = redirect;
@@ -175,6 +199,12 @@ public class HtmlPanelAction
         return children.getStyle();
     }
 
+    /**
+     * Sets the style in which to arrange the action link(s).
+     *
+     * @param style style object containing the style description for the panel
+     *              action link(s).
+     */
     public void setStyle(HtmlPanelActions.Style style)
     {
         children.setStyle(style);

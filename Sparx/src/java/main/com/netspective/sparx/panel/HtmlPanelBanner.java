@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelBanner.java,v 1.6 2004-03-02 07:38:03 aye.thu Exp $
+ * $Id: HtmlPanelBanner.java,v 1.7 2004-03-29 14:10:56 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -59,6 +59,9 @@ package com.netspective.sparx.panel;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
+/**
+ * Class for handling the banner display within a panel.
+ */
 public class HtmlPanelBanner
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -75,6 +78,11 @@ public class HtmlPanelBanner
         return actions.getStyle();
     }
 
+    /**
+     * Sets the style for the banner as horizontal or vertical.
+     *
+     * @param style banner style
+     */
     public void setStyle(HtmlPanelActions.Style style)
     {
         actions.setStyle(style);
@@ -85,6 +93,11 @@ public class HtmlPanelBanner
         return content;
     }
 
+    /**
+     * The contents to be displayed in the panel banner.
+     *
+     * @param content value source object containing banner contents
+     */
     public void setContent(ValueSource content)
     {
         this.content = content;
@@ -95,6 +108,11 @@ public class HtmlPanelBanner
         return actions;
     }
 
+    /**
+     * Specifies actions (add, edit, delete) with the records in the query result.
+     *
+     * @param actions list of actions to be associated with query result records
+     */
     public void setActions(HtmlPanelActions actions)
     {
         this.actions = actions;

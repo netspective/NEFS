@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.12 2004-03-15 05:16:43 aye.thu Exp $
+ * $Id: QueryReportPanel.java,v 1.13 2004-03-29 14:10:56 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -58,6 +58,10 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Class handling the panel display for presentation of query result.
+ */
+
 public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -75,6 +79,13 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         return noDataMsg;
     }
 
+    /**
+     * Message to be displayed when the query execution returns no data.  If provided,
+     * this message is is displayed instead of the default message.
+     *
+     * @param noDataMsg value source object containing the message to be displayed when
+     *                  query returns no data
+     */
     public void setNoDataMsg(ValueSource noDataMsg)
     {
         this.noDataMsg = noDataMsg;
@@ -85,6 +96,12 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         return getPanelIdentifier();
     }
 
+    /**
+     * Name of the panel to be used as the identifier for the panel. An identifier
+     * is a field whose values may only contain uppercase letters, numbers, and an underscore.
+     *
+     * @param name panel name
+     */
     public void setName(String name)
     {
         setPanelIdentifier(name);
