@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.6 2003-05-05 21:21:17 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.7 2003-07-08 14:17:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -362,6 +362,27 @@ public class TextUtils
                 uCase = true;
         }
         return identifier.toString();
+    }
+
+    /**
+     * Given a text string, return a string that would be suitable for that string to be used
+     * as a Java package name. The rule is to leave all periods and treat words as XML identifiers.
+     */
+    public static String xmlTextToJavaPackageName(String xml)
+    {
+        if(xml == null || xml.length() == 0)
+            return xml;
+
+        StringBuffer result = new StringBuffer();
+        StringTokenizer st = new StringTokenizer(xml, ".");
+        while(st.hasMoreTokens())
+        {
+            result.append(xmlTextToJavaIdentifier(st.nextToken(), false).toLowerCase());
+            if(st.hasMoreTokens())
+                result.append(".");
+        }
+
+        return result.toString();
     }
 
     /**
