@@ -233,7 +233,8 @@
     <b>Attributes</b><br>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
-            <td class="report-column-heading">&nbsp;</td>
+            <td class="report-column-heading" title="Attribute type (hover in row to see type)">T</td>
+            <td class="report-column-heading" title="Declared in (hover in row to see where attribute was declared)">D</td>
             <td class="report-column-heading">Name</td>
             <td class="report-column-heading">Type</td>
             <td class="report-column-heading">Choices</td>
@@ -246,6 +247,13 @@
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-attribute-required.gif")}" title="Required attribute"/>
                 <#else>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-attribute.gif")}" title="Attribute"/>
+                </#if>
+            </td>
+            <td class="report-column-${classSuffix}" rowspan=2>
+                <#if attrDetail.isInherited()>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/checkmark-empty-sm.gif")}" title="Declared in ${attrDetail.declaringClass.name}"/>
+                <#else>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/checkmark-sm.gif")}" title="Declared in this class (${attrDetail.declaringClass.name})"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
@@ -274,7 +282,7 @@
                 </#if>
             </td>
         </tr>
-            <td class="report-column-${classSuffix}" colspan=3>
+            <td class="report-column-${classSuffix}" colspan=4>
                 <font color=#999999>${attrDetail.javaDoc.description?default('&nbsp;')}</font>
             </td>
         <tr>
@@ -291,10 +299,11 @@
     <b>Child Elements</b><br>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
-            <td class="report-column-heading">&nbsp;</td>
+            <td class="report-column-heading" title="Element type (hover in row to see type)">T</td>
+            <td class="report-column-heading" title="Declared in (hover in row to see where element was declared)">D</td>
             <td class="report-column-heading">Name</td>
             <td class="report-column-heading">Class</td>
-            <td class="report-column-heading">Text</td>
+            <td class="report-column-heading" title="Supports characters (PCDATA) within element">Text</td>
             <td class="report-column-heading">Template</td>
         </tr>
 
@@ -305,6 +314,13 @@
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-template-producer.gif")}" title="Template Producer"/>
                 <#else>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-element.gif")}" title="Element"/>
+                </#if>
+            </td>
+            <td class="report-column-${classSuffix}" rowspan=2>
+                <#if childDetail.isInherited()>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/checkmark-empty-sm.gif")}" title="Declared in ${childDetail.declaringClass.name}"/>
+                <#else>
+                    <img src="${vc.activeTheme.getResourceUrl("/images/checkmark-sm.gif")}" title="Declared in this class (${childDetail.declaringClass.name})"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
@@ -366,7 +382,7 @@
             </td>
         </tr>
         <tr>
-            <td class="report-column-${classSuffix}" colspan=4>
+            <td class="report-column-${classSuffix}" colspan=5>
                 <font color=#999999>${childDetail.javaDoc.description?default('&nbsp;')}</font>
             </td>
         </tr>
