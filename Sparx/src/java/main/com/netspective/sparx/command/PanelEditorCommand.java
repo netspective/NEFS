@@ -54,7 +54,6 @@ package com.netspective.sparx.command;
 
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
-import com.netspective.sparx.form.DialogState;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.PanelEditor;
@@ -62,6 +61,7 @@ import com.netspective.sparx.theme.Theme;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.StringTokenizer;
@@ -70,7 +70,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.5 2004-03-03 23:35:14 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.6 2004-03-05 00:06:40 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -85,8 +85,9 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("panel-editor-name", true, "The fully qualified name of the panel editor (package-name.panel-name)."),
-                new CommandDocumentation.Parameter("command-action", false, "The action to perform for the selected record."),
-                new CommandDocumentation.Parameter("record-key", false, "The primary key of the selected record."),
+                new CommandDocumentation.Parameter("panel-editor-mode", false, "The mode to display for the panel editor."),
+                new CommandDocumentation.Parameter("record-key", false, "The primary key of the selected record in the panel editor."),
+                new CommandDocumentation.Parameter("previous-mode", false, "The optional previous mode of the panel editor."),
             }
     );
 
@@ -102,9 +103,12 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
 
     /* the name of the record editor panel */
     private String panelEditorName;
+    /* primary key to be used when the panel editor is in EDIT or DELETE mode */
     private String recordKey;
     /* the action to perform */
     private String panelMode;
+    /* previous mode */
+    private String previousPanelMode;
 
     /**
      * Sole constructor
@@ -127,6 +131,8 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         sb.append(panelMode);
         sb.append(delim);
         sb.append(recordKey);
+        sb.append(delim);
+        sb.append(previousPanelMode);
 
         return sb.toString();
     }
@@ -144,6 +150,8 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
             panelMode = params.nextToken();
         if (params.hasMoreTokens())
             recordKey = params.nextToken();
+        if (params.hasMoreTokens())
+            previousPanelMode = params.nextToken();
     }
 
     public String getPanelEditorName()
@@ -156,39 +164,14 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
         return panelMode;
     }
 
-    /**
-     * Calculate the mode the record editor panel is in
-     *
-     * @return
-     */
-    public int calculateEditorPanelMode(NavigationContext nc)
+    public String getPreviousPanelMode()
     {
-        int mode = PanelEditor.UNKNOWN_MODE;
-        if (panelMode == null)
-        {
-            mode = PanelEditor.DEFAULT_DISPLAY_MODE;
-        }
-        else if (panelMode.equals("add"))
-        {
-            mode = PanelEditor.ADD_RECORD_DISPLAY_MODE;
-            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "add");
-        }
-        else if (panelMode.equals("edit") && recordKey != null)
-        {
-            mode = PanelEditor.EDIT_RECORD_DISPLAY_MODE;
-            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "edit");
-        }
-        else if (panelMode.equals("delete") && recordKey != null)
-        {
-            mode = PanelEditor.DELETE_RECORD_DISPLAY_MODE;
-            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "delete");
-        }
-        else if (panelMode.equals("manage"))
-        {
-            mode = PanelEditor.MANAGE_RECORDS_DISPLAY_MODE;
-        }
+        return previousPanelMode;
+    }
 
-        return mode;
+    public String getRecordKey()
+    {
+        return recordKey;
     }
 
     /**
@@ -208,20 +191,14 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
              throw new RuntimeException("Record editor panel '"+ getPanelEditorName() + "' not found in "+ this +".");
         }
         Theme theme = nc.getActiveTheme();
-        int mode = calculateEditorPanelMode(nc);
-
-        if (mode == PanelEditor.UNKNOWN_MODE)
-        {
-            log.error("Unexpected mode encountered for the record editor panel '" + getPanelEditorName() + "'.");
-            throw new RuntimeException("Unexpected mode encountered for the record editor panel '" + getPanelEditorName() + "'.");
-        }
-        // TODO: maybe these context settings should be changed to methods in the PanelEditor 
-        nc.setAttribute(PanelEditor.DISPLAY_MODE_CONTEXT_ATTRIBUTE, new Integer(mode));
+        // TODO: maybe these context settings should be changed to methods in the PanelEditor
+        HttpServletRequest request = nc.getHttpRequest();
+        request.setAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, getPanelEditorName());
+        request.setAttribute(PanelEditor.CURRENT_MODE_CONTEXT_ATTRIBUTE, getPanelMode());
+        if (previousPanelMode != null)
+            request.setAttribute(PanelEditor.PREV_MODE_CONTEXT_ATTRIBUTE, previousPanelMode);
         if (recordKey != null)
-        {
-            nc.setAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE, recordKey);
-            nc.getHttpRequest().setAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE, recordKey);
-        }
+            request.setAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE, recordKey);
         ePanel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
 
     }
