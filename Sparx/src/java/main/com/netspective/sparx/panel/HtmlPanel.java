@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.6 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.7 2003-04-21 20:05:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,6 +51,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public interface HtmlPanel
 {
+    public String getIdentifier();
+
     public HtmlPanels getChildren();
 
     public HtmlPanelFrame getFrame();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.2 2003-04-21 20:05:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -61,15 +61,32 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public class HtmlSyntaxHighlightPanel implements HtmlPanel
 {
+    private static int panelNumber = 0;
     private int height = -1, width = -1;
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
     private String lexerType;
     private String text;
     private File file;
+    private String identifier = "HtmlSyntaxHighlightPanel_" + getNextPanelNumber();
+
+    synchronized static private final int getNextPanelNumber()
+    {
+        return ++panelNumber;
+    }
 
     public HtmlSyntaxHighlightPanel()
     {
+    }
+
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
     public String getLexerType()

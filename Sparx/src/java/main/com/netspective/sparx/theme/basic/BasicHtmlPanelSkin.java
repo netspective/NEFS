@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.4 2003-04-20 19:32:39 faisal.qureshi Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.5 2003-04-21 20:05:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -48,12 +48,7 @@ import java.io.Writer;
 import java.io.IOException;
 
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelActions;
-import com.netspective.sparx.panel.HtmlPanelAction;
-import com.netspective.sparx.panel.HtmlPanelBanner;
+import com.netspective.sparx.panel.*;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.value.ValueSource;
@@ -179,7 +174,8 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
     public void renderFrameBegin(Writer writer, HtmlPanelValueContext vc) throws IOException
     {
-        HtmlPanelFrame frame = vc.getPanel().getFrame();
+        HtmlPanel panel = vc.getPanel();
+        HtmlPanelFrame frame = panel.getFrame();
 
         Theme theme = ((BasicDbHttpServletValueContext) vc).getActiveTheme();
         String imgPath = ((BasicDbHttpServletValueContext) vc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
@@ -205,10 +201,10 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
                     if (vc.isMinimized())
-                        writer.write("            <td class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
+                        writer.write("            <td class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
-                        writer.write("            <td class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
+                        writer.write("            <td class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
                 }
                 else
@@ -233,16 +229,17 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         renderBanner(writer, vc);
 
-        int height = vc.getPanel().getHeight();
+        int height = panel.getHeight();
         if(height > 0)
-            writer.write("<tr>\n     <td class=\"panel-content-output\"><div style=\"height: "+ height +"; overflow: auto;\">\n");
+            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\"panel-content-output\"><div style=\"height: "+ height +"; overflow: auto;\">\n");
         else
-            writer.write("<tr>\n     <td class=\"panel-content-output\"><div>\n");
+            writer.write("<tr id=\""+ panel.getIdentifier() +"_content\">\n     <td class=\"panel-content-output\"><div>\n");
     }
 
     public void renderFrameEnd(Writer writer, HtmlPanelValueContext vc) throws IOException
     {
-        HtmlPanelFrame frame = vc.getPanel().getFrame();
+        HtmlPanel panel = vc.getPanel();
+        HtmlPanelFrame frame = panel.getFrame();
 
         writer.write("    </div></td>\n");
         writer.write("</tr>\n");
@@ -252,7 +249,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             ValueSource fvs = frame.getFooting();
             if(fvs != null)
             {
-                writer.write("<tr>\n");
+                writer.write("<tr id=\""+ panel.getIdentifier() +"_banner_footer\">\n");
                 writer.write("    <td class=\"panel-banner-footer-output\">" + fvs.getTextValue(vc) + "</td>\n");
                 writer.write("</tr>\n");
             }
@@ -326,7 +323,8 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
      */
     protected void renderBanner(Writer writer, HtmlPanelValueContext vc) throws IOException
     {
-        HtmlPanelBanner banner = vc.getPanel().getBanner();
+        HtmlPanel panel = vc.getPanel();
+        HtmlPanelBanner banner = panel.getBanner();
         if (banner == null)
             return;
 
@@ -335,7 +333,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         if((actions == null || (actions != null || actions.size() == 0) && content == null))
             return;
 
-        writer.write("<tr><td class=\"panel-banner-output\">\n");
+        writer.write("<tr id=\""+ panel.getIdentifier() +"_banner\"><td class=\"panel-banner-output\">\n");
         if(content != null)
         {
             writer.write(content.getTextValue(vc));

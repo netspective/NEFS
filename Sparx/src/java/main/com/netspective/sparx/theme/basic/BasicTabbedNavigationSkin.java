@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.9 2003-04-20 19:32:39 faisal.qureshi Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.10 2003-04-21 20:05:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -129,12 +129,14 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
         // get all the CSS files associated with this theme/style combination
         String cssRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/css";
+        String scriptsRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/scripts";
 
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-output.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
+        writer.write("  <script src='" + scriptsRootUrl + "/panel.js' language='JavaScript1.1'></script>\n");
 
         writer.write("</head>\n");
     }

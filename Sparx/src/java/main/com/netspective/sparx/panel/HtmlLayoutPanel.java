@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.5 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.6 2003-04-21 20:05:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,15 +51,32 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
+    private static int panelNumber = 0;
     private int height = -1, width = -1;
     private HtmlPanels children = new BasicHtmlPanels();
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
+    private String identifier = "HtmlLayoutPanel_" + getNextPanelNumber();
+
+    synchronized static private final int getNextPanelNumber()
+    {
+        return ++panelNumber;
+    }
 
     public HtmlLayoutPanel()
     {
         frame = createFrame();
         banner = createBanner();
+    }
+
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
     public int getHeight()

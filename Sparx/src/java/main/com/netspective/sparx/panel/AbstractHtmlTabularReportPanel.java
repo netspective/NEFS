@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.2 2003-04-13 02:37:07 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.3 2003-04-21 20:05:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -60,14 +60,31 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
+    private static int panelNumber = 0;
     private int height = -1, width = -1;
     private HtmlPanelFrame frame;
     private HtmlPanelBanner banner;
+    private String identifier = "AbstractHtmlTabularReportPanel_" + getNextPanelNumber();
+
+    synchronized static private final int getNextPanelNumber()
+    {
+        return ++panelNumber;
+    }
 
     public AbstractHtmlTabularReportPanel()
     {
         frame = createFrame();
         banner = createBanner();
+    }
+
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
     }
 
     public int getHeight()
