@@ -205,12 +205,9 @@
             password for the log in user. The default '<literal>sa</literal>'
             user has no password.</para>
           </callout>
-        </calloutlist><note>
-          <para>Please see the NEF User's Manual or review Tag Documentation
-          in the Console to get further details on each tag.</para>
-        </note></para>
+        </calloutlist></para>
 
-      <para>The above sample code declares a data source for the Books
+      <para>The above sample code declares a data source for the Library
       Application database.</para>
 
       <section>
@@ -218,7 +215,7 @@
 
         <para>You may test the data source by using <guimenu>Data
         Management</guimenu> | <guisubmenu>Data Sources</guisubmenu> section
-        in the Console of your Books Application.</para>
+        in the Console of your Library Application.</para>
 
         <para><screenshot>
             <graphic fileref="./resources/images/screen-console-datasource.gif" />
@@ -502,7 +499,7 @@
         Console of your Library Application.</para>
 
         <para><screenshot>
-            <graphic fileref="" />
+            <graphic fileref="./resources/images/nefs-lib-schema.gif" />
           </screenshot></para>
 
         <para>There is a list of all the tables contained in the schema. It
@@ -736,7 +733,7 @@
         <para></para>
 
         <screenshot>
-          <graphic fileref="./resources/images/screen-console-sql-explorer.gif" />
+          <graphic fileref="./resources/images/nefs-lib-test-schema.gif" />
         </screenshot>
 
         <para>To execute the test query, click the <command>OK
@@ -746,7 +743,7 @@
         <para></para>
 
         <screenshot>
-          <graphic fileref="./resources/images/screen-console-db-test-result.gif" />
+          <graphic fileref="./resources/images/nefs-lib-test-schema-result.gif" />
         </screenshot>
       </section>
     </section>
@@ -1190,14 +1187,15 @@
         your <filename>project.xml</filename> file.</para>
 
         <para><screenshot>
-            <graphic fileref="./resources/images/screen-console-static-queries.gif" />
+            <graphic fileref="./resources/images/nefs-lib-queries.gif" />
           </screenshot></para>
 
-        <para>Click on the <literal>get-all-assets</literal> query to see the
-        SQL statement.</para>
+        <para>Click on the
+        <literal>asset-names-for-select-field-choices</literal> query to see
+        the SQL statement.</para>
 
         <screenshot>
-          <graphic fileref="./resources/images/screen-console--static-qry-doc.gif" />
+          <graphic fileref="./resources/images/nefs-lib-sql-qry-doc.gif" />
         </screenshot>
 
         <para>Click on the <guimenuitem>Unit Test</guimenuitem> option in the
@@ -1212,7 +1210,7 @@
         <para></para>
 
         <screenshot>
-          <graphic fileref="./resources/images/screen-console-static-qry-unit-test.gif" />
+          <graphic fileref="./resources/images/nefs-lib-qry-result.gif" />
         </screenshot>
       </section>
     </section>
@@ -1297,7 +1295,7 @@
             class="attvalue">yes</sgmltag> if it is to be the default tree.
             Which tree is actually used by the application may be specified as
             a server parameter or chosen dynamically at runtime based on some
-            processing rules. </para>
+            processing rules.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg1-2">
@@ -1310,7 +1308,7 @@
             class="attvalue">yes</sgmltag> if it is to be the default page.
             Which page is actually used by the application may be specified as
             a servlet parameter or chosen dynamically at runtime based on some
-            processing rules. </para>
+            processing rules.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg1-3">
@@ -1322,7 +1320,7 @@
             <classname>com.netspective.sparx.panel.HtmlLayoutPanel</classname>
             class. The <sgmltag>style</sgmltag> attribute specifies how the
             panels will be arranged. In the above example, the panels will be
-            arranged horizontally. </para>
+            arranged horizontally.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg1-4">
@@ -1410,14 +1408,14 @@
             action URL (to be used instead of a next action provider) for this
             particular page. This example sets the '<literal>View
             Assets</literal>' page as the page to be called after execution of
-            an action on any page within this page tree. </para>
+            an action on any page within this page tree.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg2-2">
             <para>Declaring the '<literal>View Assets</literal>' page within
             the Assets page tree. The command attribute executes the query
-            get-all-assets to display a list of all the assets of the library.
-            </para>
+            get-all-assets to display a list of all the assets of the
+            library.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg2-3">
@@ -1435,19 +1433,19 @@
             for the asset record that is being edited. The
             <sgmltag>retain-params</sgmltag> attribute specifies that the
             "asset_id" parameter's value will be sent to another page (tab)
-            when that tab/page is clicked. </para>
+            when that tab/page is clicked.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg2-5">
             <para>The <sgmltag>missing-params-body</sgmltag> tag is used to
             optionally produce automatic error message when required request
             parameter <varname>('asset_id'</varname> in this case) is not
-            provided. </para>
+            provided.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg2-6">
             <para>Declaring the panels for <literal>Edit Asset</literal> page.
-            The panels will be arranged horizontally. </para>
+            The panels will be arranged horizontally.</para>
           </callout>
 
           <callout arearefs="nav-tags-eg2-7">
@@ -1791,17 +1789,25 @@
       <para></para>
 
       <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-home.gif" />
+        <graphic fileref="./resources/images/nefs-lib-home-page.gif" />
       </screenshot>
 
       <para>The Home page lists all the assets available in your Library
       Application database along with the available borrowers. </para>
 
-      <para></para>
+      <para>Explore the Assets tab which contains View Assets, Add Asset, Edit
+      Asset and Delete Asset pages. Use the View Assets page to view a list of
+      all the available assets.</para>
 
       <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-add.gif" />
+        <graphic fileref="./resources/images/nefs-lib-view-assets-page.gif" />
       </screenshot>
+
+      <para>Use the Add Asset page to add an asset.</para>
+
+      <para><screenshot>
+          <graphic fileref="./resources/images/nefs-lib-add-asset.page.gif" />
+        </screenshot></para>
 
       <para>Enter the book information and click the <command>OK</command>
       button. You can see the newly added book in the list available on the
