@@ -36,7 +36,7 @@
         ]]>
     </template-processor-type>
 
-    <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
+    <theme name="sampler" class="app.theme.AppTheme" inherit-resources-from-themes="console,common">
         <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
         <dialog-skin class="app.theme.ModernDialogSkin" name="modern" default="yes" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </theme>
