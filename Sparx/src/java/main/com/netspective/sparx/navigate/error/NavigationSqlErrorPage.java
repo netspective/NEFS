@@ -39,16 +39,12 @@
  */
 
 /**
- * $Id: NavigationSqlErrorPage.java,v 1.2 2004-02-11 18:26:01 shahid.shah Exp $
+ * $Id: NavigationSqlErrorPage.java,v 1.3 2004-02-11 19:58:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.error;
 
 import java.sql.SQLException;
-
-import javax.servlet.ServletException;
-
-import org.apache.commons.lang.exception.NestableException;
 
 import com.netspective.sparx.navigate.NavigationErrorPage;
 import com.netspective.sparx.navigate.NavigationTree;
@@ -101,45 +97,13 @@ public class NavigationSqlErrorPage extends NavigationErrorPage
         setEndSqlCode(code);
     }
 
-    protected boolean canHandleSqlException(Throwable t)
+    public boolean canHandle(Throwable t, boolean checkSuperClasses)
     {
         if (t instanceof SQLException)
         {
             int sqlErrorCode = ((SQLException) t).getErrorCode();
             if (sqlErrorCode >= startSqlCode && sqlErrorCode <= endSqlCode)
                return true;
-        }
-
-        return false;
-    }
-
-    public boolean canHandle(Throwable t, boolean checkSuperClasses)
-    {
-        if(canHandleSqlException(t))
-            return true;
-
-        if(t instanceof ServletException)
-        {
-            ServletException se = (ServletException) t;
-            if(canHandleSqlException(se.getRootCause()))
-                return true;
-        }
-
-        // if we're dealing with a nested exception, check to see if one of the nested exceptions is something we
-        // need to handle
-        if(t instanceof NestableException)
-        {
-            NestableException ne = (NestableException) t;
-            Throwable[] throwables = ne.getThrowables();
-            for(int i = 0; i < throwables.length; i++)
-            {
-                Throwable nestedException = throwables[i];
-                if(t.getClass() == nestedException.getClass()) // don't get stuck in an infinite loop
-                    continue;
-
-                if(canHandleSqlException(nestedException))
-                    return true;
-            }
         }
 
         return callSuperIfNoMatch ? super.canHandle(t, checkSuperClasses) : false;
