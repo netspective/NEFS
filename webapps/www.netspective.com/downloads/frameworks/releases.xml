@@ -2,6 +2,33 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.20"/>
+        <change-log>
+            <summary>Minor bug fixes</summary>
+            <change-log-entry>
+                <![CDATA[
+                Fixed problem where the <i>no/false</i> option for the <i>radio</i> style of the BooleanField
+                was not being set by a default XML setting.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added two new methods to the BooleanField's value object: isNeither() and allowNeither(). The latter
+                method is to check whether or not if the current field configuration allows the display of the "neither"
+                option. The former method is to check if the "neither" option is selected.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                The <i>radio</i> style for the BooleanField will default to false if no default value is
+                specified because according to the HTML specs, one radio button MUST always be selected.
+                If the "neither" option is available (by setting the <i>none-text</i> attribute), then
+                the "neither" option will be the default value when no default value is specified in XML.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
         <product name="Sparx" version="7.0.19"/>
         <change-log>
             <summary>Minor bug fixed</summary>
