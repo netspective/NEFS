@@ -66,14 +66,22 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
 
 public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
     public static final String TEMPLATEELEMNAME_PAGE_TYPE = "page-type";
+
+    static
+    {
+        TemplateCatalog.registerNamespaceForClass("/navigation-tree/(.*)/page-type", NavigationPage.ATTRNAME_TYPE, NavigationPage.class, true, true);
+        TemplateCatalog.registerConsumerDefnForClass(NavigationPageBodyHandlerTemplateConsumer.INSTANCE, NavigationPageBodyHandler.class, true, true);
+    }
 
     private Project project;
     private InputSourceLocator inputSourceLocator;

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.46 2003-11-05 05:14:40 aye.thu Exp $
+ * $Id: DialogField.java,v 1.47 2003-11-07 17:43:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -86,6 +86,7 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.io.InputSourceLocator;
 
@@ -103,6 +104,11 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     private static FieldTypeTemplateConsumerDefn fieldTypeConsumer = new FieldTypeTemplateConsumerDefn();
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(fieldTypeConsumer, DialogField.class, true, true);
+    }
 
     protected static class FieldTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.2 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.3 2003-11-07 17:44:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -48,6 +48,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
 {
@@ -55,6 +56,11 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     public static final String PANELTYPE_ATTRNAME_TYPE = "type";
     public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = null;
     public static final PanelTypeTemplateConsumerDefn templateConsumer = new PanelTypeTemplateConsumerDefn();
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(templateConsumer, AbstractPanel.class, true, true);
+    }
 
     protected static class PanelTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {

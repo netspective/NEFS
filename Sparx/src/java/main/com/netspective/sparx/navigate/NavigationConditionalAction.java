@@ -49,13 +49,14 @@
  *
  * @author Shahid N. Shah
  *
- * $Id: NavigationConditionalAction.java,v 1.2 2003-08-19 17:08:32 shahid.shah Exp $
+ * $Id: NavigationConditionalAction.java,v 1.3 2003-11-07 17:44:09 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -72,6 +73,11 @@ public class NavigationConditionalAction implements TemplateConsumer
     private NavigationPath path;
     private List conditionalActions = new ArrayList();
     private String name;
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(conditionalActionConsumer, NavigationConditionalAction.class, true, true);
+    }
 
     protected static class ConditionalTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {

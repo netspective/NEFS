@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: DialogExecuteHandlerTemplateConsumer.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteHandlerTemplateConsumer.java,v 1.2 2003-11-07 17:43:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 public class DialogExecuteHandlerTemplateConsumer extends TemplateConsumerDefn
 {

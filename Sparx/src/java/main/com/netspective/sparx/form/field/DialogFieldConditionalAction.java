@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.8 2003-06-10 03:51:41 aye.thu Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.9 2003-11-07 17:43:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -61,6 +61,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -79,6 +80,11 @@ public class DialogFieldConditionalAction implements TemplateConsumer
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     private static ConditionalTypeTemplateConsumerDefn conditionalActionConsumer = new ConditionalTypeTemplateConsumerDefn();
     private List conditionalActions = new ArrayList();
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(conditionalActionConsumer, DialogFieldConditionalAction.class, true, true);
+    }
 
     protected static class ConditionalTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {
