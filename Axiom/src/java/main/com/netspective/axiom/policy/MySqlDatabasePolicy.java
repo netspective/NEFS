@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MySqlDatabasePolicy.java,v 1.2 2003-12-03 01:40:29 shahid.shah Exp $
+ * $Id: MySqlDatabasePolicy.java,v 1.3 2003-12-06 17:07:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -52,11 +52,17 @@ import com.netspective.axiom.schema.column.type.AutoIncColumn;
 
 public class MySqlDatabasePolicy extends AnsiDatabasePolicy
 {
-    public static final String DBMSID_MYSQL = "mysql";
+    public static final String DBMSID_MYSQL = "MySQL";
+    public static final String[] DBMSID_ALL = new String[] { DBMSID_MYSQL, "mysql" };
 
     public String getDbmsIdentifier()
     {
         return DBMSID_MYSQL;
+    }
+
+    public String[] getDbmsIdentifiers()
+    {
+        return super.getDbmsIdentifiers();
     }
 
     public boolean supportsForeignKeyConstraints()
