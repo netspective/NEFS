@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.123 2004-07-14 18:58:00 shahid.shah Exp $
+  * $Id: console.xml,v 1.124 2004-07-18 15:42:31 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -330,7 +330,7 @@
 
         <dialog name="crypt-calc" class="com.netspective.sparx.console.form.CryptCalcDialog">
             <frame heading="Calculate Cryptographic Keys"/>
-            <field name="type" type="select" caption="Crypt Type" read-only="yes" default="UNIX Crypt"/>
+            <field name="type" type="select" caption="Crypt Type" choices="text-list:UNIX Crypt"/>
             <field name="salt" type="text" caption="Crypt Salt" default="NC"/>
             <field name="original" type="memo" caption="Encrypt (one item per line)" rows="15" cols="60"/>
         </dialog>
