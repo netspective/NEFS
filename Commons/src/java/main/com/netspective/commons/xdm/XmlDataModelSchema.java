@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.38 2003-11-07 17:37:49 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.39 2003-11-08 16:28:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -149,6 +149,7 @@ public class XmlDataModelSchema
         private Set ignoreAttributes = new HashSet();
         private Set requiredAttributes = new HashSet();
         private Set requiredNestedElements = new HashSet();
+        private Map subclassedItemsClasses = new HashMap();
 
         public Options()
         {
@@ -324,6 +325,22 @@ public class XmlDataModelSchema
                 aliases.put(primaryName, alternateNames);
             else
                 set.addAll(alternateNames);
+        }
+
+        public Map getSubclassedItemsClasses()
+        {
+            return subclassedItemsClasses;
+        }
+
+        public Class getSubclassedItemClass(String item, Class clsDefault)
+        {
+            Class cls = (Class) subclassedItemsClasses.get(item);
+            return cls != null ? cls : clsDefault;
+        }
+
+        public void addSubclassedItemClass(String item, Class cls)
+        {
+            subclassedItemsClasses.put(item, cls);
         }
     }
 
@@ -534,7 +551,7 @@ public class XmlDataModelSchema
                 }
                 catch (InstantiationException e)
                 {
-                    log.error("Unable to create instance for template producers", e);
+                    log.warn("Unable to create instance for template producers", e);
                 }
                 catch (IllegalAccessException e)
                 {
@@ -1429,7 +1446,7 @@ public class XmlDataModelSchema
     public Class getElementType(String elementName)
             throws DataModelException
     {
-        Class nt = (Class) nestedTypes.get(elementName);
+        Class nt = options.getSubclassedItemClass(elementName, (Class) nestedTypes.get(elementName));
         if (nt == null)
         {
             String msg = "Class " + bean.getName() + " doesn't support the nested \"" + elementName + "\" element.";
@@ -1444,7 +1461,7 @@ public class XmlDataModelSchema
     public Class getAttributeType(String attributeName)
             throws DataModelException
     {
-        Class at = (Class) attributeTypes.get(attributeName);
+        Class at = options.getSubclassedItemClass(attributeName, (Class) attributeTypes.get(attributeName));
         if (at == null)
         {
             String msg = "Class " + bean.getName() + " doesn't support the \"" + attributeName + "\" attribute.";
