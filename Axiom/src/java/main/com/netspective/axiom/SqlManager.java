@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.17 2003-10-31 03:35:46 aye.thu Exp $
+ * $Id: SqlManager.java,v 1.18 2003-11-08 16:25:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -206,23 +206,12 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
         return ret;
     }
 
-    public StoredProcedure createStoredProcedure()
-    {
-        return new StoredProcedure();
-    }
-
-    public Query createQuery()
+    public Query constructQuery() // not called "create" because we don't want XDM to create tag at this level but we still need the method available
     {
         return new Query();
     }
 
-    public void addStoredProcedure(StoredProcedure sp)
-    {
-        System.out.println(sp.getName()  +  " " + sp.getNameForMapKey());
-        storedProcedures.add(sp);
-    }
-
-    public void addQuery(Query query)
+    public void appendQuery(Query query) // not called "add" because we don't want XDM to create tag at this level but we still need the method available
     {
         queries.add(query);
     }
@@ -237,11 +226,6 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     {
         activeNameSpace = new QueriesPackage(getQueries());
         return activeNameSpace;
-    }
-
-    public void addStoredProcedures(StoredProceduresNameSpace pkg)
-    {
-        activeSPNameSpace = null;
     }
 
     public void addQueries(QueriesNameSpace pkg)

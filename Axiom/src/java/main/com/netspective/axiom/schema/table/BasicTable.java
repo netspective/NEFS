@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.20 2003-10-26 14:33:13 aye.thu Exp $
+ * $Id: BasicTable.java,v 1.21 2003-11-08 16:25:54 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -914,14 +914,14 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Query createQuery()
     {
-        Query result = getSchema().getSqlManager().createQuery();
+        Query result = getSchema().getSqlManager().constructQuery();
         result.setNameSpace(this);
         return result;
     }
 
     public void addQuery(Query query)
     {
-        getSchema().getSqlManager().addQuery(query);
+        getSchema().getSqlManager().appendQuery(query);
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
