@@ -1,3 +1,7 @@
+Declare input fields, page navigation and validation criteria in simple XML files. Define database schema in XML and
+generate SQL DDL and type-safe table-based DAOs. Automatically manage roles and permissions at granular levels and without
+programmer intervention. Customize our framework using standard Java extension mechanisms.
+
 <h1>Instantiate Components using XML, Customize using Java</h1>
 Instead of hand-coding object construction in Java, you use XML declarations to instantiate and configure our high-level
 Java classes in external resource files.
