@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditorSkin.java,v 1.4 2004-03-12 06:54:51 aye.thu Exp $
+ * $Id: PanelEditorSkin.java,v 1.5 2004-03-14 06:09:26 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -120,9 +120,9 @@ public class PanelEditorSkin extends RecordEditorReportSkin
                 }
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
                         "</td>\n");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
-                    "</td>\n");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
+                //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
+                //    "</td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
                 //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
                 writer.write("        </tr>\n");
@@ -176,7 +176,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
                 if (displayedItems == 0)
                 {
-                    itemBuffer.append("            <td class=\"panel-editor-frame-mid\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
+                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-heading\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
                     displayedItems++;
                 }
 
@@ -187,13 +187,13 @@ public class PanelEditorSkin extends RecordEditorReportSkin
                 ValueSource vs = ValueSources.getInstance().createValueSourceOrStatic("simple-expr:" + itemUrl);
                 itemUrl = vs.getTextValue(vc);
                 String itemCaption = item.getCaption().getTextValue(vc);
-                itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
-                        "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
+                itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\">" +
+                        "<a  href=\""+ itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
                 displayedItems++;
             }
             if (itemBuffer.length() > 0)
                 writer.write(itemBuffer.toString());
-            writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
+            writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
                     "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"2\" height=\"5\"></td>\n");
 
         }
@@ -215,26 +215,23 @@ public class PanelEditorSkin extends RecordEditorReportSkin
                 continue;
 
             ValueSource itemCaption = action.getCaption();
-            ValueSource itemIcon = action.getIcon();
-            String caption = "";
+            String itemUrl = action.getRedirect().getUrl(rc);
+            // NOTE: This is a fix to process any remaining value sources in the URL
+            ValueSource vs = ValueSources.getInstance().createValueSourceOrStatic("simple-expr:" + itemUrl);
+            itemUrl = vs.getTextValue(rc);
+            String caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
             RedirectValueSource itemRedirect = action.getRedirect();
 
             // Instead of using the caption use the icons/images as the labels
             if (itemRedirect == null)
             {
-                caption = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
+                writer.write(caption);
             }
             else
             {
                 String hint = action.getHint() != null ? action.getHint().getValue(rc).getTextValue() : "";
-                String label = itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i;
-                caption = constructRedirect(rc, itemRedirect, label, hint, null);
+                writer.write("<a href=\"" + itemUrl + "\" title=\"" + hint + "\">" + caption + "</a>");
             }
-            //if(i > 0)
-            //    writer.write(", ");
-            // if(itemIcon != null)
-            // writer.write("<img src='" + itemIcon.getValue(rc).getTextValue() + "'>");
-            writer.write(caption);
         }
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentSkin.java,v 1.1 2004-03-13 04:07:50 aye.thu Exp $
+ * $Id: ReportPanelEditorContentSkin.java,v 1.2 2004-03-14 06:09:26 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
