@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.5 2004-03-15 05:12:01 aye.thu Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.6 2004-03-22 08:08:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -73,6 +73,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.util.StringTokenizer;
 
 /**
@@ -141,8 +142,9 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     public void addDialog(Dialog dialog)
     {
         this.dialog = dialog;
-        if (this.dialog.getName() == null)
-            this.dialog.setName(DEFAULT_DIALOG_NAME);
+        this.dialog.setName(getParent().getName() + "." + getName());
+        this.dialog.setNameSpace(getParent().getNameSpace().getDialogsNameSpace());
+        getParent().getProject().getDialogs().add(dialog);
     }
 
     public String getDialogRef()
@@ -181,6 +183,31 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     }
 
     /**
+     * Creates a dialog object. Mainly used by XDM to construct a child element dialog.
+     *
+     * @return
+     */
+    public Dialog createDialog()
+    {
+        return getParent().getNameSpace().getDialogsNameSpace().createDialog();
+    }
+
+    /**
+     * Creates a dialog object. Mainly used by XDM to construct a child element dialog.
+     *
+     * @param cls
+     * @return
+     * @throws NoSuchMethodException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public Dialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        return getParent().getNameSpace().getDialogsNameSpace().createDialog(cls);
+    }
+
+    /**
      * Adds a query object
      *
      * @param query     query
@@ -188,7 +215,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     public void addQuery(Query query)
     {
         this.query = query;
-        this.query.setName(DEFAULT_QUERY_NAME);
+        this.query.setName(getName());
         this.query.setNameSpace(getParent().getNameSpace().getQueriesNameSpace());
         //this.project.getQueries().add(query);
     }
@@ -274,11 +301,21 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         qrp.setReportSkin(DEFAULT_EDITOR_SKIN);
     }
 
+    /**
+     * Creates actions for the report banner.  NO IMPLEMENTATION CURRENTLY.
+     *
+     * @param qrp
+     */
     public void createPanelFrameActions(QueryReportPanel qrp)
     {
 
     }
 
+    /**
+     * Creates actions for the report banner
+     *
+     * @param qrp
+     */
     public void createPanelBannerActions(QueryReportPanel qrp)
     {
         // Calculate what to display in the banner
@@ -297,6 +334,11 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         banner.setActions(actions);
     }
 
+    /**
+     * Creates actions (EDIT and DELETE) for the report content
+     *
+     * @param qrp       the query report panel
+     */
     public void createPanelContentActions(QueryReportPanel qrp)
     {
         String editUrl = getParent().generatePanelActionUrl(PanelEditor.MODE_EDIT);
@@ -335,24 +377,11 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     {
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
 
+        // currently only two actions are registered within the report content element and they are EDIT and DELETE
         if (mode == PanelEditor.MODE_DISPLAY)
         {
-            //actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            //if (panelRecordCount > 0)
-            //    actionStates.getState(PANEL_CONTENT_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             actionStates.getState("Delete").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-            //if (panelRecordCount <= 0)
-            //    actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
-        else if (mode == PanelEditor.MODE_ADD || mode == PanelEditor.MODE_EDIT || mode == PanelEditor.MODE_DELETE)
-        {
-            //actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-        }
-        else if (mode == PanelEditor.MODE_MANAGE)
-        {
-            //actionStates.getState(PANEL_CONTENT_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
-        }
-
     }
 
     /**
@@ -388,7 +417,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "edit");
         else if (mode == PanelEditor.MODE_DELETE)
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, "delete");
-        // record action was defined so we need to display the requested display mode
         if (dialogRef != null)
         {
             dialog = getParent().getProject().getDialog(dialogRef);
