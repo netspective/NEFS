@@ -98,8 +98,13 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                 return false;
             }
         }
-        catch(NamingException e) { log.error(e); return false; }
-        catch(SQLException e) { log.error(e); return false; }
+        catch(Exception e)
+        {
+            log.error(e);
+            if(showErrorsToUser)
+                ldc.getValidationContext().addError("An error occurred while attempting to authenticate: " + e.getMessage());
+            return false;
+        }
 
         Map passwordQueryResultRow;
         Object loginPasswordObj;
@@ -109,11 +114,11 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
             loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
             ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
         }
-        catch(SQLException e)
+        catch(Exception e)
         {
             log.error(e);
             if(showErrorsToUser)
-                ldc.getValidationContext().addError("A SQL occurred while attempting to authenticate: " + e.getMessage());
+                ldc.getValidationContext().addError("An error occurred while attempting to authenticate: " + e.getMessage());
             return false;
         }
         finally
