@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BooleanColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: BooleanColumn.java,v 1.2 2003-10-21 15:02:05 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -61,7 +61,11 @@ public class BooleanColumn extends BasicColumn
 
         public void setValue(Object value)
         {
-            if(value != null && ! value.getClass().isAssignableFrom(Boolean.class))
+            if(value instanceof Long)
+                value = new Boolean(((Long) value).longValue() == 0 ? false: true);
+            else if(value instanceof Integer)
+                value = new Boolean(((Integer) value).intValue() == 0 ? false: true);
+            else if(value != null && ! value.getClass().isAssignableFrom(Boolean.class))
                 throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
 
             super.setValue(value);
