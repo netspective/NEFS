@@ -475,6 +475,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         setIndexed(column.isIndexed());
         setUnique(column.isUnique());
         getSqlDdl().merge(column.getSqlDdl());
+        getValueDefns().merge(column.getValueDefns());
         getValidationRules().merge(column.getValidationRules());
         presentation = (ColumnPresentationTemplate) column.getPresentation();
     }
