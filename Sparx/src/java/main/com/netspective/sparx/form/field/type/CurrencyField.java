@@ -51,22 +51,21 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.7 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: CurrencyField.java,v 1.8 2004-02-03 01:46:26 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
-
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.type.TextField;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldValue;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * NOTE: JSDK 1.4 and above supports the java.util.Currency class. Right now, we're not using it
@@ -106,7 +105,17 @@ public class CurrencyField extends TextField
 
             public String getTextValue()
             {
-                return isValid() ? super.getTextValue() : getInvalidText();
+                if (!isValid())
+                    return getInvalidText();
+
+                if (getValue() instanceof Double)
+                {
+                    // sets the format for the currency value bacause toString() of a double produces
+                    // exponential formats when the value is large
+                    DecimalFormat format = new DecimalFormat("###0.0#");
+                    return format.format(((Double)getValue()).doubleValue());
+                }
+                return getValue() != null ? getValue().toString() : null;
             }
 
             /**
