@@ -39,20 +39,25 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.3 2003-04-03 18:39:25 shahbaz.javeed Exp $
+ * $Id: ReportTest.java,v 1.4 2003-04-03 23:58:52 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report;
 
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.report.tabular.*;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.ValueSource;
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.Format;
+import java.text.DecimalFormat;
 
 public class ReportTest extends TestCase
 {
@@ -198,10 +203,114 @@ public class ReportTest extends TestCase
 		StringWriter sw = new StringWriter();
 		vc.produceReport(sw, new TestReportDataSource());
 
-//		System.out.println(sw);
+		System.out.println();
+		System.out.println(sw);
 	}
 
-	public void testTabularReportColumnState() throws IOException
+	public void testTabularColumns()
+	{
+		TabularReport report = (TabularReport) reports.get(0);
+
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
+
+		TabularReportColumns columns = vc.getColumns();
+		assertEquals(4, columns.size());
+
+		System.out.println();
+
+		String[] colHeading = new String[] { "Column A", "Column B", "Column C", "Column D" };
+		for (int i = 0; i < columns.size(); i ++)
+		{
+			TabularReportColumn column = columns.getColumn(i);
+
+			// Tests that apply to all columns ...
+			assertEquals(0, column.getDataType());
+			column.setDataType(2);
+			assertEquals(2, column.getDataType());
+			column.setDataType(0);
+
+			assertNull(column.getBreak());
+			column.setBreak("Column C");
+			assertEquals("Column C", column.getBreak());
+			column.setBreak(null);
+
+			assertEquals(i, column.getColIndex());
+			assertNull(column.getConditionals());
+			assertEquals(colHeading[i], column.getHeading().getTextValue(null));
+
+			assertNull(column.getHeadingAnchorAttrs());
+			ValueSource vsHeadingAnchorAttrs = ValueSources.getInstance().getValueSource("strings:one,two,three", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+			column.setHeadingAnchorAttrs(vsHeadingAnchorAttrs);
+			assertEquals(vsHeadingAnchorAttrs, column.getHeadingAnchorAttrs());
+			column.setHeadingAnchorAttrs(null);
+
+			assertNull(column.getUrl());
+			ValueSource vsUrl = ValueSources.getInstance().getValueSource("static:http://developer.netspective.com", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+			column.setUrl(vsUrl);
+			assertEquals(vsUrl, column.getUrl());
+			column.setUrl(null);
+
+			assertNull(column.getUrlAnchorAttrs());
+			ValueSource vsUrlAnchorAttrs = ValueSources.getInstance().getValueSource("static:http://developer.netspective.com", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+			column.setUrlAnchorAttrs(vsUrlAnchorAttrs);
+			assertEquals(vsUrlAnchorAttrs, column.getUrlAnchorAttrs());
+			column.setUrlAnchorAttrs(null);
+
+			assertEquals(0, column.getWidth());
+			column.setWidth(10);
+			assertEquals(10, column.getWidth());
+
+			// Tests that apply to the non-output columns only ...
+			if (3 > i)
+			{
+				assertEquals(0, column.getFlags());
+				assertNull(column.getOutput());
+			}
+
+			// Tests that apply to the summed numeric columns only ...
+			if (1 == i || 2 == i)
+			{
+				assertEquals(TabularReportColumn.ALIGN_RIGHT, column.getAlign());
+				assertEquals("sum", column.getCalcCmd());
+				assertEquals(DecimalFormat.class, column.getFormatter().getClass());
+			}
+
+			// Tests that apply to the floating point column only ...
+			if (2 == i)
+			{
+				column.setFormat("currency");
+				assertEquals(DecimalFormat.class, column.getFormatter().getClass());
+			}
+
+			// Tests that apply to the two string columns only ...
+			if (0 == i || 3 == i)
+			{
+				assertNull(column.getFormatter());
+
+				GeneralColumn gColumn = (GeneralColumn) column;
+				assertTrue(gColumn.isColIndexSet());
+			}
+
+			// Tests that apply to the counted column only ...
+			if (0 == i)
+			{
+				assertEquals("count", column.getCalcCmd());
+			}
+
+			// Tests that apply to the output column only ...
+			if (3 == i)
+			{
+				assertEquals(TabularReportColumn.COLFLAG_HASOUTPUTPATTERN, column.getFlags());
+				assertEquals("${0} ${1} ${2}", column.getOutput());
+			}
+
+//			System.out.println("Column #" + i);
+//			System.out.println("\tFormatted: " + column.getFormatter());
+		}
+	}
+
+	public void testTabularReportColumnState()
 	{
 		TabularReport report = (TabularReport) reports.get(0);
 

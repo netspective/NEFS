@@ -12,7 +12,7 @@
     <tabular-report name="test-002">
         <column type="general" heading="Column E" calc="count"/>
         <column type="numeric" heading="Column F" calc="sum"/>
-        <column type="decimal" heading="Column G" calc="sum"/>
+        <column type="decimal" heading="Column G" calc="sum" output="${.}"/>
         <column type="general" heading="Column H" output="${0} ${1} ${2}"/>
     </tabular-report>
 
