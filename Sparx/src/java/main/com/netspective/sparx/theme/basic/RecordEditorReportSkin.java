@@ -67,10 +67,15 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.2 2003-07-11 14:37:46 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.3 2003-07-12 02:20:33 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
+    public RecordEditorReportSkin()
+    {
+        super();
+    }
+
     public RecordEditorReportSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
@@ -80,67 +85,63 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        for (int i=0; actions != null && i < actions.size(); i++)
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
+
+        if (reportAction != null)
         {
-            HtmlReportAction action = actions.get(i);
-            if (action.getType().getValueIndex() == HtmlReportAction.Type.RECORD_DELETE)
-            {
-                Command actionCommand = action.getCommand(rc);
-                Theme theme = rc.getActiveTheme();
-                String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+            Command actionCommand = reportAction.getCommand(rc);
+            Theme theme = rc.getActiveTheme();
+            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
 
-                String label = "<img src=\"" + imgPath + "/panel/output/content-action-delete.gif\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-                String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            String label = "<img src=\"" + imgPath + "/content-action-delete.gif\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
 
-                writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
-                writer.write(deleteRecordUrl);
-                writer.write("</td>");
-                break;
-            }
+            writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
+            writer.write(deleteRecordUrl);
+            writer.write("</td>");
+
         }
     }
 
+    /**
+     *
+     * @param writer
+     * @param rc
+     * @param ds
+     * @param isOddRow
+     * @throws IOException
+     */
     public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        for (int i=0; actions != null && i < actions.size(); i++)
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
+        if (reportAction != null)
         {
-            HtmlReportAction action = actions.get(i);
-            if (action.getType().getValueIndex() == HtmlReportAction.Type.RECORD_EDIT)
-            {
-                Command actionCommand = action.getCommand(rc);
-                Theme theme = rc.getActiveTheme();
-                String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
+            Command actionCommand = reportAction.getCommand(rc);
+            Theme theme = rc.getActiveTheme();
+            String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
 
-                String label = "<img src=\"" + imgPath + "/panel/output/content-action-edit.gif\" " +
-                    "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
-                String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            String label = "<img src=\"" + imgPath + "/content-action-edit.gif\" " +
+                "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
 
-                writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
-                writer.write(editRecordUrl);
-                writer.write("</td>");
-                break;
-            }
+            writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
+            writer.write(editRecordUrl);
+            writer.write("</td>");
         }
-
     }
-
-
 
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        for (int i=0; actions != null && i < actions.size(); i++)
-        {
-            HtmlReportAction action = actions.get(i);
-            if (action.getType().getValueIndex() == HtmlReportAction.Type.RECORD_DELETE)
-            {
-                return 1;
-            }
-        }
-        return 0;
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
+        if (reportAction != null)
+            return 1;
+        else
+            return 0;
+
     }
 
     /**
@@ -152,15 +153,11 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
         HtmlReportActions actions = report.getActions();
-        for (int i=0; actions != null && i < actions.size(); i++)
-        {
-            HtmlReportAction action = actions.get(i);
-            if (action.getType().getValueIndex() == HtmlReportAction.Type.RECORD_EDIT)
-            {
-                return 1;
-            }
-        }
-        return 0;
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
+        if (reportAction != null)
+            return 1;
+        else
+            return 0;
     }
 
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractThemeSkin.java,v 1.2 2003-07-11 20:53:15 shahid.shah Exp $
+ * $Id: AbstractThemeSkin.java,v 1.3 2003-07-12 02:20:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -52,6 +52,11 @@ public class AbstractThemeSkin implements ThemeSkin
 {
     private String name;
     private Theme theme;
+
+    public AbstractThemeSkin()
+    {
+
+    }
 
     public AbstractThemeSkin(Theme theme)
     {

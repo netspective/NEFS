@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.16 2003-07-11 15:05:09 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.17 2003-07-12 02:20:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -102,6 +102,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         {
             return FLAGDEFNS;
         }
+    }
+
+    public BasicHtmlTabularReportPanelSkin()
+    {
+        super();
     }
 
     public BasicHtmlTabularReportPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
@@ -311,7 +316,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
                 writer.write(defn.replaceOutputPatterns(rc, ds, singleColumn));
             }
-
+            produceDataRowDecoratorAppend(writer, rc, ds, isOddRow);
             writer.write("</tr>");
             rowsWritten++;
             //TODO: Sparx 2.x conversion required

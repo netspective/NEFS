@@ -87,6 +87,16 @@ public class AbstractTheme implements Theme
         return (NavigationSkin) navigationSkins.get(name);
     }
 
+    public HtmlTabularReportSkin createReportSkin()
+    {
+        return defaultReportSkin;
+    }
+
+    public DialogSkin createDialogSkin()
+    {
+        return defaultDialogSkin;
+    }
+
     public HtmlPanelSkin getTabbedPanelSkin()
     {
         return tabbedPanelSkin;
@@ -140,10 +150,11 @@ public class AbstractTheme implements Theme
         panelSkins.put(skin.getName(), skin);
     }
 
-    public void addTabularReportSkin(HtmlTabularReportSkin skin)
+    public void addReportSkin(HtmlTabularReportSkin skin)
     {
         skin.setTheme(this);
         tabularReportSkins.put(skin.getName(), skin);
+
     }
 
     public Map getDialogSkins()
@@ -161,7 +172,7 @@ public class AbstractTheme implements Theme
         return panelSkins;
     }
 
-    public Map getTabularReportSkins()
+    public Map getReportSkins()
     {
         return tabularReportSkins;
     }
