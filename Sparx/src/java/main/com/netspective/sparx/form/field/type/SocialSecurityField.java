@@ -39,12 +39,14 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.4 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: SocialSecurityField.java,v 1.5 2003-09-09 05:29:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.DialogContext;
 
 public class SocialSecurityField extends TextField
 {
@@ -57,7 +59,7 @@ public class SocialSecurityField extends TextField
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             SSN_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
-        SSN_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRIP_DASHES", Flags.STRIP_DASHES);
+        SSN_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "STRIP_DASHES", Flags.STRIP_DASHES);
     }
 
     public class Flags extends TextField.Flags
@@ -82,12 +84,36 @@ public class SocialSecurityField extends TextField
         }
     }
 
+    public class State extends TextField.State
+    {
+        public State(DialogContext dc)
+        {
+            super(dc);
+        }
+
+        public DialogFieldFlags constructFlagInstance()
+        {
+            return new Flags(this);
+        }
+
+    }
+
     public SocialSecurityField()
     {
         super();
         setRegExpr("/" + VALIDATE_PATTERN + "/");
         setInvalidRegExMessage("The SSN must be of the format 999-99-9999 or 999999999.");
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
+    }
+
+    public DialogField.State constructStateInstance(DialogContext dc)
+    {
+        return new State(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return SocialSecurityField.State.class;
     }
 
     public DialogFieldFlags createFlags()

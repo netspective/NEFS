@@ -39,12 +39,14 @@
  */
 
 /**
- * $Id: ZipCodeField.java,v 1.3 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: ZipCodeField.java,v 1.4 2003-09-09 05:29:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.DialogContext;
 
 public class ZipCodeField extends TextField
 {
@@ -82,12 +84,35 @@ public class ZipCodeField extends TextField
         }
     }
 
+    public class ZipCodeFieldState extends TextFieldState
+    {
+        public ZipCodeFieldState(DialogContext dc)
+        {
+            super(dc);
+        }
+
+        public DialogFieldFlags constructFlagInstance()
+        {
+            return new Flags(this);
+        }
+    }
+
     public ZipCodeField()
     {
         super();
         setRegExpr("/" + VALIDATE_PATTERN + "/");
         setInvalidRegExMessage("Zip codes must be in the 99999 or 99999-9999 format.");
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
+    }
+
+    public DialogField.State constructStateInstance(DialogContext dc)
+    {
+        return new ZipCodeFieldState(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return ZipCodeFieldState.class;
     }
 
     public DialogFieldFlags createFlags()

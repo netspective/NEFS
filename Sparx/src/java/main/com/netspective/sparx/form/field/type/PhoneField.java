@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: PhoneField.java,v 1.3 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: PhoneField.java,v 1.4 2003-09-09 05:29:09 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 public class PhoneField extends TextField
@@ -67,7 +68,7 @@ public class PhoneField extends TextField
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             PHONE_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
-        PHONE_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "STRIP_BRACKETS", Flags.STRIP_BRACKETS);
+        PHONE_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(Flags.ACCESS_XDM, "STRIP_BRACKETS", Flags.STRIP_BRACKETS);
     }
 
     public class Flags extends TextField.Flags
@@ -90,6 +91,20 @@ public class PhoneField extends TextField
         {
             return PHONE_FIELD_FLAG_DEFNS;
         }
+    }
+
+    public class State extends TextField.State
+    {
+        public State(DialogContext dc)
+        {
+            super(dc);
+        }
+
+        public DialogFieldFlags constructFlagInstance()
+        {
+            return new Flags(this);
+        }
+
     }
 
     public static class Style extends XdmEnumeratedAttribute
@@ -120,6 +135,16 @@ public class PhoneField extends TextField
     {
         super();
         setStyle(new Style(Style.DASH));
+    }
+
+    public DialogField.State constructStateInstance(DialogContext dc)
+    {
+        return new PhoneField.State(dc);
+    }
+
+    public Class getStateClass()
+    {
+        return PhoneField.State.class;
     }
 
     public PhoneField.Style getStyle()
