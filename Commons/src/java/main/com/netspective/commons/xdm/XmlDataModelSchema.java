@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.21 2003-06-19 14:26:52 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.22 2003-06-19 15:49:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -74,6 +74,9 @@ import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.lang.JavaDocXmlDocuments;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.TemplateProducerParent;
 
 /**
  * This class is used to introspect existing classes and allow parsing of XML
@@ -446,6 +449,7 @@ public class XmlDataModelSchema
     {
         private String elemName;
         private Class elemType;
+        private TemplateProducer templateProducer;
         private boolean required;
 
         public ElementDetail(String name) throws DataModelException
@@ -455,14 +459,17 @@ public class XmlDataModelSchema
             this.required = getOptions().getRequiredAttributes().contains(name);
         }
 
+        public ElementDetail(String name, TemplateProducer templateProducer) throws DataModelException
+        {
+            this.elemName = name;
+            this.elemType = TemplateProducer.class;
+            this.required = false;
+            this.templateProducer = templateProducer;
+        }
+
         public String getElemName()
         {
             return elemName;
-        }
-
-        public void setElemName(String elemName)
-        {
-            this.elemName = elemName;
         }
 
         public Class getElemType()
@@ -470,19 +477,14 @@ public class XmlDataModelSchema
             return elemType;
         }
 
-        public void setElemType(Class elemType)
-        {
-            this.elemType = elemType;
-        }
-
         public boolean isRequired()
         {
             return required;
         }
 
-        public void setRequired(boolean required)
+        public boolean isTemplateProducer()
         {
-            this.required = required;
+            return templateProducer != null;
         }
 
         public String getDescription()
@@ -502,13 +504,40 @@ public class XmlDataModelSchema
         {
             nestedElementsDetail = new ElementDetailList();
 
-            Map childPropertyNames = getPropertyNames();
+            TemplateProducers templateProducers = null;
+            if(TemplateProducerParent.class.isAssignableFrom(getBean()))
+            {
+                try
+                {
+                    Object instance = getBean().newInstance();
+                    templateProducers = ((TemplateProducerParent) instance).getTemplateProducers();
+                }
+                catch (InstantiationException e)
+                {
+                    log.error("Unable to create instance for template producers", e);
+                }
+                catch (IllegalAccessException e)
+                {
+                    log.error("Unable to create instance for template producers", e);
+                }
+            }
 
+            Map childPropertyNames = getPropertyNames();
             Set sortedChildPropertyNames = new TreeSet(getNestedElements().keySet());
+            if(templateProducers != null)
+                sortedChildPropertyNames.addAll(templateProducers.getElementNames());
+
             Iterator iterator = sortedChildPropertyNames.iterator();
             while (iterator.hasNext())
             {
                 String attrName = (String) iterator.next();
+
+                TemplateProducer producer = templateProducers != null ? templateProducers.get(attrName) : null;
+                if(producer != null)
+                {
+                    nestedElementsDetail.add(new ElementDetail(attrName, producer));
+                    continue;
+                }
 
                 if(getOptions().ignoreAttribute(attrName))
                     continue;
