@@ -52,3 +52,6 @@
 * Consider using 'proxies' for DAL -- is DAL just a SQL proxy that can plug into JDO, EJBs, etc?
 * Allow reverse engineering policies that includ standard mappings from JDBC data types to axiom.xml data-types.
 * Take a look at DBD::Multiplex (multiplexing DBD driver for Perl) and see if it makes sense to implement in Axiom
+* Take a look at http://c-jdbc.objectweb.org/doc/index.html (Cluster JDBC) for clustering heterogeneous databases using just JDBC
+* Take a look at http://www.p6spy.com/ for an open source framework for applications that intercept and optionally modify database statements (monitor JDBC operations).
+* Take a look at http://www.phworks-online.com/cache.html for a caching JDBC driver.
