@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.2 2003-05-31 17:17:42 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.3 2003-05-31 17:55:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -68,7 +68,6 @@ import org.apache.commons.logging.Log;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogDirector;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
@@ -90,7 +89,6 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference;
 import com.netspective.axiom.sql.dynamic.QueryDefnFieldReference;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
-import com.netspective.axiom.sql.dynamic.exception.QueryDefnJoinNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.value.source.QueryDefnSelectsValueSource;
 import com.netspective.axiom.value.source.QueryDefnFieldsValueSource;
@@ -114,7 +112,7 @@ public class QueryBuilderDialog extends Dialog
     public static final String QBDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME = "query-defn-name";
     public static final String QBDIALOG_RESORT_PARAMNAME = "_qbd_resort";
 
-    public static final ValueSource VS_CONDITION_CONNECTORS = new StaticListValueSource(new String[] { "", "and", "or" });
+    public static final ValueSource VS_CONDITION_CONNECTORS = new StaticListValueSource(new String[] { " ", "and", "or" });
 
     public static final int OUTPUTSTYLE_HTML = 0;
     public static final int OUTPUTSTYLE_TEXT_CSV = 1;
@@ -306,7 +304,7 @@ public class QueryBuilderDialog extends Dialog
         {
             BooleanField debugField = new BooleanField();
             debugField.setName("debug");
-            debugField.setCaption(new StaticValueSource("View Generated SQL"));
+            debugField.setCheckLabel(new StaticValueSource("View Generated SQL"));
             debugField.setStyle(new BooleanField.Style(BooleanField.Style.CHECK));
             options.addField(debugField);
         }
@@ -357,8 +355,8 @@ public class QueryBuilderDialog extends Dialog
 
     public void finalizeContents(ServletContext context)
     {
-        super.finalizeContents(context);
         createContents();
+        super.finalizeContents(context);
     }
 
     public void makeStateChanges(DialogContext dc, int stage)
