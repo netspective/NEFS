@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditorSkin.java,v 1.1 2004-03-03 08:10:09 aye.thu Exp $
+ * $Id: PanelEditorSkin.java,v 1.2 2004-03-03 20:26:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -55,10 +55,9 @@ import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.RecordEditorReportSkin;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -167,6 +166,32 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         }
     }
 
+    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
+    {
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
+        HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report
+            return;
+        }
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
+        if (reportAction != null)
+        {
+            ValueSource redirect = reportAction.getRedirect();
+            Theme theme = getTheme();
+
+            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-edit.gif") + "\" " +
+                "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String editRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
+            editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
+            writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
+            writer.write(editRecordUrl);
+            writer.write("</td>");
+        }
+    }
+
+
     public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
         BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
@@ -186,7 +211,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             ValueSource redirect = reportAction.getRedirect();
             Theme theme = getTheme();
 
-            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
+            String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, redirect, label, null, null);
             deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 
