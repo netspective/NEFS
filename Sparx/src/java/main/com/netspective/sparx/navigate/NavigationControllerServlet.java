@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
+import java.util.zip.ZipFile;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -462,7 +463,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             }
 
             if(locators.size() == 0)
-                System.err.println("Unable to register any web resource locators (" + TextUtils.getInstance().join(webAppLocations, ", ") + " were not found).");
+            {
+                locators.add(new UriAddressableSparxJarResourceLocator(request.getContextPath() + "/sparx", new ZipFile(servletContext.getRealPath("WEB-INF/lib/netspective-sparx.jar"))));
+                log.warn("Unable to register any web resource locators (" + TextUtils.getInstance().join(webAppLocations, ", ") + " were not found). Please use the SparxResourcesServlet for serving Sparx resources.");
+            }
 
             resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
             return resourceLocator;
