@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextSetColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: TextSetColumn.java,v 1.2 2003-07-19 00:36:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -92,7 +92,8 @@ public class TextSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
 
     public void afterDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        Object parentId = columnValues.getByColumnIndex(COLINDEX_PARENT_ID).getValue();
+        Column primaryKeyColumn = getTable().getPrimaryKeyColumns().getSole();
+        Object parentId = columnValues.getByColumn(primaryKeyColumn).getValue();
         if(parentId == null)
             return;
 

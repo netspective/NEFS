@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumSetColumn.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: EnumSetColumn.java,v 1.3 2003-07-19 00:36:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -94,7 +94,8 @@ public class EnumSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
 
     public void afterDelete(ConnectionContext cc, int flags, ColumnValue columnValue, ColumnValues columnValues) throws SQLException
     {
-        Object parentId = columnValues.getByColumnIndex(COLINDEX_PARENT_ID).getValue();
+        Column primaryKeyColumn = getTable().getPrimaryKeyColumns().getSole();
+        Object parentId = columnValues.getByColumn(primaryKeyColumn).getValue();
         if(parentId == null)
             return;
 
