@@ -46,8 +46,8 @@
         &lt;![CDATA[
           &lt;#list data as row>
             &lt;tr>
-              &lt;td class="report-column-even">${row[1]}&lt;/td>
-              &lt;td class="report-column-even">${row[2]}&lt;/td>
+              &lt;td>${row[1]}&lt;/td>
+              &lt;td>${row[2]}&lt;/td>
             &lt;/tr>
           &lt;/#list>
         ]]&gt;
