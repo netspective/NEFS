@@ -1,3 +1,7 @@
+* Create "XdmFlags" datatype that would allow XML files to supply flags as yes/no using booleans as well as Java-style A | B | C
+* Add performance, load, and stress tests using JunitPerf
+* Start using JAAS for login and user management (replace Principal with Subject)
+* Start using mock objects for hard to create unit tests
 * Add JMX MBean support in the core library that other derived classes can build upon (like http://jakarta.apache.org/commons/modeler.html).
 * Integrate with AppStats Framework (http://appstats.sourceforge.net/). The Metrics and SqlExectionLog in Axiom may be replaced by or built upon this library.
 * Add an exception notification facility similar to http://sijpkes.20m.com/jexn/.
