@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.5 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: NavigationTrees.java,v 1.6 2003-10-22 06:50:34 aye.thu Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -110,6 +110,25 @@ public class NavigationTrees
             defaultTree = tree;
 
 		trees.put(tree.getName(), tree);
+    }
+
+    /**
+     * Sets the tree to be the default tree.
+     * @param name  Tree name
+     *
+     */
+    public void setDefaultTree(String name)
+    {
+        if (defaultTree != null)
+        {
+            if (defaultTree.getName() == null)
+                throw new RuntimeException("Failed to change the default navigation tree because current default tree doesn" +
+                        "not have a name associated with it.");
+            defaultTree.setDefault(false);
+        }
+        NavigationTree tree = getNavigationTree(name);
+        tree.setDefault(true);
+        defaultTree = tree;
     }
 
     public NavigationTree getDefaultTree()
