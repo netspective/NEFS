@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.16 2003-06-06 23:14:57 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.17 2003-06-09 12:51:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -80,7 +80,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS = "com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS";
     public static final String CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS = INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS;
 
-    public static final String INITPARAMNAME_ROOT_CONF_FILE = "com.netspective.sparx.CONF_FILE_NAME";
+    public static final String INITPARAMNAME_ROOT_CONF_FILE = "com.netspective.sparx.PROJECT_FILE_NAME";
     public static final String CONTEXTATTRNAME_ROOT_CONF_FILE = INITPARAMNAME_ROOT_CONF_FILE;
 
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
