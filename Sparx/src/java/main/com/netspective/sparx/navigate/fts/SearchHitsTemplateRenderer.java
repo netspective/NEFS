@@ -131,8 +131,15 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
         if(atLeastOneWordParamValue != null && atLeastOneWordParamValue.trim().length() > 0)
         {
             String[] words = TextUtils.getInstance().split(atLeastOneWordParamValue, " ", true);
-            for(int i = 0; i < words.length; i++)
-                advancedQuery.add(new TermQuery(new Term(defaultFieldName, words[i])), false, false);
+            if(words.length == 1)
+                advancedQuery.add(new TermQuery(new Term(defaultFieldName, words[0])), true, false);
+            else if(words.length > 1)
+            {
+                BooleanQuery wordGroup = new BooleanQuery();
+                for(int i = 0; i < words.length; i++)
+                    wordGroup.add(new TermQuery(new Term(defaultFieldName, words[i])), false, false);
+                advancedQuery.add(wordGroup, true, false);
+            }
         }
 
         String[] advancedSearchFieldNames = searchPage.getAdvancedSearchFieldNames();
