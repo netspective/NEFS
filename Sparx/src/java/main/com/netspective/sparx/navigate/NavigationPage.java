@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.37 2003-08-30 00:24:02 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.38 2003-08-31 22:53:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -71,7 +71,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
-import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.navigate.listener.NavigationPathListener;
@@ -95,7 +95,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 13];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 14];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -118,6 +118,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 10] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_META_DATA", Flags.HANDLE_META_DATA);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 11] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_HEADER", Flags.HANDLE_HEADER);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 12] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 13] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "DEBUG_REQUEST", Flags.DEBUG_REQUEST);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -148,7 +149,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int HANDLE_META_DATA = SHOW_RENDER_TIME * 2;
         public static final int HANDLE_HEADER = HANDLE_META_DATA * 2;
         public static final int HANDLE_FOOTER = HANDLE_HEADER * 2;
-        public static final int START_CUSTOM = HANDLE_FOOTER * 2;
+        public static final int DEBUG_REQUEST = HANDLE_FOOTER * 2;
+        public static final int START_CUSTOM = DEBUG_REQUEST * 2;
 
         public Flags()
         {
