@@ -39,8 +39,6 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
  * Class for html report actions
- * <p/>
- * $Id: HtmlReportActions.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class HtmlReportActions
 {
