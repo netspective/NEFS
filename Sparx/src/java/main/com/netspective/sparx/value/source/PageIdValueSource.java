@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PageIdValueSource.java,v 1.3 2003-10-28 10:57:19 shahid.shah Exp $
+ * $Id: PageIdValueSource.java,v 1.4 2003-11-04 17:02:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -126,6 +126,7 @@ public class PageIdValueSource  extends AbstractValueSource
         HttpServletValueContext svc = (HttpServletValueContext) (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() : vc);
         HttpServletRequest request = svc.getHttpRequest();
         String contextPath = request.getContextPath();
+        String servletPath = request.getServletPath();
 
         if(treeSource == null || treeSource.length() == 0)
         {
@@ -169,7 +170,7 @@ public class PageIdValueSource  extends AbstractValueSource
                 // process the request parameters
                 localParams = reqParams.getValue(vc).getTextValue();
             }
-            return new GenericValue(contextPath + path.getQualifiedName() + (localParams != null ? "?" + localParams : ""));
+            return new GenericValue(contextPath + servletPath + path.getQualifiedName() + (localParams != null ? "?" + localParams : ""));
         }
     }
 
@@ -224,3 +225,4 @@ public class PageIdValueSource  extends AbstractValueSource
         }
     }
 }
+
