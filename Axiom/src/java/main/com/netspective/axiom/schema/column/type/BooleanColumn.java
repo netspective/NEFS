@@ -32,6 +32,9 @@
  */
 package com.netspective.axiom.schema.column.type;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.BasicColumn;
@@ -49,19 +52,27 @@ public class BooleanColumn extends BasicColumn
 
         public void setValue(Object value)
         {
-            if(value instanceof Long)
-                value = new Boolean(((Long) value).longValue() == 0 ? false : true);
-            else if(value instanceof Integer)
-                value = new Boolean(((Integer) value).intValue() == 0 ? false : true);
+            if(value instanceof Boolean)
+                super.setValue(value);
             else
-                value = new Boolean(TextUtils.getInstance().toBoolean(value.toString()));
-
-            super.setValue(value);
+            {
+                if(value instanceof Long)
+                    super.setValue(new Boolean(((Long) value).longValue() == 0 ? false : true));
+                else if(value instanceof Integer)
+                    super.setValue(new Boolean(((Integer) value).intValue() == 0 ? false : true));
+                else
+                    super.setValue(new Boolean(TextUtils.getInstance().toBoolean(value.toString())));
+            }
         }
 
         public void setTextValue(String value) throws ValueException
         {
             setValue(new Boolean(TextUtils.getInstance().toBoolean(value)));
+        }
+
+        public void setValueFromSqlResultSet(ResultSet rs, int rowNum, int colIndex) throws SQLException, ValueException
+        {
+            setValue(new Boolean(rs.getBoolean(colIndex)));
         }
     }
 

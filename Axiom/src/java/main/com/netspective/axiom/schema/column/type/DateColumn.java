@@ -32,6 +32,8 @@
  */
 package com.netspective.axiom.schema.column.type;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -86,6 +88,11 @@ public class DateColumn extends BasicColumn
             {
                 throw new ValueException(e);
             }
+        }
+
+        public void setValueFromSqlResultSet(ResultSet rs, int rowNum, int colIndex) throws SQLException, ValueException
+        {
+            setValue(rs.getDate(colIndex));
         }
     }
 

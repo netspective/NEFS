@@ -32,6 +32,9 @@
  */
 package com.netspective.axiom.schema.column.type;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.BasicColumn;
@@ -75,6 +78,11 @@ public class FloatColumn extends BasicColumn
             {
                 throw new ValueException(e);
             }
+        }
+
+        public void setValueFromSqlResultSet(ResultSet rs, int rowNum, int colIndex) throws SQLException, ValueException
+        {
+            setValue(new Float(rs.getFloat(colIndex)));
         }
     }
 
