@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.10 2003-04-23 15:41:53 shahid.shah Exp $
+ * $Id: DataModelSchemaTest.java,v 1.11 2003-06-30 15:33:30 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -139,7 +139,7 @@ public class DataModelSchemaTest extends TestCase
             return TEMPLATE_PRODUCERS;
         }
 
-        public void finalizeConstruction() throws DataModelException
+        public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
         {
             //System.out.println("called after end of root element.");
             finalizedConstruction = true;
