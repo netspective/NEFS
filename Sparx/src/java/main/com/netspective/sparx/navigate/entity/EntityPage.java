@@ -48,6 +48,7 @@ import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.Project;
@@ -189,7 +190,11 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
         if(redirectorPage != null)
         {
             setRequireRequestParam(redirectorPage.getEntityIdRequestParamName());
-            setRetainParams(new StaticValueSource(redirectorPage.getEntityIdRequestParamName()));
+            // TODO: instead of skipping the entity id request param when retainParams is null, merge all parameters into a single ValueSource.
+            if(getRetainParams() == null)
+            {
+                setRetainParams(new StaticValueSource(redirectorPage.getEntityIdRequestParamName()));
+            }
         }
     }
 
