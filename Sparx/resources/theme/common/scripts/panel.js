@@ -440,7 +440,7 @@ function HttpClient_stateChangeCallback(client)
             if (client.statusOkCallback != null)
                 client.statusOkCallback(client.xmlHttp);
         }
-        else if (xmlhttp.status == 404)
+        else if (client.xmlHttp.status == 404)
         {
             if(this.alertAfterErrorResponse)
                 alert(this.afterErrorResponseAlertMessage);
