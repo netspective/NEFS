@@ -35,7 +35,9 @@
     using the URL of the form
     http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty.
     If everything worked as it should, you will see the Starter Application
-    Welcome Page.<screenshot>
+    Welcome Page.</para>
+
+    <para><screenshot>
         <graphic fileref="./resources/images/screen-starter-home.gif" />
       </screenshot></para>
   </section>
@@ -49,7 +51,9 @@
     the following URL:
     http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/nefs-startert-empty/console.
     If everything is working, you will see the application Console login
-    screen.<screenshot>
+    screen.</para>
+
+    <para><screenshot>
         <graphic fileref="./resources/images/screen-console-login.gif" />
       </screenshot></para>
 
