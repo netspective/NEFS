@@ -157,7 +157,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         controlAreaReadonlyStyleClass = "dialog-input-readonly";
 
         controlAttrs = " onfocus='return controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
-                       "onblur='controlOnBlur(this, event)' onkeypress='controlOnKeypress(this, event)' onclick='controlOnClick(this, event) '";
+                       "onblur='controlOnBlur(this, event)' onkeypress='return controlOnKeypress(this, event)' onclick='controlOnClick(this, event) '";
         separatorFontAttrs = "face='verdana,arial' size=2 color=#555555";
         separatorBannerTextFontAttrs = "face='arial' size=2 color=#555555";
         separatorHtml = "";

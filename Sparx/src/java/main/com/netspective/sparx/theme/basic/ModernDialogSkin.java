@@ -176,7 +176,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         fieldControlAreaRequiredStyleClass = "dialog-field-input-required";
         fieldControlAreaReadonlyStyleClass = "dialog-field-input-readonly";
         fieldControlAttrs = " onfocus='return controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
-                            "onblur='controlOnBlur(this, event)' onkeypress='controlOnKeypress(this, event)' " +
+                            "onblur='controlOnBlur(this, event)' onkeypress='return controlOnKeypress(this, event)' " +
                             "onclick='controlOnClick(this, event) '";
         separatorBlockStyleClass = "dialog-field-separator-block";
         separatorBannerStyleClass = "dialog-field-separator-banner";

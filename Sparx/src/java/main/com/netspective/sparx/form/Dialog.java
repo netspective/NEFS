@@ -1225,6 +1225,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         }
         catch(Exception e)
         {
+            getLog().error(e);
             dc = new DialogContext();
         }
         dc.initialize(nc, this, skin);
