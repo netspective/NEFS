@@ -37,7 +37,7 @@
 
       <para>The Console serves as the central repository for all your project
       components. It enables you to manage and visualize all the static and
-      dynamic components using one thin client. </para>
+      dynamic components using one thin client.</para>
 
       <para><table frame="none">
           <title>Centrally Manage and Visualize Your Project</title>
@@ -79,36 +79,6 @@
       project files and the error and warning messages. This is regardless of
       which IDE you are using as the Console is a thin-client.</para>
     </section>
-
-    <section>
-      <title>Database</title>
-
-      <para>Schema management; automated generation of light-weight DAO's;
-      built-in support for connection pooling. Static SQL queries library;
-      dynamic sql qry libraries. NEFS provides powerful database connection
-      services.</para>
-
-      <para>NEFS provides packaged database components through its Axiom
-      framework. This results in significantly reduced time to deployment of
-      data-driven applications.</para>
-
-      <para>Central management of database p</para>
-
-      <section>
-        <title>SQL statement libraries</title>
-
-        <para>Allows all SQL statements and dynamic parameters used in a
-        project to be specified in one or more SQL files using XML.</para>
-      </section>
-
-      <section>
-        <title>Dynamic Queries</title>
-
-        <para>Allows developers to define tables, columns, joins, sort orders
-        and other important data through the use of Meta information about
-        data relationships.</para>
-      </section>
-    </section>
   </section>
 
   <section>
@@ -117,9 +87,10 @@
     <para>Console provides a centralized location for all project
     documentation for any application. Instead of storing application code and
     programmer documentation separately, Console brings tag documentation,
-    javadocs, MS Office documents, and other project documents into a single
-    easilyaccessible place. Managers will no longer need to hunt for
-    documents.</para>
+    javadocs, and other project documents into a single easily accessible
+    place. Managers will no longer need to hunt for documents.</para>
+
+    <para></para>
   </section>
 
   <section>
@@ -150,11 +121,11 @@
 
       <para>The Console provides a complete HTML based representation of the
       workflow of your application. Using the Console's NAvigation Tree
-      Inspector you can easily. </para>
+      Inspector you can easily.</para>
 
       <para>All of the navigation trees that are externalized in XML files
       appear in the Navigation Catalog within Console. You can use this view
-      to review all the pages that appear in an application. </para>
+      to review all the pages that appear in an application.</para>
 
       <para><mediaobject>
           <imageobject>
@@ -195,73 +166,241 @@
       <para>Almost all aspects of forms/dialogs are automatically captured and
       documented within Console. This includes a list of all the forms, any
       classes that are extended, all fields, field types, labels,
-      conditionals, and many other features. </para>
+      conditionals, and many other features.</para>
 
-      <para><table frame="none">
+      <para>All of the dialogs that are externalized in XML files appear under
+      the Dialogs Catalog in Console. Analysts or customers can use this view
+      to review all the dialogs that appear in an application.</para>
+
+      <para><figure>
           <title>Managing Dialogs</title>
 
-          <tgroup cols="2">
-            <tbody>
-              <row>
-                <entry><mediaobject>
-                    <imageobject>
-                      <imagedata fileref="./resources/images/screen-console-dialog-catalog-small.gif" />
-                    </imageobject>
-                  </mediaobject></entry>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-dialog-catalog-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
 
-                <entry valign="top">All of the dialogs that are externalized
-                in XML files appear under the Dialogs Catalog in Console.
-                Analysts or customers can use this view to review all the
-                dialogs that appear in an application. </entry>
-              </row>
+      <para>Each dialog may be further analyzed by reviewing a user- friendly
+      functional specification view. This view may be shared with analysts or
+      clients to ensure requirements completeness.</para>
 
-              <row>
-                <entry><mediaobject>
-                    <imageobject>
-                      <imagedata fileref="./resources/images/screen-console-dialog-inspector-small.gif" />
-                    </imageobject>
-                  </mediaobject></entry>
+      <para><figure>
+          <title>Viewing Functional Specs of a Dialog</title>
 
-                <entry valign="top">Each dialog may be further analyzed by
-                reviewing a user- friendly functional specification view. This
-                view may be shared with analysts or clients to ensure
-                requirements completeness. </entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table></para>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-dialog-inspector-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
-      <title>Schema Doc</title>
+      <title>Database</title>
 
-      <para>Axiom provides ready-to-use e-business database components. It
-      provides Datatypes, Tabletypes, and Indextypes which form the basis of
-      an XML-based data dictionary of Tables, Columns, Indexes and
-      Data.</para>
-    </section>
+      <section>
+        <title>Schema Doc</title>
 
-    <section>
-      <title>Data Types Dictionary</title>
+        <para>The NEFS allows you to define the structures (tables, columns,
+        relationships) needed to store your data using XML file. Schema tags
+        support full relational integrity and may actually be used to define
+        meta data to support Java-based relational integrity for existing and
+        legacy databases that may not be built with fully relational
+        integrity.</para>
 
-      <para>Maintains an RDBMS-neutral and consistent data dictionary.</para>
-    </section>
+        <para>Using the XML-based schema definition, all the database tables,
+        columns, indexes, SQL DDL, and Java data access can be automatically
+        documented in the Console.</para>
 
-    <section>
-      <title>Table Types Dictionary</title>
+        <para><table frame="none">
+            <title>Automatically generate Schema Doc</title>
 
-      <para>Defines generic tables and bevaiors that can be inherited by real
-      tables.</para>
+            <tgroup cols="2">
+              <tbody>
+                <row>
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-schema-tables-doc-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-schema-tables-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+      </section>
+
+      <section>
+        <title>Data Types Dictionary</title>
+
+        <para>NEFS provides packaged database components through its Axiom
+        framework. This results in significantly reduced time to deployment of
+        data-driven applications. Axiom provides ready-to-use e-business
+        database components such as Datatypes, Tabletypes, and Indextypes
+        which form the basis of an XML-based data dictionary of Tables,
+        Columns, Indexes and Data.</para>
+
+        <para>Datatypes serve as “column templates” that allow a programmer to
+        specify a column type. They may be inherited from other datatypes,
+        allowing better reuse and object-orientation in relational databases.
+        These datatypes can be easily defined using XML tags. This
+        RDBMS-neutral and consistent data dictionary can be viewed from within
+        the Console.</para>
+
+        <para><figure>
+            <title>Manage DataTypes Dictionary</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-datatype-dictionary-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </section>
+
+      <section>
+        <title>Table Types Dictionary</title>
+
+        <para>The Axiom Table Types dictionary contains definitions for
+        generic tables and bevaiors that can be inherited by real tables.
+        Table types work as “table templates” that allow a programmer to
+        specify a table type. They may be inherited from other table types,
+        allowing better reuse and object-orientation in relational
+        databases.</para>
+
+        <para>You can view the complete documentation for the built-in as well
+        as custom table types through the Console. Note that this
+        documentation is automatically generated when you define a new table
+        type.</para>
+
+        <para></para>
+
+        <para><figure>
+            <title>Viewing Built-in and Custom Table Types</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-table-types-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+      </section>
+
+      <section>
+        <title>SQL statement libraries</title>
+
+        <para>Almost all components of a SQL statement are automatically
+        captured and documented within the Console. This includes a list of
+        all the SQL statements used througout the application, the parameters
+        they require, and any views that may be attached to them.</para>
+
+        <para>NEFS allows all SQL statements and dynamic parameters used in a
+        project to be specified in one or more SQL files using XML. All of the
+        SQL statements that are externalized in these XML files appear in a
+        single Console page.</para>
+
+        <para><table frame="none">
+            <title>Manage Static SQL Queries</title>
+
+            <tgroup cols="2">
+              <tbody>
+                <row>
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-sql-catalog-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-sql-doc-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+
+        <para>Programmers and manager can use this view to review all the SQL
+        statements that are used in an application.</para>
+      </section>
+
+      <section>
+        <title>Dynamic Queries</title>
+
+        <para>NEFS allows developers to define report tables, columns, joins,
+        sort orders and other important data through the use of Meta
+        information about data relationships. The entire suite of fields,
+        joins, rules, conditions, select dialogs, and where expressions from
+        Query Definitions are fully documented within Console.</para>
+
+        <para><table frame="none">
+            <title>Centrally Manage Dynamic Queries</title>
+
+            <tgroup cols="2">
+              <tbody>
+                <row>
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-qry-defn-catalog-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-qry-defn-doc-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+      </section>
+
+      <section>
+        <title>Commands</title>
+
+        <para>Commands are Java classes that execute arbitrary tasks defined
+        either by you or the framework. They are used to encapsulate common
+        application logic and reuse that logic across pages and dialogs/forms.
+        All the built-in and custom commands can be viewed through the
+        Commands catalog in the Console.</para>
+
+        <para></para>
+      </section>
     </section>
   </section>
 
   <section>
     <title>Configuration</title>
 
-    <para>Centralized configuration parameters. It allows multiple properties
-    to be defined in a single XML file (web.xml), complete with variable
-    replacements. Development modes - Allows production, testing and
-    development modes</para>
+    <para>The Console allows you to centrally manage all of your configuration
+    parameters. It allows multiple properties to be defined in a single XML
+    file (web.xml), complete with variable replacements. All of these
+    Configuration variables are displayed on a single page within the Console,
+    displaying the variable names and their values.</para>
+
+    <para><figure>
+        <title>Application Configuration Management</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-console-home-small.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>Many servlet-context variables are also visible within Console,
+    including the current execution mode (Production, Testing, or
+    Development). The NEFS supports multiple runtime environments to support
+    different phases of development.</para>
   </section>
 
   <section>
@@ -273,33 +412,105 @@
     controls (in the form of XML tags), it releases your team from the need to
     create error-prone low-level infrastructure code.</para>
 
-    <para>By using NEFS your development time is spe</para>
-
     <section>
       <title>Support for Multiple Skins</title>
 
       <para>NEFS separates form/report presentation from form/report design
       and logic by automatically creating all HTML and DHTML in user-defined
-      <emphasis>skin</emphasis> objects. NEFS provides several built-in skins.
-      In addition to that, you can define your own skins and use them to
-      customize your application's look-and-feel.</para>
+      <emphasis>skin</emphasis> objects. It provides several built-in skins to
+      be used to build your applications. In addition to that, you can define
+      your own skins and use them to customize your application's
+      look-and-feel.</para>
+
+      <para>You can view the detailed design and functional description of
+      these themes/skins through Console.</para>
+
+      <para><table frame="none">
+          <title>View Design and Functional Specs of a Theme</title>
+
+          <tgroup cols="2">
+            <tbody>
+              <row>
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-theme-1-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-theme-4-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+              </row>
+
+              <row>
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-temp-catalog-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
     </section>
 
     <section>
-      <title>Custom Classes</title>
+      <title>Custom Pages and Classes</title>
 
-      <para></para>
+      <para>TYou can define your own pages and handler classes to customize
+      the framework according to your own needs. All the page definitions are
+      available for analysis through the Console. Similarly, all the built-in
+      and custom handlers are also available for viewing through the
+      Console.</para>
+
+      <para><table frame="none">
+          <title>Viewing Custom Pages and Handler Classes</title>
+
+          <tgroup cols="2">
+            <tbody>
+              <row>
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-nav-tree-catalog.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-exec-handlers-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
     </section>
   </section>
 
   <section>
     <title>Unit Testing</title>
 
-    <para>Increase the quality of your applications by running automated unit
-    tests. No additional effort is required to develop your own unit tests.
-    Common as well as custom components. No extra work required. It provides
-    the ability to quickly test things "<emphasis>in
-    container</emphasis>".</para>
+    <para>The NEFS allows you to increase the quality of your applications by
+    running automated unit tests. While developers are working on forms and
+    SQL statements, Console automatically provides browser-based testing of
+    the forms and statements. No servlets, or JSPs need to be written for
+    basic testing of forms, validations, and SQL statements. This provides the
+    ability to quickly test things "<emphasis>in container</emphasis>" without
+    requiring any extra effort from the development team.</para>
+
+    <para><important>
+        <para>The testing is done using the same classloader, classpaths, and
+        other container (app server) configurations as the ones used by the
+        application. So problems related to the container are easier to
+        find.</para>
+      </important></para>
+
+    <para>Once initial testing is completed and requirements are solidified,
+    the forms and statements can be aggregated to create interactive
+    applications. End users can use the interactive testing tools to see code
+    as it is being developed (supporting eXtreme Programming concepts).</para>
 
     <section>
       <title>Commands</title>
@@ -310,7 +521,7 @@
     <section>
       <title>Value Sources</title>
 
-      <para>Provide dynamic access to common business logic and may be
+      <para>Provides dynamic access to common business logic and may be
       considered a business rules library.</para>
     </section>
 
@@ -332,9 +543,41 @@
     <section>
       <title>SQL Queries</title>
 
-      <para>Automatically provides testing of schema tables as well as static
-      and dynamic queries. Table Dialogs - what they are and how the ease
-      development.</para>
+      <para>Each SQL statement may be unit tested inside Console to ensure
+      that user requirements are being met. As soon as the XML is completed,
+      the test harness is automatically created and may be executed by anyone
+      with access to Console. The statement, along with any reports/views can
+      be tested without creating any additional code.</para>
+
+      <para><table frame="none">
+          <title>Automatically Generate Unit Test Harness for SQL
+          Queries</title>
+
+          <tgroup cols="2">
+            <tbody>
+              <row>
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-unittest-sql-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-ut-result-sql-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+    </section>
+
+    <section>
+      <title>Database Schema</title>
+
+      <para>Table Dialogs - what they are and how the ease development. NEFS
+      automatically provides testing of schema tables.</para>
     </section>
 
     <section>
@@ -353,14 +596,13 @@
     all SQL statements, dynamic queries, configuration files, and many other
     resources are stored in XML files that are reusable across
     applications.</para>
-
-    <para></para>
   </section>
 
   <section>
     <title>Database Policies and Connections</title>
 
-    <para></para>
+    <para>Built-in support for connection pooling. NEFS provides powerful
+    database connection services.</para>
   </section>
 
   <section>
@@ -370,6 +612,9 @@
     business users and developers to permeate restrictions on forms, reports,
     pages and other resources based on user names, types, location, roles, and
     capabilities.</para>
+
+    <para>All of the application primary permissions, child permissions,
+    aliased permissions, and roles are documented in Console.</para>
 
     <section>
       <title>User Login Forms</title>
@@ -429,13 +674,6 @@
   </section>
 
   <section>
-    <title>Import/Export Database Schema in XML form - is it same as
-    12?</title>
-
-    <para></para>
-  </section>
-
-  <section>
     <title>Automated Code Generation</title>
 
     <para>HTML, SQL DDL/DML and client/server side script generation</para>
@@ -472,33 +710,113 @@
   <section>
     <title>Project Metrics</title>
 
-    <para>Logging and performance stats. How it is used for collecting and
-    managing metrics automatically. Function Points, SLOC.</para>
+    <para>As developers create forms, SQL statements, query definitions, JSP,
+    servlets, and other code, the Console automatically maintains basic
+    application metrics. Metrics are an important part of every sophisticated
+    software development process and Sparx can not only capture the metrics
+    but store them in XML files so that they can be analyzed over time. Your
+    team concentrates on implementation of business functionality while the
+    Console automatically collects all relevant project metrics, documentation
+    and details.</para>
 
-    <para>Presentation objects performance stats</para>
+    <para><table frame="none">
+        <title>View and Analyze Project Metrics</title>
 
-    <para>SQL performance stats</para>
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-metrics-3-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
 
-    <para>Your team concentrates on implementation of business functionality
-    while the Console automatically collects all relevant project metrics,
-    documentation and details.</para>
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-metrics-1-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+            </row>
+
+            <row>
+              <entry><mediaobject>
+                  <imageobject>
+                    <imagedata fileref="./resources/images/screen-console-metrics-2-small.gif" />
+                  </imageobject>
+                </mediaobject></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></para>
   </section>
 
   <section>
     <title>Application Performance and Logging</title>
 
-    <para>Tracks log output for maintaining data about execution statistics
-    for SQL statements, servlet and JSP pages, dialogs/forms, and
-    security.</para>
+    <para>All mission-critical and sophisticated web applications need to be
+    tuned for both database and application performance. Console tracks the
+    log outputs for maintaining data about execution statistics for SQL
+    statements, servlet and JSP pages, dialogs/forms, and security. This is
+    used to automatically collect the project metrics.</para>
+
+    <para><screenshot>
+        <graphic fileref="./resources/images/screen-console-sql-stats.gif" />
+      </screenshot></para>
+
+    <para>In addition to the actual SQL statements, performance metrics
+    accompany each SQL statement indicating the number of times each statement
+    is execute and the average/maximum time (in milliseconds) it took to
+    execute the statement.</para>
   </section>
 
   <section>
     <title>Support Documentation</title>
 
-    <para>Hundreds of pages of API and developer document helps lower the
-    learning curve for the development team. Includes sample applications.
-    User's manual, tutorials, startup doc, comparative analysis of
-    features.</para>
+    <para>NEFS contains hundreds of pages of API and developer document which
+    helps lower the learning curve for the development team. Console provides
+    a centralized location for all project documentation for any
+    application.</para>
+
+    <para><screenshot>
+        <graphic fileref="./resources/images/screen-console-support-docs.gif" />
+      </screenshot></para>
+
+    <section>
+      <title>XDM Tags Reference</title>
+
+      <para>Instead of storing application code and programmer documentation
+      separately, Console brings tag documentation, javadocs, and other
+      project documents into a single easily accessible place. Managers no
+      longer need to hunt for documents. It also lowers the learning curve for
+      the developers.</para>
+
+      <para><note>
+          <para>Note that any classes that are extended by customers are also
+          documented through the console automatically.</para>
+        </note></para>
+
+      <para><table frame="none">
+          <title>NEFS Comprehensive XDM Tags Reference</title>
+
+          <tgroup cols="2">
+            <tbody>
+              <row>
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-tags-doc-small.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+
+                <entry><mediaobject>
+                    <imageobject>
+                      <imagedata fileref="./resources/images/screen-console-tags-tree.gif" />
+                    </imageobject>
+                  </mediaobject></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+    </section>
   </section>
 
   <section>
