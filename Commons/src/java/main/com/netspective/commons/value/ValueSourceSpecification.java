@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceSpecification.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSourceSpecification.java,v 1.2 2003-03-21 13:56:20 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value;
@@ -132,7 +132,7 @@ public class ValueSourceSpecification
                             else
                             {
                                 processingInstructions = params.substring(1, endPos);
-                                params = params.substring(endPos);
+                                params = params.substring(endPos + 1);
                             }
                             break;
 
