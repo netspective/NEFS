@@ -41,6 +41,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
@@ -240,7 +241,7 @@ public class QueryDefnSelect extends Query
         return !isDirty && !alwaysDirty;
     }
 
-    public String getSqlText(ConnectionContext cc) throws NamingException, SQLException
+    public DbmsSqlText getSqlText(ConnectionContext cc) throws NamingException, SQLException
     {
         if(isDirty || alwaysDirty)
         {

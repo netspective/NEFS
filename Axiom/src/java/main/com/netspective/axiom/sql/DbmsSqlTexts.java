@@ -67,7 +67,17 @@ public class DbmsSqlTexts implements Cloneable
         return jexlVars;
     }
 
-    public ExpressionText createExpr(String sql)
+    public Object getOwner()
+    {
+        return owner;
+    }
+
+    public String getOwnerVarName()
+    {
+        return ownerVarName;
+    }
+
+    public ExpressionText createExpr(DbmsSqlText sqlText, String sql)
     {
         return new ValueSourceOrJavaExpressionText(sql, createVarsMap());
     }

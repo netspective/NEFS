@@ -95,22 +95,17 @@ public class QueryParameters
         }
     }
 
-    private Query query;
+    private DbmsSqlText owner;
     private List params = new ArrayList();
 
-    public QueryParameters(Query parent)
+    public QueryParameters(DbmsSqlText owner)
     {
-        setQuery(parent);
+        this.owner = owner;
     }
 
     public Query getQuery()
     {
-        return query;
-    }
-
-    public void setQuery(Query query)
-    {
-        this.query = query;
+        return owner.getOwnerQuery();
     }
 
     public QueryParameter createParam()

@@ -74,7 +74,7 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import junit.framework.TestCase;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.14 2004-08-15 02:13:10 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.15 2004-09-23 14:29:23 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -757,8 +757,8 @@ public class DynamicSqlTest extends TestCase
 
         String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (UPPER(column_03) like UPPER(?)) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
 
-        String sqlOne = select.getSqlText(cc);
-        sqlOne = TextUtils.getInstance().join(TextUtils.getInstance().split(sqlOne, " \r\t\f\n", true), " ");
+        DbmsSqlText sqlOneText = select.getSqlText(cc);
+        String sqlOne = TextUtils.getInstance().join(TextUtils.getInstance().split(sqlOneText.getSql(cc), " \r\t\f\n", true), " ");
 
         //System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
 

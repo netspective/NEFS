@@ -44,7 +44,9 @@ public class DbmsSqlText
 {
     private DbmsSqlTexts owner;
     private String dbms = DatabasePolicies.DBMSID_DEFAULT;
+    private String role = null;
     private ExpressionText sqlText;
+    private QueryParameters parameters;
 
     public DbmsSqlText(DbmsSqlTexts owner)
     {
@@ -69,6 +71,16 @@ public class DbmsSqlText
         this.dbms = dbms.getValue();
     }
 
+    public String getRole()
+    {
+        return role;
+    }
+
+    public void setRole(String role)
+    {
+        this.role = role;
+    }
+
     public String getSql()
     {
         return sqlText.getStaticExpr();
@@ -81,11 +93,34 @@ public class DbmsSqlText
 
     public void setSql(String sqlText)
     {
-        this.sqlText = owner.createExpr(sqlText);
+        this.sqlText = owner.createExpr(this, sqlText);
     }
 
     public String toString()
     {
-        return "dbms '" + dbms + "' (" + sqlText.getStaticExpr() + ")";
+        return "dbms '" + dbms + "' (" + sqlText.getStaticExpr() + ") params (" + parameters + ")";
+    }
+
+    public QueryParameters getParams()
+    {
+        return parameters;
+    }
+
+    public QueryParameters createParams()
+    {
+        return new QueryParameters(this);
+    }
+
+    public void addParams(QueryParameters params)
+    {
+        this.parameters = params;
+    }
+
+    public Query getOwnerQuery()
+    {
+        if(owner.getOwner() instanceof Query)
+            return (Query) owner.getOwner();
+        else
+            throw new RuntimeException(this + " is not owned by a Query.");
     }
 }

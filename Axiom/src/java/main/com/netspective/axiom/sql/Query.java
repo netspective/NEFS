@@ -67,14 +67,18 @@ public class Query
 
     private class QuerySqlExpressionText extends ValueSourceOrJavaExpressionText
     {
-        public QuerySqlExpressionText(String staticExpr, Map vars)
+        private DbmsSqlText sqlText;
+
+        public QuerySqlExpressionText(DbmsSqlText sqlText, String staticExpr, Map vars)
         {
             super(staticExpr, vars);
+            this.sqlText = sqlText;
         }
 
-        public QuerySqlExpressionText(String staticExpr)
+        public QuerySqlExpressionText(DbmsSqlText sqlText, String staticExpr)
         {
             super(staticExpr);
+            this.sqlText = sqlText;
         }
 
         protected String getReplacement(ValueContext vc, String entireText, String replaceToken)
@@ -84,25 +88,31 @@ public class Query
                 StringBuffer sb = new StringBuffer();
                 try
                 {
-                    int paramNum = Integer.parseInt(replaceToken.substring(LISTPARAM_PREFIX.length()));
-                    if(paramNum >= 0 && paramNum < parameters.size())
+                    final int paramNum = Integer.parseInt(replaceToken.substring(LISTPARAM_PREFIX.length()));
+                    final QueryParameters parameters = sqlText.getParams();
+                    if(parameters != null)
                     {
-                        QueryParameter param = parameters.get(paramNum);
-                        if(!param.isListType())
-                            throw new RuntimeException("Query '" + getNameForMapKey() + "': only list parameters may be specified here (param '" + paramNum + "')");
-
-                        ValueSource source = param.getValue();
-                        String[] values = source.getTextValues(vc);
-
-                        for(int q = 0; q < values.length; q++)
+                        if(paramNum >= 0 && paramNum < parameters.size())
                         {
-                            if(q > 0)
-                                sb.append(", ");
-                            sb.append("?");
+                            QueryParameter param = parameters.get(paramNum);
+                            if(!param.isListType())
+                                throw new RuntimeException("Query '" + getNameForMapKey() + "': only list parameters may be specified here (param '" + paramNum + "')");
+
+                            ValueSource source = param.getValue();
+                            String[] values = source.getTextValues(vc);
+
+                            for(int q = 0; q < values.length; q++)
+                            {
+                                if(q > 0)
+                                    sb.append(", ");
+                                sb.append("?");
+                            }
                         }
+                        else
+                            throw new RuntimeException("Query '" + getQualifiedName() + "': parameter '" + paramNum + "' does not exist");
                     }
                     else
-                        throw new RuntimeException("Query '" + getQualifiedName() + "': parameter '" + paramNum + "' does not exist");
+                        throw new RuntimeException("Query '" + getQualifiedName() + "': parameter '" + paramNum + "' does not exist - no parameters found");
                 }
                 catch(Exception e)
                 {
@@ -123,19 +133,17 @@ public class Query
             super(Query.this, "query");
         }
 
-        public ExpressionText createExpr(String sql)
+        public ExpressionText createExpr(DbmsSqlText sqlText, String sql)
         {
-            return new QuerySqlExpressionText(sql, createVarsMap());
+            return new QuerySqlExpressionText(sqlText, sql, createVarsMap());
         }
     }
 
     private Log log = LogFactory.getLog(Query.class);
     private QueriesNameSpace nameSpace;
     private String queryName;
-    private boolean sqlTextHasExpressions;
     private ValueSource dataSourceId;
     private QueryDbmsSqlTexts sqlTexts = new QueryDbmsSqlTexts();
-    private QueryParameters parameters;
     private QueryExecutionLog execLog = new QueryExecutionLog();
 
     public Query()
@@ -199,17 +207,23 @@ public class Query
 
     public QueryParameters getParams()
     {
-        return parameters;
+        DbmsSqlText sqlText = sqlTexts.getByDbms(DatabasePolicies.DBPOLICY_ANSI);
+        return sqlText.getParams();
     }
 
+    /**
+     * If we're creating parameters at the root of the <query> then we'll be doing it for ANSI
+     */
     public QueryParameters createParams()
     {
-        return new QueryParameters(this);
+        DbmsSqlText sqlText = sqlTexts.getByDbms(DatabasePolicies.DBPOLICY_ANSI);
+        return sqlText.createParams();
     }
 
-    public void addParams(QueryParameters params)
+    public void addParams(QueryParameters parameters)
     {
-        this.parameters = params;
+        DbmsSqlText sqlText = sqlTexts.getByDbms(DatabasePolicies.DBPOLICY_ANSI);
+        sqlText.addParams(parameters);
     }
 
     public ValueSource getDataSrc()
@@ -220,16 +234,6 @@ public class Query
     public void setDataSrc(ValueSource dataSourceId)
     {
         this.dataSourceId = dataSourceId;
-    }
-
-    public boolean isSqlTextHasExpressions()
-    {
-        return sqlTextHasExpressions;
-    }
-
-    public void setSqlTextHasExpressions(boolean sqlTextHasExpressions)
-    {
-        this.sqlTextHasExpressions = sqlTextHasExpressions;
     }
 
     public QueryExecutionLog getExecLog()
@@ -268,17 +272,17 @@ public class Query
         return sqlTexts;
     }
 
-    public String getSqlText(ConnectionContext cc) throws NamingException, SQLException
+    public DbmsSqlText getSqlText(ConnectionContext cc) throws NamingException, SQLException
     {
-        DbmsSqlText sqlText = sqlTexts.getByDbmsOrAnsi(cc.getDatabasePolicy());
-        return sqlText != null ? sqlText.getSql(cc) : null;
+        return sqlTexts.getByDbmsOrAnsi(cc.getDatabasePolicy());
     }
 
     public void trace(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
+        DbmsSqlText sqlText = getSqlText(cc);
         StringBuffer traceMsg = new StringBuffer();
         traceMsg.append(QueryExecutionLogEntry.class.getName() + " '" + getQualifiedName() + "' at " + cc.getContextLocation() + "\n");
-        traceMsg.append(getSqlText(cc));
+        traceMsg.append(sqlText.getSql());
         if(overrideParams != null)
         {
             for(int i = 0; i < overrideParams.length; i++)
@@ -292,7 +296,7 @@ public class Query
         }
         else
         {
-            QueryParameters params = getParams();
+            QueryParameters params = sqlText.getParams();
             if(params != null)
             {
                 for(int i = 0; i < params.size(); i++)
@@ -304,12 +308,13 @@ public class Query
 
     public String createExceptionMessage(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
+        DbmsSqlText sqlText = getSqlText(cc);
         StringBuffer text = new StringBuffer();
 
         text.append("Query id = ");
         text.append(getQualifiedName());
         text.append("\n");
-        text.append(getSqlText(cc));
+        text.append(sqlText.getSql(cc));
         text.append("\n");
         if(overrideParams != null)
         {
@@ -324,12 +329,16 @@ public class Query
             }
             text.append("\n");
         }
-        else if(parameters != null)
+        else
         {
-            text.append("\nBind Parameters (in query):\n");
-            for(int i = 0; i < parameters.size(); i++)
-                (parameters.get(i)).appendBindText(text, cc, "\n");
-            text.append("\n");
+            final QueryParameters parameters = sqlText.getParams();
+            if(parameters != null)
+            {
+                text.append("\nBind Parameters (in query):\n");
+                for(int i = 0; i < parameters.size(); i++)
+                    (parameters.get(i)).appendBindText(text, cc, "\n");
+                text.append("\n");
+            }
         }
         return text.toString();
     }
@@ -340,7 +349,8 @@ public class Query
         Connection conn = cc.getConnection();
         logEntry.registerGetConnectionEnd(conn);
         PreparedStatement stmt = null;
-        String sql = getSqlText(cc);
+        DbmsSqlText sqlText = getSqlText(cc);
+        String sql = sqlText.getSql(cc);
         if(scrollable)
             stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         else
@@ -352,8 +362,12 @@ public class Query
             for(int i = 0; i < overrideParams.length; i++)
                 stmt.setObject(i + 1, overrideParams[i]);
         }
-        else if(parameters != null)
-            parameters.apply(cc, stmt);
+        else
+        {
+            final QueryParameters parameters = sqlText.getParams();
+            if(parameters != null)
+                parameters.apply(cc, stmt);
+        }
         logEntry.registerBindParamsEnd();
         return stmt;
     }
@@ -362,7 +376,8 @@ public class Query
     {
         Connection conn = cc.getConnection();
         PreparedStatement stmt = null;
-        String sql = getSqlText(cc);
+        DbmsSqlText sqlText = getSqlText(cc);
+        String sql = sqlText.getSql(cc);
         if(scrollable)
             stmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         else
@@ -373,8 +388,12 @@ public class Query
             for(int i = 0; i < overrideParams.length; i++)
                 stmt.setObject(i + 1, overrideParams[i]);
         }
-        else if(parameters != null)
-            parameters.apply(cc, stmt);
+        else
+        {
+            final QueryParameters parameters = sqlText.getParams();
+            if(parameters != null)
+                parameters.apply(cc, stmt);
+        }
         return stmt;
     }
 
@@ -555,7 +574,8 @@ public class Query
         try
         {
             Connection conn = cc.getConnection();
-            String sql = getSqlText(cc);
+            DbmsSqlText sqlText = getSqlText(cc);
+            String sql = sqlText.getSql(cc);
             stmt = conn.prepareStatement(sql);
 
             if(overrideParams != null)
@@ -563,8 +583,12 @@ public class Query
                 for(int i = 0; i < overrideParams.length; i++)
                     stmt.setObject(i + 1, overrideParams[i]);
             }
-            else if(parameters != null)
-                parameters.apply(cc, stmt);
+            else
+            {
+                final QueryParameters parameters = sqlText.getParams();
+                if(parameters != null)
+                    parameters.apply(cc, stmt);
+            }
 
             int executeStmtResult = stmt.executeUpdate();
             return executeStmtResult;

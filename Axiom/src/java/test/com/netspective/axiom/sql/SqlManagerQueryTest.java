@@ -465,7 +465,6 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
         assertNotNull(qeleOne);
         assertNotNull(qrsOne.getResultSet());
-        assertFalse(stmtOne.isSqlTextHasExpressions());
 
         // Verify query results...
         qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
@@ -621,7 +620,6 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
         assertNotNull(qeleOne);
         assertNotNull(qrsOne.getResultSet());
-        assertFalse(stmtOne.isSqlTextHasExpressions());
 
         // Verify query results...
         qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
