@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.20 2003-10-13 03:07:52 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.21 2003-11-13 16:41:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -60,7 +61,7 @@ import com.netspective.commons.text.TextUtils;
 /**
  * Helper class for attributes that can take multiple flags from a set of a flags.
  */
-public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
+public abstract class XdmBitmaskedFlagsAttribute implements Cloneable, Serializable
 {
     private static final Log log = LogFactory.getLog(XdmBitmaskedFlagsAttribute.class);
 
