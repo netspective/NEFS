@@ -39,84 +39,31 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.8 2003-11-22 04:52:20 roque.hernandez Exp $
+ * $Id: TableQueryDefnSelect.java,v 1.1 2003-11-22 04:52:20 roque.hernandez Exp $
  */
+package com.netspective.axiom.sql.dynamic;
 
-package com.netspective.axiom;
+import com.netspective.axiom.schema.Table;
 
-import com.netspective.commons.Product;
-import com.netspective.axiom.BuildLog;
-
-public class ProductRelease implements Product
+public class TableQueryDefnSelect extends QueryDefnSelect
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
 
-    public static final String PRODUCT_NAME = "Netspective Axiom";
-    public static final String PRODUCT_ID = "netspective-axiom";
+    Table owner;
 
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 4;
-
-    public ProductRelease()
+    public TableQueryDefnSelect(QueryDefinition queryDef, Table owner)
     {
+        super(queryDef);
+        this.owner = owner;
     }
 
-    public String getProductId()
+    public Table getOwner()
     {
-        return PRODUCT_ID;
+        return owner;
     }
 
-    public String getProductName()
+    public void setOwner(Table owner)
     {
-        return PRODUCT_NAME;
+        this.owner = owner;
     }
 
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
-
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
-    }
 }

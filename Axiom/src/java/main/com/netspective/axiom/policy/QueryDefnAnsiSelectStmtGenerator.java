@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.4 2003-09-29 01:54:16 shahid.shah Exp $
+ * $Id: QueryDefnAnsiSelectStmtGenerator.java,v 1.5 2003-11-22 04:52:20 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -53,17 +53,7 @@ import java.util.Set;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.axiom.sql.dynamic.QueryDefnField;
-import com.netspective.axiom.sql.dynamic.QueryDefnJoin;
-import com.netspective.axiom.sql.dynamic.QueryDefnFields;
-import com.netspective.axiom.sql.dynamic.QueryDefnConditions;
-import com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpressions;
-import com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpression;
-import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReferences;
-import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference;
+import com.netspective.axiom.sql.dynamic.*;
 import com.netspective.axiom.DatabasePolicy;
 
 class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
@@ -197,7 +187,7 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         sql.append("from \n");
         for(int fc = 0; fc < fromCount; fc++)
         {
-            sql.append("  " + fromClause.get(fc));
+            sql.append("  " + getSchemaPrefix() + fromClause.get(fc));
             if(fc != fromLast)
                 sql.append(",");
             String comments = (String) fromClauseComments.get(fc);
@@ -328,5 +318,13 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         }
 
         return sql.toString();
+    }
+
+    private String getSchemaPrefix()
+    {
+        if ( policy.isPrefixTableNamesWithSchemaName() && (select instanceof TableQueryDefnSelect) ) {
+            return ((TableQueryDefnSelect)select).getOwner().getSchema().getName() + ".";
+        } else
+            return "";
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.9 2003-11-19 02:17:19 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.10 2003-11-22 04:52:20 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -98,6 +98,8 @@ import com.netspective.commons.text.TextUtils;
 public class AnsiDatabasePolicy implements DatabasePolicy
 {
     private static final Log log = LogFactory.getLog(AnsiDatabasePolicy.class);
+
+    private boolean prefixTableNamesWithSchemaName = false;
 
     /* --------------------------------------------------------------------------------------------------------------*/
 
@@ -239,6 +241,16 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         {
             this.createParentKeyIndex = createParentKeyIndex;
         }
+    }
+
+    public boolean isPrefixTableNamesWithSchemaName()
+    {
+        return this.prefixTableNamesWithSchemaName;
+    }
+
+    public void setPrefixTableNamesWithSchemaName(boolean prefix)
+    {
+        this.prefixTableNamesWithSchemaName = prefix;
     }
 
     /* --------------------------------------------------------------------------------------------------------------*/
@@ -779,7 +791,8 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         }
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
-        String sql = "insert into " + table.getName() + " (" + namesSql + ") values (" + valuesSql + ")";
+        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+        String sql = "insert into " + tableName + " (" + namesSql + ") values (" + valuesSql + ")";
 
         if(execute)
         {
@@ -865,7 +878,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
 
-        String sql = "update " + table.getName() + " set " + setsSql;
+        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+
+        String sql = "update " + tableName + " set " + setsSql;
         if (whereCond != null)
         {
             if(! whereCond.startsWith("where"))
@@ -925,7 +940,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
 
-        String sql = "delete from " + table.getName();
+        String tableName = (isPrefixTableNamesWithSchemaName() ? table.getSchema().getName() + "." + table.getName() : table.getName());
+
+        String sql = "delete from " + tableName;
         if (whereCond != null)
         {
             if(! whereCond.startsWith("where"))

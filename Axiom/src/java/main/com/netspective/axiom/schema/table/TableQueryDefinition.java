@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableQueryDefinition.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: TableQueryDefinition.java,v 1.2 2003-11-22 04:52:20 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -47,6 +47,7 @@ package com.netspective.axiom.schema.table;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefnField;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.TableQueryDefnSelect;
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
 import com.netspective.axiom.schema.Table;
 
@@ -76,6 +77,6 @@ public class TableQueryDefinition extends QueryDefinition
 
     public QueryDefnSelect createSelect()
     {
-        return new QueryDefnSelect(this);
+        return new TableQueryDefnSelect(this, owner);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicy.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: DatabasePolicy.java,v 1.2 2003-11-22 04:52:20 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
@@ -222,6 +222,10 @@ public interface DatabasePolicy
      * @param queryDefnSelect
      */
     public QueryDefnSelectStmtGenerator createSelectStatementGenerator(QueryDefnSelect queryDefnSelect);
+
+    public boolean isPrefixTableNamesWithSchemaName();
+
+    public void setPrefixTableNamesWithSchemaName(boolean prefix);
 
     public interface RowInsertListener
     {
