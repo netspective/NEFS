@@ -39,19 +39,19 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.Table;
 import javax.ejb.Transient;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-
 @Entity
-        @Table(name = "Party_Role_Type")
-        public class PartyRoleType extends AbstractCustomReferenceEntity implements EntitySeedDataProvider
+@Table(name = "Party_Role_Type")
+public class PartyRoleType extends AbstractCustomReferenceEntity implements EntitySeedDataProvider
 {
 
     /**
@@ -72,7 +72,7 @@ import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
     }
 
     @Id(generate = GeneratorType.AUTO)
-            public Long getPartyRoleTypeId()
+    public Long getPartyRoleTypeId()
     {
         return super.getSystemId();
     }
@@ -83,10 +83,18 @@ import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
     }
 
     @Transient
-            public EntitySeedData getEntitySeedData()
+    public EntitySeedData getEntitySeedData()
     {
         return createSeedData(new CustomSeedData[]{
-            new CustomSeedData("P", "Prospect", "A sales prospect")
+            new CustomSeedData("E", "Employee", ""),
+            new CustomSeedData("C", "Contractor", ""),
+            new CustomSeedData("F", "Family Member", ""),
+            new CustomSeedData("PORG", "Parent Organization", ""),
+            new CustomSeedData("SORG", "Subsidiary", ""),
+            new CustomSeedData("DEPT", "Department", ""),
+            new CustomSeedData("OORG", "Other Organization Unit", ""),
+            new CustomSeedData("DIV", "Division", ""),
+            new CustomSeedData("P", "Prospect", "A sales prospect"),
         });
     }
 }
