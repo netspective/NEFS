@@ -207,7 +207,7 @@
     </table>
     <#if inputSourceLocator != '-'>
         <p>
-        Source: <code>${vc.getConsoleFileBrowserLink(inputSourceLocator.inputSourceTracker.identifier, true)} line ${inputSourceLocator.lineNumber}</code>
+        Source: <code>${vc.getConsoleFileBrowserLink(inputSourceLocator.inputSourceTracker.identifier, true)} ${inputSourceLocator.lineNumbersText}</code>
     </#if>
 
     <#assign templateCatalog = vc.projectComponent.templateCatalog/>
@@ -527,7 +527,7 @@
     <@panel heading="${heading}">
         <#if object.inputSourceLocator?exists>
             <div class="textbox">
-            Source: <code>${vc.getConsoleFileBrowserLink(object.inputSourceLocator.inputSourceTracker.identifier, true)} line ${object.inputSourceLocator.lineNumber}</code>
+            Source: <code>${vc.getConsoleFileBrowserLink(object.inputSourceLocator.inputSourceTracker.identifier, true)} ${object.inputSourceLocator.lineNumbersText}</code>
             </div>
         </#if>
         <@reportTable
@@ -536,4 +536,16 @@
                 dataMayContainsHtmlCellAttrs="no"
                 />
     </@panel>
+</#macro>
+
+<#macro objectXmlSource object>
+    <#if object.inputSourceLocator?exists>
+        <#assign isl = object.inputSourceLocator/>
+        Source: <code>${vc.getConsoleFileBrowserLink(isl.inputSourceTracker.identifier, true)} ${isl.lineNumbersText}</code>
+        <@xmlCode>
+            ${statics["com.netspective.commons.text.TextUtils"].getUnindentedText(isl.sourceText?default(isl.toString() + " unavailable"))}
+        </@xmlCode>
+    <#else>
+        Unable to get input source locator for ${object.class.name};
+    </#if>
 </#macro>

@@ -18,7 +18,7 @@
                     ["Tag Name", "<code>&lt;" + producer.elementName + "&gt;</code>"],
                     ["Template Name Tag Attr", "<code>" + producer.templateNameAttrName?default('&nbsp;') + "</code>"],
                     ["Extends Template Tag Attr", "<code>" + producer.templateInhAttrName?default('&nbsp;') + "</code>"],
-                    ["Source Location", "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} line ${template.inputSourceLocator.lineNumber}</code>"]
+                    ["Source Location", "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} ${template.inputSourceLocator.lineNumbersText}</code>"]
                ]/>
 
             <@panel heading="Template Producer">
@@ -57,7 +57,7 @@
                     <#assign className = "&nbsp;"/>
                 </#if>
                 <#assign url = "?ns=${nameSpaceId}&tmpl=${template.templateName}"/>
-                <#assign report = report + [[ "<a href='${vc.constructAppUrl(url)}'>${template.templateName}</a>", className, "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} line ${template.inputSourceLocator.lineNumber}</code>"]]/>
+                <#assign report = report + [[ "<a href='${vc.constructAppUrl(url)}'>${template.templateName}</a>", className, "<code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} ${template.inputSourceLocator.lineNumbersText}</code>"]]/>
             </#list>
 
             <@panel heading="Templates">
