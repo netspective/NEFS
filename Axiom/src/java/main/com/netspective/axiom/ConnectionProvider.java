@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionProvider.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: ConnectionProvider.java,v 1.2 2003-05-24 20:26:48 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -59,6 +59,12 @@ public interface ConnectionProvider
      * @throws SQLException
      */
     public Connection getConnection(String dataSourceId) throws NamingException, SQLException;
+
+    /**
+     * Get the class that actually implements the connection provider.
+     * @return The class that is actually providing the connections -- JNDI context, etc.
+     */
+    public Class getUnderlyingImplementationClass();
 
     /**
      * Retrieve a list of all data source identifiers being managed by this provider. Each item in the Set is a String

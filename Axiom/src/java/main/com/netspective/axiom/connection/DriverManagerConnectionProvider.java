@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DriverManagerConnectionProvider.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: DriverManagerConnectionProvider.java,v 1.2 2003-05-24 20:26:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -130,6 +130,11 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
 
     private Map dataSources = new HashMap();
 
+    public Class getUnderlyingImplementationClass()
+    {
+        return DataSourceInfo.class;
+    }
+
     public DataSourceInfo createDataSource()
     {
         return new DataSourceInfo();
@@ -205,7 +210,9 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
             try
             {
                 Connection conn = DriverManager.getConnection(dsInfo.getConnUrl(), dsInfo.getConnUser(), dsInfo.getConnPassword());
-                return new BasicConnectionProviderEntry(dataSourceId, null, conn);
+                BasicConnectionProviderEntry entry = new BasicConnectionProviderEntry();
+                entry.init(dataSourceId, conn); // the connection will be closed in the init method
+                return entry;
             }
             catch (SQLException e)
             {

@@ -39,26 +39,33 @@
  */
 
 /**
- * $Id: BasicConnectionProviderEntry.java,v 1.2 2003-05-23 02:18:01 shahid.shah Exp $
+ * $Id: BasicConnectionProviderEntry.java,v 1.3 2003-05-24 20:26:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.sql.DataSource;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.axiom.ConnectionProviderEntry;
 import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.ConnectionProviderEntryStatistics;
 
 public class BasicConnectionProviderEntry extends HashMap implements ConnectionProviderEntry
 {
-    public static final String KEYNAME_DATA_SOURCE_ID = "DataSource Identifier";
-    public static final String KEYNAME_DATA_SOURCE_CLASS = "DataSource Class";
+    private static final Log log = LogFactory.getLog(BasicConnectionProviderEntry.class);
+    private static final Map STATISTICS_PROVIDERS = new HashMap();
+
     public static final String KEYNAME_DRIVER_NAME = "Driver Name";
     public static final String KEYNAME_DRIVER_VERSION = "Driver Version";
     public static final String KEYNAME_DATABASE_POLICY_CLASSNAME = "Database Policy Class";
@@ -68,22 +75,15 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
     public static final String KEYNAME_URL = "URL";
     public static final String KEYNAME_USER_NAME = "Username";
     public static final String KEYNAME_RESULTSET_TYPE = "ResultSet Type";
-    public static final String KEYNAME_EXCEPTION = "Exception";
 
-    public BasicConnectionProviderEntry(String dataSourceId, DataSource dataSource, Connection conn)
-    {
-        super();
-        init(dataSourceId, dataSource, conn);
-    }
+    private boolean valid;
+    private Throwable exception;
+    private String dataSourceId;
+    private DataSource dataSource;
 
-    public void init(String dataSourceId, DataSource dataSource, Connection conn)
+    public void init(String dataSourceId, Connection conn)
     {
-        put(KEYNAME_DATA_SOURCE_ID, dataSourceId);
-        if(conn == null)
-        {
-            put(KEYNAME_EXCEPTION, "Connection could not be established.");
-            return;
-        }
+        this.dataSourceId = dataSourceId;
 
         try
         {
@@ -101,7 +101,6 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             DatabaseMetaData dbmd = conn.getMetaData();
 
             put(KEYNAME_DRIVER_NAME, dbmd.getDriverName());
-            put(KEYNAME_DATA_SOURCE_CLASS, dataSource != null ? dataSource.getClass().getName() : "<NULL>");
             put(KEYNAME_DATABASE_PRODUCT_NAME, dbmd.getDatabaseProductName());
             put(KEYNAME_DATABASE_PRODUCT_VERSION, dbmd.getDatabaseProductVersion());
             put(KEYNAME_DRIVER_VERSION, dbmd.getDriverVersion());
@@ -116,11 +115,54 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
             else if(dbmd.supportsResultSetType(ResultSet.TYPE_FORWARD_ONLY))
                 resultSetType = "non-scrollabe (forward only)";
             put(KEYNAME_RESULTSET_TYPE, resultSetType);
+
+            valid = true;
         }
         catch(Exception e)
         {
-            put(KEYNAME_EXCEPTION, e.toString());
+            exception = e;
         }
+        finally
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (SQLException e)
+            {
+                log.error("SQL Exception while closing connection", e);
+            }
+        }
+    }
+
+    public void init(String dataSourceId, DataSource dataSource)
+    {
+        try
+        {
+            this.dataSource = dataSource;
+            init(dataSourceId, dataSource.getConnection());
+        }
+        catch (SQLException e)
+        {
+            this.dataSourceId = dataSourceId;
+            exception = e;
+            log.error("SQL Exception while obtaining connection", e);
+        }
+    }
+
+    public static void registerStatisticsProvider(ConnectionProviderEntryStatistics stats)
+    {
+        STATISTICS_PROVIDERS.put(stats.getImplementationClassName(), stats.getClass());
+    }
+
+    public Throwable getException()
+    {
+        return exception;
+    }
+
+    public boolean isValid()
+    {
+        return valid;
     }
 
     public String getDatabasePolicyClassName()
@@ -140,7 +182,12 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
 
     public String getDataSourceId()
     {
-        return (String) get(KEYNAME_DATA_SOURCE_ID);
+        return dataSourceId;
+    }
+
+    public DataSource getDataSource()
+    {
+        return dataSource;
     }
 
     public String getDriverName()
@@ -166,5 +213,30 @@ public class BasicConnectionProviderEntry extends HashMap implements ConnectionP
     public String getUserName()
     {
         return (String) get(KEYNAME_USER_NAME);
+    }
+
+    public ConnectionProviderEntryStatistics getStatistics()
+    {
+        if(dataSource == null)
+            return null;
+
+        Class statsClass = (Class) STATISTICS_PROVIDERS.get(dataSource.getClass().getName());
+        if(statsClass == null)
+        {
+            log.error("Unable to find a statistics provider for class " + dataSource.getClass().getName());
+            return null;
+        }
+
+        try
+        {
+            ConnectionProviderEntryStatistics stats = (ConnectionProviderEntryStatistics) statsClass.newInstance();
+            stats.setConnectionProviderEntry(this);
+            return stats;
+        }
+        catch (Exception e)
+        {
+            log.error("Error instantiating statistics provider ", e);
+            return null;
+        }
     }
 }

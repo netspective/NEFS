@@ -39,29 +39,19 @@
  */
 
 /**
- * $Id: ConnectionProviderEntry.java,v 1.2 2003-05-24 20:26:48 shahid.shah Exp $
+ * $Id: ConnectionProviderEntryStatistics.java,v 1.1 2003-05-24 20:26:48 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
 
-import java.util.Map;
-import javax.sql.DataSource;
-
-public interface ConnectionProviderEntry extends Map
+public interface ConnectionProviderEntryStatistics
 {
-    public String getDataSourceId();
-    public String getDriverName();
-    public String getDatabasePolicyClassName();
-    public String getDatabaseProductName();
-    public String getDatabaseProductVersion();
-    public String getDriverVersion();
-    public String getURL();
-    public String getUserName();
-    public String getResultSetType();
-    public DataSource getDataSource();
+    public String getImplementationClassName();
 
-    public boolean isValid();
-    public Throwable getException();
+    public ConnectionProviderEntry getConnectionProviderEntry();
+    public void setConnectionProviderEntry(ConnectionProviderEntry entry);
 
-    public ConnectionProviderEntryStatistics getStatistics();
+    public int getActiveConnections();
+    public int getMaxConnections();
+    public int getTotalConnections();
 }
