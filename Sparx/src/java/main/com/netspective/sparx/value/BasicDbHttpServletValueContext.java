@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.17 2003-06-09 12:51:52 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.18 2003-06-20 20:52:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -53,6 +53,8 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import freemarker.template.Configuration;
 
@@ -77,11 +79,12 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
                                       implements ServletValueContext, HttpServletValueContext,
                                                  DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
+    private static final Log log = LogFactory.getLog(BasicDbHttpServletValueContext.class);
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS = "com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS";
     public static final String CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS = INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS;
 
-    public static final String INITPARAMNAME_ROOT_CONF_FILE = "com.netspective.sparx.PROJECT_FILE_NAME";
-    public static final String CONTEXTATTRNAME_ROOT_CONF_FILE = INITPARAMNAME_ROOT_CONF_FILE;
+    public static final String INITPARAMNAME_PROJECT_FILE = "com.netspective.sparx.PROJECT_FILE_NAME";
+    public static final String CONTEXTATTRNAME_PROJECT_FILE = INITPARAMNAME_PROJECT_FILE;
 
     public static final String CONTEXTATTRNAME_FREEMARKER_CONFIG = "freemarker-config";
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
@@ -115,24 +118,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         this.response = response;
         this.servlet = servlet;
         rootUrl = ((HttpServletRequest) request).getContextPath();
-    }
-
-    public RuntimeEnvironmentFlags getEnvironmentFlags()
-    {
-        if(contextEnvFlags == null)
-        {
-            contextEnvFlags = (RuntimeEnvironmentFlags) context.getAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS);
-            String envFlagsText = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS);
-            if(envFlagsText == null)
-                throw new RuntimeException("No environment flags specified. Check '"+ INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS +"' servlet context init parameter.");
-            contextEnvFlags = constructEnvironmentFlags();
-            contextEnvFlags.setValue(envFlagsText);
-            context.setAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS, contextEnvFlags);
-
-            if(request.getAttribute(ConsoleServlet.REQATTRNAME_INCONSOLE) != null)
-                contextEnvFlags.setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
-        }
-        return contextEnvFlags;
     }
 
     public void initialize(NavigationContext nc)
@@ -274,31 +259,96 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return getApplicationManager();
     }
 
-    public static final String getRootConfFileName(ServletContext context)
+    public final static RuntimeEnvironmentFlags getEnvironmentFlags(ServletContext context)
     {
-        String result = (String) context.getAttribute(CONTEXTATTRNAME_ROOT_CONF_FILE);
+        RuntimeEnvironmentFlags contextEnvFlags = (RuntimeEnvironmentFlags) context.getAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS);
+        if(contextEnvFlags == null)
+        {
+            String envFlagsText = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS);
+            if(envFlagsText == null)
+                throw new RuntimeException("No environment flags specified. Check '"+ INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS +"' servlet context init parameter.");
+            try
+            {
+                contextEnvFlags = (RuntimeEnvironmentFlags) discoverClass.newInstance(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
+            }
+            catch (Exception e)
+            {
+                log.error("Unable to instantiate environment flags using SPI -- creating statically instead", e);
+                contextEnvFlags = new RuntimeEnvironmentFlags();
+            }
+            contextEnvFlags.setValue(envFlagsText);
+            context.setAttribute(CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS, contextEnvFlags);
+        }
+
+        return contextEnvFlags;
+    }
+
+    public RuntimeEnvironmentFlags getEnvironmentFlags()
+    {
+        if(contextEnvFlags == null)
+            contextEnvFlags = getEnvironmentFlags(context);
+
+        if(request.getAttribute(ConsoleServlet.REQATTRNAME_INCONSOLE) != null)
+            contextEnvFlags.setFlag(RuntimeEnvironmentFlags.CONSOLE_MODE);
+
+        return contextEnvFlags;
+    }
+
+    public static final String getProjectFileName(ServletContext context)
+    {
+        String result = (String) context.getAttribute(CONTEXTATTRNAME_PROJECT_FILE);
         if(result == null)
         {
-            result = context.getInitParameter(INITPARAMNAME_ROOT_CONF_FILE);
+            result = context.getInitParameter(INITPARAMNAME_PROJECT_FILE);
             if(result == null)
-                result = "/WEB-INF/sparx/components.xml";
+                result = "/WEB-INF/sparx/project.xml";
             if(result.startsWith("/WEB-INF"))
                 result = context.getRealPath(result);
-            context.setAttribute(CONTEXTATTRNAME_ROOT_CONF_FILE, result);
+            context.setAttribute(CONTEXTATTRNAME_PROJECT_FILE, result);
         }
         return result;
+    }
+
+    public final static ApplicationManagerComponent getApplicationManagerComponent(ServletContext context)
+    {
+        try
+        {
+            int compFlags = XdmComponentFactory.XDMCOMPFLAG_CACHE_ALWAYS;
+            if(getEnvironmentFlags(context).flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+                compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
+
+            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
+            // (always use the factory get() method)
+            ApplicationManagerComponent amComponent =
+                (ApplicationManagerComponent) XdmComponentFactory.get(
+                        ApplicationManagerComponent.class, getProjectFileName(context), compFlags);
+
+            for(int i = 0; i < amComponent.getErrors().size(); i++)
+                System.err.println(amComponent.getErrors().get(i));
+            for(int i = 0; i < amComponent.getWarnings().size(); i++)
+                System.out.println(amComponent.getWarnings().get(i));
+
+            return amComponent;
+        }
+        catch(Exception e)
+        {
+            throw new NestableRuntimeException(e);
+        }
     }
 
     public ApplicationManagerComponent getApplicationManagerComponent()
     {
         try
         {
+            int compFlags = XdmComponentFactory.XDMCOMPFLAG_CACHE_ALWAYS;
+            if(getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+                compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
+
             // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
             ApplicationManagerComponent amComponent =
                 (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class, getRootConfFileName(context),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+                        ApplicationManagerComponent.class, getProjectFileName(context), compFlags);
 
             for(int i = 0; i < amComponent.getErrors().size(); i++)
                 System.err.println(amComponent.getErrors().get(i));

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.3 2003-05-17 17:51:29 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.4 2003-06-20 20:52:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -56,12 +56,10 @@ import javax.servlet.ServletConfig;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.ApplicationManagerComponent;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
-import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class NavigationControllerServlet extends HttpServlet
@@ -71,10 +69,10 @@ public class NavigationControllerServlet extends HttpServlet
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
-        xdmSourceFile = new File(BasicDbHttpServletValueContext.getRootConfFileName(getServletContext()));
+        xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
-                    "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_ROOT_CONF_FILE +"' in your web.xml file.");
+                    "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
     }
 
     protected Theme getTheme()
@@ -89,26 +87,7 @@ public class NavigationControllerServlet extends HttpServlet
 
     protected ApplicationManager getApplicationManager() throws ServletException
     {
-        try
-        {
-            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
-            // (always use the factory get() method)
-            ApplicationManagerComponent amComponent =
-                (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class, xdmSourceFile.getAbsolutePath(),
-                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
-
-            for(int i = 0; i < amComponent.getErrors().size(); i++)
-                System.out.println(amComponent.getErrors().get(i));
-            for(int i = 0; i < amComponent.getWarnings().size(); i++)
-                System.out.println(amComponent.getWarnings().get(i));
-
-            return amComponent.getManager();
-        }
-        catch(Exception e)
-        {
-            throw new ServletException(e);
-        }
+        return BasicDbHttpServletValueContext.getApplicationManagerComponent(getServletContext()).getManager();
     }
 
     protected NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException

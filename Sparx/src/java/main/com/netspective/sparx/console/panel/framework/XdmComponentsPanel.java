@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.1 2003-05-31 22:26:23 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.2 2003-06-20 20:52:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -154,7 +154,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             StringBuffer src = new StringBuffer();
             if(errors.size() > 0)
             {
-                src.append("<ul>");
+                src.append("Errors<ul>");
                 for(int i = 0; i < errors.size(); i++)
                     src.append("<li>"+ errors.get(i) +"</li>");
                 src.append("</ul>");

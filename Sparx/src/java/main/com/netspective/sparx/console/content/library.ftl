@@ -85,14 +85,15 @@
         <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
     </#if>
     <#assign childElements = schema.getNestedElementsDetail()/>
+    <#assign xmlImageSrc=vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/xml" />
     <#assign classSuffix="odd"/>
 
-    <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
+    <img src="${xmlImageSrc}/xml.gif"/> <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
     ${schema.description}
 
     <table class="report" width=100% border="0" cellspacing="2" cellpadding="0">
         <tr>
-            <td class="report-column-heading">Element</td>
+            <td class="report-column-heading">Node</td>
             <td class="report-column-heading">Type</td>
             <td class="report-column-heading">Description</td>
             <td class="report-column-heading">Choices</td>
@@ -101,11 +102,18 @@
     <#list settableAttributesDetail as attrDetail>
         <tr>
             <td class="report-column-${classSuffix}">
+                <nobr>
+                <#if attrDetail.isRequired()>
+                    <img src="${xmlImageSrc}/xml-node-attribute-required.gif" title="Required attribute"/>
+                <#else>
+                    <img src="${xmlImageSrc}/xml-node-attribute.gif" title="Attribute"/>
+                </#if>
                 <#if attrDetail.isRequired()>
                     <b>${attrDetail.attrName}</b>
                 <#else>
                     ${attrDetail.attrName}
                 </#if>
+                </nobr>
             </td>
             <td class="report-column-${classSuffix}">
                 <#if attrDetail.isFlagAlias()>
@@ -137,11 +145,18 @@
     <#list childElements as childDetail>
         <tr>
             <td class="report-column-${classSuffix}">
+                <nobr>
+                <#if childDetail.isTemplateProducer()>
+                    <img src="${xmlImageSrc}/xml-node-template-producer.gif" title="Template Producer"/>
+                <#else>
+                    <img src="${xmlImageSrc}/xml-node-element.gif" title="Element"/>
+                </#if>
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
                     &lt;${childDetail.elemName}&gt;
                 </#if>
+                </nobr>
             </td>
             <td class="report-column-${classSuffix}">
                 <@classReference className = childDetail.elemType.name/>

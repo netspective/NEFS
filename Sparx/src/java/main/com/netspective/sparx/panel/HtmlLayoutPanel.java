@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.15 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.16 2003-06-20 20:52:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -192,14 +192,14 @@ public class HtmlLayoutPanel implements HtmlPanel
             case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
                 for(int i = 0; i < children.size(); i++)
                 {
-                    writer.write("<div style='padding-bottom: 6'>");
+                    writer.write("<div style='padding-bottom: 12'>");
                     children.get(i).render(writer, nc, theme, flags);
                     writer.write("</div>");
                 }
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
-                writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
+                writer.write("<table cellspacing=0 cellpadding=9><tr valign=top>");
                 for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<td>");
@@ -248,14 +248,14 @@ public class HtmlLayoutPanel implements HtmlPanel
             case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
                 for(int i = 0; i < children.size(); i++)
                 {
-                    writer.write("<div style='padding-bottom: 6'>");
+                    writer.write("<div style='padding-bottom: 12'>");
                     children.get(i).render(writer, dc, theme, flags);
                     writer.write("</div>");
                 }
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
-                writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
+                writer.write("<table cellspacing=0 cellpadding=9><tr valign=top>");
                 for(int i = 0; i < children.size(); i++)
                 {
                     writer.write("<td>");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.12 2003-06-06 22:58:46 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.13 2003-06-20 20:52:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -177,9 +177,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
-            writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
-            writer.write("	<td width=\"100%\">\n");
 
+            int errorsCount = nc.getApplicationManagerComponent().getErrors().size();
+            boolean haveErrors = errorsCount > 0;
+
+            writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+            writer.write(haveErrors ? "	<td>\n" : "	<td width=100%>\n");
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
             writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
@@ -189,8 +192,25 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     nc.getServletContext().getServletContextName() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
-
             writer.write("	</td>\n");
+
+            if(haveErrors)
+            {
+                writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
+                writer.write("	<td width=\"100%\">\n");
+
+                writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+                writer.write("			<tr>\n");
+                writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + themeImagesPath +
+                        "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+                writer.write("				<td nowrap><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></td>\n");
+                writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
+                        errorsCount +"</a></td>\n");
+                writer.write("			</tr>\n");
+                writer.write("		</table>\n");
+                writer.write("	</td>\n");
+            }
+
             writer.write("	<td nowrap width=\"50\" >\n");
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
             writer.write("			<tr>\n");
@@ -405,7 +425,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("          <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("              <tr>");
         writer.write("                  <td align=\"left\" valign=\"top\">");
-        writer.write("                  <div align=\"left\">");
+        writer.write("                  <div align=\"left\" style=\"padding-top: 6\">");
     }
 
     /**
