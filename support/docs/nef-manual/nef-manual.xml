@@ -7,9 +7,9 @@
   <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
   <bookinfo>
-    <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
+    <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-03 16:25:39 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 02:13:54 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -55,7 +55,7 @@
 
     <legalnotice>
       <para>For warranty information and a copy of the End User License
-      Agreement, please see the Netspective web site at <ulink
+      Agreement (EULA), please see the Netspective web site at <ulink
       url="http://www.netspective.com">http://www.netspective.com</ulink>. If
       you would like a copy of these materials mailed to you, or if you have
       any questions, please contact Netspective. The information included on
@@ -1548,7 +1548,7 @@
         <calloutlist>
           <callout arearefs="screen-app-generic-components-co-1">
             <para>Consider how you want your application to be organized. The
-            default theme, called <emphasis>slate</emphasis>, is tabbed
+            default theme, called <emphasis>slate</emphasis>, is a tabbed
             interface so the top level menus become tabs and the second level
             menus become buttons under their respective tabs. Other themes may
             render differently (such as pull-down menus or a tree) but the
@@ -1662,7 +1662,7 @@
           design pattern.</para>
 
           <example>
-            <title>Examples of Navigation Tags in the Presentation Layer</title>
+            <title>Navigation Tags in the Presentation Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -1831,7 +1831,7 @@ id="declare-nav-tags-eg-10" />
           time.</para>
 
           <example>
-            <title>Examples of Form Tags in Presentation Layer</title>
+            <title>Form Tags in Presentation Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -1996,7 +1996,7 @@ id="declare-form-tags-eg-8" />
           class="starttag">params</sgmltag> tags.</para>
 
           <example>
-            <title>Examples of Query Tags in Data Management Layer</title>
+            <title>Query Tags in the Data Management Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2102,7 +2102,7 @@ id="declare-data-query-static-eg-6" />
           class="starttag">params</sgmltag> tags.</para>
 
           <example>
-            <title>Examples of Stored Procedure Tags in Data Management Layer</title>
+            <title>Stored Procedure Tags in the Data Management Layer</title>
 
             <programlisting>project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2213,7 +2213,7 @@ id="declare-data-sp-eg-6" />
           user selections.</para>
 
           <example>
-            <title>Examples of Query Definition Tags in Data Management Layer</title>
+            <title>Query Definition Tags in the Data Management Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2278,7 +2278,7 @@ id="declare-data-query-defn-eg-3" />
           integrity.</para>
 
           <example>
-            <title>Examples of Schema Tags in Data Management Layer</title>
+            <title>Schema Tags in the Data Management Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2457,7 +2457,7 @@ id="declare-data-schema-eg-10" />
           class="starttag">login-dialog</sgmltag> tags.</para>
 
           <example>
-            <title>Examples of Login an Authentication Tags in Security Layer</title>
+            <title>Login an Authentication Tags in the Security Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2560,8 +2560,7 @@ id="declare-security-login-mgr-eg-6" />
           rules such as roles and permissions.</para>
 
           <example>
-            <title>Examples of Access Control and Authorization Tags in
-            Security Layer</title>
+            <title>Access Control and Authorization Tags in the Security Layer</title>
 
             <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
@@ -2684,7 +2683,26 @@ id="declare-security-acl-eg-7" />
       directly from class files for most objects there are many cases when
       generating code is more convenient. This section describes the types of
       code that NEF generates <filename>.java</filename> files for (as opposed
-      to just instantiating dynamic objects using Java class loading). </para>
+      to just instantiating dynamic objects using Java class loading). All
+      code is generated using Ant build tool and the Ant build project files,
+      which are also XML, may be run within the Console or from the command
+      command line. If you are running the Ant scripts from Console, you can
+      access the list of targets by going to Console&#39;s
+      <menuchoice><guimenu>Project</guimenu><guimenuitem>Ant Build</guimenuitem></menuchoice>
+      page.</para>
+
+      <example>
+        <title>How to Generate Code using the Console</title>
+
+        <screenshot>
+          <graphic
+          fileref="./resources/images/screen-console-project-ant-build.gif" />
+        </screenshot>
+
+        <para>As you can see in the screen shot above, you simply choose a
+        target and click Ok to run it. If you need information on what each
+        target does, the descriptions below the dialog provide the details.</para>
+      </example>
 
       <section>
         <title>Location of Generated Code</title>
@@ -2704,11 +2722,13 @@ id="declare-security-acl-eg-7" />
 
         <para>NEF generates typed Java constants for all dialog, field, query,
         stored procedure, and schema identifiers in your project&#39;s XML
-        files. Instead of accessing identifiers by strings programmers can
-        access the identifiers using Java constants. Using Java constants to
-        access identiable objects in your Java code is highly desirable so
-        that if names of items change your project, the compiler will identify
-        problems in your code that might otherwise not be found until runtime.<mediaobjectco><imageobjectco><areaspec><area
+        files. The ID constants are generated by using the <literal>generate-id-constants</literal>
+        target in the Ant build file. Instead of accessing identifiers by
+        strings programmers can access the identifiers using Java constants.
+        Using Java constants to access identiable objects in your Java code is
+        highly desirable so that if names of items change your project, the
+        compiler will identify problems in your code that might otherwise not
+        be found until runtime.<mediaobjectco><imageobjectco><areaspec><area
         coords="1" id="genarate-id-constants-co-1" /><area coords="2"
         id="genarate-id-constants-co-2" /><area coords="3"
         id="genarate-id-constants-co-3" /><area coords="4"
@@ -3040,11 +3060,11 @@ id="project-file-basic-eg-7" />
         of your application if there are any NEF errors.</para><screenshot><graphic
         fileref="./resources/images/screen-hello-world-error-line.gif" /></screenshot><para>When
         you click on the Console link in the error message (or go to the
-        application&#39;s Console Project Source tab) you will see something
-        like the following. Notice that if there are any errors and you are
-        viewing the Console you will see a error highlight at the top of the
-        Console window. Once you&#39;re in the Console
-        <menuchoice><guimenu>Project</guimenu><guimenuitem>Source</guimenuitem></menuchoice>
+        application&#39;s Console <menuchoice><guimenu>Project</guimenu><guimenuitem>Source</guimenuitem></menuchoice>
+        tab) you will see something like the following. Notice that if there
+        are any errors and you are viewing the Console you will see a error
+        highlight at the top of the Console window. Once you&#39;re in the
+        Console <menuchoice><guimenu>Project</guimenu><guimenuitem>Source</guimenuitem></menuchoice>
         menu you will be presented with a listing of the errors in the middle
         of the page.</para><screenshot><graphic
         fileref="./resources/images/screen-console-error-highlight.gif" /></screenshot></example></para>
@@ -3605,7 +3625,61 @@ id="value-source-eg-5" /></programlisting>
       <section>
         <title id="value-contexts">Value Contexts</title>
 
-        <para></para>
+        <para>Since values are specified as static text (like within an XML
+        file) but their content is actually dynamic, a <emphasis>Value Context</emphasis>
+        is necessary to determine what the value of any value source will be
+        at the time when it&#39;s called. For example, a static value source
+        (described below) whose value never changes doesn&#39;t really care
+        what context it&#39;s in: it&#39;s very will remain the same at all
+        time. However, if you have a value source that is specified as as
+        &#34;request:XXX&#34; (the value of a request parameter called XXX)
+        then it&#39;s important to have the value context know the Servlet
+        request object at the time. Put another way, the Value Context is sort
+        of an <emphasis>Environment</emphasis> within which a value is
+        evaluated and returned.</para>
+
+        <section>
+          <title>Value Contexts you will most commonly use</title>
+
+          <variablelist>
+            <varlistentry>
+              <term>ValueContext interface</term>
+
+              <listitem>
+                <para>The <classname>com.netspective.commons.value.ValueContext</classname>
+                interface is used to define the common methods required in all
+                value contexts.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>TabularReportValueContext class</term>
+
+              <listitem>
+                <para>The <classname>com.netspective.commons.report.tabular.TabularReportValueContext</classname>
+                class </para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>DialogContext class</term>
+
+              <listitem>
+                <para>The <classname>com.netspective.sparx.form.DialogContext</classname>
+                class </para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>NavigationContext class</term>
+
+              <listitem>
+                <para>The <classname>com.netspective.navigate.NavigationContext</classname>
+                class </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </section>
       </section>
 
       <section>
@@ -3621,7 +3695,7 @@ id="value-source-eg-5" /></programlisting>
         <programlisting>&#60;field.text caption=&#34;ABC&#34;/&#62;
 &#60;field.text caption=&#34;static:ABC&#34;/&#62;
 &#60;field.text caption=&#34;string:ABC&#34;/&#62;
-&#60;field.text caption=”&#34;<classname>com.netspective.commons.value.source.StaticValueSource</classname>:ABC&#34;/&#62;</programlisting>
+&#60;field.text caption=”<classname>com.netspective.commons.value.source.StaticValueSource</classname>:ABC&#34;/&#62;</programlisting>
       </section>
 
       <section>
@@ -3927,9 +4001,9 @@ id="value-source-eg-5" /></programlisting>
         <para>Defining the dialog in the Project File s the first step towards
         creating a dialog. Dialogs are defined with the <emphasis role="bold">&#60;dialog&#62;</emphasis>
         tag and each dialog must belong to a package of dialogs represented by
-        <emphasis role="bold">&#60;dialogs&#62;</emphasis> tag. The following
-        is a sample dialog entry from the <emphasis>web-cura</emphasis> sample
-        application: <programlisting>
+        the <emphasis role="bold">&#60;dialogs&#62;</emphasis> tag. The
+        following is a sample dialog entry from the <emphasis>web-cura</emphasis>
+        sample application: <programlisting>
     &#60;dialogs package=&#34;train&#34;&#62;
         &#60;dialog name=&#34;test&#34; heading=&#34;Add Account&#34;&#62;
             &#60;field.text name=&#34;org_code&#34; caption=&#34;Account Code&#34; required=&#34;yes&#34; default=&#34;request:myval&#34;/&#62;
@@ -3954,7 +4028,7 @@ id="value-source-eg-5" /></programlisting>
         above, there are fields which serve a more specific role also:
         <itemizedlist><listitem><para>Blood Pressure</para></listitem><listitem><para>Social
         Security Number</para></listitem><listitem><para>Phone Number</para></listitem></itemizedlist>
-        All available fields can be seen in ACE:</para>
+        All available fields can be seen in Console:</para>
 
         <para>Every type of field available has its own both client-side and
         server-side validation features. For example, an integer field allows
@@ -4994,9 +5068,9 @@ public class Test1  extends com.xaf.form.Dialog
           <title>Unit Testing</title>
 
           <para>Most static queries can be unit tested using though the
-          Application Component Explorer(ACE). The <menuchoice><guimenu>Database</guimenu><guimenu>SQL
-          Statements</guimenu></menuchoice> menu entry in ACE displays all the
-          SQL statements defined in <filename>web-app/Site/WEB-INF/ui/statement.xml</filename>
+          Enterprise Console. The <menuchoice><guimenu>Database</guimenu><guimenu>SQL
+          Statements</guimenu></menuchoice> menu entry in Console displays all
+          the SQL statements defined in <filename>web-app/Site/WEB-INF/ui/statement.xml</filename>
           as shown below.</para>
 
           <para><mediaobject><imageobject><imagedata
