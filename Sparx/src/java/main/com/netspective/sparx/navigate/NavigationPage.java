@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.33 2003-08-20 19:00:22 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.34 2003-08-20 22:38:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -99,6 +99,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
+    private static final int INHERIT_PAGE_FLAGS_FROM_PARENT = NavigationPath.INHERIT_PATH_FLAGS_FROM_PARENT | Flags.REQUIRE_LOGIN | Flags.ALLOW_PAGE_CMD_PARAM;
 
     static
     {
@@ -230,7 +231,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
      */
     public NavigationPage createPage() throws InstantiationException, IllegalAccessException
     {
-        return (NavigationPage) this.getClass().newInstance();
+        NavigationPage result = (NavigationPage) this.getClass().newInstance();
+        result.getFlags().inherit(getFlags(), INHERIT_PAGE_FLAGS_FROM_PARENT);
+        return result;
     }
 
     public void addPage(NavigationPage page)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.6 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.7 2003-08-20 22:38:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -64,6 +64,7 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.BasicAuthenticatedUser;
@@ -296,9 +297,12 @@ public class HttpLoginManager
         return getAuthenticatedUser(vc.getHttpRequest());
     }
 
-    public boolean accessAllowed(HttpServletValueContext vc)
+    public boolean accessAllowed(NavigationContext nc)
     {
-        return getAuthenticatedUser(vc) != null;
+        if(! nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.REQUIRE_LOGIN))
+            return true;
+
+        return getAuthenticatedUser(nc) != null;
     }
 
     public String getRememberedUserId(HttpServletValueContext vc)

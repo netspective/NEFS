@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.8 2003-08-19 17:10:31 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.9 2003-08-20 22:38:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -75,6 +75,7 @@ import com.netspective.sparx.navigate.listener.NavigationPathMakeStateChangesLis
 public class NavigationPath
 {
     private static final Log log = LogFactory.getLog(NavigationPath.class);
+    public static final int INHERIT_PATH_FLAGS_FROM_PARENT = 0;
 
     static public final String PATH_SEPARATOR = "/";
 

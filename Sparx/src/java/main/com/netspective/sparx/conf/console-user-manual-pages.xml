@@ -1,6 +1,6 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <page name="manual" caption="User's Manual">
+    <page name="manual" caption="User's Manual" require-login="no">
         <page name="overview" caption="Sparx Overview">
             <body config="console" source="console-page-content:documentation.ftl"/>
         </page>
