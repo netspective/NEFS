@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 14:03:52 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-05 21:03:35 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -1638,6 +1638,16 @@
       template writing, navigation, dynamic and static SQL, and database
       schemas. All of the declarations are placed in the <literal><filename>APP_ROOT/WEB-INF/sparx/project.xml</filename></literal>
       file (see <xref linkend="nef-project-file" />).</para>
+
+      <figure>
+        <title>NEF Tags Overview</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="resources/images/nefs-tags-overview.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
       <section>
         <title>Declaring the Presentation Layer</title>
@@ -4017,7 +4027,7 @@ id="value-source-eg-5" /></programlisting>
         capability to fully separate the Model, View, and Controller for
         sophisticated applications yet it also supports the ability to loosely
         integrate them for smaller or more modest applications where speed of
-        delivery is paramount. </para>
+        delivery is paramount.</para>
 
         <figure>
           <title>MVC Pattern Overview</title>
@@ -4053,7 +4063,7 @@ id="value-source-eg-5" /></programlisting>
           All page rendering is managed by this NavigationPage class but the
           actual rendering actions are delegated. Any given page may either
           handle the rendering itself, may call a JSP page, a FreeMarker
-          template, or any other custom body handler. </para>
+          template, or any other custom body handler.</para>
         </section>
 
         <section>
@@ -4223,7 +4233,7 @@ role="bold">command</emphasis>=&#34;dialog,schema.db.Book_Info,add&#34;/&#62;
         </section>
 
         <section>
-          <title>The <sgmltag class="starttag">body</sgmltag> tag </title>
+          <title>The <sgmltag class="starttag">body</sgmltag> tag</title>
 
           <para>The <sgmltag class="starttag">body</sgmltag> tag starts begins
           a definition of a page body appears under the <sgmltag
