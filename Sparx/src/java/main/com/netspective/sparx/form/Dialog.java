@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.33 2003-09-29 02:05:28 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.34 2003-10-11 14:39:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -99,6 +99,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.Schema;
@@ -117,7 +118,7 @@ import com.netspective.axiom.schema.Schema;
  * For dialog objects that need more complex actions for data population, validation,
  * and execution, the <code>Dialog</code> class can be subclassed to implement customized actions.
  */
-public class Dialog extends AbstractPanel implements TemplateConsumer
+public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ATTRNAME_TYPE = "type";
@@ -180,6 +181,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         return name != null ? name.toUpperCase() : null;
     }
 
+    private InputSourceLocator inputSourceLocator;
     private Log log = LogFactory.getLog(Dialog.class);
     private DialogFields fields;
     private DialogFlags dialogFlags;
@@ -237,6 +239,16 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     {
         this();
         setNameSpace(pkg);
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()

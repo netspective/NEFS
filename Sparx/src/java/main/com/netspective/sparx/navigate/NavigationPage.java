@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.40 2003-09-05 14:55:43 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.41 2003-10-11 14:40:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -72,6 +72,7 @@ import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.commons.template.TemplateProcessor;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.sparx.navigate.listener.NavigationPathListener;
@@ -91,7 +92,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class NavigationPage extends NavigationPath implements TemplateConsumer
+public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
@@ -203,6 +204,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     {
     }
 
+    private InputSourceLocator inputSourceLocator;
     private TemplateConsumerDefn templateConsumer;
     private NavigationPageBodyType bodyType = new NavigationPageBodyType(NavigationPageBodyType.NONE);
     private String pageFlagsParamName = PARAMNAME_PAGE_FLAGS;
@@ -228,6 +230,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public NavigationPage()
     {
         super();
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public void addListener(NavigationPathListener listener)

@@ -64,13 +64,15 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.io.InputSourceLocator;
 
-public class NavigationTree implements TemplateProducerParent
+public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
     public static final String TEMPLATEELEMNAME_PAGE_TYPE = "page-type";
 
+    private InputSourceLocator inputSourceLocator;
     private String name;
     private NavigationPage root;
     private NavigationPage homePage;
@@ -86,6 +88,16 @@ public class NavigationTree implements TemplateProducerParent
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     /**

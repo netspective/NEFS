@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.37 2003-09-29 03:05:34 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.38 2003-10-11 14:39:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -87,6 +87,8 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.axiom.schema.Column;
 
 /**
@@ -96,7 +98,7 @@ import com.netspective.axiom.schema.Column;
  * All dialog classes representing specialized  fields such as text fields, numerical fields, and phone fields subclass
  * the <code>DialogField</code> class to create specialized behavior.
  */
-public class DialogField implements TemplateConsumer
+public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
     private static final Log log = LogFactory.getLog(DialogField.class);
     public static final String ATTRNAME_TYPE = "type";
@@ -399,6 +401,7 @@ public class DialogField implements TemplateConsumer
 	static public int fieldCounter = 0;
 	private boolean multi = false;
 
+    private InputSourceLocator inputSourceLocator;
     private List fieldTypes = new ArrayList();
     private Dialog owner;
 	private DialogField parent;
@@ -429,6 +432,16 @@ public class DialogField implements TemplateConsumer
     public DialogField()
     {
         setFlags(new DialogFieldFlags());
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public int[] getChildCarryFlags()

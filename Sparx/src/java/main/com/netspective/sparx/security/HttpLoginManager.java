@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.16 2003-09-14 17:04:39 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.17 2003-10-11 14:40:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -70,8 +70,9 @@ import com.netspective.commons.security.AuthenticatedUserLogoutType;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.io.InputSourceLocator;
 
-public class HttpLoginManager
+public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorListener
 {
     protected static final String DEFAULT_AUTHENTICATED_USER_SESS_ATTR_NAME = "authenticated-user";
     protected static final String DEFAULT_REMEMBER_USER_ID_COOKIE_NAME = "sparx-user-id-00";
@@ -107,6 +108,7 @@ public class HttpLoginManager
         }
     }
 
+    private InputSourceLocator inputSourceLocator;
     private boolean isDefault;
     private String name;
     private String authenticatedUserSessionAttrName = DEFAULT_AUTHENTICATED_USER_SESS_ATTR_NAME;
@@ -123,6 +125,16 @@ public class HttpLoginManager
 
     public HttpLoginManager()
     {
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public AuthenticatedUsers getActiveUsers()
