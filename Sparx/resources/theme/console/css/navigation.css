@@ -67,10 +67,10 @@
 .masthead-bottom { background-color: #f1eeee }
 .masthead-right           { background-color: #f1eeee; border-bottom: 1px solid #933 }
 .masthead-left      { background: url(../images/masthead/masthead-left.gif) no-repeat left top }
-.page-heading          { color: #000; font-weight: bold; font-size: 18px; font-family: Trebuchet MS, Helvetica, Verdana; text-decoration: none; padding-top: 3px; padding-left: 3px }
+.page-heading           { color: #000; font-weight: bold; font-size: 18px; font-family: "Trebuchet MS", Helvetica, Verdana; text-decoration: none; padding-top: 3px; padding-left: 7px }
 .page-heading-table    { background-image: url(../images/active-user/active-user-backdrop.gif); border-bottom: 1px solid #333; height: 40px }
-.page-heading-icon         { padding-top: 4px; padding-left: 7px; width: 25px; height: 28px }
-.page-icon  { background-image: url(../images/page-icons/button.gif); width: 28px; height: 28px }
+.page-heading-icon          { padding-top: 1px; padding-left: 11px; width: 32px; height: 25px }
+.page-icon   { width: 32px; height: 32px }
 .menu-level-4    { color: #039; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none; padding: 1px 2px 1px 3px; width: 100% }
 .menu-level-4:link    { color: #483d8b; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none; width: 100% }
 .menu-level-4:visited    { color: #483d8b; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none; width: 100% }
