@@ -409,6 +409,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return result;
     }
 
+    public final String getAppUrl(String relativeUrl)
+    {
+        return rootUrl + relativeUrl;
+    }
+
     public final String getConsoleUrl()
     {
         return rootUrl + "/console";
