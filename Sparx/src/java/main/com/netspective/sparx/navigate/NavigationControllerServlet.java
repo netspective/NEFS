@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.34 2003-11-25 01:03:06 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.35 2003-11-25 01:39:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -584,6 +584,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
+        final HttpServletResponse httpResponse = nc.getHttpResponse();
         if(isSecure())
         {
             HttpLoginManager loginManager = getLoginManager();
@@ -610,7 +611,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                     NavigationControllerAuthenticatedUser ncUser = (NavigationControllerAuthenticatedUser) user;
                     if(ncUser.hasUserSpecificNavigationTree())
                     {
-                        NavigationTree userTree = ncUser.getUserSpecificNavigationTree(this, nc.getHttpRequest(), nc.getHttpResponse());
+                        NavigationTree userTree = ncUser.getUserSpecificNavigationTree(this, nc.getHttpRequest(), httpResponse);
                         if(userTree != null && nc.getOwnerTree() != userTree)
                         {
                             // we want to redirect back to the home page of the navigation tree so that the proper tree
@@ -640,13 +641,17 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                     // servlet's last modified time, send a short "Not Modified" status code
                     // Round down to the nearest second since client headers are in seconds
                     if (lastModfTime != null && httpRequest.getMethod().equals("GET") &&
-                        (lastModfTime.getTime() / 1000 * 1000) <= httpRequest.getDateHeader("If-Modified-Since"))
+                        ((lastModfTime.getTime() / 1000 * 1000) <= httpRequest.getDateHeader("If-Modified-Since")))
                     {
-                        nc.getHttpResponse().setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+                        httpResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                         return;
                     }
                     else
-                        staticPagesRendered.put(staticPageKey, new Date());
+                    {
+                        Date now = new Date();
+                        httpResponse.setDateHeader("Last-Modified", now.getTime());
+                        staticPagesRendered.put(staticPageKey, now);
+                    }
                 }
 
                 // if we get to there we're not static content or we're static but being rendered for the first
