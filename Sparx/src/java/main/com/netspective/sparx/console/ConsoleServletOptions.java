@@ -39,34 +39,37 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.19 2003-08-28 13:52:42 shahid.shah Exp $
+ * $Id: ConsoleServletOptions.java,v 1.1 2003-08-28 13:52:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
 
-import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationControllerServletOptions;
 
-public class ConsoleServlet extends NavigationControllerServlet
+public class ConsoleServletOptions extends NavigationControllerServletOptions
 {
-    public static final String CONSOLE_ID = "console";
-    public static final String REQATTRNAME_INCONSOLE = "in-console";
-    public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
-
-    protected NavigationControllerServletOptions constructServletOptions(ServletConfig servletConfig)
+    public ConsoleServletOptions(ServletConfig servletConfig)
     {
-        return new ConsoleServletOptions(servletConfig);
+        super(servletConfig);
     }
 
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
+    public String getNavigationTreeName()
     {
-        httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-        super.doGet(httpServletRequest, httpServletResponse);
+        String result = super.getNavigationTreeName();
+        if(result == null)
+            return ConsoleServlet.CONSOLE_ID;
+        else
+            return result;
+    }
+
+    public String getThemeName()
+    {
+        String result = super.getThemeName();
+        if(result == null)
+            return ConsoleServlet.CONSOLE_ID;
+        else
+            return result;
     }
 }

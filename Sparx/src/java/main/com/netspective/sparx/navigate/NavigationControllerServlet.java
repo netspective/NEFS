@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.22 2003-08-28 01:18:07 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.23 2003-08-28 13:52:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -84,6 +84,7 @@ import com.netspective.commons.io.MultipleUriAddressableFileLocators;
 import com.netspective.commons.io.UriAddressableFileLocator;
 import com.netspective.commons.io.UriAddressableInheritableFileResource;
 import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.HttpLoginManagers;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -101,10 +102,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
 
     private NavigationControllerServletOptions servletOptions;
-    private String loginManagerName;
-    private String themeName;
-    private String navigationTreeName;
-    private String logoutActionReqParamName;
     private String projectSourceFileName;
     private Class projectComponentClass;
     private ProjectComponent lastProjectComponentRetrieved;
@@ -124,7 +121,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         super.init(servletConfig);
 
-        servletOptions = new NavigationControllerServletOptions(servletConfig);
+        servletOptions = constructServletOptions(servletConfig);
         if(servletOptions.isHelpRequested())
             servletOptions.printHelp();
         if(servletOptions.isDebugOptionsRequested())
@@ -138,6 +135,11 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         // if the init success is determined to be END_INIT we persist now, otherwise it will be done on first GET/POST
         if(servletOptions.getInitSuccessType().equals("END_INIT"))
             persistInitCount();
+    }
+
+    protected NavigationControllerServletOptions constructServletOptions(ServletConfig servletConfig)
+    {
+        return new NavigationControllerServletOptions(servletConfig);
     }
 
     protected void loadExecutionProperties(ServletConfig servletConfig) throws ServletException
@@ -296,12 +298,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             throw new ServletException(e);
         }
 
-        loginManagerName = servletOptions.getLoginManagerName();
-        logoutActionReqParamName = servletOptions.getLogoutActionReqParamName();
-        themeName = servletOptions.getThemeName();
-        navigationTreeName = servletOptions.getNavigationTreeName();
         projectSourceFileName = checkWebInfAndGetRealPath(servletOptions.getProjectFileName());
-
         File xdmSourceFile = new File(projectSourceFileName);
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
@@ -412,56 +409,16 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         this.cacheComponents = cacheComponents;
     }
 
-    public boolean isSecure()
+    public boolean isSecure() throws ServletException
     {
-        return loginManagerName != null;
-    }
-
-    public String getLoginManagerName()
-    {
-        return loginManagerName;
-    }
-
-    public void setLoginManagerName(String loginManagerName)
-    {
-        this.loginManagerName = loginManagerName;
-    }
-
-    public String getNavigationTreeName()
-    {
-        return navigationTreeName;
-    }
-
-    public void setNavigationTreeName(String navigationTreeName)
-    {
-        this.navigationTreeName = navigationTreeName;
-    }
-
-    public String getThemeName()
-    {
-        return themeName;
-    }
-
-    public void setThemeName(String themeName)
-    {
-        this.themeName = themeName;
-    }
-
-    public String getLogoutActionReqParamName()
-    {
-        return logoutActionReqParamName;
-    }
-
-    public void setLogoutActionReqParamName(String logoutActionReqParamName)
-    {
-        this.logoutActionReqParamName = logoutActionReqParamName;
+        return getLoginManager() != null;
     }
 
     public Theme getTheme(HttpServletRequest request) throws ServletException
     {
         if(theme == null || ! isCacheComponents())
         {
-            String themeName = getThemeName();
+            String themeName = servletOptions.getThemeName();
             Themes themes = getProject().getThemes();
             theme = themeName != null ? themes.getTheme(themeName) : themes.getDefaultTheme();
             theme.setWebResourceLocator(getResourceLocator(request));
@@ -474,7 +431,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         if(navigationTree == null || ! isCacheComponents())
         {
-            String navTreeName = getNavigationTreeName();
+            String navTreeName = servletOptions.getNavigationTreeName();
             Project project = getProject();
             navigationTree = navTreeName != null ? project.getNavigationTree(navTreeName) : project.getDefaultNavigationTree();
         }
@@ -484,8 +441,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     public HttpLoginManager getLoginManager() throws ServletException
     {
-        if(loginManagerName != null && (loginManager == null || ! isCacheComponents()))
-            loginManager = getProject().getLoginManagers().getLoginManager(loginManagerName);
+        if(servletOptions.getLoginManagerName() != null && (loginManager == null || ! isCacheComponents()))
+            loginManager = getProject().getLoginManagers().getLoginManager(servletOptions.getLoginManagerName());
+        else
+            loginManager = getProject().getLoginManagers().getDefaultManager();
         return loginManager;
     }
 
@@ -594,7 +553,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         if(isSecure())
         {
-            String logoutActionReqParamValue = nc.getHttpRequest().getParameter(getLogoutActionReqParamName());
+            String logoutActionReqParamValue = nc.getHttpRequest().getParameter(servletOptions.getLogoutActionReqParamName());
             if(logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
                 getLoginManager().logout(nc);
         }
