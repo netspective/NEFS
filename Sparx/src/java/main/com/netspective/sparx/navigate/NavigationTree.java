@@ -61,16 +61,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.TemplateProducer;
 
-public class NavigationTree
+public class NavigationTree implements TemplateProducerParent
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
-    static public final String TREENAME_DEFAULT = "default";
+    public static final String TREENAME_DEFAULT = "default";
+    public static final String TEMPLATEELEMNAME_PAGE_TYPE = "page-type";
 
     private String name;
     private NavigationPage root;
     private Map pagesByQualifiedName = new HashMap();
+    private TemplateProducers templateProducers;
     private int maxLevel = -1;
 
     public NavigationTree()
@@ -78,6 +83,21 @@ public class NavigationTree
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+    }
+
+    public String getPageTypesTemplatesNameSpaceId()
+    {
+        return "/navigation-tree/" + getName() + "/page-type";
+    }
+
+    public TemplateProducers getTemplateProducers()
+    {
+        if(templateProducers == null)
+        {
+            templateProducers = new TemplateProducers();
+            templateProducers.add(new TemplateProducer(getPageTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_PAGE_TYPE, "name", "type", false, false));
+        }
+        return templateProducers;
     }
 
     public void register(NavigationPath path)

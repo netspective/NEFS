@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.24 2003-04-29 02:27:41 shahid.shah Exp $
+  * $Id: console.xml,v 1.25 2003-04-29 19:57:23 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -13,13 +13,22 @@
 
     <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
-            <panels>
-                <panel class="com.netspective.sparx.panel.TemplateContentPanel">
+            <panels style="horizontal">
+                <!--
+                <panel type="html">
                     <frame heading="Hello"/>
                     <body>
                         <![CDATA[ <b>Hello</b> World! ${nc.pageHeading} ]]>
                     </body>
                 </panel>
+                -->
+
+                <panel type="html">
+                    <frame heading="Welcome"/>
+                    <body source="console/home.ftl"/>
+                </panel>
+
+                <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
             </panels>
         </page>
         <page name="application" caption="Application">

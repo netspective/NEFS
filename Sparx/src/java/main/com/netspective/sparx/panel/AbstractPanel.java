@@ -39,42 +39,129 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.2 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.1 2003-04-29 19:57:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
-import java.io.IOException;
-
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.template.TemplateProcessor;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 
-public class TemplateContentPanel extends AbstractPanel
+public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
 {
-    private TemplateProcessor bodyTemplate;
+    public static final String PANELTYPE_TEMPLATE_NAMESPACE = HtmlPanel.class.getName();
+    public static final String PANELTYPE_ATTRNAME_TYPE = "type";
+    public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = null;
+    public static final PanelTypeTemplateConsumerDefn templateConsumer = new PanelTypeTemplateConsumerDefn();
 
-    public TemplateContentPanel()
+    protected static class PanelTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public PanelTypeTemplateConsumerDefn()
+        {
+            super(PANELTYPE_TEMPLATE_NAMESPACE, PANELTYPE_ATTRNAME_TYPE, PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+    }
+
+    private static int panelNumber = 0;
+    private int height = -1;
+    private int width = -1;
+    protected HtmlPanelFrame frame;
+    protected HtmlPanelBanner banner;
+    private String identifier = "AbstractPanel_" + getNextPanelNumber();
+
+    synchronized static private final int getNextPanelNumber()
+    {
+        return ++panelNumber;
+    }
+
+    public AbstractPanel()
+    {
+        banner = createBanner();
+        frame = createFrame();
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
     {
     }
 
-    public TemplateProcessor createBody()
+    public String getIdentifier()
     {
-        return new FreeMarkerTemplateProcessor();
+        return identifier;
     }
 
-    public void addBody(TemplateProcessor templateProcessor)
+    public void setIdentifier(String identifier)
     {
-        bodyTemplate = templateProcessor;
+        this.identifier = identifier;
     }
 
-    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
+    public int getHeight()
     {
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
-        theme.getPanelSkin().renderFrameBegin(writer, vc);
-        bodyTemplate.process(writer, nc);
-        theme.getPanelSkin().renderFrameEnd(writer, vc);
+        return height;
+    }
+
+    public void setHeight(int height)
+    {
+        this.height = height;
+    }
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+
+    public HtmlPanelFrame getFrame()
+    {
+        return frame;
+    }
+
+    public void setFrame(HtmlPanelFrame rf)
+    {
+        frame = rf;
+    }
+
+    public HtmlPanelBanner getBanner()
+    {
+        return banner;
+    }
+
+    public void setBanner(HtmlPanelBanner value)
+    {
+        banner = value;
+    }
+
+    public HtmlPanelFrame createFrame()
+    {
+        if(frame == null)
+            frame = new HtmlPanelFrame();
+        return frame;
+    }
+
+    public HtmlPanelBanner createBanner()
+    {
+        if(banner == null)
+            banner = new HtmlPanelBanner();
+        return banner;
+    }
+
+    public HtmlPanels getChildren()
+    {
+        return null;
+    }
+
+    public boolean affectsNavigationContext(NavigationContext nc)
+    {
+        return false;
     }
 }

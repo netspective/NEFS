@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.10 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.11 2003-04-29 19:57:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
@@ -164,6 +165,11 @@ public class HtmlLayoutPanel implements HtmlPanel
     public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
     {
         children.setStyle(style);
+    }
+
+    public HtmlPanel createPanel()
+    {
+        return new TemplateContentPanel();
     }
 
     public void addPanel(HtmlPanel panel)

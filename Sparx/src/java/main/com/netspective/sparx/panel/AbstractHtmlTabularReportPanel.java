@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.5 2003-04-24 17:01:11 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.6 2003-04-29 19:57:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -59,97 +59,10 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
-public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
+public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
-    private static int panelNumber = 0;
-    private int height = -1, width = -1;
-    private HtmlPanelFrame frame;
-    private HtmlPanelBanner banner;
-    private String identifier = "AbstractHtmlTabularReportPanel_" + getNextPanelNumber();
-
-    synchronized static private final int getNextPanelNumber()
-    {
-        return ++panelNumber;
-    }
-
     public AbstractHtmlTabularReportPanel()
     {
-        frame = createFrame();
-        banner = createBanner();
-    }
-
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
-    public void setHeight(int height)
-    {
-        this.height = height;
-    }
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public void setWidth(int width)
-    {
-        this.width = width;
-    }
-
-    public HtmlPanelFrame getFrame()
-    {
-        return frame;
-    }
-
-    public void setFrame(HtmlPanelFrame rf)
-    {
-        frame = rf;
-    }
-
-    public HtmlPanelBanner getBanner()
-    {
-        return banner;
-    }
-
-    public void setBanner(HtmlPanelBanner value)
-    {
-        banner = value;
-    }
-
-    public HtmlPanelFrame createFrame()
-    {
-        if(frame == null)
-            frame = new HtmlPanelFrame();
-        return frame;
-    }
-
-    public HtmlPanelBanner createBanner()
-    {
-        if(banner == null)
-            banner = new HtmlPanelBanner();
-        return banner;
-    }
-
-    public HtmlPanels getChildren()
-    {
-        return null;
-    }
-
-    public boolean affectsNavigationContext(NavigationContext nc)
-    {
-        return false;
     }
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.2 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.3 2003-04-29 19:57:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -54,10 +54,27 @@ import com.netspective.sparx.theme.basic.AbstractTheme;
 import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.xml.template.TemplateProducer;
 
 public class ApplicationManager extends SqlManager implements NavigationTreesManager, ConsoleManager
 {
+    public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
+
+    protected static class PanelTypeTemplate extends TemplateProducer
+    {
+        public PanelTypeTemplate()
+        {
+            super(HtmlPanel.class.getName(), TEMPLATEELEMNAME_PANEL_TYPE, "name", "extends", true, false);
+        }
+    }
+
+    static
+    {
+        templateProducers.add(new PanelTypeTemplate());
+    }
+
     private NavigationTrees navigationTrees = new NavigationTrees();
 
     public ApplicationManager()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.13 2003-04-06 03:57:44 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.14 2003-04-29 19:57:40 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -74,7 +74,7 @@ import com.netspective.commons.command.Commands;
 public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final TemplateProducers templateProducers = new TemplateProducers();
+    protected static final TemplateProducers templateProducers = new TemplateProducers();
     public static final String TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE = "tabular-report-column-type";
 
     protected static class TabularReportColumnTypeTemplate extends TemplateProducer

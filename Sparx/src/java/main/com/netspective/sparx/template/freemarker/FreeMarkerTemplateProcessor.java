@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.1 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.2 2003-04-29 19:57:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -49,48 +49,81 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.ext.beans.BeansWrapper;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
+import freemarker.cache.ClassTemplateLoader;
 
 import com.netspective.sparx.template.AbstractTemplateProcessor;
 import com.netspective.sparx.template.TemplateProcessorException;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.ApplicationManager;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.value.ValueSource;
 
 public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 {
+    private static final Log log = LogFactory.getLog(FreeMarkerTemplateProcessor.class);
     private static final StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
+    private static final MultiTemplateLoader multiTemplateLoader =
+            new MultiTemplateLoader(
+                    new TemplateLoader[]
+                    {
+                        stringTemplateLoader,
+                        new ClassTemplateLoader(ApplicationManager.class),
+                    });
+
     private static final Configuration fmConfig = Configuration.getDefaultConfiguration();
 
     static
     {
-        fmConfig.setTemplateLoader(stringTemplateLoader);
+        fmConfig.setTemplateLoader(multiTemplateLoader);
     }
+
+    private ValueSource source;
 
     public FreeMarkerTemplateProcessor()
     {
     }
 
+    public ValueSource getSource()
+    {
+        return source;
+    }
+
+    public void setSource(ValueSource source)
+    {
+        this.source = source;
+    }
+
     public void finalizeConstruction() throws DataModelException
     {
         super.finalizeConstruction();
-        stringTemplateLoader.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
+        if(source == null)
+            stringTemplateLoader.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
     public void process(Writer writer, NavigationContext nc) throws IOException, TemplateProcessorException
     {
-        Template template = fmConfig.getTemplate(Integer.toString(this.hashCode()));
         Map vars = new HashMap();
         try
         {
+            Template template = source != null ?
+                    fmConfig.getTemplate(source.getTextValue(nc)) :
+                    fmConfig.getTemplate(Integer.toString(this.hashCode()));
+
             vars.put("nc", BeansWrapper.getDefaultInstance().wrap(nc));
             template.process(vars, writer);
         }
-        catch (TemplateException e)
+        catch (Exception e)
         {
-            throw new TemplateProcessorException(e);
+            log.error(e);
+            writer.write(e.getMessage());
         }
     }
 }

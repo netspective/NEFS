@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.14 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.15 2003-04-29 19:57:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,6 +59,9 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -70,12 +73,15 @@ import java.io.Writer;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-public class NavigationPage extends NavigationPath
+public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
+    public static final String ATTRNAME_TYPE = "type";
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
 
     static
     {
@@ -84,10 +90,23 @@ public class NavigationPage extends NavigationPath
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_BODY", Flags.HAS_BODY);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "IGNORE_PAGE_CMD", Flags.IGNORE_PAGE_CMD);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD", Flags.ALLOW_PAGE_CMD);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
+    }
+
+    protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public PageTypeTemplateConsumerDefn()
+        {
+            super(null, ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+
+        public String getNameSpaceId()
+        {
+            return getOwner().getPageTypesTemplatesNameSpaceId();
+        }
     }
 
     public class Flags extends NavigationPath.Flags
@@ -95,11 +114,16 @@ public class NavigationPage extends NavigationPath
         public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
         public static final int HAS_BODY = REJECT_FOCUS * 2;
         public static final int HIDDEN = HAS_BODY * 2;
-        public static final int IGNORE_PAGE_CMD = HIDDEN * 2;
-        public static final int HAS_CONDITIONAL_ACTIONS = IGNORE_PAGE_CMD * 2;
+        public static final int ALLOW_PAGE_CMD = HIDDEN * 2;
+        public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD * 2;
         public static final int INHERIT_RETAIN_PARAMS = HAS_CONDITIONAL_ACTIONS * 2;
         public static final int INHERIT_ASSIGN_STATE_PARAMS = INHERIT_RETAIN_PARAMS * 2;
         public static final int START_CUSTOM = INHERIT_ASSIGN_STATE_PARAMS * 2;
+
+        public Flags()
+        {
+            setFlag(ALLOW_PAGE_CMD | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+        }
 
         public FlagDefn[] getFlagsDefns()
         {
@@ -126,6 +150,7 @@ public class NavigationPage extends NavigationPath
 
     }
 
+    private TemplateConsumerDefn templateConsumer;
     private ValueSource caption;
     private ValueSource title;
     private ValueSource heading;
@@ -135,6 +160,21 @@ public class NavigationPage extends NavigationPath
     private ValueSource redirect;
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
+    private List pageTypesConsumed = new ArrayList();
+
+    /* --- Templates consumption ------------------------------------------------------------------------------------*/
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        if(templateConsumer == null)
+            templateConsumer = new PageTypeTemplateConsumerDefn();
+        return templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        pageTypesConsumed.add(template.getTemplateName());
+    }
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
@@ -480,6 +520,11 @@ public class NavigationPage extends NavigationPath
         bodyPanel = new HtmlLayoutPanel();
         getFlags().setFlag(Flags.HAS_BODY);
         return bodyPanel;
+    }
+
+    public TemplateProcessor createBody()
+    {
+        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
     }
 
     public void addBody(TemplateProcessor templateProcessor)
