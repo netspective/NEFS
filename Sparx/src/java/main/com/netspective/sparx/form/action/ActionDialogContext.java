@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ActionDialogContext.java,v 1.2 2004-04-03 23:15:51 shahid.shah Exp $
+ * $Id: ActionDialogContext.java,v 1.3 2004-04-28 16:57:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.action;
@@ -51,6 +51,7 @@ import javax.naming.NamingException;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.sparx.form.DialogContext;
 
 /**
@@ -94,6 +95,16 @@ public class ActionDialogContext extends DialogContext
     {
         this.actionDataSourceId = dataSourceId;
         this.actionConnectionContext = getConnection(dataSourceId, true);
+        return this.actionConnectionContext;
+    }
+
+    public ConnectionContext openActionConnection(DriverManagerConnectionProvider.DataSourceInfo dsInfo) throws NamingException, SQLException
+    {
+        this.actionDataSourceId = "__CUSTOM__";
+        DriverManagerConnectionProvider dmcp = new DriverManagerConnectionProvider();
+        dmcp.addDataSourceInfo(this.actionDataSourceId, dsInfo);
+        setConnectionProvider(dmcp);
+        this.actionConnectionContext = getConnection(this.actionDataSourceId, true);
         return this.actionConnectionContext;
     }
 
