@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.24 2004-07-28 22:06:34 aye.thu Exp $
+ * $Id: BasicColumn.java,v 1.25 2004-07-30 16:35:09 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -84,6 +84,7 @@ import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.DbmsSqlTexts;
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRule;
 import com.netspective.commons.validate.ValidationRules;
@@ -313,7 +314,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private int indexInRow = -1;
     private SqlDataDefns sqlDataDefn = new SqlDataDefns(this);
     private ValueDefns valueDefn = new ValueDefns(this);
-    private JdbcTypeDefns jdbcDefn = new JdbcTypeDefns(this);
+    private JdbcTypesEnumeratedAttribute jdbcDefn;
     private String descr;
     private ForeignKey foreignKey;
     private String sequenceName;
@@ -653,20 +654,16 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public JdbcTypeDefns getJdbcType()
+    public JdbcTypesEnumeratedAttribute getJdbcType()
     {
         return jdbcDefn;
     }
     
-    public JdbcTypeDefns createJdbcType()
+    public void setJdbcType(JdbcTypesEnumeratedAttribute type)
     {
-        return jdbcDefn;
+        jdbcDefn = type;
     }
 
-    public void addJdbcType(JdbcTypeDefns jdbcTypeDefns)
-    {
-        // do nothing -- we have the instance already created, but the XML data model will call this anyway
-    }
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
