@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.4 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.5 2003-10-20 15:43:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -85,6 +85,7 @@ import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.Project;
 
@@ -187,10 +188,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if(autoMapAttrValue.equals("*"))
             {
                 Columns columns = table.getColumns();
+                DialogFields fields = getFields();
                 for(int i = 0; i < columns.size(); i++)
                 {
                     Column column = columns.get(i);
-                    attrs.addAttribute(null, null, column.getXmlNodeName(), "CDATA", column.getName());
+                    DialogField field = fields.getByName(column.getName());
+
+                    // make sure this dialog has the given column and add the column
+                    if(field != null)
+                        attrs.addAttribute(null, null, column.getXmlNodeName(), "CDATA", column.getName());
                 }
             }
             else
