@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponent.java,v 1.3 2003-08-18 22:11:28 shahid.shah Exp $
+ * $Id: DefaultXdmComponent.java,v 1.4 2003-08-19 13:24:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -99,11 +99,6 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
             for(int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentLoadedFromXml(event);
         }
-    }
-
-    public void addLifecycleListenener(XdmComponentLifecyleListener listener)
-    {
-        lifecycleListeners.add(listener);
     }
 
     public List getLifecycleListeners()
