@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.27 2003-06-19 04:52:59 aye.thu Exp $
+  * $Id: sparx.xml,v 1.28 2003-06-21 23:41:32 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -12,6 +12,7 @@
     <register-value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
+    <register-value-source class="com.netspective.sparx.value.source.AntBuildTargetsValueSource"/>
 
     <register-theme name="console" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate"/>

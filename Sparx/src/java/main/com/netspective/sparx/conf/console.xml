@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.53 2003-06-20 20:52:51 shahid.shah Exp $
+  * $Id: console.xml,v 1.54 2003-06-21 23:41:32 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -69,6 +69,11 @@
                         <frame heading="Sparx Project Input Source File and Dependencies"/>
                         <body config="console" source="console-page-content:documentation.ftl"/>
                     </panel>
+                </panels>
+            </page>
+	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target">
+                <panels>
+                    <panel type="command" command="dialog,console.ant-build"/>
                 </panels>
             </page>
 	        <page name="runtime-environment" caption="Runtime Environment">
@@ -360,6 +365,12 @@
             <field name="sql" type="memo" caption="SQL" rows="10" cols="60"/>
             <field name="name" type="text" caption="Name"/>
             <field name="rows-per-page" type="integer" caption="Rows per page" default="25"/>
+        </dialog>
+
+        <dialog name="ant-build" class="com.netspective.sparx.console.form.AntBuildDialog">
+            <frame heading="Ant Build"/>
+            <field name="project" type="text" caption="Ant Project File" read-only="yes" default="servlet-context-path:/WEB-INF/build.xml"/>
+            <field name="target" type="select" caption="Execute Target" style="radio" choices="ant-build-project-targets:" required="yes"/>
         </dialog>
     </dialogs>
 

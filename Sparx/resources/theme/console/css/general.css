@@ -5,3 +5,5 @@ a:Hover  { color: #900; font-family: Tahoma; text-decoration: none }
 
 td.property_name { font-family: tahoma; font-size: 8pt; color: #999999}
 td.property_value { font-family: tahoma; font-size: 8pt; }
+
+pre { font-family: lucida console, courier; font-size:8pt; }
