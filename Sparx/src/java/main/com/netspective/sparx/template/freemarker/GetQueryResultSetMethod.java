@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GetQueryResultSetMethod.java,v 1.2 2003-11-16 15:18:03 shahid.shah Exp $
+ * $Id: GetQueryResultSetMethod.java,v 1.3 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -50,7 +50,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateMethodModel;
-import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.core.Environment;
 import freemarker.ext.beans.StringModel;
@@ -63,7 +62,7 @@ public class GetQueryResultSetMethod implements TemplateMethodModel
 {
     private static final Log log = LogFactory.getLog(GetQueryResultSetMethod.class);
 
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         if (args.size() < 1)
             throw new TemplateModelException("Wrong arguments: expected query identifier.");

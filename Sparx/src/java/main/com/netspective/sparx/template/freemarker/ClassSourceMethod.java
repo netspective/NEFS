@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassSourceMethod.java,v 1.1 2003-10-15 19:15:23 shahid.shah Exp $
+ * $Id: ClassSourceMethod.java,v 1.2 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -48,7 +48,6 @@ import java.util.List;
 import java.net.URL;
 import java.io.File;
 
-import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.SimpleScalar;
 import freemarker.ext.beans.BeansWrapper;
@@ -57,7 +56,7 @@ import com.netspective.commons.lang.ResourceLoader;
 
 public class ClassSourceMethod extends ClassReferenceMethod
 {
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         if (args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");

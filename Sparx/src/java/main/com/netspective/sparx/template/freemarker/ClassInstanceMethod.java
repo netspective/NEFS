@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassInstanceMethod.java,v 1.1 2003-06-18 19:58:07 shahid.shah Exp $
+ * $Id: ClassInstanceMethod.java,v 1.2 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -56,7 +56,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class ClassInstanceMethod implements TemplateMethodModel
 {
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         if (args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");

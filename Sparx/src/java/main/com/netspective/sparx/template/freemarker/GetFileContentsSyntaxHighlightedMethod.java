@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GetFileContentsSyntaxHighlightedMethod.java,v 1.1 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: GetFileContentsSyntaxHighlightedMethod.java,v 1.2 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -62,7 +62,7 @@ public class GetFileContentsSyntaxHighlightedMethod implements TemplateMethodMod
 {
     private static final Log log = LogFactory.getLog(GetFileContentsSyntaxHighlightedMethod.class);
 
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         if (args.size() != 1)
         {

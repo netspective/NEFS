@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchemaMethod.java,v 1.1 2003-06-14 22:16:21 shahid.shah Exp $
+ * $Id: XmlDataModelSchemaMethod.java,v 1.2 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -47,7 +47,6 @@ package com.netspective.sparx.template.freemarker;
 import java.util.List;
 
 import freemarker.template.TemplateMethodModel;
-import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.ext.beans.BeansWrapper;
 
@@ -55,7 +54,7 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class XmlDataModelSchemaMethod implements TemplateMethodModel
 {
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         if (args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");

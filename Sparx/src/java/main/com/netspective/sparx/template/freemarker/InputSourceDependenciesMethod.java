@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: InputSourceDependenciesMethod.java,v 1.4 2003-11-16 15:18:03 shahid.shah Exp $
+ * $Id: InputSourceDependenciesMethod.java,v 1.5 2003-11-27 19:22:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -50,7 +50,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateMethodModel;
-import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.SimpleScalar;
 import freemarker.core.Environment;
@@ -65,7 +64,7 @@ public class InputSourceDependenciesMethod implements TemplateMethodModel
 {
     private static final Log log = LogFactory.getLog(InputSourceDependenciesMethod.class);
 
-    public TemplateModel exec(List args) throws TemplateModelException
+    public Object exec(List args) throws TemplateModelException
     {
         Environment env = Environment.getCurrentEnvironment();
         StringModel model = null;
