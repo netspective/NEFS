@@ -47,9 +47,15 @@ Setup instructions:
         <property name="commons.home" value="../../Commons"/>
         <property name="commons.lib.dir" value="${commons.home}/lib"/>
         <property name="commons.lib.redist.dir" value="${commons.lib.dir}/redist"/>
+        <property name="axiom.home" value="../../Axiom"/>
+        <property name="axiom.lib.dir" value="${axiom.home}/lib"/>
+        <property name="axiom.lib.redist.dir" value="${axiom.lib.dir}/redist"/>
 
         <path id="project.class.path">
             <fileset dir="${commons.lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${axiom.lib.dir}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${project.lib.redist.dir}">
