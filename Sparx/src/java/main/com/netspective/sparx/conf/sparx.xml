@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.69 2003-12-05 05:29:54 aye.thu Exp $
+  * $Id: sparx.xml,v 1.70 2003-12-06 01:19:58 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -143,6 +143,9 @@
 
     <page-body-handler name="html-sub-site" class="com.netspective.sparx.navigate.handler.NavigationPageHtmlSubsiteBodyHandler"/>
     <page-body-handler name="transform" class="com.netspective.sparx.navigate.handler.NavigationPageTransformBodyHandler"/>
+
+    <template-processor-type name="freemarker" class="com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor"/>
+    <template-processor-type name="wiki" class="com.netspective.sparx.template.RadeoxTemplateProcessor"/>
 
     <ant-project id="project" caption="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
         <dialog type="ant-build" name="project_ant_build"/>
