@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.2 2003-06-13 03:46:13 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.3 2003-06-13 04:46:51 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -64,8 +64,6 @@ import com.netspective.axiom.sql.*;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.*;
-import com.netspective.axiom.schema.dal.db.model.SchemaTest;
-import com.netspective.axiom.schema.dal.db.DataAccessLayer;
 import com.netspective.axiom.schema.column.type.*;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
@@ -93,6 +91,8 @@ public class SchemaColumnsTest extends TestCase
 
         schema = component.getManager().getSchema("db");
         assertNotNull(schema);
+
+        TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
     }
 
     public void test1()
