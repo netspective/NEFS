@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.4 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: BooleanField.java,v 1.5 2003-10-21 15:02:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -66,6 +66,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.text.TextUtils;
 
 public class BooleanField extends DialogField
 {
@@ -142,7 +143,7 @@ public class BooleanField extends DialogField
                 if(value == null || value.length() == 0)
                     setValue(new Integer(-1));
                 else
-                    setValue(new Integer(value));
+                    setValue(new Integer(TextUtils.toBoolean(value) ? 1 : 0));
             }
 
             public boolean getBoolValue()
