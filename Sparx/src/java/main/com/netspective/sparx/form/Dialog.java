@@ -67,6 +67,7 @@ import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SectionField;
 import com.netspective.sparx.form.field.type.SeparatorField;
+import com.netspective.sparx.form.field.type.GridFieldRow;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandlerTemplateConsumer;
@@ -197,6 +198,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     private List stateBeforeValidationListeners = new ArrayList();
     private List stateListeners = new ArrayList();
     private List validationListeners = new ArrayList();
+
+    /**
+     * Creates an empty dialog object. 
+     */
+    public Dialog()
+    {
+        fields = constructFields();
+        dialogFlags = createDialogFlags();
+        debugFlags = createDebugFlags();
+    }
 
     /**
      * Creates a dialog in the project.

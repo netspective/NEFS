@@ -55,6 +55,15 @@ public class ActionDialog extends Dialog
 {
     private ActionWrapper action;
 
+    /**
+     * Default constructor solely used by XDM
+     */
+    public ActionDialog()
+    {
+        super();
+        setDialogContextClass(ActionDialogContext.class);
+    }
+
     public ActionDialog(Project project)
     {
         super(project);
