@@ -9,6 +9,7 @@ public interface Respondent
     static public final String DIVISION = "division";
     static public final String FUNCTION = "function";
     static public final String LOCATION = "location";
+    static public final String LOCKED = "locked";
     static public final String PIN = "pin";
     static public final String TITLE = "title";
     static public final String YRS_CURRENT_POS = "yrs_current_pos";

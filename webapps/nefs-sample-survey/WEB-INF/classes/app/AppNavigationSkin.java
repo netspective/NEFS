@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.4 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.5 2003-08-31 15:25:28 shahid.shah Exp $
  */
 
 package app;
@@ -72,6 +72,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
+import com.netspective.sparx.theme.basic.BasicTabbedNavigationSkin;
 import com.netspective.sparx.command.DialogCommand;
 import com.netspective.sparx.ProductRelease;
 import com.netspective.commons.security.AuthenticatedUser;
@@ -168,6 +169,9 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
 
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
+        // in case any errors or messages need to appear, they'll show up at the top of our app
+        BasicTabbedNavigationSkin.renderDevelopmentEnvironmentHeader(writer, nc);
+
         if (((NavigationPage.Flags) nc.getActiveState().getFlags()).isPopup())
             return;
 
