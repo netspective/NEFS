@@ -67,7 +67,7 @@ import java.io.Writer;
 /**
  * Logical dialog field class to allow creation of grids.
  *
- * @version $Id: GridField.java,v 1.8 2004-02-12 05:33:38 aye.thu Exp $
+ * @version $Id: GridField.java,v 1.9 2004-02-13 04:41:02 aye.thu Exp $
  */
 public class GridField extends DialogField
 {
@@ -83,18 +83,7 @@ public class GridField extends DialogField
         {
             super(dc, field);
         }
-
-        /**
-         * Gets the value of the grid field. This method always return null since a grid field is more of a logical
-         * container of rows and columns.
-         *
-         * @return Null
-         */
-        public DialogFieldValue getValue()
-        {
-            return null;
-        }
-
+        
         /**
          * Gets the value of the grid entry child
          *
