@@ -5,7 +5,7 @@
 			This is a placeholder table type used to group all
 			invoices in a hierarchy under an Org
         </description>
-        <column name="invoice_id" type="guid32" primarykey="yes" descr="Unique ID for this invoice"/>
+        <column name="invoice_id" type="invoice-id" primarykey="yes" descr="Unique ID for this invoice"/>
         <column name="act_id" lookupref="${params.parentActId}" descr="The parent action that this invoice comes under">
             <presentation>
                 <field type="text" caption="Action ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
@@ -28,7 +28,7 @@
                 <field type="text" caption="Invoice Receptor Person ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
             </presentation>
         </column>
-        <column name="invoice_num" type="text" size="64" descr="Org-specific Invoice number.  Could be used when printing invoices, etc">
+        <column name="invoice_num" type="invoice-number" size="64" descr="Org-specific Invoice number.  Could be used when printing invoices, etc">
             <presentation>
                 <field type="text" caption="Invoice Number"/>
             </presentation>
@@ -43,7 +43,7 @@
                 <field.date caption="Invoice Date"/>
             </presentation>
         </column>
-        <column name="submit_date" type="date" descr="The date the invoice was submitted">
+        <column name="submit_date" type="past-date" descr="The date the invoice was submitted">
             <presentation>
                 <field.date caption="Invoice Submission Date"/>
             </presentation>

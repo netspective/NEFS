@@ -7,17 +7,17 @@
 			by the application.  The actual contents of the documents are stored in files on the server and can be
 			displayed on the client's browser by the application.
         </description>
-        <column name="document_id" type="guid32" primarykey="yes" descr="Unique Document ID for each document record stored in this table"/>
-        <column name="md5_hash_id" type="text" size="32" descr="The value of the 128-bit unique message digest (MD5) hash that can be used to verify the authenticity of the contents of the document"/>
+        <column name="document_id" type="document-id" primarykey="yes" descr="Unique Document ID for each document record stored in this table"/>
+        <column name="md5_hash_id" type="md5-hash" size="32" descr="The value of the 128-bit unique message digest (MD5) hash that can be used to verify the authenticity of the contents of the document"/>
         <column name="document_type_id" lookupref="Document_Type" descr="What kind of document is this?"/>
         <column name="mime_type_id" lookupref="Document_Mime_Type" descr="The mime-type to be sent to the browser when displaying this document"/>
         <column name="mime_type" type="text" size="64" descr="The value of the mime-type if choosing 'Other' in the field above"/>
         <column name="creator_id" lookupref="Person.person_id" descr="The ID of the person who created this document.  No org_id is necessary since it is inferred"/>
         <column name="document_title" type="text" size="512" descr="The title of the document"/>
         <column name="document_descr" type="text" size="1024" descr="A brief description of the contents of the document"/>
-        <column name="doc_creation_time" type="stamp" descr="The exact time when this document was first created"/>
-        <column name="doc_modification_time" type="stamp" descr="The last time this document was modified"/>
-        <column name="local_filename" type="text" size="1024" descr="The filename on the server where the contents of this document are stored."/>
+        <column name="doc_creation_time" type="past-timestamp" descr="The exact time when this document was first created"/>
+        <column name="doc_modification_time" type="past-timestamp" descr="The last time this document was modified"/>
+        <column name="local_filename" type="filename" size="1024" descr="The filename on the server where the contents of this document are stored."/>
     </table>
 
 </xdm:container>

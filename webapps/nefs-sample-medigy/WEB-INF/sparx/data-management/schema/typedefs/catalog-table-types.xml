@@ -6,7 +6,7 @@
 			This is a placeholder table type used to group all
 			catalogs in a hierarchy
         </description>
-        <column name="catalog_id" type="guid32" primarykey="yes" descr="Unique ID for this catalog"/>
+        <column name="catalog_id" type="catalog-id" primarykey="yes" descr="Unique ID for this catalog"/>
         <column name="catalog_name" type="text" size="128" descr="The name of this catalog">
             <presentation>
                 <field type="text" caption="Catalog Name"/>
@@ -25,7 +25,7 @@
 			will hold catalog items.  This is where you attach
 			a cost to services or products.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this item"/>
+        <column name="system_id" type="catalog-item-id" primarykey="yes" descr="Unique ID for this item"/>
         <column name="catalog_id" parentref="${params.parentCatalog}" descr="The ID for the catalog in the table corresponding to the above field">
             <presentation>
                 <field type="text" caption="Catalog ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
@@ -50,6 +50,7 @@
         </column>
     </table-type>
 
+    <!--TODO: Can we use product-catalog-id as the type for the catalog_id field in the Product_Catalog table? -->
     <table-type name="Product_Catalog" abbrev="PrdCat" type="Catalog">
         <description>
 			This is a placeholder table that will be used to define

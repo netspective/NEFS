@@ -5,13 +5,16 @@
         <description>
 			This table type is used to store the state of a record in a table.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this record state record"/>
-        <column name="upd_stamp" type="stamp" required="dbms" descr="Date/Time this record state was changed">
+        <column name="system_id" type="record-state-id" primarykey="yes" descr="Unique ID for this record state record"/>
+        <column name="upd_stamp" type="past-timestamp" required="dbms" descr="Date/Time this record state was changed">
             <sql-ddl>
                 <default dbms="oracle">sysdate</default>
             </sql-ddl>
             <value-defn>
                 <default dbms="hsqldb">curdate()</default>
+            </value-defn>
+            <value-defn>
+                <default dbms="postgres">now()</default>
             </value-defn>
             <presentation>
                 <field type="datetime" caption="Last Change Timestamp"/>

@@ -2,7 +2,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <table-type name="Ins_Coverage" type="Default">
         <description/>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each payment record"/>
+        <column name="system_id" type="insurance-coverage-id" primarykey="yes" descr="Unique System ID for each payment record"/>
         <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The insurance product/plan/policy that this information is related to">
             <presentation>
                 <field type="text" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
@@ -20,12 +20,12 @@
                 <field type="text" caption="Other Coverage Type"/>
             </presentation>
         </column>
-        <column name="ind_deduct_amt" type="currency" descr="Individual deductible amount for this type of incidents">
+        <column name="ind_deduct_amt" type="individual-deductible" descr="Individual deductible amount for this type of incidents">
             <presentation>
                 <field type="currency" caption="Individual Deductible"/>
             </presentation>
         </column>
-        <column name="fam_deduct_amt" type="currency" descr="Family deductible amount for this type of incidents">
+        <column name="fam_deduct_amt" type="family-deductible" descr="Family deductible amount for this type of incidents">
             <presentation>
                 <field type="currency" caption="Family Deductible"/>
             </presentation>
@@ -40,7 +40,7 @@
                 <field type="currency" caption="Threshold Amount"/>
             </presentation>
         </column>
-        <column name="copay_amt" type="currency" descr="The co-payment a policy holder has to pay for these types of incidents">
+        <column name="copay_amt" type="copay" descr="The co-payment a policy holder has to pay for these types of incidents">
             <presentation>
                 <field type="currency" caption="Copay Amount"/>
             </presentation>

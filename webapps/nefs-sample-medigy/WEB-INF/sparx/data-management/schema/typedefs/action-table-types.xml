@@ -3,7 +3,7 @@
 
     <table-type name="Action" abbrev="Trans" type="Default">
         <hierarchy parent="Action"/>
-        <column name="act_id" type="guid32" primarykey="yes" descr="Unique System ID for each action record"/>
+        <column name="act_id" type="action-id" primarykey="yes" descr="Unique System ID for each action record"/>
         <column name="act_type_id" lookupref="${params.actTypeEnum}" descr="What kind of action is this information stored for?">
             <presentation>
                 <field type="select" caption="Action Type"/>
@@ -31,6 +31,7 @@
         </column>
     </table-type>
 
+    <!--TODO: Is there a way to use the communication-action-id type for the act_id in the Communication_Action table? -->
     <table-type name="Communication_Action" abbrev="CommTrans" type="Action">
         <description>This table stores details of all communication actions between a patient and clinic</description>
         <column name="act_status_id" lookupref="${params.actStatusEnum}" descr="The status of this action.">

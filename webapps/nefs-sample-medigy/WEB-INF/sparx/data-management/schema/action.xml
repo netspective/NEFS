@@ -18,7 +18,7 @@
 			This table stores details of all actions where a physician makes a temporary or permanent diagnosis for a patient
         </description>
         <column name="diag_codetype_id" lookupref="Claim_Diagnosis_Code_Type" descr="The type of code that will be used to describe the diagnosis"/>
-        <column name="diag_code" type="text" size="32" descr="The code describing the diagnosis pronounced by the physician"/>
+        <column name="diag_code" type="diagnosis-code" size="32" descr="The code describing the diagnosis pronounced by the physician"/>
         <column name="diagnosis" type="text" size="256" descr="The name of diagnosis pronounced by the physician (if the field above is left empty)"/>
     </table>
 
@@ -33,11 +33,11 @@
         <column name="event_id" lookupref="Event.event_id" descr="The event_id of the Appointment"/>
         <column name="person_id" lookupref="Person.person_id" required="yes" indexed="yes" descr="The ID of the patient"/>
         <column name="effective_begin_date" type="date" descr="The effective start date of the Insurance"/>
-        <column name="deductible" type="currency" descr="Deductible amount"/>
+        <column name="deductible" type="deductible" descr="Deductible amount"/>
         <column name="deductible_met" type="currency" descr="The amount of deductible met"/>
-        <column name="ovcopay" type="currency" descr="Office Visit Copay amount"/>
-        <column name="labcopay" type="currency" descr="Lab Copay amount"/>
-        <column name="xraycopay" type="currency" descr="XRay Copay amount"/>
+        <column name="ovcopay" type="copay" descr="Office Visit Copay amount"/>
+        <column name="labcopay" type="copay" descr="Lab Copay amount"/>
+        <column name="xraycopay" type="copay" descr="XRay Copay amount"/>
         <column name="referral_required" type="boolean" descr="Whether or not referral is required"/>
         <column name="sep_copay_xray" type="boolean" descr="Whether or not separate copay for X-ray"/>
         <column name="lab" type="text" size="128" descr="The Lab Organization "/>
@@ -62,13 +62,13 @@
         <column name="circumcision" type="text" size="128" descr="Circumcisions"/>
         <column name="ins_rep_name" type="text" size="128" descr="Insurance Rep Name"/>
         <column name="ins_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Insurance verification"/>
-        <column name="ins_verify_date" type="date" descr="Date of Insurance verification"/>
+        <column name="ins_verify_date" type="past-date" descr="Date of Insurance verification"/>
         <column name="app_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Appointment verification"/>
-        <column name="app_verify_date" type="date" descr="Date of Appointment verification"/>
+        <column name="app_verify_date" type="past-date" descr="Date of Appointment verification"/>
         <column name="med_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Medical verification"/>
-        <column name="med_verify_date" type="date" descr="Date of Medical verification"/>
+        <column name="med_verify_date" type="past-date" descr="Date of Medical verification"/>
         <column name="per_verified_by" lookupref="Person.person_id" descr="The ID of the person doing the Personal verification"/>
-        <column name="per_verify_date" type="date" descr="Date of Personal verification"/>
+        <column name="per_verify_date" type="past-date" descr="Date of Personal verification"/>
         <column name="verify_action" type="text" size="64" descr="Action taken to verify appointment"/>
         <column name="owner_org_id" lookupref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/>
     </table>
@@ -80,7 +80,7 @@
     <table name="Action_Procedure" abbrev="ProcAct" type="Clinical_Action" xdm:param-actTypeEnum="Proc_Type">
         <description>This table stores details of all actions where a physician performs a procedure for a patient</description>
         <column name="proc_codetype_id" lookupref="Claim_Procedure_Code_Type" descr="The type of code that will be used to describe the procedure"/>
-        <column name="proc_code" type="text" size="32" descr="The code describing the procedure performed by the physician"/>
+        <column name="proc_code" type="procedure-code" size="32" descr="The code describing the procedure performed by the physician"/>
         <column name="procedure" type="text" size="256" descr="The name of procedure performed by the physician (if the field above is left empty)"/>
     </table>
 

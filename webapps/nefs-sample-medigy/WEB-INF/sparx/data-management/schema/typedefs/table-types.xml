@@ -30,9 +30,9 @@
 
     <table-type name="Attribute" abbrev="Attr" type="Default">
         <description>Basic information required for almost any attribute associated with a Person or Org.</description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="attribute-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for whom attribute is being defined"/>
-        <column name="attribute_id" lookupref="${params.attributeValueEnum}" required="yes" descr="The value of the attribute for this source ID">
+        <column name="attribute_type_id" lookupref="${params.attributeTypeEnum}" required="yes" descr="The attribute associated with the Source Id stored in this record.">
             <presentation>
                 <field type="select" caption="Attribute Type"/>
             </presentation>
@@ -44,7 +44,7 @@
             This table allows a developer to store preferences for any Person record.  The general format is to store the equivalent
             of an environment variable and its corresponding value as a string.  This can be enhanced later.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/>
+        <column name="system_id" type="preference-id" primarykey="yes" descr="Unique system ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which a preference is being stored."/>
         <column name="pref_name" type="text" size="256" descr="The name of this preference variable"/>
         <column name="pref_value" type="text" size="512" descr="The value of this preference variable"/>
@@ -56,7 +56,7 @@
             This table allows a developer to store information about any and all activity that occurs within a table.  This includes
             everything from adding a record to updating it and deleting it and anything else that needs to be logged.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/>
+        <column name="system_id" type="activity-log-id" primarykey="yes" descr="Unique system ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="The unique ID of the record for which activity is stored"/>
         <column name="table_name" type="text" size="64" descr="The table in which a record was added, updated or deleted"/>
         <column name="activity_type_id" lookupref="Table_Activity_Type" descr="The type of activity"/>
@@ -64,6 +64,7 @@
     </table-type>
 
 
+    <!--TODO: Is this needed even though it's present in Axiom's schema.xml? -->
     <table-type name="Relationship_Map" type="Default">
         <description>
             &lt;p&gt;This table type is used to store a mapping between relationships and their
@@ -79,7 +80,7 @@
             to update a relationship, it will update the corresponding relationship
             as well.&lt;/p&gt;
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="relationship-map-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The relationship for which an inverse is declared.  This should be a lookup to a table of type Relationship_Type."/>
         <column name="inv_rel_type_id" lookupref="${params.relationshipTypeTable}" descr="The inverse of the relationship stored in the rel_type_id field"/>
 
@@ -97,8 +98,7 @@
         <xdm:template-param name="relationshipMapRowPackage" default="app.dal.domain.row"/>
         <xdm:template-param name="relationshipMapRowsPackage" default="app.dal.domain.rows"/>
         <description>Basic information required for almost any relationship.</description>
-        <!--column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/-->
-        <column name="system_id" type="auto-inc" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="relationship-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID for the entity for which this relationship is being defined">
             <presentation>
                 <field.guid32 required="yes">
@@ -123,7 +123,7 @@
                 </field>
             </presentation>
         </column>
-        <column name="rel_begin" type="date" descr="Relationship start date/time">
+        <column name="rel_begin" type="past-date" descr="Relationship start date/time">
             <presentation>
                 <field.date caption="Begin Date"/>
             </presentation>
@@ -138,9 +138,9 @@
                 <field.memo caption="Description"/>
             </presentation>
         </column>
-        AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
+        <!-- AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
         Table triggers must now be placed in Java classes.
-        <trigger type="dal-row-java" time="after" event="insert"/><!---->
+        <trigger type="dal-row-java" time="after" event="insert"/> -->
     </table-type>
 
 
@@ -184,7 +184,7 @@
 
     <table-type name="Physical_Address" type="Default">
         <description>An address of a member of a certain entity, such as a person or org.</description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="system_id" type="address-id" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
         <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the address">
             <presentation>
                 <field.guid32 required="yes">
@@ -217,12 +217,12 @@
                 <field type="text" caption="Line 2" size="64"/>
             </presentation>
         </column>
-        <column name="city" type="text" required="yes" size="128" descr="The city of the state">
+        <column name="city" type="city" required="yes" size="128" descr="The city of the state">
             <presentation>
                 <field type="text" caption="City" size="16"/>
             </presentation>
         </column>
-        <column name="county" type="text" size="128" descr="The county of the state">
+        <column name="county" type="county" size="128" descr="The county of the state">
             <presentation>
                 <field type="text" caption="County" size="16"/>
             </presentation>
@@ -239,12 +239,12 @@
                 </field>
             </presentation>
         </column>
-        <column name="zip" type="text" size="128" descr="The postal code (+4 format)">
+        <column name="zip" type="zip-code" size="128" descr="The postal code (+4 format)">
             <presentation>
                 <field.zip caption="Zip Code"/>
             </presentation>
         </column>
-        <column name="country" type="text" size="128" descr="The country of the address">
+        <column name="country" type="country" size="128" descr="The country of the address">
             <presentation>
                 <field type="text" caption="Country" size="16"/>
             </presentation>
@@ -291,7 +291,7 @@
             as simple text (in method_value) or as simple text and parsed values (in phone_*). If parsed values are
             stored, the complete phone number should still be stored in method_value for performance reasons.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="system_id" type="contact-method-id" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
         <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the contact method">
             <presentation>
                 <field.guid32 hidden="yes" required="yes">
@@ -316,22 +316,22 @@
                 <field type="text" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
             </presentation>
         </column>
-        <column name="phone_cc" indexed="yes" type="text" size="16" descr="The country code if this is a separated phone number">
+        <column name="phone_cc" indexed="yes" type="telephone-country-code" size="16" descr="The country code if this is a separated phone number">
             <presentation>
                 <field type="text" caption="Country Code"/>
             </presentation>
         </column>
-        <column name="phone_ac" indexed="yes" type="integer" descr="The area code if this is a separated phone number">
+        <column name="phone_ac" indexed="yes" type="telephone-area-code" descr="The area code if this is a separated phone number">
             <presentation>
                 <field type="text" caption="Area Code"/>
             </presentation>
         </column>
-        <column name="phone_prefix" indexed="yes" type="integer" descr="The prefix code if this is a separated phone number">
+        <column name="phone_prefix" indexed="yes" type="telephone-exchange-number" descr="The prefix code if this is a separated phone number">
             <presentation>
                 <field type="text" caption="Prefix"/>
             </presentation>
         </column>
-        <column name="phone_suffix" indexed="yes" type="integer" descr="The suffix code if this is a separated phone number">
+        <column name="phone_suffix" indexed="yes" type="telephone-customer-number" descr="The suffix code if this is a separated phone number">
             <presentation>
                 <field type="text" caption="Suffix"/>
             </presentation>
@@ -345,7 +345,7 @@
     <table-type name="Event_Type" type="Enumeration"/>
 
     <table-type name="Event" type="Default">
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="event-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source parent ID">
             <presentation>
                 <field.guid32 hidden="yes" required="yes"/>
@@ -390,7 +390,7 @@
     <table-type name="Flag_Status" type="Status"/>
 
     <table-type name="Flag" type="Default">
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="flag-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID">
             <presentation>
                 <field.guid32 required="yes">
@@ -409,7 +409,7 @@
     <table-type name="Note_Type" type="Enumeration"/>
 
     <table-type name="Note" type="Default">
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="note-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="parent_id" parentref="${params.parentRef}" descr="Source ID">
             <presentation>
                 <field.guid32 required="yes">

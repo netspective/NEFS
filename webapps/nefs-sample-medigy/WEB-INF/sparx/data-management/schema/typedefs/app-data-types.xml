@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!-- General Data Types -->
+
+    <data-type name="session-id">
+        <generate-id>guid32</generate-id>
+        <size>36</size>
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define>
+        </sql-ddl>
+        <presentation>
+            <field.guid32>
+                <conditional action="apply-flag" flag="hidden" perspective="add"/>
+            </field.guid32>
+        </presentation>
+    </data-type>
+
     <data-type name="name" type="text">
         <copytype>text</copytype>
         <validation>
@@ -7,111 +24,131 @@
         </validation>
     </data-type>
 
-    <data-type name="action-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="user-id" type="text"/>
+    <data-type name="timezone" type="text"/>
 
-    <data-type name="clinical-action-id" type="action-id"/>
+    <data-type name="internet-hostname" type="text"/>
+    <data-type name="internet-ip-address" type="text"/>
 
-    <data-type name="communication-action-id" type="action-id"/>
+    <data-type name="attribute-id" type="guid32"/>
+    <data-type name="preference-id" type="guid32"/>
+    <data-type name="activity-log-id" type="guid32"/>
 
-    <data-type name="artifact-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="resource-id" type="guid32"/>
 
-    <data-type name="message-id" type="artifact-id"/>
+    <data-type name="relationship-map-id" type="guid32"/>
+    <data-type name="relationship-id" type="guid32"/>
 
-    <data-type name="asset-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="contact-method-id" type="guid32"/>
 
-    <data-type name="catalog-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="event-id" type="guid32"/>
 
-    <data-type name="product-catalog-id" type="catalog-id">
-        <validation>
-            <rule name="guid32-format" type="regex" success-message="Success" failure-message="Invalid GUID32 Found.">^[A-Z0-9]{32}$</rule>
-        </validation>
-    </data-type>
+    <!-- Organization Related -->
+    <data-type name="organization-id" type="guid32"/>
+    <data-type name="organization-code" type="text"/>
+    <data-type name="organization-stock-ticker-symbol" type="text"/>
+    <data-type name="organization-sic-code" type="text"/>
 
-    <data-type name="service-catalog-id" type="catalog-id"/>
+    <data-type name="organization-classification-id" type="guid32"/>
+    <data-type name="organization-invoice-map-id" type="guid32"/>
+    <data-type name="organization-identifier-id" type="guid32"/>
+    <data-type name="organization-industry-id" type="guid32"/>
+    <data-type name="organization-product-id" type="guid32"/>
+    <data-type name="organization-role-id" type="guid32"/>
+    <data-type name="organization-service-id" type="guid32"/>
+    <data-type name="organization-appointment-type-id" type="guid32"/>
+    <data-type name="organization-schedule-template-id" type="guid32"/>
 
-    <data-type name="claim-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="appointment-chain-entry-id" type="guid32"/>
 
-    <data-type name="diagnosis-code" type="text"/>
+    <data-type name="appointment-duration" type="integer"/>
 
-    <data-type name="procedure-code" type="text"/>
-
-    <data-type name="x12-data" type="text"/>
-
-    <data-type name="event-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="insurance-product-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="insurance-plan-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="deductible" type="currency"/>
-
-    <data-type name="copay" type="currency"/>
-
-    <data-type name="invoice-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="invoice-line-item-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="product-invoice-id" type="invoice-id"/>
-
-    <data-type name="service-invoice-id" type="invoice-id"/>
-
-    <data-type name="org-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
+    <data-type name="sellable-unit-measure" type="integer"/>
     <data-type name="tax-id" type="text"/>
 
-    <data-type name="employer-id" type="text"/>
+    <data-type name="flag-id" type="guid32"/>
+    <data-type name="note-id" type="guid32"/>
 
-    <data-type name="state-id" type="text"/>
+    <data-type name="record-state-id" type="guid32"/>
+    <data-type name="transaction-id" type="guid32"/>
+    <data-type name="clinical-transaction-id" type="transaction-id"/>
 
-    <data-type name="medicaid-id" type="text"/>
+    <data-type name="mime-type" type="text"/>
+    <data-type name="uri" type="text"/>
 
-    <data-type name="medicare-id" type="text"/>
+    <data-type name="document-id" type="guid32"/>
+    <data-type name="message-id" type="guid32"/>
+    <data-type name="message-recipient-id" type="guid32"/>
+    <data-type name="message-attachment-id" type="guid32"/>
 
-    <data-type name="workers-comp-id" type="text"/>
+    <!-- Address Related -->
+    <data-type name="address-id" type="guid32"/>
+    <data-type name="city" type="text"/>
+    <data-type name="county" type="text"/>
+    <data-type name="zip-code" type="text"/>
+    <data-type name="country" type="text"/>
 
-    <data-type name="bcbs-id" type="text"/>
+    <!-- Telephone Related -->
+    <data-type name="telephone-country-code" type="text"/>
+    <data-type name="telephone-area-code" type="text"/>
+    <data-type name="telephone-exchange-number" type="text"/>
+    <data-type name="telephone-customer-number" type="text"/>
 
-    <data-type name="clia-id" type="text"/>
+    <data-type name="age" type="integer"/>
+    <data-type name="md5-hash" type="text"/>
+    <data-type name="filename" type="text"/>
 
-    <data-type name="insurance-company-provider-id" type="text"/>
+    <!-- Date/Time Related -->
+    <data-type name="future-date" type="date"/>
+    <data-type name="past-date" type="date"/>
+    <data-type name="future-time" type="time"/>
+    <data-type name="past-time" type="time"/>
+    <data-type name="future-timestamp" type="stamp"/>
+    <data-type name="past-timestamp" type="stamp"/>
 
-    <data-type name="other-id" type="text"/>
+    <!-- Person Data Types -->
 
     <data-type name="person-id" type="guid32">
         <generate-id>guid32</generate-id>
+        <presentation>
+            <field type="guid32" hidden="yes"/>
+        </presentation>
     </data-type>
 
-    <data-type name="ssn" type="text"/>
+    <data-type name="person-classification-id" type="guid32"/>
+    <data-type name="person-ethnicity-id" type="guid32"/>
+    <data-type name="person-language-id" type="guid32"/>
+    <data-type name="person-identifier-id" type="guid32"/>
+    <data-type name="person-login-id" type="guid32"/>
+    <data-type name="person-role-id" type="guid32"/>
 
-    <data-type name="gender" type="integer"/>
+    <data-type name="staff-benefit-id" type="guid32"/>
+    <data-type name="staff-license-id" type="guid32"/>
+    <data-type name="staff-license-number" type="guid32"/>
 
-    <data-type name="marital-status" type="integer"/>
+    <data-type name="ssn" type="text">
+        <presentation>
+            <field type="ssn" caption="Social Security Number" required="yes" size="11"/>
+        </presentation>
+    </data-type>
 
-    <data-type name="blood-type" type="integer"/>
+    <data-type name="date-of-birth" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Birth" size="12"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="date-of-death" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Death" size="12"/>
+        </presentation>
+    </data-type>
 
     <data-type name="password" type="text"/>
+
+    <!-- Other Data Types -->
+
+    <data-type name="other-id" type="text"/>
 
     <data-type name="reference" type="guid32">
         <generate-id>guid32</generate-id>
@@ -130,38 +167,6 @@
         Column triggers, validation, and DAL information must now be placed in Java classes.
         <validate name="guid32-format-delete" type="guid32-format" event="delete"/>
     -->
-    <data-type name="session-id">
-        <generate-id>guid32</generate-id>
-        <size>36</size>
-        <sql-ddl>
-            <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define>
-            <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define>
-        </sql-ddl>
-        <presentation>
-            <field.guid32>
-                <conditional action="apply-flag" flag="hidden" perspective="add"/>
-            </field.guid32>
-        </presentation>
-    </data-type>
-
-    <data-type name="address_state" type="text"/>
-
-    <data-type name="address_zip" type="text"/>
-
-    <data-type name="age" type="integer"/>
-
-    <data-type name="md5-hash" type="text"/>
-
-    <data-type name="filename" type="text"/>
-
-    <data-type name="future-date" type="date"/>
-
-    <data-type name="past-date" type="date"/>
-
-    <data-type name="future-time" type="time"/>
-
-    <data-type name="past-time" type="time"/>
-
     <data-type name="survey">
         <composite>
             <column name="${params.name}_id" lookupref="${params.surveyTypeEnum}" descr="The text of the question"/>

@@ -2,8 +2,8 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <table-type name="Resource" abbrev="Rsrc" type="Default">
+        <column name="resource_id" type="resource-id" size="36" descr="The generic Resource ID for this record.  It is the same as one of person, org, asset, or other ID in this record.  It is duplicated for performance reasons. "/>
         <column name="resource_type_id" lookupref="Resource_Type" descr="The type of resource specified by this record"/>
-        <column name="resource_id" type="text" size="36" descr="The generic Resource ID for this record.  It is the same as one of person, org, asset, or other ID in this record.  It is duplicated for performance reasons. "/>
         <column name="org_id" lookupref="Org.org_id" descr="The facility specified by this record"/>
         <column name="person_id" lookupref="Person.person_id" descr="The physician specified by this record"/>
         <column name="asset_id" lookupref="Asset.asset_id" descr="The asset resource specified by this record"/>
@@ -12,10 +12,10 @@
 
     <table name="Org_Appt_Type" abbrev="OrgApTy" type="Default">
         <description>This table stores practice-defined Appointment Types.</description>
-        <column name="appt_type_id" type="guid32" primarykey="yes" descr="Unique ID for a specific Appt Type"/>
+        <column name="appt_type_id" type="organization-appointment-type-id" primarykey="yes" descr="Unique ID for a specific Appt Type"/>
         <column name="org_id" parentref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/>
         <column name="caption" type="text" size="128" required="yes" indexed="yes" descr="The descriptive name of the Appt Type"/>
-        <column name="duration" type="integer" required="yes" descr="The duration of the appointment in minutes"/>
+        <column name="duration" type="appointment-duration" required="yes" descr="The duration of the appointment in minutes"/>
         <column name="lead_time" type="integer" descr="Lead time in minutes before the appointment"/>
         <column name="lag_time" type="integer" descr="Lag time in minutes after the appointment"/>
         <column name="back_to_back" type="boolean" descr="Back-to-Back appointment of this type allowed"/>
@@ -41,7 +41,7 @@
 
     <table name="Org_Sch_Template" abbrev="ScTmpl" type="Default">
         <description>A predefined block of time during which a resource is available or unavailable for scheduling events</description>
-        <column name="template_id" type="guid32" primarykey="yes" descr="Unique ID for a specific template"/>
+        <column name="template_id" type="organization-schedule-template-id" primarykey="yes" descr="Unique ID for a specific template"/>
         <column name="org_id" parentref="Org.org_id" required="yes" indexed="yes" descr="The organization which owns this record"/>
         <column name="active" type="boolean" required="yes" descr="Whether or not this Template is active"/>
         <column name="caption" type="text" size="128" required="yes" indexed="yes" descr="The descriptive name of the template"/>
@@ -66,7 +66,7 @@
 
     <table name="Appt_Chain_Entry" abbrev="ApChainE" type="Default">
         <description> Appointment Chain Entry detailing chain appointments related to an appointment type.</description>
-        <column name="entry_id" type="guid32" primarykey="yes" descr="Unique ID for a specific Entry"/>
+        <column name="entry_id" type="appointment-chain-entry-id" primarykey="yes" descr="Unique ID for a specific Entry"/>
         <column name="chain_id" lookupref="Org_Appt_Type.appt_type_id" descr="The Appointment Type"/>
         <column name="appt_type_id" lookupref="Org_Appt_Type.appt_type_id" descr="The Appointment Type"/>
         <column name="sequence" type="integer" descr="Index number indicating the sequence of this entry in the chain"/>
@@ -81,7 +81,7 @@
 				Event_Attendee stores data associated with the attendee or the patient.
 
         </description>
-        <column name="event_id" type="guid32" primarykey="yes" descr="Unique ID for a specific event"/>
+        <column name="event_id" type="event-id" primarykey="yes" descr="Unique ID for a specific event"/>
         <column name="org_id" lookupref="Org.org_id" required="yes" indexed="yes" descr="The owner Org of the event"/>
         <column name="event_type_id" lookupref="Event_Type" descr="The type of event"/>
         <column name="event_status_id" lookupref="Event_Status_Type" descr="Event status"/>

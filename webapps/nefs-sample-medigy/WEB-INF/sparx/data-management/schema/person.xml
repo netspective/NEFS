@@ -4,53 +4,45 @@
     <table name="Person" abbrev="Per" type="Default">
         <trigger class="app.schema.trigger.PersonRowTableTrigger"/>
         <description>Any person (client, staff member, etc.)</description>
-        <column name="person_id" primarykey="yes" type="guid32" descr="Auto-generated Unique ID for a person within the entire system">
-            <presentation>
-                <field type="guid32" hidden="yes"/>
-            </presentation>
-        </column>
+        <column name="person_id" primarykey="yes" type="person-id" descr="Auto-generated Unique ID for a person within the entire system"/>
         <column name="name_prefix_id" lookupref="Name_Prefix_Type">
             <presentation>
                 <field type="select" caption="Name Prefix"/>
             </presentation>
         </column>
-        <column name="name_prefix" type="text" size="16">
+        <column name="name_prefix" type="alternate-to-lookup" size="16">
             <presentation>
                 <field type="text" caption="Other Name Prefix">
                     <conditional action="display" partner="name_prefix_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
                 </field>
             </presentation>
         </column>
-        <column name="name_first" type="text" required="yes" size="32">
+        <column name="name_first" type="name" required="yes" size="32">
             <presentation>
                 <field type="text" caption="First Name"/>
             </presentation>
         </column>
-        <column name="name_middle" type="text" size="32">
+        <column name="name_middle" type="name" size="32">
             <presentation>
                 <field type="text" caption="Middle Name"/>
             </presentation>
         </column>
-        <column name="name_last" type="text" required="yes" size="32">
+        <column name="name_last" type="name" required="yes" size="32">
             <presentation>
                 <field type="text" caption="Last Name"/>
             </presentation>
         </column>
-        <column name="name_suffix" type="text" size="16">
+        <column name="name_suffix" type="name" size="16">
             <presentation>
                 <field type="text" caption="Suffix" size="4"/>
             </presentation>
         </column>
-        <column name="short_name" type="text" required="dbms" size="42" descr="[first letter of name_first] [name_last]"/>
-        <column name="simple_name" type="text" required="dbms" size="96" descr="[name_first] [name_last]"/>
-        <column name="complete_name" type="text" required="dbms" size="128" descr="[name_prefix] [name_first] [name_middle] [name_last] [name_suffix]"/>
-        <column name="short_sortable_name" type="text" required="dbms" size="42" descr="[name_last], [first letter of name_first]"/>
-        <column name="complete_sortable_name" type="text" required="dbms" size="128" descr="[name_last], [name_first] [name_middle]"/>
-        <column name="ssn" indexed="yes" type="text" size="11" descr="Social Security number">
-            <presentation>
-                <field type="ssn" caption="Social Security Number" required="yes" size="11"/>
-            </presentation>
-        </column>
+        <column name="short_name" type="name" required="dbms" size="42" descr="[first letter of name_first] [name_last]"/>
+        <column name="simple_name" type="name" required="dbms" size="96" descr="[name_first] [name_last]"/>
+        <column name="complete_name" type="name" required="dbms" size="128" descr="[name_prefix] [name_first] [name_middle] [name_last] [name_suffix]"/>
+        <column name="short_sortable_name" type="name" required="dbms" size="42" descr="[name_last], [first letter of name_first]"/>
+        <column name="complete_sortable_name" type="name" required="dbms" size="128" descr="[name_last], [name_first] [name_middle]"/>
+        <column name="ssn" indexed="yes" type="ssn" size="11" descr="Social Security number"/>
         <column name="gender_id" lookupref="Gender_Type" descr="Gender_Type">
             <presentation>
                 <field type="select" caption="Gender"/>
@@ -76,17 +68,9 @@
                 <field type="select" caption="Blood Type"/>
             </presentation>
         </column>
-        <column name="birth_date" type="date" descr="Date of Birth">
-            <presentation>
-                <field type="date" caption="Date of Birth" size="12"/>
-            </presentation>
-        </column>
-        <column name="death_date" type="date" descr="Date of Death">
-            <presentation>
-                <field type="date" caption="Date of Death" size="12"/>
-            </presentation>
-        </column>
-        <column name="age" type="integer" descr="Actual age (only required if date_of_birth is NULL or not known)"/>
+        <column name="birth_date" type="date-of-birth" descr="Date of Birth"/>
+        <column name="death_date" type="date-of-death" descr="Date of Death"/>
+        <column name="age" type="age" descr="Actual age (only required if date_of_birth is NULL or not known)"/>
         <!--
         AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;trigger&gt; is no longer used in Axiom.
         Table triggers must now be placed in Java classes.
@@ -172,7 +156,7 @@
         <description>
             Stores a record of the different classifications for a person e.g. patient, physician, nurse, etc
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-classification-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which classification record is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -234,7 +218,7 @@
             ethnicity is "Other", this table also stores a string containing the word for the
             person's ethnicity.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-ethnicity-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="Person ID for whose ethnicity is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -291,7 +275,7 @@
             master person index where personal information from multiple data sources may easily be
             aggregated without losing identifiers or causing name mangling.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-identifier-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The actual person record for which identifier is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -364,7 +348,7 @@
             with a person_id and will contain detailed information about the specific limits etc of the plan
             selected by the person_id.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="insurance-coverage-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="The person_id whose insurance coverage this record contains information about">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -387,7 +371,7 @@
                 <field type="guid32" caption="Relationship to Guarantor"/>
             </presentation>
         </column>
-        <column name="member_number" type="text" size="64" descr="This person's member number on an insurance policy">
+        <column name="member_number" type="insurance-policy-member-number" size="64" descr="This person's member number on an insurance policy">
             <presentation>
                 <field type="text" caption="Member Number" size="16"/>
             </presentation>
@@ -423,7 +407,7 @@
             language is "Other", this table also stores a string containing the word for the
             person's spoken language.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-language-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" descr="Person whose language is being defined">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -465,7 +449,7 @@
             Person table and is separated to allow easily changing login information (username/password)
             without affecting a person's registation record.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-login-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom login information is specified">
             <presentation>
                 <field type="guid32" caption="Person ID" required="yes">
@@ -473,12 +457,12 @@
                 </field>
             </presentation>
         </column>
-        <column name="user_id" type="text" size="32" unique="yes" descr="The login ID for the person in this system">
+        <column name="user_id" type="user-id" size="32" unique="yes" descr="The login ID for the person in this system">
             <presentation>
                 <field type="text" caption="Login Name" required="yes"/>
             </presentation>
         </column>
-        <column name="password" type="text" size="16" descr="The login password">
+        <column name="password" type="password" size="16" descr="The login password">
             <presentation>
                 <field type="text" caption="Password" size="16" mask-entry="yes"/>
             </presentation>
@@ -545,7 +529,7 @@
         <description>
             Stores the login roles for each person.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="person-role-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom role information is specified">
             <presentation>
                 <field type="guid32" caption="Person ID">
@@ -603,7 +587,7 @@
         <description>
             Stores records pertaining to retirement, vacation etc benefits for staff members of a practice.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="staff-benefit-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom this medical license record is stored">
             <presentation>
                 <field type="guid32" caption="Person ID">
@@ -652,7 +636,7 @@
         <description>
             Stores one record for each medical license that a person has including expiration dates.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="staff-license-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="person_id" parentref="Person.person_id" indexed="yes" descr="The person for whom this medical license record is stored"/>
         <column name="org_id" lookupref="Org.org_id" descr="The org record for which person's medical license record is being defined">
             <presentation>
@@ -669,7 +653,7 @@
                 <field type="text" caption="Other License Type" size="32"/>
             </presentation>
         </column>
-        <column name="license_num" type="text" size="64" descr="The license number">
+        <column name="license_num" type="staff-license-number" size="64" descr="The license number">
             <presentation>
                 <field type="text" caption="License Number" size="32"/>
             </presentation>

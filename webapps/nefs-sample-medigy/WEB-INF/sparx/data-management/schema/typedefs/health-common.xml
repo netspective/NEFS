@@ -6,42 +6,86 @@
     These are all the health care related data types
     =====================================================
      -->
-    <data-type name="clinical-action-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
 
-    <data-type name="claim-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
+    <data-type name="action-id" type="guid32"/>
+    <data-type name="clinical-action-id" type="action-id"/>
+    <data-type name="communication-action-id" type="action-id"/>
 
-    <data-type name="diagnosis-code" type="text"/>
+    <data-type name="artifact-id" type="guid32"/>
+    <data-type name="message-id" type="guid32"/>
+    <data-type name="asset-id" type="guid32"/>
+    <data-type name="asset-serial-number" type="guid32"/>
+    <data-type name="asset-maintenance-id" type="guid32"/>
 
-    <data-type name="procedure-code" type="text"/>
+    <data-type name="catalog-id" type="guid32"/>
+    <data-type name="catalog-item-id" type="guid32"/>
+    <data-type name="product-catalog-id" type="catalog-id"/>
+    <data-type name="service-catalog-id" type="catalog-id"/>
+
+    <data-type name="claim-id" type="guid32"/>
+    <data-type name="claim-batch-id" type="integer"/>
+    <data-type name="claim-authorization-number" type="text"/>
+
+    <data-type name="claim-to-diagnosis-map-id" type="guid32"/>
+    <data-type name="claim-diagnosis-id" type="guid32"/>
+    <data-type name="claim-diagnosis-code" type="text"/>
+    <data-type name="claim-diagnosis-code-modifier" type="text"/>
+    <data-type name="claim-procedure-id" type="guid32"/>
+    <data-type name="claim-procedure-code" type="text"/>
+    <data-type name="claim-procedure-code-modifier" type="text"/>
+
+    <data-type name="claim-data-history-id" type="guid32"/>
+
+    <data-type name="claim-data-archive-id" type="guid32"/>
+    <data-type name="x12-data" type="text"/>
+
+    <data-type name="event-id" type="guid32"/>
+
+    <!-- Insurance Related -->
+    <data-type name="insurance-product-id" type="guid32"/>
+    <data-type name="insurance-plan-id" type="guid32"/>
+    <data-type name="remit-payer-id" type="text"/>
+    <data-type name="medigap-id" type="text"/>
+    <data-type name="insurance-policy-id" type="guid32"/>
+    <data-type name="insurance-policy-number" type="guid32"/>
+    <data-type name="insurance-policy-member-number" type="guid32"/>
+    <data-type name="insurance-policy-group-number" type="guid32"/>
+    <data-type name="insurance-coverage-id" type="guid32"/>
+
+    <data-type name="organization-medication-id" type="guid32"/>
+
+    <data-type name="patient-indication-id" type="guid32"/>
+    <data-type name="patient-medication-id" type="guid32"/>
+
+    <data-type name="medication-dose" type="float"/>
+    <data-type name="medication-dosage-unit" type="text"/>
+    <data-type name="medication-sale-unit" type="text"/>
+    <data-type name="medication-frequency" type="text"/>
+    <data-type name="medication-consumption-duration-unit" type="text"/>
+    <data-type name="medication-consumption-duration" type="integer"/>
+    <data-type name="medication-quantity-per-refill" type="integer"/>
+
+    <data-type name="medication-quantity-per-refill" type="guid32"/>
+    <data-type name="referral-authorization-number" type="text"/>
 
     <data-type name="deductible" type="currency"/>
-
+    <data-type name="individual-deductible" type="deductible"/>
+    <data-type name="family-deductible" type="deductible"/>
     <data-type name="copay" type="currency"/>
 
-    <data-type name="blood-type" type="integer"/>
+    <data-type name="invoice-id" type="guid32"/>
+    <data-type name="invoice-number" type="text"/>
+    <data-type name="invoice-line-item-id" type="guid32"/>
+    <data-type name="product-invoice-id" type="invoice-id"/>
+    <data-type name="service-invoice-id" type="invoice-id"/>
 
-    <data-type name="insurance-product-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="insurance-plan-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="invoice-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
-    <data-type name="invoice-line-item-id" type="guid32">
-        <generate-id>guid32</generate-id>
-    </data-type>
-
+    <!-- Are these license-related ids? -->
+    <data-type name="state-id" type="text"/>
     <data-type name="medicaid-id" type="text"/>
-
     <data-type name="medicare-id" type="text"/>
+    <data-type name="workers-comp-id" type="text"/>
+    <data-type name="bcbs-id" type="text"/>
+    <data-type name="clia-id" type="text"/>
+    <data-type name="insurance-company-provider-id" type="text"/>
 
 </xdm:container>

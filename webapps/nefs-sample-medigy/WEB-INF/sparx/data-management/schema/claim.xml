@@ -13,8 +13,8 @@
 			that is already submitted.  To get the data that this table was pointing to *when the claim was
 			submitted*, you need to look at a different table, to be specified later.
         </description>
-        <column name="claim_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-        <column name="batch_id" type="integer" descr="What batch does this claim belong to?"/>
+        <column name="claim_id" type="claim-id" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="batch_id" type="claim-batch-id" descr="What batch does this claim belong to?"/>
         <column name="batch_date" type="date" descr="The date associated with this claim"/>
         <column name="visit_type_id" lookupref="Doctor_Visit_Type" descr="The type of visit this claim is associated with"/>
         <column name="claim_status_id" lookupref="Claim_Status_Type" descr="What is the current status of this claim?"/>
@@ -27,7 +27,7 @@
         <column name="accident" type="boolean" descr="Was this in relationship to an accident?"/>
         <column name="accident_state_id" lookupref="US_State_Type" descr="What state did this accident occur?"/>
         <column name="accident_state" type="text" size="32" descr="The state in which this accident occurred (if 'Other' was selected above)"/>
-        <column name="authorization_number" type="text" size="64" descr="Prior Authorization Number"/>
+        <column name="authorization_number" type="claim-authorization-number" size="64" descr="Prior Authorization Number"/>
     </table>
 
     <table name="Claim_Diagnosis" abbrev="ClmDiag" type="Default">
@@ -37,11 +37,11 @@
 			procedure will therefore have to be related to this diagnosis.  That relationship, however, will
 			not be created here in the interests of more normalization.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="claim-diagnosis-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this diagnosis is being reported on"/>
         <column name="diag_code_type_id" lookupref="Claim_Diagnosis_Code_Type" descr="What type of diagnosis code is stored in the diagnosis code field?  E.g. ICD-9, ICD-10"/>
-        <column name="diag_code" type="text" size="32" descr="The official diagnosis code to be stored.  This will be included in the HCFA1500 claim form"/>
-        <column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the diagnosis code"/>
+        <column name="diag_code" type="claim-diagnosis-code" size="32" descr="The official diagnosis code to be stored.  This will be included in the HCFA1500 claim form"/>
+        <column name="modifier" type="claim-diagnosis-code-modifier" size="32" descr="Any modifiers needed to give additional information about the diagnosis code"/>
     </table>
 
     <table name="Claim_DiagProc_Rel" abbrev="ClmDPRel" type="Default">
@@ -57,7 +57,7 @@
 			with the id of the first diagnosis and the relevant procedure; Another with the id of the second
 			diagnosis and the id of the same procedure.&lt;/p&gt;
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="claim-to-diagnosis-map-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="diagnosis_id" parentref="Claim_Diagnosis.system_id" descr="A physician-performed diagnosis (of a patient's problem) that is reported on this claim"/>
         <column name="procedure_id" parentref="Claim_Procedure.system_id" descr="The physician-performed procedure to take care of the diagnosis shown in the field above"/>
         <column name="comments" type="text" size="256" descr="Any comments on why this procedure was assigned to this diagnosis?"/>
@@ -73,9 +73,9 @@
 			If you add a field to the Claim table, make sure to add a corresponding entry to the
 			Claim_Table_Field_Type enum in the enums/claim.xml file.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="claim-data-history-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="claim_id" parentref="Claim.claim_id" descr="Which claim is this historical record for?"/>
-        <column name="change_time" type="stamp" descr="When did this change occur?"/>
+        <column name="change_time" type="past-timestamp" descr="When did this change occur?"/>
         <column name="change_type_id" lookupref="Field_Change_Type" descr="What kind of change was it?  Creation, Addition, Modification, Deletion?"/>
         <column name="changed_field_id" lookupref="Claim_Table_Field_Type" descr="Which field in the claim was changed?"/>
         <column name="field_old_value" type="text" size="256" descr="The old value of the field, translated to text"/>
@@ -89,11 +89,11 @@
 			will therefore have to be related to the said diagnosis.  That relationship, however, will not be
 			created here in the interests of more normalization.
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="claim-procedure-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this procedure is being reported on"/>
         <column name="proc_code_type_id" lookupref="Claim_Procedure_Code_Type" descr="What type of procedure code is stored in the procedure code field?  E.g. HCPCS, CPT-4, CPT-5"/>
-        <column name="proc_code" type="text" size="32" descr="The official procedure code to be stored.  This will be included in the HCFA1500 claim form"/>
-        <column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the procedure code"/>
+        <column name="proc_code" type="claim-procedure-code" size="32" descr="The official procedure code to be stored.  This will be included in the HCFA1500 claim form"/>
+        <column name="modifier" type="claim-procedure-code-modifier" size="32" descr="Any modifiers needed to give additional information about the procedure code"/>
         <column name="date" type="duration" descr="The dates between which this procedure was carried out"/>
     </table>
 
@@ -102,9 +102,9 @@
 			This table stores a snapshot of all the data that was submitted on a claim.  The data is stored
 			in the X12 XML standard.  More information on this at http://www.x12.org
         </description>
-        <column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
+        <column name="system_id" type="claim-data-archive-id" primarykey="yes" descr="Unique System ID for any given row"/>
         <column name="claim_id" parentref="Claim.claim_id" descr="What claim is this data snapshot for?"/>
-        <column name="x12_xml_data" type="text" size="2048" descr="Store all data filed with this claim in this field using X12 XML format"/>
+        <column name="x12_xml_data" type="x12-data" size="2048" descr="Store all data filed with this claim in this field using X12 XML format"/>
     </table>
 
 </xdm:container>

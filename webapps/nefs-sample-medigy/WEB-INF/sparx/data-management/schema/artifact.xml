@@ -5,10 +5,10 @@
 
     <table name="Artifact" abbrev="Artf" type="Default">
         <description>All artifacts that we can manage</description>
-        <column name="artifact_id" type="guid32" primarykey="yes" descr="Unique artifact ID"/>
+        <column name="artifact_id" type="artifact-id" primarykey="yes" descr="Unique artifact ID"/>
         <column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/>
         <column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/>
-        <column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/>
+        <column name="mime_type" type="mime-type" size="128" descr="The MIME type, if any for this artifact"/>
         <column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/>
         <column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/>
         <column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/>
@@ -18,9 +18,9 @@
         <column name="source_system" type="text" size="255" indexed="yes" descr="If the artifact is a message, this is the application that sent the message"/>
         <column name="name" type="text" size="1024" required="yes" descr="They name of the artifact"/>
         <column name="description" type="text" size="4000" descr="They description of the artifact"/>
-        <column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/>
-        <column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/>
-        <column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
+        <column name="orig_stamp" type="past-timestamp" descr="The date/time artifact was created/originated"/>
+        <column name="recv_stamp" type="past-timestamp" descr="The date/time artifact was received"/>
+        <column name="content_uri" type="uri" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
         <column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/>
         <column name="content_large" type="data-block" descr="They actual content of the artifact"/>
     </table>
@@ -30,7 +30,7 @@
         <column name="artifact_id" parentref="Artifact.artifact_id" descr="Unique artifact ID"/>
         <column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/>
         <column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/>
-        <column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/>
+        <column name="mime_type" type="mime-type" size="128" descr="The MIME type, if any for this artifact"/>
         <column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/>
         <column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/>
         <column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/>
@@ -42,7 +42,7 @@
         <column name="description" type="text" size="4000" descr="They description of the artifact"/>
         <column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/>
         <column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/>
-        <column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
+        <column name="content_uri" type="uri" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
         <column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/>
         <column name="content_large" type="data-block" descr="They actual content of the artifact"/>
     </table>

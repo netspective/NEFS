@@ -2,7 +2,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <table-type name="Transaction" abbrev="Trans" type="Default">
-        <column name="trans_id" type="guid32" primarykey="yes" descr="Unique System ID for each transaction record"/>
+        <column name="trans_id" type="transaction-id" primarykey="yes" descr="Unique System ID for each transaction record"/>
         <column name="trns_type_id" lookupref="${params.transTypeEnum}" descr="What kind of transaction is this information stored for?">
             <presentation>
                 <field type="select" caption="Transaction Type ID"/>
@@ -30,6 +30,7 @@
         </column>
     </table-type>
 
+    <!--TODO: Is it possible to use clinical-transaction-id as a type for the trans_id field in the Clinical_Transaction table? -->
     <table-type name="Clinical_Transaction" abbrev="ClncTrans" type="Transaction">
         <description>
 			This table stores details of all clinical transactions between a patient and physician

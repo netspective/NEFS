@@ -2,14 +2,6 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 
-    <table-type name="Person_Relationship" type="Relationship">
-        <xdm:template-param name="parentRef" default="Person.person_id"/>
-        <xdm:template-param name="relatedEntity" default="Person.person_id"/>
-        <xdm:template-param name="relatedEntityFieldCaption" default="Related Person ID"/>
-        <xdm:template-param name="relatedEntityFieldQuery" default="person.get-all-persons"/>
-        <description>Basic information required for an entity that may be related to a person.</description>
-    </table-type>
-
     <table-type name="Org_Relationship" type="Relationship">
         <xdm:template-param name="parentRef" default="Org.org_id"/>
         <xdm:template-param name="relatedEntity" default="Org.org_id"/>
@@ -20,6 +12,7 @@
         <description>Basic information required for an entity that may be related to an organization.</description>
     </table-type>
 
+    <!--TODO: Determine what this table-type is all about-->
     <table-type name="Org_Lookup" type="Default">
         <xdm:template-param name="capsize" default="96"/>
         <xdm:template-param name="abbrevsize" default="32"/>

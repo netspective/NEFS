@@ -62,11 +62,11 @@
             <description>
             An active session of a user connected to the application
             </description>
-            <column name="session_id" type="guid32" primarykey="yes" descr="An application-generated unique session ID"/>
+            <column name="session_id" type="session-id" primarykey="yes" descr="An application-generated unique session ID"/>
             <column name="person_id" parentref="Person.person_id" required="yes" indexed="yes" descr="The ID of the person that owns the session"/>
             <column name="org_id" lookupref="Org.org_id" descr="The organization (if any) from where session is being used"/>
-            <column name="remote_host" type="text" size="128" descr="Remote host information that should be stored for security purposes"/>
-            <column name="remote_addr" type="text" size="32" required="yes" descr="Remote address information that should be kept for security purposes"/>
+            <column name="remote_host" type="internet-hostname" size="128" descr="Remote host information that should be stored for security purposes"/>
+            <column name="remote_addr" type="internet-ip-address" size="32" required="yes" descr="Remote address information that should be kept for security purposes"/>
             <column name="first_access" type="stamp" required="yes" descr="The first known time the session was access/used"/>
             <column name="last_access" type="stamp" required="yes" descr="The last known time the session was accessed/used"/>
         </table>
