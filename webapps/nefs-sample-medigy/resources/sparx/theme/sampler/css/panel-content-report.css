@@ -1,0 +1,23 @@
+.report {  }
+.report_no_frame {  }
+.report-column-heading   { color: #666666; font-weight: bold; font-size: 9pt; font-family: Verdana; padding: 1px 4px; border: solid 1px #c0c0c0 }
+.report-column-even { color: #000; font-size:  9pt; font-family: Verdana; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; vertical-align: top; }
+.report-column-odd  { color: #000; font-size:  9pt; font-family: Verdana; background-color: #f8f8f8; vertical-align: top; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc }
+.report-column-selected  { color: #900; font-weight: bold; font-size:  9pt; font-family: Verdana; background-color: #d3d3d3; vertical-align: top; padding: 1px 4px; border: solid 1px #a9a9a9 }
+.report-column-summary  { color: #333; font-weight: bold; font-size:  9pt; font-family: Verdana; background-color: #f5f5f5; padding: 1px 4px; border-top: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc }
+
+.report-detail  { color: black; font-size: 11px; font-family: Tahoma; background-color: #f1eeee; text-align: left; padding: 1px 4px; border-right: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3 }
+.report-field  { color: #000; font-weight: bold; font-size: 11px; font-family: Tahoma; background-color: #f5f5f5; padding: 1px 4px; border: solid 1px #696969 }
+.report-field-detail  { color: #000; font-weight: bold; font-size: 11px; font-family: Tahoma; background: url(../images/panel/output/content-separator.gif) no-repeat right center; padding: 1px 7px 1px 4px; border-bottom: 1px solid #d3d3d3 }
+
+.panel-editor-content .report { }
+.panel-editor-content .report_no_frame { }
+.panel-editor-content .report .report-column-heading   { color: #666666; font-weight: bold; font-size: 9pt; font-family: Verdana; padding: 1px 4px; border: solid 1px #c0c0c0 }
+.panel-editor-content .report .report-column-even { color: #000; font-size:  7pt; font-family: Verdana; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc; vertical-align: top; }
+.panel-editor-content .report .report-column-odd  { color: #000; font-size:  7pt; font-family: Verdana; background-color: #f8f8f8; vertical-align: top; padding: 1px 4px; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc }
+.panel-editor-content .report .report-column-selected  { color: #900; font-weight: bold; font-size:  7pt; font-family: Verdana; background-color: #d3d3d3; vertical-align: top; padding: 1px 4px; border: solid 1px #a9a9a9 }
+.panel-editor-content .report .report-column-summary  { color: #333; font-weight: bold; font-size:  7pt; font-family: Verdana; background-color: #f5f5f5; padding: 1px 4px; border-top: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-left: 1px solid #dcdcdc }
+
+.panel-editor-content .report .report-detail  { color: black; font-size: 11px; font-family: Tahoma; background-color: #f1eeee; text-align: left; padding: 1px 4px; border-right: 1px solid #d3d3d3; border-bottom: 1px solid #d3d3d3 }
+.panel-editor-content .report .report-field  { color: #000; font-weight: bold; font-size: 11px; font-family: Tahoma; background-color: #f5f5f5; padding: 1px 4px; border: solid 1px #696969 }
+.panel-editor-content .report .report-field-detail  { color: #000; font-weight: bold; font-size: 11px; font-family: Tahoma; background: url(../images/panel/output/content-separator.gif) no-repeat right center; padding: 1px 7px 1px 4px; border-bottom: 1px solid #d3d3d3 }
