@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.51 2003-12-22 08:34:56 aye.thu Exp $
+ * $Id: Dialog.java,v 1.52 2004-01-06 19:59:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -806,6 +806,27 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     public DialogExecuteHandlers getExecuteHandlers()
     {
         return executeHandlers;
+    }
+
+    /**
+     * Ascertain whether or not this dialog should just auto-execute (not show any input) by default.
+     * @return True if auto executing by default
+     */
+    public boolean isAutoExecByDefault()
+    {
+        return false;
+    }
+
+    /**
+     * If this dialog is not auto-exec by default, then does the current state of the dialog (using the context)
+     * indicate that it should be auto-executed?
+     * @param dc The current dialog context
+     * @param autoExecReqParamValue The value of the _d_exec request parameter
+     * @return True if the current state indicates auto-execution
+     */
+    public boolean isAutoExec(DialogContext dc, String autoExecReqParamValue)
+    {
+        return autoExecReqParamValue != null && ! autoExecReqParamValue.equals("no");
     }
 
     /**

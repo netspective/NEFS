@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.33 2003-12-16 19:25:38 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.34 2004-01-06 19:59:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -522,21 +522,21 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
         }
 
-        boolean autoExec = false;
-        if(! dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
+        boolean autoExec = dialog.isAutoExecByDefault();
+        if(!autoExec && ! dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
         {
             String autoExecOption = request.getParameter(Dialog.PARAMNAME_AUTOEXECUTE);
             if (autoExecOption == null || autoExecOption.length() == 0)
                 // if no autoexec is defined in the request parameter, look for it also in the request attribute
                 autoExecOption = (String) request.getAttribute(Dialog.PARAMNAME_AUTOEXECUTE);
 
-            if(autoExecOption != null && ! autoExecOption.equals("no"))
+            if(dialog.isAutoExec(this, autoExecOption))
                 autoExec = true;
         }
         boolean executeButtonPressed =
             (request.getParameter(dialog.getSubmitDataParamName()) != null) ||
             (request.getParameter(dialog.getCancelDataParamName()) != null && dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON));
-        if(autoExec ||  executeButtonPressed || ignoreValidation)
+        if(autoExec || executeButtonPressed || ignoreValidation)
         {
             if(! dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
             {
