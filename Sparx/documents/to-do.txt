@@ -1,9 +1,12 @@
+* Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
+* Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
 * In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Need to move error messages that occur in XDM parsing into Console too (instead of just stdout)
 * Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
 * Need to add support for table dialogs (from Sparx 2.3)
+* Need to fix NPE when the first element of a NavigationTree path is not found (e.g. try http://xxx/console/home -- which does not exist)
 * Need to conduct detailed memory leak analysis, performance testing, stress/load testing
 * Integrate http://oss.metaparadigm.com/jmemprof/ open-source memory profiler intended for web application containers (like resin, tomcat, etc). Also take a look at the SUN HAT http://java.sun.com/people/billf/heap/.
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management

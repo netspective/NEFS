@@ -3,13 +3,14 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.48 2003-06-15 20:32:16 shahid.shah Exp $
+  * $Id: console.xml,v 1.49 2003-06-18 19:58:07 shahid.shah Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet"/>
+    <!-- TODO: the base-dir attribute below is included only because resource loading does not notice file updates (REMOVE before deployment) -->
+    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="c:\Projects\Frameworks\Sparx\src\java\main\com\netspective\sparx\console"/>
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
     <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
 
@@ -27,7 +28,7 @@
     </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
-        <page name="home" caption="Home" default="yes" sub-heading="trying something here">
+        <page name="project" caption="Project" default="yes">
             <panels style="horizontal">
                 <panels style="vertical">
                     <panel type="html">
@@ -45,6 +46,27 @@
 
                 <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
             </panels>
+
+            <page name="project-file" caption="Project File" heading="Sparx Project File">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Sparx Project File XML Tags"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+	        <page name="runtime-environment" caption="Runtime Environment">
+                <body config="console" source="content/framework/runtime-environment.ftl"/>
+            </page>
+	        <page name="metrics" caption="Metrics"/>
+	        <page name="configuration" caption="Configuration Properties">
+	            <page name="servlet" caption="Servlet Config"/>
+	            <page name="application" caption="App Config">
+                    <body config="console" source="content/project/app-overview.ftl"/>
+                </page>
+            </page>
+	        <page name="access-control" caption="Access Control"/>
         </page>
 
         <page name="presentation" caption="Presentation">
@@ -135,20 +157,6 @@
 
 	        <page name="panel" caption="Panels"/>
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
-        </page>
-
-        <page name="application" caption="Application">
-            <body config="console" source="content/home/app-overview.ftl"/>
-
-	        <page name="runtime-environment" caption="Runtime Environment">
-                <body config="console" source="content/framework/runtime-environment.ftl"/>
-            </page>
-	        <page name="metrics" caption="Metrics"/>
-	        <page name="configuration" caption="Configuration Properties">
-	            <page name="servlet" caption="Servlet Config"/>
-	            <page name="application" caption="App Config"/>
-            </page>
-	        <page name="access-control" caption="Access Control"/>
         </page>
 
         <page name="data-management" caption="Data Management">

@@ -1,5 +1,15 @@
 <!--
  ******************************************************************************
+ ** MACRO: projectFile
+ ** PARAMS: none
+ ******************************************************************************
+-->
+<#macro projectFile>
+    <code>${vc.applicationManagerComponent.inputSource.identifier}</code>
+</#macro>
+
+<!--
+ ******************************************************************************
  ** MACRO: childrenSummaries
  ** PARAMS: sourcePageType ('parent' | 'active')
  ******************************************************************************
@@ -74,6 +84,7 @@
     <#else>
         <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
     </#if>
+    <#assign childElements = schema.getNestedElementsDetail()/>
     <#assign classSuffix="odd"/>
 
     <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
@@ -114,6 +125,32 @@
                 <#else>
                     &nbsp;
                 </#if>
+            </td>
+        </tr>
+        <#if classSuffix = 'odd'>
+            <#assign classSuffix='even'/>
+        <#else>
+            <#assign classSuffix='odd'/>
+        </#if>
+    </#list>
+
+    <#list childElements as childDetail>
+        <tr>
+            <td class="report-column-${classSuffix}">
+                <#if childDetail.isRequired()>
+                    &lt;<b>${childDetail.elemName}</b>&gt;
+                <#else>
+                    &lt;${childDetail.elemName}&gt;
+                </#if>
+            </td>
+            <td class="report-column-${classSuffix}">
+                <@classReference className = childDetail.elemType.name/>
+            </td>
+            <td class="report-column-${classSuffix}">
+                ${childDetail.description}
+            </td>
+            <td class="report-column-${classSuffix}">
+                &nbsp;
             </td>
         </tr>
         <#if classSuffix = 'odd'>
