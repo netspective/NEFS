@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.13 2003-09-21 02:33:00 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.14 2003-11-07 17:32:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -116,15 +116,8 @@ public class SchemaColumnsTest extends TestCase
         colValue.setTextValue("true");
         assertTrue(((Boolean) colValue.getValue()).booleanValue());
 
-        try
-        {
-            colValue.setValue(new Integer(0));
-            fail();
-        }
-        catch (ClassCastException e)
-        {
-            //This is good
-        }
+        colValue.setValue(new Integer(0));
+        assertFalse(((Boolean) colValue.getValue()).booleanValue());
     }
 
     public void testNumericColumns()
