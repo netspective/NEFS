@@ -111,7 +111,7 @@
             where genre = book_type.id
 
             <presentation>
-                <panel name="main">
+                <panel name="main" height="300">
                     <frame heading="static:All available books"/>
                     <report>
                         <actions>
