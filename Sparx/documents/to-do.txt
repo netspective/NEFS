@@ -1,3 +1,5 @@
+* Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
+* Need to move error messages that occur in XDM parsing into Console too (instead of just stdout)
 * Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
 * Need to add support for table dialogs (from Sparx 2.3)
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
@@ -6,7 +8,6 @@
 * Incorporate features from http://www.irongrid.com (IronEye SQL and IronEye Cache) into Console
 * Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
-* Ugrade to FreeMarker 2.3 (has numerous new features that will be useful)
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 * Add ID constants generator to Sparx components (just like Axiom components)
