@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.5 2003-07-19 00:35:27 shahid.shah Exp $
+ * $Id: Column.java,v 1.6 2003-08-28 00:40:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -51,7 +51,6 @@ import java.util.Map;
 import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
-import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateProducer;
