@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.11 2003-04-04 17:02:21 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.12 2003-04-07 17:11:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -281,12 +281,17 @@ public class XmlDataModelSchema
     private Map attributeTypes;
 
     /**
-     * holds the attribute setter methods.
+     * holds the attribute setter anonymous classes.
      */
     private Map attributeSetters;
 
     /**
-     * holds the classes that can manage bitmasked flags
+     * holds the attribute setter methods
+     */
+    private Map attributeSetterMethods;
+
+    /**
+     * holds the classes that have accessors
      */
     private Map attributeAccessors;
 
@@ -369,6 +374,11 @@ public class XmlDataModelSchema
         return attributeSetters;
     }
 
+    public Map getAttributeSetterMethods()
+    {
+        return attributeSetterMethods;
+    }
+
     public Map getFlagsAttributeAccessors()
     {
         return flagsAttributeAccessors;
@@ -434,6 +444,7 @@ public class XmlDataModelSchema
         propertyNames = new HashMap();
         attributeTypes = new HashMap();
         attributeSetters = new HashMap();
+        attributeSetterMethods = new HashMap();
         attributeAccessors = new HashMap();
         flagsAttributeAccessors = new HashMap();
         nestedTypes = new HashMap();
@@ -486,6 +497,7 @@ public class XmlDataModelSchema
                     if(propNames[pn].length() == 0)
                         continue;
 
+                    attributeSetterMethods.put(propNames[pn], m);
                     AttributeSetter as = createAttributeSetter(m, propNames[pn], args[0]);
                     if (as != null)
                     {
