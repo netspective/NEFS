@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.10 2003-04-21 20:05:18 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.11 2003-04-22 03:38:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -136,7 +136,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-output.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
-        writer.write("  <script src='" + scriptsRootUrl + "/panel.js' language='JavaScript1.1'></script>\n");
+        writer.write("  <script src=\"" + scriptsRootUrl + "/panel.js\" language=\"JavaScript1.1\"></script>\n");
 
         writer.write("</head>\n");
     }

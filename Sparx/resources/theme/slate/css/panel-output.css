@@ -4,8 +4,8 @@
 
 .panel-frame-heading-action-left-blank-output  { background: url(../images/panel/output/frame-heading-action-left.gif) no-repeat; width: 17px; height: 19px }
 .panel-frame-heading-action-right-blank-output  { background: url(../images/panel/output/frame-heading-action-right.gif) no-repeat; width: 17px; height: 19px }
-.panel-frame-heading-action-collapse-output  { background: url(../images/panel/output/frame-heading-action-up.gif) no-repeat; width: 17px; height: 19px }
-.panel-frame-heading-action-expand-output  { background: url(../images/panel/output/frame-heading-action-down.gif) no-repeat; width: 17px; height: 19px }
+.panel-frame-heading-action-collapse-output  { background: url(../images/panel/output/frame-heading-action-up.gif) no-repeat; width: 17px; height: 19px; cursor: hand; }
+.panel-frame-heading-action-expand-output  { background: url(../images/panel/output/frame-heading-action-down.gif) no-repeat; width: 17px; height: 19px; cursor: hand; }
 .panel-frame-heading-action-drag-output { background: url(../images/panel/output/frame-heading-action-drag.gif) no-repeat; width: 17px; height: 19px }
 .panel-frame-action-search-output { background: url(../images/panel/output/frame-action-search.gif) no-repeat; width: 17px; height: 14px }
 .panel-frame-action-add-output { background: url(../images/panel/output/frame-action-add.gif) no-repeat; width: 17px; height: 14px }

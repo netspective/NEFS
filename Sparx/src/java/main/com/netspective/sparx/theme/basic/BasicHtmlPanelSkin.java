@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.5 2003-04-21 20:05:18 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.6 2003-04-22 03:38:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -201,10 +201,10 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
                     if (vc.isMinimized())
-                        writer.write("            <td class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
-                        writer.write("            <td class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
                 }
                 else

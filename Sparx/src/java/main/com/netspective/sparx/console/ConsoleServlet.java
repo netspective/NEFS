@@ -39,17 +39,19 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.6 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.7 2003-04-22 03:38:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.File;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import javax.servlet.ServletConfig;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
@@ -62,6 +64,26 @@ import com.netspective.commons.xdm.XdmComponentFactory;
 
 public class ConsoleServlet extends HttpServlet
 {
+    public static final String INITPARAM_NAME_XDM_SOURCE = "sparx.xdm-source";
+    public static final String INITPARAM_DEFAULTVALUE_XDM_SOURCE = "/WEB-INF/sparx/components.xml";
+    private File xdmSourceFile;
+
+    public void init(ServletConfig servletConfig) throws ServletException
+    {
+        super.init(servletConfig);
+
+        String xdmSource = servletConfig.getServletContext().getInitParameter(INITPARAM_NAME_XDM_SOURCE);
+        if(xdmSource == null)
+            xdmSource = INITPARAM_DEFAULTVALUE_XDM_SOURCE;
+
+        if(xdmSource.startsWith("/WEB-INF"))
+            xdmSource = servletConfig.getServletContext().getRealPath(xdmSource);
+
+        xdmSourceFile = new File(xdmSource);
+        if(! xdmSourceFile.exists())
+            throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist.");
+    }
+
     protected ApplicationManager getApplicationManager() throws ServletException
     {
         try
@@ -70,8 +92,7 @@ public class ConsoleServlet extends HttpServlet
             // (always use the factory get() method)
             ApplicationManagerComponent pmComponent =
                 (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class,
-                        getServletContext().getRealPath("/WEB-INF/sparx/components.xml"),
+                        ApplicationManagerComponent.class, xdmSourceFile.getAbsolutePath(),
                         XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
             for(int i = 0; i < pmComponent.getErrors().size(); i++)
