@@ -101,7 +101,11 @@
     <queries package="library">
 
         <query name="get-all-books">
-            select * from book_info
+
+            select id, name, author, book_type.caption, isbn
+            from book_info, book_type
+            where genre = book_type.id
+
             <presentation>
                 <panel name="Test">
                     <frame heading="static:Book Report"/>
@@ -163,7 +167,7 @@
         <field name="isbn" caption="ISBN" join="BookInfo" column="isbn"/>
 
         <join name="BookInfo" table="book_info"/>
-		<join name="BookType" table="book_type" condition="book_type.id = book_info.genre"/>
+		<join name="BookType" table="book_type" condition="BookType.id = BookInfo.genre"/>
 
         <presentation>
             <select-dialog name="searchBooksDialog"  allow-debug="yes" hide-output-dests="yes" hide-readonly-hints="yes" >
