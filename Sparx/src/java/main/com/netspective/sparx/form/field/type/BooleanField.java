@@ -1,59 +1,35 @@
 /*
- * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
- * Netspective Corporation permits redistribution, modification and use
- * of this file in source and binary form ("The Software") under the
- * Netspective Source License ("NSL" or "The License"). The following
- * conditions are provided as a summary of the NSL but the NSL remains the
- * canonical license and must be accepted before using The Software. Any use of
- * The Software indicates agreement with the NSL.
+ * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
+ * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the canonical license and must be accepted
+ * before using The Software. Any use of The Software indicates agreement with the NSL.
  *
- * 1. Each copy or derived work of The Software must preserve the copyright
- *    notice and this notice unmodified.
+ * 1. Each copy or derived work of The Software must preserve the copyright notice and this notice unmodified.
  *
- * 2. Redistribution of The Software is allowed in object code form only
- *    (as Java .class files or a .jar file containing the .class files) and only
- *    as part of an application that uses The Software as part of its primary
- *    functionality. No distribution of the package is allowed as part of a software
- *    development kit, other library, or development tool without written consent of
- *    Netspective Corporation. Any modified form of The Software is bound by
- *    these same restrictions.
+ * 2. Redistribution of The Software is allowed in object code form only (as Java .class files or a .jar file
+ *    containing the .class files) and only as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software development kit, other library,
+ *    or development tool without written consent of Netspective. Any modified form of The Software is bound by these
+ *    same restrictions.
  *
- * 3. Redistributions of The Software in any form must include an unmodified copy of
- *    The License, normally in a plain ASCII text file unless otherwise agreed to,
- *    in writing, by Netspective Corporation.
+ * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
+ *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
- * 4. The names "Sparx" and "Netspective" are trademarks of Netspective
- *    Corporation and may not be used to endorse products derived from The
- *    Software without without written consent of Netspective Corporation. "Sparx"
- *    and "Netspective" may not appear in the names of products derived from The
- *    Software without written consent of Netspective Corporation.
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
- * 5. Please attribute functionality to Sparx where possible. We suggest using the
- *    "powered by Sparx" button or creating a "powered by Sparx(tm)" link to
- *    http://www.netspective.com for each application using Sparx.
+ * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ * ARE HEREBY DISCLAIMED.
  *
- * The Software is provided "AS IS," without a warranty of any kind.
- * ALL EXPRESS OR IMPLIED REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
- * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
- *
- * NETSPECTIVE CORPORATION AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
- * SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A RESULT OF USING OR DISTRIBUTING
- * THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
- * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
- * INABILITY TO USE THE SOFTWARE, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * NETSPECTIVE AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A
+ * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
+ * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: BooleanField.java,v 1.8 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form.field.type;
 
 import java.io.IOException;
@@ -77,12 +53,10 @@ import com.netspective.sparx.form.field.DialogFieldValue;
  * <li><i>check-alone</i>: Draw one checkbox with the caption on the right</li>
  * <li><i>combo</i>: Draws a pull-down list with two options</li>
  * </ul>
- *
+ * <p/>
  * Only the <i>radio</i> style allows the user to enter a third option to indicate that
  * neither True nor False is selected. The third option is only displayed when
  * the <i>none-text</i> attribute is set.
- *
- *
  */
 public class BooleanField extends DialogField
 {
@@ -92,15 +66,15 @@ public class BooleanField extends DialogField
         public static final int TRUEFALSE = 1;
         public static final int ONOFF = 2;
 
-        public static final String[] TEXT_TYPE_VALUES = new String[] { "yesno", "truefalse", "onoff" };
-        public static final ValueSource[] TEXT_CHOICES = new ValueSource[] {
-                new StaticValueSource("No"),
-                new StaticValueSource("Yes"),
-                new StaticValueSource("False"),
-                new StaticValueSource("True"),
-                new StaticValueSource("Off"),
-                new StaticValueSource("On")
-            };
+        public static final String[] TEXT_TYPE_VALUES = new String[]{"yesno", "truefalse", "onoff"};
+        public static final ValueSource[] TEXT_CHOICES = new ValueSource[]{
+            new StaticValueSource("No"),
+            new StaticValueSource("Yes"),
+            new StaticValueSource("False"),
+            new StaticValueSource("True"),
+            new StaticValueSource("Off"),
+            new StaticValueSource("On")
+        };
 
         public Choices()
         {
@@ -124,7 +98,7 @@ public class BooleanField extends DialogField
         public static final int CHECKALONE = 2;
         public static final int COMBO = 3;
 
-        public static final String[] STYLE_VALUES = new String[] { "radio", "check", "check-alone", "combo" };
+        public static final String[] STYLE_VALUES = new String[]{"radio", "check", "check-alone", "combo"};
 
         public Style()
         {
@@ -147,7 +121,6 @@ public class BooleanField extends DialogField
          * Value object class to represent a boolean value. The value is actually saved as an Integer
          * object and translated to a boolean value based on the following: positive integers are considered to be true
          * while zero and negative integers are considered to be false.
-         *
          */
         public class BooleanFieldValue extends BasicStateValue
         {
@@ -158,7 +131,7 @@ public class BooleanField extends DialogField
             /**
              * Gets the class used to hold the value.
              *
-             * @return  Integer class
+             * @return Integer class
              */
             public Class getValueHolderClass()
             {
@@ -171,13 +144,14 @@ public class BooleanField extends DialogField
              * are considered to be false. If the passed in text is null or zero-length string,
              * a -1 integer value is used.
              *
-             * @param value     a numeric text
+             * @param value a numeric text
+             *
              * @throws ValueException
              */
             public void setTextValue(String value) throws ValueException
             {
                 // TODO: convert the neither value to a constant
-                if(value == null || value.length() == 0)
+                if (value == null || value.length() == 0)
                 {
                     // the 'neither' value is the default if the style allows it
                     if (allowNeither())
@@ -237,9 +211,9 @@ public class BooleanField extends DialogField
              */
             public boolean allowNeither()
             {
-                BooleanField booleanField = (BooleanField)getField();
+                BooleanField booleanField = (BooleanField) getField();
                 if (booleanField.getStyle().getValueIndex() == Style.RADIO &&
-                    booleanField.getNoneText() != null)
+                        booleanField.getNoneText() != null)
                 {
                     // the radio buttons have a third option aside from true/false
                     return true;
@@ -296,7 +270,7 @@ public class BooleanField extends DialogField
         this.choices = choices;
         int choicesTextIndex = choices.getValueIndex() * 2;
         setFalseText(Choices.TEXT_CHOICES[choicesTextIndex]);
-        setTrueText(Choices.TEXT_CHOICES[choicesTextIndex+1]);
+        setTrueText(Choices.TEXT_CHOICES[choicesTextIndex + 1]);
     }
 
     public ValueSource getFalseText()
@@ -351,7 +325,7 @@ public class BooleanField extends DialogField
 
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        if(isInputHidden(dc))
+        if (isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc));
             return;
@@ -366,11 +340,16 @@ public class BooleanField extends DialogField
         String strValue = value == -1 ? "" : Integer.toString(value);
         String boolValueCaption = value == -1 ? "" : (value == 1 ? trueTextStr : falseTextStr);
 
-        if(isReadOnly(dc))
+        if (isReadOnly(dc))
         {
-            if (this.noneText == null) {
-                writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" + (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value == 1 ? trueTextStr : falseTextStr) + "</span>");
-            } else {
+            if (this.noneText == null)
+            {
+                writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" + (strValue != null
+                        ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" + (value == 1
+                        ? trueTextStr : falseTextStr) + "</span>");
+            }
+            else
+            {
                 writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value='" +
                         (strValue != null ? strValue : "") + "'><span id='" + getQualifiedName() + "'>" +
                         boolValueCaption +
@@ -381,7 +360,7 @@ public class BooleanField extends DialogField
 
         String id = getHtmlFormControlId();
         String defaultControlAttrs = dc.getSkin().getDefaultControlAttrs();
-        switch(style.getValueIndex())
+        switch (style.getValueIndex())
         {
             case Style.RADIO:
                 // according to HTML 4.01 spec:
@@ -390,23 +369,24 @@ public class BooleanField extends DialogField
                 // radio button of the set initially.
                 if (bfValue.allowNeither())
                 {
-                    String[] val = { "" , "" , "" };
-                    setChecked (strValue, val);
-                    writer.write(
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + val[0] + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + val[1] + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr> " +
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "2' value='2' " + val[2] + defaultControlAttrs + "> <label for='" + id + "2'>" + noneTextStr + "</label></nobr>");
+                    String[] val = {"", "", ""};
+                    setChecked(strValue, val);
+                    writer.write("<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + val[0] + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                            "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + val[1] + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr> " +
+                            "<nobr><input type='radio' name='" + id + "' id='" + id + "2' value='2' " + val[2] + defaultControlAttrs + "> <label for='" + id + "2'>" + noneTextStr + "</label></nobr>");
                 }
                 else
                 {
-                    writer.write(
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (bfValue.getBoolValue() == false ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (bfValue.getBoolValue() == true ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
+                    writer.write("<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (bfValue.getBoolValue() == false
+                            ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                            "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (bfValue.getBoolValue() == true
+                            ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
                 }
                 break;
 
             case Style.CHECK:
-                writer.write("<nobr><input type='checkbox' name='" + id + "' id='" + id + "' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "'>" + getCheckLabel().getTextValue(dc) + "</label></nobr>");
+                writer.write("<nobr><input type='checkbox' name='" + id + "' id='" + id + "' value='1' " + (value == 1
+                        ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "'>" + getCheckLabel().getTextValue(dc) + "</label></nobr>");
                 break;
 
             case Style.CHECKALONE:
@@ -414,8 +394,7 @@ public class BooleanField extends DialogField
                 break;
 
             case Style.COMBO:
-                writer.write(
-                        "<select name='" + id + "' " + defaultControlAttrs + ">" +
+                writer.write("<select name='" + id + "' " + defaultControlAttrs + ">" +
                         "<option " + (value == 0 ? "" : "selected") + " value='0'>" + falseTextStr + "</option>" +
                         "<option " + (value == 1 ? "selected" : "") + " value='1'>" + trueTextStr + "</option>" +
                         "</select>");
@@ -426,14 +405,14 @@ public class BooleanField extends DialogField
         }
     }
 
-    private void setChecked (String strValue, String[] val)
+    private void setChecked(String strValue, String[] val)
     {
         int index;
         if (strValue != null)
         {
             try
             {
-                index = Integer.parseInt (strValue);
+                index = Integer.parseInt(strValue);
                 val[index] = " checked ";
             }
             catch (NumberFormatException e)

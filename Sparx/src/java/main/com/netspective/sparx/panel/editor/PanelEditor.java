@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,16 +28,20 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: PanelEditor.java,v 1.7 2004-08-01 00:38:08 shahid.shah Exp $
- */
-
 package com.netspective.sparx.panel.editor;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.RedirectValueSource;
@@ -62,39 +61,28 @@ import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.theme.Theme;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Base class for custom panel editors. This class is meant to be EXTENDED to create new panel editor types. This does not
  * define a complete panel editor behavior since the content editing will be up to the child class to implement. The
  * constructor's of this class are all protected and only meant to be instantiated by the PanelEditorsPackage.
- *
  */
 public class PanelEditor extends AbstractPanel
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String PANEL_RECORD_EDIT_ACTION     = "Edit";
-    public static final String PANEL_CONTENT_ADD_ACTION     = "Add";
-    public static final String PANEL_CONTENT_MANAGE_ACTION  = "Manage";
-    public static final String PANEL_RECORD_DONE_ACTION     = "Done";
-    public static final String PANEL_CONTENT_DELETE_ACTION  = "Delete";
+    public static final String PANEL_RECORD_EDIT_ACTION = "Edit";
+    public static final String PANEL_CONTENT_ADD_ACTION = "Add";
+    public static final String PANEL_CONTENT_MANAGE_ACTION = "Manage";
+    public static final String PANEL_RECORD_DONE_ACTION = "Done";
+    public static final String PANEL_CONTENT_DELETE_ACTION = "Delete";
 
     // the following are all the possible displaymodes that the editor panel can be in
-    public static final int UNKNOWN_MODE        = -1;
-    public static final int MODE_DISPLAY        = 1;    /* default display report mode */
-    public static final int MODE_EDIT           = 2;    /* editing panel content mode (dialog and current content (e.g. report)) */
-    public static final int MODE_DELETE         = 3;    /* deleting panel content mode (dialog and current content) */
-    public static final int MODE_ADD            = 4;    /* add content mode (dialog and current content) */
-    public static final int MODE_MANAGE         = 5;    /* managing content (report only but different from default) */
+    public static final int UNKNOWN_MODE = -1;
+    public static final int MODE_DISPLAY = 1;    /* default display report mode */
+    public static final int MODE_EDIT = 2;    /* editing panel content mode (dialog and current content (e.g. report)) */
+    public static final int MODE_DELETE = 3;    /* deleting panel content mode (dialog and current content) */
+    public static final int MODE_ADD = 4;    /* add content mode (dialog and current content) */
+    public static final int MODE_MANAGE = 5;    /* managing content (report only but different from default) */
 
 
     /* default skin to use to display query report panel */
@@ -141,7 +129,6 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
-     *
      * @return
      */
     public String getNameForRequestAttribute()
@@ -153,6 +140,7 @@ public class PanelEditor extends AbstractPanel
      * Create the state object for the panel editor
      *
      * @param nc
+     *
      * @return
      */
     public PanelEditorState constructPanelEditorState(NavigationContext nc)
@@ -172,7 +160,7 @@ public class PanelEditor extends AbstractPanel
 
     public PanelEditorContentElement createElement(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if(PanelEditorContentElement.class.isAssignableFrom(cls))
+        if (PanelEditorContentElement.class.isAssignableFrom(cls))
         {
             return (PanelEditorContentElement) cls.newInstance();
         }
@@ -235,26 +223,27 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
-    * Calculate the mode the record editor panel is in and also set the
-    *
-    * @return  the current mode of the panel editor
-    */
-   public static int validatePanelEditorMode(String panelMode, String recordKey)
-   {
-       int mode = translateMode(panelMode);
+     * Calculate the mode the record editor panel is in and also set the
+     *
+     * @return the current mode of the panel editor
+     */
+    public static int validatePanelEditorMode(String panelMode, String recordKey)
+    {
+        int mode = translateMode(panelMode);
         // if mode is supposed to be in add, edit, or delete then the recordKey should have been provided.
-       if ((mode == PanelEditor.MODE_EDIT ||
-           mode == MODE_DELETE) && recordKey == null)
-       {
-           mode = UNKNOWN_MODE;
-       }
-       return mode;
+        if ((mode == PanelEditor.MODE_EDIT ||
+                mode == MODE_DELETE) && recordKey == null)
+        {
+            mode = UNKNOWN_MODE;
+        }
+        return mode;
     }
 
     /**
      * Translates the mode name into a mode value. This doesn't do any validation checking of the mode.
      *
      * @param modeName
+     *
      * @return
      */
     public static int translateMode(String modeName)
@@ -269,7 +258,7 @@ public class PanelEditor extends AbstractPanel
         else if (modeName.equals("delete"))
             mode = MODE_DELETE;
         else if (modeName.equals("manage"))
-           mode = MODE_MANAGE;
+            mode = MODE_MANAGE;
         else
             mode = UNKNOWN_MODE;
 
@@ -278,7 +267,9 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Translates the mode integer to its string version
+     *
      * @param mode
+     *
      * @return
      */
     public static String translateModeToString(int mode)
@@ -301,7 +292,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Gets the associated project
      *
-     * @return  associated project
+     * @return associated project
      */
     public Project getProject()
     {
@@ -311,7 +302,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Gets the request parameter that is required for this panel editor
      *
-     * @return      request parameter name
+     * @return request parameter name
      */
     public String getRequireRequestParam()
     {
@@ -331,7 +322,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Gets the name of the panel
      *
-     * @return  name of the panel
+     * @return name of the panel
      */
     public String getName()
     {
@@ -341,7 +332,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Sets the name of the panel
      *
-     * @param name      name of the panel
+     * @param name name of the panel
      */
     public void setName(String name)
     {
@@ -356,7 +347,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Gets the namespace (package name)
      *
-     * @return      namespace
+     * @return namespace
      */
     public PanelEditorsPackage getNameSpace()
     {
@@ -366,7 +357,7 @@ public class PanelEditor extends AbstractPanel
     /**
      * Sets the namespace (package name)
      *
-     * @param nameSpace     package name
+     * @param nameSpace package name
      */
     public void setNameSpace(PanelEditorsPackage nameSpace)
     {
@@ -386,8 +377,9 @@ public class PanelEditor extends AbstractPanel
     /**
      * Translate name of the panel editor to a key name suitable for use in a map
      *
-     * @param name  name of the panel editor
-     * @return      translated key name
+     * @param name name of the panel editor
+     *
+     * @return translated key name
      */
     public static final String translateNameForMapKey(String name)
     {
@@ -403,8 +395,9 @@ public class PanelEditor extends AbstractPanel
      * Generates the URL string for the  panel editor's associated actions. This URL is set only once and any dynamic
      * information needs to be passed using value sources.
      *
-     * @param actionMode    the mode  for which the URL is being calculated
-     * @return              url string (containing context sensitive elements) used to construct a redirect value source
+     * @param actionMode the mode  for which the URL is being calculated
+     *
+     * @return url string (containing context sensitive elements) used to construct a redirect value source
      */
     public String generatePanelActionUrl(int actionMode)
     {
@@ -432,7 +425,7 @@ public class PanelEditor extends AbstractPanel
     }
 
     public static String calculateNextModeUrl(DialogContext dc, String panelName, int panelMode, int previousMode,
-                                         String panelRecordKey)
+                                              String panelRecordKey)
     {
         String url = "active-page:";
         String currentUrl = dc.getNavigationContext().getActivePage().getUrl(dc);
@@ -448,7 +441,6 @@ public class PanelEditor extends AbstractPanel
     /**
      * Creates all the panel actions for the  panel editor. This method SHOULD only be called once to populate the
      * panel editor.
-     *
      */
     public void initialize()
     {
@@ -459,12 +451,11 @@ public class PanelEditor extends AbstractPanel
 
 
     /**
-     *
-     *
      * @param writer
      * @param dc
      * @param theme
      * @param flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
@@ -473,12 +464,11 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
-     *
-     *
      * @param writer
      * @param nc
      * @param theme
      * @param flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
@@ -495,8 +485,9 @@ public class PanelEditor extends AbstractPanel
      * active element's "action" item while the right column contains all the elements in their inactive display
      * mode.
      *
-     * @param writer    writer to render the output to
-     * @param nc        current navigation context
+     * @param writer writer to render the output to
+     * @param nc     current navigation context
+     *
      * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
@@ -533,7 +524,7 @@ public class PanelEditor extends AbstractPanel
         StringWriter activeDisplayWriter = new StringWriter();
         StringWriter inactiveWriter = new StringWriter();
         PanelEditorContentElement[] elements = getElementsAsArray();
-        for (int i=0; i < elements.length; i++)
+        for (int i = 0; i < elements.length; i++)
         {
             if (activeElement != null && elements[i].getName().equals(activeElement))
             {
@@ -562,9 +553,9 @@ public class PanelEditor extends AbstractPanel
     /**
      * Calculate and process the state of the all the panel actions based on current context
      *
-     * @param nc                current navigation context
-     * @param vc                current report panel context
-     * @param mode              panel mode
+     * @param nc   current navigation context
+     * @param vc   current report panel context
+     * @param mode panel mode
      */
     public void preparePanelActionStates(NavigationContext nc, HtmlPanelValueContext vc, PanelEditorState state, int mode)
     {
@@ -574,7 +565,7 @@ public class PanelEditor extends AbstractPanel
             actionStates.getState("Done").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             PanelEditorContentElement[] elements = getElementsAsArray();
             String caption = null;
-            for (int i=0; i < elements.length; i++)
+            for (int i = 0; i < elements.length; i++)
             {
                 caption = elements[i].getCaption();
                 PanelEditorContentElement.PanelEditorContentState elementState = state.getElementState(elements[i].getName());
@@ -596,7 +587,6 @@ public class PanelEditor extends AbstractPanel
 
     /**
      * Creates the frame actions for the panel editor. They are MANAGE, DONE.
-     *
      */
     public void createPanelFrameActions()
     {
@@ -631,7 +621,7 @@ public class PanelEditor extends AbstractPanel
         HtmlPanelActions actions = new HtmlPanelActions();
 
         PanelEditorContentElement[] elements = getElementsAsArray();
-        for (int i=0; i < elements.length; i++)
+        for (int i = 0; i < elements.length; i++)
         {
             HtmlPanelAction addAction = banner.createAction();
             PanelEditorContentElement element = elements[i];
@@ -651,7 +641,7 @@ public class PanelEditor extends AbstractPanel
      * adding of the actions need to be done only once and this flag is set
      * once the addition is done.
      *
-     * @return  True if all required actions have been added
+     * @return True if all required actions have been added
      */
     public boolean isInitialized()
     {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,22 +28,14 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Permission.java,v 1.4 2003-10-11 14:31:53 shahid.shah Exp $
- */
-
 package com.netspective.commons.acl;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
-import java.util.ArrayList;
 
-import com.netspective.commons.acl.AccessControlList;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class Permission
@@ -79,7 +66,7 @@ public class Permission
     public void unionChildPermissions(Permission perm)
     {
         childPermissions.or(perm.getChildPermissions());
-        if(getParent() != null) getParent().unionChildPermissions(this);
+        if (getParent() != null) getParent().unionChildPermissions(this);
     }
 
     protected void setOwner(AccessControlList owner)
@@ -95,7 +82,7 @@ public class Permission
     protected void setParent(Permission parent)
     {
         this.parent = parent;
-        if(parent != null)
+        if (parent != null)
         {
             setOwner(parent.getOwner());
             setLevel(parent.getLevel() + 1);
@@ -140,7 +127,7 @@ public class Permission
 
     public String getQualifiedName()
     {
-        if(null == qualifiedName)
+        if (null == qualifiedName)
         {
             String qName = AccessControlList.NAME_SEPARATOR + getName();
             if (parent != null)
@@ -150,7 +137,7 @@ public class Permission
             setQualifiedName(qName);
         }
 
-	    return qualifiedName;
+        return qualifiedName;
     }
 
     public void setQualifiedName(String qualifiedName)
@@ -185,7 +172,7 @@ public class Permission
     {
         int result = 0;
         Permission parent = getParent();
-        while(parent != null)
+        while (parent != null)
         {
             result++;
             parent = parent.getParent();
@@ -197,9 +184,9 @@ public class Permission
     {
         List result = new ArrayList();
         Permission parent = getParent();
-        while(parent != null)
+        while (parent != null)
         {
-            if(result.size() == 0)
+            if (result.size() == 0)
                 result.add(parent);
             else
                 result.add(0, parent);
@@ -213,7 +200,7 @@ public class Permission
         int depth = getAncestorsCount();
 
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < depth; i++)
+        for (int i = 0; i < depth; i++)
             sb.append("  ");
 
         sb.append(getQualifiedName());
@@ -223,7 +210,7 @@ public class Permission
         sb.append(childPermissions);
         sb.append("\n");
 
-        for(int i = 0; i < children.size(); i++)
+        for (int i = 0; i < children.size(); i++)
         {
             Permission perm = (Permission) children.get(i);
             sb.append(perm.toString());

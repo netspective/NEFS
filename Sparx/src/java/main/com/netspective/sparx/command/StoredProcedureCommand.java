@@ -1,93 +1,76 @@
 /*
- * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
- * Netspective Corporation permits redistribution, modification and use
- * of this file in source and binary form ("The Software") under the
- * Netspective Source License ("NSL" or "The License"). The following
- * conditions are provided as a summary of the NSL but the NSL remains the
- * canonical license and must be accepted before using The Software. Any use of
- * The Software indicates agreement with the NSL.
+ * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
+ * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the canonical license and must be accepted
+ * before using The Software. Any use of The Software indicates agreement with the NSL.
  *
- * 1. Each copy or derived work of The Software must preserve the copyright
- *    notice and this notice unmodified.
+ * 1. Each copy or derived work of The Software must preserve the copyright notice and this notice unmodified.
  *
- * 2. Redistribution of The Software is allowed in object code form only
- *    (as Java .class files or a .jar file containing the .class files) and only
- *    as part of an application that uses The Software as part of its primary
- *    functionality. No distribution of the package is allowed as part of a software
- *    development kit, other library, or development tool without written consent of
- *    Netspective Corporation. Any modified form of The Software is bound by
- *    these same restrictions.
+ * 2. Redistribution of The Software is allowed in object code form only (as Java .class files or a .jar file
+ *    containing the .class files) and only as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software development kit, other library,
+ *    or development tool without written consent of Netspective. Any modified form of The Software is bound by these
+ *    same restrictions.
  *
- * 3. Redistributions of The Software in any form must include an unmodified copy of
- *    The License, normally in a plain ASCII text file unless otherwise agreed to,
- *    in writing, by Netspective Corporation.
+ * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
+ *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
- * 4. The names "Sparx" and "Netspective" are trademarks of Netspective
- *    Corporation and may not be used to endorse products derived from The
- *    Software without without written consent of Netspective Corporation. "Sparx"
- *    and "Netspective" may not appear in the names of products derived from The
- *    Software without written consent of Netspective Corporation.
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
- * 5. Please attribute functionality to Sparx where possible. We suggest using the
- *    "powered by Sparx" button or creating a "powered by Sparx(tm)" link to
- *    http://www.netspective.com for each application using Sparx.
+ * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ * ARE HEREBY DISCLAIMED.
  *
- * The Software is provided "AS IS," without a warranty of any kind.
- * ALL EXPRESS OR IMPLIED REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
- * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
- *
- * NETSPECTIVE CORPORATION AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
- * SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A RESULT OF USING OR DISTRIBUTING
- * THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
- * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
- * INABILITY TO USE THE SOFTWARE, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGES.
- *
+ * NETSPECTIVE AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A
+ * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
+ * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 
 
 package com.netspective.sparx.command;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.SqlManager;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.sql.QueryDialogContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.StoredProcedureReportPanel;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
-import com.netspective.sparx.sql.StoredProcedure;
-import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.StoredProcedureReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.axiom.SqlManager;
-
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.Writer;
-import java.io.IOException;
+import com.netspective.sparx.sql.StoredProcedure;
+import com.netspective.sparx.theme.Theme;
 
 /**
  * Command for executing a stored procedure and producing a report returned from the stored procedure as a result set
+ *
  * @author Aye Thu
- * @version $Id: StoredProcedureCommand.java,v 1.3 2003-11-16 15:18:04 shahid.shah Exp $
+ * @version $Id: StoredProcedureCommand.java,v 1.4 2004-08-15 01:47:06 shahid.shah Exp $
  */
 public class StoredProcedureCommand extends AbstractHttpServletCommand
 {
     private static final Log log = LogFactory.getLog(QueryCommand.class);
     public static final int UNLIMITED_ROWS = Integer.MAX_VALUE;
-    public static final String[] IDENTIFIERS = new String[] { "stored-procedure", "stored-proc" };
+    public static final String[] IDENTIFIERS = new String[]{"stored-procedure", "stored-proc"};
 
-    public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
-            "Displays the results of a result set returned from the execution of a stored procedure.",
+    public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays the results of a result set returned from the execution of a stored procedure.",
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("stored-procedure-name", true, "The fully qualified name of the stored procedure (package-name.stored-procedure-name)."),
@@ -95,10 +78,9 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
                 new CommandDocumentation.Parameter("report-id", false, "The name of a specific report panel element in the stored procedure call declaration or '-' for the default report panel."),
                 new CommandDocumentation.Parameter("rows-per-page", false, "-", "The number of rows per page to display ('-' means single page, any other number means a pageable report."),
                 new SkinParameter(),
-                new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more "+
-                                                   "semicolon-separated URL formats that may override those within a report."),
-            }
-    );
+                new CommandDocumentation.Parameter("url-formats", false, "The url-formats parameter is one or more " +
+            "semicolon-separated URL formats that may override those within a report."),
+            });
 
     public static String[] getIdentifiers()
     {
@@ -118,26 +100,25 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
     private String[] urlFormats;
 
     /**
-     *
      * @param params
      */
     public void setParameters(StringTokenizer params)
     {
         spName = params.nextToken();
 
-        if(params.hasMoreTokens())
+        if (params.hasMoreTokens())
         {
             reportId = params.nextToken();
-            if(reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
+            if (reportId.length() == 0 || reportId.equals(PARAMVALUE_DEFAULT))
                 reportId = null;
         }
         else
             reportId = null;
 
-        if(params.hasMoreTokens())
+        if (params.hasMoreTokens())
         {
             String rowsPerPageStr = params.nextToken();
-            if(rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
+            if (rowsPerPageStr.length() == 0 || rowsPerPageStr.equals(PARAMVALUE_DEFAULT))
                 rowsPerPage = UNLIMITED_ROWS;
             else
             {
@@ -154,28 +135,28 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         else
             rowsPerPage = UNLIMITED_ROWS;
 
-        if(params.hasMoreTokens())
+        if (params.hasMoreTokens())
         {
             reportSkinName = params.nextToken();
-            if(reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
+            if (reportSkinName.length() == 0 || reportSkinName.equals(PARAMVALUE_DEFAULT))
                 reportSkinName = null;
         }
         else
             reportSkinName = null;
 
-        if(params.hasMoreTokens())
+        if (params.hasMoreTokens())
         {
             String urlFormatsStr = params.nextToken();
-            if(urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
+            if (urlFormatsStr.length() == 0 || urlFormatsStr.equals(PARAMVALUE_DEFAULT))
                 urlFormats = null;
             else
             {
                 StringTokenizer urlFmtTokenizer = new StringTokenizer(urlFormatsStr, ";");
                 List urlFormatsList = new ArrayList();
-                while(urlFmtTokenizer.hasMoreTokens())
+                while (urlFmtTokenizer.hasMoreTokens())
                 {
                     String urlFormat = urlFmtTokenizer.nextToken();
-                    if(urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
+                    if (urlFormat.length() == 0 || urlFormat.equals(PARAMVALUE_DEFAULT))
                         urlFormatsList.add(null);
                     else
                         urlFormatsList.add(urlFormat);
@@ -190,6 +171,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Constructs a string containing the command paramaters of the stored procedure
+     *
      * @return
      */
     public String getParameters()
@@ -203,11 +185,11 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         sb.append(delim);
         sb.append(reportSkinName != null ? reportSkinName : PARAMVALUE_DEFAULT);
         sb.append(delim);
-        if(urlFormats != null)
+        if (urlFormats != null)
         {
-            for(int i = 0; i < urlFormats.length; i++)
+            for (int i = 0; i < urlFormats.length; i++)
             {
-                if(i > 0) sb.append(";");
+                if (i > 0) sb.append(";");
                 sb.append(urlFormats[i]);
             }
         }
@@ -219,16 +201,19 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the query dialog associated with the stored procedure call
+     *
      * @param writer
      * @param sqlManager
      * @param theme
+     *
      * @return
+     *
      * @throws IOException
      */
     public com.netspective.sparx.form.sql.QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
-        StoredProcedure query = (com.netspective.sparx.sql.StoredProcedure)sqlManager.getStoredProcedure(spName);
-        if(query == null)
+        StoredProcedure query = (com.netspective.sparx.sql.StoredProcedure) sqlManager.getStoredProcedure(spName);
+        if (query == null)
         {
             writer.write("Stored procedure '" + spName + "' not found.");
             return null;
@@ -247,19 +232,22 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the report panel associated with the stored procedure call
+     *
      * @param writer
      * @param sqlManager
      * @param theme
+     *
      * @return
+     *
      * @throws java.io.IOException
      */
     public StoredProcedureReportPanel createReportPanel(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         StoredProcedure storedProc = (com.netspective.sparx.sql.StoredProcedure) sqlManager.getStoredProcedure(spName);
-        if(storedProc == null)
+        if (storedProc == null)
         {
-            log.error("Stored procedure " + spName + " not found in "+ this +".");
-            throw new RuntimeException("Stored procedure " + spName + " not found in "+ this +".");
+            log.error("Stored procedure " + spName + " not found in " + this + ".");
+            throw new RuntimeException("Stored procedure " + spName + " not found in " + this + ".");
         }
         StoredProcedureReportPanel result = null;
         if (reportId != null)
@@ -273,9 +261,11 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Handles the stored procedure call command executed from a dialog context
+     *
      * @param writer
      * @param dc
      * @param unitTest
+     *
      * @throws CommandException
      * @throws IOException
      */
@@ -285,16 +275,18 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         Theme theme = dc.getActiveTheme();
 
         HtmlTabularReportPanel panel = createReportPanel(writer, sqlManager, theme);
-        if(panel != null)
+        if (panel != null)
             panel.render(writer, dc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
 
     }
 
     /**
      * Handles the stored procedure call command executed from a navigation context such as from a navigation page
-     * @param writer            Writer object associated with the response buffer
-     * @param nc                the navigation context in which the command was executed
-     * @param unitTest          flag indicating if this execution is for a unit test
+     *
+     * @param writer   Writer object associated with the response buffer
+     * @param nc       the navigation context in which the command was executed
+     * @param unitTest flag indicating if this execution is for a unit test
+     *
      * @throws CommandException
      * @throws IOException
      */
@@ -317,14 +309,14 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         {
             // a non-default  query dialog name was specified or the default one was specified (explicitly or implied)
             com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
-            if(queryDialog != null)
+            if (queryDialog != null)
             {
                 if (autoExecute)
                     nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
 
                 StoredProcedureReportPanel panel = createReportPanel(writer, sqlManager, theme);
                 // create the context for which the dialog can run in
-                QueryDialogContext qdc = (QueryDialogContext)queryDialog.createContext(nc, theme.getDefaultDialogSkin());
+                QueryDialogContext qdc = (QueryDialogContext) queryDialog.createContext(nc, theme.getDefaultDialogSkin());
                 if (rowsPerPage < UNLIMITED_ROWS && rowsPerPage > 0)
                     qdc.setRowsPerPage(rowsPerPage);
                 qdc.setReportPanel(panel);
@@ -335,12 +327,12 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
         {
             StoredProcedureReportPanel panel = createReportPanel(writer, sqlManager, theme);
             TabularReport.Flags flags = panel.getReport(nc).getFlags();
-            boolean isSelectable = flags != null? flags.flagIsSet(HtmlTabularReport.Flags.SELECTABLE) : false;
+            boolean isSelectable = flags != null ? flags.flagIsSet(HtmlTabularReport.Flags.SELECTABLE) : false;
             if (isSelectable)
             {
                 nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
                 com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
-                QueryDialogContext qdc = (QueryDialogContext)queryDialog.createContext(nc, theme.getDefaultDialogSkin());
+                QueryDialogContext qdc = (QueryDialogContext) queryDialog.createContext(nc, theme.getDefaultDialogSkin());
                 qdc.setReportPanel(panel);
                 queryDialog.render(writer, qdc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
             }
@@ -356,6 +348,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the stored procedure name
+     *
      * @return
      */
     public String getStoredProcedureName()
@@ -365,6 +358,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the report skin name
+     *
      * @return
      */
     public String getReportSkinName()
@@ -374,6 +368,7 @@ public class StoredProcedureCommand extends AbstractHttpServletCommand
 
     /**
      * Gets the URL formats
+     *
      * @return
      */
     public String[] getUrlFormats()

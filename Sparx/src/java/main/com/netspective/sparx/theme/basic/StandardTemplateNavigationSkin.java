@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,50 +28,44 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: StandardTemplateNavigationSkin.java,v 1.3 2003-12-07 18:06:59 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.basic;
 
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-import java.io.Writer;
-import java.io.IOException;
-import java.io.File;
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessorException;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.sparx.theme.Theme;
+
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
-import freemarker.ext.beans.BeansWrapper;
-
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
-import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.commons.template.TemplateProcessor;
-import com.netspective.commons.template.TemplateProcessorException;
 
 public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -176,7 +165,7 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
             int overrideAtAncestor = -1;
             if (ancestors.size() > 0)
             {
-                for (int i = ancestors.size()-1; i >= 0; i--)
+                for (int i = ancestors.size() - 1; i >= 0; i--)
                 {
                     if (templateAvailable(servletContext, ((NavigationPath) ancestors.get(i)).getAbsPathRelativeToThisPath(overrideName)))
                     {
@@ -193,20 +182,20 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
                 {
                     NavigationPath ancestorPath = (NavigationPath) ancestors.get(i);
                     String name = ancestorPath.getAbsPathRelativeToThisPath(inheritName);
-                    if(templateAvailable(servletContext, name))
+                    if (templateAvailable(servletContext, name))
                         fmConfig.getTemplate(name).process(instanceVars, writer);
                 }
 
                 // now apply the template in the current page
                 String name = activePath.getAbsPathRelativeToThisPath(inheritName);
-                if(templateAvailable(servletContext, name))
+                if (templateAvailable(servletContext, name))
                     fmConfig.getTemplate(name).process(instanceVars, writer);
             }
             else
             {
                 // first apply the template in the current page (if any)
                 String name = activePath.getAbsPathRelativeToThisPath(inheritName);
-                if(templateAvailable(servletContext, name))
+                if (templateAvailable(servletContext, name))
                     fmConfig.getTemplate(name).process(instanceVars, writer);
 
                 // now, start from the first ancestor and go up the chain until the first override
@@ -214,7 +203,7 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
                 {
                     NavigationPath ancestorPath = (NavigationPath) ancestors.get(i);
                     name = ancestorPath.getAbsPathRelativeToThisPath(inheritName);
-                    if(templateAvailable(servletContext, name))
+                    if (templateAvailable(servletContext, name))
                         fmConfig.getTemplate(name).process(instanceVars, writer);
                 }
             }

@@ -1,59 +1,35 @@
 /*
- * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
- * Netspective Corporation permits redistribution, modification and use
- * of this file in source and binary form ("The Software") under the
- * Netspective Source License ("NSL" or "The License"). The following
- * conditions are provided as a summary of the NSL but the NSL remains the
- * canonical license and must be accepted before using The Software. Any use of
- * The Software indicates agreement with the NSL.
+ * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
+ * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the canonical license and must be accepted
+ * before using The Software. Any use of The Software indicates agreement with the NSL.
  *
- * 1. Each copy or derived work of The Software must preserve the copyright
- *    notice and this notice unmodified.
+ * 1. Each copy or derived work of The Software must preserve the copyright notice and this notice unmodified.
  *
- * 2. Redistribution of The Software is allowed in object code form only
- *    (as Java .class files or a .jar file containing the .class files) and only
- *    as part of an application that uses The Software as part of its primary
- *    functionality. No distribution of the package is allowed as part of a software
- *    development kit, other library, or development tool without written consent of
- *    Netspective Corporation. Any modified form of The Software is bound by
- *    these same restrictions.
+ * 2. Redistribution of The Software is allowed in object code form only (as Java .class files or a .jar file
+ *    containing the .class files) and only as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software development kit, other library,
+ *    or development tool without written consent of Netspective. Any modified form of The Software is bound by these
+ *    same restrictions.
  *
- * 3. Redistributions of The Software in any form must include an unmodified copy of
- *    The License, normally in a plain ASCII text file unless otherwise agreed to,
- *    in writing, by Netspective Corporation.
+ * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
+ *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
- * 4. The names "Sparx" and "Netspective" are trademarks of Netspective
- *    Corporation and may not be used to endorse products derived from The
- *    Software without without written consent of Netspective Corporation. "Sparx"
- *    and "Netspective" may not appear in the names of products derived from The
- *    Software without written consent of Netspective Corporation.
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
- * 5. Please attribute functionality to Sparx where possible. We suggest using the
- *    "powered by Sparx" button or creating a "powered by Sparx(tm)" link to
- *    http://www.netspective.com for each application using Sparx.
+ * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ * ARE HEREBY DISCLAIMED.
  *
- * The Software is provided "AS IS," without a warranty of any kind.
- * ALL EXPRESS OR IMPLIED REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
- * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
- *
- * NETSPECTIVE CORPORATION AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
- * SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A RESULT OF USING OR DISTRIBUTING
- * THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
- * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
- * INABILITY TO USE THE SOFTWARE, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * NETSPECTIVE AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A
+ * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
+ * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: BasicTabbedNavigationSkin.java,v 1.41 2004-08-08 22:55:16 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
@@ -132,8 +108,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Render the authenticated user information and the logout navigation link
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
@@ -173,7 +151,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
             writer.write("	</td>\n");
             writer.write("	<td><img src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
-            if (orgName != null && ! orgName.equals(personName))
+            if (orgName != null && !orgName.equals(personName))
             {
                 writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
                 writer.write("			<tr>\n");
@@ -217,8 +195,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
 
         ValueSource baseAttrs = nc.getActivePage().getBaseAttributes();
-        if(baseAttrs != null)
-            writer.write("<base "+ baseAttrs.getTextValue(nc) +"></base>");
+        if (baseAttrs != null)
+            writer.write("<base " + baseAttrs.getTextValue(nc) + "></base>");
 
         renderAuthenticatedUser(writer, nc);
         Theme theme = getTheme();
@@ -249,8 +227,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Render the Level one menu
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelOne(Writer writer, NavigationContext nc) throws IOException
@@ -259,9 +239,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
         writer.write("<!-- Level 1 Begins -->\n");
         NavigationPath activePage = nc.getActivePage();
-        if(activePage != null)
+        if (activePage != null)
         {
-            String html = generateLevelOneHtml(activePage.getLevel() == 1 ? activePage : (NavigationPath) nc.getActivePage().getAncestorsList().get(1), nc);
+            String html = generateLevelOneHtml(activePage.getLevel() == 1
+                    ? activePage : (NavigationPath) nc.getActivePage().getAncestorsList().get(1), nc);
             writer.write(html);
         }
         writer.write("<!-- Level 1 Ends -->\n");
@@ -278,14 +259,16 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Generates the level two HTML
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelTwo(Writer writer, NavigationContext nc) throws IOException
     {
         NavigationPath activePath = nc.getActivePage();
-        if(activePath == null)
+        if (activePath == null)
             return;
 
         Theme theme = getTheme();
@@ -354,15 +337,15 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     }
 
     /**
-     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelThree(Writer writer, NavigationContext nc) throws IOException
     {
         NavigationPath activePath = nc.getActivePage();
-        if(activePath == null)
+        if (activePath == null)
             return;
 
         Theme theme = getTheme();
@@ -373,14 +356,14 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 if (activePath.getMaxChildLevel() > 2 && activePathChildren.size() > 0)
                 {
                     writer.write("  <tr>\n");
-                    writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
-                            "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
+                    writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
+                            "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
                     writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                             "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                     writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                     writer.write("  </tr>\n");
                     writer.write("  <tr>\n");
-                    writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
+                    writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
                     writer.write(generateLevelThreeHtml((NavigationPath) activePath.getChildrenList().get(0), nc));
                     writer.write("      </td>\n");
                 }
@@ -388,36 +371,36 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
             case 3:
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
-                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
+                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
+                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
                 writer.write(generateLevelThreeHtml(activePath, nc));
                 writer.write("      </td>\n");
                 break;
 
             case 4:
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
-                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\">" +
+                        "<img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" width=\"" + sidebarWidth + "\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
+                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"" + sidebarWidth + "\" height=\"100%\">\n");
                 writer.write(generateLevelThreeHtml((NavigationPath) activePath.getAncestorsList().get(3), nc));
                 writer.write("      </td>\n");
                 break;
             default:
-             //   writer.write("  <tr>\n");
-             //   writer.write("      <td colspan=\"3\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
-             //           "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
-             //   writer.write("  </tr>\n");
+                //   writer.write("  <tr>\n");
+                //   writer.write("      <td colspan=\"3\"><img src=\"" + theme.getResourceUrl("/images/spacer-big.gif") + "\" " +
+                //           "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
+                //   writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 break;
 
@@ -425,9 +408,9 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     }
 
     /**
-     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
@@ -455,8 +438,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Renders the page heading if one exists
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     private void renderPageHeading(Writer writer, NavigationContext nc) throws IOException
@@ -466,7 +451,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         NavigationPage page = nc.getActivePage();
         String heading = page != null ? nc.getPageHeading() : "No active page";
 
-        String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
+        String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null
+                ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
 
         writer.write("<!-- Page Header Begins -->\n");
         writer.write("<table class=\"page-heading-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -489,14 +475,16 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Render the sub heading in the page content
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     private void renderPageSubHeading(Writer writer, NavigationContext nc) throws IOException
     {
         NavigationPage page = nc.getActivePage();
-        if(page == null)
+        if (page == null)
             return;
 
         String subHeading = nc.getPageSubheading();
@@ -527,8 +515,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Render the page content footer
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException
@@ -537,7 +527,9 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         if (flags.flagIsSet(NavigationPage.Flags.SHOW_RENDER_TIME))
         {
             Long startTime = (Long) nc.getRequest().getAttribute(NavigationControllerServlet.REQATTRNAME_RENDER_START_TIME);
-            writer.write("<p align=right>Render time: " + (startTime != null ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;") : "unknown&nbsp;&nbsp;"));
+            writer.write("<p align=right>Render time: " + (startTime != null
+                    ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;")
+                    : "unknown&nbsp;&nbsp;"));
         }
 
         if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
@@ -554,8 +546,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Generates the HTML for the Level one navigation
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @throws IOException
      */
     protected String generateLevelOneHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -576,9 +570,9 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !tabElement.isInActivePath(nc));
 
-            if (! hidden)
+            if (!hidden)
             {
                 if (i == 0)
                 {
@@ -633,9 +627,12 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Generates the HTML for the level two navigation level
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @return
+     *
      * @throws IOException
      */
     protected String generateLevelTwoHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -659,7 +656,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !tabElement.isInActivePath(nc));
 
             if (!hidden)
             {
@@ -671,7 +668,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 }
                 else
                 {
-                    writer.append("<td nowrap align=\"center\" " + (i != size - 1 ? "class=\"menu-level-2-separator\"" : "") + ">");
+                    writer.append("<td nowrap align=\"center\" " + (i != size - 1
+                            ? "class=\"menu-level-2-separator\"" : "") + ">");
                     writer.append("<a class=\"menu-level-2\" " +
                             tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
@@ -688,9 +686,12 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     /**
      * Generates the html for the third navaigation level
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @return
+     *
      * @throws IOException
      */
     protected String generateLevelThreeHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -711,7 +712,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         {
             NavigationPage sideBarElement = (NavigationPage) sideBarElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(sideBarElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! sideBarElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !sideBarElement.isInActivePath(nc));
             if (!hidden)
             {
                 if (sideBarElement.isInActivePath(nc))

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SchemaTableColumnsPanel.java,v 1.13 2004-07-25 21:12:53 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data.schema;
 
 import java.util.Iterator;
@@ -118,10 +106,11 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
-        if(selectedRow == null)
+        if (selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return createColumnsDataSource(nc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
+            return createColumnsDataSource(nc, selectedRow.tableTreeNode != null
+                    ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -147,9 +136,9 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         public String getSqlTexts(DbmsSqlTexts sqlTexts)
         {
             Set dbmsIds = sqlTexts.getAvailableDbmsIds();
-            if(dbmsIds.size() == 1)
+            if (dbmsIds.size() == 1)
             {
-                for(Iterator dbmsIdIter = dbmsIds.iterator(); dbmsIdIter.hasNext(); )
+                for (Iterator dbmsIdIter = dbmsIds.iterator(); dbmsIdIter.hasNext();)
                 {
                     String dbmsId = (String) dbmsIdIter.next();
                     return sqlTexts.getByDbmsId(dbmsId).getSql(reportValueContext);
@@ -157,9 +146,9 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
             }
 
             StringBuffer allSql = new StringBuffer();
-            for(Iterator dbmsIdIter = dbmsIds.iterator(); dbmsIdIter.hasNext(); )
+            for (Iterator dbmsIdIter = dbmsIds.iterator(); dbmsIdIter.hasNext();)
             {
-                if(allSql.length() > 0)
+                if (allSql.length() > 0)
                     allSql.append("<br>");
 
                 String dbmsId = (String) dbmsIdIter.next();
@@ -174,40 +163,43 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         {
             Column column = columns.get(row);
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     Theme theme = ((HtmlTabularReportValueContext) reportValueContext).getActiveTheme();
                     StringBuffer content = new StringBuffer();
-                    if(column.isPrimaryKey())
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/primary-key.gif") + "\" title=\"Primary key\"> ");
-                    if(column.isUnique())
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-unique.gif") + "\" title=\"Values must be unique\"> ");
-                    if(column.isRequiredByApp())
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-required.gif") + "\" title=\"Value is required\"> ");
-                    if(column.isRequiredByDbms())
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/value-required-dbms.gif") + "\" title=\"Value is required (but only in the DBMS)\"> ");
-                    if(column.isIndexed())
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/indexed.gif") + "\" title=\"Column is indexed\"> ");
-                    if(column.getForeignKey() != null)
+                    if (column.isPrimaryKey())
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/primary-key.gif") + "\" title=\"Primary key\"> ");
+                    if (column.isUnique())
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/value-unique.gif") + "\" title=\"Values must be unique\"> ");
+                    if (column.isRequiredByApp())
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/value-required.gif") + "\" title=\"Value is required\"> ");
+                    if (column.isRequiredByDbms())
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/value-required-dbms.gif") + "\" title=\"Value is required (but only in the DBMS)\"> ");
+                    if (column.isIndexed())
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/indexed.gif") + "\" title=\"Column is indexed\"> ");
+                    if (column.getForeignKey() != null)
                     {
                         boolean isLogical = column.getForeignKey().isLogical();
-                        switch(column.getForeignKey().getType())
+                        switch (column.getForeignKey().getType())
                         {
                             case ForeignKey.FKEYTYPE_PARENT:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference"+ (isLogical ?" (logical)" : "") +"\"> ");
+                                content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/parent-ref-key.gif") + "\" title=\"Child-key reference" + (isLogical
+                                        ? " (logical)" : "") + "\"> ");
                                 break;
 
                             case ForeignKey.FKEYTYPE_SELF:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/self-ref-key.gif") + "\" title=\"Self reference"+ (isLogical ?" (logical)" : "") +"\"> ");
+                                content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/self-ref-key.gif") + "\" title=\"Self reference" + (isLogical
+                                        ? " (logical)" : "") + "\"> ");
                                 break;
 
                             default:
-                                content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference"+ (isLogical ?" (logical)" : "") +"\"> ");
+                                content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/foreign-key.gif") + "\" title=\"Foreign key reference" + (isLogical
+                                        ? " (logical)" : "") + "\"> ");
                         }
                     }
-                    if(column.getDependentForeignKeys() != null && column.getDependentForeignKeys().size() > 0)
-                        content.append("<img src=\""+ theme.getResourceUrl("/images/dbdd/foreign-key-elsewhere.gif") + "\" title=\"Referenced as a foreign key elsewhere\"> ");
+                    if (column.getDependentForeignKeys() != null && column.getDependentForeignKeys().size() > 0)
+                        content.append("<img src=\"" + theme.getResourceUrl("/images/dbdd/foreign-key-elsewhere.gif") + "\" title=\"Referenced as a foreign key elsewhere\"> ");
                     return content.toString();
 
                 case 1:
@@ -228,11 +220,11 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 
                 case 6:
                     ForeignKey fKey = column.getForeignKey();
-                    if(fKey == null) return null;
+                    if (fKey == null) return null;
                     Table fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
-                    return "<a href=\"?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"="+
-                                fKeyTable.getSchema().getName() + "." +
-                                fKeyTable.getName() +"\">" + fKey.getReference().getReference() +
+                    return "<a href=\"?" + REQPARAMNAME_SHOW_DETAIL_TABLE + "=" +
+                            fKeyTable.getSchema().getName() + "." +
+                            fKeyTable.getName() + "\">" + fKey.getReference().getReference() +
                             "</a>";
 
                 default:
@@ -262,10 +254,10 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
-            setActiveRow(row+1);
+            setActiveRow(row + 1);
             return true;
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: FileTypeMetric.java,v 1.2 2003-10-07 01:35:07 shahid.shah Exp $
- */
-
 package com.netspective.commons.metric;
 
 import java.io.BufferedReader;
@@ -68,7 +56,7 @@ public class FileTypeMetric extends Metric
 
     public FileTypeMetric(Metric root, String name, boolean isCode)
     {
-        super(root.getLevel()+1, root, name);
+        super(root.getLevel() + 1, root, name);
         this.isCode = isCode;
     }
 
@@ -97,7 +85,7 @@ public class FileTypeMetric extends Metric
         int result = 0;
 
         BufferedReader reader = new BufferedReader(new FileReader(entry));
-        while(reader.readLine() != null)
+        while (reader.readLine() != null)
             result++;
         reader.close();
 
@@ -111,7 +99,7 @@ public class FileTypeMetric extends Metric
         totalBytes += entry.length();
         avgBytes = (double) totalBytes / (double) count;
 
-        if(isCode)
+        if (isCode)
         {
             try
             {
@@ -119,7 +107,7 @@ public class FileTypeMetric extends Metric
                 totalLines += lineCount;
                 avgLines = (double) totalLines / (double) count;
             }
-            catch(Exception IOException)
+            catch (Exception IOException)
             {
             }
         }
@@ -133,11 +121,11 @@ public class FileTypeMetric extends Metric
         metricElem.setAttribute("name", getName());
         metricElem.setAttribute("type", "file-type");
 
-        if(flagIsSet(METRICFLAG_SORT_CHILDREN))
+        if (flagIsSet(METRICFLAG_SORT_CHILDREN))
             metricElem.setAttribute("sort-children", "yes");
 
         List children = getChildren();
-        if(children != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
+        if (children != null && flagIsSet(METRICFLAG_SUM_CHILDREN))
         {
             metricElem.setAttribute("type", "file-types");
 
@@ -145,7 +133,7 @@ public class FileTypeMetric extends Metric
             totalLines = 0;
             totalBytes = 0;
 
-            for(Iterator i = children.iterator(); i.hasNext();)
+            for (Iterator i = children.iterator(); i.hasNext();)
             {
                 FileTypeMetric ftMetric = ((FileTypeMetric) i.next());
                 count += ftMetric.getCount();
@@ -153,7 +141,7 @@ public class FileTypeMetric extends Metric
                 totalBytes += ftMetric.getTotalBytes();
             }
 
-            if(count > 0)
+            if (count > 0)
             {
                 avgLines = (double) totalLines / (double) count;
                 avgBytes = (double) totalBytes / (double) count;
@@ -166,22 +154,22 @@ public class FileTypeMetric extends Metric
         metricElem.setAttribute("total-bytes", fmt.format(totalBytes));
         metricElem.setAttribute("avg-bytes", fmt.format((long) avgBytes));
 
-        if(flagIsSet(METRICFLAG_SUM_CHILDREN) && totalLines > 0)
+        if (flagIsSet(METRICFLAG_SUM_CHILDREN) && totalLines > 0)
         {
             metricElem.setAttribute("total-lines", fmt.format(totalLines));
             metricElem.setAttribute("avg-lines", fmt.format((long) avgLines));
         }
 
-        if(isCode)
+        if (isCode)
         {
             metricElem.setAttribute("is-code", "yes");
             metricElem.setAttribute("total-lines", fmt.format(totalLines));
             metricElem.setAttribute("avg-lines", fmt.format((long) avgLines));
         }
 
-        if(children != null)
+        if (children != null)
         {
-            for(Iterator i = children.iterator(); i.hasNext();)
+            for (Iterator i = children.iterator(); i.hasNext();)
             {
                 Metric childMetric = (Metric) i.next();
                 //childMetric.createElement(metricElem);

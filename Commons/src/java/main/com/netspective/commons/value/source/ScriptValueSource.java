@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ScriptValueSource.java,v 1.2 2004-08-09 22:14:28 shahid.shah Exp $
- */
-
 package com.netspective.commons.value.source;
 
 import java.util.List;
@@ -61,16 +49,14 @@ import com.netspective.commons.value.exception.ValueSourceInitializeException;
 
 public class ScriptValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "script"};
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "A value source that wraps a bean script to provide dynamic values. A function called getValue(ValueContext) must be" +
+    public static final String[] IDENTIFIERS = new String[]{"script"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("A value source that wraps a bean script to provide dynamic values. A function called getValue(ValueContext) must be" +
             "present in the script. Optionally, the script may contain getPresentationValue(ValueContext) and hasValue(ValueContext)" +
             "methods.",
             new ValueSourceDocumentation.Parameter[]
             {
                 new ValueSourceDocumentation.Parameter("script-name", true, "The name of the script (must have been defined elsewhere)")
-            }
-    );
+            });
 
     public static String[] getIdentifiers()
     {
@@ -102,9 +88,9 @@ public class ScriptValueSource extends AbstractValueSource
     public Object callFunctionInScript(ValueContext vc, String method, Object[] params)
     {
         Script script = vc.getScriptsManager().getScript(scriptName);
-        if(script == null)
-            throw new RuntimeException("Script '"+ scriptName +"' not found in " + this + ". Available: " +
-                                       vc.getScriptsManager().getScriptNames());
+        if (script == null)
+            throw new RuntimeException("Script '" + scriptName + "' not found in " + this + ". Available: " +
+                    vc.getScriptsManager().getScriptNames());
 
         Object result;
         try
@@ -124,7 +110,7 @@ public class ScriptValueSource extends AbstractValueSource
         Object result;
         try
         {
-            result = callFunctionInScript(vc, "getPresentationValue", new Object[] { vc });
+            result = callFunctionInScript(vc, "getPresentationValue", new Object[]{vc});
         }
         catch (Exception e)
         {
@@ -132,16 +118,16 @@ public class ScriptValueSource extends AbstractValueSource
             result = getValue(vc);
         }
 
-        if(result instanceof PresentationValue)
+        if (result instanceof PresentationValue)
             return (PresentationValue) result;
 
-        if(result instanceof Value)
+        if (result instanceof Value)
             return new PresentationValue((Value) result);
 
-        if(result instanceof String[])
+        if (result instanceof String[])
             return new PresentationValue(new GenericValue((String[]) result));
 
-        if(result instanceof List)
+        if (result instanceof List)
             return new PresentationValue(new GenericValue((List) result));
 
         return new PresentationValue(new GenericValue(result));
@@ -149,18 +135,18 @@ public class ScriptValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        Object result = callFunctionInScript(vc, "getValue", new Object[] { vc });
+        Object result = callFunctionInScript(vc, "getValue", new Object[]{vc});
 
-        if(result instanceof Value)
+        if (result instanceof Value)
             return (Value) result;
 
-        if(result == null)
+        if (result == null)
             return null;
 
-        if(result instanceof String[])
+        if (result instanceof String[])
             return new GenericValue((String[]) result);
 
-        if(result instanceof List)
+        if (result instanceof List)
             return new GenericValue((List) result);
 
         return new GenericValue(result);
@@ -171,7 +157,7 @@ public class ScriptValueSource extends AbstractValueSource
         Object result;
         try
         {
-            result = callFunctionInScript(vc, "hasValue", new Object[] { vc });
+            result = callFunctionInScript(vc, "hasValue", new Object[]{vc});
         }
         catch (Exception e)
         {
@@ -179,10 +165,10 @@ public class ScriptValueSource extends AbstractValueSource
             result = getValue(vc);
         }
 
-        if(result instanceof Boolean)
+        if (result instanceof Boolean)
             return ((Boolean) result).booleanValue();
 
-        if(result instanceof Value)
+        if (result instanceof Value)
             return ((Value) result).hasValue();
 
         return result != null ? TextUtils.getInstance().toBoolean(result.toString(), false) : false;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SchemaTablesPanel.java,v 1.9 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data.schema;
 
 import java.util.ArrayList;
@@ -149,10 +137,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
         public Table getTable()
         {
-            if(tableTreeNode != null)
+            if (tableTreeNode != null)
                 return tableTreeNode.getTable();
 
-            if(enumTable != null)
+            if (enumTable != null)
                 return enumTable;
 
             return null;
@@ -164,11 +152,11 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             String schemaName = schemaAndTableNameArray[0];
             String tableName = schemaAndTableNameArray[1];
 
-            if(tableTreeNode != null && tableTreeNode.getTable().getName().equalsIgnoreCase(tableName) &&
+            if (tableTreeNode != null && tableTreeNode.getTable().getName().equalsIgnoreCase(tableName) &&
                     tableTreeNode.getTable().getSchema().getName().equalsIgnoreCase(schemaName))
                 return true;
 
-            if(enumTable != null && enumTable.getName().equalsIgnoreCase(tableName) &&
+            if (enumTable != null && enumTable.getName().equalsIgnoreCase(tableName) &&
                     enumTable.getSchema().getName().equalsIgnoreCase(schemaName))
                 return true;
 
@@ -189,14 +177,14 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         StructureRow activeStructureRow = new StructureRow(level, treeNode, ancestors);
         rows.add(activeStructureRow);
         List children = treeNode.getChildren();
-        if(children != null)
+        if (children != null)
         {
-            for(int c = 0; c < children.size(); c++)
+            for (int c = 0; c < children.size(); c++)
             {
                 List childAncestors = new ArrayList();
                 childAncestors.add(activeStructureRow);
                 childAncestors.addAll(ancestors);
-                addStructurRow(rows, level+1, (Schema.TableTreeNode) children.get(c), childAncestors);
+                addStructurRow(rows, level + 1, (Schema.TableTreeNode) children.get(c), childAncestors);
             }
         }
     }
@@ -204,11 +192,11 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     public static List createStructureRows(Schemas schemas)
     {
         List rows = (List) rowsCache.get(schemas);
-        if(rows != null)
+        if (rows != null)
             return rows;
 
         rows = new ArrayList();
-        for(int i = 0; i < schemas.size(); i++)
+        for (int i = 0; i < schemas.size(); i++)
         {
             Schema schema = schemas.get(i);
             Schema.TableTree tree = schema.getStructure();
@@ -224,7 +212,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             appTableAncestors.add(appTablesRow);
 
             List children = tree.getChildren();
-            for(int c = 0; c < children.size(); c++)
+            for (int c = 0; c < children.size(); c++)
                 addStructurRow(rows, 2, (Schema.TableTreeNode) children.get(c), appTableAncestors);
 
             StructureRow enumTablesRow = new StructureRow(1, schemaRow, "Enumeration Tables");
@@ -236,13 +224,13 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
             Set sortedEnumTables = new TreeSet(BasicSchema.TABLE_COMPARATOR);
             Tables tables = schema.getTables();
-            for(int c = 0; c < tables.size(); c++)
+            for (int c = 0; c < tables.size(); c++)
             {
                 Table table = tables.get(c);
-                if(table instanceof EnumerationTable)
+                if (table instanceof EnumerationTable)
                     sortedEnumTables.add(table);
             }
-            for(Iterator iter = sortedEnumTables.iterator(); iter.hasNext(); )
+            for (Iterator iter = sortedEnumTables.iterator(); iter.hasNext();)
                 rows.add(new StructureRow(2, (EnumerationTable) iter.next(), enumTableAncestors));
         }
 
@@ -270,11 +258,11 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
 
-        if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
+        if (view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ALL)
             return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
         else
         {
-            if(selectedRow == null)
+            if (selectedRow == null)
                 return new SimpleMessageDataSource(noTableSelected);
             else
                 return new StructureDataSource(createStructureRows(nc.getSqlManager().getSchemas()), selectedRow);
@@ -289,16 +277,17 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     public static StructureRow getSelectedStructureRow(NavigationContext nc, List structureRows)
     {
         String selectedTable = nc.getRequest().getParameter(REQPARAMNAME_SHOW_DETAIL_TABLE);
-        if(selectedTable == null)
+        if (selectedTable == null)
             return null;
 
-        for(int i = 0; i < structureRows.size(); i++)
+        for (int i = 0; i < structureRows.size(); i++)
         {
             StructureRow structureRow = (StructureRow) structureRows.get(i);
-            if(structureRow.isTable(selectedTable))
+            if (structureRow.isTable(selectedTable))
             {
                 String abbrev = structureRow.getTable().getAbbrev();
-                nc.setPageHeading(abbrev.equals(structureRow.getTable().getName()) ? selectedTable : (selectedTable + " (" + abbrev + ")"));
+                nc.setPageHeading(abbrev.equals(structureRow.getTable().getName())
+                        ? selectedTable : (selectedTable + " (" + abbrev + ")"));
                 return structureRow;
             }
         }
@@ -350,16 +339,16 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             this.selectedRow = selectedRow;
             lastRow = structureRows.size() - 1;
 
-            if(view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ACTIVE_TABLE)
+            if (view.getValueIndex() == SchemaTablesPanelViewEnumeratedAttribute.ACTIVE_TABLE)
             {
                 this.rows = new ArrayList();
 
-                if(selectedRow != null)
+                if (selectedRow != null)
                 {
-                    for(int i = 0; i < structureRows.size(); i++)
+                    for (int i = 0; i < structureRows.size(); i++)
                     {
                         StructureRow checkRow = (StructureRow) structureRows.get(i);
-                        if(checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
+                        if (checkRow == selectedRow || selectedRow.ancestors.contains(checkRow) || (checkRow.ancestors != null && checkRow.ancestors.contains(selectedRow)))
                             this.rows.add(structureRows.get(i));
                     }
                 }
@@ -370,43 +359,43 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
         public String createTableHref(Table table)
         {
-            return "<a href=\"table?schema-table="+ table.getSchema().getName() + "." + table.getName() +"\">" + table.getName() + "</a>";
+            return "<a href=\"table?schema-table=" + table.getSchema().getName() + "." + table.getName() + "\">" + table.getName() + "</a>";
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
             Table activeTable = activeRow.getTable();
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    if(activeTable != null)
+                    if (activeTable != null)
                         return createTableHref(activeTable);
                     else
                         return "<b>" + activeRow.heading + "</b>";
 
                 case 1:
-                    if(activeTable != null)
+                    if (activeTable != null)
                         return activeTable.getXmlNodeName();
 
                 case 2:
-                    if(activeTable != null)
+                    if (activeTable != null)
                         return new Integer(activeTable.getColumns().size());
 
                 case 3:
-                    if(activeTable != null)
+                    if (activeTable != null)
                         return new Integer(activeTable.getIndexes().size());
 
                 case 4:
                     Rows rows = null;
-                    if(activeTable != null)
+                    if (activeTable != null)
                         rows = activeTable.getData();
                     return rows != null ? new Integer(rows.size()) : null;
 
                 case 5:
-                    if(activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
+                    if (activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.tableTreeNode.getTable().getClass());
-                    else if(activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
+                    else if (activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.enumTable.getClass());
 
                 default:
@@ -437,7 +426,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

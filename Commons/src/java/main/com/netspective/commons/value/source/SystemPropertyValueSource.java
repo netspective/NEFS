@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SystemPropertyValueSource.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
- */
-
 package com.netspective.commons.value.source;
 
 import java.util.StringTokenizer;
@@ -49,30 +37,26 @@ import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.text.GloballyUniqueIdentifier;
 
 public class SystemPropertyValueSource extends AbstractValueSource
 {
     private static final Log log = LogFactory.getLog(SystemPropertyValueSource.class);
-    public static final String[] IDENTIFIERS = new String[] { "system-property" };
-    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Provides access to the system property indicated by the property name.",
+    public static final String[] IDENTIFIERS = new String[]{"system-property"};
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation("Provides access to the system property indicated by the property name.",
             new ValueSourceDocumentation.Parameter[]
             {
                 new ValueSourceDocumentation.Parameter("property-name", true, "The system property name that should be looked up."),
                 new ValueSourceDocumentation.Parameter("default-value", false, "The default value of the property if it was not found. This is a value source specficiation.")
-            }
-    );
+            });
 
     private String propertyName;
     private ValueSource defaultValue;
@@ -96,16 +80,16 @@ public class SystemPropertyValueSource extends AbstractValueSource
         super.initialize(spec);
 
         StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
-        if(st.hasMoreTokens())
+        if (st.hasMoreTokens())
             propertyName = st.nextToken();
 
-        if(st.hasMoreTokens())
+        if (st.hasMoreTokens())
             defaultValue = ValueSources.getInstance().getValueSourceOrStatic(st.nextToken().trim());
     }
 
     public Value getValue(ValueContext vc)
     {
-        if(defaultValue != null)
+        if (defaultValue != null)
             return new GenericValue(System.getProperty(propertyName, defaultValue.getTextValue(vc)));
         else
             return new GenericValue(System.getProperty(propertyName));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ExpressionText.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
- */
-
 package com.netspective.commons.text;
 
 import com.netspective.commons.value.ValueContext;
@@ -89,13 +77,16 @@ abstract public class ExpressionText
 
     /**
      * Callback method that is called within getFinalText() whenever there is a ${xxx} formatted text string found.
+     *
      * @param replaceToken The text inside the ${ and } characters.
+     *
      * @return
      */
     abstract protected String getReplacement(ValueContext vc, String entireText, String replaceToken) throws ExpressionTextException;
 
     /**
      * This method is called to reconstruct a text string so that it looks like the original replacement expression.
+     *
      * @param text The text that was inside the ${ and } characters.
      */
     public String getOriginalReplacement(String text)
@@ -105,14 +96,15 @@ abstract public class ExpressionText
 
     /**
      * Given a static expression, replace all ${xxx} text strings by calling getReplacement() method for each occurrence.
+     *
      * @return The replaced text
      */
     public String getFinalText(ValueContext vc)
     {
-        if(staticExpr == null)
+        if (staticExpr == null)
             throw new RuntimeException("Static expression not provided.");
 
-        if(staticExprHasReplacements)
+        if (staticExprHasReplacements)
             return getFinalText(vc, staticExpr);
         else
             return staticExpr;
@@ -120,7 +112,9 @@ abstract public class ExpressionText
 
     /**
      * Given a value, replace all ${xxx} text strings by calling getReplacement() method for each occurrence.
+     *
      * @param value The original text
+     *
      * @return The replaced text
      */
     public String getFinalText(ValueContext vc, String value) throws ExpressionTextException
@@ -130,18 +124,18 @@ abstract public class ExpressionText
         int prev = 0;
 
         int pos;
-        while((pos = value.indexOf(EXPRESSION_REPLACEMENT_FIRST_CHAR, prev)) >= 0)
+        while ((pos = value.indexOf(EXPRESSION_REPLACEMENT_FIRST_CHAR, prev)) >= 0)
         {
-            if(pos > 0)
+            if (pos > 0)
             {
                 result.append(value.substring(prev, pos));
             }
-            if(pos == (value.length() - 1))
+            if (pos == (value.length() - 1))
             {
                 result.append('$');
                 prev = pos + 1;
             }
-            else if(value.charAt(pos + 1) != EXPRESSION_REPLACEMENT_SECOND_CHAR)
+            else if (value.charAt(pos + 1) != EXPRESSION_REPLACEMENT_SECOND_CHAR)
             {
                 result.append(value.charAt(pos + 1));
                 prev = pos + 2;
@@ -149,7 +143,7 @@ abstract public class ExpressionText
             else
             {
                 int endName = value.indexOf(EXPRESSION_REPLACEMENT_LAST_CHAR, pos);
-                if(endName < 0)
+                if (endName < 0)
                     throw new RuntimeException("Syntax error in expression: " + value);
 
                 String replaceText = value.substring(pos + 2, endName);
@@ -160,7 +154,7 @@ abstract public class ExpressionText
             }
         }
 
-        if(prev < value.length()) result.append(value.substring(prev));
+        if (prev < value.length()) result.append(value.substring(prev));
         return result.toString();
     }
 }

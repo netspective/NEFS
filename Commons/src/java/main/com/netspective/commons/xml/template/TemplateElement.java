@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: TemplateElement.java,v 1.5 2004-08-09 22:14:28 shahid.shah Exp $
- */
-
 package com.netspective.commons.xml.template;
 
 import java.util.ArrayList;
@@ -109,9 +97,9 @@ public class TemplateElement extends TemplateNode
     public TemplateElement addChild(String elementName, String[][] attrNamesValues)
     {
         AttributesImpl attrs = new AttributesImpl();
-        if(attrNamesValues != null)
+        if (attrNamesValues != null)
         {
-            for(int i = 0; i < attrNamesValues.length; i++)
+            for (int i = 0; i < attrNamesValues.length; i++)
                 attrs.addAttribute(null, null, attrNamesValues[i][0], "CDATA", attrNamesValues[i][1]);
         }
 
@@ -123,10 +111,12 @@ public class TemplateElement extends TemplateNode
     /**
      * Given the elemToCopy element, copy the element's name and attributes and add them as children in this element.
      * While copying the attributes, this method will perform Jexl expression replacements of the form ${xxx}.
+     *
      * @param elemToCopy The element that should be copied
-     * @param jexlVars A Map that defines some Jexl variables that should be replaced or empty map if no variables should
-     *                 be replaced. The map should not be null.
-     * @param recurse True if the children should be copied as well or false if only the primary element should be copied
+     * @param jexlVars   A Map that defines some Jexl variables that should be replaced or empty map if no variables should
+     *                   be replaced. The map should not be null.
+     * @param recurse    True if the children should be copied as well or false if only the primary element should be copied
+     *
      * @return
      */
     public TemplateElement addCopyOfChildAndReplaceExpressions(TemplateElement elemToCopy, Map jexlVars, boolean recurse)
@@ -136,22 +126,22 @@ public class TemplateElement extends TemplateNode
         JavaExpressionText jet = new JavaExpressionText();
         jet.init(jexlVars);
 
-        for(int i = 0; i < copyAttrs.getLength(); i++)
+        for (int i = 0; i < copyAttrs.getLength(); i++)
         {
             attrNamesAndValues[i][0] = copyAttrs.getQName(i);
             attrNamesAndValues[i][1] = jet.getFinalText(null, copyAttrs.getValue(i));
         }
 
         TemplateElement result = addChild(elemToCopy.getElementName(), attrNamesAndValues);
-        if(recurse)
+        if (recurse)
         {
             List copyChildren = elemToCopy.getChildren();
-            for(int i = 0; i < copyChildren.size(); i++)
+            for (int i = 0; i < copyChildren.size(); i++)
             {
                 TemplateNode node = (TemplateNode) copyChildren.get(i);
-                if(node instanceof TemplateElement)
+                if (node instanceof TemplateElement)
                     result.addCopyOfChildAndReplaceExpressions((TemplateElement) node, jexlVars, recurse);
-                else if(node instanceof TemplateText)
+                else if (node instanceof TemplateText)
                     result.addChild(new TemplateText(result, ((TemplateText) node).getText()));
                 else
                     throw new RuntimeException("This should never happen.");
@@ -171,12 +161,12 @@ public class TemplateElement extends TemplateNode
     {
         TemplateContentHandler contentHandler = ac.getContentHandler();
 
-        if(! contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
+        if (!contentHandler.isInIgnoreNode() && ac.isAllowReplaceExpressions() && isAllowReplaceExpressions())
         {
-            if(! defnFinalized)
+            if (!defnFinalized)
                 finalizeDefinition(ac);
 
-            if(attrExpressionsCount > 0)
+            if (attrExpressionsCount > 0)
             {
                 ac.pushActiveTemplate(this, true);
                 contentHandler.startTemplateElement(ac, url, localName, qName, attributes);
@@ -185,7 +175,7 @@ public class TemplateElement extends TemplateNode
             else
                 contentHandler.startElement(url, localName, qName, attributes);
 
-            for(int i = 0; i < children.size(); i++)
+            for (int i = 0; i < children.size(); i++)
                 ((TemplateNode) children.get(i)).apply(ac);
 
             contentHandler.endElement(url, localName, qName);
@@ -193,7 +183,7 @@ public class TemplateElement extends TemplateNode
         else
         {
             contentHandler.startElement(url, localName, qName, attributes);
-            for(int i = 0; i < children.size(); i++)
+            for (int i = 0; i < children.size(); i++)
                 ((TemplateNode) children.get(i)).apply(ac);
             contentHandler.endElement(url, localName, qName);
         }
@@ -204,10 +194,10 @@ public class TemplateElement extends TemplateNode
         defnFinalized = true;
         attrExpressionsCount = 0;
         attrHasExpression = new boolean[attributes.getLength()];
-        for(int i = 0; i < attributes.getLength(); i++)
+        for (int i = 0; i < attributes.getLength(); i++)
         {
             String attrValue = attributes.getValue(i);
-            if(attrValue.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) != -1)
+            if (attrValue.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) != -1)
             {
                 attrHasExpression[i] = true;
                 attrExpressionsCount++;

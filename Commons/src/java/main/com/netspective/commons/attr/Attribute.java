@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,21 +28,15 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Attribute.java,v 1.1 2004-08-14 19:53:31 shahid.shah Exp $
- */
-
 package com.netspective.commons.attr;
 
 public interface Attribute
 {
     /**
      * Obtain the attributes collection that owns this attribute.
+     *
      * @return The collecion that owns this attribute
      */
     public Attributes getOwner();
@@ -56,12 +45,14 @@ public interface Attribute
      * Obtain the unique identifier assigned to this attribute. It is often the same as "name" but may be different
      * at times. For example, if the attribute were read from a DBMS, it is often the primary key of the record that
      * was read.
+     *
      * @return The unique identifier (either in a DBMS or memory) of the attribute
      */
     public Object getAttributeIdentifier();
 
     /**
      * Obtain the name of the attribute that would be meaning for an end-user application or user interface.
+     *
      * @return The name of the attribute
      */
     public String getAttributeName();
@@ -69,6 +60,7 @@ public interface Attribute
     /**
      * Obtain the value, as a string, of this Attribute. The default implementation just returns toString() on the
      * instance but may be something else if necessary.
+     *
      * @return The text representation of this attribute.
      */
     public String getAttributeTextValue();
@@ -76,6 +68,7 @@ public interface Attribute
     /**
      * Ascertain whether mutliple attributes of the same name are allowed. If allow multiple returns true, then the
      * owner will manage the attributes as list instead of a single value.
+     *
      * @return True if multiple attributes of the same name are allowed, false if only a single one is allowed
      */
     public boolean isAllowMultiple();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,51 +28,48 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 
 package com.netspective.sparx.form.sql;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.DialogLoopStyle;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
-import com.netspective.sparx.form.field.type.BooleanField;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDestinations;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
-import com.netspective.sparx.panel.QueryReportPanel;
-import com.netspective.sparx.sql.QueryDefinition;
-import com.netspective.sparx.sql.QueryDefnSelect;
-import com.netspective.sparx.Project;
-import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
-
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogLoopStyle;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.type.BooleanField;
+import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
+import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDestinations;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
+import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
+import com.netspective.sparx.sql.QueryDefinition;
+import com.netspective.sparx.sql.QueryDefnSelect;
 
 /**
  * Dialog class for executing dynamic queries defined in XML. This class is based on
  * <code>QueryBuilderDialog</code> and can handle pageable reporting by keeping track of
  * the scrolled state of the result set.
  *
- * @version $Id: QuerySelectDialog.java,v 1.12 2004-02-10 16:48:44 aye.thu Exp $
+ * @version $Id: QuerySelectDialog.java,v 1.13 2004-08-15 01:47:08 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -115,7 +107,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         options.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(options);
 
-        if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+        if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             BooleanField debugField = new BooleanField();
             debugField.setName("debug");
@@ -141,11 +133,12 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     /**
      * Create a query definition based select object
+     *
      * @return
      */
     public QueryDefnSelect createSelect()
     {
-        qdSelect =  new com.netspective.sparx.sql.QueryDefnSelect(getQueryDefn());
+        qdSelect = new com.netspective.sparx.sql.QueryDefnSelect(getQueryDefn());
         return qdSelect;
     }
 
@@ -164,7 +157,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
     {
         DialogField field = null;
         DialogFields fields = this.getFields();
-        for (int i=0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             field = fields.get(i);
             field.makeStateChanges(dc, stage);
@@ -173,16 +166,17 @@ public class QuerySelectDialog extends QueryBuilderDialog
         fieldStates.getState(QSDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getQueryDefn().getName());
         fieldStates.getState(QSDIALOG_DIALOG_NAME_PASSTHRU_FIELDNAME).getValue().setTextValue(getName());
         QueryBuilderDialogFlags dFlags = (QueryBuilderDialogFlags) getDialogFlags();
-        if(dc.getDialogState().isInExecuteMode())
+        if (dc.getDialogState().isInExecuteMode())
         {
             int flag =
-                    dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
-            for(int i = 0; i < fields.size(); i++)
+                    dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA)
+                    ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
+            for (int i = 0; i < fields.size(); i++)
             {
                 fieldStates.getState(fields.get(i)).getStateFlags().setFlag(flag);
             }
             fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
-            if(dFlags.flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+            if (dFlags.flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
                 fieldStates.getState("options").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
 
             fieldStates.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
@@ -193,7 +187,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         else
         {
             fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
-            if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
+            if (dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
                 fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             fieldStates.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         }
@@ -203,18 +197,19 @@ public class QuerySelectDialog extends QueryBuilderDialog
     /**
      * Handles the execution of the query select dialog
      *
-     * @param writer            the writer object to write any output to
-     * @param dc                current dialog context
+     * @param writer the writer object to write any output to
+     * @param dc     current dialog context
+     *
      * @throws IOException
      * @throws DialogExecuteException
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         DialogFieldStates states = dc.getFieldStates();
-        if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
+        if (getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
         {
             String debugStr = states.getState("options.debug").getValue().getTextValue();
-            if(debugStr != null && debugStr.equals("1"))
+            if (debugStr != null && debugStr.equals("1"))
             {
                 ConnectionContext cc = null;
                 try
@@ -235,7 +230,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 {
                     try
                     {
-                        if(cc != null) cc.close();
+                        if (cc != null) cc.close();
                     }
                     catch (SQLException e)
                     {
@@ -245,8 +240,12 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 }
             }
         }
-        String outputStyleStr = getFirstAvailableFieldValue(dc, new String[] { "output_style", "output-style", "output.style" }, "0");
-        String outputDestStr = getFirstAvailableFieldValue(dc, new String[] { "output_destination", "output-destination", "output.destination" }, "0");
+        String outputStyleStr = getFirstAvailableFieldValue(dc, new String[]{
+            "output_style", "output-style", "output.style"
+        }, "0");
+        String outputDestStr = getFirstAvailableFieldValue(dc, new String[]{
+            "output_destination", "output-destination", "output.destination"
+        }, "0");
 
         int outputStyle = Integer.parseInt(outputStyleStr);
         int outputDest = Integer.parseInt(outputDestStr);
@@ -255,7 +254,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         HtmlTabularReportDestination destination = null;
         HtmlTabularReportSkin reportSkin = null;
 
-        switch(outputDest)
+        switch (outputDest)
         {
             case DESTINATION_BROWSER:
                 HtmlTabularReportBrowserDestination browserDest = desintations.createBrowserDestination(writer, dc);
@@ -263,7 +262,9 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 break;
 
             case DESTINATION_BROWSER_PAGED:
-                String rowsPerPageStr = getFirstAvailableFieldValue(dc, new String[] { "rows_per_page", "rows-per-page", "output.rows_per_page" }, "20");
+                String rowsPerPageStr = getFirstAvailableFieldValue(dc, new String[]{
+                    "rows_per_page", "rows-per-page", "output.rows_per_page"
+                }, "20");
                 browserDest = desintations.createBrowserDestination(writer, dc, Integer.parseInt(rowsPerPageStr));
                 destination = browserDest;
                 break;
@@ -283,10 +284,12 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 return;
         }
 
-        switch(outputStyle)
+        switch (outputStyle)
         {
             case OUTPUTSTYLE_HTML:
-                String reportSkinName = getFirstAvailableFieldValue(dc, new String[] { "report_skin", "report-skin", "output.report_skin" }, "report");
+                String reportSkinName = getFirstAvailableFieldValue(dc, new String[]{
+                    "report_skin", "report-skin", "output.report_skin"
+                }, "report");
                 reportSkin = dc.getActiveTheme().getReportSkin(reportSkinName);
                 break;
 
@@ -317,9 +320,10 @@ public class QuerySelectDialog extends QueryBuilderDialog
     /**
      * Renders the report output of the query executed by the dialog.
      *
-     * @param dc                curent dialog context in which the query was executed
-     * @param destination       the output format such as html, csv, etc
-     * @param reportSkin        the skin for the output
+     * @param dc          curent dialog context in which the query was executed
+     * @param destination the output format such as html, csv, etc
+     * @param reportSkin  the skin for the output
+     *
      * @throws IOException
      * @throws QueryDefinitionException
      */
@@ -327,13 +331,13 @@ public class QuerySelectDialog extends QueryBuilderDialog
     {
         QueryReportPanel reportPanel = null;
 
-        if(destination instanceof HtmlTabularReportBrowserDestination)
+        if (destination instanceof HtmlTabularReportBrowserDestination)
         {
             HtmlTabularReportBrowserDestination browserDest = (HtmlTabularReportBrowserDestination) destination;
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if(scrollStateById == null)
+            if (scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be
@@ -341,18 +345,18 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
                 String resortBy = dc.getRequest().getParameter(QBDIALOG_RESORT_PARAMNAME);
-                if(activeScrollState != null && resortBy != null)
+                if (activeScrollState != null && resortBy != null)
                 {
                     // TODO
                     //handleSortOrderChange(dc, activeState, resortBy);
                 }
 
-                if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                if (activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
 
                 reportPanel = qdSelect.getPresentation().getDefaultPanel();
                 reportPanel.setQuery(qdSelect);
-                if(browserDest.isScrollable())
+                if (browserDest.isScrollable())
                 {
                     reportPanel.setScrollable(true);
                     reportPanel.setScrollRowsPerPage(browserDest.getPageSize());

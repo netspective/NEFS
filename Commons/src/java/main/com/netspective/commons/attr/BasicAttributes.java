@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: BasicAttributes.java,v 1.2 2004-08-14 21:16:32 shahid.shah Exp $
- */
-
 package com.netspective.commons.attr;
 
 import java.lang.reflect.Constructor;
@@ -162,7 +150,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
         Object attrValue = attrMapCopy.get(MAPKEY_ATTR_VALUE);
         String textValue = attrValue != null ? attrValue.toString() : null;
 
-        if(attrName == null)
+        if (attrName == null)
         {
             log.error("Unable to create attribute. No attr name provided as '" + MAPKEY_ATTR_NAME + "' key: " + attrMap);
             return null;
@@ -170,7 +158,7 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
         Attribute result = null;
         final String keyText = attrName.toString();
-        if(cls != null && cls.toString().length() > 0)
+        if (cls != null && cls.toString().length() > 0)
         {
             try
             {
@@ -178,28 +166,28 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
                 attrMapCopy.remove(MAPKEY_ATTR_CLASS);
 
                 // find a constructor that can take an owner, a key, and text value
-                Constructor c = prefClass.getConstructor(new Class[] { Attributes.class, String.class, String.class });
-                if(c == null)
+                Constructor c = prefClass.getConstructor(new Class[]{Attributes.class, String.class, String.class});
+                if (c == null)
                 {
                     // find a constructor that can take an owner, a key
-                    c = prefClass.getConstructor(new Class[] { Attributes.class, String.class });
-                    if(c == null)
+                    c = prefClass.getConstructor(new Class[]{Attributes.class, String.class});
+                    if (c == null)
                     {
-                        c = prefClass.getConstructor(new Class[] { Attributes.class });
-                        if(c != null)
-                            result = (Attribute) c.newInstance(new Object[] { this });
+                        c = prefClass.getConstructor(new Class[]{Attributes.class});
+                        if (c != null)
+                            result = (Attribute) c.newInstance(new Object[]{this});
                         else
                             result = new ExceptionAttribute(this, keyText, textValue, new RuntimeException("No valid constructor found for Preference " + prefClass));
                     }
                     else
                     {
-                        result = (Attribute) c.newInstance(new Object[] { this, attrName });
+                        result = (Attribute) c.newInstance(new Object[]{this, attrName});
                         attrMapCopy.remove(MAPKEY_ATTR_NAME); // key is set, don't let XDM set it again below
                     }
                 }
                 else
                 {
-                    result = (Attribute) c.newInstance(new Object[] { this, attrName, attrValue });
+                    result = (Attribute) c.newInstance(new Object[]{this, attrName, attrValue});
                     attrMapCopy.remove(MAPKEY_ATTR_NAME);  // key is set, don't let XDM set it again below
                     attrMapCopy.remove(MAPKEY_ATTR_VALUE);  // value is set, don't let XDM set it again below
                 }
@@ -246,17 +234,17 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
     {
         if (serializableRequired && !(attribute instanceof java.io.Serializable))
         {
-            log.error("A Non-Serializable attribute "+  attribute.getClass() + " was added to " +
-                      this.getClass() + " object. \n" +
-                      "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
-                      "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
-                      "serialization of its members or its members implement Serializable as well.");
+            log.error("A Non-Serializable attribute " + attribute.getClass() + " was added to " +
+                    this.getClass() + " object. \n" +
+                    "The process of serializing the session would fail if the server is configured for clustering or persistant sessions.\n" +
+                    "Make sure any attribute added to the AuthenticatedUser object implements Serializable and that it either implements the \n" +
+                    "serialization of its members or its members implement Serializable as well.");
         }
 
-        if(attribute.isAllowMultiple())
+        if (attribute.isAllowMultiple())
         {
             Collection coll = (Collection) attributes.get(attribute.getAttributeName());
-            if(coll == null)
+            if (coll == null)
             {
                 coll = ((MutableAttribute) attribute).createMultiAttributeCollection();
                 attributes.put(attribute.getAttributeName(), coll);
@@ -272,10 +260,10 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
     public void removeAttribute(Attribute attribute)
     {
-        if(attribute.isAllowMultiple())
+        if (attribute.isAllowMultiple())
         {
             Collection coll = (Collection) attributes.get(attribute.getAttributeName());
-            if(coll != null)
+            if (coll != null)
                 coll.remove(attribute);
         }
         else
@@ -286,27 +274,27 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
 
     public void observeAttributeAdd(Attribute attribute)
     {
-        if(isObserving())
+        if (isObserving())
         {
-            for(int i = 0; i < observers.size(); i++)
+            for (int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeAdd(this, attribute);
         }
     }
 
     public void observeAttributeChange(Attribute attribute)
     {
-        if(isObserving())
+        if (isObserving())
         {
-            for(int i = 0; i < observers.size(); i++)
+            for (int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeChange(this, attribute);
         }
     }
 
     public void observeAttributeRemove(Attribute attribute)
     {
-        if(isObserving())
+        if (isObserving())
         {
-            for(int i = 0; i < observers.size(); i++)
+            for (int i = 0; i < observers.size(); i++)
                 ((AttributeMutationObserver) observers.get(i)).observeAttributeRemove(this, attribute);
         }
     }
@@ -390,14 +378,16 @@ public class BasicAttributes implements Attributes, MutableAttributes, java.io.S
          * define mutators with specific attribute names as java getter/setters. For example, if a preference is named
          * "max-login-attempts" and it's value is an integer "5" then Attributes.setMaxLoginAttempts(5) will be
          * called. If a method is available, it will be used as type-specific call.
-         * @param key The preference key
+         *
+         * @param key   The preference key
          * @param value The EntityPreference instance
+         *
          * @return
          */
         public Object put(Object key, Object value)
         {
             // if value is a List, we're not going to assign it to a mutator
-            if(value instanceof Attribute)
+            if (value instanceof Attribute)
             {
                 Attribute attr = (Attribute) value;
                 try

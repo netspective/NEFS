@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,19 +28,21 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HttpServletResponseCache.java,v 1.2 2003-11-24 20:14:04 shahid.shah Exp $
- */
-
 package com.netspective.sparx.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Vector;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -103,7 +100,7 @@ public class HttpServletResponseCache
 
     public void cacheResponse(long servletLastModf, HttpServletRequest req, ResponseCache res)
     {
-        synchronized(pageCache)
+        synchronized (pageCache)
         {
             String cacheKey = req.getServletPath() + req.getPathInfo() + req.getQueryString();
             pageCache.put(cacheKey, new CacheData(res, servletLastModf, req.getServletPath(), req.getPathInfo(), req.getQueryString()));
@@ -180,8 +177,7 @@ public class HttpServletResponseCache
             }
             catch (IOException e)
             {
-                System.out.println(
-                        "Got IOException constructing cached response: " + e.getMessage());
+                System.out.println("Got IOException constructing cached response: " + e.getMessage());
             }
             internalReset();
         }
@@ -272,8 +268,7 @@ public class HttpServletResponseCache
             }
             catch (IOException e)
             {
-                System.out.println(
-                        "Got IOException writing cached response: " + e.getMessage());
+                System.out.println("Got IOException writing cached response: " + e.getMessage());
             }
         }
 
@@ -281,8 +276,7 @@ public class HttpServletResponseCache
         {
             if (gotWriter)
             {
-                throw new IllegalStateException(
-                        "Cannot get output stream after getting writer");
+                throw new IllegalStateException("Cannot get output stream after getting writer");
             }
             gotStream = true;
             return out;
@@ -292,8 +286,7 @@ public class HttpServletResponseCache
         {
             if (gotStream)
             {
-                throw new IllegalStateException(
-                        "Cannot get writer after getting output stream");
+                throw new IllegalStateException("Cannot get writer after getting output stream");
             }
             gotWriter = true;
             if (writer == null)
@@ -377,7 +370,9 @@ public class HttpServletResponseCache
             return delegate.containsHeader(name);
         }
 
-        /** @deprecated */
+        /**
+         * @deprecated
+         */
         public void setStatus(int sc, String sm)
         {
             delegate.setStatus(sc, sm);
@@ -451,13 +446,17 @@ public class HttpServletResponseCache
             internalAddHeader(name, new Long(value));
         }
 
-        /** @deprecated */
+        /**
+         * @deprecated
+         */
         public String encodeUrl(String url)
         {
             return this.encodeURL(url);
         }
 
-        /** @deprecated */
+        /**
+         * @deprecated
+         */
         public String encodeRedirectUrl(String url)
         {
             return this.encodeRedirectURL(url);

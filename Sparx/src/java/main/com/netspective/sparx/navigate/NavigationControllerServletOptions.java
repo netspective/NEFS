@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: NavigationControllerServletOptions.java,v 1.9 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.navigate;
 
 import java.io.PrintWriter;
@@ -98,7 +86,8 @@ public class NavigationControllerServletOptions
         {
             String optionsParamValue = servletConfig.getInitParameter(INITPARAMNAME_SERVLET_OPTIONS);
             log.debug("Using servlet init param " + INITPARAMNAME_SERVLET_OPTIONS + ":\n  " + optionsParamValue);
-            commandLine = parser.parse(servletOptions, optionsParamValue != null ? TextUtils.getInstance().split(optionsParamValue, " ", false) : new String[0]);
+            commandLine = parser.parse(servletOptions, optionsParamValue != null
+                    ? TextUtils.getInstance().split(optionsParamValue, " ", false) : new String[0]);
         }
         catch (ParseException pe)
         {
@@ -136,97 +125,97 @@ public class NavigationControllerServletOptions
     public void initOptions()
     {
         servletOptions.addOption(OptionBuilder.withLongOpt("help")
-                                              .withDescription("Show options")
-                                              .create('?'));
+                .withDescription("Show options")
+                .create('?'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("project")
-                                              .hasArg().withArgName("file")
-                                              .withDescription("The project file to use. The default is " + DEFAULT_PROJECT_FILE_NAME)
-                                              .create('p'));
+                .hasArg().withArgName("file")
+                .withDescription("The project file to use. The default is " + DEFAULT_PROJECT_FILE_NAME)
+                .create('p'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("project-component-class")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of the class used for the ProjectComponent instance. Default is " + PROJECT_COMPONENT_CLASS.getName() + ".")
-                                              .create('P'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of the class used for the ProjectComponent instance. Default is " + PROJECT_COMPONENT_CLASS.getName() + ".")
+                .create('P'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("runtime-environment")
-                                              .hasArg().withArgName("flags")
-                                              .withDescription("The runtime environment flags to use. The default is "+ DEFAULT_RUNTIME_FLAGS +".")
-                                              .create('e'));
+                .hasArg().withArgName("flags")
+                .withDescription("The runtime environment flags to use. The default is " + DEFAULT_RUNTIME_FLAGS + ".")
+                .create('e'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("runtime-environment-class")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The class used for the RuntimeEnvironmentFlags instance. The default is " + RUNTIME_ENVIRONMENT_FLAGS_CLASS.getName() + ".")
-                                              .create('E'));
+                .hasArg().withArgName("name")
+                .withDescription("The class used for the RuntimeEnvironmentFlags instance. The default is " + RUNTIME_ENVIRONMENT_FLAGS_CLASS.getName() + ".")
+                .create('E'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("navigation-tree")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of navigation tree (defined in <project>) to use for navigation. The default is specified in the project file as <navigation-tree default=\"yes\">.")
-                                              .create('n'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of navigation tree (defined in <project>) to use for navigation. The default is specified in the project file as <navigation-tree default=\"yes\">.")
+                .create('n'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("theme")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of theme (defined in <project>) to use for presentation. The default is specified in the project file as <theme default=\"yes\">.")
-                                              .create('t'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of theme (defined in <project>) to use for presentation. The default is specified in the project file as <theme default=\"yes\">.")
+                .create('t'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("sparx-resource-locators")
-                                              .hasArg().withArgName("locators")
-                                              .withDescription("A set of comma-separated locators for finding Sparx web resources. Default is " + DEFAULT_SPARX_RESOURCES_LOCATOR)
-                                              .create('s'));
+                .hasArg().withArgName("locators")
+                .withDescription("A set of comma-separated locators for finding Sparx web resources. Default is " + DEFAULT_SPARX_RESOURCES_LOCATOR)
+                .create('s'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("login-manager")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of the login manager (defined in <project>) to use for security. There is no security by default.")
-                                              .create('l'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of the login manager (defined in <project>) to use for security. There is no security by default.")
+                .create('l'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("logout-request-param-name")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of the servlet request parameter that will be set if when a users wants to logout. The default is \""+ DEFAULT_LOGOUT_REQ_PARAM +"\".")
-                                              .create('L'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of the servlet request parameter that will be set if when a users wants to logout. The default is \"" + DEFAULT_LOGOUT_REQ_PARAM + "\".")
+                .create('L'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("init-first-time-using-ant")
-                                              .hasArg().withArgName("file:target")
-                                              .withDescription("Initialize the servlet using an Ant build file and a given target the first time the servlet is initialized.")
-                                              .create('I'));
+                .hasArg().withArgName("file:target")
+                .withDescription("Initialize the servlet using an Ant build file and a given target the first time the servlet is initialized.")
+                .create('I'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("init-using-ant")
-                                              .hasArg().withArgName("file:target")
-                                              .withDescription("Initialize the servlet using an Ant build file and a given target. This build file and target will always be executed each time the servlet is initialized (and if a init-first-time-using-ant option is provided, it will be run after that file:target too).")
-                                              .create('i'));
+                .hasArg().withArgName("file:target")
+                .withDescription("Initialize the servlet using an Ant build file and a given target. This build file and target will always be executed each time the servlet is initialized (and if a init-first-time-using-ant option is provided, it will be run after that file:target too).")
+                .create('i'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("init-using-ant-log")
-                                              .hasArg().withArgName("file")
-                                              .withDescription("The name of the log file to store ant init output (defaults to location of ant file)")
-                                              .create('B'));
+                .hasArg().withArgName("file")
+                .withDescription("The name of the log file to store ant init output (defaults to location of ant file)")
+                .create('B'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("init-success")
-                                              .hasArg().withArgName("type")
-                                              .withDescription("Determine when the initialization will be considered successful (to increment the init count). Options are END_INIT which means at the end of the Servlet init() method or FIRST_GET_POST which means at the end of the first successful GET/POST. Default is FIRST_GET_POST")
-                                              .create('c'));
+                .hasArg().withArgName("type")
+                .withDescription("Determine when the initialization will be considered successful (to increment the init count). Options are END_INIT which means at the end of the Servlet init() method or FIRST_GET_POST which means at the end of the first successful GET/POST. Default is FIRST_GET_POST")
+                .create('c'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("servlet-exec-properties")
-                                              .hasArg().withArgName("file")
-                                              .withDescription("The name of the file that stores the persistent servlet execution properties like initialization count. The default is " + DEFAULT_EXEC_PROPS_FILE_NAME + ".")
-                                              .create('x'));
+                .hasArg().withArgName("file")
+                .withDescription("The name of the file that stores the persistent servlet execution properties like initialization count. The default is " + DEFAULT_EXEC_PROPS_FILE_NAME + ".")
+                .create('x'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("listener-class")
-                                              .hasArg().withArgName("name")
-                                              .withDescription("The name of a project lifecycle listener class to add to project after all other initialization has occurred. More than one may be provided.")
-                                              .create('r'));
+                .hasArg().withArgName("name")
+                .withDescription("The name of a project lifecycle listener class to add to project after all other initialization has occurred. More than one may be provided.")
+                .create('r'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("debug-options")
-                                              .withDescription("Dump the option values to STDOUT.")
-                                              .create('g'));
+                .withDescription("Dump the option values to STDOUT.")
+                .create('g'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("default-data-source")
-                                              .hasArg().withArgName("id")
-                                              .withDescription("The identifier of the default data source.")
-                                              .create('d'));
+                .hasArg().withArgName("id")
+                .withDescription("The identifier of the default data source.")
+                .create('d'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("page-cache-max-size")
-                                              .hasArg().withArgName("size")
-                                              .withDescription("The maximum number of pages to cache (for pages that allow caching)")
-                                              .create('X'));
+                .hasArg().withArgName("size")
+                .withDescription("The maximum number of pages to cache (for pages that allow caching)")
+                .create('X'));
     }
 
     public boolean isHelpRequested()
@@ -332,27 +321,27 @@ public class NavigationControllerServletOptions
         Arrays.sort(attrNames);
 
         Map propertyNames = schema.getPropertyNames();
-        for(int an = 0; an < attrNames.length; an++)
+        for (int an = 0; an < attrNames.length; an++)
         {
             String attrName = (String) attrNames[an];
-            if(attrName.equals("name") || attrName.equals("class"))
+            if (attrName.equals("name") || attrName.equals("class"))
                 continue;
 
             XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) propertyNames.get(attrName);
-            if(propNames != null && propNames.isPrimaryName(attrName))
+            if (propNames != null && propNames.isPrimaryName(attrName))
             {
                 XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) attributeAccessors.get(attrName);
-                if(accessor != null)
+                if (accessor != null)
                 {
                     String propName = propNames.getPrimaryName();
-                    if(propNamesPrefix != null)
+                    if (propNamesPrefix != null)
                         propName = propNamesPrefix + '.' + propName;
                     try
                     {
                         Object propValue = accessor.get(null, this);
-                        if(propValue != null)
+                        if (propValue != null)
                             properties.setProperty(propName, propValue.toString());
-                        else if(setNulls)
+                        else if (setNulls)
                             properties.setProperty(propName, "NULL");
                     }
                     catch (Exception e)
@@ -371,7 +360,7 @@ public class NavigationControllerServletOptions
     {
         StringBuffer result = new StringBuffer();
         Properties props = setProperties(new Properties(), null, true);
-        for(Iterator i = props.keySet().iterator(); i.hasNext(); )
+        for (Iterator i = props.keySet().iterator(); i.hasNext();)
         {
             String propName = (String) i.next();
             String propValue = props.getProperty(propName);

@@ -1,59 +1,35 @@
 /*
- * Copyright (c) 2000-2002 Netspective Corporation -- all rights reserved
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
- * Netspective Corporation permits redistribution, modification and use
- * of this file in source and binary form ("The Software") under the
- * Netspective Source License ("NSL" or "The License"). The following
- * conditions are provided as a summary of the NSL but the NSL remains the
- * canonical license and must be accepted before using The Software. Any use of
- * The Software indicates agreement with the NSL.
+ * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
+ * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the canonical license and must be accepted
+ * before using The Software. Any use of The Software indicates agreement with the NSL.
  *
- * 1. Each copy or derived work of The Software must preserve the copyright
- *    notice and this notice unmodified.
+ * 1. Each copy or derived work of The Software must preserve the copyright notice and this notice unmodified.
  *
- * 2. Redistribution of The Software is allowed in object code form only
- *    (as Java .class files or a .jar file containing the .class files) and only
- *    as part of an application that uses The Software as part of its primary
- *    functionality. No distribution of the package is allowed as part of a software
- *    development kit, other library, or development tool without written consent of
- *    Netspective Corporation. Any modified form of The Software is bound by
- *    these same restrictions.
+ * 2. Redistribution of The Software is allowed in object code form only (as Java .class files or a .jar file
+ *    containing the .class files) and only as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software development kit, other library,
+ *    or development tool without written consent of Netspective. Any modified form of The Software is bound by these
+ *    same restrictions.
  *
- * 3. Redistributions of The Software in any form must include an unmodified copy of
- *    The License, normally in a plain ASCII text file unless otherwise agreed to,
- *    in writing, by Netspective Corporation.
+ * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
+ *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
- * 4. The names "Sparx" and "Netspective" are trademarks of Netspective
- *    Corporation and may not be used to endorse products derived from The
- *    Software without without written consent of Netspective Corporation. "Sparx"
- *    and "Netspective" may not appear in the names of products derived from The
- *    Software without written consent of Netspective Corporation.
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
- * 5. Please attribute functionality to Sparx where possible. We suggest using the
- *    "powered by Sparx" button or creating a "powered by Sparx(tm)" link to
- *    http://www.netspective.com for each application using Sparx.
+ * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ * ARE HEREBY DISCLAIMED.
  *
- * The Software is provided "AS IS," without a warranty of any kind.
- * ALL EXPRESS OR IMPLIED REPRESENTATIONS AND WARRANTIES, INCLUDING ANY
- * IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
- * OR NON-INFRINGEMENT, ARE HEREBY DISCLAIMED.
- *
- * NETSPECTIVE CORPORATION AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES
- * SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A RESULT OF USING OR DISTRIBUTING
- * THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE
- * FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL,
- * CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
- * REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
- * INABILITY TO USE THE SOFTWARE, EVEN IF HE HAS BEEN ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * NETSPECTIVE AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A
+ * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
+ * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ConsoleNavigationSkin.java,v 1.47 2004-08-03 19:55:22 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.console;
 
 import java.io.IOException;
@@ -156,8 +132,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Render the authenticated user information and the logout navigation link
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderAuthenticatedUser(Writer writer, NavigationContext nc) throws IOException
@@ -167,7 +145,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         String personId = authUser != null ? authUser.getUserId().toString() : "Not logged in";
         String personName = authUser != null ? authUser.getUserName() : "Not logged in";
 
-        if(authUser != null && authUser.isRemembered())
+        if (authUser != null && authUser.isRemembered())
             personName += " (remembered)";
 
         Theme theme = getTheme();
@@ -198,12 +176,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getHttpRequest().getContextPath() + "\">&nbsp;&nbsp;" +
-                nc.getHttpRequest().getContextPath() +" ("+ nc.getHttpServlet().getServletContext().getServerInfo() +")</a></td>\n");
+                nc.getHttpRequest().getContextPath() + " (" + nc.getHttpServlet().getServletContext().getServerInfo() + ")</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");
 
-        if(haveErrors)
+        if (haveErrors)
         {
             int errorsCount = projectManager.getErrors().size() + projectManager.getWarnings().size();
 
@@ -215,7 +193,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors/Warnings&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
-                    errorsCount +"</a></td>\n");
+                    errorsCount + "</a></td>\n");
             writer.write("			</tr>\n");
             writer.write("		</table>\n");
             writer.write("	</td>\n");
@@ -243,10 +221,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
 
         ValueSource baseAttrs = nc.getActivePage().getBaseAttributes();
-        if(baseAttrs != null)
-            writer.write("<base "+ baseAttrs.getTextValue(nc) +"></base>");
+        if (baseAttrs != null)
+            writer.write("<base " + baseAttrs.getTextValue(nc) + "></base>");
 
-        if(isShowAuthenticatedUser())
+        if (isShowAuthenticatedUser())
             renderAuthenticatedUser(writer, nc);
 
         Theme theme = getTheme();
@@ -271,8 +249,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Render the Level one menu
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelOne(Writer writer, NavigationContext nc) throws IOException
@@ -281,7 +261,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         writer.write("<!-- Level 1 Begins -->\n");
         NavigationPath activePath = nc.getActivePage();
-        String html = generateLevelOneHtml(activePath.getLevel() == 1 ? activePath : (NavigationPath) nc.getActivePage().getAncestorsList().get(1), nc);
+        String html = generateLevelOneHtml(activePath.getLevel() == 1
+                ? activePath : (NavigationPath) nc.getActivePage().getAncestorsList().get(1), nc);
         writer.write(html);
         writer.write("<!-- Level 1 Ends -->\n");
 
@@ -297,8 +278,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Generates the level two HTML
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelTwo(Writer writer, NavigationContext nc) throws IOException
@@ -341,9 +324,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     }
 
     /**
-     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageMenusLevelThree(Writer writer, NavigationContext nc) throws IOException
@@ -413,15 +396,15 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     }
 
     /**
-     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
         // in case any errors or messages need to appear, they'll show up at the top of our app
-        if(isShowErrorHeader())
+        if (isShowErrorHeader())
             HttpUtils.renderDevelopmentEnvironmentHeader(writer, nc);
 
         if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
@@ -443,8 +426,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Renders the page heading if one exists
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     private void renderPageHeading(Writer writer, NavigationContext nc) throws IOException
@@ -454,9 +439,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         NavigationPage page = nc.getActivePage();
         String heading = page != null ? nc.getPageHeading() : "-";
 
-        if(! heading.equals("-"))
+        if (!heading.equals("-"))
         {
-            String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
+            String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null
+                    ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
 
             writer.write("<!-- Page Header Begins -->\n");
             writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -479,8 +465,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Render the sub heading in the page content
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     private void renderPageSubHeading(Writer writer, NavigationContext nc) throws IOException
@@ -515,8 +503,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Render the page content footer
+     *
      * @param writer
      * @param nc
+     *
      * @throws IOException
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException
@@ -525,7 +515,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if (flags.flagIsSet(NavigationPage.Flags.SHOW_RENDER_TIME))
         {
             Long startTime = (Long) nc.getRequest().getAttribute(NavigationControllerServlet.REQATTRNAME_RENDER_START_TIME);
-            writer.write("<p align=right>Render time: " + (startTime != null ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;") : "unknown&nbsp;&nbsp;"));
+            writer.write("<p align=right>Render time: " + (startTime != null
+                    ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;")
+                    : "unknown&nbsp;&nbsp;"));
         }
 
         if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
@@ -540,8 +532,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Generates the HTML for the Level one navigation
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @throws IOException
      */
     protected String generateLevelOneHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -562,7 +556,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !tabElement.isInActivePath(nc));
             if (!hidden)
             {
                 if (i == 0)
@@ -619,9 +613,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Generates the HTML for the level two navigation level
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @return
+     *
      * @throws IOException
      */
     protected String generateLevelTwoHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -645,7 +642,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         {
             NavigationPage tabElement = (NavigationPage) tabElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(tabElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! tabElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !tabElement.isInActivePath(nc));
 
             if (!hidden)
             {
@@ -661,7 +658,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 }
                 else
                 {
-                    writer.append("<td nowrap align=\"center\" " + (i != size - 1 ? "class=\"menu-level-2-separator\"" : "") + ">");
+                    writer.append("<td nowrap align=\"center\" " + (i != size - 1
+                            ? "class=\"menu-level-2-separator\"" : "") + ">");
                     writer.append("<a class=\"menu-level-2\" " +
                             tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
@@ -677,9 +675,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     /**
      * Generates the html for the third navigation level
+     *
      * @param currentNavTree
      * @param nc
+     *
      * @return
+     *
      * @throws IOException
      */
     protected String generateLevelThreeHtml(NavigationPath currentNavTree, NavigationContext nc) throws IOException
@@ -700,7 +701,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         {
             NavigationPage sideBarElement = (NavigationPage) sideBarElements.get(i);
             NavigationPage.Flags flags = (NavigationPage.Flags) nc.getState(sideBarElement).getFlags();
-            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && ! sideBarElement.isInActivePath(nc));
+            boolean hidden = flags.isHidden() || (flags.isHiddenUnlessActive() && !sideBarElement.isInActivePath(nc));
             if (!hidden)
             {
                 if (sideBarElement.isInActivePath(nc))

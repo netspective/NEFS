@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SchemaRecordEditorDialog.java,v 1.31 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form.schema;
 
 import java.io.IOException;
@@ -364,19 +352,19 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     }
 
     /**
-     ****************************************************************************************************************
-     ** Conditional Data methods                                                                                   **
-     ****************************************************************************************************************
+     * ***************************************************************************************************************
+     * * Conditional Data methods                                                                                   **
+     * ***************************************************************************************************************
      */
 
     public boolean isConditionalTestExpressionTrue(SchemaRecordEditorDialogContext sredc, TemplateElement element)
     {
         String testExpr = element.getAttributes().getValue(ATTRNAME_TEST);
-        if(testExpr != null && testExpr.length() > 0)
+        if (testExpr != null && testExpr.length() > 0)
             return sredc.isConditionalExpressionTrue(testExpr, null);
 
         testExpr = element.getAttributes().getValue(ATTRNAME_TEST_VS);
-        if(testExpr != null && testExpr.length() > 0)
+        if (testExpr != null && testExpr.length() > 0)
             return ValueSources.getInstance().getValueSourceOrStatic(testExpr).getValue(sredc).getBooleanValue();
 
         getLog().error("'test' attribute or 'test-vs' attribute with conditional expression is required");
@@ -385,7 +373,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public ConditionalTemplateResult getConditionalChoiceTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
-        if(! template.getElementName().equals(ELEMNAME_CHOOSE))
+        if (!template.getElementName().equals(ELEMNAME_CHOOSE))
             return null;
 
         TemplateElement otherwiseTemplate = null;
@@ -397,12 +385,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             if ((chooseElementChildNode instanceof TemplateElement))
             {
                 TemplateElement whenElement = (TemplateElement) chooseElementChildNode;
-                if(whenElement.getElementName().equals(ELEMNAME_WHEN))
+                if (whenElement.getElementName().equals(ELEMNAME_WHEN))
                 {
-                    if(isConditionalTestExpressionTrue(sredc, whenElement))
+                    if (isConditionalTestExpressionTrue(sredc, whenElement))
                         return new ConditionalTemplateResult(true, whenElement);
                 }
-                else if(whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
+                else if (whenElement.getElementName().equals(ELEMNAME_OTHERWISE))
                     otherwiseTemplate = whenElement;
                 else
                     getLog().error("Only <when> or <otherwise> elements allowed inside a <choose> tag: " + whenElement.getElementName() + " is not a valid child of <choose>");
@@ -415,11 +403,11 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public ConditionalTemplateResult getConditionalIfTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
-        if(! template.getElementName().equals(ELEMNAME_IF))
+        if (!template.getElementName().equals(ELEMNAME_IF))
             return null;
 
         String testExpr = template.getAttributes().getValue(ATTRNAME_TEST);
-        if(testExpr == null || testExpr.length() == 0)
+        if (testExpr == null || testExpr.length() == 0)
         {
             getLog().error("Test expression is required");
             return new ConditionalTemplateResult(false, template);
@@ -431,7 +419,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public ConditionalTemplateResult getConditionalTemplate(SchemaRecordEditorDialogContext sredc, TemplateElement template)
     {
         ConditionalTemplateResult result = getConditionalChoiceTemplate(sredc, template);
-        if(result != null)
+        if (result != null)
             return result;
 
         return getConditionalIfTemplate(sredc, template);
@@ -539,9 +527,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to populate
         ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
-        if(conditionalTemplateResult != null)
+        if (conditionalTemplateResult != null)
         {
-            if(conditionalTemplateResult.isExprResultTrue())
+            if (conditionalTemplateResult.isExprResultTrue())
             {
                 List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
                 for (int i = 0; i < conditionalChildElements.size(); i++)
@@ -578,7 +566,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             else
             {
                 final Object primaryKeyValueObj = primaryKeyValue.getValue();
-                Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{primaryKeyValueObj}, null);
+                Row activeRow = table.getRowByPrimaryKeys(sredc.getActiveConnectionContext(), new Object[]{
+                    primaryKeyValueObj
+                }, null);
                 if (activeRow != null)
                     populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
                 else
@@ -675,9 +665,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     }
 
     /**
-     ****************************************************************************************************************
-     ** Data insert methods                                                                                        **
-     ****************************************************************************************************************
+     * ***************************************************************************************************************
+     * * Data insert methods                                                                                        **
+     * ***************************************************************************************************************
      */
 
     public void addDataUsingTemplateElement(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement, Row parentRow) throws SQLException
@@ -686,9 +676,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // in the case we are a <choose> or <if> then the children of the choose's <when> or <otherwise> blocks will be
         // the actual things we want to add
         ConditionalTemplateResult conditionalTemplateResult = getConditionalTemplate(sredc, templateElement);
-        if(conditionalTemplateResult != null)
+        if (conditionalTemplateResult != null)
         {
-            if(conditionalTemplateResult.isExprResultTrue())
+            if (conditionalTemplateResult.isExprResultTrue())
             {
                 List conditionalChildElements = conditionalTemplateResult.getTemplateElement().getChildren();
                 for (int i = 0; i < conditionalChildElements.size(); i++)
@@ -833,7 +823,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         else
         {
             Value fieldValue = vs.getValue(sredc);
-            if(fieldValue.getValueHolderClass() == columnValue.getValueHolderClass())
+            if (fieldValue.getValueHolderClass() == columnValue.getValueHolderClass())
                 columnValue.copyValueByReference(fieldValue);
             else
                 columnValue.setTextValue(vs.getTextValue(sredc));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,40 +28,22 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SchemaTableIndexesPanel.java,v 1.4 2003-05-30 23:11:32 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data.schema;
 
 import java.util.List;
-import java.util.Set;
-import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.Indexes;
 import com.netspective.axiom.schema.Index;
-import com.netspective.axiom.sql.DbmsSqlTexts;
+import com.netspective.axiom.schema.Indexes;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
 {
@@ -97,10 +74,11 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         List rows = SchemaTablesPanel.createStructureRows(nc.getSqlManager().getSchemas());
         SchemaTablesPanel.StructureRow selectedRow = SchemaTablesPanel.getSelectedStructureRow(nc, rows);
 
-        if(selectedRow == null)
+        if (selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return new IndexesDataSource(selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
+            return new IndexesDataSource(selectedRow.tableTreeNode != null
+                    ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -125,7 +103,7 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         {
             Index index = indexes.get(row);
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     return index.getName();
@@ -163,7 +141,7 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);

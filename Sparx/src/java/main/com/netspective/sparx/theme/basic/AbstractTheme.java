@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AbstractTheme.java,v 1.26 2004-08-09 22:15:15 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
@@ -115,7 +103,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets the resource locator
      *
-     * @return   the resource locator
+     * @return the resource locator
      */
     public UriAddressableFileLocator getResourceLocator()
     {
@@ -130,15 +118,16 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Constructs a  URL for the resource by prepending the theme's name to the relative URL.
      *
-     * @param themeName     the name of the theme
-     * @param relativeUrl   the relative URL of the resource with respect to the theme's location
+     * @param themeName   the name of the theme
+     * @param relativeUrl the relative URL of the resource with respect to the theme's location
+     *
      * @return
      */
     protected String getResourceUrlWithThemePrefix(final String themeName, final String relativeUrl)
     {
         StringBuffer themeRelativeUrlBuf = new StringBuffer("theme/");
         themeRelativeUrlBuf.append(themeName);
-        if(! relativeUrl.startsWith("/"))
+        if (!relativeUrl.startsWith("/"))
             themeRelativeUrlBuf.append('/');
         themeRelativeUrlBuf.append(relativeUrl);
         return themeRelativeUrlBuf.toString();
@@ -148,13 +137,14 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
      * Gets the URL of the resource  related to the theme
      *
      * @param relativeUrl
+     *
      * @return
      */
     public String getResourceUrl(final String relativeUrl)
     {
         String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
 
-        if(resourceLocator == null)
+        if (resourceLocator == null)
         {
             System.err.println("No resource locator set for theme " + this);
             return themeRelativeUrl;
@@ -163,13 +153,13 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
         try
         {
             UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
-            if(resource != null)
+            if (resource != null)
                 return resource.getUrl();
 
-            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+            for (int i = 0; i < inheritResourcesFromThemes.length; i++)
             {
                 resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
-                if(resource != null)
+                if (resource != null)
                     return resource.getUrl();
             }
         }
@@ -179,20 +169,21 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             return themeRelativeUrl;
         }
 
-        if(log.isWarnEnabled()) log.warn("Resource '"+ themeRelativeUrl +"' not located in resource locator " + resourceLocator);
+        if (log.isWarnEnabled()) log.warn("Resource '" + themeRelativeUrl + "' not located in resource locator " + resourceLocator);
         return themeRelativeUrl;
     }
 
     /**
      * Gets the URL of the resource related to the theme
      *
-     * @param relativeUrl       the relative URL of the resource
-     * @param defaultUrl        the URL to use if the resource is not located using the relative URL
-     * @return                  the resource's URL
+     * @param relativeUrl the relative URL of the resource
+     * @param defaultUrl  the URL to use if the resource is not located using the relative URL
+     *
+     * @return the resource's URL
      */
     public String getResourceUrl(final String relativeUrl, final String defaultUrl)
     {
-        if(resourceLocator == null)
+        if (resourceLocator == null)
         {
             System.err.println("No resource locator set for theme " + this);
             return defaultUrl;
@@ -203,13 +194,13 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
             String themeRelativeUrl = getResourceUrlWithThemePrefix(name, relativeUrl);
 
             UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
-            if(resource != null)
+            if (resource != null)
                 return resource.getUrl();
 
-            for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+            for (int i = 0; i < inheritResourcesFromThemes.length; i++)
             {
                 resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
-                if(resource != null)
+                if (resource != null)
                     return resource.getUrl();
             }
         }
@@ -224,7 +215,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets an array of resources inherited from other themese
      *
-     * @return  array of resources
+     * @return array of resources
      */
     public String[] getInheritResourcesFromThemes()
     {
@@ -234,15 +225,15 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Sets the resources inherited from other themes
      *
-     * @param delimitedThemeNames       A comma delimited string of resources
+     * @param delimitedThemeNames A comma delimited string of resources
      */
     public void setInheritResourcesFromThemes(String delimitedThemeNames)
     {
         List themeNamesList = new ArrayList();
         String[] themeNames = TextUtils.getInstance().split(delimitedThemeNames, ",", true);
-        for(int i = 0; i < themeNames.length; i++)
+        for (int i = 0; i < themeNames.length; i++)
             themeNamesList.add(themeNames[i]);
-        for(int i = 0; i < inheritResourcesFromThemes.length; i++)
+        for (int i = 0; i < inheritResourcesFromThemes.length; i++)
             themeNamesList.add(inheritResourcesFromThemes[i]);
         inheritResourcesFromThemes = (String[]) themeNamesList.toArray(new String[themeNamesList.size()]);
     }
@@ -265,7 +256,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets the name of the theme
      *
-     * @return  theme name
+     * @return theme name
      */
     public String getName()
     {
@@ -280,7 +271,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets the default navigation skin
      *
-     * @return  default navigation skin
+     * @return default navigation skin
      */
     public NavigationSkin getDefaultNavigationSkin()
     {
@@ -290,8 +281,9 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets a theme navigation skin by its name
      *
-     * @param name      navigation skin name
-     * @return          navigation skin
+     * @param name navigation skin name
+     *
+     * @return navigation skin
      */
     public NavigationSkin getNavigationSkin(String name)
     {
@@ -301,7 +293,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Returns the default report skin
      *
-     * @return      html tabular report skin
+     * @return html tabular report skin
      */
     public HtmlTabularReportSkin createReportSkin()
     {
@@ -311,7 +303,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Creates a new dialog skin
      *
-     * @return    new dialog skin
+     * @return new dialog skin
      */
     public DialogSkin createDialogSkin()
     {
@@ -341,8 +333,9 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets a template skin by its name
      *
-     * @param name      skin name
-     * @return          template skin
+     * @param name skin name
+     *
+     * @return template skin
      */
     public HtmlPanelSkin getTemplateSkin(String name)
     {
@@ -352,7 +345,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets the default report skin
      *
-     * @return  html report skin
+     * @return html report skin
      */
     public HtmlTabularReportSkin getDefaultReportSkin()
     {
@@ -362,8 +355,9 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets a report skin by its name
      *
-     * @param name      report skin name
-     * @return          report skin
+     * @param name report skin name
+     *
+     * @return report skin
      */
     public HtmlTabularReportSkin getReportSkin(String name)
     {
@@ -394,7 +388,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets the default dialog skin
      *
-     * @return  default dialog skin
+     * @return default dialog skin
      */
     public DialogSkin getDefaultDialogSkin()
     {
@@ -404,8 +398,9 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Gets a dialog skin by its name
      *
-     * @param name      dialog skin name
-     * @return          dialog skin
+     * @param name dialog skin name
+     *
+     * @return dialog skin
      */
     public DialogSkin getDialogSkin(String name)
     {
@@ -415,13 +410,13 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Adds a dialog skin
      *
-     * @param skin      dialog skin
+     * @param skin dialog skin
      */
     public void addDialogSkin(DialogSkin skin)
     {
         skin.setTheme(this);
         dialogSkins.put(skin.getName(), skin);
-        if(skin.isDefault())
+        if (skin.isDefault())
             defaultDialogSkin = skin;
     }
 
@@ -439,20 +434,20 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
      * Adds a new navigation skin and also sets the default navigation skin if the passed in skin
      * is configured to be the default one.
      *
-     * @param skin      navigation skin
+     * @param skin navigation skin
      */
     public void addNavigationSkin(NavigationSkin skin)
     {
         skin.setTheme(this);
         navigationSkins.put(skin.getName(), skin);
-        if(skin.isDefault())
+        if (skin.isDefault())
             defaultNavigationSkin = skin;
     }
 
     /**
      * Adds a html panel skin
      *
-     * @param skin      panel skin
+     * @param skin panel skin
      */
     public void addPanelSkin(HtmlPanelSkin skin)
     {
@@ -463,20 +458,20 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Adds a report skin and sets the default report skin if the passed in skin is configured to be the default one.
      *
-     * @param skin      report skin
+     * @param skin report skin
      */
     public void addReportSkin(HtmlTabularReportSkin skin)
     {
         skin.setTheme(this);
         tabularReportSkins.put(skin.getName(), skin);
-        if(skin.isDefault())
+        if (skin.isDefault())
             defaultReportSkin = skin;
     }
 
     /**
      * Gets a map of dialog skins of the theme
      *
-     * @return      dialog skins
+     * @return dialog skins
      */
     public Map getDialogSkins()
     {
@@ -501,7 +496,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     /**
      * Checks to see if the theme is the default one
      *
-     * @return      True if the theme is the default one
+     * @return True if the theme is the default one
      */
     public boolean isDefault()
     {

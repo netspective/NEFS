@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,33 +28,26 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: InspectObject.java,v 1.1 2003-11-21 19:46:39 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.form;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.jxpath.JXPathContext;
 import org.apache.commons.jxpath.servlet.JXPathServletContexts;
 
-import com.netspective.sparx.Project;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.form.DialogsPackage;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 public class InspectObject extends ConsoleDialog
 {
@@ -90,24 +78,24 @@ public class InspectObject extends ConsoleDialog
         String jxPathExprValue = fieldStates.getState("jxpath-expr").getValue().getTextValue();
         String action = fieldStates.getState("action").getValue().getTextValue();
 
-        if(contextValue.equalsIgnoreCase("Project"))
+        if (contextValue.equalsIgnoreCase("Project"))
             jxPathContext = JXPathContext.newContext(dc.getProject());
-        else if(contextValue.equalsIgnoreCase("Servlet"))
+        else if (contextValue.equalsIgnoreCase("Servlet"))
             jxPathContext = JXPathContext.newContext(dc.getServlet());
-        else if(contextValue.equalsIgnoreCase("Application"))
+        else if (contextValue.equalsIgnoreCase("Application"))
             jxPathContext = JXPathServletContexts.getApplicationContext(dc.getServlet().getServletConfig().getServletContext());
-        else if(contextValue.equalsIgnoreCase("Request"))
+        else if (contextValue.equalsIgnoreCase("Request"))
             jxPathContext = JXPathServletContexts.getRequestContext(dc.getRequest(), dc.getServlet().getServletConfig().getServletContext());
-        else if(contextValue.equalsIgnoreCase("Session"))
+        else if (contextValue.equalsIgnoreCase("Session"))
             jxPathContext = JXPathServletContexts.getSessionContext(dc.getHttpRequest().getSession(), dc.getServlet().getServletConfig().getServletContext());
 
         Object jxPathValue = null;
-        if(action.equalsIgnoreCase("getValue"))
+        if (action.equalsIgnoreCase("getValue"))
             jxPathValue = jxPathContext.getValue(jxPathExprValue);
         else
             jxPathValue = jxPathContext.iterate(jxPathExprValue);
 
-        if(jxPathValue != null)
+        if (jxPathValue != null)
         {
             Map vars = new HashMap();
             vars.put("jxPathValue", jxPathValue);
@@ -115,6 +103,6 @@ public class InspectObject extends ConsoleDialog
             inspectJxPathValueTemplate.process(writer, dc, vars);
         }
         else
-            writer.write("JXPath expression '"+ jxPathExprValue +"' evaluated to NULL.");
+            writer.write("JXPath expression '" + jxPathExprValue + "' evaluated to NULL.");
     }
 }

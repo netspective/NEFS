@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,66 +28,52 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
- */
-
-/**
- * @version $Id: DialogListCommand.java,v 1.1 2003-12-08 05:11:50 aye.thu Exp $
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 package com.netspective.sparx.command;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.HtmlListPanelSkin;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlCommandPanel;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.value.HttpServletValueContext;
-
-import java.io.Writer;
-import java.io.IOException;
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
 
 
 /**
  * Command class for displaying dialogs belonging to one package as a list of command links. This is used to display
  * a "selection" list of dialogs and when one  dialog link is selected, the dialog itself is displayed.
  */
-public class DialogListCommand  extends CommandListCommand
+public class DialogListCommand extends CommandListCommand
 {
     private static final Log log = LogFactory.getLog(DialogListCommand.class);
-    public static final String[] IDENTIFIERS = new String[] { "dialog-list" };
+    public static final String[] IDENTIFIERS = new String[]{"dialog-list"};
     public static final String[] DIALOG_COMMAND_RETAIN_PARAMS =
             {
                 PAGE_COMMAND_REQUEST_PARAM_NAME
             };
-    public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
-            "Displays a list of command items such as dialogs, queries, and query definitions to execute.",
+    public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation("Displays a list of command items such as dialogs, queries, and query definitions to execute.",
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("dialog-pkg-name", true, "The name of the dialog package"),
-            }
-    );
+            });
 
     private String pkgName;
 
     /**
      * Gets the list of command aliases
+     *
      * @return
      */
     public static String[] getIdentifiers()
@@ -102,6 +83,7 @@ public class DialogListCommand  extends CommandListCommand
 
     /**
      * Gets the documentation object
+     *
      * @return
      */
     public static CommandDocumentation getDocumentation()
@@ -111,6 +93,7 @@ public class DialogListCommand  extends CommandListCommand
 
     /**
      * Gets the command parameters
+     *
      * @return
      */
     public String getParameters()
@@ -123,6 +106,7 @@ public class DialogListCommand  extends CommandListCommand
 
     /**
      * Sets the command parameters
+     *
      * @param params
      */
     public void setParameters(StringTokenizer params)
@@ -141,7 +125,7 @@ public class DialogListCommand  extends CommandListCommand
             panel.setFrame(frame);
 
             return new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(),
-                vc.getResponse(), panel);
+                    vc.getResponse(), panel);
         }
         else
             return super.getPanelContext(vc);
@@ -151,7 +135,7 @@ public class DialogListCommand  extends CommandListCommand
     {
         List dialogs = vc.getDialogsManager().getDialogs(pkgName);
         List cmdItems = new ArrayList();
-        for (int i=0; i < dialogs.size(); i++)
+        for (int i = 0; i < dialogs.size(); i++)
         {
             Dialog dialog = (Dialog) dialogs.get(i);
             Command dCommand = Commands.getInstance().getCommand(DialogCommand.IDENTIFIERS[0], dialog.getQualifiedName());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,29 +28,21 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DefaultXdmComponent.java,v 1.7 2003-11-07 17:37:49 shahid.shah Exp $
- */
-
 package com.netspective.commons.xdm;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import com.netspective.commons.io.InputSourceTracker;
-import com.netspective.commons.xdm.XdmComponent;
+import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.Metrics;
 import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.metric.MetricsProducer;
-import com.netspective.commons.metric.Metric;
 import com.netspective.commons.xml.template.TemplateCatalog;
 
 public abstract class DefaultXdmComponent implements XdmComponent, MetricsProducer
@@ -73,10 +60,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void removedFromCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
-        if(listeners.size() > 0)
+        if (listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for(int i = 0; i < listeners.size(); i++)
+            for (int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentRemovedFromCache(event);
         }
     }
@@ -84,10 +71,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void addedToCache(Map cache, Object key, int flags)
     {
         List listeners = getLifecycleListeners();
-        if(listeners.size() > 0)
+        if (listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for(int i = 0; i < listeners.size(); i++)
+            for (int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentAddedToCache(event);
         }
     }
@@ -95,10 +82,10 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     public void loadedFromXml(int flags)
     {
         List listeners = getLifecycleListeners();
-        if(listeners.size() > 0)
+        if (listeners.size() > 0)
         {
             XdmComponentEvent event = new XdmComponentEvent(this, flags);
-            for(int i = 0; i < listeners.size(); i++)
+            for (int i = 0; i < listeners.size(); i++)
                 ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentLoadedFromXml(event);
         }
     }
@@ -113,6 +100,7 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
     /**
      * This method will be called by the DataModelSchema parse as soon as the root element is started and will provide
      * the input source that is producing this data.
+     *
      * @param source The input source (could be a file or other source)
      */
     public void setInputSourceTracker(InputSourceTracker source)
@@ -146,13 +134,13 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
 
     public void printErrorsAndWarnings()
     {
-        if(errors.size() != 0)
+        if (errors.size() != 0)
         {
             System.out.println("*** ERRORS: " + errors.size());
-            for(int i = 0; i < errors.size(); i++)
+            for (int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
-                if(error instanceof Throwable)
+                if (error instanceof Throwable)
                     System.out.println(((Throwable) error).getMessage());
                 else
                     System.out.println(error.toString());
@@ -190,7 +178,7 @@ public abstract class DefaultXdmComponent implements XdmComponent, MetricsProduc
 
     public Metrics getMetrics()
     {
-        if(metrics == null)
+        if (metrics == null)
         {
             metrics = new Metrics(this, this.getClass().getName() + " Metrics");
             produceMetrics(metrics);

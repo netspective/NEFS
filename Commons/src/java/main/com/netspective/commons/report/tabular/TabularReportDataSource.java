@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: TabularReportDataSource.java,v 1.9 2003-09-14 17:01:16 shahid.shah Exp $
- */
-
 package com.netspective.commons.report.tabular;
 
 import com.netspective.commons.value.ValueSource;
@@ -78,6 +66,7 @@ public interface TabularReportDataSource
 
     /**
      * Set the data source to automatically close after a set amount of time
+     *
      * @param autoCloseInactivityDuration Number of milliseconds of inactivity that should retire this datasource
      */
     public void setAutoClose(long autoCloseInactivityDuration);
@@ -89,6 +78,7 @@ public interface TabularReportDataSource
 
     /**
      * Determines whether the data source is already closed
+     *
      * @return True if close() was already called, false otherwise
      */
     public boolean isClosed();
@@ -101,6 +91,7 @@ public interface TabularReportDataSource
 
     /**
      * Ascertain whether or not there are additional rows available
+     *
      * @return Return true if next() will return a valid row or false if the end of the data source has been reached.
      */
     public boolean hasMoreRows();
@@ -112,14 +103,18 @@ public interface TabularReportDataSource
 
     /**
      * Retrieve data for the heading row's columns based on a column index.
+     *
      * @param columnIndex The column we're interested in (0-based)
+     *
      * @return The column's heading as text
      */
     public String getHeadingRowColumnData(int columnIndex);
 
     /**
      * Retrieve data for one of the current row's columns based on a column index.
+     *
      * @param columnIndex The column we're interested in (0-based)
+     *
      * @return The raw data the report can use to put into the report
      */
     public Object getActiveRowColumnData(int columnIndex, int flags);
@@ -127,13 +122,16 @@ public interface TabularReportDataSource
     /**
      * Retrieve data for one of the current row's columns based on a column name (may throw an exception if not
      * supported).
+     *
      * @param columnName The name of the column we're interested in
+     *
      * @return The raw data the report can use to put into the report
      */
     public Object getActiveRowColumnData(String columnName, int flags);
 
     /**
      * Return true if this data source has some structure
+     *
      * @return
      */
     public boolean isHierarchical();
@@ -156,29 +154,35 @@ public interface TabularReportDataSource
 
     /**
      * Ascertain whether or not the data source is active
+     *
      * @param timeOut The number of milliseconds to consider as a valid
-     * @return  True if the time since this data source was last used is less than the timeOut otherwise return false
+     *
+     * @return True if the time since this data source was last used is less than the timeOut otherwise return false
      */
     public boolean isActive(long timeOut);
 
     /**
      * Ascertain whether or not the data source is considered "scrollable" (allows paging of results/data)
+     *
      * @return True if data may be scrolled forward/backward or false if the data source is unidirectional (forward only)
      */
     public boolean isScrollable();
 
     /**
      * Move to the selected row.
+     *
      * @param rowNum The 0-based row number that should become the active row.
      */
     public void setActiveRow(int rowNum);
 
     /**
      * Get the total number of rows in the data source (assuming the data source is scrollable)
+     *
      * @return TOTAL_ROWS_UNKNOWN if there is no way to know the total rows, otherwise the number of rows in the data source
      */
     public int getTotalRows();
 
     public TabularReportValueContext getReportValueContext();
+
     public void setReportValueContext(TabularReportValueContext vc);
 }

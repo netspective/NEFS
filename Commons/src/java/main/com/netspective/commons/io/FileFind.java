@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: FileFind.java,v 1.5 2004-08-09 22:14:27 shahid.shah Exp $
- */
-
 package com.netspective.commons.io;
 
 import java.io.BufferedInputStream;
@@ -67,15 +55,17 @@ public class FileFind
     public static final int FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST * 2;
     public static final int FINDINPATHFLAG_SEARCH_RECURSIVELY = FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY * 2;
 
-	public static final int FINDINPATHFLAG_DEFAULT = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING;
+    public static final int FINDINPATHFLAG_DEFAULT = FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING;
 
     /**
      * Return 'true' if the given file appears to be a compressed file
      * (with either .jar or .zip extension).
      * <P>
+     *
      * @param fileName a file being investigated
+     *
      * @return true if the 'fileName' could be a .jar or .zip file
-     **/
+     */
     public static boolean isJarFile(String fileName)
     {
         File f = new File(fileName);
@@ -91,10 +81,12 @@ public class FileFind
      * platform, specifically is taken from the Java System property
      * "file.separator").
      * <P>
+     *
      * @param f is a file whose file extension is being looked for
+     *
      * @return a file extension found in the end of 'f', or an empty
      *         string if there is no extension
-     **/
+     */
     public static String getExtension(File f)
     {
         if (f != null)
@@ -111,11 +103,14 @@ public class FileFind
      * Return the extension portion of the file's name which is given as
      * a String.
      * <P>
+     *
      * @param f is a file whose file extension is being looked for
+     *
      * @return a file extension found in the end of 'f', or an empty
      *         string if there is no extension
+     *
      * @see #getExtension(File)
-     **/
+     */
     public static String getExtension(String f)
     {
         return getExtension(new File(f));
@@ -126,12 +121,14 @@ public class FileFind
      * If 'perhapsDirectory' is true look also for jar entries starting
      * with 'fileName' followed by "/".
      * <P>
-     * @param jarFile a compressed file where to look for the 'fileName'
-     * @param fileName a file name to be looked for
+     *
+     * @param jarFile          a compressed file where to look for the 'fileName'
+     * @param fileName         a file name to be looked for
      * @param perhapsDirectory if true the 'fileName' is also considered
-     *        as a directory name in the jar file's entries
+     *                         as a directory name in the jar file's entries
+     *
      * @return true if 'fileName' found in 'jarFile'
-     **/
+     */
     public static boolean existsInJarFile(File jarFile, String fileName, boolean perhapsDirectory)
     {
         try
@@ -158,10 +155,12 @@ public class FileFind
     /**
      * Read the contents of an 'entry' from a compressed (jar, zip) file.
      * <P>
-     * @param jarFile a compressed file
+     *
+     * @param jarFile   a compressed file
      * @param entryName an entry to be read and returned
+     *
      * @return contents of the <tt>entryName</tt> as stored in <tt>jarFile</tt>
-     **/
+     */
     public static byte[] getJarEntry(File jarFile, String entryName)
             throws FileNotFoundException, IOException
     {
@@ -217,7 +216,7 @@ public class FileFind
         private boolean searchJarsDuring;
         private boolean searchJarsLate;
         private boolean searchFileMayBeDirectory;
-	    private boolean searchRecursive;
+        private boolean searchRecursive;
         private int foundFileInPathItem;
         private File foundFile;
         private boolean foundFileAbsoluteAndDoesntExist;
@@ -231,7 +230,7 @@ public class FileFind
             this.searchJarsDuring = (flags & FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING) != 0;
             this.searchJarsLate = (flags & FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST) != 0;
             this.searchFileMayBeDirectory = (flags & FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY) != 0;
-	        this.searchRecursive = (flags & FINDINPATHFLAG_SEARCH_RECURSIVELY) != 0;
+            this.searchRecursive = (flags & FINDINPATHFLAG_SEARCH_RECURSIVELY) != 0;
             this.foundFileInPathItem = -1;
 
             File file = new File(searchFileName);
@@ -358,63 +357,64 @@ public class FileFind
                     foundFileInPathItem = i;
                     return;
                 }
-	            else
+                else
                 {
-	                if (searchPath.isDirectory()) {
-		                // Do a breadth first search if the file isnt found ...
-		                RegexpFileFilter fileFilter = new RegexpFileFilter("^" + searchFileName + "$", true);
-		                List searchCandidates = new ArrayList();
-		                List dynamicallyUpdatedCandidates = new ArrayList();
-		                File[] initialCandidates = searchPath.listFiles(fileFilter);
+                    if (searchPath.isDirectory())
+                    {
+                        // Do a breadth first search if the file isnt found ...
+                        RegexpFileFilter fileFilter = new RegexpFileFilter("^" + searchFileName + "$", true);
+                        List searchCandidates = new ArrayList();
+                        List dynamicallyUpdatedCandidates = new ArrayList();
+                        File[] initialCandidates = searchPath.listFiles(fileFilter);
 
-		                for (int j = 0; j < initialCandidates.length; j ++)
-			                searchCandidates.add(initialCandidates[j]);
+                        for (int j = 0; j < initialCandidates.length; j++)
+                            searchCandidates.add(initialCandidates[j]);
 
-		                Iterator candidate = searchCandidates.listIterator();
-		                while (candidate.hasNext() || dynamicallyUpdatedCandidates.size() > 0)
-		                {
-							if (! candidate.hasNext())
-							{
-								// We're at the end of the initial set of directories...
-								// Populate them with the ones we found during our search ...
-								searchCandidates.clear();
-								searchCandidates.addAll(dynamicallyUpdatedCandidates);
-								dynamicallyUpdatedCandidates.clear();
-								candidate = searchCandidates.listIterator();
+                        Iterator candidate = searchCandidates.listIterator();
+                        while (candidate.hasNext() || dynamicallyUpdatedCandidates.size() > 0)
+                        {
+                            if (!candidate.hasNext())
+                            {
+                                // We're at the end of the initial set of directories...
+                                // Populate them with the ones we found during our search ...
+                                searchCandidates.clear();
+                                searchCandidates.addAll(dynamicallyUpdatedCandidates);
+                                dynamicallyUpdatedCandidates.clear();
+                                candidate = searchCandidates.listIterator();
 
-								if (! candidate.hasNext()) continue;
-							}
+                                if (!candidate.hasNext()) continue;
+                            }
 
-			                File theCandidate = (File) candidate.next();
+                            File theCandidate = (File) candidate.next();
 
-			                if (theCandidate.isDirectory())
-			                {
-				                File findFileInCandidate = new File(theCandidate, searchFileName);
-				                if (findFileInCandidate.exists())
-				                {
-					                foundFile = findFileInCandidate;
-					                foundFileInPathItem = i;
-					                return;
-				                }
+                            if (theCandidate.isDirectory())
+                            {
+                                File findFileInCandidate = new File(theCandidate, searchFileName);
+                                if (findFileInCandidate.exists())
+                                {
+                                    foundFile = findFileInCandidate;
+                                    foundFileInPathItem = i;
+                                    return;
+                                }
 
-				                File[] moreCandidates = theCandidate.listFiles(fileFilter);
+                                File[] moreCandidates = theCandidate.listFiles(fileFilter);
 
-				                for (int c = 0; c < moreCandidates.length; c ++)
-					                dynamicallyUpdatedCandidates.add(moreCandidates[c]);
-			                }
-			                else
-			                {
-				                // This must be a file...
-				                if (theCandidate.getName().equals(searchFileName))
-				                {
-					                // Exact match found...
-					                foundFile = theCandidate;
-					                foundFileInPathItem = i;
-					                return;
-				                }
-			                }
-		                }
-	                }
+                                for (int c = 0; c < moreCandidates.length; c++)
+                                    dynamicallyUpdatedCandidates.add(moreCandidates[c]);
+                            }
+                            else
+                            {
+                                // This must be a file...
+                                if (theCandidate.getName().equals(searchFileName))
+                                {
+                                    // Exact match found...
+                                    foundFile = theCandidate;
+                                    foundFileInPathItem = i;
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

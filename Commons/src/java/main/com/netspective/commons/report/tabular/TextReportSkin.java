@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: TextReportSkin.java,v 1.7 2003-09-10 04:06:12 aye.thu Exp $
- */
-
 package com.netspective.commons.report.tabular;
 
 import java.io.IOException;
@@ -107,13 +95,13 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
 
         StringBuffer row = new StringBuffer();
-        for(int i = 0; i < dataColsCount; i++)
+        for (int i = 0; i < dataColsCount; i++)
         {
-            if(! states[i].isVisible())
+            if (!states[i].isVisible())
                 continue;
 
             String colHeading = ds.getHeadingRowColumnData(i);
-            if(colHeading != null)
+            if (colHeading != null)
                 writeText(row, colHeading, i < lastDataCol);
             else
                 writeText(row, getBlankValue(), i < lastDataCol);
@@ -132,12 +120,12 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
         boolean hierarchical = ds.isHierarchical();
 
-        while(ds.next())
+        while (ds.next())
         {
             int hiearchyCol = 0;
             int activeLevel = 0;
 
-            if(hierarchical)
+            if (hierarchical)
             {
                 TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
@@ -145,12 +133,12 @@ public class TextReportSkin implements TabularReportSkin
             }
 
             StringBuffer row = new StringBuffer();
-            for(int i = 0; i < dataColsCount; i++)
+            for (int i = 0; i < dataColsCount; i++)
             {
                 TabularReportColumn column = columns.getColumn(i);
                 TabularReportColumnState state = states[i];
 
-                if(! state.isVisible())
+                if (!state.isVisible())
                     continue;
 
                 String data =
@@ -158,9 +146,9 @@ public class TextReportSkin implements TabularReportSkin
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 
-                if(hierarchical && (hiearchyCol == i) && activeLevel > 0)
+                if (hierarchical && (hiearchyCol == i) && activeLevel > 0)
                 {
-                    for(int sp = 0; sp < activeLevel; sp++)
+                    for (int sp = 0; sp < activeLevel; sp++)
                         data = " " + data;
                 }
 
@@ -175,7 +163,7 @@ public class TextReportSkin implements TabularReportSkin
     public void produceFootRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
         int calcsCount = rc.getCalcsCount();
-        if(calcsCount == 0)
+        if (calcsCount == 0)
             return;
 
         TabularReportColumnState[] states = rc.getStates();
@@ -184,14 +172,14 @@ public class TextReportSkin implements TabularReportSkin
         int lastDataCol = dataColsCount - 1;
 
         StringBuffer row = new StringBuffer();
-        for(int i = 0; i < dataColsCount; i++)
+        for (int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumn column = columns.getColumn(i);
-            if(! states[i].isVisible())
+            if (!states[i].isVisible())
                 continue;
 
             String summary = column.getFormattedData(rc, states[i].getCalc());
-            if(summary == null)
+            if (summary == null)
                 summary = "";
 
             writeText(row, summary, i < lastDataCol);
@@ -202,17 +190,17 @@ public class TextReportSkin implements TabularReportSkin
 
     public void writeText(StringBuffer sb, String text, boolean delimiterColumn) throws IOException
     {
-        if(textQualifier != null)
+        if (textQualifier != null)
         {
             sb.append(textQualifier);
-            if(text != null)
+            if (text != null)
                 sb.append(text);
             sb.append(textQualifier);
         }
-        else if(text != null)
+        else if (text != null)
             sb.append(text);
 
-        if(delimiterColumn)
+        if (delimiterColumn)
             sb.append(delimiter);
     }
 }

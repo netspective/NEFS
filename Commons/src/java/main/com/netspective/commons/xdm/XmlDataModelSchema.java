@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: XmlDataModelSchema.java,v 1.52 2004-08-14 19:56:07 shahid.shah Exp $
- */
-
 package com.netspective.commons.xdm;
 
 import java.io.File;
@@ -1583,7 +1571,7 @@ public class XmlDataModelSchema
             if (args.length == 1)
             {
                 XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) getAttributeSetters().get(key);
-                if(as != null)
+                if (as != null)
                 {
                     as.set(null, element, value == null ? null : value.toString());
                     return true;
@@ -1592,7 +1580,7 @@ public class XmlDataModelSchema
                 {
                     try
                     {
-                        method.invoke(element, new Object[] { value });
+                        method.invoke(element, new Object[]{value});
                         return true;
                     }
                     catch (Exception e)
@@ -1636,15 +1624,17 @@ public class XmlDataModelSchema
     /**
      * Given a Map, assign its current values using appropriate accessor methods of the instance object
      * (using Java reflection).
+     *
      * @param element The object who's mutator methods should be matched
-     * @param map The Map for which the key is a setXXX(YYY) call [XXX is the key] and values are the YYY parameter
-     * @param keys The names of the keys that should be assigned to the mutators of the instance object.
-     *             This may be '*' (for all keys in the map) or a comma-separated list of names. The parameter names
-     *             may optionally be followed by an '=' to indicate a default value for the parameter. Parameter
-     *             names may optionally be terminated with an '!' to indicate that they are required (an exception
-     *             is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
-     *             'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
-     *             exception should be thrown if 'b' is not available as a request parameter.
+     * @param map     The Map for which the key is a setXXX(YYY) call [XXX is the key] and values are the YYY parameter
+     * @param keys    The names of the keys that should be assigned to the mutators of the instance object.
+     *                This may be '*' (for all keys in the map) or a comma-separated list of names. The parameter names
+     *                may optionally be followed by an '=' to indicate a default value for the parameter. Parameter
+     *                names may optionally be terminated with an '!' to indicate that they are required (an exception
+     *                is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
+     *                'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
+     *                exception should be thrown if 'b' is not available as a request parameter.
+     *
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */

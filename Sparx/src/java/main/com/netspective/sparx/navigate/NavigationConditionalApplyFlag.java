@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,24 +28,20 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
-
- * $Id: NavigationConditionalApplyFlag.java,v 1.9 2004-01-09 05:59:12 aye.thu Exp $
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 package com.netspective.sparx.navigate;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.acl.PermissionNotFoundException;
-
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
 
 public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 {
@@ -72,15 +63,16 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the has-permissions attribute values
+     *
      * @param permissionsStr
      */
     public void setHasPermissions(String permissionsStr)
     {
-        if(permissionsStr != null && permissionsStr.length() > 0)
+        if (permissionsStr != null && permissionsStr.length() > 0)
         {
             List permsList = new ArrayList();
             StringTokenizer st = new StringTokenizer(permissionsStr, ",");
-            while(st.hasMoreTokens())
+            while (st.hasMoreTokens())
                 permsList.add(st.nextToken());
             hasPermissions = (String[]) permsList.toArray(new String[permsList.size()]);
         }
@@ -88,7 +80,8 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the has-permissions attribute values
-     * @return  an array of permission strings
+     *
+     * @return an array of permission strings
      */
     public String[] getHasPermissions()
     {
@@ -97,6 +90,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the lack-permissions attribute values
+     *
      * @return an array of permission strings
      */
     public String[] getLackPermissions()
@@ -106,15 +100,16 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the lack-permissions attribute value
+     *
      * @param lackPermissionsStr
      */
     public void setLackPermissions(String lackPermissionsStr)
     {
-        if(lackPermissionsStr != null && lackPermissionsStr.length() > 0)
+        if (lackPermissionsStr != null && lackPermissionsStr.length() > 0)
         {
             List permsList = new ArrayList();
             StringTokenizer st = new StringTokenizer(lackPermissionsStr, ",");
-            while(st.hasMoreTokens())
+            while (st.hasMoreTokens())
                 permsList.add(st.nextToken());
             lackPermissions = (String[]) permsList.toArray(new String[permsList.size()]);
         }
@@ -132,6 +127,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the has-value attribute value
+     *
      * @param value
      */
     public void setHasValue(ValueSource value)
@@ -141,6 +137,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the has-value attribute value
+     *
      * @return
      */
     public ValueSource getHasValue()
@@ -150,6 +147,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the lack-value attribute value
+     *
      * @return
      */
     public ValueSource getLackValue()
@@ -159,6 +157,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the lack-value attribute
+     *
      * @param lackValue
      */
     public void setLackValue(ValueSource lackValue)
@@ -168,6 +167,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the is-true attribute value
+     *
      * @return
      */
     public ValueSource getIsTrue()
@@ -177,6 +177,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the is-true attribute value
+     *
      * @param aTrue
      */
     public void setIsTrue(ValueSource aTrue)
@@ -186,6 +187,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Gets the data command to check for
+     *
      * @return
      */
     public String getDataCommand()
@@ -195,6 +197,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
 
     /**
      * Sets the data command to check for
+     *
      * @param dataCmd
      */
     public void setDataCommand(String dataCmd)
@@ -203,7 +206,6 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
     }
 
     /**
-     *
      * @param nc
      */
     public void execute(NavigationContext nc)
@@ -217,14 +219,14 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         boolean lackPermissionFlg = false;
 
         // handle any configured permissions
-        if(status && (this.hasPermissions != null || this.lackPermissions != null))
+        if (status && (this.hasPermissions != null || this.lackPermissions != null))
         {
             AuthenticatedUser authUser = nc.getAuthenticatedUser();
-            if(authUser != null)
+            if (authUser != null)
             {
                 try
                 {
-                    if(this.hasPermissions != null && this.lackPermissions != null)
+                    if (this.hasPermissions != null && this.lackPermissions != null)
                     {
                         // if both has-permissions and lack-permissions are set then both conditions need to be satisfied
                         // for the flag to be applied
@@ -253,11 +255,11 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
                 status = false;
         }
         // handle any configured  'value' checks
-        if(status && isTrue != ValueSource.NULL_VALUE_SOURCE)
+        if (status && isTrue != ValueSource.NULL_VALUE_SOURCE)
         {
             // handle the is-true boolean check
             Object value = isTrue.getValue(nc).getValue();
-            if(value instanceof Boolean)
+            if (value instanceof Boolean)
                 status = ((Boolean) value).booleanValue();
             else
                 status = value != null;
@@ -272,7 +274,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
             String textVal = lackValue.getValue(nc).getTextValue();
             status = textVal == null || textVal.length() == 0;
         }
-        if(status)
+        if (status)
         {
             //TODO: check to see if our flags should overwrite the other flags or only update them
             nc.getState(this.getPath()).getFlags().setFlag(flags.getFlags());

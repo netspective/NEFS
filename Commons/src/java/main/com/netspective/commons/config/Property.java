@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,27 +28,20 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Property.java,v 1.2 2003-04-02 14:48:16 shahid.shah Exp $
- */
-
 package com.netspective.commons.config;
 
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.text.ValueSourceExpressionText;
 import com.netspective.commons.text.ExpressionText;
+import com.netspective.commons.text.ValueSourceExpressionText;
+import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class Property
@@ -72,29 +60,29 @@ public class Property
         protected String getReplacement(ValueContext vc, String entireText, String replaceToken)
         {
             Property property = getOwner().findProperty(replaceToken);
-            if(property != null)
+            if (property != null)
             {
                 PropertyTextExpression subExpr = new PropertyTextExpression();
                 String result = subExpr.getFinalText(vc, property.getValue(vc));
-                if(subExpr.dynamicReplacementsCount == 0)
+                if (subExpr.dynamicReplacementsCount == 0)
                     property.setFinalValue(result);
                 else
                     dynamicReplacementsCount += subExpr.dynamicReplacementsCount;
 
                 return result;
             }
-            else if(replaceToken.startsWith("/"))
+            else if (replaceToken.startsWith("/"))
             {
                 String[] items = StringUtils.split(replaceToken, "/");
                 Configuration alternateConfig = owner.getManager().getConfiguration(items[0]);
-                if(alternateConfig != null)
+                if (alternateConfig != null)
                 {
                     property = alternateConfig.findProperty(items[1]);
-                    if(property != null)
+                    if (property != null)
                     {
                         PropertyTextExpression subExpr = new PropertyTextExpression();
                         String result = subExpr.getFinalText(vc, property.getValue(vc));
-                        if(subExpr.dynamicReplacementsCount == 0)
+                        if (subExpr.dynamicReplacementsCount == 0)
                             property.setFinalValue(result);
                         else
                             dynamicReplacementsCount += subExpr.dynamicReplacementsCount;
@@ -105,7 +93,7 @@ public class Property
                         return getOriginalReplacement(items[1]);
                 }
                 else
-                    return getOriginalReplacement("Configuration '"+ items[1] +"' not found");
+                    return getOriginalReplacement("Configuration '" + items[1] + "' not found");
             }
             else
                 return super.getReplacement(vc, entireText, replaceToken);
@@ -196,7 +184,7 @@ public class Property
 
     public void setValue(String expr)
     {
-        if(expr.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) >= 0)
+        if (expr.indexOf(ExpressionText.EXPRESSION_REPLACEMENT_PREFIX) >= 0)
             setDynamicValue(expr);
         else
             setFinalValue(expr);
@@ -214,7 +202,7 @@ public class Property
 
     protected String getValue(ValueContext vc)
     {
-        if(! isDynamic()) return value;
+        if (!isDynamic()) return value;
 
         PropertyTextExpression expr = new PropertyTextExpression();
         return expr.getFinalText(vc, value);
@@ -242,18 +230,18 @@ public class Property
 
     public void addProperty(Property property)
     {
-        if(property.getOwner() == null)
+        if (property.getOwner() == null)
             property.setOwner(getOwner());
         setParent(this);
 
-        if(childrenList == null)
+        if (childrenList == null)
         {
             childrenList = new ArrayList();
             childrenMap = new HashMap();
         }
 
         childrenList.add(property);
-        if(property.getName() != null)
+        if (property.getName() != null)
             childrenMap.put(property.getName(), property);
 
         property.getOwner().registerProperty(property);

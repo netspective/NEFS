@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,59 +28,53 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ParseContext.java,v 1.9 2003-11-08 18:34:40 shahid.shah Exp $
- */
-
 package com.netspective.commons.xml;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
-import java.io.Writer;
+import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.List;
+import java.io.Writer;
 import java.util.ArrayList;
-import java.util.zip.ZipFile;
+import java.util.List;
 import java.util.zip.ZipEntry;
-import javax.xml.parsers.SAXParserFactory;
+import java.util.zip.ZipFile;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.Result;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.PosixParser;
-import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
-import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.PosixParser;
 import org.apache.commons.lang.StringUtils;
 import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
-import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.FileTracker;
 import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.URLTracker;
 import com.netspective.commons.xml.template.TemplateCatalog;
 
@@ -131,7 +120,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
         this.parentPC = parentPC;
-        if(parentPC != null)
+        if (parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(text));
     }
@@ -139,7 +128,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
         this.parentPC = parentPC;
-        if(parentPC != null)
+        if (parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(srcFile));
     }
@@ -147,7 +136,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
         this.parentPC = parentPC;
-        if(parentPC != null)
+        if (parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(resource));
     }
@@ -155,7 +144,7 @@ public class ParseContext
     public ParseContext(ParseContext parentPC, File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
     {
         this.parentPC = parentPC;
-        if(parentPC != null)
+        if (parentPC != null)
             setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(jarFile, jarFileEntry));
     }
@@ -177,7 +166,7 @@ public class ParseContext
 
     public TemplateCatalog getTemplateCatalog()
     {
-        if(templateCatalog == null && parentPC != null)
+        if (templateCatalog == null && parentPC != null)
             return parentPC.getTemplateCatalog();
 
         return templateCatalog;
@@ -216,7 +205,7 @@ public class ParseContext
 
         this.inputSrcTracker = new FileTracker();
         ((FileTracker) this.inputSrcTracker).setFile(srcFile);
-        if(parentSrcTracker != null)
+        if (parentSrcTracker != null)
             this.inputSrcTracker.setParent(parentSrcTracker);
         this.sourceFile = srcFile;
 
@@ -235,13 +224,13 @@ public class ParseContext
 
             this.inputSrcTracker = new URLTracker();
             ((URLTracker) this.inputSrcTracker).setUrl(resource.getResource());
-            if(parentSrcTracker != null)
+            if (parentSrcTracker != null)
                 this.inputSrcTracker.setParent(parentSrcTracker);
 
             return inputSource;
         }
         else
-            throw new IOException("Resource '" + resource.getSystemId() + "' not found. ClassPath is "+ System.getProperty("java.class.path") +".");
+            throw new IOException("Resource '" + resource.getSystemId() + "' not found. ClassPath is " + System.getProperty("java.class.path") + ".");
     }
 
     public InputSource createInputSource(File jarFile, ZipEntry jarFileEntry) throws FileNotFoundException, IOException
@@ -258,13 +247,13 @@ public class ParseContext
 
             this.inputSrcTracker = new FileTracker();
             ((FileTracker) this.inputSrcTracker).setFile(jarFile);
-            if(parentSrcTracker != null)
+            if (parentSrcTracker != null)
                 this.inputSrcTracker.setParent(parentSrcTracker);
 
             return inputSource;
         }
         else
-            throw new FileNotFoundException("Zip entry '" + jarFileEntry.getName() + "' not found in zip file '"+ jarFile.getAbsolutePath() +"'.");
+            throw new FileNotFoundException("Zip entry '" + jarFileEntry.getName() + "' not found in zip file '" + jarFile.getAbsolutePath() + "'.");
     }
 
     public void init(InputSource inputSource) throws ParserConfigurationException, SAXException
@@ -273,7 +262,7 @@ public class ParseContext
         this.errors = new ArrayList();
         this.warnings = new ArrayList();
 
-        if(inputSource.getSystemId() == null)
+        if (inputSource.getSystemId() == null)
             throw new ParserConfigurationException("Please set the system id.");
 
         SAXParser saxParser = getParserFactory().newSAXParser();
@@ -306,10 +295,10 @@ public class ParseContext
         String[] styleSheets = cmd.getOptionValues('s');
         for (int i = 0; i < styleSheets.length; i++)
         {
-            if(isResource)
+            if (isResource)
             {
                 InputStream stream = getClass().getClassLoader().getResourceAsStream(styleSheets[i].trim());
-                if(stream == null)
+                if (stream == null)
                     errors.add("Error in <?" + TRANSFORM_INSTRUCTION + " " + instructionParams + "?>, stylesheet '" + styleSheets[i].trim() + "' not found as a resource in ClassLoader " + getClass().getClassLoader());
                 else
                 {
@@ -321,7 +310,7 @@ public class ParseContext
                 File sourceFile = resolveFile(styleSheets[i].trim());
                 try
                 {
-                    if(inputSrcTracker != null)
+                    if (inputSrcTracker != null)
                     {
                         FileTracker preProcessor = new FileTracker();
                         preProcessor.setFile(sourceFile);
@@ -346,16 +335,16 @@ public class ParseContext
 
     public InputSource recreateInputSource() throws FileNotFoundException, IOException
     {
-        if(sourceFile != null && sourceJarEntry == null)
+        if (sourceFile != null && sourceJarEntry == null)
             return createInputSource(sourceFile);
 
-        if(sourceText != null)
+        if (sourceText != null)
             return createInputSource(sourceText);
 
-        if(sourceResource != null)
+        if (sourceResource != null)
             return createInputSource(sourceResource);
 
-        if(sourceFile != null && sourceJarEntry != null)
+        if (sourceFile != null && sourceJarEntry != null)
             return createInputSource(sourceFile, sourceJarEntry);
 
         return null;
@@ -386,13 +375,13 @@ public class ParseContext
             }
         }
 
-        if(activeFileInputStream != null)
+        if (activeFileInputStream != null)
         {
             activeFileInputStream.close();
             activeFileInputStream = null;
         }
 
-        if(sourceJarFile != null)
+        if (sourceJarFile != null)
             sourceJarFile.close();
     }
 
@@ -402,8 +391,8 @@ public class ParseContext
         InputSource inputSource = recreateInputSource();
 
         Source activeSource = inputSource.getByteStream() != null ?
-                    new StreamSource(inputSource.getByteStream()) :
-                    new StreamSource(inputSource.getCharacterStream());
+                new StreamSource(inputSource.getByteStream()) :
+                new StreamSource(inputSource.getCharacterStream());
         activeSource.setSystemId(inputSource.getSystemId());
 
         Writer activeResultBuffer = new StringWriter();
@@ -441,10 +430,11 @@ public class ParseContext
     public File resolveFile(String src)
     {
         File file = new File(src);
-        if(file.isAbsolute())
+        if (file.isAbsolute())
             return file;
         else
-            return inputSrcTracker != null && inputSrcTracker instanceof FileTracker ? new File(((FileTracker) inputSrcTracker).getFile().getParent(), src) : file;
+            return inputSrcTracker != null && inputSrcTracker instanceof FileTracker
+                    ? new File(((FileTracker) inputSrcTracker).getFile().getParent(), src) : file;
     }
 
     public void setThrowErrorException(boolean throwErrorException)

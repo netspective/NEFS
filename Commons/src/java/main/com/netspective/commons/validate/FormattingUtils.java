@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,23 +28,16 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: FormattingUtils.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
- */
-
 package com.netspective.commons.validate;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 
 public class FormattingUtils implements Serializable
 {
@@ -57,7 +45,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a byte primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Byte formatByte(String value)
     {
@@ -77,7 +65,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a short primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Short formatShort(String value)
     {
@@ -97,7 +85,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a int primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Integer formatInt(String value)
     {
@@ -117,7 +105,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a long primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Long formatLong(String value)
     {
@@ -137,7 +125,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a float primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Float formatFloat(String value)
     {
@@ -157,7 +145,7 @@ public class FormattingUtils implements Serializable
     /**
      * <p>Checks if the value can safely be converted to a double primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Double formatDouble(String value)
     {
@@ -179,8 +167,8 @@ public class FormattingUtils implements Serializable
      * used with <code>java.text.DateFormat</code>.  The setLenient method
      * is set to <code>false</code> for all.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	locale        	The Locale to use to parse the date (system default if null)
+     * @param value  The value validation is being performed on.
+     * @param locale The Locale to use to parse the date (system default if null)
      */
     public static Date formatDate(String value, Locale locale)
     {
@@ -219,9 +207,9 @@ public class FormattingUtils implements Serializable
      * the format 'MM/dd/yyyy' because the month isn't two digits.
      * The setLenient method is set to <code>false</code> for all.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	datePattern	The pattern passed to <code>SimpleDateFormat</code>.
-     * @param 	strict	        Whether or not to have an exact match of the datePattern.
+     * @param value       The value validation is being performed on.
+     * @param datePattern The pattern passed to <code>SimpleDateFormat</code>.
+     * @param strict      Whether or not to have an exact match of the datePattern.
      */
     public static Date formatDate(String value, String datePattern, boolean strict)
     {
@@ -257,7 +245,7 @@ public class FormattingUtils implements Serializable
      * <p>Translated to Java by Ted Husted (<a href="mailto:husted@apache.org">husted@apache.org</a>).<br>
      * &nbsp;&nbsp;&nbsp; Reference Sean M. Burke's script at http://www.ling.nwu.edu/~sburke/pub/luhn_lib.pl</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static Long formatCreditCard(String value)
     {

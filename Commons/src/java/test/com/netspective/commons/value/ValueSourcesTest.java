@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,26 +28,23 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ValueSourcesTest.java,v 1.8 2004-04-28 16:51:20 shahid.shah Exp $
- */
-
 package com.netspective.commons.value;
 
-import java.util.Set;
 import java.util.List;
-import junit.framework.TestCase;
+import java.util.Set;
 
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.source.*;
 import com.netspective.commons.metric.Metrics;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.source.FilesystemEntriesValueSource;
+import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
+import com.netspective.commons.value.source.StaticListValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.source.SystemPropertyValueSource;
+import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
+
+import junit.framework.TestCase;
 
 public class ValueSourcesTest extends TestCase
 {
@@ -61,96 +53,96 @@ public class ValueSourcesTest extends TestCase
         super(name);
     }
 
-	public void testGenericValues()
-	{
-		Value valueOne = new GenericValue(new Float(3.14159));
-		assertTrue(valueOne.hasValue());
-		assertFalse(valueOne.isListValue());
-		assertEquals(Value.VALUELISTTYPE_NONE, valueOne.getListValueType());
+    public void testGenericValues()
+    {
+        Value valueOne = new GenericValue(new Float(3.14159));
+        assertTrue(valueOne.hasValue());
+        assertFalse(valueOne.isListValue());
+        assertEquals(Value.VALUELISTTYPE_NONE, valueOne.getListValueType());
 
-		assertEquals(Object.class, valueOne.getValueHolderClass());
-		assertEquals(Object.class, valueOne.getBindParamValueHolderClass());
+        assertEquals(Object.class, valueOne.getValueHolderClass());
+        assertEquals(Object.class, valueOne.getBindParamValueHolderClass());
 
-		assertEquals(new Float(3.14159), valueOne.getValue());
-		assertEquals(new Float(3.14159), valueOne.getValueForSqlBindParam());
-		assertEquals("3.14159", valueOne.getTextValueOrDefault("default value"));
-		assertTrue(Math.abs(3.14159 - valueOne.getDoubleValue()) < 0.00001);
+        assertEquals(new Float(3.14159), valueOne.getValue());
+        assertEquals(new Float(3.14159), valueOne.getValueForSqlBindParam());
+        assertEquals("3.14159", valueOne.getTextValueOrDefault("default value"));
+        assertTrue(Math.abs(3.14159 - valueOne.getDoubleValue()) < 0.00001);
 
-		String[] valuesOne = valueOne.getTextValues();
-		assertEquals(1, valuesOne.length);
-		assertEquals("3.14159", valuesOne[0]);
+        String[] valuesOne = valueOne.getTextValues();
+        assertEquals(1, valuesOne.length);
+        assertEquals("3.14159", valuesOne[0]);
 
-		List listValuesOne = valueOne.getListValue();
-		assertEquals(1, listValuesOne.size());
-		assertEquals("3.14159", listValuesOne.get(0));
+        List listValuesOne = valueOne.getListValue();
+        assertEquals(1, listValuesOne.size());
+        assertEquals("3.14159", listValuesOne.get(0));
 
-		valueOne.appendText(" is the value of Pi");
-		assertEquals("3.14159 is the value of Pi", valueOne.getTextValue());
+        valueOne.appendText(" is the value of Pi");
+        assertEquals("3.14159 is the value of Pi", valueOne.getTextValue());
 
-		valueOne.setTextValue("Pi = 3.14159");
-		assertEquals("Pi = 3.14159", valueOne.getTextValue());
+        valueOne.setTextValue("Pi = 3.14159");
+        assertEquals("Pi = 3.14159", valueOne.getTextValue());
 
-		// Testing String[] routines/sections
-		String[] inputValues = new String[] { "Apple", "Pi", "are", "squared" };
-		Value valueTwo = new GenericValue(inputValues);
-		assertTrue(valueTwo.hasValue());
-		assertTrue(valueTwo.isListValue());
-		assertEquals(Value.VALUELISTTYPE_STRINGARRAY, valueTwo.getListValueType());
+        // Testing String[] routines/sections
+        String[] inputValues = new String[]{"Apple", "Pi", "are", "squared"};
+        Value valueTwo = new GenericValue(inputValues);
+        assertTrue(valueTwo.hasValue());
+        assertTrue(valueTwo.isListValue());
+        assertEquals(Value.VALUELISTTYPE_STRINGARRAY, valueTwo.getListValueType());
 
-		List valuesTwoList = valueTwo.getListValue();
+        List valuesTwoList = valueTwo.getListValue();
 
-		assertEquals(inputValues.length, valuesTwoList.size());
-		for (int i = 0; i < inputValues.length; i ++)
-			assertTrue(valuesTwoList.contains(inputValues[i]));
+        assertEquals(inputValues.length, valuesTwoList.size());
+        for (int i = 0; i < inputValues.length; i++)
+            assertTrue(valuesTwoList.contains(inputValues[i]));
 
-		assertEquals(inputValues[0], valueTwo.getTextValue());
+        assertEquals(inputValues[0], valueTwo.getTextValue());
 
-		String[] valuesTwoArray = valueTwo.getTextValues();
-		assertEquals(inputValues.length, valuesTwoArray.length);
-		for (int i = 0; i < inputValues.length; i ++)
-			assertEquals(inputValues[i], valuesTwoArray[i]);
+        String[] valuesTwoArray = valueTwo.getTextValues();
+        assertEquals(inputValues.length, valuesTwoArray.length);
+        for (int i = 0; i < inputValues.length; i++)
+            assertEquals(inputValues[i], valuesTwoArray[i]);
 
-		// Testing List routines/sections using AbstractValue instead of the Value interface
-		List valueThreeInput = valuesTwoList;
-		AbstractValue valueThree = new GenericValue(valueThreeInput);
+        // Testing List routines/sections using AbstractValue instead of the Value interface
+        List valueThreeInput = valuesTwoList;
+        AbstractValue valueThree = new GenericValue(valueThreeInput);
 
-		assertTrue(valueThree.hasValue());
-		assertTrue(valueThree.isListValue());
-		assertEquals(Value.VALUELISTTYPE_LIST, valueThree.getListValueType());
+        assertTrue(valueThree.hasValue());
+        assertTrue(valueThree.isListValue());
+        assertEquals(Value.VALUELISTTYPE_LIST, valueThree.getListValueType());
 
-		List valueThreeList = valueTwo.getListValue();
+        List valueThreeList = valueTwo.getListValue();
 
-		assertEquals(inputValues.length, valueThreeList.size());
-		for (int i = 0; i < inputValues.length; i ++)
-			assertTrue(valueThreeList.contains(inputValues[i]));
+        assertEquals(inputValues.length, valueThreeList.size());
+        for (int i = 0; i < inputValues.length; i++)
+            assertTrue(valueThreeList.contains(inputValues[i]));
 
-		assertEquals(inputValues[0], valueThree.getTextValue());
+        assertEquals(inputValues[0], valueThree.getTextValue());
 
-		String[] valueThreeArray = valueThree.getTextValues();
-		assertEquals(inputValues.length, valueThreeArray.length);
-		for (int i = 0; i < inputValues.length; i ++)
-			assertEquals(inputValues[i], valueThreeArray[i]);
+        String[] valueThreeArray = valueThree.getTextValues();
+        assertEquals(inputValues.length, valueThreeArray.length);
+        for (int i = 0; i < inputValues.length; i++)
+            assertEquals(inputValues[i], valueThreeArray[i]);
 
-	}
+    }
 
-	public void testCachedValues()
-	{
-		CachedValue cValue = new CachedValue(new GenericValue(new Float (3.14159)), 5);
-		assertTrue(cValue.isValid());
-		assertTrue(cValue.getCreationTime() <= System.currentTimeMillis());
-		assertTrue(cValue.isValid());
-		assertEquals(5, cValue.getTimeoutValue());
-		assertTrue(cValue.isValid());
-		assertEquals("3.14159", cValue.getValue().getTextValue());
-		assertTrue(cValue.isValid());
+    public void testCachedValues()
+    {
+        CachedValue cValue = new CachedValue(new GenericValue(new Float(3.14159)), 5);
+        assertTrue(cValue.isValid());
+        assertTrue(cValue.getCreationTime() <= System.currentTimeMillis());
+        assertTrue(cValue.isValid());
+        assertEquals(5, cValue.getTimeoutValue());
+        assertTrue(cValue.isValid());
+        assertEquals("3.14159", cValue.getValue().getTextValue());
+        assertTrue(cValue.isValid());
 
-        // Sleep for 6 seconds
+// Sleep for 6 seconds
 //		assertFalse(cValue.isValid());
-	}
+    }
 
-	public void testReadOnlyValues ()
-	{
-		// Testing Readonly Values
+    public void testReadOnlyValues()
+    {
+        // Testing Readonly Values
 /*
 		ReadOnlyValue readOnlyValue = new GenericValue(new String("Testing Read Only"));
 
@@ -181,99 +173,102 @@ public class ValueSourcesTest extends TestCase
 		assertEquals("Testing Read Only", readOnlyValue.getTextValue());
 
 */
-	}
+    }
 
-	public void testValueErrors()
-	{
-		Value valueOne = new GenericValue(new Float(3.14159));
-		assertTrue(valueOne.hasValue());
-		assertFalse(valueOne.isListValue());
+    public void testValueErrors()
+    {
+        Value valueOne = new GenericValue(new Float(3.14159));
+        assertTrue(valueOne.hasValue());
+        assertFalse(valueOne.isListValue());
 
-		boolean exceptionThrown = true;
+        boolean exceptionThrown = true;
 
-		try {
-			assertEquals(3, valueOne.getIntValue());
-			exceptionThrown = false;
-		} catch (Exception e) {
-			assertTrue(exceptionThrown);
-		}
+        try
+        {
+            assertEquals(3, valueOne.getIntValue());
+            exceptionThrown = false;
+        }
+        catch (Exception e)
+        {
+            assertTrue(exceptionThrown);
+        }
 
-		assertTrue(exceptionThrown);
-	}
+        assertTrue(exceptionThrown);
+    }
 
-	public void testValueSources()
-	{
-		ValueSources vs = ValueSources.getInstance();
+    public void testValueSources()
+    {
+        ValueSources vs = ValueSources.getInstance();
 
-		Set srcClassesMapKeySet = vs.getValueSourceClassesMap().keySet();
-		String[] expectedClassesMapKeySet = new String[] {
-			"vs-expr", "simple-expr",
-			"filesystem-entries",
-			"guid", "generate-id",
-			"static", "text", "string",
-			"text-list", "strings",
-			"system-property", "java-expr", "java",
+        Set srcClassesMapKeySet = vs.getValueSourceClassesMap().keySet();
+        String[] expectedClassesMapKeySet = new String[]{
+            "vs-expr", "simple-expr",
+            "filesystem-entries",
+            "guid", "generate-id",
+            "static", "text", "string",
+            "text-list", "strings",
+            "system-property", "java-expr", "java",
             "redirect", "script"
-		};
+        };
 
         assertEquals(expectedClassesMapKeySet.length, srcClassesMapKeySet.size());
 
-		for (int i = 0; i < expectedClassesMapKeySet.length; i ++)
-			assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
+        for (int i = 0; i < expectedClassesMapKeySet.length; i++)
+            assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
 
-		Set srcClassesSet = vs.getValueSourceClassesSet();
-		Class[] expectedClassesSet = new Class[] {
-			ValueSrcExpressionValueSource.class,
-			FilesystemEntriesValueSource.class,
-			GloballyUniqueIdValueSource.class,
-			StaticValueSource.class,
-			StaticListValueSource.class,
-			SystemPropertyValueSource.class
-		};
+        Set srcClassesSet = vs.getValueSourceClassesSet();
+        Class[] expectedClassesSet = new Class[]{
+            ValueSrcExpressionValueSource.class,
+            FilesystemEntriesValueSource.class,
+            GloballyUniqueIdValueSource.class,
+            StaticValueSource.class,
+            StaticListValueSource.class,
+            SystemPropertyValueSource.class
+        };
 
-		for (int i = 0; i < expectedClassesSet.length; i ++)
-			assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
-	}
+        for (int i = 0; i < expectedClassesSet.length; i++)
+            assertTrue(srcClassesMapKeySet.contains(expectedClassesMapKeySet[i]));
+    }
 
     public void testValueSourceTokens()
     {
         ValueSourceSpecification vss = ValueSources.createSpecification("test-id:abc");
         assertTrue(vss.isValid());
         assertTrue(vss.isEscaped() == false);
-	    assertEquals("test-id:abc", vss.toString());
+        assertEquals("test-id:abc", vss.toString());
         assertEquals("test-id", vss.getIdOrClassName());
         assertEquals("abc", vss.getParams());
-	    assertFalse(vss.isCustomClass());
-	    assertEquals(ValueSourceSpecification.class, vss.getClass());
-	    assertEquals(7, vss.getIdDelimPos());
+        assertFalse(vss.isCustomClass());
+        assertEquals(ValueSourceSpecification.class, vss.getClass());
+        assertEquals(7, vss.getIdDelimPos());
 
         // since the ':' is escaped, this is not a valid value source specification
         vss = ValueSources.createSpecification("test-id\\:abc");
         assertFalse(vss.isValid());
         assertTrue(vss.isEscaped());
-	    assertEquals(8, vss.getIdDelimPos());
-	    assertEquals("test-id\\:abc", vss.getSpecificationText());
+        assertEquals(8, vss.getIdDelimPos());
+        assertEquals("test-id\\:abc", vss.getSpecificationText());
 
         // very basic expression that should not be seen as a value source
         vss = ValueSources.createSpecification("this is a simple expression");
         assertFalse(vss.isValid());
         assertFalse(vss.isEscaped());
-	    assertEquals(-1, vss.getIdDelimPos());
-	    assertEquals("this is a simple expression", vss.getSpecificationText());
+        assertEquals(-1, vss.getIdDelimPos());
+        assertEquals("this is a simple expression", vss.getSpecificationText());
 
         // xyz should be treated as a processing instruction since it's in []
         vss = ValueSources.createSpecification("test-id:[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
         assertEquals("xyz", vss.getProcessingInstructions());
-	    assertEquals(7, vss.getIdDelimPos());
-	    assertEquals("abc", vss.getParams());
+        assertEquals(7, vss.getIdDelimPos());
+        assertEquals("abc", vss.getParams());
 
         // xyz should NOT be treated as a processing instruction since the first [ is escaped
         vss = ValueSources.createSpecification("test-id:\\[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
-	    assertNull(vss.getProcessingInstructions());
+        assertNull(vss.getProcessingInstructions());
         assertEquals("[xyz]abc", vss.getParams());
 
         // this is an invalid specification since the [ is not closed
@@ -287,22 +282,22 @@ public class ValueSourcesTest extends TestCase
         ValueSource svs = ValueSources.getInstance().getValueSource("simple-expr:this is ${static:my world}", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         assertNotNull(svs);
         assertEquals(ValueSrcExpressionValueSource.class, svs.getClass());
-	    assertEquals("this is my world", svs.getTextValue(null));
+        assertEquals("this is my world", svs.getTextValue(null));
 
-	    ValueContext vc = ValueSources.getInstance().createDefaultValueContext();
-	    assertEquals("this is my world", svs.getTextValue(vc));
+        ValueContext vc = ValueSources.getInstance().createDefaultValueContext();
+        assertEquals("this is my world", svs.getTextValue(vc));
 
         svs = ValueSources.getInstance().getValueSource("simple-expr\\:this is ${my.expr}", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         assertNull(svs);
 
-	    ValueSource staticVS = ValueSources.getInstance().getValueSource("static:This is static text", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-	    assertNotNull(staticVS);
-	    assertEquals(StaticValueSource.class, staticVS.getClass());
-		assertTrue(staticVS.hasValue(null));
-	    assertEquals("This is static text", staticVS.getTextValue(null));
+        ValueSource staticVS = ValueSources.getInstance().getValueSource("static:This is static text", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+        assertNotNull(staticVS);
+        assertEquals(StaticValueSource.class, staticVS.getClass());
+        assertTrue(staticVS.hasValue(null));
+        assertEquals("This is static text", staticVS.getTextValue(null));
 
-		Value staticValue = new GenericValue("This is static text");
-	    assertEquals(staticValue.getTextValue(), staticVS.getPresentationValue(null).getTextValue());
+        Value staticValue = new GenericValue("This is static text");
+        assertEquals(staticValue.getTextValue(), staticVS.getPresentationValue(null).getTextValue());
     }
 
     public void testGetSingleOrStaticValueSource()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,26 +28,32 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: XmlDataModelDtd.java,v 1.3 2003-12-05 04:49:04 roque.hernandez Exp $
- */
-
 package com.netspective.commons.xdm;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.TemplateProducers;
 
 public class XmlDataModelDtd
 {
@@ -119,7 +120,7 @@ public class XmlDataModelDtd
 
     /**
      * Prints the header of the generated output.
-     *
+     * <p/>
      * <p>Basically this prints the XML declaration, defines some
      * entities and the project element.</p>
      */
@@ -165,7 +166,7 @@ public class XmlDataModelDtd
     private void printElementDecl(PrintWriter out, XmlDataModel model, XmlDataModelSchema parentSchema, String name, Class element) throws DataModelException
     {
         TemplateProducers templateProducers = null;
-        if(parentSchema instanceof TemplateProducerParent)
+        if (parentSchema instanceof TemplateProducerParent)
             templateProducers = ((TemplateProducerParent) parentSchema).getTemplateProducers();
 
         if (visitedElements.containsKey(name))
@@ -191,7 +192,7 @@ public class XmlDataModelDtd
         while (iterator.hasNext())
         {
             String nestedName = (String) iterator.next();
-            if(schema.getOptions().ignoreNestedElement(nestedName))
+            if (schema.getOptions().ignoreNestedElement(nestedName))
                 continue;
             list.add(nestedName);
         }
@@ -215,12 +216,12 @@ public class XmlDataModelDtd
 
             boolean first = count > 0 ? false : true;
 
-            if(templateProducers != null)
+            if (templateProducers != null)
             {
                 iterator = templateProducers.getElementNames().iterator();
                 while (iterator.hasNext())
                 {
-                    if (! first)
+                    if (!first)
                         sb.append(" | ");
                     sb.append(iterator.next());
                 }
@@ -235,26 +236,26 @@ public class XmlDataModelDtd
         sb.append(">");
 
         XmlDataModelSchema.PropertyNames elemNames = (XmlDataModelSchema.PropertyNames) parentPropertyNames.get(name);
-        if(! elemNames.isPrimaryName(name))
-            sb.append(" <!-- alias for '"+ elemNames.getPrimaryName() +"' element -->");
+        if (!elemNames.isPrimaryName(name))
+            sb.append(" <!-- alias for '" + elemNames.getPrimaryName() + "' element -->");
 
         out.println(sb);
 
         sb.setLength(0);
         sb.append("<!ATTLIST ").append(name);
-        sb.append(lSep).append("          class CDATA \""+ element.getName() + "\"");
+        sb.append(lSep).append("          class CDATA \"" + element.getName() + "\"");
 
-        if(model instanceof TemplateConsumer)
+        if (model instanceof TemplateConsumer)
         {
             TemplateConsumerDefn tcd = ((TemplateConsumer) model).getTemplateConsumerDefn();
-            sb.append(lSep).append("          "+ tcd.getTemplateRefAttrName() +" CDATA #IMPLIED <!-- template consumer namespace: "+ tcd.getNameSpaceId() +" -->");
+            sb.append(lSep).append("          " + tcd.getTemplateRefAttrName() + " CDATA #IMPLIED <!-- template consumer namespace: " + tcd.getNameSpaceId() + " -->");
         }
 
         iterator = schema.getAttributes().iterator();
         while (iterator.hasNext())
         {
             String attrName = (String) iterator.next();
-            if(schema.getOptions().ignoreAttribute(attrName))
+            if (schema.getOptions().ignoreAttribute(attrName))
                 continue;
 
             sb.append(lSep).append("          ").append(attrName).append(" ");
@@ -273,7 +274,7 @@ public class XmlDataModelDtd
                     {
                         sb.append("CDATA ");
                     }
-                    else if(!areNmtokens(values))
+                    else if (!areNmtokens(values))
                     {
                         sb.append("CDATA (NOT VALID XML-NMTOKENS) ");
                     }
@@ -293,11 +294,11 @@ public class XmlDataModelDtd
                 }
                 catch (InstantiationException ie)
                 {
-                    sb.append("CDATA ("+ ie.getMessage() +") ");
+                    sb.append("CDATA (" + ie.getMessage() + ") ");
                 }
                 catch (IllegalAccessException iae)
                 {
-                    sb.append("CDATA ("+ iae.getMessage() +") ");
+                    sb.append("CDATA (" + iae.getMessage() + ") ");
                 }
             }
             else
@@ -306,8 +307,8 @@ public class XmlDataModelDtd
             }
             sb.append("#IMPLIED <!-- ");
             XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-            if(attrNames != null && !attrNames.isPrimaryName(attrName))
-                sb.append("alias for '"+ attrNames.getPrimaryName() +"' attribute, ");
+            if (attrNames != null && !attrNames.isPrimaryName(attrName))
+                sb.append("alias for '" + attrNames.getPrimaryName() + "' attribute, ");
             sb.append(type.getName());
             sb.append(" -->");
         }
@@ -319,7 +320,7 @@ public class XmlDataModelDtd
         for (int i = 0; i < count; i++)
         {
             String nestedName = (String) list.get(i);
-            if(schema.getOptions().ignoreNestedElement(nestedName))
+            if (schema.getOptions().ignoreNestedElement(nestedName))
                 continue;
 
             if (!"#PCDATA".equals(nestedName)
@@ -330,14 +331,14 @@ public class XmlDataModelDtd
             }
         }
 
-        if(templateProducers != null)
+        if (templateProducers != null)
         {
             iterator = templateProducers.getElementNames().iterator();
             while (iterator.hasNext())
             {
                 String producerName = (String) iterator.next();
                 TemplateProducer tp = templateProducers.get(producerName);
-                if(visitedProducers.contains(tp))
+                if (visitedProducers.contains(tp))
                     continue;
 
                 visitedProducers.add(tp);
@@ -346,7 +347,7 @@ public class XmlDataModelDtd
                 sb.append(tp.getElementName()).append(" (#PCDATA)*>").append("\n");
                 sb.append("<!ATTLIST ").append(tp.getElementName()).append("\n");
                 sb.append("          ").append(tp.getTemplateNameAttrName()).append(" CDATA #REQUIRED");
-                sb.append(" <!-- template definition namespace: "+ tp.getNameSpaceId() +" -->").append("\n");
+                sb.append(" <!-- template definition namespace: " + tp.getNameSpaceId() + " -->").append("\n");
                 sb.append("          ").append(tp.getTemplateInhAttrName()).append(" CDATA #IMPLIED>\n");
 
                 out.println(sb);
@@ -381,7 +382,7 @@ public class XmlDataModelDtd
 
     /**
      * Do the Strings all match the XML-NMTOKEN production?
-     *
+     * <p/>
      * <p>Otherwise they are not suitable as an enumerated attribute,
      * for example.</p>
      */

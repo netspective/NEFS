@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,33 +28,26 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.7 2003-10-07 18:16:24 shahid.shah Exp $
- */
-
 package com.netspective.sparx.panel;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.io.Writer;
-import java.io.IOException;
-import java.io.Reader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
 
 import com.Ostermiller.Syntax.Lexer.Lexer;
 import com.Ostermiller.Syntax.Lexer.Token;
-
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogContext;
 
 public class HtmlSyntaxHighlightPanel extends AbstractPanel
 {
@@ -113,12 +101,12 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        if(text != null)
+        if (text != null)
         {
             Reader reader = new StringReader(text);
             emitHtml(lexerType, reader, writer);
         }
-        else if(file != null)
+        else if (file != null)
         {
             emitHtml(file, writer);
         }
@@ -133,8 +121,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
 
     static
     {
-        register(
-                com.Ostermiller.Syntax.Lexer.HTMLLexer1.class,
+        register(com.Ostermiller.Syntax.Lexer.HTMLLexer1.class,
                 new String[]{
                     "htm",
                     "html",
@@ -142,29 +129,21 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
                     "ftl",
                     "jsp",
                     "xsl",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.JavaLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.JavaLexer.class,
                 new String[]{
                     "jav",
                     "java",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.JavaScriptLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.JavaScriptLexer.class,
                 new String[]{
                     "js",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.SQLLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.SQLLexer.class,
                 new String[]{
                     "sql",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.CLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.CLexer.class,
                 new String[]{
                     "c",
                     "h",
@@ -175,17 +154,13 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
                     "hpp",
                     "hxx",
                     "hh",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.PropertiesLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.PropertiesLexer.class,
                 new String[]{
                     "props",
                     "properties",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.LatexLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.LatexLexer.class,
                 new String[]{
                     "tex",
                     "sty",
@@ -193,24 +168,21 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
                     "dtx",
                     "ins",
                     "latex",
-                }
-        );
-        register(
-                com.Ostermiller.Syntax.Lexer.PlainLexer.class,
+                });
+        register(com.Ostermiller.Syntax.Lexer.PlainLexer.class,
                 new String[]{
                     "txt",
                     "text",
-                }
-        );
+                });
     }
 
     /**
      * Register a lexer to handle the given mime types and fileExtensions.
-     * <p>
+     * <p/>
      * If a document has a type "text/plain" it will first match a registered
      * mime type of "text/plain" and then a registered mime type of "text".
      *
-     * @param lexer String representing the fully qualified java name of the lexer.
+     * @param lexer          String representing the fully qualified java name of the lexer.
      * @param fileExtensions array of mime types that the lexer can handle.
      * @param fileExtensions array of fileExtensions the lexer can handle. (case insensitive)
      */
@@ -226,7 +198,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Open a span if needed for the given style.
      *
      * @param description style description.
-     * @param out place to write output.
+     * @param out         place to write output.
      */
     private static void openSpan(String description, Writer out) throws IOException
     {
@@ -237,7 +209,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Close a span if needed for the given style.
      *
      * @param description style description.
-     * @param out place to write output.
+     * @param out         place to write output.
      */
     private static void closeSpan(String description, Writer out) throws IOException
     {
@@ -248,7 +220,8 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Write a highlighted document html fragment.
      *
      * @param lexer Lexer from which to get input.
-     * @param out place to write output.
+     * @param out   place to write output.
+     *
      * @throws java.io.IOException if an I/O error occurs.
      */
     public static void emitHtml(Lexer lexer, Writer out) throws IOException
@@ -282,8 +255,10 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Write a highlighted document html fragment.
      *
      * @param type the fileName to get the source from
-     * @param out place to write output.
+     * @param out  place to write output.
+     *
      * @return true if this file type can be handled
+     *
      * @throws java.io.IOException if an I/O error occurs.
      */
     public static boolean emitHtml(String type, Reader in, Writer out) throws IOException
@@ -311,8 +286,10 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Write a highlighted document html fragment.
      *
      * @param file the fileName to get the source from
-     * @param out place to write output.
+     * @param out  place to write output.
+     *
      * @return true if this file type can be handled
+     *
      * @throws java.io.IOException if an I/O error occurs.
      */
     public static boolean emitHtml(File file, Writer out) throws IOException
@@ -331,8 +308,10 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * Write a highlighted document html fragment.
      *
      * @param fileName the fileName to get the source from
-     * @param out place to write output.
+     * @param out      place to write output.
+     *
      * @return true if this file type can be handled
+     *
      * @throws java.io.IOException if an I/O error occurs.
      */
     public static boolean emitHtml(String fileName, Writer out) throws IOException
@@ -345,7 +324,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
      * it from rendering in html.
      *
      * @param text The string to be escaped and written
-     * @param out output gets written here
+     * @param out  output gets written here
      */
     private static void writeEscapedHTML(String text, Writer out) throws IOException
     {
@@ -355,24 +334,24 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
             switch (ch)
             {
                 case '<':
-                        out.write("&lt;");
-                        break;
+                    out.write("&lt;");
+                    break;
 
                 case '>':
-                        out.write("&gt;");
-                        break;
+                    out.write("&gt;");
+                    break;
 
                 case '&':
-                        out.write("&amp;");
-                        break;
+                    out.write("&amp;");
+                    break;
 
                 case '"':
-                        out.write("&quot;");
-                        break;
+                    out.write("&quot;");
+                    break;
 
                 default:
-                        out.write(ch);
-                        break;
+                    out.write(ch);
+                    break;
             }
         }
     }

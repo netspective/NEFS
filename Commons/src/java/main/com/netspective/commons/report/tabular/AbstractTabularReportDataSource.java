@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,22 +28,15 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AbstractTabularReportDataSource.java,v 1.12 2003-09-14 17:01:16 shahid.shah Exp $
- */
-
 package com.netspective.commons.report.tabular;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -81,6 +69,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Gets the report object associated with the scroll state
+         *
          * @return
          */
         public TabularReport getReport()
@@ -90,6 +79,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Sets the report object associated with the scroll state
+         *
          * @param report
          */
         public void setReport(TabularReport report)
@@ -99,11 +89,12 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Keeps track of the number of rows that has been viewed before reaching the end of the resultset
+         *
          * @param rowsProcessed
          */
         public void accumulateRowsProcessed(int rowsProcessed)
         {
-            if(! reachedEndOnce)
+            if (!reachedEndOnce)
                 this.rowsProcessed += rowsProcessed;
         }
 
@@ -119,6 +110,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Get the currently viewed active page number
+         *
          * @return
          */
         public int getActivePage()
@@ -128,7 +120,8 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Gets the datasource object associated with the scroll state
-         * @return   TabularReportDataSource
+         *
+         * @return TabularReportDataSource
          */
         public TabularReportDataSource getDataSource()
         {
@@ -147,6 +140,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Gets the number of rows per page for display
+         *
          * @return
          */
         public int getRowsPerPage()
@@ -156,6 +150,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Gets the number of rows already processed
+         *
          * @return
          */
         public int getRowsProcessed()
@@ -165,6 +160,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
         /**
          * Gets the total number of rows
+         *
          * @return
          */
         public int getTotalPages()
@@ -175,6 +171,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         /**
          * Sets the active page within the scroll state and calculates the current row number within the
          * result set
+         *
          * @param page
          */
         public void setActivePage(int page)
@@ -189,6 +186,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         /**
          * Sets the rows per page for the scroll state and calculates the total number of pages for the scroll state
          * based on the total number of rows in the result set.
+         *
          * @param rowsPerPage
          */
         public void setRowsPerPage(int rowsPerPage)
@@ -197,12 +195,14 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
             // get the total number of rows in the result set
             int totalRows = AbstractTabularReportDataSource.this.getTotalRows();
             // calculate the total number of pages
-            this.totalPages = (totalRows % rowsPerPage == 0) ? (totalRows / rowsPerPage) : ((totalRows / rowsPerPage) + 1);
+            this.totalPages = (totalRows % rowsPerPage == 0)
+                    ? (totalRows / rowsPerPage) : ((totalRows / rowsPerPage) + 1);
 
         }
 
         /**
          * Recalculates the active page number using the delta value
+         *
          * @param delta
          */
         public void setPageDelta(int delta)
@@ -241,7 +241,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     {
         public void run()
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug("Automatically closing " + this + " after " + autoCloseInactivityDuration + " milliseconds of inactivity.");
             close();
         }
@@ -272,18 +272,22 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     public void recordActivity()
     {
         lastAccessed = System.currentTimeMillis();
-        if(autoCloseTimer != null)
+        if (autoCloseTimer != null)
         {
-            if(log.isDebugEnabled())
+            if (log.isDebugEnabled())
                 log.debug("Activity recorded in " + this + ", resetting to auto close in " + autoCloseInactivityDuration + " milliseconds.");
             scheduleAutoCloseCheck();
         }
     }
 
     public abstract boolean hasMoreRows();
+
     public abstract boolean next();
+
     public abstract void setActiveRow(int rowNum);
+
     public abstract boolean isScrollable();
+
     public abstract int getTotalRows();
 
     public TabularReportDataSourceScrollState createScrollState(String identifier)
@@ -340,16 +344,16 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
     protected void scheduleAutoCloseCheck()
     {
-        if(log.isDebugEnabled())
+        if (log.isDebugEnabled())
             log.debug("Setting " + this + " to auto close in " + autoCloseInactivityDuration + " milliseconds.");
 
-        if(autoCloseTimer != null)
+        if (autoCloseTimer != null)
         {
             autoCloseTimer.cancel();
             autoCloseTimer = null;
         }
 
-        if(autoCloseInactivityDuration > 0)
+        if (autoCloseInactivityDuration > 0)
         {
             autoCloseTimer = new Timer();
             autoCloseTimer.schedule(new AutoCloseTask(), autoCloseInactivityDuration);
@@ -358,10 +362,10 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
     public void close()
     {
-        if(log.isDebugEnabled())
+        if (log.isDebugEnabled())
             log.debug("Closing " + this + ".");
 
-        if(autoCloseTimer != null)
+        if (autoCloseTimer != null)
         {
             autoCloseTimer.cancel();
             autoCloseTimer = null;

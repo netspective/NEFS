@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Transform.java,v 1.4 2004-08-09 22:14:27 shahid.shah Exp $
- */
-
 package com.netspective.commons.text;
 
 import java.io.File;
@@ -236,12 +224,12 @@ public class Transform
     public StreamSource getStreamSource(ValueSource vs, ValueContext vc, boolean isFile)
     {
         String sourceValue = vs.getTextValue(vc);
-        if(isFile)
+        if (isFile)
             return new StreamSource(new File(sourceValue));
         else
         {
             Resource resource =
-                relativeToClass == null ?
+                    relativeToClass == null ?
                     new Resource(this.getClass().getClassLoader(), sourceValue) :
                     new Resource(relativeToClass, sourceValue);
             return new StreamSource(resource.getResourceAsStream());
@@ -255,17 +243,17 @@ public class Transform
 
     public boolean render(Writer writer, ValueContext vc, Source transformSource, Map additionalParams, boolean writeErrors) throws TransformerConfigurationException, TransformerException, IOException
     {
-        if(source == null && transformSource == null)
+        if (source == null && transformSource == null)
         {
-            if(writeErrors)
+            if (writeErrors)
                 writer.write("No source attribute provided.");
             log.error("No source attribute provided for " + this);
             return false;
         }
 
-        if(styleSheet == null)
+        if (styleSheet == null)
         {
-            if(writeErrors)
+            if (writeErrors)
                 writer.write("No style-sheet attribute provided.");
             log.error("No style-sheet attribute provided for " + this);
             return false;
@@ -274,11 +262,11 @@ public class Transform
         try
         {
             Map savedProps = new HashMap();
-            for(int i = 0; i < systemProperties.size(); i++)
+            for (int i = 0; i < systemProperties.size(); i++)
             {
                 SystemProperty prop = (SystemProperty) systemProperties.get(i);
                 String currentValue = System.getProperty(prop.getName());
-                if(currentValue != null)
+                if (currentValue != null)
                     savedProps.put(prop.getName(), currentValue);
                 System.setProperty(prop.getName(), prop.getValue().getTextValue(vc));
             }
@@ -286,52 +274,55 @@ public class Transform
             TransformerFactory tFactory = TransformerFactory.newInstance();
             Transformer transformer = tFactory.newTransformer(getStreamSource(styleSheet, vc, styleSheetIsFile));
 
-            for(Iterator i = savedProps.entrySet().iterator(); i.hasNext(); )
+            for (Iterator i = savedProps.entrySet().iterator(); i.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 System.setProperty((String) entry.getKey(), (String) entry.getValue());
             }
 
             List params = getParams();
-            for(int i = 0; i < params.size(); i++)
+            for (int i = 0; i < params.size(); i++)
             {
                 StyleSheetParameter param = (StyleSheetParameter) params.get(i);
                 transformer.setParameter(param.getName(), param.getValue().getTextValue(vc));
             }
 
-            if(additionalParams != null)
+            if (additionalParams != null)
             {
-                for(Iterator i = additionalParams.entrySet().iterator(); i.hasNext(); )
+                for (Iterator i = additionalParams.entrySet().iterator(); i.hasNext();)
                 {
                     Map.Entry entry = (Map.Entry) i.next();
                     transformer.setParameter(entry.getKey().toString(), entry.getValue());
                 }
             }
 
-            transformer.transform(transformSource != null ? transformSource : getStreamSource(source, vc, sourceIsFile),
-                                  new StreamResult(writer));
+            transformer.transform(transformSource != null
+                    ? transformSource : getStreamSource(source, vc, sourceIsFile),
+                    new StreamResult(writer));
 
             return true;
         }
-        catch(TransformerConfigurationException e)
+        catch (TransformerConfigurationException e)
         {
             log.error("XSLT error in " + this.getClass().getName(), e);
-            if(writeErrors)
+            if (writeErrors)
             {
-                writer.write("<pre>"+ TextUtils.getInstance().getStackTrace(e) +"</pre>");
+                writer.write("<pre>" + TextUtils.getInstance().getStackTrace(e) + "</pre>");
                 return false;
             }
-            else throw e;
+            else
+                throw e;
         }
-        catch(TransformerException e)
+        catch (TransformerException e)
         {
             log.error("XSLT error in " + this.getClass().getName(), e);
-            if(writeErrors)
+            if (writeErrors)
             {
-                writer.write("<pre>"+ TextUtils.getInstance().getStackTrace(e) +"</pre>");
+                writer.write("<pre>" + TextUtils.getInstance().getStackTrace(e) + "</pre>");
                 return false;
             }
-            else throw e;
+            else
+                throw e;
         }
     }
 }

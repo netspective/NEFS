@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,27 +28,20 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ImportConfigurationTask.java,v 1.5 2003-05-18 22:25:40 shahid.shah Exp $
- */
-
 package com.netspective.commons.ant;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
-import java.io.File;
 
 import org.apache.tools.ant.BuildException;
 
-import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.Configuration;
-import com.netspective.commons.config.Property;
+import com.netspective.commons.config.Configurations;
 import com.netspective.commons.config.ConfigurationsComponent;
+import com.netspective.commons.config.Property;
 import com.netspective.commons.xdm.XdmComponent;
 
 public class ImportConfigurationTask extends XdmComponentTask
@@ -98,16 +86,16 @@ public class ImportConfigurationTask extends XdmComponentTask
 
         int imported = 0;
         Configuration config = manager.getConfiguration(configId);
-        for(Iterator i = config.getChildrenMap().keySet().iterator(); i.hasNext();)
+        for (Iterator i = config.getChildrenMap().keySet().iterator(); i.hasNext();)
         {
             Map.Entry configEntry = (Map.Entry) i.next();
             Property property = (Property) configEntry.getValue();
 
             String antPropertyName = prefix + property.getName();
-            if(! property.isDynamic())
+            if (!property.isDynamic())
             {
                 project.setProperty(antPropertyName, config.getTextValue(null, property.getName()));
-                if(isDebug()) log(antPropertyName + " = " + project.getProperty(antPropertyName));
+                if (isDebug()) log(antPropertyName + " = " + project.getProperty(antPropertyName));
                 imported++;
             }
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,36 +28,28 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: JunxionException.java,v 1.1 2003-03-13 18:37:20 shahid.shah Exp $
- */
-
 package com.netspective.junxion;
 
 import java.util.ResourceBundle;
 
 /**
  * Encapsulate a general Junxion error or warning.
- *
+ * <p/>
  * <p>This class can contain basic error or warning information from
  * either the a parser or the application: a parser writer or
  * application writer can subclass it to provide additional
  * functionality. Junxion handlers may throw this exception or
  * any exception subclassed from it.</p>
- *
+ * <p/>
  * <p>If the application needs to pass through other types of
  * exceptions, it must wrap those exceptions in a JunxionException
  * or an exception derived from a JunxionException.</p>
- *
+ * <p/>
  * <p>If the parser or application needs to include information about a
  * specific location in an XML document, it should use the
  * {@link com.netspective.junxion.edi.input.ParseException} subclass.</p>
- *
  */
 public class JunxionException extends Exception
 {
@@ -95,7 +82,7 @@ public class JunxionException extends Exception
 
     /**
      * Create a new JunxionException wrapping an existing exception.
-     *
+     * <p/>
      * <p>The existing exception will be embedded in the new
      * one, and its message will become the default message for
      * the JunxionException.</p>
@@ -111,12 +98,12 @@ public class JunxionException extends Exception
 
     /**
      * Create a new JunxionException from an existing exception.
-     *
+     * <p/>
      * <p>The existing exception will be embedded in the new
      * one, but the new exception will have its own message.</p>
      *
      * @param message The detail message.
-     * @param e The exception to be wrapped in a JunxionException.
+     * @param e       The exception to be wrapped in a JunxionException.
      */
     public JunxionException(String message, Exception e)
     {
@@ -127,7 +114,7 @@ public class JunxionException extends Exception
 
     /**
      * Return a detail message for this exception.
-     *
+     * <p/>
      * <p>If there is an embedded exception, and if the JunxionException
      * has no detail message of its own, this method will return
      * the detail message from the embedded exception.</p>

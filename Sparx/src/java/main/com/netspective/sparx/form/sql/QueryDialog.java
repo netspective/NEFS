@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,79 +28,71 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: QueryDialog.java,v 1.13 2003-11-16 15:18:03 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form.sql;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogsPackage;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.form.field.type.TextField;
-import com.netspective.sparx.form.field.type.IntegerField;
-import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
-import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
-import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.sql.Query;
-import com.netspective.sparx.panel.QueryReportPanel;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlTabularReportPanel;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogSkin;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
+import com.netspective.sparx.form.field.type.IntegerField;
+import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
+import com.netspective.sparx.form.field.type.TextField;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.sql.Query;
+import com.netspective.sparx.theme.Theme;
 
 /**
  * Class for handling query report actions such as navigation and selection
  */
 public class QueryDialog extends Dialog
 {
-    public static final String PARAMNAME_ROWS_PER_PAGE  = ".report_rows_per_page";
-    public static final String PARAMNAME_SELECTABLE     = ".report_selectable";
-    public static final String PARAMNAME_REPORT_PANEL   = ".report_panel";
-    public static final String PARAMNAME_REPORT_SKIN    = ".report_skin";
-    public static final String PARAMNAME_QUERY          = ".query";
+    public static final String PARAMNAME_ROWS_PER_PAGE = ".report_rows_per_page";
+    public static final String PARAMNAME_SELECTABLE = ".report_selectable";
+    public static final String PARAMNAME_REPORT_PANEL = ".report_panel";
+    public static final String PARAMNAME_REPORT_SKIN = ".report_skin";
+    public static final String PARAMNAME_QUERY = ".query";
 
 
     private static final Log log = LogFactory.getLog(QueryDialog.class);
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_NAME = "rows-per-page";
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION = "Rows per page";
     public static final String DEFAULT_ROWS_PER_PAGE_FIELD_VALUE = "10";
-    public static final String REPORT_ACTION_FIELD_NAME =  Dialog.PARAMNAME_CONTROLPREFIX +  "report_action";
+    public static final String REPORT_ACTION_FIELD_NAME = Dialog.PARAMNAME_CONTROLPREFIX + "report_action";
 
     //  declare all the possible report actions
-    public static final int EXECUTE_SELECT_ACTION   = 0;  // this flag will never be used on the server side
-    public static final int EXECUTE_RS_NEXT_ACTION  = 1;
-    public static final int EXECUTE_RS_PREV_ACTION  = 2;
+    public static final int EXECUTE_SELECT_ACTION = 0;  // this flag will never be used on the server side
+    public static final int EXECUTE_RS_NEXT_ACTION = 1;
+    public static final int EXECUTE_RS_PREV_ACTION = 2;
     public static final int EXECUTE_RS_FIRST_ACTION = 3;
-    public static final int EXECUTE_RS_DONE_ACTION  = 4;
-    public static final int EXECUTE_RS_LAST_ACTION  = 5;
+    public static final int EXECUTE_RS_DONE_ACTION = 4;
+    public static final int EXECUTE_RS_LAST_ACTION = 5;
 
     private Query query;
     private HtmlTabularReport report;
@@ -156,7 +143,7 @@ public class QueryDialog extends Dialog
     }
 
     /**
-     *  Creates the selected item field. By default, the field is hidden.
+     * Creates the selected item field. By default, the field is hidden.
      */
     public void createSelectedItemsField()
     {
@@ -179,9 +166,9 @@ public class QueryDialog extends Dialog
     public void createParamFields()
     {
         QueryParameters params = query.getParams();
-        if(params != null)
+        if (params != null)
         {
-            for(int i = 0; i < query.getParams().size(); i++)
+            for (int i = 0; i < query.getParams().size(); i++)
             {
                 QueryParameter param = query.getParams().get(i);
                 DialogField field = new TextField();
@@ -217,8 +204,10 @@ public class QueryDialog extends Dialog
 
     /**
      * Creates the dialog context associated with the dialog
+     *
      * @param nc
      * @param skin
+     *
      * @return
      */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
@@ -255,6 +244,7 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the report panel associated with the report
+     *
      * @return
      */
     public HtmlTabularReportPanel getReportPanel()
@@ -264,6 +254,7 @@ public class QueryDialog extends Dialog
 
     /**
      * Sets the report panel associated with the report
+     *
      * @param reportPanel
      */
     public void setReportPanel(HtmlTabularReportPanel reportPanel)
@@ -303,6 +294,7 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the report rows per page value
+     *
      * @return
      */
     public String getRowsPerPageParamName()
@@ -312,6 +304,7 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the selectable report flag
+     *
      * @return
      */
     public String getSelectableParamName()
@@ -321,37 +314,41 @@ public class QueryDialog extends Dialog
 
     /**
      * Gets the name of the dialog field containing the report panel name
+     *
      * @return
      */
     public String getReportPanelParamName()
     {
         return PARAMNAME_DIALOGPREFIX + getHtmlFormName() + PARAMNAME_REPORT_PANEL;
     }
+
     /**
      * Renders the report of the dialog query
+     *
      * @param writer
      * @param dc
      * @param reportSkin
+     *
      * @throws IOException
      * @throws QueryDefinitionException
      */
     public void renderReport(Writer writer, DialogContext dc, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         HtmlTabularReportPanel reportPanel = null;
-        QueryDialogContext qdc = (QueryDialogContext)dc;
+        QueryDialogContext qdc = (QueryDialogContext) dc;
         if (qdc.getRowsPerPage() > 0)
         {
             HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
-            if(scrollStateById == null)
+            if (scrollStateById == null)
             {
                 // if our transaction does not have a scroll state, but there is an active scroll state available, then it
                 // means that we need to close the previous one and remove the attribute so that the connection can be
                 // closed and returned to the pool
                 HtmlTabularReportDataSourceScrollState activeScrollState = scrollStatesManager.getActiveScrollState(dc);
 
-                if(activeScrollState != null && ! getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
+                if (activeScrollState != null && !getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_MULTIPLE_SCROLL_STATES))
                     scrollStatesManager.removeActiveState(dc, activeScrollState);
                 reportPanel = qdc.getReportPanel();
                 reportPanel.setScrollRowsPerPage(qdc.getRowsPerPage());
@@ -374,6 +371,7 @@ public class QueryDialog extends Dialog
 
     /**
      * Initiates state changes to each individual field of the dialog
+     *
      * @param dc
      * @param stage
      */
@@ -381,14 +379,14 @@ public class QueryDialog extends Dialog
     {
         QueryDialogContext qdc = (QueryDialogContext) dc;
         DialogFieldStates states = dc.getFieldStates();
-        if(dc.getDialogState().isInExecuteMode())
+        if (dc.getDialogState().isInExecuteMode())
         {
             //DialogField.State state = dc.getFieldStates().getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME);
             //rowsPerPage =  state.getValue().getIntValue();
 
             // hide all the dialog fields
             DialogFields fields = getFields();
-            for(int i = 0; i < fields.size(); i++)
+            for (int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
                 field.makeStateChanges(dc, stage);
@@ -422,8 +420,10 @@ public class QueryDialog extends Dialog
 
     /**
      * Executes the query associated with the dialog and displays the report
+     *
      * @param writer
      * @param dc
+     *
      * @throws IOException
      * @throws DialogExecuteException
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,13 +28,7 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
- */
-
-/**
- * @version $Id: CommandListItem.java,v 1.4 2003-12-08 05:11:50 aye.thu Exp $
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 package com.netspective.sparx.command;
 
@@ -67,18 +56,20 @@ public class CommandListItem
 
     /**
      * Gets the URL associated with this command item
+     *
      * @return URL value source
      */
     public String getUrl(HttpServletValueContext nc)
     {
         // TODO: Need to change this to return some kind of value source instead of returning a string
         String requestURL = nc.getHttpRequest().getRequestURL().toString();
-        return (requestURL.indexOf("?") != -1 ?  (requestURL + "&" + AbstractListCommand.ACTIVE_LIST_ITEM + "=" + index) :
+        return (requestURL.indexOf("?") != -1 ? (requestURL + "&" + AbstractListCommand.ACTIVE_LIST_ITEM + "=" + index) :
                 (requestURL + "?" + AbstractListCommand.ACTIVE_LIST_ITEM + "=" + index));
     }
 
     /**
      * Gets the presentation caption for the command
+     *
      * @return Value source object containing the value expression
      */
     public ValueSource getCaption()
@@ -104,6 +95,7 @@ public class CommandListItem
      * Sets the caption for display of the command as a link. This is optional and if it
      * is not defined, a suitable name or caption from the Command itself is used. For example, for
      * dialogs the dialog name is used as the caption.
+     *
      * @param itemCaption the value source for the caption
      */
     public void setCaption(ValueSource itemCaption)
@@ -113,6 +105,7 @@ public class CommandListItem
 
     /**
      * Gets the more detailed information (compared to the caption) about the command item
+     *
      * @return
      */
     public ValueSource getDescription()
@@ -122,6 +115,7 @@ public class CommandListItem
 
     /**
      * Sets the detailed description to display with the command caption
+     *
      * @param itemDescription
      */
     public void setDescription(ValueSource itemDescription)
@@ -131,6 +125,7 @@ public class CommandListItem
 
     /**
      * Gets the command
+     *
      * @return
      */
     public Command getCommand()
@@ -140,6 +135,7 @@ public class CommandListItem
 
     /**
      * Sets the command
+     *
      * @param command
      */
     public void setCommand(Command command)
@@ -149,6 +145,7 @@ public class CommandListItem
 
     /**
      * Gets the index (position) of this item in the list
+     *
      * @return
      */
     public int getIndex()
@@ -158,6 +155,7 @@ public class CommandListItem
 
     /**
      * Sets the index (position) of this item in the list
+     *
      * @param index
      */
     public void setIndex(int index)

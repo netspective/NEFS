@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HttpUtils.java,v 1.8 2004-08-09 22:15:15 shahid.shah Exp $
- */
-
 package com.netspective.sparx.util;
 
 import java.io.IOException;
@@ -88,52 +76,53 @@ public class HttpUtils
     public static void assignParamToInstance(HttpServletRequest req, XmlDataModelSchema schema, Object instance, String paramName, String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
         boolean required = false;
-        if(paramName.endsWith("!"))
+        if (paramName.endsWith("!"))
         {
             required = true;
             paramName = paramName.substring(0, paramName.length() - 1);
         }
 
         Method method = (Method) schema.getAttributeSetterMethods().get(paramName);
-        if(method != null)
+        if (method != null)
         {
             Class[] args = method.getParameterTypes();
-            if(args.length == 1)
+            if (args.length == 1)
             {
                 Class arg = args[0];
-                if(java.lang.String.class.equals(arg) && arg.isArray())
+                if (java.lang.String.class.equals(arg) && arg.isArray())
                 {
                     String[] paramValues = req.getParameterValues(paramName);
-                    if((paramValues == null || paramValues.length == 0) && required)
-                            throw new ServletParameterRequiredException("Servlet parameter list '"+ paramName + "' is required but not available.");
-                    method.invoke(instance, new Object[] { paramValues });
+                    if ((paramValues == null || paramValues.length == 0) && required)
+                        throw new ServletParameterRequiredException("Servlet parameter list '" + paramName + "' is required but not available.");
+                    method.invoke(instance, new Object[]{paramValues});
                 }
                 else
                 {
                     XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) schema.getAttributeSetters().get(paramName);
                     String paramValue = req.getParameter(paramName);
-                    if(paramValue == null)
+                    if (paramValue == null)
                     {
-                        if(required)
-                            throw new ServletParameterRequiredException("Servlet parameter '"+ paramName + "' is required but not available.");
+                        if (required)
+                            throw new ServletParameterRequiredException("Servlet parameter '" + paramName + "' is required but not available.");
 
                         paramValue = defaultValue;
                     }
                     as.set(null, instance, paramValue);
                 }
             }
-            else if(log.isDebugEnabled())
-                log.debug("Attempting to assign '"+ paramName +"' to a method in '"+ instance.getClass() +"' but the method has more than one argument.");
+            else if (log.isDebugEnabled())
+                log.debug("Attempting to assign '" + paramName + "' to a method in '" + instance.getClass() + "' but the method has more than one argument.");
         }
-        else if(log.isDebugEnabled())
-            log.debug("Attempting to assign '"+ paramName +"' to a method in '"+ instance.getClass() +"' but there is no mutator available.");
+        else if (log.isDebugEnabled())
+            log.debug("Attempting to assign '" + paramName + "' to a method in '" + instance.getClass() + "' but there is no mutator available.");
     }
 
     /**
      * Given a list of HTTP parameter names, assign their current values using appropriate accessor methods of the
      * instance object (using Java reflection).
-     * @param req The HTTP servlet request
-     * @param instance The object who's mutator methods should be matched
+     *
+     * @param req        The HTTP servlet request
+     * @param instance   The object who's mutator methods should be matched
      * @param paramNames The names of the parameters that should be assigned to the mutators of the instance object.
      *                   This may be '*' (for all parameters) or a comma-separated list of names. The parameter names
      *                   may optionally be followed by an '=' to indicate a default value for the parameter. Parameter
@@ -141,6 +130,7 @@ public class HttpUtils
      *                   is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
      *                   'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
      *                   exception should be thrown if 'b' is not available as a request parameter.
+     *
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      */
@@ -148,9 +138,9 @@ public class HttpUtils
     {
         XmlDataModelSchema schema = XmlDataModelSchema.getSchema(instance.getClass());
 
-        if(paramNames.equals("*"))
+        if (paramNames.equals("*"))
         {
-            for(Enumeration e = req.getParameterNames(); e.hasMoreElements(); )
+            for (Enumeration e = req.getParameterNames(); e.hasMoreElements();)
             {
                 String paramName = (String) e.nextElement();
                 assignParamToInstance(req, schema, instance, paramName, null);
@@ -159,12 +149,12 @@ public class HttpUtils
         else
         {
             String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
-            for(int i = 0; i < retainParams.length; i++)
+            for (int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
                 int defaultValuePos = paramName.indexOf('=');
-                if(defaultValuePos > 0)
-                    assignParamToInstance(req, schema, instance, paramName.substring(0, defaultValuePos), paramName.substring(defaultValuePos+1));
+                if (defaultValuePos > 0)
+                    assignParamToInstance(req, schema, instance, paramName.substring(0, defaultValuePos), paramName.substring(defaultValuePos + 1));
                 else
                     assignParamToInstance(req, schema, instance, paramName, null);
             }
@@ -176,16 +166,16 @@ public class HttpUtils
         StringBuffer result = new StringBuffer(url);
         boolean hasQueryChar = url.indexOf('?') >= 0;
 
-        if(paramNames.equals("*"))
+        if (paramNames.equals("*"))
         {
             int i = 0;
-            for(Enumeration e = req.getParameterNames(); e.hasMoreElements(); )
+            for (Enumeration e = req.getParameterNames(); e.hasMoreElements();)
             {
                 String paramName = (String) e.nextElement();
                 String paramValue = req.getParameter(paramName);
-                if(paramValue != null)
+                if (paramValue != null)
                 {
-                    if(i > 0 || hasQueryChar)
+                    if (i > 0 || hasQueryChar)
                         result.append("&");
                     else
                         result.append("?");
@@ -200,13 +190,13 @@ public class HttpUtils
         else
         {
             String[] retainParams = TextUtils.getInstance().split(paramNames, ",", true);
-            for(int i = 0; i < retainParams.length; i++)
+            for (int i = 0; i < retainParams.length; i++)
             {
                 String paramName = retainParams[i];
                 String paramValue = req.getParameter(paramName);
-                if(paramValue != null)
+                if (paramValue != null)
                 {
-                    if(i > 0 || hasQueryChar)
+                    if (i > 0 || hasQueryChar)
                         result.append("&");
                     else
                         result.append("?");
@@ -223,22 +213,22 @@ public class HttpUtils
 
     public static void renderDevelopmentEnvironmentHeader(Writer writer, NavigationContext nc) throws IOException
     {
-        if(! nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+        if (!nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
             return;
 
         final ProjectComponent projectComponent = nc.getProjectComponent();
-        if(projectComponent.hasErrors())
+        if (projectComponent.hasErrors())
         {
             int errorsCount = projectComponent.getErrors().size() + projectComponent.getWarnings().size();
 
             writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\" bgcolor=darkred><tr>\n");
-            writer.write("  <td nowrap><font size=2 color=white style='font-family: tahoma,arial; font-size: 8pt'><b>You have <font color=yellow>"+ errorsCount +"</font> Netspective Frameworks Project Errors/Warnings.");
-            writer.write("             Visit the <a href='"+ nc.getRootUrl() +"/console/project/input-source#errors' style='color: yellow'>Console</a> to see the messages</b></font></td>\n");
+            writer.write("  <td nowrap><font size=2 color=white style='font-family: tahoma,arial; font-size: 8pt'><b>You have <font color=yellow>" + errorsCount + "</font> Netspective Frameworks Project Errors/Warnings.");
+            writer.write("             Visit the <a href='" + nc.getRootUrl() + "/console/project/input-source#errors' style='color: yellow'>Console</a> to see the messages</b></font></td>\n");
             writer.write("</tr></table>");
         }
 
         final NavigationPage.Flags flags = (NavigationPage.Flags) nc.getActiveState().getFlags();
-        if(flags.isDebuggingRequest())
+        if (flags.isDebuggingRequest())
             develEnvironmentHeader.process(writer, nc, null);
     }
 
@@ -249,7 +239,7 @@ public class HttpUtils
 
         RequestDispatcher rd = request.getRequestDispatcher(includePath);
 
-        if(writer != response.getWriter())
+        if (writer != response.getWriter())
             response = new AlternateOutputDestServletResponse(writer, response);
 
         request.setAttribute(valueContextAttrName, vc);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,35 +28,27 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HttpRequestParametersPanel.java,v 1.3 2003-05-30 23:11:33 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.presentation;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 {
@@ -119,13 +106,13 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
             public ParameterRows()
             {
                 List paramNamesList = new ArrayList();
-                for(Enumeration e = request.getParameterNames(); e.hasMoreElements(); )
+                for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
                     paramNamesList.add(e.nextElement());
 
                 String[] paramNames = (String[]) paramNamesList.toArray(new String[paramNamesList.size()]);
                 Arrays.sort(paramNames);
 
-                for(int i = 0; i < paramNames.length; i++)
+                for (int i = 0; i < paramNames.length; i++)
                 {
                     String name = paramNames[i];
                     String[] values = request.getParameterValues(name);
@@ -135,14 +122,14 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
             public void add(int level, String name, String[] values)
             {
-                if(values.length > 1)
+                if (values.length > 1)
                 {
                     ParameterRow activeRow = new ParameterRow(level, name, null, null);
                     rows.add(activeRow);
-                    for(int i = 0; i < values.length; i++)
-                        rows.add(new ParameterRow(level+1, name + "["+ i +"]", values[i], activeRow));
+                    for (int i = 0; i < values.length; i++)
+                        rows.add(new ParameterRow(level + 1, name + "[" + i + "]", values[i], activeRow));
                 }
-                else if(values.length == 1)
+                else if (values.length == 1)
                     rows.add(new ParameterRow(level, name, values[0], null));
             }
 
@@ -207,7 +194,7 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     return activeRow.name;
@@ -243,7 +230,7 @@ public class HttpRequestParametersPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);

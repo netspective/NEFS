@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: EntityRedirectorPage.java,v 1.3 2004-08-11 05:13:45 shahid.shah Exp $
- */
-
 package com.netspective.sparx.navigate.entity;
 
 import java.sql.SQLException;
@@ -118,7 +106,7 @@ public class EntityRedirectorPage extends NavigationPage
             entitySubtypeName = name;
 
             setEntitySubtype(getEntitySubtypeInfoById(id));
-            if(getEntitySubtype() == null && name != null)
+            if (getEntitySubtype() == null && name != null)
                 setEntitySubtype(getEntitySubtypeInfoByName(name));
         }
     }
@@ -194,7 +182,7 @@ public class EntityRedirectorPage extends NavigationPage
 
         public void setRetainParam(String retainParams)
         {
-            this.retainParams = new String[] { retainParams };
+            this.retainParams = new String[]{retainParams};
         }
 
         public void setRetainParams(String retainParams)
@@ -205,6 +193,7 @@ public class EntityRedirectorPage extends NavigationPage
         /**
          * Sets the retain parameters for the entity subtype. Protected because it should only be called from Java
          * and not XDM.
+         *
          * @param retainParams
          */
         protected void setRetainParams(String[] retainParams)
@@ -246,7 +235,7 @@ public class EntityRedirectorPage extends NavigationPage
         {
             try
             {
-                QueryResultSet qrs = activeEntityQuery.execute(nc, new Object[]{ getEntityIdRequestParamValue(nc) }, false);
+                QueryResultSet qrs = activeEntityQuery.execute(nc, new Object[]{getEntityIdRequestParamValue(nc)}, false);
                 if (qrs != null)
                 {
                     ActiveEntity activeEntity = (ActiveEntity) activeEntityClass.newInstance();
@@ -356,34 +345,34 @@ public class EntityRedirectorPage extends NavigationPage
 
     public void addEntitySubtype(EntitySubtypeInfo subtypeInfo)
     {
-        if(subtypeInfo.getSchemaEnum() != null)
+        if (subtypeInfo.getSchemaEnum() != null)
         {
             String[] params = TextUtils.getInstance().split(subtypeInfo.getSchemaEnum(), ",", true);
-            if(params.length != 2)
+            if (params.length != 2)
                 log.error("the schema-enum attribute in <sub-type> of entity redirector requires 2 params: schema.enum-table,enum-id-or-caption");
             else
             {
                 Project project = getOwner().getProject();
                 Table table = project.getSchemas().getTable(params[0]);
-                if(table == null || !(table instanceof EnumerationTable))
+                if (table == null || !(table instanceof EnumerationTable))
                     log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid schema.enum-table: " + params[0]);
                 else
                 {
                     EnumerationTable enumTable = (EnumerationTable) table;
                     EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
                     EnumerationTableRow enumRow = enumRows.getByIdOrCaptionOrAbbrev(params[1]);
-                    if(enumRow == null)
-                        log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid enum value for "+ params[0] +": " + params[1]);
+                    if (enumRow == null)
+                        log.error("the schema-enum attribute in <sub-type> of entity redirector has an invalid enum value for " + params[0] + ": " + params[1]);
                     else
                         subtypeInfo.setId(enumRow.getId());
                 }
             }
         }
 
-        if(subtypeInfo.getId() != ID_UNKNOWN)
+        if (subtypeInfo.getId() != ID_UNKNOWN)
             subtypeInfoByIdMap.put(new Integer(subtypeInfo.getId()), subtypeInfo);
 
-        if(subtypeInfo.getName() != null)
+        if (subtypeInfo.getName() != null)
             subtypeInfoByNameMap.put(subtypeInfo.getName(), subtypeInfo);
     }
 
@@ -402,7 +391,7 @@ public class EntityRedirectorPage extends NavigationPage
         HttpSession session = nc.getHttpRequest().getSession();
         EntitySubtypeRedirectInfo esri = (EntitySubtypeRedirectInfo) session.getAttribute(SESSATTRNAME_ESRI);
         session.removeAttribute(SESSATTRNAME_ESRI); // get rid of it so it's not hanging around for next call
-        if(esri != null && esri.getId().equals(id))
+        if (esri != null && esri.getId().equals(id))
             return esri;
         else
             return null;
@@ -416,7 +405,7 @@ public class EntityRedirectorPage extends NavigationPage
 
     public boolean isValid(NavigationContext nc)
     {
-        if(!super.isValid(nc))
+        if (!super.isValid(nc))
             return false;
 
         ConnectionContext cc;
@@ -432,11 +421,11 @@ public class EntityRedirectorPage extends NavigationPage
 
         try
         {
-            if(!isEntityValid(nc, cc))
+            if (!isEntityValid(nc, cc))
                 return false;
 
             EntityRedirectorPageState state = (EntityRedirectorPageState) nc.getActiveState();
-            if(state.getEntitySubtype() != null)
+            if (state.getEntitySubtype() != null)
             {
                 // set this to true so that the navigation controller will ask us later for the URL we want to redirect to
                 nc.setRedirectRequired(true);
@@ -470,7 +459,7 @@ public class EntityRedirectorPage extends NavigationPage
     public String getUrl(HttpServletValueContext vc)
     {
         EntityRedirectorPageState state = (EntityRedirectorPageState) ((NavigationContext) vc).getActiveState();
-        if(state.getEntitySubtype() != null)
+        if (state.getEntitySubtype() != null)
             return state.getEntitySubtype().getRedirect().getTextValue(vc);
         else
             return super.getUrl(vc);

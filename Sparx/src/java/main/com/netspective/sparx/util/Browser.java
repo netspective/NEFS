@@ -1,19 +1,53 @@
+/*
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
+ *
+ * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
+ * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
+ * conditions are provided as a summary of the NSL but the NSL remains the canonical license and must be accepted
+ * before using The Software. Any use of The Software indicates agreement with the NSL.
+ *
+ * 1. Each copy or derived work of The Software must preserve the copyright notice and this notice unmodified.
+ *
+ * 2. Redistribution of The Software is allowed in object code form only (as Java .class files or a .jar file
+ *    containing the .class files) and only as part of an application that uses The Software as part of its primary
+ *    functionality. No distribution of the package is allowed as part of a software development kit, other library,
+ *    or development tool without written consent of Netspective. Any modified form of The Software is bound by these
+ *    same restrictions.
+ *
+ * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
+ *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
+ *
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
+ * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
+ * ARE HEREBY DISCLAIMED.
+ *
+ * NETSPECTIVE AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY THIRD PARTY AS A
+ * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
+ * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
+ * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+ */
 package com.netspective.sparx.util;
 
-import javax.servlet.http.*;
+import javax.servlet.http.HttpSession;
 
-/** Browser.java
- *  @version 2.0.
- *  @author Garrett S Smith
- *  (web: <a href='http://dhtmlkitchen.com'>http://dhtmlkitchen.com</a>)
- *  You may use this for free.  You may add to or modify this code.
- *  Please do not remove this notice.
- * <p>
- *  To use the methods, get the session instance of the Browser object
- *  by calling the static method Browser.getInstance(request).
- *  <pre> Browser b = Browser.getInstance(request) </pre>
- *  The public constructor (previously deprecated) has been removed.
- * </p>
+/**
+ * Browser.java
+ *
+ * @author Garrett S Smith
+ *         (web: <a href='http://dhtmlkitchen.com'>http://dhtmlkitchen.com</a>)
+ *         You may use this for free.  You may add to or modify this code.
+ *         Please do not remove this notice.
+ *         <p/>
+ *         To use the methods, get the session instance of the Browser object
+ *         by calling the static method Browser.getInstance(request).
+ *         <pre> Browser b = Browser.getInstance(request) </pre>
+ *         The public constructor (previously deprecated) has been removed.
+ *         </p>
+ * @version 2.0.
  */
 public class Browser implements java.io.Serializable
 {
@@ -58,14 +92,15 @@ public class Browser implements java.io.Serializable
     private String IEVersion = "-1";
 
 
-    /** Constructor that builds browser object.
+    /**
+     * Constructor that builds browser object.
+     * <p/>
+     * It is necessary to pass an HttpServletRequest to this constructor.
+     * There is no default or empty constructor.
      *
-     *  It is necessary to pass an HttpServletRequest to this constructor.
-     *  There is no default or empty constructor.
-     *  @deprecated
-     *  It is not necessary to create more than one Browser per session.
-     *  @see #getInstance(javax.servlet.http.HttpServletRequest)
-     *  getInstance(javax.servlet.http.HttpServletRequest).
+     * @see #getInstance(javax.servlet.http.HttpServletRequest)
+     *      getInstance(javax.servlet.http.HttpServletRequest).
+     * @deprecated It is not necessary to create more than one Browser per session.
      */
     private Browser(javax.servlet.http.HttpServletRequest request)
     {
@@ -211,10 +246,11 @@ public class Browser implements java.io.Serializable
         }
     }
 
-    /** returns the Browser from the session.
-     *  if the session does not have a Browser,
-     *  a new Browser is created and stored in
-     *  the session.
+    /**
+     * returns the Browser from the session.
+     * if the session does not have a Browser,
+     * a new Browser is created and stored in
+     * the session.
      */
     public static Browser getInstance(final javax.servlet.http.HttpServletRequest request)
     {
@@ -233,10 +269,11 @@ public class Browser implements java.io.Serializable
         return browser;
     }
 
-    /** returns a string representation of the browser.
-     *  The string returned by getBrowserName() is the browser name + the version.
-     *  For IE, the platform preceeds the browser name and version.
-     *  "unknown" is returned if the browser is not defined in this class.
+    /**
+     * returns a string representation of the browser.
+     * The string returned by getBrowserName() is the browser name + the version.
+     * For IE, the platform preceeds the browser name and version.
+     * "unknown" is returned if the browser is not defined in this class.
      */
     public String getBrowserName()
     {
@@ -260,7 +297,8 @@ public class Browser implements java.io.Serializable
                 "unknown";
     }
 
-    /** returns a String representing the floating-point version of Internet Explorer.
+    /**
+     * returns a String representing the floating-point version of Internet Explorer.
      */
     public String getIEVersion()
     {
@@ -268,7 +306,7 @@ public class Browser implements java.io.Serializable
     }
 
     /**
-     *  returns true if the browser is Gecko (Gecko includes Mozilla, Galeon, and NS6).
+     * returns true if the browser is Gecko (Gecko includes Mozilla, Galeon, and NS6).
      */
     public boolean isGecko()
     {
@@ -276,7 +314,8 @@ public class Browser implements java.io.Serializable
     }
 
 
-    /** returns true if the browser is Netscape 4 only.
+    /**
+     * returns true if the browser is Netscape 4 only.
      * returns false for all other versions of Netscape
      */
     public boolean isNS4()
@@ -284,7 +323,8 @@ public class Browser implements java.io.Serializable
         return this.NS4;
     }
 
-    /** returns true if the browser is Netscape 6.
+    /**
+     * returns true if the browser is Netscape 6.
      * also returns true if the browser is Netscape 6.x
      */
     public boolean isMinNS6()
@@ -292,7 +332,8 @@ public class Browser implements java.io.Serializable
         return this.NS6 || this.NS7;
     }
 
-    /** returns true only if the browser is over Netscape 6.1.
+    /**
+     * returns true only if the browser is over Netscape 6.1.
      */
     public boolean isMinNS61()
     {
@@ -304,53 +345,60 @@ public class Browser implements java.io.Serializable
         return this.NS7;
     }
 
-    /** returns true only if the browser is Gecko and <b>Not</b> Netscape 6.1.
+    /**
+     * returns true only if the browser is Gecko and <b>Not</b> Netscape 6.1.
      */
     public boolean isMoz()
     {
         return this.moz;
     }
 
-    /** returns true if the browser is IE.
+    /**
+     * returns true if the browser is IE.
      */
     public boolean isIE()
     {
         return this.IE;
     }
 
-    /** returns true if the browser is IE5.x or IE6.x.
-     *  returns false for any version of IE that is not 5.0.
+    /**
+     * returns true if the browser is IE5.x or IE6.x.
+     * returns false for any version of IE that is not 5.0.
      */
     public boolean isMinIE5()
     {
         return this.minIE5;
     }
 
-    /** returns true if the browser is IE5.0.
-     *  returns false for any version of IE that is not 5.0.
+    /**
+     * returns true if the browser is IE5.0.
+     * returns false for any version of IE that is not 5.0.
      */
     public boolean isIE5()
     {
         return this.IE5;
     }
 
-    /** returns true if the browser is IE5.5.
-     *  returns false for any version of IE that is not 5.5.
+    /**
+     * returns true if the browser is IE5.5.
+     * returns false for any version of IE that is not 5.5.
      */
     public boolean isIE55()
     {
         return this.IE55;
     }
 
-    /** returns true if the browser is IE5.6.
-     *  returns false for any version of IE that is not 5.6.
+    /**
+     * returns true if the browser is IE5.6.
+     * returns false for any version of IE that is not 5.6.
      */
     public boolean isIE56()
     {
         return this.IE56;
     }
 
-    /** returns true if the browser is IE6 or IE6.x.
+    /**
+     * returns true if the browser is IE6 or IE6.x.
      */
     public boolean isIE6()
     {
@@ -360,7 +408,8 @@ public class Browser implements java.io.Serializable
     /** returns true if the browser is a Microsoft Windows version.
      */
 
-    /** returns true if the browser is Mac IE5.x.
+    /**
+     * returns true if the browser is Mac IE5.x.
      */
     public boolean isMacIE5()
     {
@@ -390,8 +439,9 @@ public class Browser implements java.io.Serializable
         return this.opera7;
     }
 
-    /** Mac only browser, supports document.getElementById,
-     *  document.classes, document.tags, and innerHTML.
+    /**
+     * Mac only browser, supports document.getElementById,
+     * document.classes, document.tags, and innerHTML.
      */
     public boolean isIcab()
     {
@@ -399,18 +449,21 @@ public class Browser implements java.io.Serializable
     }
 
 
-    /** From the developer:
-     *  "FireFly is a new Gnutella servent.
-     *  It supports segmented downloading
-     *  (ie downloading same file from different sources),
-     *  previewing of downloads, etc.".
+    /**
+     * From the developer:
+     * "FireFly is a new Gnutella servent.
+     * It supports segmented downloading
+     * (ie downloading same file from different sources),
+     * previewing of downloads, etc.".
      */
     public boolean isFirefly()
     {
         return this.firefly;
     }
 
-    /** Linux browser with some DOM support. */
+    /**
+     * Linux browser with some DOM support.
+     */
     public boolean isKonqueror()
     {
         return this.konqueror;
@@ -427,22 +480,27 @@ public class Browser implements java.io.Serializable
     }
 
 
-    /** Mac-OS X browser that is similar to Konqueror.
-     *  Safari, only available for Mac-OS X, supports HTML DOM.
-     *  There are no versions of this browser.
+    /**
+     * Mac-OS X browser that is similar to Konqueror.
+     * Safari, only available for Mac-OS X, supports HTML DOM.
+     * There are no versions of this browser.
      */
     public boolean isSafari()
     {
         return this.safari;
     }
 
-    /** Another <b>Gecko&trade;</b> browser. */
+    /**
+     * Another <b>Gecko&trade;</b> browser.
+     */
     public boolean isGaleon()
     {
         return this.galeon;
     }
 
-    /**@deprecated replaced with isWebTV() */
+    /**
+     * @deprecated replaced with isWebTV()
+     */
     public boolean isWebtv()
     {
         return this.webTV;
@@ -453,7 +511,9 @@ public class Browser implements java.io.Serializable
         return this.webTV;
     }
 
-    /**@deprecated replaced with isAOL() */
+    /**
+     * @deprecated replaced with isAOL()
+     */
     public boolean isAol()
     {
         return this.AOL;
@@ -464,7 +524,8 @@ public class Browser implements java.io.Serializable
         return this.AOL;
     }
 
-    /** A Mac OS X browser. The current version is 4
+    /**
+     * A Mac OS X browser. The current version is 4
      * and has with poor standards support, but it supports
      * document.layers.
      */
@@ -479,8 +540,9 @@ public class Browser implements java.io.Serializable
         return this.win;
     }
 
-    /** returns true if the browser is Windows IE5 or Higher
-     *  (true for IE6, too).
+    /**
+     * returns true if the browser is Windows IE5 or Higher
+     * (true for IE6, too).
      */
     public boolean isWinIE5()
     {
@@ -488,28 +550,32 @@ public class Browser implements java.io.Serializable
     }
 
 
-    /** returns true if the browser is Mac IE5.1.
+    /**
+     * returns true if the browser is Mac IE5.1.
      */
     public boolean isIE51()
     {
         return this.IE51;
     }
 
-    /** returns true if the browser is Mac IE5.2.
+    /**
+     * returns true if the browser is Mac IE5.2.
      */
     public boolean isIE52()
     {
         return this.IE52;
     }
 
-    /** returns true if the browser is the  beta version of Mac IE5.1.
+    /**
+     * returns true if the browser is the  beta version of Mac IE5.1.
      */
     public boolean isIE51b()
     {
         return this.IE51b;
     }
 
-    /** returns true if the browser is Mac.
+    /**
+     * returns true if the browser is Mac.
      */
     public boolean isMac()
     {
@@ -517,7 +583,8 @@ public class Browser implements java.io.Serializable
     }
 
 
-    /** returns true for all flavors of unix
+    /**
+     * returns true for all flavors of unix
      * (OS2, sun, irix, hpux, aix, dec, VMS, linux, sinix, reliant, bsd, unixware, mpras).
      */
     public boolean isUnix()
@@ -535,7 +602,9 @@ public class Browser implements java.io.Serializable
         return win ? this.win98 : false;
     }
 
-    /** @deprecated replaced with isWinME() */
+    /**
+     * @deprecated replaced with isWinME()
+     */
     public boolean isWinme()
     {
         return win ? this.winME : false;
@@ -546,7 +615,9 @@ public class Browser implements java.io.Serializable
         return win ? this.winME : false;
     }
 
-    /** @deprecated replaced with iswinNT() */
+    /**
+     * @deprecated replaced with iswinNT()
+     */
     public boolean isWinnt()
     {
         return win ? this.winNT : false;
@@ -562,7 +633,9 @@ public class Browser implements java.io.Serializable
         return win ? this.win2k : false;
     }
 
-    /** @deprecated replaced with isOS2() */
+    /**
+     * @deprecated replaced with isOS2()
+     */
     public boolean isOs2()
     {
         return unix ? this.OS2 : false;
@@ -593,34 +666,42 @@ public class Browser implements java.io.Serializable
         return unix ? this.aix : false;
     }
 
-    /** Returns true if the client machine is Unix Tru64. */
+    /**
+     * Returns true if the client machine is Unix Tru64.
+     */
     public boolean isDec()
     {
         return unix ? this.dec : false;
     }
 
-    /** @deprecated replaced by isSCO. */
+    /**
+     * @deprecated replaced by isSCO.
+     */
     public boolean isSco()
     {
         return unix ? this.SCO : false;
     }
 
-    /** Returns true if the client machine is a
-     *  Santa Cruz Operation make.
+    /**
+     * Returns true if the client machine is a
+     * Santa Cruz Operation make.
      */
     public boolean isSCO()
     {
         return unix ? this.SCO : false;
     }
 
-    /** @deprecated replaced by isVMS */
+    /**
+     * @deprecated replaced by isVMS
+     */
     public boolean isVms()
     {
         return unix ? this.VMS : false;
     }
 
-    /** Returns true if the client machine is
-     *  VMS (Vax Messaging System) or Open VMS (Open Vax Messaging System).
+    /**
+     * Returns true if the client machine is
+     * VMS (Vax Messaging System) or Open VMS (Open Vax Messaging System).
      */
     public boolean isVMS()
     {
@@ -647,7 +728,9 @@ public class Browser implements java.io.Serializable
         return unix ? this.freeBSD : false;
     }
 
-    /** @deprecated replaced by isOpenBSD*/
+    /**
+     * @deprecated replaced by isOpenBSD
+     */
     public boolean isOpenbsd()
     {
         return unix ? this.openBSD : false;
@@ -658,7 +741,9 @@ public class Browser implements java.io.Serializable
         return unix ? this.openBSD : false;
     }
 
-    /** @deprecated replaced by isNetBSD*/
+    /**
+     * @deprecated replaced by isNetBSD
+     */
     public boolean isNetbsd()
     {
         return unix ? this.netBSD : false;
@@ -669,7 +754,9 @@ public class Browser implements java.io.Serializable
         return unix ? this.netBSD : false;
     }
 
-    /** @deprecated replaced by isBSD*/
+    /**
+     * @deprecated replaced by isBSD
+     */
     public boolean isBsd()
     {
         return unix ? this.BSD : false;
@@ -680,7 +767,9 @@ public class Browser implements java.io.Serializable
         return unix ? this.BSD : false;
     }
 
-    /** @deprecated replaced by isUnixWare */
+    /**
+     * @deprecated replaced by isUnixWare
+     */
     public boolean isUnixware()
     {
         return unix ? this.unixWare : false;
@@ -691,7 +780,9 @@ public class Browser implements java.io.Serializable
         return unix ? this.unixWare : false;
     }
 
-    /** @deprecated replaced by isNCR */
+    /**
+     * @deprecated replaced by isNCR
+     */
     public boolean isNcr()
     {
         return unix ? this.NCR : false;
@@ -702,7 +793,8 @@ public class Browser implements java.io.Serializable
         return unix ? this.NCR : false;
     }
 
-    /** Returns true if the browser is
+    /**
+     * Returns true if the browser is
      * X Window System, Version 11
      */
     public boolean isX11()
@@ -710,13 +802,17 @@ public class Browser implements java.io.Serializable
         return unix ? this.X11 : false;
     }
 
-    /** googlebot is the Google search engine robot. */
+    /**
+     * googlebot is the Google search engine robot.
+     */
     public boolean isGooglebot()
     {
         return this.googlebot;
     }
 
-    /** ia_archiver is the Alexa search engine robot. */
+    /**
+     * ia_archiver is the Alexa search engine robot.
+     */
     public boolean isIa_archiver()
     {
         return this.ia_archiver;
@@ -727,7 +823,8 @@ public class Browser implements java.io.Serializable
         return this.w3cValidator;
     }
 
-    /** returns true for browsers that are <em>not</em> : IE, Gecko, Netscape 4, Opera,
+    /**
+     * returns true for browsers that are <em>not</em> : IE, Gecko, Netscape 4, Opera,
      * aol, Omniweb, FireFly, the w3cValidator.
      */
     public boolean isUnknown()
@@ -735,7 +832,9 @@ public class Browser implements java.io.Serializable
         return this.unknown;
     }
 
-    /** returns the full user agent string. */
+    /**
+     * returns the full user agent string.
+     */
     public String toString()
     {
         return this.origUa;

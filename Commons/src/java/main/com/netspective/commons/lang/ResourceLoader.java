@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,37 +28,30 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ResourceLoader.java,v 1.3 2003-10-15 19:14:12 shahid.shah Exp $
- */
-
 package com.netspective.commons.lang;
 
 import java.net.URL;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ResourceLoader
 {
     private static final Log log = LogFactory.getLog(ResourceLoader.class);
 
     /**
-       This method will search for <code>resource</code> in different
-       places. The search order is as follows:
-
-       <ol>
-           <li>Search for <code>resource</code> using the thread context
-           class loader. If that fails, search for <code>resource</code> using
-           the class loader that loaded this class.
-           <li>Try one last time with <code>ClassLoader.getSystemResource(resource)</code>.
-       </ol>
-    */
+     * This method will search for <code>resource</code> in different
+     * places. The search order is as follows:
+     * <p/>
+     * <ol>
+     * <li>Search for <code>resource</code> using the thread context
+     * class loader. If that fails, search for <code>resource</code> using
+     * the class loader that loaded this class.
+     * <li>Try one last time with <code>ClassLoader.getSystemResource(resource)</code>.
+     * </ol>
+     */
     public static URL getResource(String resource)
     {
         ClassLoader classLoader = null;
@@ -102,16 +90,18 @@ public class ResourceLoader
 
     /**
      * Find the first resource in the list and return the URL to it.
+     *
      * @param resources The list of different resource names to try
+     *
      * @return The URL for the first resource found or NULL if resource could not be located
      */
     public static URL getFirstResource(String[] resources)
     {
-        for(int i = 0; i < resources.length; i++)
+        for (int i = 0; i < resources.length; i++)
         {
             String resource = resources[i];
             URL result = getResource(resource);
-            if(result != null)
+            if (result != null)
                 return result;
         }
 

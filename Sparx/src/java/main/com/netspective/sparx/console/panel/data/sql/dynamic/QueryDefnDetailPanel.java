@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: QueryDefnDetailPanel.java,v 1.4 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data.sql.dynamic;
 
 import com.netspective.axiom.SqlManager;
@@ -60,7 +48,7 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
 {
     public static final String REQPARAMNAME_QUERY_DEFN_SOURCE = "query-defn-source";
     public static final String REQPARAMNAME_QUERY_DEFN = "selected-query-defn-id";
-    private static final ValueSource noQueryDefnParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_QUERY_DEFN +"' parameter provided.");
+    private static final ValueSource noQueryDefnParamAvailSource = new StaticValueSource("No '" + REQPARAMNAME_QUERY_DEFN + "' parameter provided.");
 
     protected class SelectedQueryDefinition
     {
@@ -73,39 +61,39 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
         public SelectedQueryDefinition(SqlManager sqlManager, String queryDefnSource, String queryDefnName)
         {
             this.queryDefnSource = queryDefnSource;
-            this.queryDefnName= queryDefnName;
+            this.queryDefnName = queryDefnName;
 
-            if(queryDefnName == null)
+            if (queryDefnName == null)
             {
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noQueryDefnParamAvailSource);
                 return;
             }
 
-            if(queryDefnSource == null || "dynamic".equalsIgnoreCase(queryDefnSource))
+            if (queryDefnSource == null || "dynamic".equalsIgnoreCase(queryDefnSource))
             {
                 queryDefn = sqlManager.getQueryDefns().get(queryDefnName);
-                if(queryDefn == null)
-                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Custom query definition '"+ queryDefnName +"' not found.");
+                if (queryDefn == null)
+                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Custom query definition '" + queryDefnName + "' not found.");
                 else
                     pageHeading = "Custom Dynamic Query: " + queryDefn.getName();
             }
-            else if(queryDefnSource.startsWith("schema"))
+            else if (queryDefnSource.startsWith("schema"))
             {
                 String[] querySourceParams = TextUtils.getInstance().split(queryDefnSource, ",", true);
                 Schema schema = sqlManager.getSchema(querySourceParams[1]);
-                if(schema != null)
+                if (schema != null)
                 {
                     Table table = schema.getTables().getByName(queryDefnName);
-                    if(table != null)
+                    if (table != null)
                     {
                         queryDefn = table.getQueryDefinition();
                         pageHeading = "Schema Dynamic Query: " + querySourceParams[1] + "." + queryDefnName;
                     }
                     else
-                        dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Table '"+ querySourceParams[1] + "." + queryDefnName +"' not found.");
+                        dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Table '" + querySourceParams[1] + "." + queryDefnName + "' not found.");
                 }
                 else
-                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Schema '"+ querySourceParams[1] +"' not found. Available: " + sqlManager.getSchemas().getNames());
+                    dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Schema '" + querySourceParams[1] + "' not found. Available: " + sqlManager.getSchemas().getNames());
             }
             else
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Unknown query source.");
@@ -140,14 +128,14 @@ abstract public class QueryDefnDetailPanel extends AbstractHtmlTabularReportPane
     public SelectedQueryDefinition getSelectedQueryDefn(NavigationContext nc)
     {
         String schemaTable = nc.getHttpRequest().getParameter(SchemaTableColumnsPanel.REQPARAMNAME_SHOW_DETAIL_TABLE);
-        if(schemaTable != null)
+        if (schemaTable != null)
         {
             String[] items = TextUtils.getInstance().split(schemaTable, ".", false);
             return new SelectedQueryDefinition(nc.getSqlManager(), "schema," + items[0], items[1]);
         }
         else
             return new SelectedQueryDefinition(nc.getSqlManager(),
-                            nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
-                            nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
+                    nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN_SOURCE),
+                    nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_DEFN));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DataModelSchemaTest.java,v 1.12 2004-08-09 22:14:28 shahid.shah Exp $
- */
-
 package com.netspective.commons.xdm;
 
 import java.io.File;
@@ -74,7 +62,10 @@ public class DataModelSchemaTest extends TestCase
 
     private DataModelTest dmt = null;
     private List errors = null;
-    private String[] rootSchemaPropertyNames = new String[]{"integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class", "test-double", "test-file", "test-float", "test-long", "test-short"};
+    private String[] rootSchemaPropertyNames = new String[]{
+        "integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class",
+        "test-double", "test-file", "test-float", "test-long", "test-short"
+    };
     private String[] schemaModifiedPropertyNames = null;
     private TextUtils textUtils = TextUtils.getInstance();
 
@@ -417,6 +408,7 @@ public class DataModelSchemaTest extends TestCase
 
         /**
          * This is the only method a subclass needs to implement.
+         *
          * @return an array holding all possible values of the flags.
          */
         public FlagDefn[] getFlagsDefns()
@@ -435,7 +427,7 @@ public class DataModelSchemaTest extends TestCase
 
         static
         {
-            for(int i = 0; i < SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length; i++)
+            for (int i = 0; i < SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length; i++)
                 FLAG_DEFNS[i] = SampleBitmaskedFlagsAttribute.FLAG_DEFNS[i];
             FLAG_DEFNS[SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "BIT_EIGHT", BIT_EIGHT);
             FLAG_DEFNS[SampleBitmaskedFlagsAttribute.FLAG_DEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "BIT_NINE", BIT_NINE);
@@ -444,6 +436,7 @@ public class DataModelSchemaTest extends TestCase
 
         /**
          * This is the only method a subclass needs to implement.
+         *
          * @return an array holding all possible values of the flags.
          */
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -687,12 +680,17 @@ public class DataModelSchemaTest extends TestCase
 
         testOpt.addAliases("ignored-attribute-two", new String[]{"ignored-attribute-too", "ignored-attribute-2"});
         assertEquals(1, testOpt.getAliases().size());
-        testOpt.addAliases("ignored-attribute-two", new String[]{"ignored-attribute-too", "ignored-attribute-2", "ignored-attribute-to", "ignored-attr-too"});
+        testOpt.addAliases("ignored-attribute-two", new String[]{
+            "ignored-attribute-too", "ignored-attribute-2", "ignored-attribute-to", "ignored-attr-too"
+        });
         assertEquals(1, testOpt.getAliases().size());
 
         Set nestedElementAliasesOne = new HashSet();
         Set nestedElementAliasesTwo = new HashSet();
-        String[] nestedElementAliasList = new String[]{"ignored-nested-element-too", "ignored-nested-element-2", "ignored-nested-element-to", "ignored-nested-elem-too"};
+        String[] nestedElementAliasList = new String[]{
+            "ignored-nested-element-too", "ignored-nested-element-2", "ignored-nested-element-to",
+            "ignored-nested-elem-too"
+        };
 
         for (int i = 0; i < nestedElementAliasList.length; i++)
         {
@@ -757,7 +755,9 @@ public class DataModelSchemaTest extends TestCase
     {
         Map schemas = XmlDataModelSchema.getSchemas();
         Set schemaNames = schemas.keySet();
-        Class[] expectedSchemas = new Class[]{DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class};
+        Class[] expectedSchemas = new Class[]{
+            DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class
+        };
 
         for (int i = 0; i < expectedSchemas.length; i++)
             assertTrue(schemaNames.contains(expectedSchemas[i]));
@@ -869,7 +869,9 @@ public class DataModelSchemaTest extends TestCase
 
         // BitMask: 10101010
         long expectedBitMaskOne = 170;
-        String[] possibleFlagNames = new String[]{"BIT_ZERO", "BIT_ONE", "BIT_TWO", "BIT_THREE", "BIT_FOUR", "BIT_FIVE", "BIT_SIX", "BIT_SEVEN"};
+        String[] possibleFlagNames = new String[]{
+            "BIT_ZERO", "BIT_ONE", "BIT_TWO", "BIT_THREE", "BIT_FOUR", "BIT_FIVE", "BIT_SIX", "BIT_SEVEN"
+        };
         String[] expectedBitStringsOne = new String[]{"BIT_ONE", "BIT_THREE", "BIT_FIVE", "BIT_SEVEN"};
         bmfa = new SampleBitmaskedFlagsAttribute(170);
         assertEquals(expectedBitMaskOne, bmfa.getFlags());
@@ -937,7 +939,9 @@ public class DataModelSchemaTest extends TestCase
     {
         Map schemas = XmlDataModelSchema.getSchemas();
         Set schemaNames = schemas.keySet();
-        Class[] expectedSchemas = new Class[]{DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class};
+        Class[] expectedSchemas = new Class[]{
+            DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class
+        };
 
         for (int i = 0; i < expectedSchemas.length; i++)
             assertTrue(schemaNames.contains(expectedSchemas[i]));

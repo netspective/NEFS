@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,27 +28,21 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.6 2003-11-08 18:48:27 shahid.shah Exp $
- */
-
 package com.netspective.commons.value.source;
 
 import java.io.File;
-import java.util.List;
 import java.util.ArrayList;
-import junit.framework.TestCase;
+import java.util.List;
 
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.Value;
 import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.ValueSources;
+
+import junit.framework.TestCase;
 
 public class FilesystemEntriesValueSourceTest extends TestCase
 {
@@ -64,10 +53,10 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         assertTrue(roots.length > 0);
 
         String rootPath = null;
-        for(int i = 0; i < roots.length; i++)
+        for (int i = 0; i < roots.length; i++)
         {
             rootPath = roots[i].getAbsolutePath();
-            if(new File(rootPath).exists())
+            if (new File(rootPath).exists())
                 break;
         }
         assertTrue(rootPath + " does not seem to exist.", new File(rootPath).exists());
@@ -76,54 +65,54 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         rootPath = ValueSourceSpecification.escapeFirstDelim(rootPath);
 
         ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-	    FilesystemEntriesValueSource fsVS = new FilesystemEntriesValueSource();
-	    fsVS.setRootPath(rootPath);
+        FilesystemEntriesValueSource fsVS = new FilesystemEntriesValueSource();
+        fsVS.setRootPath(rootPath);
         Value value = vs.getValue(null);
 
-	    assertEquals(unescapedRootPath, fsVS.getRootPath().getTextValue(null));
-		// Verify the presence of the default filter...
-	    assertEquals("/.*/", fsVS.getFilter());
-	    assertTrue(0 < vs.getTextValues(null).length);
-	    assertNotNull(vs.getTextValueOrBlank(null));
+        assertEquals(unescapedRootPath, fsVS.getRootPath().getTextValue(null));
+        // Verify the presence of the default filter...
+        assertEquals("/.*/", fsVS.getFilter());
+        assertTrue(0 < vs.getTextValues(null).length);
+        assertNotNull(vs.getTextValueOrBlank(null));
 
-		String[] theValue = value.getTextValues();
-		PresentationValue.Items altValueItems = fsVS.getPresentationValue(null).getItems();
+        String[] theValue = value.getTextValues();
+        PresentationValue.Items altValueItems = fsVS.getPresentationValue(null).getItems();
 
-		assertEquals(theValue.length, altValueItems.size());
-	    assertFalse(fsVS.isPathInSelection());
-	    for (int i = 0; i < theValue.length; i ++) {
-			assertFalse(altValueItems.contains(theValue[i]));
-		}
+        assertEquals(theValue.length, altValueItems.size());
+        assertFalse(fsVS.isPathInSelection());
+        for (int i = 0; i < theValue.length; i++)
+        {
+            assertFalse(altValueItems.contains(theValue[i]));
+        }
 
-		fsVS.setIncludePathInSelection(true);
-		PresentationValue.Items altValueItemsWithPath = fsVS.getPresentationValue(null).getItems();
+        fsVS.setIncludePathInSelection(true);
+        PresentationValue.Items altValueItemsWithPath = fsVS.getPresentationValue(null).getItems();
 
-		assertEquals(theValue.length, altValueItemsWithPath.size());
-	    assertTrue(fsVS.isPathInSelection());
-	    for (int i = 0; i < theValue.length; i ++)
-	    {
-			assertEquals(theValue[i], altValueItemsWithPath.getItem(i).getValue());
-			assertEquals(altValueItems.getItem(i).getValue(), altValueItemsWithPath.getItem(i).getCaption());
-	    }
+        assertEquals(theValue.length, altValueItemsWithPath.size());
+        assertTrue(fsVS.isPathInSelection());
+        for (int i = 0; i < theValue.length; i++)
+        {
+            assertEquals(theValue[i], altValueItemsWithPath.getItem(i).getValue());
+            assertEquals(altValueItems.getItem(i).getValue(), altValueItemsWithPath.getItem(i).getCaption());
+        }
 
-	    // Try the same tests with a filter...
-		// only files/dirs that contain the letter s in them...
-	    fsVS.setFilter("[sS]");
-	    assertEquals("/[sS]/", fsVS.getFilter());
-	    assertTrue(fsVS.isPathInSelection());
+        // Try the same tests with a filter...
+        // only files/dirs that contain the letter s in them...
+        fsVS.setFilter("[sS]");
+        assertEquals("/[sS]/", fsVS.getFilter());
+        assertTrue(fsVS.isPathInSelection());
 
         PresentationValue.Items filterValueItems = fsVS.getPresentationValue(null).getItems();
-		assertTrue(filterValueItems.size() <= altValueItems.size());
+        assertTrue(filterValueItems.size() <= altValueItems.size());
 
-	    List altValueWithPathList  = new ArrayList();
-		for (int i = 0; i < altValueItemsWithPath.size(); i ++)
-			altValueWithPathList.add(altValueItemsWithPath.getItem(i).getValue());
+        List altValueWithPathList = new ArrayList();
+        for (int i = 0; i < altValueItemsWithPath.size(); i++)
+            altValueWithPathList.add(altValueItemsWithPath.getItem(i).getValue());
 
-		assertEquals(altValueItemsWithPath.size(), altValueWithPathList.size());
+        assertEquals(altValueItemsWithPath.size(), altValueWithPathList.size());
 
-	    for (int i = 0; i < filterValueItems.size(); i ++)
-		    assertTrue(altValueWithPathList.contains(filterValueItems.getItem(i).getValue()));
-
+        for (int i = 0; i < filterValueItems.size(); i++)
+            assertTrue(altValueWithPathList.contains(filterValueItems.getItem(i).getValue()));
 
 
         vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath + ",exe$", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);

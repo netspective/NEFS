@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,37 +28,30 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HtmlCommandPanel.java,v 1.6 2004-01-24 20:43:48 aye.thu Exp $
- */
-
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.command.HttpServletCommand;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.command.HttpServletCommand;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
 
 /**
  * Special panel class that handles commands and usually defined in xml as:
- *  <![CDATA[
- *  <panel type="command" command="..."/>
+ * <![CDATA[
+ * <panel type="command" command="..."/>
  * ]]>
  */
 public class HtmlCommandPanel extends AbstractPanel
@@ -79,7 +67,7 @@ public class HtmlCommandPanel extends AbstractPanel
     /**
      * Gets the command
      *
-     * @return      Command object
+     * @return Command object
      */
     public Command getCommand()
     {
@@ -89,7 +77,7 @@ public class HtmlCommandPanel extends AbstractPanel
     /**
      * Sets the command
      *
-     * @param command   Command object
+     * @param command Command object
      */
     public void setCommand(Command command)
     {
@@ -100,7 +88,7 @@ public class HtmlCommandPanel extends AbstractPanel
      * Gets the value source  that will be evaluated and the result of the evaluation will be treated as a command
      * specification.
      *
-     * @return      value source
+     * @return value source
      */
     public ValueSource getCommandExpr()
     {
@@ -119,21 +107,22 @@ public class HtmlCommandPanel extends AbstractPanel
     }
 
     /**
-     * Writes the HTML for the command panel  
+     * Writes the HTML for the command panel
      *
-     * @param writer        Write object to write to
-     * @param nc            the navigation context in which the panel is being used
-     * @param theme         current theme
-     * @param flags         the panel flags
+     * @param writer Write object to write to
+     * @param nc     the navigation context in which the panel is being used
+     * @param theme  current theme
+     * @param flags  the panel flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
-        if(commandExpr != null)
+        if (commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(nc);
-            if(commandText != null)
+            if (commandText != null)
             {
                 try
                 {
@@ -152,7 +141,7 @@ public class HtmlCommandPanel extends AbstractPanel
         // if we get to here, we don't have an expression or the expression returned null so see if we have static
         // command supplied
 
-        if(command == null)
+        if (command == null)
         {
             writer.write("No command provided.");
             return;
@@ -170,21 +159,22 @@ public class HtmlCommandPanel extends AbstractPanel
     }
 
     /**
-     *  Writes the HTML for the command panel
+     * Writes the HTML for the command panel
      *
-     * @param writer        Write object to write to
-     * @param dc            Dialog context in which the panel is being used
-     * @param theme         Current theme
-     * @param flags         Panel flags
+     * @param writer Write object to write to
+     * @param dc     Dialog context in which the panel is being used
+     * @param theme  Current theme
+     * @param flags  Panel flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         ValueSource commandExpr = getCommandExpr();
-        if(commandExpr != null)
+        if (commandExpr != null)
         {
             String commandText = commandExpr.getTextValue(dc);
-            if(commandText != null)
+            if (commandText != null)
             {
                 try
                 {
@@ -200,7 +190,7 @@ public class HtmlCommandPanel extends AbstractPanel
             }
         }
 
-        if(command == null)
+        if (command == null)
         {
             writer.write("No command provided.");
             return;

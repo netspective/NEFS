@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,76 +28,70 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: StandardExchangeFormatParserConstants.java,v 1.1 2003-03-13 18:37:21 shahid.shah Exp $
- */
-
 package com.netspective.junxion.edi.format.sef;
 
-public interface StandardExchangeFormatParserConstants {
+public interface StandardExchangeFormatParserConstants
+{
 
-  int EOF = 0;
-  int TABLE_START = 7;
-  int SEGMENT_ID = 8;
-  int EOL = 9;
-  int LPAREN = 10;
-  int RPAREN = 11;
-  int LBRACE = 12;
-  int RBRACE = 13;
-  int LBRACKET = 14;
-  int RBRACKET = 15;
-  int SEMICOLON = 16;
-  int COMMA = 17;
-  int DOT = 18;
-  int IDENTIFIER = 19;
-  int INTEGER = 20;
-  int EQUAL_TEXT_DATA = 21;
-  int EQUAL_TEXT_DATA_END = 22;
-  int FREE_TEXT_DATA = 23;
-  int FREE_TEXT_DATA_END = 24;
-  int COMMASEPTEXTDATA = 25;
-  int IGNORE_TO_PUBLIC_SECTION = 27;
+    int EOF = 0;
+    int TABLE_START = 7;
+    int SEGMENT_ID = 8;
+    int EOL = 9;
+    int LPAREN = 10;
+    int RPAREN = 11;
+    int LBRACE = 12;
+    int RBRACE = 13;
+    int LBRACKET = 14;
+    int RBRACKET = 15;
+    int SEMICOLON = 16;
+    int COMMA = 17;
+    int DOT = 18;
+    int IDENTIFIER = 19;
+    int INTEGER = 20;
+    int EQUAL_TEXT_DATA = 21;
+    int EQUAL_TEXT_DATA_END = 22;
+    int FREE_TEXT_DATA = 23;
+    int FREE_TEXT_DATA_END = 24;
+    int COMMASEPTEXTDATA = 25;
+    int IGNORE_TO_PUBLIC_SECTION = 27;
 
-  int DEFAULT = 0;
-  int EqualTextDataSect = 1;
-  int FreeTextDataSect = 2;
-  int CommaSepTextDataSect = 3;
-  int IgnoreToPublicSect = 4;
+    int DEFAULT = 0;
+    int EqualTextDataSect = 1;
+    int FreeTextDataSect = 2;
+    int CommaSepTextDataSect = 3;
+    int IgnoreToPublicSect = 4;
 
-  String[] tokenImage = {
-    "<EOF>",
-    "\".VER \"",
-    "\".INI\"",
-    "\".PRIVATE\"",
-    "\".SETS\"",
-    "\"+\"",
-    "\">1\"",
-    "\"^\"",
-    "<SEGMENT_ID>",
-    "<EOL>",
-    "\"(\"",
-    "\")\"",
-    "\"{\"",
-    "\"}\"",
-    "\"[\"",
-    "\"]\"",
-    "\";\"",
-    "\",\"",
-    "\".\"",
-    "<IDENTIFIER>",
-    "<INTEGER>",
-    "<EQUAL_TEXT_DATA>",
-    "\"=\"",
-    "<FREE_TEXT_DATA>",
-    "<FREE_TEXT_DATA_END>",
-    "<COMMASEPTEXTDATA>",
-    "<token of kind 26>",
-    "<IGNORE_TO_PUBLIC_SECTION>",
-  };
+    String[] tokenImage = {
+        "<EOF>",
+        "\".VER \"",
+        "\".INI\"",
+        "\".PRIVATE\"",
+        "\".SETS\"",
+        "\"+\"",
+        "\">1\"",
+        "\"^\"",
+        "<SEGMENT_ID>",
+        "<EOL>",
+        "\"(\"",
+        "\")\"",
+        "\"{\"",
+        "\"}\"",
+        "\"[\"",
+        "\"]\"",
+        "\";\"",
+        "\",\"",
+        "\".\"",
+        "<IDENTIFIER>",
+        "<INTEGER>",
+        "<EQUAL_TEXT_DATA>",
+        "\"=\"",
+        "<FREE_TEXT_DATA>",
+        "<FREE_TEXT_DATA_END>",
+        "<COMMASEPTEXTDATA>",
+        "<token of kind 26>",
+        "<IGNORE_TO_PUBLIC_SECTION>",
+    };
 
 }

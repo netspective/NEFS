@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,40 +28,39 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AbstractContentHandler.java,v 1.13 2003-12-10 21:01:00 shahid.shah Exp $
- */
-
 package com.netspective.commons.xml;
 
-import java.util.Stack;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.io.IOException;
-import java.io.File;
+import java.util.Map;
+import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.JexlHelper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.Locator;
 
-import com.netspective.commons.xml.template.*;
-import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateApplyContext;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateContentHandler;
+import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateText;
 
 public abstract class AbstractContentHandler implements TemplateContentHandler
 {
@@ -119,7 +113,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public boolean isInIgnoreNode()
     {
-        return ! ignoreStack.isEmpty();
+        return !ignoreStack.isEmpty();
     }
 
     public String getStateText()
@@ -134,7 +128,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public TemplateProducer getDynamicTemplatesProducer()
     {
-        if(parseContext.getParentPC() != null)
+        if (parseContext.getParentPC() != null)
             return ((TemplateContentHandler) parseContext.getParentPC().getParser().getContentHandler()).getDynamicTemplatesProducer();
         else
             return nodeIdentifiers.getDynamicTemplatesProducer();
@@ -185,7 +179,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         }
         catch (Exception e)
         {
-            if(e instanceof ContentHandlerException)
+            if (e instanceof ContentHandlerException)
                 throw (ContentHandlerException) e;
             else
                 throw new ContentHandlerException(parseContext, e);
@@ -201,16 +195,16 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             Resource resource = null;
             Object relativeTo = activeEntry.getResourceIncludeRelativeTo();
             String relativeToExpr = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO);
-            if(relativeToExpr != null)
+            if (relativeToExpr != null)
                 relativeTo = evaluateHandlerExpression(relativeToExpr);
 
-            log.trace("Including resource '"+ resourceName +"' relative to '"+ relativeTo +"'.");
+            log.trace("Including resource '" + resourceName + "' relative to '" + relativeTo + "'.");
 
-            if(relativeTo instanceof Class)
+            if (relativeTo instanceof Class)
                 resource = new Resource((Class) relativeTo, resourceName);
-            else if(relativeTo instanceof ClassLoader)
+            else if (relativeTo instanceof ClassLoader)
                 resource = new Resource((ClassLoader) relativeTo, resourceName);
-            else if(relativeTo instanceof String)
+            else if (relativeTo instanceof String)
             {
                 try
                 {
@@ -218,11 +212,11 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
                 }
                 catch (ClassNotFoundException e)
                 {
-                    throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> ("+ relativeToExpr +") must be either a Class or a ClassLoader.");
+                    throw new ContentHandlerException(parseContext, "The result of '" + NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO + "' attribute expression '" + relativeTo + "' in <" + nodeIdentifiers.getIncludeElementName() + "> (" + relativeToExpr + ") must be either a Class or a ClassLoader.");
                 }
             }
-            else if(relativeToExpr != null)
-                throw new ContentHandlerException(parseContext, "The result of '"+ NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO +"' attribute expression '"+ relativeTo +"' in <"+ nodeIdentifiers.getIncludeElementName()  +"> ("+ relativeToExpr +") must be either a Class or a ClassLoader.");
+            else if (relativeToExpr != null)
+                throw new ContentHandlerException(parseContext, "The result of '" + NodeIdentifiers.ATTRNAME_INCLUDE_RESOURCE_RELATIVE_TO + "' attribute expression '" + relativeTo + "' in <" + nodeIdentifiers.getIncludeElementName() + "> (" + relativeToExpr + ") must be either a Class or a ClassLoader.");
             else
                 resource = new Resource(activeEntry.getClass(), resourceName);
 
@@ -232,13 +226,13 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
             parseContext.getErrors().addAll(includePC.getErrors());
         }
-        else if(templateName != null && templateName.length() > 0)
+        else if (templateName != null && templateName.length() > 0)
         {
-            log.trace("Including template '"+ templateName + "'.");
+            log.trace("Including template '" + templateName + "'.");
 
             Template template = parseContext.getTemplateCatalog().getTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName);
-            if(template == null)
-                throw new SAXParseException("Generic template '"+ templateName +"' was not found in the active document.", parseContext.getLocator());
+            if (template == null)
+                throw new SAXParseException("Generic template '" + templateName + "' was not found in the active document.", parseContext.getLocator());
             template.applyChildren(template.createApplyContext(this, nodeIdentifiers.getIncludeElementName(), attrs));
         }
         else
@@ -246,7 +240,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             String fileName = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_FILE);
             File includeFile = parseContext.resolveFile(fileName);
 
-            log.trace("Including file '"+ includeFile.getAbsolutePath() + "'.");
+            log.trace("Including file '" + includeFile.getAbsolutePath() + "'.");
 
             ParseContext includePC = activeEntry.parseInclude(parseContext, includeFile);
             parseContext.getErrors().addAll(includePC.getErrors());
@@ -255,13 +249,13 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     protected boolean handleDefaultText(String text) throws SAXException
     {
-        if(! templateDefnStack.isEmpty())
+        if (!templateDefnStack.isEmpty())
         {
             TemplateElement activeTemplate = (TemplateElement) templateDefnStack.peek();
             activeTemplate.addChild(new TemplateText(activeTemplate, text));
             return true;
         }
-        else if(nodeStack.isEmpty() || ! ignoreStack.isEmpty())
+        else if (nodeStack.isEmpty() || !ignoreStack.isEmpty())
             return true;
         else
             return false;
@@ -274,7 +268,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public void consumeCharacters() throws SAXException
     {
-        if(characters.length() > 0)
+        if (characters.length() > 0)
         {
             text(characters.toString());
             characters = new StringBuffer();
@@ -284,19 +278,19 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     protected boolean defaultHandleTemplateStartElement(String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         String elementName = qName.toLowerCase();
-        if(! templateDefnStack.isEmpty())
+        if (!templateDefnStack.isEmpty())
         {
             // we're inside a template already so just grab the contents
             TemplateElement activeTemplate = (TemplateElement) templateDefnStack.peek();
-            if(nodeIdentifiers.getTemplateParamDecl().equals(elementName))
+            if (nodeIdentifiers.getTemplateParamDecl().equals(elementName))
             {
-                if(activeTemplate instanceof Template)
+                if (activeTemplate instanceof Template)
                 {
                     ((Template) activeTemplate).declareParameter(this, url, localName, qName, attributes);
                     templateDefnStack.push(activeTemplate);
                 }
                 else
-                    throw new SAXParseException("<"+ nodeIdentifiers.getTemplateParamDecl() +"> not allowed here.", parseContext.getLocator());
+                    throw new SAXParseException("<" + nodeIdentifiers.getTemplateParamDecl() + "> not allowed here.", parseContext.getLocator());
             }
             else
             {
@@ -309,8 +303,8 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         else if (elementName.equals(nodeIdentifiers.getTemplateElementName()))
         {
             String templateName = attributes.getValue(NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME);
-            if(templateName == null || templateName.length() == 0)
-                throw new SAXParseException("Template must have a '"+ NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME +"' attribute in <"+ elementName +"> ", parseContext.getLocator());
+            if (templateName == null || templateName.length() == 0)
+                throw new SAXParseException("Template must have a '" + NodeIdentifiers.ATTRNAME_GENERIC_TEMPLATE_NAME + "' attribute in <" + elementName + "> ", parseContext.getLocator());
 
             final Locator locator = getParseContext().getLocator();
             InputSourceLocator inputSourceLocator = new InputSourceLocator(getParseContext().getInputSrcTracker(), locator.getLineNumber(), locator.getColumnNumber());
@@ -326,7 +320,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public String getStackDepthPrefix()
     {
         StringBuffer sb = new StringBuffer();
-        for(int i = 1; i < nodeStack.size(); i++)
+        for (int i = 1; i < nodeStack.size(); i++)
             sb.append("  ");
         return sb.toString();
     }
@@ -334,7 +328,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public String getAttributeNames(Attributes attributes)
     {
         StringBuffer sb = new StringBuffer(" Attrs: [");
-        for(int i = 0; i < attributes.getLength(); i++)
+        for (int i = 0; i < attributes.getLength(); i++)
         {
             sb.append(attributes.getQName(i));
             sb.append("=");
@@ -350,10 +344,10 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     {
         // see if we have any dynamic templates that we now need to process
         List dynTemplates = getDynamicTemplatesProducer().getInstances();
-        if(dynTemplates.size() > 0)
+        if (dynTemplates.size() > 0)
         {
             TemplateApplyContext tac = new TemplateApplyContext(this);
-            for(int i = 0; i < dynTemplates.size(); i++)
+            for (int i = 0; i < dynTemplates.size(); i++)
             {
                 Template template = (Template) dynTemplates.get(i);
                 template.applySelfAndChildren(tac);
@@ -373,7 +367,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         consumeCharacters();
 
         // containers are simply holders of other elements and should not be processed
-        if(qName.equals(nodeIdentifiers.getContainerElementName()))
+        if (qName.equals(nodeIdentifiers.getContainerElementName()))
             return true;
 
         return false;
@@ -385,10 +379,10 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         consumeCharacters();
 
         // containers are simply holders of other elements and should not be processed
-        if(qName.equals(nodeIdentifiers.getContainerElementName()))
+        if (qName.equals(nodeIdentifiers.getContainerElementName()))
             return true;
 
-        if(inInclude)
+        if (inInclude)
         {
             inInclude = false;
             return true;

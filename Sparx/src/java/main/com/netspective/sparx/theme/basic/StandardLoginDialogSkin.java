@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,26 +28,19 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: StandardLoginDialogSkin.java,v 1.1 2004-07-11 02:15:42 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.basic;
+
+import java.io.IOException;
+import java.io.Writer;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.security.LoginDialogSkin;
-
-import java.io.IOException;
-import java.io.Writer;
+import com.netspective.sparx.theme.Theme;
 
 public class StandardLoginDialogSkin extends StandardDialogSkin implements LoginDialogSkin
 {
@@ -88,7 +76,7 @@ public class StandardLoginDialogSkin extends StandardDialogSkin implements Login
         writer.write("            <tr>");
         writer.write("                <td class=\"panel-input-content\">");
         writer.write("                    <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
-        if(heading != null)
+        if (heading != null)
         {
             writer.write("                        <tr height=\"30\">");
             writer.write("                            <td class=\"dialog-fields-header\" align=\"left\" valign=\"bottom\" height=\"30\">" +
@@ -106,11 +94,10 @@ public class StandardLoginDialogSkin extends StandardDialogSkin implements Login
 
         writer.write("          <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 
-        if(summarizeErrors)
+        if (summarizeErrors)
             writer.write(errorMsgsHtml.toString());
 
-        writer.write(
-                "<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
                 encType + " onsubmit='return(activeDialog.isValid())'>\n" +
                 dc.getStateHiddens() + "\n" +
                 fieldsHtml +
@@ -132,8 +119,10 @@ public class StandardLoginDialogSkin extends StandardDialogSkin implements Login
     /**
      * We typically take over the entire page for login dialog so lets give some spacing at the top and center
      * ourselves.
+     *
      * @param writer
      * @param dc
+     *
      * @throws IOException
      */
     public void renderHtml(Writer writer, DialogContext dc) throws IOException

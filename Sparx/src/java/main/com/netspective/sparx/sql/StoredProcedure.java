@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,31 +28,22 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
- */
-
-/**
- * $Id: StoredProcedure.java,v 1.3 2003-11-26 17:31:42 shahid.shah Exp $
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 package com.netspective.sparx.sql;
 
-import com.netspective.sparx.Project;
-import com.netspective.sparx.form.sql.QueryDialog;
-import com.netspective.sparx.panel.StoredProcedureReportPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.axiom.sql.StoredProceduresNameSpace;
-import com.netspective.commons.value.source.StaticValueSource;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+
+import com.netspective.axiom.sql.StoredProceduresNameSpace;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.StoredProcedureReportPanel;
 
 /**
  * Class for handling the &lt;stored-procedure&gt; entry defined in the project.
  * It extends the <code>com.netspective.axiom.sql.StoredProcedure</code> by providing reporting
  * functionalities.
- *
  */
 public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 {
@@ -72,6 +58,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Creates a display report panel for the query
+         *
          * @return
          */
         public StoredProcedureReportPanel createPanel()
@@ -99,11 +86,12 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
         /**
          * Adds a display report panel for the stored procedure. Multiple report panels representing different presentations
          * of the results of the stored procedure can be added.
+         *
          * @param panel
          */
         public void addPanel(StoredProcedureReportPanel panel)
         {
-            if(reportPanels.size() == 0 || panel.isDefaultPanel())
+            if (reportPanels.size() == 0 || panel.isDefaultPanel())
                 defaultPanel = panel;
             reportPanels.put(panel.getName(), panel);
         }
@@ -111,11 +99,12 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
         /**
          * Gets the default report panel for the stored procedure. Usually the default panel is the one that is defined without
          * a name associated with it.
+         *
          * @return
          */
         public StoredProcedureReportPanel getDefaultPanel()
         {
-            if(defaultPanel == null)
+            if (defaultPanel == null)
             {
                 defaultPanel = new StoredProcedureReportPanel();
                 defaultPanel.setStoredProcedure(StoredProcedure.this);
@@ -123,10 +112,13 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
             }
             return defaultPanel;
         }
+
         /**
          * Gets the report panel
-         * @param name  report panel name
-         * @return      report panel object
+         *
+         * @param name report panel name
+         *
+         * @return report panel object
          */
         public StoredProcedureReportPanel getPanel(String name)
         {
@@ -135,6 +127,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Gets a map of all the report panels of this stored procedure
+         *
          * @return
          */
         public Map getPanels()
@@ -144,6 +137,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Sets the default report panel for this stored procedure
+         *
          * @param defaultPanel
          */
         public void setDefaultPanel(StoredProcedureReportPanel defaultPanel)
@@ -153,6 +147,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
         /**
          * Gets the number of report panels for this stored procedure
+         *
          * @return
          */
         public int size()
@@ -166,6 +161,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
             // do nothing, we're ignoring the text
         }
     }
+
     private Project project;
     private StoredProcedure.Presentation presentation = new StoredProcedure.Presentation();
 
@@ -185,8 +181,9 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
         return project;
     }
 
-/**
+    /**
      * Gets the Presentation object of this stored procedure.
+     *
      * @return
      */
     public Presentation getPresentation()
@@ -196,6 +193,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
     /**
      * Returns the Presentation object of this stored procedure. This is used by XDM.
+     *
      * @return
      */
     public Presentation createPresentation()
@@ -205,6 +203,7 @@ public class StoredProcedure extends com.netspective.axiom.sql.StoredProcedure
 
     /**
      * Empty method. This  method is needed so XDM knows that "presentation" is a valid XML child
+     *
      * @param presentation
      */
     public void addPresentation(Presentation presentation)

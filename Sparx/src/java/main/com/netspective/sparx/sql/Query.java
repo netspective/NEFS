@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,26 +28,19 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Query.java,v 1.9 2003-11-05 04:54:01 aye.thu Exp $
- */
-
 package com.netspective.sparx.sql;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.netspective.sparx.panel.QueryReportPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.form.sql.QueryDialog;
-import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.sql.QueryDialog;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.QueryReportPanel;
 
 /**
  * Class representing a SQL Statement along with its parameters and report definitions defined using the &lt;query&gt; in XML.
@@ -72,6 +60,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Creates a display report panel for the query
+         *
          * @return
          */
         public QueryReportPanel createPanel()
@@ -83,6 +72,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Creates a dialog for the query input
+         *
          * @return
          */
         public QueryDialog createDialog()
@@ -103,22 +93,24 @@ public class Query extends com.netspective.axiom.sql.Query
         /**
          * Adds a display report panel for the query. Multiple report panels representing different presentations
          * of the results of the query can be added to each query.
+         *
          * @param panel
          */
         public void addPanel(QueryReportPanel panel)
         {
-            if(reportPanels.size() == 0 || panel.isDefaultPanel())
+            if (reportPanels.size() == 0 || panel.isDefaultPanel())
                 defaultPanel = panel;
             reportPanels.put(panel.getName(), panel);
         }
 
         /**
          * Adds  a dialog associated with the query
+         *
          * @param dialog
          */
         public void addDialog(QueryDialog dialog)
         {
-            if(reportDialogs.size() == 0)
+            if (reportDialogs.size() == 0)
                 defaultDialog = dialog;
             reportDialogs.put(dialog.getName(), dialog);
         }
@@ -126,11 +118,12 @@ public class Query extends com.netspective.axiom.sql.Query
         /**
          * Gets the default report panel for the query. Usually the default panel is the one that is defined without
          * a name associated with it.
+         *
          * @return
          */
         public QueryReportPanel getDefaultPanel()
         {
-            if(defaultPanel == null)
+            if (defaultPanel == null)
             {
                 defaultPanel = new QueryReportPanel();
                 defaultPanel.setQuery(Query.this);
@@ -142,11 +135,12 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Gets the default dialog for the query
+         *
          * @return
          */
         public QueryDialog getDefaultDialog()
         {
-            if(defaultDialog == null)
+            if (defaultDialog == null)
             {
                 defaultDialog = createDialog();
                 defaultDialog.createParamFields();
@@ -158,8 +152,10 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Gets the report panel
-         * @param name  report panel name
-         * @return      report panel object
+         *
+         * @param name report panel name
+         *
+         * @return report panel object
          */
         public QueryReportPanel getPanel(String name)
         {
@@ -168,6 +164,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Gets a map of all the report panels of this query
+         *
          * @return
          */
         public Map getPanels()
@@ -182,6 +179,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Sets the default report panel for this query
+         *
          * @param defaultPanel
          */
         public void setDefaultPanel(QueryReportPanel defaultPanel)
@@ -191,6 +189,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Sets the default dialog for this query
+         *
          * @param defaultDialog
          */
         public void setDefaultDialog(QueryDialog defaultDialog)
@@ -200,6 +199,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
         /**
          * Gets the number of report panels for this query
+         *
          * @return
          */
         public int size()
@@ -224,6 +224,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
     /**
      * Gets the <code>Project</code> associated with this query
+     *
      * @return
      */
     public Project getProject()
@@ -233,6 +234,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
     /**
      * Gets the Presentation object of this query.
+     *
      * @return
      */
     public Presentation getPresentation()
@@ -242,6 +244,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
     /**
      * Returns the Presentation object of this query. This is used by XDM.
+     *
      * @return
      */
     public Presentation createPresentation()
@@ -251,6 +254,7 @@ public class Query extends com.netspective.axiom.sql.Query
 
     /**
      * Empty method. This  method is needed so XDM knows that "presentation" is a valid XML child
+     *
      * @param presentation
      */
     public void addPresentation(Presentation presentation)

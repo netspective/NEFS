@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DialogFields.java,v 1.9 2004-04-03 22:50:04 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form.field;
 
 import java.util.ArrayList;
@@ -91,13 +79,13 @@ public class DialogFields
 
         // make sure to register field in both parent and owner so fields can be found just by querying the hierarchy
         owner.getFields().mapByQualifiedName.put(field.getQualifiedName(), field);
-        if(parent != null)
+        if (parent != null)
             parent.getChildren().mapByQualifiedName.put(field.getQualifiedName(), field);
     }
 
     public int add(DialogField field)
     {
-        if(parent == null)
+        if (parent == null)
             field.setQualifiedName(field.getName());
         else
             field.setQualifiedName(parent.getQualifiedName() + "." + field.getName());
@@ -126,9 +114,9 @@ public class DialogFields
     {
         StringBuffer result = new StringBuffer();
         List names = getOnlyNames();
-        for(int i = 0; i < names.size(); i++)
+        for (int i = 0; i < names.size(); i++)
         {
-            if(i > 0)
+            if (i > 0)
                 result.append(delimiter);
             result.append(names.get(i));
         }
@@ -138,9 +126,9 @@ public class DialogFields
     public String getNamesDelimited(String delimiter)
     {
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < namesOnly.size(); i++)
+        for (int i = 0; i < namesOnly.size(); i++)
         {
-            if(i > 0)
+            if (i > 0)
                 sb.append(delimiter);
             sb.append(namesOnly.get(i));
         }
@@ -149,8 +137,8 @@ public class DialogFields
 
     public DialogField getSole()
     {
-        if(size() != 1)
-            throw new RuntimeException("Only a single field is expected in this collection (not "+ size() +"): " + this);
+        if (size() != 1)
+            throw new RuntimeException("Only a single field is expected in this collection (not " + size() + "): " + this);
         return (DialogField) fields.get(0);
     }
 
@@ -173,7 +161,7 @@ public class DialogFields
     {
         DialogFields sublist = parent != null ? new DialogFields(parent) : new DialogFields(owner);
         StringTokenizer st = new StringTokenizer(names, delimiter);
-        while(st.hasMoreTokens())
+        while (st.hasMoreTokens())
         {
             String colName = st.nextToken().trim();
             sublist.add(getByName(colName));
@@ -183,20 +171,20 @@ public class DialogFields
 
     public void clearFlags(long flags)
     {
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
             ((DialogField) fields.get(i)).getFlags().clearFlag(flags);
     }
 
     public void setFlags(long flags)
     {
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
             ((DialogField) fields.get(i)).getFlags().setFlag(flags);
     }
 
     public int totalSize()
     {
         int result = 0;
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogFields children = get(i).getChildren();
             result += children != null ? (get(i).getChildren().totalSize() + 1) : 1;
@@ -212,8 +200,8 @@ public class DialogFields
     public boolean requiresMultiPartEncoding()
     {
         // if any child requires multi part encoding, then return true (this will take of things recursively)
-        for(int i = 0; i < fields.size(); i++)
-            if(((DialogField) fields.get(i)).requiresMultiPartEncoding())
+        for (int i = 0; i < fields.size(); i++)
+            if (((DialogField) fields.get(i)).requiresMultiPartEncoding())
                 return true;
 
         return false;
@@ -225,7 +213,7 @@ public class DialogFields
      */
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo(DialogContextBeanMemberInfo parentMI)
     {
-        for(int i = 0; i < size(); i++)
+        for (int i = 0; i < size(); i++)
         {
             DialogField field = get(i);
             DialogContextBeanMemberInfo childMI = field.getDialogContextBeanMemberInfo();
@@ -247,7 +235,7 @@ public class DialogFields
 
     public void finalizeContents()
     {
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = get(i);
             field.finalizeContents();
@@ -257,7 +245,7 @@ public class DialogFields
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < fields.size(); i++)
+        for (int i = 0; i < fields.size(); i++)
         {
             sb.append("  ");
             sb.append(fields.get(i).toString());

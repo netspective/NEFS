@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,21 +28,14 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ValidationUtils.java,v 1.4 2004-03-17 17:13:09 shahbaz.javeed Exp $
- */
-
 package com.netspective.commons.validate;
 
-import java.util.Locale;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import org.apache.oro.text.perl.Perl5Util;
 
@@ -75,7 +63,7 @@ public class ValidationUtils
      * <p>Checks if the field isn't null and length of the field is greater than zero not
      * including whitespace.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isBlankOrNull(String value)
     {
@@ -85,8 +73,8 @@ public class ValidationUtils
     /**
      * <p>Checks if the value matches the regular expression.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	regexp		The regular expression.
+     * @param value  The value validation is being performed on.
+     * @param regexp The regular expression.
      */
     public static boolean matchRegexp(String value, String regexp)
     {
@@ -105,7 +93,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a byte primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isByte(String value)
     {
@@ -115,7 +103,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a short primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isShort(String value)
     {
@@ -125,7 +113,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a int primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isInt(String value)
     {
@@ -135,7 +123,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a long primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isLong(String value)
     {
@@ -145,7 +133,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a float primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isFloat(String value)
     {
@@ -155,7 +143,7 @@ public class ValidationUtils
     /**
      * <p>Checks if the value can safely be converted to a double primitive.</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isDouble(String value)
     {
@@ -167,8 +155,8 @@ public class ValidationUtils
      * used with <code>java.text.DateFormat</code>.  The setLenient method
      * is set to <code>false</code> for all.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	locale	    The locale to use for the date format, defaults to the default system default if null.
+     * @param value  The value validation is being performed on.
+     * @param locale The locale to use for the date format, defaults to the default system default if null.
      */
     public static boolean isDate(String value, Locale locale)
     {
@@ -212,9 +200,9 @@ public class ValidationUtils
      * the format 'MM/dd/yyyy' because the month isn't two digits.
      * The setLenient method is set to <code>false</code> for all.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	datePattern	The pattern passed to <code>SimpleDateFormat</code>.
-     * @param 	strict	        Whether or not to have an exact match of the datePattern.
+     * @param value       The value validation is being performed on.
+     * @param datePattern The pattern passed to <code>SimpleDateFormat</code>.
+     * @param strict      Whether or not to have an exact match of the datePattern.
      */
     public static boolean isDate(String value, String datePattern, boolean strict)
     {
@@ -257,9 +245,9 @@ public class ValidationUtils
      * <p>Checks if a value is within a range (min &amp; max specified
      * in the vars attribute).</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	min		The minimum value of the range.
-     * @param 	max		The maximum value of the range.
+     * @param value The value validation is being performed on.
+     * @param min   The minimum value of the range.
+     * @param max   The maximum value of the range.
      */
     public static boolean isInRange(int value, int min, int max)
     {
@@ -270,9 +258,9 @@ public class ValidationUtils
      * <p>Checks if a value is within a range (min &amp; max specified
      * in the vars attribute).</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	min		The minimum value of the range.
-     * @param 	max		The maximum value of the range.
+     * @param value The value validation is being performed on.
+     * @param min   The minimum value of the range.
+     * @param max   The maximum value of the range.
      */
     public static boolean isInRange(float value, float min, float max)
     {
@@ -283,9 +271,9 @@ public class ValidationUtils
      * <p>Checks if a value is within a range (min &amp; max specified
      * in the vars attribute).</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	min		The minimum value of the range.
-     * @param 	max		The maximum value of the range.
+     * @param value The value validation is being performed on.
+     * @param min   The minimum value of the range.
+     * @param max   The maximum value of the range.
      */
     public static boolean isInRange(short value, short min, short max)
     {
@@ -296,9 +284,9 @@ public class ValidationUtils
      * <p>Checks if a value is within a range (min &amp; max specified
      * in the vars attribute).</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	min		The minimum value of the range.
-     * @param 	max		The maximum value of the range.
+     * @param value The value validation is being performed on.
+     * @param min   The minimum value of the range.
+     * @param max   The maximum value of the range.
      */
     public static boolean isInRange(double value, double min, double max)
     {
@@ -310,7 +298,7 @@ public class ValidationUtils
      * <p>Translated to Java by Ted Husted (<a href="mailto:husted@apache.org">husted@apache.org</a>).<br>
      * &nbsp;&nbsp;&nbsp; Reference Sean M. Burke's script at http://www.ling.nwu.edu/~sburke/pub/luhn_lib.pl</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isCreditCard(String value)
     {
@@ -322,7 +310,7 @@ public class ValidationUtils
      * <p>Translated to Java by Ted Husted (<a href="mailto:husted@apache.org">husted@apache.org</a>).<br>
      * &nbsp;&nbsp;&nbsp; Reference Sean M. Burke's script at http://www.ling.nwu.edu/~sburke/pub/luhn_lib.pl</p>
      *
-     * @param 	cardNumber 		Credit Card Number
+     * @param cardNumber Credit Card Number
      */
     protected static boolean validateCreditCardLuhnCheck(String cardNumber)
     {
@@ -369,7 +357,7 @@ public class ValidationUtils
      * <p>Translated to Java by Ted Husted (<a href="mailto:husted@apache.org">husted@apache.org</a>).<br>
      * &nbsp;&nbsp;&nbsp; Reference Sean M. Burke's script at http://www.ling.nwu.edu/~sburke/pub/luhn_lib.pl</p>
      *
-     * @param 	cardNumber 		Credit Card Number
+     * @param cardNumber Credit Card Number
      */
     protected static boolean validateCreditCardPrefixCheck(String cardNumber)
     {
@@ -431,7 +419,7 @@ public class ValidationUtils
      * <p>Based on a script by Sandeep V. Tamhankar (stamhankar@hotmail.com),
      * http://javascript.internet.com</p>
      *
-     * @param 	value 		The value validation is being performed on.
+     * @param value The value validation is being performed on.
      */
     public static boolean isEmail(String value)
     {
@@ -561,8 +549,8 @@ public class ValidationUtils
     /**
      * <p>Checks if the value's length is less than or equal to the max.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	max		The maximum length.
+     * @param value The value validation is being performed on.
+     * @param max   The maximum length.
      */
     public static boolean maxLength(String value, int max)
     {
@@ -572,8 +560,8 @@ public class ValidationUtils
     /**
      * <p>Checks if the value's length is greater than or equal to the min.</p>
      *
-     * @param 	value 		The value validation is being performed on.
-     * @param 	min		The minimum length.
+     * @param value The value validation is being performed on.
+     * @param min   The minimum length.
      */
     public static boolean minLength(String value, int min)
     {
@@ -591,10 +579,12 @@ public class ValidationUtils
 
     /**
      * <p>Checks to see whether an integer is a multiple of another integer or not.</p>
-     * @param value The value that this multiple check is being performed on.
+     *
+     * @param value    The value that this multiple check is being performed on.
      * @param multiple The number that should divide value evenly into an integral number of parts.
+     *
      * @return A boolean indicating whether value is evenly divisible by multiple or not.  The return value is always
-     * false when multiple == 0.
+     *         false when multiple == 0.
      */
     public static boolean isMultipleOf(int value, int multiple)
     {

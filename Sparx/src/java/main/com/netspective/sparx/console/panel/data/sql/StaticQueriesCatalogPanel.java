@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,38 +28,31 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: StaticQueriesCatalogPanel.java,v 1.5 2003-09-15 03:57:45 aye.thu Exp $
- */
-
 package com.netspective.sparx.console.panel.data.sql;
 
-import java.util.TreeSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 {
@@ -74,7 +62,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
     static
     {
         queryIdColumn.setHeading(new StaticValueSource("Query"));
-        queryIdColumn.setRedirect(new RedirectValueSource("detail?"+ QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY +"=%{1}"));
+        queryIdColumn.setRedirect(new RedirectValueSource("detail?" + QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY + "=%{1}"));
         catalogReport.addColumn(queryIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)
@@ -168,15 +156,15 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
             //TODO: this does not account for queries that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(queries.getNameSpaceNames());
-            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext(); )
+            for (Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
             {
                 String nameSpaceId = (String) nsi.next();
                 Set sortedQueryNamesInNameSpace = new TreeSet();
 
-                for(int i = 0; i < queries.size(); i++)
+                for (int i = 0; i < queries.size(); i++)
                 {
                     Query query = queries.get(i);
-                    if(nameSpaceId.equals(query.getNameSpace().getNameSpaceId()))
+                    if (nameSpaceId.equals(query.getNameSpace().getNameSpaceId()))
                     {
                         sortedQueryNamesInNameSpace.add(query.getQualifiedName());
                     }
@@ -196,7 +184,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean isActiveRowSelected()
         {
-            if(activeRowQuery == null)
+            if (activeRowQuery == null)
                 return false;
 
             return activeRowQuery.getQualifiedName().equals(selectedQueryName);
@@ -232,7 +220,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             activeRow = rowNum;
             String itemName = (String) rows.get(activeRow);
             activeRowQuery = queries.get(itemName);
-            if(activeRowQuery == null)
+            if (activeRowQuery == null)
                 activeNameSpace = itemName;
             else
                 activeNameSpace = null;
@@ -240,7 +228,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -249,9 +237,9 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if(activeNameSpace != null)
+            if (activeNameSpace != null)
             {
-                switch(columnIndex)
+                switch (columnIndex)
                 {
                     case 0:
                         return activeNameSpace;
@@ -261,7 +249,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                 }
             }
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     return reportValueContext.getSkin().constructRedirect(reportValueContext, queryIdColumn.getRedirect(), activeRowQuery.getName(), activeRowQuery.getQualifiedName(), null);
@@ -282,7 +270,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                     QueryExecutionLog execLog = activeRowQuery.getExecLog();
                     QueryExecutionLog.QueryExecutionStatistics stats = execLog.getStatistics();
 
-                    switch(columnIndex)
+                    switch (columnIndex)
                     {
                         case 3:
                             return stats.totalExecutions > 0 ? new Integer(stats.totalExecutions) : null;
@@ -291,7 +279,8 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
                         case 5:
                             return stats.averageTotalExecTime > 0 ? new Long(stats.averageTotalExecTime) : null;
                         case 6:
-                            return stats.averageConnectionEstablishTime > 0 ? new Long(stats.averageConnectionEstablishTime) : null;
+                            return stats.averageConnectionEstablishTime > 0
+                                    ? new Long(stats.averageConnectionEstablishTime) : null;
                         case 7:
                             return stats.averageBindParamsTime > 0 ? new Long(stats.averageBindParamsTime) : null;
                         case 8:

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,16 +28,14 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Aye Thu
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: PanelEditorContentElement.java,v 1.4 2004-03-15 05:12:01 aye.thu Exp $
- */
-
 package com.netspective.sparx.panel.editor;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xml.template.Template;
@@ -52,14 +45,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Base content element for a panel editor
- *
  */
 public class PanelEditorContentElement extends HtmlLayoutPanel
 {
@@ -71,7 +58,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
 
     };
 
-    public class Flags extends  XdmBitmaskedFlagsAttribute
+    public class Flags extends XdmBitmaskedFlagsAttribute
     {
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
         {
@@ -81,7 +68,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
 
     public static final String PANELTYPE_TEMPLATE_NAMESPACE = PanelEditorContentElement.class.getName();
     public static final String PANELTYPE_ATTRNAME_TYPE = "type";
-    public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = new String[]{"name"};
     public static final PanelEditorContentElementTypeTemplateConsumerDefn elementTypeTemplateConsumer =
             new PanelEditorContentElementTypeTemplateConsumerDefn();
 
@@ -146,7 +133,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
 
     public PanelEditorContentElement()
     {
-        
+
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -182,7 +169,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     /**
      * Sets the flags
      *
-     * @param flags     Flags set for the content element
+     * @param flags Flags set for the content element
      */
     public void setFlags(Flags flags)
     {
@@ -207,7 +194,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     /**
      * Gets the parent panel editor.
      *
-     * @return      Panel editor parent
+     * @return Panel editor parent
      */
     public PanelEditor getParent()
     {
@@ -265,7 +252,6 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     }
 
     /**
-     *
      * @param writer
      * @param state
      */
@@ -287,7 +273,6 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
 
     /**
      * Initialize the content element.
-     *
      */
     public void initialize()
     {
@@ -298,20 +283,21 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
      * Adds information specific to the content element using a comma separated token. This information can only
      * be "understood" by the content element itself.
      *
-     * @param url           URL generated by the parent panel editor
-     * @param actionMode    the current mode of the panel editor
+     * @param url        URL generated by the parent panel editor
+     * @param actionMode the current mode of the panel editor
+     *
      * @return
      */
     public String appendElementInfoToActionUrl(String url, int actionMode)
     {
-        url = url + "," +  getName();
+        url = url + "," + getName();
         return url;
     }
 
     /**
      * Checks to see if the content element has been initilized or not.
      *
-     * @return      True if the element has been initialized
+     * @return True if the element has been initialized
      */
     public boolean isInitialized()
     {
@@ -331,7 +317,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     /**
      * Prepares the content element for request specific execution
      *
-     * @param state     current state of the panel editor for the request
+     * @param state current state of the panel editor for the request
      */
     public void prepareElement(PanelEditorState state)
     {

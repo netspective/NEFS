@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,41 +28,33 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AntBuildDialog.java,v 1.7 2003-11-13 17:30:51 shahid.shah Exp $
- */
-
 package com.netspective.sparx.ant;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.io.File;
-import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Writer;
 
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.BuildLogger;
-import org.apache.tools.ant.NoBannerLogger;
 import org.apache.tools.ant.Main;
+import org.apache.tools.ant.NoBannerLogger;
+import org.apache.tools.ant.Project;
 
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
-import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldStates;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.ant.AntProject;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.source.StaticValueSource;
 
 public class AntBuildDialog extends ConsoleDialog
 {
@@ -115,23 +102,23 @@ public class AntBuildDialog extends ConsoleDialog
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
-        if(dc.getDialogState().isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
+        if (dc.getDialogState().isInitialEntry() && formatType == DialogContext.STATECALCSTAGE_BEFORE_VALIDATION)
         {
             Project project = antProject.getProject(dc);
             dc.getFieldStates().getState("target").getValue().setTextValue(project.getDefaultTarget());
 
             DialogFields fields = getFields();
-            for(int i = 0; i < fields.size(); i++)
+            for (int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(field instanceof AntBuildDialogPropertyField)
+                if (field instanceof AntBuildDialogPropertyField)
                 {
                     AntBuildDialogPropertyField propertyField = (AntBuildDialogPropertyField) field;
                     String propertyName = propertyField.getProperty();
                     String propertyValue = project.getUserProperty(propertyName);
-                    if(propertyValue == null)
+                    if (propertyValue == null)
                         propertyValue = project.getProperty(propertyName);
-                    if(propertyValue != null)
+                    if (propertyValue != null)
                         dc.getFieldStates().getState(propertyField).getValue().setTextValue(propertyValue);
                 }
             }
@@ -166,15 +153,15 @@ public class AntBuildDialog extends ConsoleDialog
         try
         {
             DialogFields fields = getFields();
-            for(int i = 0; i < fields.size(); i++)
+            for (int i = 0; i < fields.size(); i++)
             {
                 DialogField field = fields.get(i);
-                if(field instanceof AntBuildDialogPropertyField)
+                if (field instanceof AntBuildDialogPropertyField)
                 {
                     AntBuildDialogPropertyField propertyField = (AntBuildDialogPropertyField) field;
                     String propertyName = propertyField.getProperty();
                     String propertyValue = dc.getFieldStates().getState(propertyField).getValue().getTextValue();
-                    if(propertyValue != null)
+                    if (propertyValue != null)
                         antProject.setUserProperty(propertyName, propertyValue);
                 }
             }
@@ -185,11 +172,11 @@ public class AntBuildDialog extends ConsoleDialog
             exceptionThrown = e;
         }
 
-        writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
+        writer.write("<div class='textbox'>" + Main.getAntVersion() + "<p><pre>");
         writer.write(ostream.toString());
         writer.write("</pre>");
 
-        if(exceptionThrown != null)
+        if (exceptionThrown != null)
             renderFormattedExceptionMessage(writer, exceptionThrown);
 
         System.setOut(saveOut);
@@ -200,7 +187,7 @@ public class AntBuildDialog extends ConsoleDialog
     {
         super.render(writer, nc, theme, flags);
         File projectFile = new File(antProject.getFile().getTextValue(nc));
-        if(! projectFile.exists())
+        if (!projectFile.exists())
             return;
 
         writer.write("<p>");

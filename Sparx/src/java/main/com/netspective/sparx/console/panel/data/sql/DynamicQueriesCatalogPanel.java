@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,41 +28,33 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data.sql;
 
-import java.util.TreeSet;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.schema.Schemas;
+import com.netspective.axiom.schema.table.TableQueryDefinition;
+import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnDetailPanel;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnDetailPanel;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.schema.Schemas;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.table.TableQueryDefinition;
-import com.netspective.axiom.sql.dynamic.QueryDefinitions;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
 
 public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 {
@@ -143,11 +130,11 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             super();
 
             QueryDefinitions customQueryDefns = sqlManager.getQueryDefns();
-            if(customQueryDefns.size() > 0)
+            if (customQueryDefns.size() > 0)
             {
                 rows.add("Custom");
                 Set sortedNames = new TreeSet(customQueryDefns.getNames());
-                for(Iterator i = sortedNames.iterator(); i.hasNext(); )
+                for (Iterator i = sortedNames.iterator(); i.hasNext();)
                 {
                     String queryDefnName = (String) i.next();
                     rows.add(customQueryDefns.get(queryDefnName));
@@ -155,15 +142,15 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             }
 
             Schemas schemas = sqlManager.getSchemas();
-            for(int i = 0; i < schemas.size(); i++)
+            for (int i = 0; i < schemas.size(); i++)
             {
                 Schema schema = schemas.get(i);
                 QueryDefinitions tableQueryDefns = schema.getQueryDefinitions();
-                if(tableQueryDefns.size() > 0)
+                if (tableQueryDefns.size() > 0)
                 {
-                    rows.add("Schema '"+ schema.getName() +"'");
+                    rows.add("Schema '" + schema.getName() + "'");
                     Set sortedNames = new TreeSet(tableQueryDefns.getNames());
-                    for(Iterator iter = sortedNames.iterator(); iter.hasNext(); )
+                    for (Iterator iter = sortedNames.iterator(); iter.hasNext();)
                     {
                         String queryDefnName = (String) iter.next();
                         rows.add(tableQueryDefns.get(queryDefnName));
@@ -208,7 +195,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             activeRow = rowNum;
             Object item = rows.get(activeRow);
-            if(item instanceof QueryDefinition)
+            if (item instanceof QueryDefinition)
             {
                 activeRowHeading = null;
                 activeRowQueryDefn = (QueryDefinition) item;
@@ -222,7 +209,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -231,26 +218,26 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if(activeRowHeading != null)
+            if (activeRowHeading != null)
             {
-                if(columnIndex == 0)
+                if (columnIndex == 0)
                     return activeRowHeading;
                 else
                     return null;
             }
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     StringBuffer href = new StringBuffer("detail?");
-                    if(activeRowQueryDefn instanceof TableQueryDefinition)
+                    if (activeRowQueryDefn instanceof TableQueryDefinition)
                         href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN_SOURCE + "=" + "schema," + ((TableQueryDefinition) activeRowQueryDefn).getOwner().getSchema().getName() +
                                 "&" + QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
                     else
                         href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
 
                     //return reportValueContext.getSkin().constructRedirect(reportValueContext, Commands.getInstance().getCommand("redirect," + href), activeRowQueryDefn.getName(), null, null);
-                    return "<a href=\""+ href +"\">" + activeRowQueryDefn.getName() + "</a>";
+                    return "<a href=\"" + href + "\">" + activeRowQueryDefn.getName() + "</a>";
 
                 case 1:
                     return new Integer(activeRowQueryDefn.getFields().size());

@@ -1,7 +1,5 @@
-package com.netspective.sparx.console.panel.data.schema;
-
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -20,12 +18,7 @@ package com.netspective.sparx.console.panel.data.schema;
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -35,31 +28,24 @@ package com.netspective.sparx.console.panel.data.schema;
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
+package com.netspective.sparx.console.panel.data.schema;
 
-/**
- * $Id: SchemaTableColumnsRefByPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
- */
-
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Arrays;
 
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.ColumnsCollection;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
 {
@@ -96,10 +82,10 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, Table table)
     {
         Columns depColumns = new ColumnsCollection();
-        for(int i = 0; i < table.getColumns().size(); i++)
+        for (int i = 0; i < table.getColumns().size(); i++)
         {
             Column col = table.getColumns().get(i);
-            if(col.getDependentForeignKeys() != null)
+            if (col.getDependentForeignKeys() != null)
                 depColumns.add(col);
         }
 
@@ -117,7 +103,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
         {
             Column column = columns.get(row);
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                 case 1:
@@ -128,7 +114,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                     Set dependents = column.getDependentForeignKeys();
                     String[] depNames = new String[dependents.size()];
                     int dn = 0;
-                    for(Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext(); )
+                    for (Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext();)
                     {
                         ForeignKey fKey = (ForeignKey) i.next();
                         depNames[dn] = fKey.getSourceColumns().getFirst().getQualifiedName();
@@ -137,7 +123,7 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                     Arrays.sort(depNames);
 
                     StringBuffer sb = new StringBuffer();
-                    for(int i = 0; i < depNames.length; i++)
+                    for (int i = 0; i < depNames.length; i++)
                     {
                         sb.append(depNames[i]);
                         sb.append("<br>");

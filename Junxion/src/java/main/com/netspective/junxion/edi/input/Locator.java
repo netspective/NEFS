@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,51 +28,50 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Locator.java,v 1.1 2003-03-13 18:37:22 shahid.shah Exp $
- */
-
 package com.netspective.junxion.edi.input;
 
 public interface Locator
 {
     /**
      * Return the filename or other identifier for the location source.
+     *
      * @return The filename or other identifier, null if none is available.
      */
     public String getSourceIdentifier();
 
     /**
      * Return the segment number where the current document event ends.
+     *
      * @return The segement number, or -1 if none is available.
      */
     public int getSegmentNumber();
 
     /**
      * Return the segment ID where the current document event ends.
+     *
      * @return The segement id, or null if the segement id has not yet been determined.
      */
     public String getSegmentIdentifier();
 
     /**
      * Return the data number where the current document event ends.
+     *
      * @return The data element number, or -1 if none is available.
      */
     public int getDataElementNumber();
 
     /**
      * Return the column number where the current document event ends.
+     *
      * @return The column number, or -1 if none is available.
      */
     public int getColumnNumber();
 
     /**
      * Return the line number where the current document event ends.
+     *
      * @return The line number, or -1 if none is available.
      */
     public int getLineNumber();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,28 +28,21 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: XdmComponentTask.java,v 1.5 2003-08-27 16:35:59 shahid.shah Exp $
- */
-
 package com.netspective.commons.ant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.Delete;
+import org.apache.tools.ant.types.FileSet;
 
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.xdm.XdmComponent;
@@ -65,6 +53,7 @@ public abstract class XdmComponentTask extends Task
     protected interface ActionHandler
     {
         public String getName();
+
         public void execute() throws BuildException;
     }
 
@@ -118,7 +107,7 @@ public abstract class XdmComponentTask extends Task
 
     public void setupActionHandlers()
     {
-        if(actionHandlers != null)
+        if (actionHandlers != null)
             return;
         actionHandlers = new HashMap();
     }
@@ -132,8 +121,8 @@ public abstract class XdmComponentTask extends Task
     {
         setupActionHandlers();
         actionHandler = (ActionHandler) actionHandlers.get(action);
-        if(actionHandler == null)
-            throw new BuildException("Unknown action '"+ action +"'. Available: " + actionHandlers.keySet());
+        if (actionHandler == null)
+            throw new BuildException("Unknown action '" + action + "'. Available: " + actionHandlers.keySet());
     }
 
     public boolean isCleanFirst()
@@ -143,21 +132,22 @@ public abstract class XdmComponentTask extends Task
 
     public void setCleanFirst(String cleanFirstStyle)
     {
-        if("no".equals(cleanFirstStyle))
+        if ("no".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_FALSE;
-        else if("yes".equals(cleanFirstStyle))
+        else if ("yes".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_DIR;
-        else if("preserve-cvs".equals(cleanFirstStyle))
+        else if ("preserve-cvs".equals(cleanFirstStyle))
             this.cleanFirst = CLEAN_FIRST_PRESERVE_CVS;
     }
 
     /**
      * Deletes the contents of the given directory.
+     *
      * @param dir The directory to delete
      */
     public synchronized void delete(File dir)
     {
-        switch(cleanFirst)
+        switch (cleanFirst)
         {
             case CLEAN_FIRST_DIR:
                 deleteTask.setDir(dir);
@@ -165,7 +155,7 @@ public abstract class XdmComponentTask extends Task
                 break;
 
             case CLEAN_FIRST_PRESERVE_CVS:
-                if(dir.exists())
+                if (dir.exists())
                 {
                     FileSet everythingButCVSFileSet = new FileSet();
                     everythingButCVSFileSet.setDir(dir);
@@ -245,18 +235,18 @@ public abstract class XdmComponentTask extends Task
 
     public boolean generateIdentifierConstants(XdmComponent component) throws BuildException
     {
-        if(getDestDir() != null || genIdConstantsRootPkgAndClass != null)
+        if (getDestDir() != null || genIdConstantsRootPkgAndClass != null)
         {
-            if(getDestDir() == null || genIdConstantsRootPkgAndClass == null)
+            if (getDestDir() == null || genIdConstantsRootPkgAndClass == null)
                 throw new BuildException("destDir and idConstantsClass are both required to generate Identifier Constants.");
 
-            if(isCleanFirst())
+            if (isCleanFirst())
                 delete(new File(getDestDir(), genIdConstantsRootPkgAndClass.replace('.', '/')));
 
             try
             {
                 component.generateIdentifiersConstants(getDestDir(), genIdConstantsRootPkgAndClass);
-                log("Created ID constants package '"+ genIdConstantsRootPkgAndClass +"' in " + getDestDir().getAbsolutePath());
+                log("Created ID constants package '" + genIdConstantsRootPkgAndClass + "' in " + getDestDir().getAbsolutePath());
             }
             catch (IOException e)
             {
@@ -272,7 +262,7 @@ public abstract class XdmComponentTask extends Task
 
     protected XdmComponent getComponent(Class componentClass) throws BuildException
     {
-        if(projectFile == null && xdmResource == null)
+        if (projectFile == null && xdmResource == null)
             throw new BuildException("No project resource or file attributes supplied (projectFile).");
 
         XdmComponent component = null;
@@ -280,9 +270,9 @@ public abstract class XdmComponentTask extends Task
 
         try
         {
-            if(projectFile != null)
+            if (projectFile != null)
                 component = XdmComponentFactory.get(componentClass, projectFile, flags);
-            else if(xdmResource != null)
+            else if (xdmResource != null)
                 component = XdmComponentFactory.get(componentClass, xdmResource, flags);
         }
         catch (Exception e)
@@ -291,18 +281,18 @@ public abstract class XdmComponentTask extends Task
         }
 
         List errors = component.getErrors();
-        if(errors.size() > 0)
+        if (errors.size() > 0)
         {
-            for(int i = 0; i < errors.size(); i++)
+            for (int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
-                if(error instanceof Exception)
+                if (error instanceof Exception)
                     throw new BuildException((Exception) error);
                 log(error.toString());
             }
         }
 
-        if(isMetrics())
+        if (isMetrics())
             log(component.getMetrics().toString());
 
         return component;
@@ -310,7 +300,7 @@ public abstract class XdmComponentTask extends Task
 
     public void execute() throws BuildException
     {
-        if(getActionHandler() == null)
+        if (getActionHandler() == null)
         {
             setupActionHandlers();
             throw new BuildException("action attribute expected with one of the following values: " + actionHandlers.keySet());

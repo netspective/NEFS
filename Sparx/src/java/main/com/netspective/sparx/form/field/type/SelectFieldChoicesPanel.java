@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SelectFieldChoicesPanel.java,v 1.7 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form.field.type;
 
 import java.io.IOException;
@@ -103,6 +91,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Sets the datasource with the select choices data
+     *
      * @param ds
      */
     public void setDataSource(TabularReportDataSource ds)
@@ -112,7 +101,9 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Creates the datasource containing the data to fill the report with
+     *
      * @param nc
+     *
      * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
@@ -125,7 +116,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
         }
         else
         {
-            if(selectedQuery.getDataSource() != null)
+            if (selectedQuery.getDataSource() != null)
                 return selectedQuery.getDataSource();
             else
             {
@@ -137,7 +128,9 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Gets the associated report object
+     *
      * @param nc
+     *
      * @return
      */
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -147,15 +140,17 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
     /**
      * Gets the <i>Id</i> report column
+     *
      * @return
      */
-    public  TabularReportColumn getIdReportColumn()
+    public TabularReportColumn getIdReportColumn()
     {
         return choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX);
     }
 
     /**
      * Gets the <i>Caption</i> report column
+     *
      * @return
      */
     public TabularReportColumn getCaptionReportColumn()
@@ -204,10 +199,10 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
             DbmsSqlTexts texts = selectedQuery.getQuery().getSqlTexts();
             Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
 
-            for(Iterator i = availableDbmsIds.iterator(); i.hasNext(); )
+            for (Iterator i = availableDbmsIds.iterator(); i.hasNext();)
             {
                 String dbmsId = (String) i.next();
-                rows.add(new Object[] { dbmsId, texts.getByDbmsId(dbmsId) });
+                rows.add(new Object[]{dbmsId, texts.getByDbmsId(dbmsId)});
             }
 
             lastRow = rows.size() - 1;
@@ -240,7 +235,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -249,7 +244,7 @@ public class SelectFieldChoicesPanel extends QueryDetailPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     return ((Object[]) rows.get(activeRow))[0];

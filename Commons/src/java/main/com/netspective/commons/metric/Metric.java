@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: Metric.java,v 1.2 2003-10-07 01:35:07 shahid.shah Exp $
- */
-
 package com.netspective.commons.metric;
 
 import java.util.ArrayList;
@@ -104,7 +92,7 @@ public abstract class Metric
     public void setParent(Metric metric)
     {
         parent = metric;
-        if(parent != null) metric.setOwner(parent.getOwner());
+        if (parent != null) metric.setOwner(parent.getOwner());
     }
 
     public abstract String getFormattedValue();
@@ -132,10 +120,10 @@ public abstract class Metric
     public final void setFlag(long flag, boolean includeChildren)
     {
         flags |= flag;
-        if(includeChildren && children != null)
+        if (includeChildren && children != null)
         {
             Iterator i = children.iterator();
-            while(i.hasNext())
+            while (i.hasNext())
             {
                 ((Metric) i.next()).setFlag(flag);
             }
@@ -145,10 +133,10 @@ public abstract class Metric
     public final void clearFlag(long flag, boolean includeChildren)
     {
         flags &= ~flag;
-        if(includeChildren && children != null)
+        if (includeChildren && children != null)
         {
             Iterator i = children.iterator();
-            while(i.hasNext())
+            while (i.hasNext())
             {
                 ((Metric) i.next()).clearFlag(flag);
             }
@@ -163,7 +151,7 @@ public abstract class Metric
     protected void addChild(Metric metric)
     {
         metric.setParent(this);
-        if(children == null)
+        if (children == null)
         {
             children = new ArrayList();
             childMap = new HashMap();
@@ -175,7 +163,7 @@ public abstract class Metric
     public MetricsGroup addGroupMetric(String name)
     {
         MetricsGroup metric = (MetricsGroup) getChild(name);
-        if(metric != null)
+        if (metric != null)
             return metric;
 
         metric = new MetricsGroup(this, name);
@@ -186,7 +174,7 @@ public abstract class Metric
     public ValueMetric addValueMetric(String name, String value)
     {
         ValueMetric metric = (ValueMetric) getChild(name);
-        if(metric != null)
+        if (metric != null)
             return metric;
 
         metric = new ValueMetric(this, name, value);
@@ -197,7 +185,7 @@ public abstract class Metric
     public CountMetric addCountMetric(String name)
     {
         CountMetric metric = (CountMetric) getChild(name);
-        if(metric != null)
+        if (metric != null)
             return metric;
 
         metric = new CountMetric(this, name);
@@ -208,7 +196,7 @@ public abstract class Metric
     public AverageMetric addAverageMetric(String name)
     {
         AverageMetric metric = (AverageMetric) getChild(name);
-        if(metric != null)
+        if (metric != null)
             return metric;
 
         metric = new AverageMetric(this, name);
@@ -219,7 +207,7 @@ public abstract class Metric
     public FileTypeMetric addFileTypeMetric(String name, boolean isCode)
     {
         FileTypeMetric metric = (FileTypeMetric) getChild(name);
-        if(metric != null)
+        if (metric != null)
             return metric;
 
         metric = new FileTypeMetric(this, name, isCode);
@@ -229,7 +217,7 @@ public abstract class Metric
 
     public Metric getChild(String name)
     {
-        if(childMap == null)
+        if (childMap == null)
             return null;
 
         return (Metric) childMap.get(name);
@@ -239,7 +227,7 @@ public abstract class Metric
     {
         int count = 0;
         Metric parent = getParent();
-        while(parent != null)
+        while (parent != null)
         {
             count++;
             parent = parent.getParent();
@@ -250,22 +238,22 @@ public abstract class Metric
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < getAncestorCount(); i++)
+        for (int i = 0; i < getAncestorCount(); i++)
             sb.append("  ");
 
         sb.append(getName());
 
         String fv = getFormattedValue();
-        if(fv != null)
+        if (fv != null)
         {
             sb.append(": ");
             sb.append(fv);
         }
         sb.append("\n");
 
-        if(children != null)
+        if (children != null)
         {
-            for(int i = 0; i < children.size(); i++)
+            for (int i = 0; i < children.size(); i++)
             {
                 Metric childMetric = (Metric) children.get(i);
                 sb.append(childMetric);

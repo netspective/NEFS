@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: XdmSchemaStructurePanel.java,v 1.8 2004-08-09 22:15:14 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.framework;
 
 import java.util.ArrayList;
@@ -94,7 +82,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     static
     {
         elementTagIdColumn.setHeading(new StaticValueSource("Element"));
-        elementTagIdColumn.setRedirect(new RedirectValueSource("detail?"+ REQPARAMNAME_SHOW_CLASS_DETAIL +"=%{1}"));
+        elementTagIdColumn.setRedirect(new RedirectValueSource("detail?" + REQPARAMNAME_SHOW_CLASS_DETAIL + "=%{1}"));
         structureReport.addColumn(elementTagIdColumn);
 
         GeneralColumn xdmClass = new GeneralColumn();
@@ -187,17 +175,17 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         Object childInstance = null;
 
         StructureRow childRow = null;
-        if(name != null)
+        if (name != null)
         {
             try
             {
                 childInstance = parentSchema.createElement(null, null, parent, name, true);
-                if(childInstance != null)
+                if (childInstance != null)
                     schema = XmlDataModelSchema.getSchema(childInstance.getClass());
                 else
                 {
                     Class interfaceClass = parentSchema.getElementType(name);
-                    if(interfaceClass == null)
+                    if (interfaceClass == null)
                         interfaceClass = parentSchema.getAttributeType(name);
                     rows.add(new StructureRow(level, propNames.getPrimaryName(), parentRow, ancestors, interfaceClass, false));
                     log.warn("Unable to create child for " + name + ", must be an interface instead of a concrete class: " + interfaceClass);
@@ -219,7 +207,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             recursive = ancestors.contains(schema);
 
             // flags have "createXXX" methods but they are not really nestable elements
-            if(! XdmBitmaskedFlagsAttribute.class.isAssignableFrom(childInstance.getClass()))
+            if (!XdmBitmaskedFlagsAttribute.class.isAssignableFrom(childInstance.getClass()))
             {
                 childRow = new StructureRow(level, propNames.getPrimaryName(), parentRow, ancestors, schema, childInstance, recursive);
                 rows.add(childRow);
@@ -231,7 +219,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             childInstance = parent;
         }
 
-        if(recursive)
+        if (recursive)
             return;
 
         List childElemNames = new ArrayList();
@@ -241,24 +229,24 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         while (iterator.hasNext())
         {
             String nestedName = (String) iterator.next();
-            if(schema.getOptions().ignoreNestedElement(nestedName) || ! ((XmlDataModelSchema.PropertyNames) schemaPropertyNames.get(nestedName)).isPrimaryName(nestedName))
+            if (schema.getOptions().ignoreNestedElement(nestedName) || !((XmlDataModelSchema.PropertyNames) schemaPropertyNames.get(nestedName)).isPrimaryName(nestedName))
                 continue;
 
             childElemNames.add(nestedName);
         }
 
         TemplateProducers templateProducers = null;
-        if(childInstance instanceof TemplateProducerParent)
+        if (childInstance instanceof TemplateProducerParent)
         {
             templateProducers = ((TemplateProducerParent) childInstance).getTemplateProducers();
-            for(int i = 0; i < templateProducers.size(); i++)
+            for (int i = 0; i < templateProducers.size(); i++)
             {
                 TemplateProducer templateProducer = templateProducers.getByIndex(i);
                 childElemNames.add(templateProducer.getElementName());
             }
         }
 
-        if(childElemNames.size() > 0)
+        if (childElemNames.size() > 0)
         {
             String[] nested = (String[]) childElemNames.toArray(new String[childElemNames.size()]);
             Arrays.sort(nested);
@@ -267,13 +255,13 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             childAncestors.add(schema);
             childAncestors.addAll(ancestors);
 
-            for(int i = 0; i < nested.length; i++)
+            for (int i = 0; i < nested.length; i++)
             {
                 String nestedName = nested[i];
-                if(templateProducers != null && templateProducers.get(nestedName) != null)
-                    rows.add(new StructureRow(level+1, nestedName, childRow, ancestors, templateProducers.get(nestedName), false));
+                if (templateProducers != null && templateProducers.get(nestedName) != null)
+                    rows.add(new StructureRow(level + 1, nestedName, childRow, ancestors, templateProducers.get(nestedName), false));
                 else
-                    addStructureRow(rows, level+1, childRow, childAncestors, childInstance, nestedName);
+                    addStructureRow(rows, level + 1, childRow, childAncestors, childInstance, nestedName);
             }
         }
     }
@@ -281,7 +269,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public List createStructureRows(XmlDataModel dataModel)
     {
         List rows = (List) dataModelRows.get(dataModel);
-        if(rows != null)
+        if (rows != null)
             return rows;
 
         rows = new ArrayList();
@@ -301,7 +289,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public void setView(XdmSchemaStructurePanelViewEnumeratedAttribute view)
     {
         this.view = view;
-        switch(view.getValueIndex())
+        switch (view.getValueIndex())
         {
             case XdmSchemaStructurePanelViewEnumeratedAttribute.TREE:
                 getFrame().setHeading(new StaticValueSource("All Elements"));
@@ -335,7 +323,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
         HtmlTabularReportValueContext vc = new HtmlTabularReportValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
-        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
+        if (view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
         {
             TabularReportColumnState[] states = vc.getStates();
             states[1].getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
@@ -348,13 +336,13 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
     public StructureRow getSelectedStructureRow(NavigationContext nc, List structureRows)
     {
         String selectedClass = nc.getRequest().getParameter(REQPARAMNAME_SHOW_CLASS_DETAIL);
-        if(selectedClass == null)
+        if (selectedClass == null)
             return null;
 
-        for(int i = 0; i < structureRows.size(); i++)
+        for (int i = 0; i < structureRows.size(); i++)
         {
             StructureRow structureRow = (StructureRow) structureRows.get(i);
-            if(structureRow.schema != null && structureRow.schema.getBean().getName().equals(selectedClass))
+            if (structureRow.schema != null && structureRow.schema.getBean().getName().equals(selectedClass))
             {
                 nc.setPageHeading(structureRow.schema.getBean().getName());
                 return structureRow;
@@ -369,7 +357,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         List structureRows = createStructureRows(dataModel == null ? nc.getProjectComponent() : dataModel);
         StructureRow selectedRow = getSelectedStructureRow(nc, structureRows);
 
-        switch(view.getValueIndex())
+        switch (view.getValueIndex())
         {
             case XdmSchemaStructurePanelViewEnumeratedAttribute.STRUCTURE:
                 return new StructureDataSource(structureRows, selectedRow);
@@ -379,11 +367,11 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
             case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS:
             case XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL:
-                if(selectedRow != null)
+                if (selectedRow != null)
                 {
                     try
                     {
-                        if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS)
+                        if (view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL_ANCESTORS)
                             return new DetailAncestorsDataSource(structureRows, selectedRow);
                         else
                             return new DetailDataSource(structureRows, selectedRow);
@@ -404,7 +392,8 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL ? detailReport : structureReport;
+        return view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.DETAIL
+                ? detailReport : structureReport;
     }
 
     protected class StructureDataSource extends AbstractHtmlTabularReportDataSource
@@ -454,42 +443,43 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    if(activeRow.isConcreteClass())
+                    if (activeRow.isConcreteClass())
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getRedirect(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
 
                 case 1:
-                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                    if ((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                     {
-                        if(activeRow.templateProducer != null)
+                        if (activeRow.templateProducer != null)
                             return activeRow.templateProducer.getClass().getName();
-                        else if(activeRow.interfaceClass != null)
+                        else if (activeRow.interfaceClass != null)
                             return activeRow.interfaceClass.getName();
                         else
                             return activeRow.schema.getBean().getName();
                     }
                     else
                     {
-                        if(activeRow.templateProducer != null)
+                        if (activeRow.templateProducer != null)
                         {
-                            if(activeRow.templateProducer.isStatic())
+                            if (activeRow.templateProducer.isStatic())
                                 return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
                             else
-                                return "Template producer (dynamic namespace: "+ reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                                return "Template producer (dynamic namespace: " + reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) + ")";
                         }
-                        else if(activeRow.interfaceClass != null)
+                        else if (activeRow.interfaceClass != null)
                             return reportValueContext.getSkin().constructClassRef(activeRow.interfaceClass);
                         else
                             return reportValueContext.getSkin().constructClassRef(activeRow.schema.getBean());
                     }
 
                 case 2:
-                    if(activeRow.isConcreteClass())
-                        return activeRow.schema.supportsCharacters() ? "Yes" : reportValueContext.getSkin().getBlankValue();
+                    if (activeRow.isConcreteClass())
+                        return activeRow.schema.supportsCharacters()
+                                ? "Yes" : reportValueContext.getSkin().getBlankValue();
                     else
                         return reportValueContext.getSkin().getBlankValue();
 
@@ -524,10 +514,10 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
-            setActiveRow(row+1);
+            setActiveRow(row + 1);
             return true;
         }
 
@@ -585,11 +575,11 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             this.selectedRow = selectedRow;
             this.ancestorRows = new ArrayList();
 
-            for(int i = 0; i < structureRows.size(); i++)
+            for (int i = 0; i < structureRows.size(); i++)
             {
                 StructureRow checkRow = (StructureRow) structureRows.get(i);
-                if(checkRow == selectedRow ||
-                   (selectedRow.ancestors.contains(checkRow.schema) && checkRow.level < selectedRow.level))
+                if (checkRow == selectedRow ||
+                        (selectedRow.ancestors.contains(checkRow.schema) && checkRow.level < selectedRow.level))
                     ancestorRows.add(structureRows.get(i));
             }
 
@@ -603,42 +593,43 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    if(activeRow.isConcreteClass())
+                    if (activeRow.isConcreteClass())
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, elementTagIdColumn.getRedirect(), activeRow.elementName, null, null);
                     else
                         return activeRow.elementName;
 
                 case 1:
-                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                    if ((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                     {
-                        if(activeRow.templateProducer != null)
+                        if (activeRow.templateProducer != null)
                             return activeRow.templateProducer.getClass().getName();
-                        else if(activeRow.interfaceClass != null)
+                        else if (activeRow.interfaceClass != null)
                             return activeRow.interfaceClass.getName();
                         else
                             return activeRow.schema.getBean().getName();
                     }
                     else
                     {
-                        if(activeRow.templateProducer != null)
+                        if (activeRow.templateProducer != null)
                         {
-                            if(activeRow.templateProducer.isStatic())
+                            if (activeRow.templateProducer.isStatic())
                                 return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
                             else
-                                return "Template producer (dynamic namespace: "+ reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                                return "Template producer (dynamic namespace: " + reportValueContext.getSkin().constructClassRef(activeRow.templateProducer.getClass()) + ")";
                         }
-                        else if(activeRow.interfaceClass != null)
+                        else if (activeRow.interfaceClass != null)
                             return reportValueContext.getSkin().constructClassRef(activeRow.interfaceClass);
                         else
                             return reportValueContext.getSkin().constructClassRef(activeRow.schema.getBean());
                     }
 
                 case 2:
-                    if(activeRow.isConcreteClass())
-                        return activeRow.schema.supportsCharacters() ? "Yes" : reportValueContext.getSkin().getBlankValue();
+                    if (activeRow.isConcreteClass())
+                        return activeRow.schema.supportsCharacters()
+                                ? "Yes" : reportValueContext.getSkin().getBlankValue();
                     else
                         return reportValueContext.getSkin().getBlankValue();
 
@@ -673,10 +664,10 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
-            setActiveRow(row+1);
+            setActiveRow(row + 1);
             return true;
         }
 
@@ -732,14 +723,14 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             super();
             this.selectedRow = selectedRow;
 
-            if(selectedRow.schema != null)
+            if (selectedRow.schema != null)
             {
                 childPropertyNames = selectedRow.schema.getPropertyNames();
 
                 Map flagSetters = new HashMap();
-                if(selectedRow.instance != null)
+                if (selectedRow.instance != null)
                 {
-                    for(Iterator i = selectedRow.schema.getFlagsAttributeAccessors().entrySet().iterator(); i.hasNext(); )
+                    for (Iterator i = selectedRow.schema.getFlagsAttributeAccessors().entrySet().iterator(); i.hasNext();)
                     {
                         Map.Entry entry = (Map.Entry) i.next();
                         XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) entry.getValue();
@@ -753,15 +744,15 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                             throw new DataModelException(null, e);
                         }
 
-                        if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                        if (returnVal instanceof XdmBitmaskedFlagsAttribute)
                         {
                             XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
                             Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
-                            for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                            for (Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext();)
                             {
                                 String xmlNodeName = (String) xmliter.next();
-                                if(! childPropertyNames.containsKey(xmlNodeName))
-                                    flagSetters.put(xmlNodeName, new Object[] { bfa, xmlNodeNames.get(xmlNodeName) });
+                                if (!childPropertyNames.containsKey(xmlNodeName))
+                                    flagSetters.put(xmlNodeName, new Object[]{bfa, xmlNodeNames.get(xmlNodeName)});
                             }
                         }
                     }
@@ -774,18 +765,18 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                 {
                     String attrName = (String) iterator.next();
 
-                    if(flagSetters.containsKey(attrName))
+                    if (flagSetters.containsKey(attrName))
                     {
                         Object[] flagSetterInfo = (Object[]) flagSetters.get(attrName);
                         detailRows.add(new DetailRow(attrName, (XdmBitmaskedFlagsAttribute) flagSetterInfo[0], (XdmBitmaskedFlagsAttribute.FlagDefn) flagSetterInfo[1]));
                         continue;
                     }
 
-                    if(selectedRow.schema.getOptions().ignoreAttribute(attrName))
+                    if (selectedRow.schema.getOptions().ignoreAttribute(attrName))
                         continue;
 
                     XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-                    if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+                    if (attrNames != null && !attrNames.isPrimaryName(attrName))
                         continue;
 
                     detailRows.add(new DetailRow(attrName));
@@ -793,14 +784,14 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
                 // find all the structure rows that have this structureRow as the first ancestor (meaning we're their parent)
                 Set addedChildElems = new HashSet();
-                for(int i = 0; i < structureRows.size(); i++)
+                for (int i = 0; i < structureRows.size(); i++)
                 {
                     StructureRow checkChildRow = (StructureRow) structureRows.get(i);
-                    if(checkChildRow.schema != null)
+                    if (checkChildRow.schema != null)
                     {
-                        if(checkChildRow.ancestors.get(0) == selectedRow.schema)
+                        if (checkChildRow.ancestors.get(0) == selectedRow.schema)
                         {
-                            if(!addedChildElems.contains(checkChildRow.schema))
+                            if (!addedChildElems.contains(checkChildRow.schema))
                             {
                                 addedChildElems.add(checkChildRow.schema);
                                 detailRows.add(new DetailRow(checkChildRow));
@@ -842,10 +833,10 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
-            setActiveRow(activeRowNum+1);
+            setActiveRow(activeRowNum + 1);
             return true;
         }
 
@@ -861,33 +852,33 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
-                case 0 :
-                    if(activeRow.childElement != null)
-                        return "<a href=\"?xdm-class="+ activeRow.childElement.schema.getBean().getName() +"\">&lt;" + activeRow.childElement.elementName + "&gt;</a>";
+                case 0:
+                    if (activeRow.childElement != null)
+                        return "<a href=\"?xdm-class=" + activeRow.childElement.schema.getBean().getName() + "\">&lt;" + activeRow.childElement.elementName + "&gt;</a>";
                     else
                         return activeRow.attrName;
 
                 case 1:
-                    if(activeRow.childElement != null)
+                    if (activeRow.childElement != null)
                         return reportValueContext.getSkin().constructClassRef(activeRow.childElement.schema.getBean());
-                    else if(activeRow.bfa != null)
-                        return "<span title=\"alias for " + activeRow.flagDefn.getName() + " (" + activeRow.bfa.getClass() +")\">boolean (dynamic)</span>";
+                    else if (activeRow.bfa != null)
+                        return "<span title=\"alias for " + activeRow.flagDefn.getName() + " (" + activeRow.bfa.getClass() + ")\">boolean (dynamic)</span>";
                     else
                         return reportValueContext.getSkin().constructClassRef(activeRow.attrType);
 
                 case 2:
                     TextUtils textUtils = TextUtils.getInstance();
-                    if(activeRow.attrType != null)
+                    if (activeRow.attrType != null)
                     {
-                        if(XdmBitmaskedFlagsAttribute.class.isAssignableFrom(activeRow.attrType))
+                        if (XdmBitmaskedFlagsAttribute.class.isAssignableFrom(activeRow.attrType))
                         {
                             XdmBitmaskedFlagsAttribute bfa = null;
                             try
                             {
                                 XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) selectedRow.schema.getNestedCreators().get(activeRow.attrName);
-                                if(creator != null)
+                                if (creator != null)
                                     bfa = (XdmBitmaskedFlagsAttribute) creator.create(selectedRow.instance);
                                 else
                                     bfa = (XdmBitmaskedFlagsAttribute) activeRow.attrType.newInstance();
@@ -900,7 +891,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
                             return textUtils.join(bfa.getFlagNamesWithXdmAccess(), " | ");
                         }
-                        else if(XdmEnumeratedAttribute.class.isAssignableFrom(activeRow.attrType))
+                        else if (XdmEnumeratedAttribute.class.isAssignableFrom(activeRow.attrType))
                         {
                             XdmEnumeratedAttribute ea = null;
                             try
@@ -915,12 +906,12 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
                             return textUtils.join(ea.getValues(), ", ");
                         }
-                        else if(Boolean.class.isAssignableFrom(activeRow.attrType) || (activeRow.attrType == boolean.class))
+                        else if (Boolean.class.isAssignableFrom(activeRow.attrType) || (activeRow.attrType == boolean.class))
                             return textUtils.join(textUtils.getBooleanChoices(), ", ");
                         else
                             return reportValueContext.getSkin().getBlankValue();
                     }
-                    else if(activeRow.bfa != null)
+                    else if (activeRow.bfa != null)
                         return textUtils.join(textUtils.getBooleanChoices(), ", ");
                     else
                         return reportValueContext.getSkin().getBlankValue();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ActionWrapper.java,v 1.4 2004-08-09 18:59:00 aye.thu Exp $
- */
-
 package com.netspective.sparx.form.action;
 
 import java.io.Writer;
@@ -97,7 +85,9 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         this.actionDialog = actionDialog;
         this.actionSchema = actionClass == null ? null : XmlDataModelSchema.getSchema(actionClass);
-        this.setServletEnvironmentMethod = getMethod("setServletEnvironment", new Class[] { Servlet.class, ServletRequest.class, ServletResponse.class });
+        this.setServletEnvironmentMethod = getMethod("setServletEnvironment", new Class[]{
+            Servlet.class, ServletRequest.class, ServletResponse.class
+        });
         this.getDataSourceNameMethod = getMethod("getDataSourceName", (Class[]) null);
         this.getDataSourceInfoMethod = getMethod("getDataSourceInfo", (Class[]) null);
         this.setConnectionMethod = getMethod("setConnection", Connection.class);
@@ -136,10 +126,10 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         DialogFields dialogFields = actionDialog.getFields();
 
-        if(dialogFields.getByQualifiedName(attrName) != null)
+        if (dialogFields.getByQualifiedName(attrName) != null)
         {
             FieldMutator fieldMutator = locateMutator(attrValue);
-            if(fieldMutator != null) fieldMutators.put(attrName, fieldMutator);
+            if (fieldMutator != null) fieldMutators.put(attrName, fieldMutator);
         }
         else
             schema.setAttribute(pc, parent, attrName, attrValue, true);
@@ -185,7 +175,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         try
         {
-            return actionSchema.getBean().getMethod(name, new Class[] { paramType });
+            return actionSchema.getBean().getMethod(name, new Class[]{paramType});
         }
         catch (NoSuchMethodException e)
         {
@@ -197,7 +187,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         try
         {
-            return actionSchema.getBean().getMethod(name, paramTypes );
+            return actionSchema.getBean().getMethod(name, paramTypes);
         }
         catch (NoSuchMethodException e)
         {
@@ -223,47 +213,47 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         try
         {
             final Method method = (Method) actionSchema.getAttributeSetterMethods().get(attributeName);
-            if(method != null)
+            if (method != null)
             {
                 Class[] args = method.getParameterTypes();
-                if(args.length == 1)
+                if (args.length == 1)
                 {
                     Class arg = args[0];
-                    if(java.lang.String.class.equals(arg) && arg.isArray())
+                    if (java.lang.String.class.equals(arg) && arg.isArray())
                     {
                         return new FieldMutator()
                         {
                             public void set(Object instance, Value value) throws Exception
                             {
-                                method.invoke(instance, new Object[] { value.getTextValues() });
+                                method.invoke(instance, new Object[]{value.getTextValues()});
                             }
                         };
                     }
-                    else if(Value.class.equals(arg))
+                    else if (Value.class.equals(arg))
                     {
                         return new FieldMutator()
                         {
                             public void set(Object instance, Value value) throws Exception
                             {
-                                method.invoke(instance, new Object[] { value });
+                                method.invoke(instance, new Object[]{value});
                             }
                         };
                     }
-                    else if(Date.class.equals(arg))
+                    else if (Date.class.equals(arg))
                     {
                         return new FieldMutator()
                         {
                             public void set(Object instance, Value value) throws Exception
                             {
                                 // assuming that if a date is expected then the Object of the value.getValue() will be a date
-                                method.invoke(instance, new Object[] { (Date) value.getValue() });
+                                method.invoke(instance, new Object[]{(Date) value.getValue()});
                             }
                         };
                     }
                     else
                     {
                         final XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) actionSchema.getAttributeSetters().get(attributeName);
-                        if(as != null)
+                        if (as != null)
                         {
                             return new FieldMutator()
                             {
@@ -282,12 +272,12 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         }
         catch (Exception e)
         {
-            actionDialog.getLog().error("Unable to create mutator '"+ attributeName +"' for "+ actionSchema.getBean() +": " + e.getMessage(), e);
+            actionDialog.getLog().error("Unable to create mutator '" + attributeName + "' for " + actionSchema.getBean() + ": " + e.getMessage(), e);
             throw new NestableRuntimeException(e);
         }
 
         // if we get to here, unable to set the attribute
-        actionDialog.getLog().warn("Unable to locate mutator '"+ attributeName +"' for "+ actionSchema.getBean());
+        actionDialog.getLog().warn("Unable to locate mutator '" + attributeName + "' for " + actionSchema.getBean());
 
         return null;
     }
@@ -296,29 +286,30 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
     {
         DialogFields dialogFields = actionDialog.getFields();
 
-        for(Iterator i = dialogFields.getFieldsMapByQualifiedName().keySet().iterator(); i.hasNext(); )
+        for (Iterator i = dialogFields.getFieldsMapByQualifiedName().keySet().iterator(); i.hasNext();)
         {
             String fieldName = (String) i.next();
-            if(! fieldMutators.containsKey(fieldName))
+            if (!fieldMutators.containsKey(fieldName))
             {
                 FieldMutator fieldMutator = locateMutator(fieldName);
-                if(fieldMutator != null) fieldMutators.put(fieldName, fieldMutator);
+                if (fieldMutator != null) fieldMutators.put(fieldName, fieldMutator);
             }
         }
     }
 
     public void locateValidator() throws NoSuchMethodException
     {
-        final Method isValidMethod = getMethod(isValidMethodName, List.class) == null ? getMethod(isValidMethodName, (Class[]) null) : getMethod(isValidMethodName, List.class);
-        if(isValidMethod != null)
+        final Method isValidMethod = getMethod(isValidMethodName, List.class) == null
+                ? getMethod(isValidMethodName, (Class[]) null) : getMethod(isValidMethodName, List.class);
+        if (isValidMethod != null)
         {
-            if(isValidMethod.getReturnType() == boolean.class)
+            if (isValidMethod.getReturnType() == boolean.class)
             {
                 actionValidator = new ActionValidator()
                 {
                     public boolean isValid(Object instance, List messages) throws Exception
                     {
-                        Boolean result = (Boolean) isValidMethod.invoke(instance, new Object[] { messages });
+                        Boolean result = (Boolean) isValidMethod.invoke(instance, new Object[]{messages});
                         return result.booleanValue();
                     }
                 };
@@ -326,23 +317,24 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         }
         else
             actionValidator = null;
-   }
+    }
 
     public void locateExecutor() throws NoSuchMethodException
     {
-        final Method execMethod = getMethod(executeMethodName, Writer.class) == null ? getMethod(executeMethodName, (Class[]) null) : getMethod(executeMethodName, Writer.class);
-        if(execMethod == null)
+        final Method execMethod = getMethod(executeMethodName, Writer.class) == null
+                ? getMethod(executeMethodName, (Class[]) null) : getMethod(executeMethodName, Writer.class);
+        if (execMethod == null)
             throw new NoSuchMethodException("Unable to find " + executeMethodName + "() or " + executeMethodName + "(Writer) method in " + actionSchema.getBean());
 
-        if(execMethod.getParameterTypes().length > 0)
+        if (execMethod.getParameterTypes().length > 0)
         {
-            if(execMethod.getReturnType() == String.class)
+            if (execMethod.getReturnType() == String.class)
             {
                 actionExecutor = new ActionExecutor()
                 {
                     public String execute(Writer writer, Object instance) throws Exception
                     {
-                        return (String) execMethod.invoke(instance, new Object[] { writer });
+                        return (String) execMethod.invoke(instance, new Object[]{writer});
                     }
                 };
             }
@@ -352,7 +344,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
                 {
                     public String execute(Writer writer, Object instance) throws Exception
                     {
-                        execMethod.invoke(instance, new Object[] { writer });
+                        execMethod.invoke(instance, new Object[]{writer});
                         return null;
                     }
                 };
@@ -360,7 +352,7 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
         }
         else
         {
-            if(execMethod.getReturnType() == String.class)
+            if (execMethod.getReturnType() == String.class)
             {
                 actionExecutor = new ActionExecutor()
                 {
@@ -386,15 +378,17 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
 
     protected void initInstance(Object instance, ActionDialogContext dc) throws Exception
     {
-        if(setActionDialogContextMethod != null) setActionDialogContextMethod.invoke(instance, new Object[] { dc });
-        if(setServletEnvironmentMethod != null) setServletEnvironmentMethod.invoke(instance, new Object[] { dc.getServlet(), dc.getRequest(), dc.getResponse() });
+        if (setActionDialogContextMethod != null) setActionDialogContextMethod.invoke(instance, new Object[]{dc});
+        if (setServletEnvironmentMethod != null) setServletEnvironmentMethod.invoke(instance, new Object[]{
+            dc.getServlet(), dc.getRequest(), dc.getResponse()
+        });
     }
 
     protected void assignInstanceValues(Object instance, ActionDialogContext dc) throws Exception
     {
         DialogFieldStates dfs = dc.getFieldStates();
 
-        for(Iterator i = fieldMutators.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = fieldMutators.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             String fieldName = (String) entry.getKey();
@@ -403,59 +397,63 @@ public class ActionWrapper implements CustomElementAttributeSetter, Construction
             actionMutator.set(instance, dfs.getState(fieldName).getValue());
         }
 
-        if(assignRequestParams != null)
+        if (assignRequestParams != null)
             HttpUtils.assignParamsToInstance(dc.getHttpRequest(), instance, assignRequestParams);
     }
 
     protected void assignDatabaseConnection(Object instance, ActionDialogContext dc) throws Exception
     {
-        if(setConnectionContextMethod != null || setConnectionMethod != null)
+        if (setConnectionContextMethod != null || setConnectionMethod != null)
         {
             String dataSourceId = dc.getDefaultDataSource();
-            if(getDataSourceNameMethod != null)
+            if (getDataSourceNameMethod != null)
                 dataSourceId = (String) getDataSourceNameMethod.invoke(instance, null);
 
-            if(dataSourceId != null)
+            if (dataSourceId != null)
             {
                 ValueSource dataSourceIdValueSource = ValueSources.getInstance().getValueSourceOrStatic(dataSourceId);
                 dataSourceId = dataSourceIdValueSource.getTextValue(dc);
 
-                if(dataSourceId.equals("DEFAULT"))
+                if (dataSourceId.equals("DEFAULT"))
                     dataSourceId = null;
 
                 ConnectionContext cc = dc.openActionConnection(dataSourceId);
-                if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[] { cc });
-                if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[] { cc.getConnection() });
+                if (setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[]{cc});
+                if (setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[]{cc.getConnection()});
             }
             else
             {
-                if(getDataSourceInfoMethod != null)
+                if (getDataSourceInfoMethod != null)
                 {
                     Object dataSourceInfo = getDataSourceInfoMethod.invoke(instance, null);
-                    if(dataSourceInfo != null)
+                    if (dataSourceInfo != null)
                     {
                         DriverManagerConnectionProvider.DataSourceInfo dsInfo = DriverManagerConnectionProvider.PROVIDER.createDataSource();
-                        if(dataSourceInfo instanceof List)
+                        if (dataSourceInfo instanceof List)
                         {
-                            if(! dsInfo.setInfo((List) dataSourceInfo))
+                            if (!dsInfo.setInfo((List) dataSourceInfo))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type List but has fewer than two entries. Need at least driver class and URL.");
                         }
-                        else if(dataSourceInfo instanceof String[])
+                        else if (dataSourceInfo instanceof String[])
                         {
-                            if(! dsInfo.setInfo((String[]) dataSourceInfo))
+                            if (!dsInfo.setInfo((String[]) dataSourceInfo))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type String[] but has fewer than two entries. Need at least driver class and URL.");
                         }
-                        else if(dataSourceInfo instanceof Map)
+                        else if (dataSourceInfo instanceof Map)
                         {
-                            if(! dsInfo.setInfo((Map) dataSourceInfo, null))
+                            if (!dsInfo.setInfo((Map) dataSourceInfo, null))
                                 dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class and it returns type Map but does not have 'jdbc-driver-class' or 'jdbc-connection-url'.");
                         }
                         else
-                            dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class but it returns an object ("+ dataSourceInfo +") that NEFS doesn't understand.");
+                            dc.getDialog().getLog().error("Found getDataSourceInfo() method in action class but it returns an object (" + dataSourceInfo + ") that NEFS doesn't understand.");
 
                         ConnectionContext cc = dc.openActionConnection(dsInfo);
-                        if(setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[] { cc });
-                        if(setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[] { cc.getConnection() });
+                        if (setConnectionContextMethod != null) setConnectionContextMethod.invoke(instance, new Object[]{
+                            cc
+                        });
+                        if (setConnectionMethod != null) setConnectionMethod.invoke(instance, new Object[]{
+                            cc.getConnection()
+                        });
                     }
                 }
             }

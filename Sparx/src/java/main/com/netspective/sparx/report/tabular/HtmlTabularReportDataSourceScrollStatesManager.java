@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,23 +28,16 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HtmlTabularReportDataSourceScrollStatesManager.java,v 1.3 2004-02-24 21:30:01 aye.thu Exp $
- */
-
 package com.netspective.sparx.report.tabular;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 
@@ -74,7 +62,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
 
     public static void closeAllScrollStates(Log log)
     {
-        for(Iterator i = allScrollStateManagers.iterator(); i.hasNext(); )
+        for (Iterator i = allScrollStateManagers.iterator(); i.hasNext();)
         {
             HtmlTabularReportDataSourceScrollStatesManager states = (HtmlTabularReportDataSourceScrollStatesManager) i.next();
             int count = states.closeAll();
@@ -116,7 +104,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
                 (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + id);
 
         // since set the data source to auto close after a period of time, make sure the data source didn't close itself
-        if(state != null && ! state.isClosed())
+        if (state != null && !state.isClosed())
             return state;
         else
             return null;
@@ -127,7 +115,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
         HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + ATTRNAME_ACTIVE_SCROLL_STATE);
 
         // since set the data source to auto close after a period of time, make sure the data source didn't close itself
-        if(state != null && ! state.isClosed())
+        if (state != null && !state.isClosed())
             return state;
         else
             return null;
@@ -153,7 +141,7 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
     public void removeActiveState(HttpServletValueContext vc)
     {
         TabularReportDataSourceScrollState state = getActiveScrollState(vc);
-        if(state != null)
+        if (state != null)
             removeActiveState(vc, state);
     }
 
@@ -161,12 +149,12 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
     {
         Set statesRetired = new HashSet();
 
-        for(Iterator i = scrollStates.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = scrollStates.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) entry.getValue();
 
-            if(! statesRetired.contains(state))
+            if (!statesRetired.contains(state))
             {
                 statesRetired.add(state);
                 state.close();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,40 +28,31 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AntTargetsDocumentationPanel.java,v 1.1 2003-07-12 03:31:46 shahid.shah Exp $
- */
-
 package com.netspective.sparx.ant;
 
-import java.util.List;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Iterator;
-import java.io.File;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.ant.AntProject;
-import com.netspective.sparx.ant.AntBuildDialog;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 
 public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 {
@@ -116,11 +102,11 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
         {
             super();
             antBuildDialog = (AntBuildDialog) nc.getRequest().getAttribute(AntBuildDialog.REQATTRPARAMNAME_ACTIVE_ANT_BUILD_DIALOG);
-            if(antBuildDialog == null)
+            if (antBuildDialog == null)
                 throw new RuntimeException("Unable to find console.ant-build dialog!");
 
             File projectFile = new File(antBuildDialog.getAntProject().getFile().getTextValue(nc));
-            if(!projectFile.exists())
+            if (!projectFile.exists())
             {
                 lastRowIndex = activeRowIndex;
                 return;
@@ -128,10 +114,10 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
             antProject = AntProject.getConfiguredProject(projectFile);
             Set sortedTargetNames = new TreeSet(antProject.getTargets().keySet());
-            for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
+            for (Iterator i = sortedTargetNames.iterator(); i.hasNext();)
             {
                 String targetName = (String) i.next();
-                if(! antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
+                if (!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                     continue;
                 targets.add(antProject.getTargets().get(targetName));
             }
@@ -151,10 +137,11 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    return "<code>" + (isActiveTargetDefault() ? ("<b>" + activeTarget.getName() + "</b>") : activeTarget.getName()) + "</code>";
+                    return "<code>" + (isActiveTargetDefault()
+                            ? ("<b>" + activeTarget.getName() + "</b>") : activeTarget.getName()) + "</code>";
 
                 case 1:
                     return activeTarget.getDescription();
@@ -162,12 +149,12 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
                 case 2:
                     StringBuffer dep = new StringBuffer();
                     boolean first = true;
-                    for(Enumeration e = activeTarget.getDependencies(); e.hasMoreElements(); )
+                    for (Enumeration e = activeTarget.getDependencies(); e.hasMoreElements();)
                     {
                         String targetName = e.nextElement().toString();
-                        if(! antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
+                        if (!antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                             continue;
-                        if(! first)
+                        if (!first)
                             dep.append(", ");
                         dep.append(targetName);
                         first = false;
@@ -202,7 +189,7 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);

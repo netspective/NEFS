@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: BasicDbHttpServletValueContext.java,v 1.57 2004-07-15 23:23:28 shahid.shah Exp $
- */
-
 package com.netspective.sparx.value;
 
 import java.io.File;
@@ -66,9 +54,9 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.commons.RuntimeEnvironment;
 import com.netspective.commons.RuntimeEnvironmentFlags;
-import com.netspective.commons.activity.ActivityManager;
-import com.netspective.commons.activity.Activity;
 import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.activity.Activity;
+import com.netspective.commons.activity.ActivityManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.script.ScriptsManager;
@@ -95,8 +83,8 @@ import com.netspective.sparx.util.HttpUtils;
 import freemarker.template.Configuration;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
-                                      implements ServletValueContext, HttpServletValueContext,
-                                                 DatabaseServletValueContext, DatabaseHttpServletValueContext
+        implements ServletValueContext, HttpServletValueContext,
+        DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
     private static final Log log = LogFactory.getLog(BasicDbHttpServletValueContext.class);
 
@@ -106,12 +94,12 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String REQATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
     public static final String SESSATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
 
-    public static final int SHARED_CONN_TYPE_NONE    = 0;
+    public static final int SHARED_CONN_TYPE_NONE = 0;
     public static final int SHARED_CONN_TYPE_REQUEST = 1;
     public static final int SHARED_CONN_TYPE_SESSION = 2;
 
     public static final String[] SHARED_CONN_TYPES =
-            new String[] {"none", "request", "session"};
+            new String[]{"none", "request", "session"};
 
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
@@ -169,9 +157,12 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
      * are stored in HTTP sessions, they will be automatically closed when the session unbinding event occurs. This
      * method allows connection sharing to take place as well -- if a connection is available in either the session or
      * the request then it will be "reused" and a new ConnectionContext will not be created.
+     *
      * @param dataSourceId
      * @param transaction
+     *
      * @return
+     *
      * @throws NamingException
      * @throws SQLException
      */
@@ -185,10 +176,13 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
      * are stored in HTTP sessions, they will be automatically closed when the session unbinding event occurs. This
      * method allows connection sharing to take place as well -- if a connection is available in either the session or
      * the request then it will be "reused" and a new ConnectionContext will not be created.
+     *
      * @param dataSourceId
      * @param transaction
      * @param sharedType
+     *
      * @return
+     *
      * @throws NamingException
      * @throws SQLException
      */
@@ -201,15 +195,15 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         {
             HttpSession session = httpRequest.getSession();
             result = (ConnectionContext) session.getAttribute(SESSATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
-            if(result != null)
+            if (result != null)
             {
-                if(log.isTraceEnabled())
-                    log.trace("Reusing shared session CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                if (log.isTraceEnabled())
+                    log.trace("Reusing shared session CC " + result + " for data source '" + result.getDataSourceId() + "'.");
                 return result;
             }
             else
             {
-                if(transaction)
+                if (transaction)
                     result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
                 else
                     result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
@@ -219,15 +213,15 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         else if (sharedType == SHARED_CONN_TYPE_REQUEST)
         {
             result = (ConnectionContext) httpRequest.getAttribute(REQATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
-            if(result != null)
+            if (result != null)
             {
-                if(log.isTraceEnabled())
-                    log.trace("Reusing shared request CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                if (log.isTraceEnabled())
+                    log.trace("Reusing shared request CC " + result + " for data source '" + result.getDataSourceId() + "'.");
                 return result;
             }
             else
             {
-                if(transaction)
+                if (transaction)
                     result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
                 else
                     result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
@@ -235,14 +229,14 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
         else
         {
-            if(transaction)
+            if (transaction)
                 result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
             else
                 result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
         }
 
-        if(log.isTraceEnabled())
-            log.trace("Obtained " + result + " for data source '"+ result.getDataSourceId() +"'.");
+        if (log.isTraceEnabled())
+            log.trace("Obtained " + result + " for data source '" + result.getDataSourceId() + "'.");
 
         return result;
     }
@@ -250,22 +244,22 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public String getDefaultDataSource()
     {
         String result = super.getDefaultDataSource();
-        if(result != null && result.length() > 0)
+        if (result != null && result.length() > 0)
             return result;
 
         // the default data source is (1) specified as a servlet init param, (2) specified in <default-data-source> in project.xml, or (3) is jdbc/default
         result = ((NavigationControllerServlet) servlet).getServletOptions().getDefaultDataSourceId(null);
-        if(result == null)
+        if (result == null)
         {
-           ValueSource projectDefaultDataSource = getProject().getDefaultDataSource();
-           if(projectDefaultDataSource != null)
-               result = projectDefaultDataSource.getTextValue(this);
+            ValueSource projectDefaultDataSource = getProject().getDefaultDataSource();
+            if (projectDefaultDataSource != null)
+                result = projectDefaultDataSource.getTextValue(this);
         }
-        if(result == null)
+        if (result == null)
             result = NavigationControllerServletOptions.DEFAULT_DATA_SOURCE_ID;
 
-        if(result == null)
-            throw new RuntimeException("No default data source available. Provide one using '"+ NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS +"' servlet context init parameter or in project.xml using 'default-data-source' tag.");
+        if (result == null)
+            throw new RuntimeException("No default data source available. Provide one using '" + NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS + "' servlet context init parameter or in project.xml using 'default-data-source' tag.");
 
         return result;
     }
@@ -415,9 +409,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public final String getServletRootUrl()
     {
-        String result = rootUrl + (getHttpRequest().getServletPath().startsWith("/") ? getHttpRequest().getServletPath() : "/" + getHttpRequest().getServletPath());
-        if(result.endsWith("/"))
-            result = result.substring(0, result.length()-1);
+        String result = rootUrl + (getHttpRequest().getServletPath().startsWith("/")
+                ? getHttpRequest().getServletPath() : "/" + getHttpRequest().getServletPath());
+        if (result.endsWith("/"))
+            result = result.substring(0, result.length() - 1);
         return result;
     }
 
@@ -428,7 +423,9 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     /**
      * Take the given URL and ensure that the current page's retain params are added to it
+     *
      * @param url The complete URL to use
+     *
      * @return The given url plus any of our current page's retin params
      */
     public final String constructAppUrl(String url)
@@ -436,7 +433,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         NavigationPage activePage = getNavigationContext().getActivePage();
         ValueSource retainParamsVS = activePage.getRetainParams();
 
-        if(retainParamsVS != null)
+        if (retainParamsVS != null)
             return HttpUtils.appendParams(getHttpRequest(), url, retainParamsVS.getTextValue(this));
         else
             return url;
@@ -444,10 +441,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public final String getConsoleFileBrowserLink(String absolutePath, boolean showRelative)
     {
-        if(showRelative)
+        if (showRelative)
         {
             String servletContextPath = servlet.getServletConfig().getServletContext().getRealPath("");
-            if(absolutePath.startsWith(servletContextPath))
+            if (absolutePath.startsWith(servletContextPath))
                 return getConsoleFileBrowserLinkShowAlt(absolutePath, absolutePath.substring(servletContextPath.length()));
         }
 
@@ -459,35 +456,35 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         String className = cls.getName();
         String packageName = cls.getPackage().getName();
         String classNameNoInner = className.replace('$', '.');
-        String classNameShort = classNameNoInner.substring(packageName.length()+1);
+        String classNameShort = classNameNoInner.substring(packageName.length() + 1);
         String showClassName = showShortClassName ? classNameShort : className;
 
-        if(packageName.startsWith("java.lang"))
-            return "<span title='"+ className +"'>"+ showClassName +"</span>";
+        if (packageName.startsWith("java.lang"))
+            return "<span title='" + className + "'>" + showClassName + "</span>";
         else
         {
             String classJavaSourceFileName = ClassPath.getClassFileName(className);
-            if(classJavaSourceFileName == null)
-                return "<span title='"+ className +"'>"+ showClassName +"</span>";
+            if (classJavaSourceFileName == null)
+                return "<span title='" + className + "'>" + showClassName + "</span>";
             else
             {
                 File classJavaSourceFile = new File(classJavaSourceFileName);
-                if(classJavaSourceFile.exists())
+                if (classJavaSourceFile.exists())
                 {
                     String servletRootPath = getHttpServlet().getServletContext().getRealPath("");
-                    if(classJavaSourceFile.getAbsolutePath().startsWith(servletRootPath))
+                    if (classJavaSourceFile.getAbsolutePath().startsWith(servletRootPath))
                     {
                         String relativePath = classJavaSourceFile.getAbsolutePath().substring(servletRootPath.length());
                         String relativePathProperDelims = relativePath.replace('\\', '/');
                         String relativePathProperExtn = relativePathProperDelims.substring(0, relativePathProperDelims.length() - ".class".length()) + ".java";
-                        return "<a href='"+ getConsoleUrl() +"/project/files/"+ relativePathProperExtn +"' title='"+ className +" ("+ classJavaSourceFileName +")'>"+ showClassName +"</a>";
+                        return "<a href='" + getConsoleUrl() + "/project/files/" + relativePathProperExtn + "' title='" + className + " (" + classJavaSourceFileName + ")'>" + showClassName + "</a>";
                     }
                     else
-                        return "<span title='"+ className +" ("+ classJavaSourceFileName +")'>"+ showClassName +"</span>";
+                        return "<span title='" + className + " (" + classJavaSourceFileName + ")'>" + showClassName + "</span>";
 
                 }
                 else
-                    return "<span title='"+ classJavaSourceFileName +"'>"+ showClassName +"</span>";
+                    return "<span title='" + classJavaSourceFileName + "'>" + showClassName + "</span>";
             }
         }
     }
@@ -507,7 +504,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public final String getConsoleFileBrowserLinkShowAlt(String absolutePath, String showAltPath)
     {
         String servletContextPath = servlet.getServletConfig().getServletContext().getRealPath("");
-        if(absolutePath.startsWith(servletContextPath))
+        if (absolutePath.startsWith(servletContextPath))
         {
             String relativePath = absolutePath.substring(servletContextPath.length());
             StringBuffer result = new StringBuffer();
@@ -516,7 +513,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             result.append("/project/files/");
             result.append(relativePath.replace('\\', '/'));
             result.append("\">");
-            if(showAltPath != null)
+            if (showAltPath != null)
             {
                 result.append("<span title=\"");
                 result.append(absolutePath);
@@ -531,7 +528,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         }
         else
         {
-            if(showAltPath != null)
+            if (showAltPath != null)
                 return showAltPath;
             else
                 return absolutePath;
@@ -564,7 +561,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     /**
      * Gets the panel editor state
      *
-     * @return  Null if the current context does not contain a panel editor state
+     * @return Null if the current context does not contain a panel editor state
      */
     public PanelEditorState getPanelEditorState()
     {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.17 2003-12-10 04:18:52 aye.thu Exp $
- */
-
 package com.netspective.sparx.template.freemarker;
 
 import java.io.File;
@@ -50,14 +38,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import freemarker.template.Configuration;
-import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import freemarker.template.Configuration;
 
 public class FreeMarkerConfigurationAdapter
 {
@@ -87,7 +75,7 @@ public class FreeMarkerConfigurationAdapter
     public void setDefault(boolean defaultAdapter)
     {
         this.defaultAdapter = defaultAdapter;
-        if(defaultAdapter)
+        if (defaultAdapter)
             Configuration.setDefaultConfiguration(configuration);
     }
 
@@ -98,10 +86,10 @@ public class FreeMarkerConfigurationAdapter
 
     protected TemplateLoader getClassTemplateLoader()
     {
-        if(baseClass == null)
+        if (baseClass == null)
             return null;
 
-        if(baseClassPath == null)
+        if (baseClassPath == null)
             return new ClassTemplateLoader(baseClass);
 
         return new ClassTemplateLoader(baseClass, baseClassPath);
@@ -114,7 +102,7 @@ public class FreeMarkerConfigurationAdapter
 
         try
         {
-            if(baseDir != null)
+            if (baseDir != null)
                 tmplLoaders.add(new FileTemplateLoader(baseDir));
         }
         catch (IOException e)
@@ -122,7 +110,7 @@ public class FreeMarkerConfigurationAdapter
             throw new NestableRuntimeException(e);
         }
 
-        if(baseClass != null)
+        if (baseClass != null)
             tmplLoaders.add(getClassTemplateLoader());
 
         TemplateLoader[] templateLoaders = (TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()]);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ValueSources.java,v 1.21 2004-04-27 20:10:00 shahid.shah Exp $
- */
-
 package com.netspective.commons.value;
 
 import java.lang.reflect.Method;
@@ -119,7 +107,7 @@ public class ValueSources implements MetricsProducer
     {
         parent.addValueMetric("Value Source Classes", Integer.toString(srcClassesSet.size()));
         MetricsGroup instancesMetrics = parent.addGroupMetric("Value Source Instances");
-        for(Iterator i = srcInstancesMap.values().iterator(); i.hasNext(); )
+        for (Iterator i = srcInstancesMap.values().iterator(); i.hasNext();)
         {
             ValueSource instance = (ValueSource) i.next();
             CountMetric instanceMetric = instancesMetrics.addCountMetric(instance.getClass().getName());
@@ -174,18 +162,20 @@ public class ValueSources implements MetricsProducer
     {
         Class actualClass = discoverClass.find(vsClass, vsClass.getName());
         String[] identifiers = getValueSourceIdentifiers(actualClass);
-        for(int i = 0; i < identifiers.length; i++)
+        for (int i = 0; i < identifiers.length; i++)
         {
             srcClassesMap.put(identifiers[i], actualClass);
-            if(log.isTraceEnabled())
-                log.trace("Registered value source "+ actualClass.getName() +" as '"+ identifiers[i] +"'.");
+            if (log.isTraceEnabled())
+                log.trace("Registered value source " + actualClass.getName() + " as '" + identifiers[i] + "'.");
         }
         srcClassesSet.add(actualClass);
     }
 
     /**
      * Gets all the identifiers available for a value source class
+     *
      * @param vsClass
+     *
      * @return
      */
     public String[] getValueSourceIdentifiers(Class vsClass)
@@ -198,7 +188,7 @@ public class ValueSources implements MetricsProducer
         catch (NoSuchMethodException e)
         {
             log.error("Error retrieving method " + VSMETHODNAME_GETIDENTIFIERS, e);
-            throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + vsClass.getName(), e);
+            throw new NestableRuntimeException("Static method 'String[] " + VSMETHODNAME_GETIDENTIFIERS + "()' not found in value source " + vsClass.getName(), e);
         }
 
         try
@@ -208,12 +198,13 @@ public class ValueSources implements MetricsProducer
         catch (Exception e)
         {
             log.error("Error executing method " + VSMETHODNAME_GETIDENTIFIERS, e);
-            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' method in value source " + vsClass.getName(), e);
+            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] " + VSMETHODNAME_GETIDENTIFIERS + "()' method in value source " + vsClass.getName(), e);
         }
     }
 
     /**
      * Gets all available indentifiers for all registered value source classes
+     *
      * @return a string array containing all the identifiers
      */
     public String[] getAllValueSourceIdentifiers()
@@ -235,7 +226,9 @@ public class ValueSources implements MetricsProducer
 
     /**
      * Gets the documentation associated with a value source class
+     *
      * @param vsClass
+     *
      * @return the value source class documentation
      */
     public ValueSourceDocumentation getValueSourceDocumentation(Class vsClass)
@@ -265,11 +258,11 @@ public class ValueSources implements MetricsProducer
     {
         Set result = new TreeSet();
         Class cls = (Class) getValueSourceClassesMap().get(identifier);
-        if(cls != null)
+        if (cls != null)
         {
             String[] identifiers = getValueSourceIdentifiers(cls);
-            for(int i = 0; i < identifiers.length; i++)
-                if(! identifiers[i].equals(identifier))
+            for (int i = 0; i < identifiers.length; i++)
+                if (!identifiers[i].equals(identifier))
                     result.add(identifiers[i]);
         }
 
@@ -278,7 +271,7 @@ public class ValueSources implements MetricsProducer
 
     public final void assertValueContextInstance(Class expected, ValueContext vc, ValueSource vs) throws UnexpectedValueContextException
     {
-        if(! expected.isAssignableFrom(vc.getClass()) || null == vc || null == expected)
+        if (!expected.isAssignableFrom(vc.getClass()) || null == vc || null == expected)
         {
             UnexpectedValueContextException e = new UnexpectedValueContextException(expected, vc, vs);
             log.error("Invalid value context instance", e);
@@ -299,15 +292,15 @@ public class ValueSources implements MetricsProducer
 
     public int getUsageCount(Class vsClass)
     {
-        if(vsClass.equals(StaticValueSource.class))
+        if (vsClass.equals(StaticValueSource.class))
             return StaticValueSource.getUsageCount();
         else
         {
             int count = 0;
-            for(Iterator i = srcInstancesMap.values().iterator(); i.hasNext(); )
+            for (Iterator i = srcInstancesMap.values().iterator(); i.hasNext();)
             {
                 ValueSource instance = (ValueSource) i.next();
-                if(instance.getClass() == vsClass)
+                if (instance.getClass() == vsClass)
                     count++;
             }
             return count;
@@ -327,26 +320,26 @@ public class ValueSources implements MetricsProducer
         try
         {
             // if no identifier was registered, then see if it's a custom class
-            if(vsClass == null)
+            if (vsClass == null)
             {
                 vsClass = Class.forName(idOrClassName);
                 vss.setCustomClass(true);
             }
         }
-        catch(ClassNotFoundException cnfe)
+        catch (ClassNotFoundException cnfe)
         {
             vsClass = null;
         }
 
-        if(vsClass == null)
+        if (vsClass == null)
         {
-            switch(notFoundHandlerType)
+            switch (notFoundHandlerType)
             {
                 case VSNOTFOUNDHANDLER_NULL:
                     return null;
 
                 case VSNOTFOUNDHANDLER_ERROR_VS:
-                    return new StaticValueSource("Value source '" + idOrClassName + "' class not found in '"+ vss.getSpecificationText()  +"'.");
+                    return new StaticValueSource("Value source '" + idOrClassName + "' class not found in '" + vss.getSpecificationText() + "'.");
 
                 case VSNOTFOUNDHANDLER_THROW_EXCEPTION:
                     throw new ValueSourceNotFoundException(vss);
@@ -358,7 +351,7 @@ public class ValueSources implements MetricsProducer
             vs = (ValueSource) vsClass.newInstance();
             vs.initialize(vss);
 
-            if(cacheInstance)
+            if (cacheInstance)
                 srcInstancesMap.put(vs.getSpecification().getSpecificationText(), vs);
         }
         catch (InstantiationException e)
@@ -376,12 +369,12 @@ public class ValueSources implements MetricsProducer
     public ValueSource getValueSource(String source, int notFoundHandlerType) throws ValueSourceInitializeException
     {
         ValueSource vs = (ValueSource) srcInstancesMap.get(source);
-        if(vs != null)
+        if (vs != null)
             return vs;
         else
         {
             ValueSourceSpecification vst = createSpecification(source);
-            if(vst.isValid())
+            if (vst.isValid())
                 return getValueSource(vst, notFoundHandlerType, true);
             else
                 return null;
@@ -391,7 +384,7 @@ public class ValueSources implements MetricsProducer
     public ValueSource createValueSource(String source, int notFoundHandlerType) throws ValueSourceInitializeException
     {
         ValueSourceSpecification vst = createSpecification(source);
-        if(vst.isValid())
+        if (vst.isValid())
             return getValueSource(vst, notFoundHandlerType, false);
         else
             return null;
@@ -400,12 +393,12 @@ public class ValueSources implements MetricsProducer
     public ValueSource getValueSourceOrStatic(String source)
     {
         ValueSource vs = (ValueSource) srcInstancesMap.get(source);
-        if(vs != null)
+        if (vs != null)
             return vs;
         else
         {
             ValueSourceSpecification vst = createSpecification(source);
-            if(vst.isValid())
+            if (vst.isValid())
             {
                 try
                 {
@@ -424,7 +417,7 @@ public class ValueSources implements MetricsProducer
     public ValueSource createValueSourceOrStatic(String source)
     {
         ValueSourceSpecification vst = createSpecification(source);
-        if(vst.isValid())
+        if (vst.isValid())
         {
             try
             {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,30 +28,23 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DateValueValidationRule.java,v 1.3 2003-11-12 12:47:10 shahid.shah Exp $
- */
-
 package com.netspective.commons.validate.rule;
 
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.validate.ValidationContext;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public class DateValueValidationRule extends BasicValidationRule
 {
@@ -79,13 +67,14 @@ public class DateValueValidationRule extends BasicValidationRule
      * Translates a reserved date word such as "today" or "now" into the actual time
      *
      * @param str reserved string
+     *
      * @return String actual time string
      */
     public String translateTimeString(String str)
     {
         String xlatedDate = str;
 
-        if(str != null && (str.startsWith("today") || str.startsWith("now")))
+        if (str != null && (str.startsWith("today") || str.startsWith("now")))
         {
             Date dt = new Date();
             xlatedDate = format(dt);
@@ -97,26 +86,27 @@ public class DateValueValidationRule extends BasicValidationRule
      * Translates a reserved date word such as "today" or "now" into the actual date
      *
      * @param str reserved string
+     *
      * @return String actual date string
      */
     public String translateDateString(String str)
     {
         String xlatedDate = str;
 
-        if(str != null && (str.startsWith("today") || str.startsWith("now")))
+        if (str != null && (str.startsWith("today") || str.startsWith("now")))
         {
             int strLength = 0;
-            if(str.startsWith("today"))
+            if (str.startsWith("today"))
                 strLength = "today".length();
             else
                 strLength = "now".length();
             Date dt = null;
-            if(str.length() > strLength)
+            if (str.length() > strLength)
             {
                 try
                 {
                     String opValueStr = null;
-                    if(str.charAt(strLength) == '+')
+                    if (str.charAt(strLength) == '+')
                         opValueStr = str.substring(strLength + 1);
                     else
                         opValueStr = str.substring(strLength);
@@ -126,7 +116,7 @@ public class DateValueValidationRule extends BasicValidationRule
                     dt = calendar.getTime();
                     xlatedDate = format(dt);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     log.error("Unable to translate date string " + str, e);
                 }
@@ -152,7 +142,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public String format(Date date)
     {
-        synchronized(format)
+        synchronized (format)
         {
             return format.format(date);
         }
@@ -160,7 +150,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public Date parse(String text) throws ParseException
     {
-        synchronized(format)
+        synchronized (format)
         {
             return format.parse(text);
         }
@@ -168,7 +158,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public String toPattern()
     {
-        synchronized(format)
+        synchronized (format)
         {
             return format.toPattern();
         }
@@ -201,7 +191,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public void setMaxDateSource(ValueSource maxDate) throws ParseException
     {
-        if(maxDate instanceof StaticValueSource)
+        if (maxDate instanceof StaticValueSource)
             this.maxDate = parse(translateDateString(maxDate.getTextValue(null)));
         else
             maxDateSource = maxDate;
@@ -214,7 +204,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public void setMinDateSource(ValueSource minDate) throws ParseException
     {
-        if(minDate instanceof StaticValueSource)
+        if (minDate instanceof StaticValueSource)
             this.minDate = parse(translateDateString(minDate.getTextValue(null)));
         else
             minDateSource = minDate;
@@ -292,11 +282,11 @@ public class DateValueValidationRule extends BasicValidationRule
 
     public Date getValueSourceOrDate(String name, Value value, ValueSource vs, ValidationContext vc, Date date)
     {
-        if(vs == null)
+        if (vs == null)
             return date;
 
         String dateText = vs.getTextValue(vc.getValidationValueContext());
-        if(dateText == null)
+        if (dateText == null)
             return date;
 
         try
@@ -306,46 +296,52 @@ public class DateValueValidationRule extends BasicValidationRule
         catch (ParseException e)
         {
             vc.addValidationError(value, getInvalidNamedDateMessage(),
-                                new Object[] { getValueCaption(vc), name, dateText, toPattern() });
+                    new Object[]{getValueCaption(vc), name, dateText, toPattern()});
             return date;
         }
     }
 
     public boolean isValid(ValidationContext vc, Value value)
     {
-        if(! isValidType(vc, value, Date.class))
+        if (!isValidType(vc, value, Date.class))
             return false;
 
         Date dateValue = (Date) value.getValue();
-        if(dateValue == null)
+        if (dateValue == null)
             return true;
 
-        if(pastOnly || futureOnly)
+        if (pastOnly || futureOnly)
         {
             Date now = new Date();
-            if(pastOnly && dateValue.after(now))
+            if (pastOnly && dateValue.after(now))
             {
-                vc.addValidationError(value, getPastOnlyDateMessage(), new Object[] { getValueCaption(vc), format(now) });
+                vc.addValidationError(value, getPastOnlyDateMessage(), new Object[]{getValueCaption(vc), format(now)});
                 return false;
             }
-            if(futureOnly && dateValue.before(now))
+            if (futureOnly && dateValue.before(now))
             {
-                vc.addValidationError(value, getFutureOnlyDateMessage(), new Object[] { getValueCaption(vc), format(now) });
+                vc.addValidationError(value, getFutureOnlyDateMessage(), new Object[]{
+                    getValueCaption(vc), format(now)
+                });
                 return false;
             }
         }
 
         Date minimumDate = getValueSourceOrDate("Minimum", value, minDateSource, vc, minDate);
-        if(minimumDate != null && dateValue.before(minimumDate))
+        if (minimumDate != null && dateValue.before(minimumDate))
         {
-            vc.addValidationError(value, getPreMinDateDateMessage(), new Object[] { getValueCaption(vc), format(minimumDate) });
+            vc.addValidationError(value, getPreMinDateDateMessage(), new Object[]{
+                getValueCaption(vc), format(minimumDate)
+            });
             return false;
         }
 
         Date maximumDate = getValueSourceOrDate("Maximum", value, maxDateSource, vc, maxDate);
-        if(maximumDate != null && dateValue.after(maximumDate))
+        if (maximumDate != null && dateValue.after(maximumDate))
         {
-            vc.addValidationError(value, getPostMaxDateMessage(), new Object[] { getValueCaption(vc), format(maximumDate) });
+            vc.addValidationError(value, getPostMaxDateMessage(), new Object[]{
+                getValueCaption(vc), format(maximumDate)
+            });
             return false;
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DialogPerspectives.java,v 1.2 2003-06-18 19:58:07 shahid.shah Exp $
- */
-
 package com.netspective.sparx.form;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
@@ -62,19 +50,19 @@ public class DialogPerspectives extends XdmBitmaskedFlagsAttribute
                 "Indicates that the dialog should be processed for adding/inserting records.",
                 "Declare the ADD dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "EDIT", EDIT, "Indicates that the dialog should be processed for " +
-                "editing/updating records. This perspective will automatically make any primary-keys read-only.",
+            "editing/updating records. This perspective will automatically make any primary-keys read-only.",
                 "Declare the EDIT dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DELETE", DELETE, "Indicates that the dialog should be processed for " +
-                "deleting/removing records. This perspective will automatically make all fields read-only " +
-                "(for confirmation) and allow submission.",
+            "deleting/removing records. This perspective will automatically make all fields read-only " +
+            "(for confirmation) and allow submission.",
                 "Declare the DELETE dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "PRINT", PRINT, "Indicates that the dialog should be processed for " +
-                "printing data. All the items become read-only and a few tweaks are made so that the dialog looks more " +
-                "like a report than a form.",
+            "printing data. All the items become read-only and a few tweaks are made so that the dialog looks more " +
+            "like a report than a form.",
                 "Declare the PRINT dialog data perspective (${xdmAttrDetailAliasComment})"),
         new FlagDefn(DialogFlags.ACCESS_XDM, "CONFIRM", CONFIRM, "Indicates that the dialog should be processed for " +
-                "confirming data. This perspective will automatically make all fields read-only (for confirmation) but " +
-                "does not infer a further action.",
+            "confirming data. This perspective will automatically make all fields read-only (for confirmation) but " +
+            "does not infer a further action.",
                 "Declare the CONFIRM dialog data perspective (${xdmAttrDetailAliasComment})"),
     };
 

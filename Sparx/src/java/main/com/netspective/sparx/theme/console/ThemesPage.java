@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,31 +28,24 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: ThemesPage.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
- */
-
 package com.netspective.sparx.theme.console;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
 
 import javax.servlet.ServletException;
 
+import com.netspective.commons.value.ValueSources;
 import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.commons.value.ValueSources;
+import com.netspective.sparx.theme.Theme;
 
 public class ThemesPage extends ConsoleServletPage
 {
@@ -68,14 +56,14 @@ public class ThemesPage extends ConsoleServletPage
 
     public boolean isValid(NavigationContext nc)
     {
-        if(! super.isValid(nc))
+        if (!super.isValid(nc))
             return false;
 
         // check to see if all the themes are loaded
         List children = getChildrenList();
         Map themes = nc.getProject().getThemes().getThemesByName();
 
-        if(children.size() != themes.size())
+        if (children.size() != themes.size())
             synchronize(nc);
 
         return true;
@@ -86,7 +74,7 @@ public class ThemesPage extends ConsoleServletPage
         removeAllChildren();
 
         Map themes = nc.getProject().getThemes().getThemesByName();
-        for(Iterator i = themes.entrySet().iterator(); i.hasNext(); )
+        for (Iterator i = themes.entrySet().iterator(); i.hasNext();)
         {
             Map.Entry entry = (Map.Entry) i.next();
             Theme theme = (Theme) entry.getValue();
@@ -94,7 +82,7 @@ public class ThemesPage extends ConsoleServletPage
             String name = theme.getName();
             page.setTheme(theme);
             page.setName(name != null ? name : "default");
-            if(name.equalsIgnoreCase("sampler"))
+            if (name.equalsIgnoreCase("sampler"))
                 page.setDefault(true);
             FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
             templateProcessor.setConfig("console");

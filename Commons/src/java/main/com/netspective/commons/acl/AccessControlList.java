@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,26 +28,17 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: AccessControlList.java,v 1.6 2004-01-06 05:29:33 aye.thu Exp $
- */
-
 package com.netspective.commons.acl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorListener
 {
@@ -117,17 +103,18 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets the qualified name of the ACL
+     *
      * @return
      */
     public String getQualifiedName()
     {
-		if (null == qualifiedName)
+        if (null == qualifiedName)
         {
             String qName = AccessControlList.NAME_SEPARATOR + getName();
-			setQualifiedName(qName);
+            setQualifiedName(qName);
         }
 
-	    return qualifiedName;
+        return qualifiedName;
     }
 
     /**
@@ -169,8 +156,8 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         String[] roleNames = new String[rolesByName.size()];
         Object[] names = rolesByName.keySet().toArray();
-        for (int i=0; i < roleNames.length; i++)
-            roleNames[i] = (String)names[i];
+        for (int i = 0; i < roleNames.length; i++)
+            roleNames[i] = (String) names[i];
 
         return roleNames;
     }
@@ -184,9 +171,9 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         String[] roleNames = new String[rolesByName.size()];
         Object[] names = rolesByName.keySet().toArray();
-        for (int i=0; i < roleNames.length; i++)
+        for (int i = 0; i < roleNames.length; i++)
         {
-            Role role = (Role)rolesByName.get((String)names[i]);
+            Role role = (Role) rolesByName.get((String) names[i]);
             roleNames[i] = role.getName();
         }
         return roleNames;
@@ -194,6 +181,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets the owner of this ACL. Currently, all ACL's are their own owners.
+     *
      * @return
      */
     public AccessControlList getOwner()
@@ -236,6 +224,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Creates a permission object
+     *
      * @return
      */
     public Permission createPermission()
@@ -245,6 +234,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Adds and registers a permission to the ACL
+     *
      * @param perm
      */
     public void addPermission(Permission perm)
@@ -260,6 +250,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Adds and registers a role to the ACL
+     *
      * @param role
      */
     public void addRole(Role role)
@@ -272,14 +263,16 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
      * Gets a registered permission by its qualified name
      *
      * @param name the permission's qualified name
+     *
      * @return
+     *
      * @throws PermissionNotFoundException
      */
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
         Permission result = (Permission) permissionsByName.get(name);
-        if(result == null)
-            throw new PermissionNotFoundException("Permission '"+ name +"' not found in ACL.", getOwner(), name);
+        if (result == null)
+            throw new PermissionNotFoundException("Permission '" + name + "' not found in ACL.", getOwner(), name);
         else
             return result;
     }
@@ -288,20 +281,23 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
      * Gets a registered role by its qualified name
      *
      * @param name the role's qualified name
+     *
      * @return
+     *
      * @throws RoleNotFoundException
      */
     public Role getRole(String name) throws RoleNotFoundException
     {
         Role result = (Role) rolesByName.get(name);
-        if(result == null)
-            throw new RoleNotFoundException("Role '"+ name +"' not found in ACL.", getOwner(), name);
+        if (result == null)
+            throw new RoleNotFoundException("Role '" + name + "' not found in ACL.", getOwner(), name);
         else
             return result;
     }
 
     /**
      * Gets root permissions defined to the ACL. This does not include children permissions.
+     *
      * @return
      */
     public List getPermissions()
@@ -311,6 +307,7 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 
     /**
      * Gets root roles belonging to the ACL. This does not include children roles.
+     *
      * @return
      */
     public List getRoles()
@@ -322,10 +319,10 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
     {
         StringBuffer sb = new StringBuffer();
         sb.append("Permissions:\n");
-        for(int i = 0; i < permissions.size(); i++)
+        for (int i = 0; i < permissions.size(); i++)
             sb.append(permissions.get(i));
         sb.append("Roles:\n");
-        for(int i = 0; i < roles.size(); i++)
+        for (int i = 0; i < roles.size(); i++)
             sb.append(roles.get(i));
         return sb.toString();
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: HttpLoginManager.java,v 1.27 2004-08-14 19:59:33 shahid.shah Exp $
- */
-
 package com.netspective.sparx.security;
 
 import java.io.IOException;
@@ -98,19 +86,19 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             LoginDialogContext ldc = (LoginDialogContext) dvc.getDialogContext();
 
             HttpLoginAttemptsManager attemptsManager = getLoginAttemptsManager();
-            if(! allowLoginAttempt(ldc))
+            if (!allowLoginAttempt(ldc))
             {
                 dvc.addError(attemptsManager.getMaxLoginAttemptsExceededMessage().getTextValue(ldc));
                 return;
             }
 
-            if(loginAuthenticator == null)
+            if (loginAuthenticator == null)
             {
                 dvc.addError("No login authenticator provided.");
                 return;
             }
 
-            if(! loginAuthenticator.isUserValid(HttpLoginManager.this, ldc))
+            if (!loginAuthenticator.isUserValid(HttpLoginManager.this, ldc))
                 dvc.addError(invalidUserMessage.getTextValue(ldc));
         }
     }
@@ -233,7 +221,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public String getRememberPasswordCookiePath(HttpServletValueContext vc)
     {
-        if(rememberPasswordCookiePath == null)
+        if (rememberPasswordCookiePath == null)
             return vc.getHttpRequest().getContextPath();
         else
             return rememberPasswordCookiePath.getTextValue(vc);
@@ -266,9 +254,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     /**
      * Create the authenticated user object associated with the given userId.
-     * @param ldc If a 'remembered' (by cookie) id is being used, this will be null otherwise it will be the
-     *            LoginDialogContext that was constructed by the LoginDialog.
+     *
+     * @param ldc    If a 'remembered' (by cookie) id is being used, this will be null otherwise it will be the
+     *               LoginDialogContext that was constructed by the LoginDialog.
      * @param userId The userId that was either remembered or entered by a user.
+     *
      * @return
      */
     public MutableAuthenticatedUser createAuthenticatedUser(LoginDialogContext ldc, String userId, String encryptedPassword, boolean isRemembered)
@@ -285,7 +275,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         catch (AuthenticatedUserInitializationException e)
         {
             log.error("Error creating authenticated user", e);
-            throw new NestableRuntimeException("Error creating authenticated user", e);            
+            throw new NestableRuntimeException("Error creating authenticated user", e);
         }
     }
 
@@ -306,7 +296,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public boolean accessAllowed(NavigationContext nc)
     {
-        if(! nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.REQUIRE_LOGIN))
+        if (!nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.REQUIRE_LOGIN))
             return true;
 
         return getAuthenticatedUser(nc) != null;
@@ -315,12 +305,12 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public String getRememberedUserId(HttpServletValueContext vc)
     {
         Cookie[] cookies = vc.getHttpRequest().getCookies();
-        if(cookies != null)
+        if (cookies != null)
         {
-            for(int i =0; i < cookies.length; i++)
+            for (int i = 0; i < cookies.length; i++)
             {
                 Cookie cookie = cookies[i];
-                if(cookie.getName().equals(getRememberUserIdCookieName()))
+                if (cookie.getName().equals(getRememberUserIdCookieName()))
                     return cookie.getValue();
             }
         }
@@ -330,12 +320,12 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     public String getRememberedEncryptedPassword(HttpServletValueContext vc)
     {
         Cookie[] cookies = vc.getHttpRequest().getCookies();
-        if(cookies != null)
+        if (cookies != null)
         {
-            for(int i =0; i < cookies.length; i++)
+            for (int i = 0; i < cookies.length; i++)
             {
                 Cookie cookie = cookies[i];
-                if(cookie.getName().equals(getRememberPasswordCookieName()))
+                if (cookie.getName().equals(getRememberPasswordCookieName()))
                     return cookie.getValue();
             }
         }
@@ -346,7 +336,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     {
         vc.getHttpRequest().getSession().setAttribute(getAuthenticatedUserSessionAttrName(), user);
 
-        if(isAllowRememberUserId() && rememberUserId)
+        if (isAllowRememberUserId() && rememberUserId)
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), user.getUserId().toString());
             cookie.setPath(getRememberPasswordCookiePath(vc));
@@ -365,7 +355,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     {
         vc.getProject().getScrollStates().removeActiveState(vc);
 
-        if(isAllowRememberUserId())
+        if (isAllowRememberUserId())
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), "");
             cookie.setPath(getRememberPasswordCookiePath(vc));
@@ -379,7 +369,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
         HttpServletRequest req = vc.getHttpRequest();
         MutableAuthenticatedUser user = (MutableAuthenticatedUser) getAuthenticatedUser(req);
-        if(user != null)
+        if (user != null)
         {
             registerLogout(vc, user);
             req.getSession().removeAttribute(getAuthenticatedUserSessionAttrName());
@@ -407,7 +397,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         activeUsers.add(user);
 
         HttpServletRequest req = hsvc.getHttpRequest();
-        if(log.isInfoEnabled())
+        if (log.isInfoEnabled())
         {
 
             String userId = user.getUserId().toString();
@@ -426,11 +416,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             info.append(perms != null ? user.getUserPermissions().toString() : "{}");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
             String[] roles = user.getUserRoleNames();
-            if(roles != null)
+            if (roles != null)
             {
-                for(int r = 0; r < roles.length; r++)
+                for (int r = 0; r < roles.length; r++)
                 {
-                    if(r > 0)
+                    if (r > 0)
                         info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
                     info.append(roles[r]);
                 }
@@ -438,21 +428,21 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             log.info(info);
         }
 
-        if(log.isDebugEnabled())
+        if (log.isDebugEnabled())
         {
             String userId = user.getUserId().toString();
             log.debug("User '" + userId + "' (" + user.getUserName() + ") is now authenticated for Session ID '" + req.getSession().getId() + "'");
 
             BitSet perms = user.getUserPermissions();
-            if(perms != null)
+            if (perms != null)
                 log.debug("User '" + userId + "' has permissions " + user.getUserPermissions().toString());
             else
                 log.debug("User '" + userId + " has no permissions.");
 
             String[] roles = user.getUserRoleNames();
-            if(roles != null)
+            if (roles != null)
             {
-                for(int r = 0; r < roles.length; r++)
+                for (int r = 0; r < roles.length; r++)
                     log.debug("User '" + userId + "' has role " + roles[r]);
             }
             else
@@ -469,7 +459,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         user.registerLogout(hsvc, AuthenticatedUserLogoutType.USER_REQUEST);
         activeUsers.remove(user);
 
-        if(log.isInfoEnabled())
+        if (log.isInfoEnabled())
         {
             HttpServletRequest req = hsvc.getHttpRequest();
             String userId = user.getUserId().toString();
@@ -488,11 +478,11 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             info.append(perms != null ? user.getUserPermissions().toString() : "{}");
             info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
             String[] roles = user.getUserRoleNames();
-            if(roles != null)
+            if (roles != null)
             {
-                for(int r = 0; r < roles.length; r++)
+                for (int r = 0; r < roles.length; r++)
                 {
-                    if(r > 0)
+                    if (r > 0)
                         info.append(MONITOR_ENTRY_FIELD_SEPARATOR);
                     info.append(roles[r]);
                 }
@@ -534,10 +524,10 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public LoginDialog createLoginDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
     {
-        if(LoginDialog.class.isAssignableFrom(cls))
+        if (LoginDialog.class.isAssignableFrom(cls))
         {
-            Constructor c = cls.getConstructor(new Class[] { HttpLoginManager.class });
-            return (LoginDialog) c.newInstance(new Object[] { this });
+            Constructor c = cls.getConstructor(new Class[]{HttpLoginManager.class});
+            return (LoginDialog) c.newInstance(new Object[]{this});
         }
         else
             throw new RuntimeException("Don't know what to do with with class: " + cls);
@@ -556,24 +546,24 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public LoginDialogMode getLoginDialogMode(NavigationContext nc) throws IOException, ServletException
     {
-        if(accessAllowed(nc))
+        if (accessAllowed(nc))
             return LoginDialogMode.ACCESS_ALLOWED;
 
         Theme theme = nc.getActiveTheme();
         LoginDialog loginDialog = getLoginDialog();
         LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
 
-        if(ldc.hasRememberedValues(this))
+        if (ldc.hasRememberedValues(this))
             nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
         loginDialog.prepareContext(ldc);
 
         Writer writer = nc.getResponse().getWriter();
 
         // check to make sure the user's not locked out because of max attempts from before
-        if(allowLoginAttempt(ldc))
+        if (allowLoginAttempt(ldc))
         {
             // ok, we're not locked out so see if we're in execute mode
-            if(! ldc.getDialogState().isInExecuteMode())
+            if (!ldc.getDialogState().isInExecuteMode())
             {
                 // we're not in execute mode so we need to present the login dialog
                 nc.getSkin().renderPageMetaData(writer, nc);

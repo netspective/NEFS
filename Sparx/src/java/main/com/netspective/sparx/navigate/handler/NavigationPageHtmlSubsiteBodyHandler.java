@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,25 +28,19 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: NavigationPageHtmlSubsiteBodyHandler.java,v 1.3 2003-11-08 05:05:45 roque.hernandez Exp $
- */
-
 package com.netspective.sparx.navigate.handler;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.io.File;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
-import java.util.List;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.Writer;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 
 import org.apache.oro.text.perl.Perl5Util;
@@ -59,8 +48,8 @@ import org.apache.oro.text.perl.Perl5Util;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
 
 /**
  * Allows the navigation of a HTML website but makes it looks like it's part of the same theme (including headers, footers, etc)
@@ -143,7 +132,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        if(root == null)
+        if (root == null)
         {
             writer.write("No root path specified.");
             return;
@@ -153,16 +142,16 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
         StringBuffer activePath = new StringBuffer(rootPath.getAbsolutePath());
         String relativePath = nc.getActivePathFindResults().getUnmatchedPath(0);
-        if(relativePath != null && relativePath.length() > 0)
+        if (relativePath != null && relativePath.length() > 0)
             activePath.append(relativePath);
 
         File activeFile = new File(activePath.toString());
-        if(activeFile.isDirectory())
+        if (activeFile.isDirectory())
             activeFile = new File(activeFile.getAbsolutePath() + "/" + indexFile.getTextValue(nc));
 
-        if(! activeFile.exists())
+        if (!activeFile.exists())
         {
-            writer.write(MessageFormat.format(getFileNotFoundMessage(), new Object[] { activeFile.getAbsolutePath() }));
+            writer.write(MessageFormat.format(getFileNotFoundMessage(), new Object[]{activeFile.getAbsolutePath()}));
             return;
         }
 
@@ -171,21 +160,21 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
 
         try
         {
-            if(substitutions.size() > 0)
+            if (substitutions.size() > 0)
             {
                 final Perl5Util perl5Util = new Perl5Util();
                 final String[] regExs = new String[substitutions.size()];
 
-                for(int i  = 0; i < substitutions.size(); i++)
+                for (int i = 0; i < substitutions.size(); i++)
                 {
                     Substitute substitute = (Substitute) substitutions.get(i);
                     regExs[i] = substitute.getPerlRegEx().getTextValue(nc);
                 }
 
                 String rec;
-                while((rec = br.readLine()) != null)
+                while ((rec = br.readLine()) != null)
                 {
-                    for(int i = 0; i < regExs.length; i++)
+                    for (int i = 0; i < regExs.length; i++)
                         rec = perl5Util.substitute(regExs[i], rec);
                     writer.write(rec);
                     writer.write("\n");
@@ -195,7 +184,7 @@ public class NavigationPageHtmlSubsiteBodyHandler extends NavigationPageBodyDefa
             {
                 int c;
                 while ((c = br.read()) != -1)
-                   writer.write(c);
+                    writer.write(c);
             }
         }
         finally

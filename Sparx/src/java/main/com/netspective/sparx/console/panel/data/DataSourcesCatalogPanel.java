@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,48 +28,42 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DataSourcesCatalogPanel.java,v 1.7 2004-04-28 14:51:33 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.data;
 
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
+import com.netspective.axiom.ConnectionProvider;
+import com.netspective.axiom.ConnectionProviderEntries;
+import com.netspective.axiom.ConnectionProviderEntry;
+import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.axiom.ConnectionProviderEntries;
-import com.netspective.axiom.ConnectionProviderEntry;
-import com.netspective.axiom.ConnectionProvider;
-import com.netspective.axiom.ConnectionProviderEntryStatistics;
-import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
 {
     public static final String REQPARAMNAME_DATA_SOURCE = "selected-data-source";
     public static final HtmlTabularReport catalogReport = new BasicHtmlTabularReport();
+
     static
     {
         TabularReportColumn column = catalogReport.createColumn();
         column.setHeading(new StaticValueSource("Identifier"));
-        column.setRedirect(new RedirectValueSource("explorer?"+ REQPARAMNAME_DATA_SOURCE +"=%{0}"));
+        column.setRedirect(new RedirectValueSource("explorer?" + REQPARAMNAME_DATA_SOURCE + "=%{0}"));
         catalogReport.addColumn(column);
 
         column = catalogReport.createColumn();
@@ -97,7 +86,8 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             ConnectionProvider cp = ((DatabaseConnValueContext) vc).getConnectionProvider();
             Class underlyingImplementationClass = cp.getUnderlyingImplementationClass();
-            return new GenericValue("Connection Provider: " + cp.getClass().getName() + "<br>" + "Underlying Implementation: " + (underlyingImplementationClass != null ? underlyingImplementationClass.getName() : "Unavailable"));
+            return new GenericValue("Connection Provider: " + cp.getClass().getName() + "<br>" + "Underlying Implementation: " + (underlyingImplementationClass != null
+                    ? underlyingImplementationClass.getName() : "Unavailable"));
         }
 
         public boolean hasValue(ValueContext vc)
@@ -138,7 +128,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
             super.setReportValueContext(reportValueContext);
             ConnectionProviderEntries cpe = ((HtmlTabularReportValueContext) reportValueContext).getConnectionProvider().getDataSourceEntries(reportValueContext);
             entries = (ConnectionProviderEntry[]) cpe.values().toArray(new ConnectionProviderEntry[cpe.size()]);
-            lastRow = entries.length-1;
+            lastRow = entries.length - 1;
         }
 
         public int getTotalRows()
@@ -163,7 +153,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(!hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(row + 1);
@@ -179,10 +169,10 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             ConnectionProviderEntry entry = entries[row];
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
+                    if ((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
                         return entry.getDataSourceId();
                     else
                         return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), entry.getDataSourceId(), entry.getDataSourceId(), null);
@@ -192,31 +182,29 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
                             "Yes" : null;
 
                 case 2:
-                    if(! entry.isValid()) return entry.getException().getMessage();
+                    if (!entry.isValid()) return entry.getException().getMessage();
                     ConnectionProviderEntryStatistics stats = entry.getStatistics();
                     StringBuffer sb = new StringBuffer();
-                    sb.append(
-                           "<table>" +
-                               "<tr><td align=right class=property_name>Database:</td><td class=property_value><b>" + entry.getDatabaseProductName() + " Version " + entry.getDatabaseProductVersion() + "</b></td></tr>" +
-                               "<tr><td align=right class=property_name>Driver:</td><td class=property_value>" + entry.getDriverName() + " Version " + entry.getDriverVersion() + "</td></tr>" +
-                               "<tr><td align=right class=property_name>URL:</td><td class=property_value>" + entry.getURL() + "</td></tr>" +
-                               "<tr><td align=right class=property_name>User:</td><td class=property_value>" + entry.getUserName() + "</td></tr>" +
-                               "<tr><td align=right class=property_name>ResultSet Type:</td><td class=property_value>" + entry.getResultSetType() + "</td></tr>" +
-                               "<tr><td align=right class=property_name>Database Policy:</td><td class=property_value>" + entry.getDatabasePolicyClassName() + "</td></tr>" +
-                           "</table>");
+                    sb.append("<table>" +
+                            "<tr><td align=right class=property_name>Database:</td><td class=property_value><b>" + entry.getDatabaseProductName() + " Version " + entry.getDatabaseProductVersion() + "</b></td></tr>" +
+                            "<tr><td align=right class=property_name>Driver:</td><td class=property_value>" + entry.getDriverName() + " Version " + entry.getDriverVersion() + "</td></tr>" +
+                            "<tr><td align=right class=property_name>URL:</td><td class=property_value>" + entry.getURL() + "</td></tr>" +
+                            "<tr><td align=right class=property_name>User:</td><td class=property_value>" + entry.getUserName() + "</td></tr>" +
+                            "<tr><td align=right class=property_name>ResultSet Type:</td><td class=property_value>" + entry.getResultSetType() + "</td></tr>" +
+                            "<tr><td align=right class=property_name>Database Policy:</td><td class=property_value>" + entry.getDatabasePolicyClassName() + "</td></tr>" +
+                            "</table>");
 
-                    if(stats == null)
+                    if (stats == null)
                         sb.append("<b>No connection statistics provider class registered for connection pool.</b>");
                     else
                     {
                         sb.append("<br>Statistics");
-                        sb.append(
-                             "<table>" +
+                        sb.append("<table>" +
                                 "<tr><td align=right class=property_name>Provider:</td><td class=property_value>" + reportValueContext.getSkin().constructClassRef(stats.getClass()) + "</td></tr>" +
                                 "<tr><td align=right class=property_name>Active Connections:</td><td class=property_value>" + stats.getActiveConnections() + "</td></tr>" +
                                 "<tr><td align=right class=property_name>Max Connections:</td><td class=property_value>" + stats.getMaxConnections() + "</td></tr>" +
                                 "<tr><td align=right class=property_name>Total Connections:</td><td class=property_value>" + stats.getTotalConnections() + "</td></tr>" +
-                             "</table>");
+                                "</table>");
                     }
                     return sb.toString();
 

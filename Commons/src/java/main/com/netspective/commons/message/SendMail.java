@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,41 +28,34 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: SendMail.java,v 1.3 2004-02-12 19:16:12 shahid.shah Exp $
- */
-
 package com.netspective.commons.message;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Properties;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
-import javax.mail.Transport;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.MessagingException;
 import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.AddressException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.template.TemplateProcessor;
 
 public class SendMail
 {
@@ -234,11 +222,11 @@ public class SendMail
 
     protected Address[] getAddresses(Value value) throws AddressException, MessagingException
     {
-        if(value.isListValue())
+        if (value.isListValue())
         {
             String[] addressTexts = value.getTextValues();
             Address[] result = new Address[addressTexts.length];
-            for(int i = 0; i < addressTexts.length; i++)
+            for (int i = 0; i < addressTexts.length; i++)
                 result[i] = new InternetAddress(addressTexts[i]);
             return result;
         }
@@ -248,10 +236,10 @@ public class SendMail
 
     public void send(ValueContext vc, Map bodyTemplateVars) throws IOException, AddressException, MessagingException, SendMailNoFromAddressException, SendMailNoRecipientsException
     {
-        if(from == null)
+        if (from == null)
             throw new SendMailNoFromAddressException("No FROM address provided.");
 
-        if(to == null && cc == null && bcc == null)
+        if (to == null && cc == null && bcc == null)
             throw new SendMailNoRecipientsException("No TO, CC, or BCC addresses provided.");
 
         Properties props = System.getProperties();
@@ -261,10 +249,10 @@ public class SendMail
 
         MimeMessage message = new MimeMessage(mailSession);
 
-        if(headers != null)
+        if (headers != null)
         {
             List headersList = headers.getHeaders();
-            for(int i = 0; i < headersList.size(); i++)
+            for (int i = 0; i < headersList.size(); i++)
             {
                 Header header = (Header) headersList.get(i);
                 message.setHeader(header.getName(), header.getValue().getTextValue(vc));
@@ -273,22 +261,22 @@ public class SendMail
 
         message.setFrom(new InternetAddress(from.getTextValue(vc)));
 
-        if(replyTo != null)
+        if (replyTo != null)
             message.setReplyTo(getAddresses(replyTo.getValue(vc)));
 
-        if(to != null)
+        if (to != null)
             message.setRecipients(Message.RecipientType.TO, getAddresses(to.getValue(vc)));
 
-        if(cc != null)
+        if (cc != null)
             message.setRecipients(Message.RecipientType.CC, getAddresses(cc.getValue(vc)));
 
-        if(bcc != null)
+        if (bcc != null)
             message.setRecipients(Message.RecipientType.BCC, getAddresses(bcc.getValue(vc)));
 
-        if(subject != null)
+        if (subject != null)
             message.setSubject(subject.getTextValue(vc));
 
-        if(body != null)
+        if (body != null)
         {
             StringWriter messageText = new StringWriter();
             body.process(messageText, vc, bodyTemplateVars);

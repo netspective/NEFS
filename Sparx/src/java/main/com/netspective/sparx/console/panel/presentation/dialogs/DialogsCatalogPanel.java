@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,31 +28,24 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DialogsCatalogPanel.java,v 1.10 2003-10-24 03:23:40 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import java.util.TreeSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import com.netspective.sparx.form.Dialogs;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.Dialogs;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 
 public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 {
@@ -104,18 +92,18 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
             //TODO: this does not account for dialogs that are not contained within a namespace
             Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());
-            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext(); )
+            for (Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext();)
             {
                 String nameSpaceId = (String) nsi.next();
-                if(nameSpaceId.startsWith(ConsoleServlet.CONSOLE_ID) && ! doingFrameworkDeveploment)
+                if (nameSpaceId.startsWith(ConsoleServlet.CONSOLE_ID) && !doingFrameworkDeveploment)
                     continue;
 
                 Set sortedDialogNamesInNameSpace = new TreeSet();
 
-                for(int i = 0; i < dialogs.size(); i++)
+                for (int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
-                    if(dialog.getNameSpace() != null && nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
+                    if (dialog.getNameSpace() != null && nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
                     {
                         sortedDialogNamesInNameSpace.add(dialog.getQualifiedName());
                     }
@@ -135,7 +123,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean isActiveRowSelected()
         {
-            if(activeRowDialog == null)
+            if (activeRowDialog == null)
                 return false;
 
             return activeRowDialog.getQualifiedName().equals(selectedDialogName);
@@ -171,7 +159,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             activeRow = rowNum;
             String itemName = (String) rows.get(activeRow);
             activeRowDialog = dialogs.get(itemName);
-            if(activeRowDialog == null)
+            if (activeRowDialog == null)
                 activeNameSpace = itemName;
             else
                 activeNameSpace = null;
@@ -179,7 +167,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRow + 1);
@@ -188,9 +176,9 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            if(activeNameSpace != null)
+            if (activeNameSpace != null)
             {
-                switch(columnIndex)
+                switch (columnIndex)
                 {
                     case 0:
                         return activeNameSpace;
@@ -200,7 +188,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
                 }
             }
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
                     return reportValueContext.getSkin().constructRedirect(reportValueContext, reportValueContext.getReport().getColumn(0).getRedirect(), activeRowDialog.getName(), activeRowDialog.getQualifiedName(), null);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,29 +28,29 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
 
 package com.netspective.sparx.panel;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
 import com.netspective.sparx.sql.StoredProcedure;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.axiom.sql.QueryResultSet;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
- * @author  Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.4 2004-01-15 20:01:06 aye.thu Exp $
+ * @author Aye Thu
+ * @version $Id: StoredProcedureReportPanel.java,v 1.5 2004-08-15 01:47:09 shahid.shah Exp $
  */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
@@ -70,6 +65,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Creates a new basic html tabulare report
+     *
      * @return
      */
     public HtmlTabularReport createReport()
@@ -79,6 +75,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the report for this panel
+     *
      * @param report
      */
     public void addReport(HtmlTabularReport report)
@@ -93,6 +90,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the stored procedure associated with this report panel
+     *
      * @param sp
      */
     public void setStoredProcedure(StoredProcedure sp)
@@ -102,6 +100,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Gets the stored procedure associated with this report panel
+     *
      * @return StoredProcedure object
      */
     public StoredProcedure getStoredProcedure()
@@ -111,6 +110,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Indicates whether or not this panel is the defaul report panel for the stored procedure
+     *
      * @return True if this is the default report panel
      */
     public boolean isDefaultPanel()
@@ -120,6 +120,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the current report panel to be the default one
+     *
      * @param defaultPanel
      */
     public void setDefault(boolean defaultPanel)
@@ -129,6 +130,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Gets the name of the repot panel
+     *
      * @return
      */
     public String getName()
@@ -138,6 +140,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Sets the name of the report panel
+     *
      * @param name
      */
     public void setName(String name)
@@ -152,7 +155,9 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Executes the query and assigns the result set to a new report data source object
+     *
      * @param nc
+     *
      * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
@@ -160,7 +165,7 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
         try
         {
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute(getCachedResultSetAttributeId());
-            if(resultSet == null)
+            if (resultSet == null)
             {
                 if (isScrollable())
                     resultSet = parentProcedure.execute(nc, null, null, true);
@@ -183,14 +188,14 @@ public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
     }
 
     /**
-     *
      * @param nc
+     *
      * @return
      */
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         HtmlTabularReport activeReport = getReport();
-        if(activeReport == null)
+        if (activeReport == null)
         {
             // if the report is null, we need to create it by running the query and getting the meta data
             activeReport = new BasicHtmlTabularReport();

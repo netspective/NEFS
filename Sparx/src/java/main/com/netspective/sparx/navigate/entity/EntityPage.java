@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,15 +28,8 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: EntityPage.java,v 1.5 2004-08-11 05:13:45 shahid.shah Exp $
- */
-
 package com.netspective.sparx.navigate.entity;
 
 import java.sql.SQLException;
@@ -145,21 +133,21 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
     public void setEntitySubtypeSchemaEnum(String schemaEnumId)
     {
         String[] params = TextUtils.getInstance().split(schemaEnumId, ",", true);
-        if(params.length != 2)
+        if (params.length != 2)
             log.error("the entity-subtype-schema-enum attribute in the entity page requires 2 params: schema.enum-table,enum-id-or-caption");
         else
         {
             Project project = getOwner().getProject();
             Table table = project.getSchemas().getTable(params[0]);
-            if(table == null || !(table instanceof EnumerationTable))
+            if (table == null || !(table instanceof EnumerationTable))
                 log.error("the entity-subtype-schema-enum attribute in the entity page has an invalid schema.enum-table: " + params[0]);
             else
             {
                 EnumerationTable enumTable = (EnumerationTable) table;
                 EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
                 EnumerationTableRow enumRow = enumRows.getByIdOrCaptionOrAbbrev(params[1]);
-                if(enumRow == null)
-                    log.error("the entity-subtype-schema-enum attribute in the entity page has an invalid enum value for "+ params[0] +": " + params[1]);
+                if (enumRow == null)
+                    log.error("the entity-subtype-schema-enum attribute in the entity page has an invalid enum value for " + params[0] + ": " + params[1]);
                 else
                 {
                     setEntitySubtypeId(enumRow.getId());
@@ -182,8 +170,8 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
     public void setEntityRedirectorPageId(String redirectPageId)
     {
         redirectorPage = (EntityRedirectorPage) getOwner().findPath(redirectPageId).getMatchedPath();
-        if(redirectorPage == null)
-            throw new RuntimeException("Redirector page with id '"+ redirectPageId +"' not found.");
+        if (redirectorPage == null)
+            throw new RuntimeException("Redirector page with id '" + redirectPageId + "' not found.");
 
         setRequireRequestParam(redirectorPage.getEntityIdRequestParamName());
         setRetainParams(new StaticValueSource(redirectorPage.getEntityIdRequestParamName()));
@@ -191,21 +179,21 @@ public class EntityPage extends NavigationPage implements EntitySubtypePage
 
     public boolean isValid(NavigationContext nc)
     {
-        if(! super.isValid(nc))
+        if (!super.isValid(nc))
             return false;
 
         ActiveEntity activeEntity;
 
         // if we're coming from a redirector then it means that we may not need to rerun our queries
         final EntityRedirectorPage redirectorPage = getRedirectorPage();
-        if(redirectorPage == null)
+        if (redirectorPage == null)
         {
             log.error("No redirector page specified for entity page " + getQualifiedNameIncludingTreeId());
             return false;
         }
 
         EntitySubtypeRedirectInfo esri = EntityRedirectorPage.getEntitySubtypeRedirectInfo(nc, redirectorPage.getEntityIdRequestParamValue(nc));
-        if(esri != null)
+        if (esri != null)
             activeEntity = (ActiveEntity) esri.getData();
         else
         {

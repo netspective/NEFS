@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -18,12 +18,7 @@
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
  * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
- *
- * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
- *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
+ *    used to endorse or appear in products derived from The Software without written consent of Netspective.
  *
  * THE SOFTWARE IS PROVIDED "AS IS" WITHOUT A WARRANTY OF ANY KIND. ALL EXPRESS OR IMPLIED REPRESENTATIONS AND
  * WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT,
@@ -33,36 +28,29 @@
  * RESULT OF USING OR DISTRIBUTING THE SOFTWARE. IN NO EVENT WILL NETSPECTIVE OR ITS LICENSORS BE LIABLE FOR ANY LOST
  * REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT, SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
- * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
- *
- * @author Shahid N. Shah
+ * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-/**
- * $Id: DialogDetailPanel.java,v 1.8 2003-07-10 00:52:08 shahid.shah Exp $
- */
-
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 
 public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 {
     public static final String REQPARAMNAME_DIALOG = "selected-dialog-id";
-    private static final ValueSource noDialogParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_DIALOG +"' parameter provided.");
+    private static final ValueSource noDialogParamAvailSource = new StaticValueSource("No '" + REQPARAMNAME_DIALOG + "' parameter provided.");
     protected static final ValueSource noFields = new StaticValueSource("Dialog has no fields.");
 
     protected class SelectedDialog
@@ -73,17 +61,17 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
         public SelectedDialog(Dialogs dialogs, String dialogName)
         {
-            this.dialogName= dialogName;
+            this.dialogName = dialogName;
 
-            if(dialogName == null)
+            if (dialogName == null)
             {
                 dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource(noDialogParamAvailSource);
                 return;
             }
 
             dialog = dialogs.get(dialogName);
-            if(dialog == null)
-                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Dialog '"+ dialogName +"' not found. Available: " + dialogs.getNames());
+            if (dialog == null)
+                dataSource = new AbstractHtmlTabularReportPanel.SimpleMessageDataSource("Dialog '" + dialogName + "' not found. Available: " + dialogs.getNames());
         }
 
         public TabularReportDataSource getDataSource()
@@ -172,7 +160,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
         public DialogField getField()
         {
-            if(field != null)
+            if (field != null)
                 return field;
 
             return null;
@@ -191,7 +179,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             DialogFields children = dialog.getFields();
             FieldRows ancestors = new FieldRows();
-            for(int c = 0; c < children.size(); c++)
+            for (int c = 0; c < children.size(); c++)
                 add(0, children.get(c), ancestors);
         }
 
@@ -200,14 +188,14 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
             FieldRow activeRow = new FieldRow(level, field, ancestors);
             rows.add(activeRow);
             DialogFields children = field.getChildren();
-            if(children != null)
+            if (children != null)
             {
-                for(int c = 0; c < children.size(); c++)
+                for (int c = 0; c < children.size(); c++)
                 {
                     FieldRows childAncestors = new FieldRows();
                     childAncestors.rows.add(activeRow);
                     childAncestors.rows.addAll(ancestors.rows);
-                    add(level+1, children.get(c), childAncestors);
+                    add(level + 1, children.get(c), childAncestors);
                 }
             }
         }
@@ -280,40 +268,40 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             DialogField activeField = activeRow.getField();
 
-            switch(columnIndex)
+            switch (columnIndex)
             {
                 case 0:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getQualifiedName();
                     else
                         return activeRow.heading;
 
                 case 1:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getFieldTypes().size() > 0 ? activeField.getFieldTypes().get(0) : null;
 
                 case 2:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getHtmlFormControlId();
 
                 case 3:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getCaption() != ValueSource.NULL_VALUE_SOURCE ?
                                 activeField.getCaption().getSpecification() :
                                 null;
 
                 case 4:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getFlags().getFlagsText();
 
                 case 5:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getDefault() != null && activeField.getDefault() != ValueSource.NULL_VALUE_SOURCE ?
                                 activeField.getDefault().getSpecification() :
                                 null;
 
                 case 6:
-                    if(activeField != null)
+                    if (activeField != null)
                         return activeField.getHint() != null && activeField.getHint() != ValueSource.NULL_VALUE_SOURCE ?
                                 activeField.getHint().getSpecification() :
                                 null;
@@ -346,7 +334,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
 
         public boolean next()
         {
-            if(! hasMoreRows())
+            if (!hasMoreRows())
                 return false;
 
             setActiveRow(activeRowIndex + 1);
