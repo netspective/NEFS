@@ -39,50 +39,29 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.2 2003-03-21 13:54:46 shahbaz.javeed Exp $
+ * $Id: ExpressionValueSourceTest.java,v 1.1 2003-03-21 13:54:46 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import java.io.File;
-import java.util.List;
 import junit.framework.TestCase;
 
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 
-public class FilesystemEntriesValueSourceTest extends TestCase
+public class ExpressionValueSourceTest extends TestCase
 {
     public void testGetValue()
     {
-        // in 'c\\:\\' the first \\ is to escape ':' because otherwise c: will be regarded as its own value source
-        // because the rootPath in FileSystemEntriesValueSource is a ValueSource, not a string
-        String rootPath = "c\\:\\";
+	    String sentence = "This is a simple ${static:expression}";
+        ValueSource vs = ValueSources.getInstance().getValueSource("vs-expr:" + sentence, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+	    Value vsValue = vs.getValue(null);
 
-        ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-        Value value = vs.getValue(null);
-	    assertTrue(0 < vs.getTextValues(null).length);
-	    assertNotNull(vs.getTextValueOrBlank(null));
 
-		String[] theValue = value.getTextValues();
-	    List altValue = vs.getPresentationValue(null).getListValue();
-
-		assertEquals(theValue.length, altValue.size());
-	    for (int i = 0; i < theValue.length; i ++)
-	        assertTrue(altValue.contains(theValue[i]));
-
+	    assertNotNull(vs);
 	    assertTrue(vs.hasValue(null));
-
-        System.out.println(value.getTextValue());
-        System.out.println(value.getTextValues());
-        System.out.println(value.getListValue());
-
-
-        vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath + ",exe$", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-        value = vs.getValue(null);
-        System.out.println(value.getTextValue());
-        System.out.println(value.getTextValues());
-        System.out.println(value.getListValue());
+	    assertEquals("This is a simple expression", vsValue.getTextValue());
+	    assertEquals("This is a simple expression", vs.getPresentationValue(null).getTextValue());
     }
 }

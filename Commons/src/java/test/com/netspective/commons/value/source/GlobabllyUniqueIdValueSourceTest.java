@@ -39,27 +39,82 @@
  */
 
 /**
- * $Id: GlobabllyUniqueIdValueSourceTest.java,v 1.1 2003-03-16 02:23:21 shahid.shah Exp $
+ * $Id: GlobabllyUniqueIdValueSourceTest.java,v 1.2 2003-03-21 13:54:46 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
 
+import java.util.Map;
+import java.util.HashMap;
 import junit.framework.TestCase;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.Value;
+import org.apache.oro.text.perl.Perl5Util;
+import org.apache.oro.text.perl.MalformedPerl5PatternException;
 
 public class GlobabllyUniqueIdValueSourceTest extends TestCase
 {
     public void testGetValue()
     {
-        ValueSource vs = ValueSources.getInstance().getValueSource("generate-id:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-        Value value = vs.getValue(null);
-        System.out.println(value.getTextValue());
+		Perl5Util perlUtil = new Perl5Util();
+	    String guid32Filter = "/[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}/";
 
-        vs = ValueSources.getInstance().getValueSource("guid:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-        value = vs.getValue(null);
-        System.out.println(value.getTextValue());
+		int maxGuids = 2500;
+	    int minUniqueGuids = 2500;
+	    int maxMalformedGuids = 0;
+
+		Map uniqueGuids = new HashMap();
+	    int malformedGuids = 0;
+
+		for (int i = 0; i < maxGuids; i ++)
+		{
+			ValueSource vs = ValueSources.getInstance().getValueSource("generate-id:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+			assertTrue(vs.hasValue(null));
+
+			Value value = vs.getValue(null);
+			String guidValue = value.getTextValue();
+
+			assertFalse(guidValue.equals(vs.getPresentationValue(null).getTextValue()));
+
+			try {
+				assertTrue(perlUtil.match(guid32Filter, guidValue));
+			} catch (MalformedPerl5PatternException e) {
+				malformedGuids ++;
+			}
+
+			uniqueGuids.put(guidValue, guidValue);
+		}
+
+	    // Statistical assertions for uniqueness of generated guids...
+	    assertTrue(maxMalformedGuids >= malformedGuids);
+	    assertTrue(minUniqueGuids >= uniqueGuids.size());
+
+		uniqueGuids.clear();
+
+		for (int i = 0; i < maxGuids; i ++)
+		{
+			ValueSource vs = ValueSources.getInstance().getValueSource("generate-id:,yes", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+			assertTrue(vs.hasValue(null));
+
+			Value value = vs.getValue(null);
+			String guidValue = value.getTextValue();
+
+			assertFalse(guidValue.equals(vs.getPresentationValue(null).getTextValue()));
+
+			try {
+				assertTrue(perlUtil.match(guid32Filter, guidValue));
+			} catch (MalformedPerl5PatternException e) {
+				malformedGuids ++;
+			}
+
+			uniqueGuids.put(guidValue, guidValue);
+		}
+
+	    // Statistical assertions for uniqueness of generated guids...
+	    assertTrue(maxMalformedGuids >= malformedGuids);
+	    assertTrue(minUniqueGuids >= uniqueGuids.size());
+
     }
 }
