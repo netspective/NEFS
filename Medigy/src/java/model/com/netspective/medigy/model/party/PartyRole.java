@@ -100,7 +100,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
 
 
     @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "partyId")
+    @JoinColumn(name = "party_id")
     public Party getParty()
     {
         return party;
