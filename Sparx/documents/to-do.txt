@@ -19,6 +19,7 @@
 * Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
 * Run through all the code to make sure all "TODO" tags are completed -- many of the TODO tags indicated code that hasn't been migrated over from 2.3 to 7.0.
 
+* Check out http://just4log.sourceforge.net/ features and incorporate them into Console
 * Consider how to integrate http://jbpm.org/ (BPM) into Sparx
 * Check out http://www.jmyra.com features and incorporate them into Console
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
@@ -64,6 +65,7 @@
 * See if it makes sense to include Jamon (http://www.jamon.org) as a template engine option
 * Might be interesting to see if Sparx can work with x-Desktop (http://www.x-desktop.org/).
 * Review XP stories and scenarios capture methodology described in http://www.agilealliance.com/articles/articles/breitman.pdf and implement as new Sparx feature for capturing requirements and traceability
+* Review http://www.globecom.se/tora/ to see if creating a Sparx-based version would sell
 
 BUGS
 * SelectField:
