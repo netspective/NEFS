@@ -1,6 +1,5 @@
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
-* Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
@@ -18,6 +17,7 @@
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 * Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
+* Run through all the code to make sure all "TODO" tags are completed -- many of the TODO tags indicated code that hasn't been migrated over from 2.3 to 7.0.
 
 * Check out http://www.jmyra.com features and incorporate them into Console
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
