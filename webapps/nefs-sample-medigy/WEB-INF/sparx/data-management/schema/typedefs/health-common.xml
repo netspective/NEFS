@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!--
+    =====================================================
+    These are all the health care related data types
+    =====================================================
+     -->
+    <data-type name="clinical-action-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="claim-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="diagnosis-code" type="text"/>
+
+    <data-type name="procedure-code" type="text"/>
+
+    <data-type name="deductible" type="currency"/>
+
+    <data-type name="copay" type="currency"/>
+
+    <data-type name="blood-type" type="integer"/>
+
+    <data-type name="insurance-product-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="insurance-plan-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="invoice-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="invoice-line-item-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="medicaid-id" type="text"/>
+
+    <data-type name="medicare-id" type="text"/>
+
+</xdm:container>
