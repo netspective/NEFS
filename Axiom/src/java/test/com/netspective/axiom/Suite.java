@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: Suite.java,v 1.2 2003-04-06 23:57:48 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom;
@@ -56,7 +56,7 @@ public class Suite
     {
         TestSuite suite = new TestSuite();
         suite.addTest(new TestSuite(SqlManagerQueryTest.class));
-        suite.addTest(new TestSuite(SqlManagerSchemaTest.class));
+//        suite.addTest(new TestSuite(SqlManagerSchemaTest.class));
         return suite;
     }
 }
