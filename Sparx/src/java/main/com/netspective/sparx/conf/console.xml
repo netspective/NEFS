@@ -3,13 +3,13 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.44 2003-06-13 02:14:11 shahid.shah Exp $
+  * $Id: console.xml,v 1.45 2003-06-13 02:19:49 shahid.shah Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="c:\Projects\Frameworks\Sparx\src\java\main\com\netspective\sparx\console"/>
+    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet"/>
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
     <register-value-source class="com.netspective.sparx.console.value.ConsolePageContentPathValueSource"/>
 
