@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.23 2004-07-15 23:25:09 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.24 2004-07-18 21:19:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -378,8 +378,8 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         AuthenticatedUser user = getAuthenticatedUser(req);
         if(user != null)
         {
-            req.getSession().removeAttribute(getAuthenticatedUserSessionAttrName());
             registerLogout(vc, user);
+            req.getSession().removeAttribute(getAuthenticatedUserSessionAttrName());
         }
     }
 
