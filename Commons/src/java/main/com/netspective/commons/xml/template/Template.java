@@ -135,6 +135,11 @@ public class Template extends TemplateElement
         this.templateProducer = producer;
     }
 
+    public TemplateCatalog getTemplateCatalog()
+    {
+        return templateCatalog;
+    }
+
     public String getTemplateName()
     {
         return templateName;
