@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.9 2003-08-27 01:21:40 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.10 2003-08-28 00:40:55 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -64,6 +64,7 @@ import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.lang.ResourceLoader;
@@ -368,6 +369,7 @@ public class DataAccessLayerGenerator
             addImport(accessorClass, ColumnValues.class);
             addImport(accessorClass, ForeignKey.class);
             addImport(accessorClass, ParentForeignKey.class);
+            addImport(accessorClass, QueryResultSet.class);
         }
 
         public void generateFieldsAndConstructors()
@@ -509,6 +511,20 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.addParameter(vm.newType("Row"), "row");
             method.newStmt(vm.newFree("return new " + recordInnerClassName + "(row)"));
+
+            method = accessorClass.newMethod(vm.newType(recordsInnerClassName), "getAccessorRecords");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.addParameter(vm.newType("QueryDefnSelect"), "accessor");
+            method.addParameter(vm.newType("Object[]"), "bindValues");
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            method.newStmt(vm.newFree("Rows rows = getTable().createRows()"));
+            method.newStmt(vm.newFree("QueryResultSet qrs = accessor.execute(cc, bindValues, false)"));
+            method.newStmt(vm.newFree("if(qrs != null) rows.populateDataByIndexes(qrs.getResultSet())"));
+            method.newStmt(vm.newFree("qrs.close(false)"));
+            method.newStmt(vm.newFree("return new Records(rows)"));
         }
 
         public void generateRetrievalByPrimaryKeysMethod()
