@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
 
 <dal>
     <org ID="ORG_0" rec-stat-id="Active" org-name="Medspective Inc." org-code="MEDS" org-abbrev="MEDS" ownership-id="Private" ticker-symbol="" sic-code="" employees="10" time-zone="EST" hcfa-servplace-id="Office"/>
@@ -20,14 +19,14 @@
     </org>
     <person ID="PERSON_1" name-first="John" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_1" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_1" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_1"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_2" name-first="Mathew" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_1" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_1" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_1"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -83,14 +82,14 @@
     </person>
     <person ID="PERSON_10" name-first="Ben" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_1" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_1" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_1"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_11" name-first="Bernard" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_1" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_1" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_1"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -146,7 +145,7 @@
     </person>
     <person ID="PERSON_19" name-first="Samuel" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_1" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_1" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_1"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -163,7 +162,7 @@
     </org>
     <person ID="PERSON_1" name-first="Harold" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_2" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_2" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_2"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -219,14 +218,14 @@
     </person>
     <person ID="PERSON_9" name-first="Mathew" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_2" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_2" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_2"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_10" name-first="Brandon" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_2" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_2" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_2"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -282,14 +281,14 @@
     </person>
     <person ID="PERSON_18" name-first="Bernard" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_2" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_2" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_2"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_19" name-first="Sam" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_2" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_2" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_2"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -355,14 +354,14 @@
     </person>
     <person ID="PERSON_8" name-first="Harold" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_3" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_3" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_3"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_9" name-first="Jacob" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_3" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_3" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_3"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -418,14 +417,14 @@
     </person>
     <person ID="PERSON_17" name-first="Brandon" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_3" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_3" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_3"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_18" name-first="Robert" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_3" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_3" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_3"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -491,14 +490,14 @@
     </person>
     <person ID="PERSON_7" name-first="Sam" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_4" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_4" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_4"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_8" name-first="Victor" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_4" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_4" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_4"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -554,14 +553,14 @@
     </person>
     <person ID="PERSON_16" name-first="Jacob" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_4" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_4" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_4"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_17" name-first="Leroy" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_4" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_4" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_4"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -627,14 +626,14 @@
     </person>
     <person ID="PERSON_6" name-first="Robert" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_5" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_5" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_5"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_7" name-first="Jason" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_5" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_5" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_5"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -690,14 +689,14 @@
     </person>
     <person ID="PERSON_15" name-first="Victor" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_5" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_5" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_5"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_16" name-first="John" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_5" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_5" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_5"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -763,14 +762,14 @@
     </person>
     <person ID="PERSON_5" name-first="Leroy" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_6" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_6" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_6"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_6" name-first="Ben" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_6" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_6" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_6"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -826,14 +825,14 @@
     </person>
     <person ID="PERSON_14" name-first="Jason" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_6" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_6" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_6"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_15" name-first="Samuel" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_6" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_6" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_6"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -899,14 +898,14 @@
     </person>
     <person ID="PERSON_4" name-first="John" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_7" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_7" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_7"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_5" name-first="Mathew" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_7" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_7" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_7"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -962,14 +961,14 @@
     </person>
     <person ID="PERSON_13" name-first="Ben" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_7" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_7" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_7"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_14" name-first="Bernard" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_7" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_7" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_7"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1035,14 +1034,14 @@
     </person>
     <person ID="PERSON_3" name-first="Samuel" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_8" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_8" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_8"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_4" name-first="Harold" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_8" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_8" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_8"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1098,14 +1097,14 @@
     </person>
     <person ID="PERSON_12" name-first="Mathew" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_8" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_8" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_8"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_13" name-first="Brandon" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_8" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_8" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_8"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1171,14 +1170,14 @@
     </person>
     <person ID="PERSON_2" name-first="Bernard" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_9" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_9" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_9"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_3" name-first="Sam" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_9" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_9" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_9"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1234,14 +1233,14 @@
     </person>
     <person ID="PERSON_11" name-first="Harold" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_9" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_9" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_9"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_12" name-first="Jacob" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_9" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_9" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_9"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1307,14 +1306,14 @@
     </org>
     <person ID="PERSON_1" name-first="Brandon" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_10" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_10" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_10"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_2" name-first="Robert" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_10" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_10" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_10"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1370,14 +1369,14 @@
     </person>
     <person ID="PERSON_10" name-first="Sam" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_10" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_10" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_10"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_11" name-first="Victor" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_10" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_10" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_10"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1433,7 +1432,7 @@
     </person>
     <person ID="PERSON_19" name-first="Jacob" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_10" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_10" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_10"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1450,7 +1449,7 @@
     </org>
     <person ID="PERSON_1" name-first="Leroy" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_11" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_11" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_11"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1506,14 +1505,14 @@
     </person>
     <person ID="PERSON_9" name-first="Robert" name-last="Miller" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_11" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_11" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_11"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_10" name-first="Jason" name-last="Scotts" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_11" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_11" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_11"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1569,14 +1568,14 @@
     </person>
     <person ID="PERSON_18" name-first="Victor" name-last="Kennedy" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Billing" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_11" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_11" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_11"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_19" name-first="John" name-last="Parker" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Other" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_11" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_11" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_11"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1642,14 +1641,14 @@
     </person>
     <person ID="PERSON_8" name-first="Leroy" name-last="Smith" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_12" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_12" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_12"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_9" name-first="Ben" name-last="Johnson" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Primary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_12" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_12" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_12"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
@@ -1705,14 +1704,14 @@
     </person>
     <person ID="PERSON_17" name-first="Jason" name-last="Cote" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Secondary" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_12" person-type-id="0" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_12" person-type-id="patient" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_12"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
     </person>
     <person ID="PERSON_18" name-first="Samuel" name-last="Graham" ssn="123456789" rec-stat-id="Active" gender-id="Male" language-id="English,Spanish" marital-status-id="Unknown" blood-type-id="Unknown">
         <person-address address-name="Test Address Name" rec-stat-id="Active" address-type-id="Alternate" line1="987 Main St." city="Washington" state-id="District of Columbia" county="DC" zip="22059"/>
-        <person-classification org-id="IDREF:ORG_12" person-type-id="1" rec-stat-id="Active"/>
+        <person-classification org-id="IDREF:ORG_12" person-type-id="physician" rec-stat-id="Active"/>
         <person-contact method-type="Telephone: Business" method-value="555-5555" phone-ac="703" rec-stat-id="Active"/>
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employed (Full-time)" rel-entity-id="IDREF:ORG_12"/>
         <patient-indication rec-stat-id="Active" indication-type-id="Medication Allergy" indication="Ampicilin"/>
