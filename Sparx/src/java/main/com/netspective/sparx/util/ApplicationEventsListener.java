@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: ApplicationEventsListener.java,v 1.2 2003-08-17 13:37:17 shahid.shah Exp $
+ * $Id: ApplicationEventsListener.java,v 1.1 2003-08-17 13:44:53 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.util;
 
 import java.util.Enumeration;
 import java.util.Set;
@@ -81,15 +81,19 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
             String sessAttrName = (String) e.nextElement();
             Object sessAttrValue = session.getAttribute(sessAttrName);
 
+            log.trace("Found sessionAttrName '"+ sessAttrName +"': " + sessAttrValue.getClass().getName());
+
             if(sessAttrValue instanceof AuthenticatedUser)
             {
                 ((AuthenticatedUser) sessAttrValue).registerTimeOut();
+                log.trace("Timed out authenticated user: " + sessAttrValue);
                 continue;
             }
 
             if(sessAttrValue instanceof TabularReportDataSourceScrollState)
             {
                 ((TabularReportDataSourceScrollState) sessAttrValue).timeOut();
+                log.trace("Timed out scroll state: " + sessAttrValue);
                 continue;
             }
 
@@ -111,6 +115,8 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
                 {
                     log.error("Unable to rollback and close the shared (session) connection.", se);
                 }
+                log.trace("Closed JDBC connection: " + sessAttrValue);
+                continue;
             }
 
             if(sessAttrValue instanceof ConnectionContext)
@@ -138,6 +144,7 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
                 {
                     log.error("Unable to timeOut the connection ", se);
                 }
+                log.trace("Timed out ConnectionContext: " + sessAttrValue);
                 continue;
             }
         }
@@ -145,7 +152,7 @@ public class ApplicationEventsListener implements ServletContextListener, HttpSe
 
     public void contextInitialized(ServletContextEvent event)
     {
-        log.trace("Init context " + event.getServletContext().getServletContextName());
+        log.trace("Init context for " + event.getServletContext().getServletContextName());
     }
 
     public void contextDestroyed(ServletContextEvent event)
