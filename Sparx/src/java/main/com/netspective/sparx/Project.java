@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.39 2003-11-19 05:21:40 aye.thu Exp $
+ * $Id: Project.java,v 1.40 2003-11-20 04:15:38 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -524,13 +524,13 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void produceMetrics(Metric parent)
     {
         super.produceMetrics(parent);
-        MetricsGroup mg = parent.addGroupMetric("User Interface");
+        MetricsGroup mg = parent.addGroupMetric("Presentation");
         getDialogs().produceMetrics(mg);
+        getThemes().produceMetrics(mg);
+        getNavigationTrees().produceMetrics(mg);
 
         parent.addValueMetric("Lifecycle Listeners", Integer.toString(lifecycleListeners.size()));
         parent.addValueMetric("Ant Projects", Integer.toString(antProjects.size()));
-        parent.addValueMetric("Navigation Trees", Integer.toString(navigationTrees.size()));
-        parent.addValueMetric("Themes", Integer.toString(themes.size()));
         parent.addValueMetric("Login Managers", Integer.toString(loginManagers.size()));
     }
 
