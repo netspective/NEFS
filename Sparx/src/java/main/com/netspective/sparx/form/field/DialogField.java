@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.55 2004-07-14 19:05:34 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.56 2004-07-26 13:43:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -94,6 +94,7 @@ import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyF
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
 import com.netspective.sparx.panel.HtmlHelpPanel;
+import com.netspective.sparx.value.source.DialogFieldValueSource;
 
 /**
  * A <code>DialogField</code> object represents a data field of a form/dialog. It contains functionalities
@@ -471,6 +472,8 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     private List clientJavascripts = new ArrayList();
     private DialogFieldFlags flags = createFlags();
     private DialogFieldPopup popup;
+
+    private List popupList = new ArrayList();   // array to keep track of popup actions assigned to the field
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
@@ -748,10 +751,26 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
      * Gets the associated popup field
      *
      * @return
+     * @deprecated Multiple popups are allowed now and this method needs to be removed.
      */
     public DialogFieldPopup getPopup()
     {
         return popup;
+    }
+
+    /**
+     * Gets all the popups associated with the dialog field
+     *
+     * @return  an array of popups
+     */
+    public DialogFieldPopup[] getPopups()
+    {
+        DialogFieldPopup[] popups = new DialogFieldPopup[popupList.size()];
+        for (int i=0; i < popupList.size(); i++)
+        {
+            popups[i] = (DialogFieldPopup) popupList.get(i);
+        }
+        return popups;
     }
 
     /**
@@ -764,6 +783,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         if (popup.getFill() == null)
             popup.setFill(getQualifiedName());
         this.popup = popup;
+        this.popupList.add(popup);
     }
 
     public DialogFieldPopup createPopup()
@@ -1605,6 +1625,33 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                                 + "\", \"" + action.getPartnerField().getQualifiedName() + "\", \"" + action.getExpression() + "\");\n");
                     else
                         log.warn("Javascript dependent condition was not added because the partner field with name '" + action.getPartnerFieldName() + "' was not available.");
+                }
+                else if (o instanceof DialogFieldConditionalApplyFlag)
+                {
+                    DialogFieldConditionalApplyFlag condition = (DialogFieldConditionalApplyFlag) o;
+                    DialogFieldFlags flags = condition.getFlags();
+                    if (flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN) || flags.flagIsSet(DialogFieldFlags.REQUIRED))
+                    {
+                        // the INPUT HIDDEN flag needs to be handled on both the client side and the server side if the
+                        // condition is based on client-side actions
+                        ValueSource hasValue = condition.getHasValue();
+                        if (hasValue != null && hasValue instanceof DialogFieldValueSource)
+                        {
+                            // based on another field
+                           if (condition.getPartnerField().isAvailable(dc))
+                           {
+                                dcJs.append("field.dependentConditions[field.dependentConditions.length] = new DialogFieldConditionalFlag(\"" +
+                                        condition.getSourceField().getQualifiedName() + "\", \"" +
+                                        condition.getPartnerField().getQualifiedName() + "\", \"" +
+                                        condition.getExpression(dc) + "\", "+ flags.getFlags() + ");\n");
+                           }
+                           else
+                               log.warn("Javascript dependent condition was not added because " +
+                                       "the field with name '" + condition.getPartnerFieldName() + "' set in has-value attribute was not available.");
+                        }
+
+                    }
+
                 }
             }
             js = js + dcJs.toString();
