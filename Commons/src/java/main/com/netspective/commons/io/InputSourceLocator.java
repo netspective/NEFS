@@ -32,6 +32,7 @@
  */
 package com.netspective.commons.io;
 
+import java.io.File;
 import java.io.IOException;
 
 import com.netspective.commons.text.TextUtils;
@@ -98,5 +99,18 @@ public class InputSourceLocator
     public String toString()
     {
         return inputSourceTracker.getIdentifier() + getLineNumbersText();
+    }
+
+    /**
+     * Obtain an absolute path that assumes that the given file is relative to this input source locator
+     *
+     * @param file The relative path
+     *
+     * @return The absolute path
+     */
+    public File getRelativeFile(File file)
+    {
+        return new File(new File(new File(inputSourceTracker.getIdentifier()).getParent()),
+                        file.getAbsolutePath());
     }
 }
