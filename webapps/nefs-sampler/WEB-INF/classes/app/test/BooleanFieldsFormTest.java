@@ -51,7 +51,7 @@
  */
 
 /**
- * @version $Id: BooleanFieldsFormTest.java,v 1.3 2004-01-04 04:40:27 aye.thu Exp $
+ * @version $Id: BooleanFieldsFormTest.java,v 1.4 2004-02-16 19:09:56 aye.thu Exp $
  */
 package app.test;
 
@@ -79,13 +79,14 @@ public class BooleanFieldsFormTest  extends FormInputTest
     {
 
         // verify all the default values
-        //assertEquals("0", form.getParameterValue("_dc.boolFieldRadio0"));
-        // this returns a NULL if the default value is false for some reason
-        assertEquals("1", form.getParameterValue("_dc.boolFieldAlone"));
+        assertEquals("0", form.getParameterValue("_dc.boolFieldRadioA"));
+        assertEquals("1", form.getParameterValue("_dc.boolFieldRadioB"));
+        assertEquals("2", form.getParameterValue("_dc.boolFieldRadioC"));
+        assertEquals("1", form.getParameterValue("_dc.boolFieldCheckAlone"));
+        assertEquals("1", form.getParameterValue("_dc.boolFieldCheck"));
         assertEquals("0", form.getParameterValue("_dc.boolFieldCombo"));
 
-
-        form.setCheckbox("_dc.boolFieldAlone", false);
+        form.setCheckbox("_dc.boolFieldCheckAlone", false);
         WebResponse response = form.submit();
 
         //  verify the first row header names
@@ -98,13 +99,19 @@ public class BooleanFieldsFormTest  extends FormInputTest
 
         // verify the first column to make sure all fields were submitted
         // NOTE: There is a space (&nbps;) after the field names
-        assertEquals("bool_field_radio ", fieldStates[1][0]);
-        assertEquals("bool_field_alone ", fieldStates[2][0]);
-        assertEquals("bool_field_combo ", fieldStates[3][0]);
+        assertEquals("bool_field_radio_A ", fieldStates[1][0]);
+        assertEquals("bool_field_radio_B ", fieldStates[2][0]);
+        assertEquals("bool_field_radio_C ", fieldStates[3][0]);
+        assertEquals("bool_field_check_alone ", fieldStates[4][0]);
+        assertEquals("bool_field_check ", fieldStates[5][0]);
+        assertEquals("bool_field_combo ", fieldStates[6][0]);
         // verify the fourth column to make sure all the values were submitted
         assertEquals("0 ", fieldStates[1][4]);
-        assertEquals("0 ", fieldStates[2][4]);
-        assertEquals("0 ", fieldStates[3][4]);
+        assertEquals("1 ", fieldStates[2][4]);
+        assertEquals("2 ", fieldStates[3][4]);
+        assertEquals("0 ", fieldStates[4][4]);
+        assertEquals("1 ", fieldStates[5][4]);
+        assertEquals("0 ", fieldStates[6][4]);
 
     }
 }
