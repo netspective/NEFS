@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.49 2003-06-18 19:58:07 shahid.shah Exp $
+  * $Id: console.xml,v 1.50 2003-06-19 03:10:40 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -28,13 +28,9 @@
     </panel-type>
 
     <navigation-tree name="console" class="com.netspective.sparx.console.ConsoleNavigationTree">
-        <page name="project" caption="Project" default="yes">
+        <page name="project" caption="Project Home" default="yes">
             <panels style="horizontal">
                 <panels style="vertical">
-                    <panel type="html">
-                        <frame heading="Welcome"/>
-                        <body config="console" source="console-page-content:welcome.ftl"/>
-                    </panel>
                     <panel type="html">
                         <frame heading="Configuration Overview"/>
                         <body config="console" source="console-page-content:app-overview.ftl"/>
@@ -42,12 +38,22 @@
                     <panel type="console-sibling-summaries">
                         <frame heading="Table of Contents"/>
                     </panel>
+                    <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
                 </panels>
 
-                <panel class="com.netspective.sparx.console.panel.LibrariesPanel"/>
+                <panels style="vertical">
+                    <panel type="html">
+                        <frame heading="Welcome"/>
+                        <body config="console" source="console-page-content:welcome.ftl"/>
+                    </panel>
+                    <panel type="html">
+                        <frame heading="Console Security"/>
+                        <body config="console" source="console-page-content:console-security.ftl"/>
+                    </panel>
+                </panels>
             </panels>
 
-            <page name="project-file" caption="Project File" heading="Sparx Project File">
+            <page name="project-source" caption="Project Source" heading="Sparx Project File">
                 <panels>
                     <panel type="console-page-summary"/>
                     <panel type="html">

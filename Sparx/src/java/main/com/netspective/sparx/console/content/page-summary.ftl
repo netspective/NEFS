@@ -1,6 +1,4 @@
-<div class="textbox">
-    <font style="font-size: 125%">
-        <#assign templateName = "/content/${vc.navigationContext.activePage.qualifiedName}/summary.ftl">
-        <#include templateName>
-    </font>
+<div class="textbox" style="background-color: #f8f8f8; font-size: 9pt">
+    <#assign templateName = "/content/${vc.navigationContext.activePage.qualifiedName}/summary.ftl">
+    <#include templateName>
 </div>
