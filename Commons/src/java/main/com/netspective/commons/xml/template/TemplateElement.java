@@ -210,6 +210,17 @@ public class TemplateElement extends TemplateNode
         return activeEntry.evaluateTemplateAttrExpressions(ac, getAttrHasExpression());
     }
 
+    public Attributes getAttributesWithExpressionsReplaced(Map jexlVars)
+    {
+        JavaExpressionText jet = new JavaExpressionText(jexlVars);
+
+        AttributesImpl attrs = new AttributesImpl(attributes);
+        for(int i = 0; i < attrs.getLength(); i++)
+            attrs.setValue(i, jet.getFinalText(null, attrs.getValue(i)));
+
+        return attrs;
+    }
+
     public Attributes getAttributes()
     {
         return attributes;
@@ -238,6 +249,56 @@ public class TemplateElement extends TemplateNode
     public boolean[] getAttrHasExpression()
     {
         return attrHasExpression;
+    }
+
+    public String asXML(final Map jexlVars, final boolean onlyChildren)
+    {
+        StringBuffer result = new StringBuffer();
+        if(!onlyChildren)
+        {
+            result.append("<");
+            result.append(getElementName());
+            Attributes attrs = jexlVars != null ? getAttributesWithExpressionsReplaced(jexlVars) : getAttributes();
+            for(int i = 0; i < attrs.getLength(); i++)
+            {
+                result.append(" ");
+                result.append(attrs.getQName(i));
+                result.append("=\"");
+                result.append(attrs.getValue(i));
+                result.append("\"");
+            }
+        }
+
+        List children = getChildren();
+        if(children.size() > 0)
+        {
+            if(! onlyChildren)
+                result.append(">");
+
+            for(int i = 0; i < children.size(); i++)
+            {
+                TemplateNode node = (TemplateNode) children.get(i);
+                if(node instanceof TemplateElement)
+                {
+                    result.append("\n");
+                    result.append(((TemplateElement) node).asXML(jexlVars, false));
+                }
+                else if(node instanceof TemplateText)
+                    result.append(((TemplateText) node).getText());
+            }
+
+            if(!onlyChildren)
+            {
+                result.append("</");
+                result.append(getElementName());
+                result.append(">");
+            }
+        }
+        else
+            if(! onlyChildren) result.append("/>");
+
+
+        return result.toString();
     }
 }
 
