@@ -27,8 +27,10 @@
 
       <listitem>
         <para><ulink url="http://www.caucho.com">Resin 2.1.10+</ulink> for web
-        application server. Although Release 3.0 of Resin should work and there is a configuration file prepared for it, it has
-        <emphasis>not</emphasis> been as well-tested as the Resin 2.1 configuration.</para>
+        application server. Although Release 3.0 of Resin should work and
+        there is a configuration file prepared for it, it has
+        <emphasis>not</emphasis> been as well-tested as the Resin 2.1
+        configuration.</para>
       </listitem>
 
       <listitem>
@@ -51,6 +53,54 @@
   </sect1>
 
   <sect1>
+    <title>CVS Authentication Information</title>
+
+    <para>CVSROOT is <filename
+    class="directory">user@cvs.netspective.com:/home/netspective/cvs/Frameworks</filename>.
+    If you already have access to Sparx CVS, then your
+    <varname>user.name</varname> and <varname>password</varname> is the same.
+    If you don't yet have access to Sparx CVS then you'll need to get a
+    login/account.</para>
+
+    <sect2>
+      <title>For CVS 1.2</title>
+
+      <para>The <emphasis>Authentication</emphasis> option under Admin |
+      Preferences should be set to <emphasis>"passwd" file on the cvs
+      server</emphasis> option (as shown below):</para>
+
+      <figure>
+        <title>Setting the Authentication Preference in WinCVS 1.2</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-wincvs12-auth-opt.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
+
+    <sect2>
+      <title>For CVS 1.3</title>
+
+      <para>The <emphasis>Authentication</emphasis> option under
+      <guimenu>Admin</guimenu> | <guimenuitem>Preferences</guimenuitem> should
+      be set to <emphasis>pserver</emphasis> option (as shown below): (TODO:
+      Image to be put here)</para>
+
+      <figure>
+        <title>Setting the Authentication Preference in WinCVS 1.3</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-wincvs13-auth-opt.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </sect2>
+  </sect1>
+
+  <sect1>
     <title>Default Paths</title>
 
     <para>Default location on development boxes are:</para>
@@ -67,8 +117,8 @@
       </listitem>
 
       <listitem>
-        <para><filename class="directory">NEFS_HOME/support/ide</filename> for all
-        IDE-related files</para>
+        <para><filename class="directory">NEFS_HOME/support/ide</filename> for
+        all IDE-related files</para>
       </listitem>
 
       <listitem>
@@ -152,31 +202,30 @@
   </sect1>
 
   <sect1>
-        <title>Special Compilation Note for JDK 1.4</title>
+    <title>Special Compilation Note for JDK 1.4</title>
 
-      <orderedlist>
-        <listitem>
-          <para>Locate the <filename>xalan.jar</filename> file located in
-          <filename
-          class="directory">NEFS_HOME/Commons/lib/redist</filename>.</para>
-        </listitem>
+    <orderedlist>
+      <listitem>
+        <para>Locate the <filename>xalan.jar</filename> file located in
+        <filename
+        class="directory">NEFS_HOME/Commons/lib/redist</filename>.</para>
+      </listitem>
 
-        <listitem>
-          <para>Locate your <varname>JAVA_HOME</varname> folder.</para>
-        </listitem>
+      <listitem>
+        <para>Locate your <varname>JAVA_HOME</varname> folder.</para>
+      </listitem>
 
-        <listitem>
-          <para>Create a folder under <filename
-          class="directory">JAVA_HOME/jre/lib</filename> named endorsed if
-          there isn't one already.</para>
-        </listitem>
+      <listitem>
+        <para>Create a folder under <filename
+        class="directory">JAVA_HOME/jre/lib</filename> named endorsed if there
+        isn't one already.</para>
+      </listitem>
 
-        <listitem>
-          <para>Copy the <filename>xalan.jar</filename> file into
-          <filename
-          class="directory">JAVA_HOME/jre/lib/endorsed</filename>.</para>
-        </listitem>
-      </orderedlist>
+      <listitem>
+        <para>Copy the <filename>xalan.jar</filename> file into <filename
+        class="directory">JAVA_HOME/jre/lib/endorsed</filename>.</para>
+      </listitem>
+    </orderedlist>
   </sect1>
 
   <sect1>
@@ -194,8 +243,8 @@
 
         <listitem>
           <para>In IDEA, open <guimenuitem>File</guimenuitem> |
-          <guimenuitem>Settings</guimenuitem> and make sure that the
-          output directory points to <filename
+          <guimenuitem>Settings</guimenuitem> and make sure that the output
+          directory points to <filename
           class="directory">NEFS_HOME/support/ide/classes/main</filename>.</para>
         </listitem>
 
@@ -208,34 +257,33 @@
       </orderedlist>
     </sect2>
 
-          <sect2>
-            <title>If you're compiling with another IDE (Eclipse, JBuilder, etc)</title>
+    <sect2>
+      <title>If you're compiling with another IDE (Eclipse, JBuilder,
+      etc)</title>
 
-            <orderedlist>
-              <listitem>
-                <para>Create a project file NEFS_HOME as the project root.</para>
-              </listitem>
+      <orderedlist>
+        <listitem>
+          <para>Create a project file NEFS_HOME as the project root.</para>
+        </listitem>
 
-              <listitem>
-                <para>Make sure that all the JAR files in <filename
-                class="directory">NEFS_HOME/Commons/lib/redist</filename>, <filename
-                class="directory">NEFS_HOME/Axiom/lib/redist</filename>, and
-                <filename class="directory">NEFS_HOME/Sparx/lib/redist</filename> are in the CLASSPATH.
-                </para>
-              </listitem>
+        <listitem>
+          <para>Make sure that all the JAR files in <filename
+          class="directory">NEFS_HOME/Commons/lib/redist</filename>, <filename
+          class="directory">NEFS_HOME/Axiom/lib/redist</filename>, and
+          <filename class="directory">NEFS_HOME/Sparx/lib/redist</filename>
+          are in the CLASSPATH.</para>
+        </listitem>
 
-              <listitem>
-                <para>Make sure that the compiled classes end up in
-                <filename class="directory">NEFS_HOME/support/ide/classes/main</filename>).
-                </para>
-              </listitem>
+        <listitem>
+          <para>Make sure that the compiled classes end up in <filename
+          class="directory">NEFS_HOME/support/ide/classes/main</filename>).</para>
+        </listitem>
 
-              <listitem>
-                <para>Compile full project.</para>
-              </listitem>
-            </orderedlist>
-          </sect2>
-
+        <listitem>
+          <para>Compile full project.</para>
+        </listitem>
+      </orderedlist>
+    </sect2>
 
     <sect2>
       <title>If you're compiling with Ant (Command Line tool)</title>
@@ -288,10 +336,11 @@
     <para>If you are not using the standard directory locations, open the
     Resin <filename>NEFS_HOME/webapps/nefs-resin-*.conf</filename>
     configuration files and follow the directions in the top of each file to
-    ensure that the proper paths are supplied. </para>
+    ensure that the proper paths are supplied.</para>
 
     <sect2>
-      <title>If you compiled using an IDE (IDEA, Eclipse, JBuilder, etc)</title>
+      <title>If you compiled using an IDE (IDEA, Eclipse, JBuilder,
+      etc)</title>
 
       <itemizedlist>
         <listitem>
@@ -303,7 +352,7 @@
         <listitem>
           <para>Resin is started on UNIX/OS X from the command line using
           <command>RESIN_HOME/bin/httpd.sh -conf
-          NEFS_HOME/webapps/nefs-resin-sde-ide.conf</command> </para>
+          NEFS_HOME/webapps/nefs-resin-sde-ide.conf</command></para>
         </listitem>
       </itemizedlist>
     </sect2>
