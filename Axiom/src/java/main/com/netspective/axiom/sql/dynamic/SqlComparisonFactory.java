@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.7 2004-08-09 22:13:32 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.8 2004-08-12 20:30:36 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -60,6 +60,7 @@ import com.netspective.axiom.sql.dynamic.comparison.InComparison;
 import com.netspective.axiom.sql.dynamic.comparison.IsDefinedComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparisonIgnoreCase;
+import com.netspective.axiom.sql.dynamic.comparison.LikeExpressionComparison;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSources;
 
@@ -75,6 +76,7 @@ public class SqlComparisonFactory
         registerComparison(new BinaryOpComparison("not-equals", "does not equal", "general", "!="), new String[]{
             "is-not", "!="
         });
+        registerComparison(new LikeExpressionComparison(), null);
         registerComparison(new StartsWithComparison(), null);
         registerComparison(new StartsWithComparisonIgnoreCase(), null);
         registerComparison(new ContainsComparison(), null);
