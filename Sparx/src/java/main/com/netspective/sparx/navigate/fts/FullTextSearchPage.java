@@ -142,6 +142,7 @@ public class FullTextSearchPage extends NavigationPage
     private String activeUserSearchResultsSessAttrName = "active-search-results";
     private String indexLocatorIndexDirPropertyName = "indexDir"; // property that will be used to read the index dir from a given properties file
     private String indexLocatorIndexDirPathSepPropertyName = "indexDirPathSep"; // property that will be used to split index directory path to search for first available directory
+    private boolean valid; // is the search page valid?
     private File indexDirectory;
     private IndexDirectorySearchPath indexDirectorySearchPath;
     private IndexSearcher indexSearcher;
@@ -236,8 +237,17 @@ public class FullTextSearchPage extends NavigationPage
             getLog().error("Index directory " + indexDir + " does not exist for FullTextSearchPage " + getQualifiedName());
         else
         {
-            readIndexInfo(indexDir);
-            indexSearcher = new IndexSearcher(indexDir.getAbsolutePath());
+            try
+            {
+                readIndexInfo(indexDir);
+                indexSearcher = new IndexSearcher(indexDir.getAbsolutePath());
+                valid = true;
+            }
+            catch(Exception e)
+            {
+                getLog().error(e);
+                valid = false;
+            }
         }
         this.indexDirectory = indexDir;
     }
@@ -400,6 +410,12 @@ public class FullTextSearchPage extends NavigationPage
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        if(! valid)
+        {
+            writer.write("Index loading was not completed properly, this page is not valid.");
+            return;
+        }
+
         final ServletRequest request = nc.getRequest();
         if(request.getParameter("terms") != null)
         {
