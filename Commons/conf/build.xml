@@ -233,7 +233,7 @@ Setup instructions:
     <target name="clover-test" depends="clover-compile-test">
         <junit filtertrace="yes" fork="yes">
             <classpath>
-                <pathelement path="${project.class.path}"/>
+                <path refid="project.class.path"/>
                 <pathelement location="${project.build.main.classes.dir}"/>
                 <pathelement location="${project.build.test.classes.dir}"/>
             </classpath>
