@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.2 2003-03-13 22:01:29 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.3 2003-03-13 22:10:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -85,7 +85,7 @@ public class DataAccessLayerGenerator
         this.vm = VirtualMachine.getVirtualMachine();
         this.structure = structure;
         this.rootDir = rootDir;
-        this.rootNameSpace = rootNameSpace;
+        this.rootNameSpace = rootNameSpace + "." + structure.getSchema().getName().toLowerCase();
         this.dalClassName = dalClassName;
     }
 
