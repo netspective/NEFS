@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.28 2003-09-14 17:04:39 shahid.shah Exp $
+ * $Id: Project.java,v 1.29 2003-10-07 01:36:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
@@ -101,6 +102,7 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.metric.Metric;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -243,7 +245,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return DIALOG_TYPES;
     }
 
-    public static DialogExecuteHandlerTemplate getDialogExecuteHandlers()
+    public DialogExecuteHandlerTemplate getDialogExecuteHandlers()
     {
         return DIALOG_EXECUTE_HANDLERS;
     }
@@ -462,6 +464,19 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addFreemarkerConfiguration(FreeMarkerConfigurationAdapter config)
     {
         FreeMarkerConfigurationAdapters.getInstance().addConfiguration(config);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public void produceMetrics(Metric parent)
+    {
+        super.produceMetrics(parent);
+        parent.addValueMetric("Lifecycle Listeners", Integer.toString(lifecycleListeners.size()));
+        parent.addValueMetric("Ant Projects", Integer.toString(antProjects.size()));
+        parent.addValueMetric("Navigation Trees", Integer.toString(navigationTrees.size()));
+        parent.addValueMetric("Dialogs", Integer.toString(dialogs.size()));
+        parent.addValueMetric("Themes", Integer.toString(themes.size()));
+        parent.addValueMetric("Login Managers", Integer.toString(loginManagers.size()));
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
