@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.3 2003-06-30 01:33:48 aye.thu Exp $
+ * $Id: HtmlPanelFrame.java,v 1.4 2003-07-11 05:30:32 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -73,6 +73,7 @@ public class HtmlPanelFrame
         public static final int IS_COLLAPSED = ALLOW_COLLAPSE * 2;
         public static final int HIDE_HEADING = IS_COLLAPSED * 2;
 
+
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING", HAS_HEADING),
@@ -81,6 +82,7 @@ public class HtmlPanelFrame
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_SELECTABLE", IS_SELECTABLE),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_COLLAPSE", ALLOW_COLLAPSE),
             new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_COLLAPSED", IS_COLLAPSED),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING)
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
