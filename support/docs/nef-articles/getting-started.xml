@@ -110,7 +110,13 @@
             </row>
           </tbody>
         </tgroup>
-      </table>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to
+      </table></para>
+  </section>
+
+  <section>
+    <title>Methods of Evaluating NEFS</title>
+
+    <para>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to
     view all the documentation online and follow along with the online
     versions of the sample applications. Since all you need is a web browser,
     you can start learning about NEFS immediately. Because the applications
