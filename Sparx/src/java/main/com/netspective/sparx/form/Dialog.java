@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.36 2003-10-17 15:59:07 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.37 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -91,8 +91,11 @@ import com.netspective.sparx.form.listener.DialogListener;
 import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.Project;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -112,7 +115,7 @@ import com.netspective.commons.io.InputSourceLocator;
  * For dialog objects that need more complex actions for data population, validation,
  * and execution, the <code>Dialog</code> class can be subclassed to implement customized actions.
  */
-public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
+public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final String ATTRNAME_TYPE = "type";
@@ -175,6 +178,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return name != null ? name.toUpperCase() : null;
     }
 
+    private Project project;
     private InputSourceLocator inputSourceLocator;
     private Log log = LogFactory.getLog(Dialog.class);
     private DialogFields fields;
@@ -217,17 +221,23 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     /**
      * Create a dialog
      */
-    public Dialog()
+    public Dialog(Project project)
     {
+        this.project = project;
         fields = constructFields();
         dialogFlags = createDialogFlags();
         debugFlags = createDebugFlags();
     }
 
-    public Dialog(DialogsPackage pkg)
+    public Dialog(Project project, DialogsPackage pkg)
     {
-        this();
+        this(project);
         setNameSpace(pkg);
+    }
+
+    public Project getProject()
+    {
+        return project;
     }
 
     public InputSourceLocator getInputSourceLocator()
@@ -597,21 +607,20 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         addField(field);
     }
 
-    /**
-     * Loops through each dialog field and finalize them. Because this can be called via multiple threads but all threads
-     * usually use the same dialog, it is synchronized.
-     */
-    public synchronized void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
-        fields.finalizeContents(nc);
+        fields.finalizeContents();
         for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
             if(field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
                 layoutColumnsCount++;
         }
+    }
 
-        dialogFlags.setFlag(DialogFlags.CONTENTS_FINALIZED);
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
+    {
+        finalizeContents();
     }
 
     /**
@@ -788,9 +797,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
      */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
     {
-        if(!dialogFlags.flagIsSet(DialogFlags.CONTENTS_FINALIZED))
-            finalizeContents(nc);
-
         DialogContext dc = null;
         try
         {

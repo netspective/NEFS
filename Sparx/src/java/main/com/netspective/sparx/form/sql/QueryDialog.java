@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.9 2003-09-14 05:35:38 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.10 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -73,6 +73,7 @@ import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
@@ -110,9 +111,9 @@ public class QueryDialog extends Dialog
     private String[] urlFormats;
     private QueryReportPanel reportPanel;
 
-    public QueryDialog()
+    public QueryDialog(Project project)
     {
-        super();
+        super(project);
         setDialogContextClass(QueryDialogContext.class);
         createReportActionField();
         createNavigatorField();
@@ -120,9 +121,9 @@ public class QueryDialog extends Dialog
         createSelectedItemsField();
     }
 
-    public QueryDialog(DialogsPackage pkg)
+    public QueryDialog(Project project, DialogsPackage pkg)
     {
-        super(pkg);
+        super(project, pkg);
         setDialogContextClass(QueryDialogContext.class);
         createReportActionField();
         createNavigatorField();
@@ -234,7 +235,6 @@ public class QueryDialog extends Dialog
      */
     public void populateValues(DialogContext dc, int formatType)
     {
-        QueryDialogContext qdc = (QueryDialogContext)dc;
         super.populateValues(dc, formatType);
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.30 2003-10-15 18:03:12 shahid.shah Exp $
+ * $Id: Project.java,v 1.31 2003-10-19 17:05:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -51,6 +51,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -188,8 +189,8 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     }
 
     private List lifecycleListeners = new ArrayList();
-    private NavigationTrees navigationTrees = new NavigationTrees();
-    private Dialogs dialogs = new Dialogs();
+    private NavigationTrees navigationTrees = new NavigationTrees(this);
+    private Dialogs dialogs = new Dialogs(this);
     private DialogsPackage activeDialogsNameSpace;
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
@@ -268,13 +269,13 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public QueriesNameSpace createQueries()
     {
-        activeNameSpace = new QueriesPackage(getQueries());
+        activeNameSpace = new QueriesPackage(this, getQueries());
         return activeNameSpace;
     }
 
     public com.netspective.axiom.sql.Query createQuery()
     {
-        return new com.netspective.sparx.sql.Query();
+        return new com.netspective.sparx.sql.Query(this);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
@@ -303,7 +304,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public HttpLoginManager createLoginManager()
     {
-        return new HttpLoginManager();
+        return new HttpLoginManager(this);
     }
 
     public void addLoginManager(HttpLoginManager loginManager)
@@ -320,7 +321,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public AntProject createAntProject()
     {
-        return new AntProject();
+        return new AntProject(this);
     }
 
     public void addAntProject(AntProject antProject)
@@ -379,6 +380,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public NavigationTree createNavigationTree()
     {
         return navigationTrees.createNavigationTree();
+    }
+
+    public NavigationTree createNavigationTree(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        return navigationTrees.createNavigationTree(cls);
     }
 
     public NavigationTree getDefaultNavigationTree()
@@ -441,7 +447,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     public com.netspective.axiom.sql.dynamic.QueryDefinition createQueryDefn()
     {
-        return new com.netspective.sparx.sql.QueryDefinition();
+        return new com.netspective.sparx.sql.QueryDefinition(this);
     }
 
     public QueryDefinition getQueryDefinition(String name)

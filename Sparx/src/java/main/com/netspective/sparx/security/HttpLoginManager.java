@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.17 2003-10-11 14:40:22 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.18 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -64,6 +64,7 @@ import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthen
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.Project;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
@@ -108,6 +109,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         }
     }
 
+    private Project project;
     private InputSourceLocator inputSourceLocator;
     private boolean isDefault;
     private String name;
@@ -123,8 +125,14 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
     private HttpLoginAttemptsManager loginAttemptsManager = createLoginAttemptsListener();
     private ValueSource invalidUserMessage = DEFAULT_INVALID_USER_MESSAGE;
 
-    public HttpLoginManager()
+    public HttpLoginManager(Project project)
     {
+        this.project = project;
+    }
+
+    public Project getProject()
+    {
+        return project;
     }
 
     public InputSourceLocator getInputSourceLocator()
@@ -511,13 +519,12 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
 
     public LoginDialog createLoginDialog()
     {
-        return new LoginDialog();
+        return new LoginDialog(this);
     }
 
     public void addLoginDialog(LoginDialog loginDialog)
     {
         this.loginDialog = loginDialog;
-        this.loginDialog.setLoginManager(this);
         this.loginDialog.addListener(new LoginDialogValidator());
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.5 2003-08-09 03:59:36 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.6 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -54,6 +54,7 @@ import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.Project;
 
 public class LoginDialog extends Dialog
 {
@@ -67,15 +68,17 @@ public class LoginDialog extends Dialog
     private String rememberIdFieldName = DEFAULT_REMEMBER_ID_FIELD_NAME;
     private int maximumAttempts = 3;
 
-    public LoginDialog()
+    public LoginDialog(HttpLoginManager loginManager)
     {
+        super(loginManager.getProject());
+        setLoginManager(loginManager);
         setDialogContextClass(LoginDialogContext.class);
         setName("login");
     }
 
-    public LoginDialog(DialogsPackage pkg)
+    public LoginDialog(Project project, DialogsPackage pkg)
     {
-        super(pkg);
+        super(project, pkg);
     }
 
     public HttpLoginManager getLoginManager()

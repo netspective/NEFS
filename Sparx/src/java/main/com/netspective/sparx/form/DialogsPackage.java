@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsPackage.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: DialogsPackage.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -97,10 +97,16 @@ package com.netspective.sparx.form;
  */
 
 /**
- * $Id: DialogsPackage.java,v 1.2 2003-05-25 17:30:10 shahid.shah Exp $
+ * $Id: DialogsPackage.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
+
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.ant.AntBuildDialog;
+import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.Project;
 
 public class DialogsPackage
 {
@@ -143,7 +149,18 @@ public class DialogsPackage
 
     public Dialog createDialog()
     {
-        return new Dialog(this);
+        return new Dialog(container.getProject(), this);
+    }
+
+    public Dialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(Dialog.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { Project.class, DialogsPackage.class });
+            return (Dialog) c.newInstance(new Object[] { container.getProject(), this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addDialog(Dialog dialog)

@@ -39,29 +39,35 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.4 2003-10-07 01:38:54 shahid.shah Exp $
+ * $Id: NavigationTrees.java,v 1.5 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.Project;
 
 public class NavigationTrees
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTrees.class);
 
+    private Project project;
     private NavigationTree defaultTree;
     private Map trees = new HashMap();
 
-    public NavigationTrees()
+    public NavigationTrees(Project project)
     {
+        this.project = project;
     }
 
     public Map getTrees()
@@ -84,7 +90,18 @@ public class NavigationTrees
 
     public NavigationTree createNavigationTree()
     {
-        return new NavigationTree();
+        return new NavigationTree(project);
+    }
+
+    public NavigationTree createNavigationTree(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(NavigationTree.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { Project.class });
+            return (NavigationTree) c.newInstance(new Object[] { project });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addNavigationTree(NavigationTree tree)

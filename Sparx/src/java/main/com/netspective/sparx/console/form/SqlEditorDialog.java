@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlEditorDialog.java,v 1.2 2003-07-17 14:43:20 shahid.shah Exp $
+ * $Id: SqlEditorDialog.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -53,8 +53,10 @@ import org.apache.commons.logging.Log;
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.command.HttpServletCommand;
+import com.netspective.sparx.Project;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.command.Commands;
@@ -66,6 +68,16 @@ import com.netspective.axiom.SqlManager;
 public class SqlEditorDialog extends ConsoleDialog
 {
     private static final Log log = LogFactory.getLog(SqlEditorDialog.class);
+
+    public SqlEditorDialog(Project project)
+    {
+        super(project);
+    }
+
+    public SqlEditorDialog(Project project, DialogsPackage pkg)
+    {
+        super(project, pkg);
+    }
 
     public void populateValues(DialogContext dc, int formatType)
     {
@@ -88,7 +100,7 @@ public class SqlEditorDialog extends ConsoleDialog
             int rowsPerPage = states.getState("rows-per-page").getValue().getIntValue();
 
             SqlManager sqlManager = dc.getSqlManager();
-            Query query = new Query();
+            Query query = new Query(getProject());
             query.setDataSrc(new StaticValueSource(dataSource));
             query.setName(name);
             query.setNameSpace(sqlManager.getTemporaryQueriesNameSpace());

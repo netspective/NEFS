@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.7 2003-09-29 02:09:29 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.8 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -52,8 +52,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     // last CUSTOM_START entry. This is because QueryBuilderDialog
     // extends this class and has additional flags that is based on the value
     // of CUSTOM_START.
-    public static final int CONTENTS_FINALIZED = 1;
-    public static final int RETAIN_ALL_REQUEST_PARAMS = CONTENTS_FINALIZED * 2;
+    public static final int RETAIN_ALL_REQUEST_PARAMS = 1;
     public static final int HIDE_READONLY_HINTS = RETAIN_ALL_REQUEST_PARAMS * 2;
     public static final int ENCTYPE_MULTIPART_FORMDATA = HIDE_READONLY_HINTS * 2;
     public static final int HIDE_HEADING_IN_EXEC_MODE = ENCTYPE_MULTIPART_FORMDATA * 2;
@@ -70,7 +69,6 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
-        new FlagDefn(DialogFlags.ACCESS_PRIVATE, "CONTENTS_FINALIZED", CONTENTS_FINALIZED),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "RETAIN_ALL_REQUEST_PARAMS", RETAIN_ALL_REQUEST_PARAMS),
         new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "ENCTYPE_MULTIPART_FORMDATA", ENCTYPE_MULTIPART_FORMDATA),

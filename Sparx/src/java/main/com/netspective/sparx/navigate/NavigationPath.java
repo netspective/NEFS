@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.11 2003-10-09 18:19:26 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.12 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -144,13 +144,13 @@ public class NavigationPath
             makeStateChangesListeners.add(listener);
     }
 
-    public void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
         for(int i = 0; i < childrenList.size(); i++)
-            ((NavigationPath) childrenList.get(i)).finalizeContents(nc);
+            ((NavigationPath) childrenList.get(i)).finalizeContents();
 
         for (int i = 0; i < finalizeContentsListeners.size(); i++)
-            ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this, nc);
+            ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this);
     }
 
     public void makeStateChanges(NavigationContext nc)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.5 2003-09-29 02:03:43 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.6 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -50,8 +50,6 @@ import java.io.File;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.NoBannerLogger;
@@ -60,6 +58,7 @@ import org.apache.tools.ant.Main;
 import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.type.SelectField;
@@ -71,7 +70,6 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class AntBuildDialog extends ConsoleDialog
 {
-    private static final Log log = LogFactory.getLog(AntBuildDialog.class);
     public static final String REQATTRPARAMNAME_ACTIVE_ANT_BUILD_DIALOG = "ant-build-dialog";
 
     private AntTargetsDocumentationPanel activeTargetsDocumentationPanel = new AntTargetsDocumentationPanel();
@@ -81,6 +79,18 @@ public class AntBuildDialog extends ConsoleDialog
      * shown to the user.
      */
     private AntProject antProject;
+
+    public AntBuildDialog(AntProject antProject)
+    {
+        super(antProject.getSparxProject());
+        setAntProject(antProject);
+    }
+
+    public AntBuildDialog(AntProject antProject, DialogsPackage pkg)
+    {
+        super(antProject.getSparxProject(), pkg);
+        setAntProject(antProject);
+    }
 
     public AntProject getAntProject()
     {
@@ -92,9 +102,9 @@ public class AntBuildDialog extends ConsoleDialog
         this.antProject = antProject;
     }
 
-    public synchronized void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
-        super.finalizeContents(nc);
+        super.finalizeContents();
         DialogFields fields = getFields();
         fields.getByName("project-id").setDefault(new StaticValueSource(antProject.getId()));
         fields.getByName("project-file").setDefault(antProject.getFile());

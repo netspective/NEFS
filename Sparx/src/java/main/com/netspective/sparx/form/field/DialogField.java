@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.40 2003-10-17 15:59:07 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.41 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -79,7 +79,6 @@ import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
-import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -938,7 +937,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	 * Finalize the dialog field's contents: loops through each conditional action of the field to
 	 * assign partner fields and loops through each child field to finalize their contents.
 	 */
-	public synchronized void finalizeContents(NavigationContext nc)
+	public void finalizeContents()
 	{
         for(int i = 0; i < conditionalActions.size(); i++)
         {
@@ -951,7 +950,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         }
 
 		if (children != null)
-			children.finalizeContents(nc);
+			children.finalizeContents();
 
 		if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
 			this.setupDoubleEntry();

@@ -39,23 +39,27 @@
  */
 
 /**
- * $Id: QueriesPackage.java,v 1.1 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: QueriesPackage.java,v 1.2 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
 
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
+import com.netspective.sparx.Project;
 
 public class QueriesPackage extends com.netspective.axiom.sql.collection.QueriesPackage
 {
-    public QueriesPackage(Queries queries)
+    private Project project;
+
+    public QueriesPackage(Project project, Queries queries)
     {
         super(queries);
+        this.project = project;
     }
 
     public Query createQuery()
     {
-        return new com.netspective.sparx.sql.Query(this);
+        return new com.netspective.sparx.sql.Query(project, this);
     }
 }

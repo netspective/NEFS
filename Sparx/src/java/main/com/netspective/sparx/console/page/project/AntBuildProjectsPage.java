@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildProjectsPage.java,v 1.3 2003-10-11 14:41:07 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.4 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -53,17 +53,17 @@ import com.netspective.commons.text.TextUtils;
 
 public class AntBuildProjectsPage extends ConsoleServletPage
 {
-    public void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
-        super.finalizeContents(nc);
-        syncronize(nc);
+        super.finalizeContents();
+        synchronize();
     }
 
-    public void syncronize(NavigationContext nc)
+    public void synchronize()
     {
         removeAllChildren();
 
-        AntProjects antProjects = nc.getProject().getAntProjects();
+        AntProjects antProjects = getOwner().getProject().getAntProjects();
         for(int i = 0; i < antProjects.size(); i++)
         {
             AntProject antProject = antProjects.getByIndex(i);

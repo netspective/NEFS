@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.3 2003-10-17 15:59:08 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.4 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -86,6 +86,7 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
+import com.netspective.sparx.Project;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
@@ -254,14 +255,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     private DeleteDataTemplate deleteDataTemplateProducer;
     private TemplateProducers templateProducers;
 
-    public SchemaRecordEditorDialog()
+    public SchemaRecordEditorDialog(Project project)
     {
+        super(project);
         setDialogContextClass(SchemaRecordEditorDialogContext.class);
     }
 
-    public SchemaRecordEditorDialog(DialogsPackage pkg)
+    public SchemaRecordEditorDialog(Project project, DialogsPackage pkg)
     {
-        super(pkg);
+        super(project, pkg);
         setDialogContextClass(SchemaRecordEditorDialogContext.class);
     }
 

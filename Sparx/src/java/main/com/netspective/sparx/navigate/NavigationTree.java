@@ -61,17 +61,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.sparx.Project;
 
-public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener
+public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
     public static final String TEMPLATEELEMNAME_PAGE_TYPE = "page-type";
 
+    private Project project;
     private InputSourceLocator inputSourceLocator;
     private String name;
     private NavigationPage root;
@@ -81,13 +85,18 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     private TemplateProducers templateProducers;
     private int maxLevel = -1;
     private boolean defaultTree;
-    private boolean contentsFinalized;
 
-    public NavigationTree()
+    public NavigationTree(Project project)
     {
+        this.project = project;
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+    }
+
+    public Project getProject()
+    {
+        return project;
     }
 
     public InputSourceLocator getInputSourceLocator()
@@ -100,14 +109,8 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
         this.inputSourceLocator = inputSourceLocator;
     }
 
-    /**
-     * Called each time a navigation context is contructed -- this method should set a flag so that it's not called
-     * multiple times.
-     */
-    public void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
-        if(contentsFinalized) return;
-
         if(root != null)
         {
             if (popupPage == null)
@@ -126,9 +129,13 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
                     log.warn("Failed to create default popup page", e);
                 }
             }
-            root.finalizeContents(nc);
+            root.finalizeContents();
         }
-        contentsFinalized = true;
+    }
+
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
+    {
+        finalizeContents();
     }
 
     public int size()

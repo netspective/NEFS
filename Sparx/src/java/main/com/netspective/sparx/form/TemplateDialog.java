@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateDialog.java,v 1.2 2003-08-31 22:50:32 shahid.shah Exp $
+ * $Id: TemplateDialog.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -49,6 +49,7 @@ import java.io.IOException;
 
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.sparx.Project;
 import com.netspective.commons.value.ValueSource;
 
 /**
@@ -59,13 +60,14 @@ public class TemplateDialog extends Dialog
     private TemplateProcessor bodyTemplate;
     private ValueSource html;
 
-    public TemplateDialog()
+    public TemplateDialog(Project project)
     {
+        super(project);
     }
 
-    public TemplateDialog(DialogsPackage pkg)
+    public TemplateDialog(Project project, DialogsPackage pkg)
     {
-        super(pkg);
+        super(project, pkg);
     }
 
     public ValueSource getHtml()

@@ -43,14 +43,11 @@ package com.netspective.sparx.sql;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.sql.QuerySelectDialog;
 import com.netspective.sparx.form.sql.QueryBuilderDialog;
+import com.netspective.sparx.Project;
 
 import java.util.Map;
 import java.util.HashMap;
 
-/**
- * @author aye
- * $Id: QueryDefinition.java,v 1.2 2003-07-03 22:32:21 aye.thu Exp $
- */
 public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefinition
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
@@ -70,22 +67,9 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
         {
         }
 
-        public QuerySelectDialog getSelectDialog()
-        {
-            return new QuerySelectDialog();
-        }
-
-
-        public QuerySelectDialog getDialog()
-        {
-            return new QuerySelectDialog();
-        }
-
         public QuerySelectDialog createSelectDialog()
         {
-            QuerySelectDialog result = new QuerySelectDialog();
-            result.setQueryDefn(QueryDefinition.this);
-            return result;
+            return new QuerySelectDialog(getProject(), QueryDefinition.this);
         }
 
         // created here because we need to ignore text but can't include public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -98,11 +82,11 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
         {
             qsDialogs.put(dialog.getName(), dialog);
         }
+
         public void addDialog(QuerySelectDialog dialog)
         {
             qsDialogs.put(dialog.getName(), dialog);
         }
-
 
         public QuerySelectDialog getSelectDialog(String name)
         {
@@ -116,12 +100,20 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
     }
 
     public static final int QBDIALOG_MAXIMUM_CONDITIONS = 5;
+
+    private Project project;
     private QueryBuilderDialog qbDialog = null;
     private Presentation presentation = new Presentation();
 
-    public QueryDefinition()
+    public QueryDefinition(Project project)
     {
         super();
+        this.project = project;
+    }
+
+    public Project getProject()
+    {
+        return project;
     }
 
     public void setName(String name)
@@ -149,10 +141,11 @@ public class QueryDefinition extends com.netspective.axiom.sql.dynamic.QueryDefi
     {
         if (qbDialog == null)
         {
-            qbDialog = new QueryBuilderDialog();
+            qbDialog = new QueryBuilderDialog(getProject());
             qbDialog.setName(this.getName());
             qbDialog.setQueryDefn(this);
             qbDialog.setMaxConditions(QBDIALOG_MAXIMUM_CONDITIONS);
+            qbDialog.finalizeContents();
         }
         return qbDialog;
     }

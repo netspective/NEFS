@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.26 2003-09-13 01:07:20 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.27 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -473,6 +473,9 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                         log.error(message);
                     else
                         System.err.println(message);
+
+                    for(int i = 0; i < projectComponent.getErrors().size(); i++)
+                        System.err.println(projectComponent.getErrors().get(i));
                 }
                 if(projectComponent.getWarnings().size() > 0)
                 {
@@ -528,7 +531,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
         NavigationTree tree = getNavigationTree();
         if(tree == null)
-            throw new ServletException("Navigation tree not found. Available: " + project.getNavigationTrees());
+            throw new ServletException("Navigation tree '"+ servletOptions.getNavigationTreeName() +"' not found. Available: " + project.getNavigationTrees());
 
         String activePageId = httpServletRequest.getPathInfo();
         if(activePageId == null)

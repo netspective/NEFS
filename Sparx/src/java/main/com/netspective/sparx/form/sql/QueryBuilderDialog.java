@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.13 2003-09-29 03:00:20 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.14 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -64,6 +64,7 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
@@ -102,7 +103,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollSta
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
-import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.Project;
 
 public class QueryBuilderDialog extends Dialog
 {
@@ -183,8 +184,14 @@ public class QueryBuilderDialog extends Dialog
 
     }
 
-    public QueryBuilderDialog()
+    public QueryBuilderDialog(Project project)
     {
+        super(project);
+    }
+
+    public QueryBuilderDialog(Project project, DialogsPackage pkg)
+    {
+        super(project, pkg);
     }
 
     public DialogFlags createDialogFlags()
@@ -365,10 +372,10 @@ public class QueryBuilderDialog extends Dialog
         this.queryDefn = queryDefn;
     }
 
-    public synchronized void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
         createContents();
-        super.finalizeContents(nc);
+        super.finalizeContents();
     }
 
     public void makeStateChanges(DialogContext dc, int stage)

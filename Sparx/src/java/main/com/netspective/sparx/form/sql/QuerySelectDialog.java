@@ -60,6 +60,7 @@ import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDe
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.sql.QueryDefinition;
 import com.netspective.sparx.sql.QueryDefnSelect;
+import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 
 import com.netspective.axiom.ConnectionContext;
@@ -71,7 +72,7 @@ import java.io.Writer;
 import java.sql.SQLException;
 
 /**
- * $Id: QuerySelectDialog.java,v 1.8 2003-09-14 05:35:38 shahid.shah Exp $
+ * $Id: QuerySelectDialog.java,v 1.9 2003-10-19 17:05:31 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -80,15 +81,14 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     private QueryDefnSelect qdSelect = null;
 
-    public QuerySelectDialog()
+    public QuerySelectDialog(Project project)
     {
-        super();
-
+        super(project);
     }
 
-
-    public QuerySelectDialog(QueryDefinition queryDefn)
+    public QuerySelectDialog(Project project, QueryDefinition queryDefn)
     {
+        super(project);
         setQueryDefn(queryDefn);
         setLoop(new DialogLoopStyle(DialogLoopStyle.APPEND));
         getDialogFlags().setFlag(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA | DialogFlags.HIDE_HEADING_IN_EXEC_MODE | QueryBuilderDialogFlags.ALWAYS_SHOW_DSNAV);
@@ -101,7 +101,6 @@ public class QuerySelectDialog extends QueryBuilderDialog
         addDisplayOptionsFields();
         addField(new DataSourceNavigatorButtonsField());
         addSelectedItemsField();
-
     }
 
     public void addDisplayOptionsFields()
@@ -158,7 +157,6 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
     public void makeStateChanges(DialogContext dc, int stage)
     {
-
         DialogField field = null;
         DialogFields fields = this.getFields();
         for (int i=0; i < fields.size(); i++)

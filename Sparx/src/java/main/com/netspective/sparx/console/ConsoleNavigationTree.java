@@ -39,18 +39,20 @@
  */
 
 /**
- * $Id: ConsoleNavigationTree.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: ConsoleNavigationTree.java,v 1.2 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
 
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.Project;
 
 public class ConsoleNavigationTree extends NavigationTree
 {
-    public ConsoleNavigationTree()
+    public ConsoleNavigationTree(Project project)
     {
+        super(project);
     }
 
     public NavigationPage constructRoot()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProject.java,v 1.5 2003-10-11 14:37:24 shahid.shah Exp $
+ * $Id: AntProject.java,v 1.6 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -50,6 +50,8 @@ import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
@@ -67,6 +69,7 @@ public class AntProject
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
+    private com.netspective.sparx.Project sparxProject;
     private String id;
     private String caption;
     private ValueSource file;
@@ -75,8 +78,14 @@ public class AntProject
     private String privateTargetPrefixChars = "._";
     private boolean showPrivateTargets = false;
 
-    public AntProject()
+    public AntProject(com.netspective.sparx.Project project)
     {
+        this.sparxProject = project;
+    }
+
+    public com.netspective.sparx.Project getSparxProject()
+    {
+        return sparxProject;
     }
 
     public String getId()
@@ -164,12 +173,22 @@ public class AntProject
 
     public AntBuildDialog createDialog()
     {
-        return new AntBuildDialog();
+        return new AntBuildDialog(this);
+    }
+
+    public AntBuildDialog createDialog(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(AntBuildDialog.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { AntProject.class });
+            return (AntBuildDialog) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void addDialog(AntBuildDialog dialog)
     {
-        dialog.setAntProject(this);
         antDialog = dialog;
     }
 

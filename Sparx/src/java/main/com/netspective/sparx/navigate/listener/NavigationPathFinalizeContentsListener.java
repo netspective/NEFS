@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPathFinalizeContentsListener.java,v 1.1 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPathFinalizeContentsListener.java,v 1.2 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.listener;
@@ -53,5 +53,5 @@ public interface NavigationPathFinalizeContentsListener extends NavigationPathLi
      * Called before the first time the navigation path is rendered (allows final changes)
      * @param nc The navigation context
      */
-    public void finalizeNavigationPathContents(NavigationPath path, NavigationContext nc);
+    public void finalizeNavigationPathContents(NavigationPath path);
 }

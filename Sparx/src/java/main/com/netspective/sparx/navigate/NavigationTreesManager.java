@@ -39,16 +39,20 @@
  */
 
 /**
- * $Id: NavigationTreesManager.java,v 1.1 2003-03-23 04:51:52 shahid.shah Exp $
+ * $Id: NavigationTreesManager.java,v 1.2 2003-10-19 17:05:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
+
+import java.lang.reflect.InvocationTargetException;
 
 public interface NavigationTreesManager
 {
     public NavigationTrees getNavigationTrees();
 
     public NavigationTree createNavigationTree();
+
+    public NavigationTree createNavigationTree(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException;
 
     public void addNavigationTree(NavigationTree tree);
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Dialogs.java,v 1.2 2003-07-07 01:02:38 shahid.shah Exp $
+ * $Id: Dialogs.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -51,14 +51,23 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.TreeMap;
 
+import com.netspective.sparx.Project;
+
 public class Dialogs
 {
+    private Project project;
     private List dialogs = new ArrayList();
     private Map byName = new TreeMap();
     private Set nameSpaceNames = new TreeSet();
 
-    public Dialogs()
+    public Dialogs(Project project)
     {
+        this.project = project;
+    }
+
+    public Project getProject()
+    {
+        return project;
     }
 
     public void add(Dialog dialog)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.6 2003-10-17 15:59:07 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.7 2003-10-19 17:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -242,12 +242,12 @@ public class DialogFields
         return parentMI;
     }
 
-    public synchronized void finalizeContents(NavigationContext nc)
+    public void finalizeContents()
     {
         for(int i = 0; i < fields.size(); i++)
         {
             DialogField field = get(i);
-            field.finalizeContents(nc);
+            field.finalizeContents();
         }
     }
 
