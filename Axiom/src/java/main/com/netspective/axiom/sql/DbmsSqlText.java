@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: DbmsSqlText.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: DbmsSqlText.java,v 1.2 2004-08-12 00:18:55 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
+import com.netspective.axiom.DatabasePolicies;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.value.ValueContext;
-import com.netspective.axiom.DatabasePolicies;
 
 /**
  * Contains a SQL text block that is specific to a particular DBMS. The SQL text block may contain expressions that
@@ -94,5 +94,10 @@ public class DbmsSqlText
     public void setSql(String sqlText)
     {
         this.sqlText = owner.createExpr(sqlText);
+    }
+
+    public String toString()
+    {
+        return "dbms '"+ dbms +"' (" + sqlText.getStaticExpr() + ")";
     }
 }

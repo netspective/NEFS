@@ -39,18 +39,17 @@
  */
 
 /**
- * $Id: DbmsSqlTexts.java,v 1.3 2003-04-09 04:23:38 shahbaz.javeed Exp $
+ * $Id: DbmsSqlTexts.java,v 1.4 2004-08-12 00:18:55 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.DatabasePolicies;
-import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.DatabasePolicy;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 
@@ -132,5 +131,10 @@ public class DbmsSqlTexts implements Cloneable
     public int size()
     {
         return byDbms.size();
+    }
+
+    public String toString()
+    {
+        return byDbms.toString();
     }
 }
