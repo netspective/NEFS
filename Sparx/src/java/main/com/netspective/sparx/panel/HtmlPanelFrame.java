@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.5 2004-02-23 18:53:25 aye.thu Exp $
+ * $Id: HtmlPanelFrame.java,v 1.6 2004-03-03 08:12:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -170,6 +170,11 @@ public class HtmlPanelFrame
     public HtmlPanelActions getActions()
     {
         return actions;
+    }
+
+    public void setActions(HtmlPanelActions actions)
+    {
+        this.actions = actions;
     }
 
     public HtmlPanelAction createAction()
