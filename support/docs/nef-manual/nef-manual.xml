@@ -4,15 +4,14 @@
 <!ENTITY include_nef_faq_non_tech SYSTEM "../nef-faq-non-tech-section.xml">
 ]>
 <book>
-  <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
+  <title>Netspective Enterprise Frameworks (NEF) User&#39;s Manual</title>
 
   <bookinfo>
-    <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
-    User&#39;s Manual</title>
+    <title>Netspective Enterprise Frameworks (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-20 14:18:18 $)</releaseinfo>
+    <releaseinfo>Release 7.0 ($Date: 2003-11-23 19:37:12 $)</releaseinfo>
 
-    <releaseinfo>This version is in DRAFT until November 30, 2003 when
+    <releaseinfo>This version is in DRAFT until December 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
     material is being added regularly.</releaseinfo>
 
@@ -1034,398 +1033,6 @@
     </section>
 
     &include_nef_faq_non_tech;
-  </chapter>
-
-  <chapter>
-    <title>Getting Started</title>
-
-    <para>While the Netspective Enterprise Frameworks Suite (NEFS) is
-    comprised of Commons, Axiom, and Sparx the most visible portion of the NEF
-    to end users (programmers) will be the Sparx Application Platform. For
-    this reason, the remainder of this document will concentrate on
-    introducing Sparx first and then referencing Commons and Axiom where
-    appropriate. In many cases, the terms Sparx and NEF will be used
-    interchangeably because Sparx builds upon and uses Commons and Axiom.</para>
-
-    <section>
-      <title>Evaluating the Frameworks</title>
-
-      <para>The first (and quickest) way to evaluate the NEF is to view all
-      the documentation online and follow along with the online versions of
-      the applications created in the tutorials. The main advantages of this
-      method are simplicity and speed. Since all you need is a web browser,
-      you can start learning about NEF within minutes. You will also be
-      introduced to NEF&#39;s built-in remote development and team programming
-      capabilities. The disadvantage is that you will not have the ability to
-      dabble in or change the application code yourself.</para>
-
-      <para>The second (and recommended) way of evaluating NEF is by
-      downloading a free developer evaluation kit or obtaining an evaluation
-      CD direct from Netspective. This kit contains everything you need to
-      start getting familiar with NEF and learning how to develop applications
-      powered by it. The main advantage of using this method is that you will
-      get a good hands-on look at NEF and, by the time you are through with
-      the documentation and tutorials, you will be well on your way to
-      developing your own applications using NEF. The only disadvantage is
-      that you’ll need to download and install a Java Developer’s Kit (JDK)
-      and the NEF kit itself on your own server.</para>
-
-      <section>
-        <title>Evaluating the Frameworks Online</title>
-
-        <para>An online evaluation is only different from a regular evaluation
-        in the amount of interaction you have with NEF. While the regular
-        evaluation will enable you to re-create all the demonstration
-        applications that come with the evaluation kit, the online version
-        will allow you to only see the source code and the final products (you
-        will not be able to modify any code).</para>
-
-        <para>The only thing you will need to keep in mind while following the
-        tutorials is that all URLs listed in the documentation that are
-        supposed to be pointing to the applications developed in the tutorials
-        will be different. The general rule is that for an application named
-        appName, the URL for its online version should look like the following
-        URL: <literal>http://sampler.netspective.com/nefs-sample-<replaceable>appName</replaceable></literal>.</para>
-
-        <para>Therefore, if you are following the development of the Hello
-        World application, instead of using your browser to access the URL
-        mentioned in the documentation (<literal>http://localhost:8099/nefs-sample-hello-world</literal>),
-        you should point your web browser to the following URL:
-        http://sampler.netspective.com/nefs-sample-hello-world. Similarly,
-        when following the development of the Library sample application
-        online, you should point your web browser to <literal>http://sampler.netspective.com/nefs-sample-library</literal>
-        instead of <literal>http://localhost:8099/nefs-sample-library</literal>.</para>
-      </section>
-
-      <section>
-        <title>Evaluating the Frameworks on your PC</title>
-
-        <para>This section introduces you to how to install pre-requesites the
-        evaluation kit on your own PC instead of reviewing the code online.</para>
-
-        <section>
-          <title>Pre-requsites</title>
-
-          <para>Since NEF works with J2EE application servers, a fundamental
-          requirement to develop applications with it is a Java SDK (the full
-          SDK is required, the JRE will not be enough). You can obtain Sun’s
-          official Java SDK from its Java web site at <ulink
-          url="http://java.sun.com/j2se/1.3/download.html">http://java.sun.com/j2se/1.3/download.html</ulink>.
-          This is a link to the Java 1.3. SDK but Java 1.2 and 1.4 will also
-          work.</para>
-
-          <para>You can also optionally install a Java integrated development
-          environment (IDE) for developing Sparx applications using the
-          evaluation kit. Sparx does not require any particular Java IDE and
-          if you prefer to use simple text editors like vi, emacs, or <ulink
-          url="http://www.textpad.com">TextPad</ulink> those will do just as
-          well. We recommend <ulink url="http://www.eclipse.org">Eclipse</ulink>
-          or <ulink url="http://www.intellij.org">JetBrain’s IDEA</ulink> for
-          those who are not already familiar with other IDEs.</para>
-        </section>
-
-        <section>
-          <title>Installing the Evaluation Kit</title>
-
-          <para>Navigate to the <ulink url="http://www.netspective.com">Netspective
-          web site</ulink> and download the evaluation kit. The evaluation kit
-          comes in the form of a Windows .zip or Unix tar.gz file. Uncompress
-          the contents of the file into a directory of your choice – however,
-          please realize that this document assumes you’re using the default
-          <literal>C:\Netspective</literal> directory. If you are using UNIX,
-          Linux, or OS X please make the appropriate adjustments mentally
-          while reading this document.</para>
-        </section>
-
-        <section>
-          <title>Starting the Application and Web Server (Resin)</title>
-
-          <para>NEF includes a free development version of an excellent Java
-          application server that doubles as a web server. Resin is a separate
-          product and support for it is available from <ulink
-          url="http://www.caucho.com">http://www.caucho.com</ulink>. NEF fully
-          supports WebLogic, WebSphere, Tomcat, and many other application
-          servers as well but for evaluation purposes we provide Resin because
-          it’s easy to use and fast.</para>
-
-          <para>Before attempting to access any sample application, you need
-          to ensure that Resin is running. There are two methods of starting
-          Resin. The first is as a foreground application that you manually
-          start and leave running while you are working with NEF. The second
-          is as a Windows service or a UNIX daemon.</para>
-
-          <para>You can start Resin in the foreground by opening up My
-          Computer under Windows and navigating to the evaluation kit’s
-          installation directory (<literal>c:\Netspective</literal> by
-          default). Navigate to the <literal>resin-x.y.z/bin</literal>
-          directory under this installation directory and double-click on the
-          executable named <literal>httpd.exe</literal>. This should start
-          Resin in foreground mode running the web server and application
-          servers on port 8099.</para>
-
-          <para>If you’d like to use a different port you can modify
-          resin-x.y.z/conf/resin.conf. For complete instructions on how to
-          start Resin in the foreground or by deploying it as a NT
-          service/daemon, please visit <ulink
-          url="If you’d like to use a different port you can modify resin-x.y.z/conf/resin.conf. For complete instructions on how to start Resin in the foreground or by deploying it as a NT service/daemon, please visit http://www.caucho.com">http://www.caucho.com</ulink>.
-          While you are developing your application it&#39;s best to remain in
-          this foreground mode so that error messages sent to stdout will
-          appear in your window instead of being placed in a log file.</para>
-        </section>
-      </section>
-    </section>
-
-    <section>
-      <title>Using the Sampler to Sample the NEF</title>
-
-      <para>You can get an idea of the kind of applications that can be
-      developed with NEF by taking a look at the sample applications that come
-      with the evaluation kit. To see a list of all the sample applications,
-      go to <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>
-      (or <ulink url="http://localhost:8099">http://localhost:8099</ulink> if
-      you installed the developer kit on your local machine). The
-      <emphasis>Sampler</emphasis> application is itself an NEF (mainly Sparx)
-      application that helps you navigate your way through all the NEF sample
-      applications, test beds, and starter projects.</para>
-
-      <screenshot>
-        <graphic fileref="./resources/images/screen-sampler-home.gif" />
-      </screenshot>
-
-      <section>
-        <title>Viewing Source Code in a Browser</title>
-
-        <para>The Netspective administration console, called the
-        <emphasis>Enterprise Console</emphasis>, provides a complete file
-        browser with color syntax highlighting for XML, JSP, Java, JavaScript,
-        and SQL files – this file browser allows you to review source code for
-        sample applications at <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>
-        or locally if you downloaded the evaluation kit.</para>
-
-        <para>The Enterprise Console is a Sparx Servlet that provides a
-        browser-based administrative interface to all of the dynamic
-        components and objects that NEF produces. The Enterprise Console is
-        automatically available to all NEF-based applications during
-        development. The Console&#39;s default user name is &#39;<literal>console</literal>&#39;
-        and the default password is &#39;<literal>console</literal>&#39;.
-        Unless otherwise specified, that is the user name and password
-        combination you should use if the Console prompts you to login.</para>
-
-        <screenshot>
-          <graphic fileref="./resources/images/screen-console-login.gif" />
-        </screenshot>
-
-        <para>Once you have logged into the Console for any particular
-        application, all of the source files and folders are available for
-        viewing. Simply click on the <guimenuitem>Project</guimenuitem> tab
-        and then click <guimenuitem>Project Folders</guimenuitem> to view all
-        of the folders contained in the application and
-        <guimenuitem>Project Files</guimenuitem> to navigate all the
-        directories and look at the project files. The first time you enter
-        the Project Files section, you should see a list of all the
-        directories that exist in the application’s root directory. You can
-        click on any directory to navigate to it and view the list of files
-        and sub-directories inside it.</para>
-
-        <screenshot>
-          <graphic
-          fileref="./resources/images/screen-console-project-files.gif" />
-        </screenshot>
-
-        <para>If you click on any XML, JSP or Java source file, you should
-        also be able to see the source for those files directly from the
-        browser.</para>
-
-        <screenshot>
-          <graphic
-          fileref="./resources/images/screen-console-project-file-source.gif" />
-        </screenshot>
-      </section>
-    </section>
-
-    <section>
-      <title>Application Directory Structure</title>
-
-      <para>Every NEF application shares the benefit of a standard directory
-      structure. To see the structure of an empty application (one with only
-      the basic files required for all applications), view the Project Folders
-      tab of the <ulink
-      url="http://sampler.netspective.com/nefs-starter-empty/console/project/folders">starter
-      application</ulink>.</para>
-
-      <figure>
-        <title>NEF Standard Project Directory Structure</title>
-
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="./resources/images/screen-starter-folders.gif" />
-          </imageobject>
-        </mediaobject>
-      </figure>
-
-      <variablelist>
-        <varlistentry>
-          <term>APP_ROOT</term>
-
-          <listitem>
-            <para>The root directory (in this case <literal>nefs-starter-empty</literal>)
-            contains all the browser-accessible files for the application.
-            This is commonly referred to as the <emphasis>Document Root</emphasis>
-            for a website because it is the root directory visible to web
-            browsers. It also contains a private directory, called
-            <literal>WEB-INF</literal>, for the application to store NEF and
-            Java servlet related files (it&#39;s called private because none
-            of its contents will ever be served to end users). As already
-            mentioned, all files in the application’s root directory are
-            accessible through a web browser. All subdirectories in the
-            application root other than <literal>WEB-INF</literal> will also
-            be directly accessible through a browser. Therefore, if you put an
-            index.jsp file in this directory, you should be able to access it
-            using a URL of the form http://host:port/appName/index.jsp.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>APP_ROOT/resources</term>
-
-          <listitem>
-            <para>If present this directory tree contains all of the
-            application&#39;s shared files that need to be served to end users
-            of your applications. Web browser resources that your application
-            needs such as images and scripts are placed here and will be
-            served to your end users by their browser.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>APP_ROOT/sparx</term>
-
-          <listitem>
-            <para>This directory tree contains all of the Sparx shared files
-            that need to be served to end users of your applications. Web
-            browser resources that Sparx needs such as style sheets,
-            JavaScript sources, images, and Console files are placed here and
-            will be served to your end users by their browser. You should not
-            modify files in this directory because it does not contain any
-            programmer-modifiable files.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>APP_ROOT/resources/sparx</term>
-
-          <listitem>
-            <para>This directory tree (which is not present in the starter
-            application or the diagram above) contains optional Sparx shared
-            files and resources that usually belong in <literal>APP_ROOT/sparx</literal>
-            but are being overridden by your application. For example, if you
-            have your own stylesheets or images that need to replace something
-            in Sparx, they would be placed in this directory. Because the
-            <literal>APP_ROOT/sparx</literal> directory contents should never
-            be modified, the <literal>APP_ROOT/resources/sparx</literal>
-            directory gives you the opportunity to override Sparx resources
-            without worrying about files being overwritten when Sparx is
-            upgrade.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>APP_ROOT/WEB-INF</term>
-
-          <listitem>
-            <para>The <literal>WEB-INF</literal> directory is required by the
-            J2EE Servlet Specification. It contains all files private to the
-            application, meaning none of the files in this directory will be
-            accessible to an end-user’s web-browser (except through the
-            Netspective Console which optionally allows secure browsing of
-            source files in <literal>WEB-INF</literal>).</para>
-
-            <para>The <literal>APP_ROOT/WEB-INF/web.xml</literal> file
-            configures your application for your J2EE Servlet container and
-            you should refer to your application server’s documentation for
-            how to configure the contents of that file. For Resin (the
-            application server included in the NEF Evaluation Kit) you can
-            refer to the documentation available at <ulink
-            url="http://www.caucho.com">http://www.caucho.com</ulink>.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>WEB-INF/classes</term>
-
-          <listitem>
-            <para>This directory, which is a part of the J2EE Servlet
-            Specification, holds all the custom Java source code written for
-            the application. After the application is built, each Java source
-            file in this directory contains a corresponding compiled version
-            in the same location as the source.</para>
-
-            <para>All Java classes in WEB-INF/classes are automatically
-            included in the classpath of the application. Therefore if you
-            have declared a dialog (in the project.xml file) to have a custom
-            Java handler for complete or partial dialog processing, the Java
-            source and compiled versions should be located somewhere in this
-            directory structure. Any auxiliary Java classes that you might
-            need should also be placed here.</para>
-
-            <para>By default, you should place all of your Java classes in the
-            directory <literal>WEB-INF/classes/app</literal> (or another
-            appropriate subdirectory) because certain application servers will
-            not work with Java classes that are not in a package.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>WEB-INF/classes/auto</term>
-
-          <listitem>
-            <para>Although this directory is not found in the starter package,
-            it is automatically created by NEF when it generates classes for
-            use by your application. It is called <literal>auto</literal>
-            because the classes in there are auto-generated and should not be
-            modified. You may refer to the <xref
-            linkend="section-generate-code" /> to take a look at the types of
-            generated code stored in this directory.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>WEB-INF/lib</term>
-
-          <listitem>
-            <para>This directory, which is a part of the J2EE Servlet
-            Specification, holds all the Java Archive (JAR) files needed by
-            your application. These include not only JAR files needed for
-            Sparx but also extra JAR files needed by your own Java classes.</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>WEB-INF/sparx</term>
-
-          <listitem>
-            <para>Sparx uses the <literal>WEB-INF/sparx</literal> directory to
-            store its project component descriptors. There is usually at least
-            one <literal>project.xml</literal> file and may contain
-            subdirectories if you wish to split up your application component
-            declarations. The <emphasis role="bold">APP_ROOT/WEB-INF/sparx/project.xml</emphasis>
-            is the file that drives all of the Sparx functionality in your
-            application (see <xref linkend="nef-project-file" />).</para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>WEB-INF/sparx/conf</term>
-
-          <listitem>
-            <para>This directory contains contains sample <literal>web.xml</literal>
-            configuration files for different application servers like
-            WebLogic, WebSphere, Resin and Tomcat. It also contains Ant build
-            files for compiling your application&#39;s classes.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
   </chapter>
 
   <chapter>
@@ -2949,6 +2556,190 @@ id="declare-security-acl-eg-7" />
     <para>This chapter outlines some of the important, global, concepts that
     you should be familiar with before embarking on developing your own
     applications.</para>
+
+    <section>
+      <title>Application Directory Structure</title>
+
+      <para>Every NEF application shares the benefit of a standard directory
+      structure. To see the structure of an empty application (one with only
+      the basic files required for all applications), view the Project Folders
+      tab of the <ulink
+      url="http://sampler.netspective.com/nefs-starter-empty/console/project/folders">starter
+      application</ulink>.</para>
+
+      <figure>
+        <title>NEF Standard Project Directory Structure</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="./resources/images/screen-starter-folders.gif" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <variablelist>
+        <varlistentry>
+          <term>APP_ROOT</term>
+
+          <listitem>
+            <para>The root directory (in this case <literal>nefs-starter-empty</literal>)
+            contains all the browser-accessible files for the application.
+            This is commonly referred to as the <emphasis>Document Root</emphasis>
+            for a website because it is the root directory visible to web
+            browsers. It also contains a private directory, called
+            <literal>WEB-INF</literal>, for the application to store NEF and
+            Java servlet related files (it&#39;s called private because none
+            of its contents will ever be served to end users). As already
+            mentioned, all files in the application’s root directory are
+            accessible through a web browser. All subdirectories in the
+            application root other than <literal>WEB-INF</literal> will also
+            be directly accessible through a browser. Therefore, if you put an
+            index.jsp file in this directory, you should be able to access it
+            using a URL of the form http://host:port/appName/index.jsp.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>APP_ROOT/resources</term>
+
+          <listitem>
+            <para>If present this directory tree contains all of the
+            application&#39;s shared files that need to be served to end users
+            of your applications. Web browser resources that your application
+            needs such as images and scripts are placed here and will be
+            served to your end users by their browser.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>APP_ROOT/sparx</term>
+
+          <listitem>
+            <para>This directory tree contains all of the Sparx shared files
+            that need to be served to end users of your applications. Web
+            browser resources that Sparx needs such as style sheets,
+            JavaScript sources, images, and Console files are placed here and
+            will be served to your end users by their browser. You should not
+            modify files in this directory because it does not contain any
+            programmer-modifiable files.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>APP_ROOT/resources/sparx</term>
+
+          <listitem>
+            <para>This directory tree (which is not present in the starter
+            application or the diagram above) contains optional Sparx shared
+            files and resources that usually belong in <literal>APP_ROOT/sparx</literal>
+            but are being overridden by your application. For example, if you
+            have your own stylesheets or images that need to replace something
+            in Sparx, they would be placed in this directory. Because the
+            <literal>APP_ROOT/sparx</literal> directory contents should never
+            be modified, the <literal>APP_ROOT/resources/sparx</literal>
+            directory gives you the opportunity to override Sparx resources
+            without worrying about files being overwritten when Sparx is
+            upgrade.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>APP_ROOT/WEB-INF</term>
+
+          <listitem>
+            <para>The <literal>WEB-INF</literal> directory is required by the
+            J2EE Servlet Specification. It contains all files private to the
+            application, meaning none of the files in this directory will be
+            accessible to an end-user’s web-browser (except through the
+            Netspective Console which optionally allows secure browsing of
+            source files in <literal>WEB-INF</literal>).</para>
+
+            <para>The <literal>APP_ROOT/WEB-INF/web.xml</literal> file
+            configures your application for your J2EE Servlet container and
+            you should refer to your application server’s documentation for
+            how to configure the contents of that file. For Resin (the
+            application server included in the NEF Evaluation Kit) you can
+            refer to the documentation available at <ulink
+            url="http://www.caucho.com">http://www.caucho.com</ulink>.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>WEB-INF/classes</term>
+
+          <listitem>
+            <para>This directory, which is a part of the J2EE Servlet
+            Specification, holds all the custom Java source code written for
+            the application. After the application is built, each Java source
+            file in this directory contains a corresponding compiled version
+            in the same location as the source.</para>
+
+            <para>All Java classes in WEB-INF/classes are automatically
+            included in the classpath of the application. Therefore if you
+            have declared a dialog (in the project.xml file) to have a custom
+            Java handler for complete or partial dialog processing, the Java
+            source and compiled versions should be located somewhere in this
+            directory structure. Any auxiliary Java classes that you might
+            need should also be placed here.</para>
+
+            <para>By default, you should place all of your Java classes in the
+            directory <literal>WEB-INF/classes/app</literal> (or another
+            appropriate subdirectory) because certain application servers will
+            not work with Java classes that are not in a package.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>WEB-INF/classes/auto</term>
+
+          <listitem>
+            <para>Although this directory is not found in the starter package,
+            it is automatically created by NEF when it generates classes for
+            use by your application. It is called <literal>auto</literal>
+            because the classes in there are auto-generated and should not be
+            modified. You may refer to the <xref
+            linkend="section-generate-code" /> to take a look at the types of
+            generated code stored in this directory.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>WEB-INF/lib</term>
+
+          <listitem>
+            <para>This directory, which is a part of the J2EE Servlet
+            Specification, holds all the Java Archive (JAR) files needed by
+            your application. These include not only JAR files needed for
+            Sparx but also extra JAR files needed by your own Java classes.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>WEB-INF/sparx</term>
+
+          <listitem>
+            <para>Sparx uses the <literal>WEB-INF/sparx</literal> directory to
+            store its project component descriptors. There is usually at least
+            one <literal>project.xml</literal> file and may contain
+            subdirectories if you wish to split up your application component
+            declarations. The <emphasis role="bold">APP_ROOT/WEB-INF/sparx/project.xml</emphasis>
+            is the file that drives all of the Sparx functionality in your
+            application (see <xref linkend="nef-project-file" />).</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>WEB-INF/sparx/conf</term>
+
+          <listitem>
+            <para>This directory contains contains sample <literal>web.xml</literal>
+            configuration files for different application servers like
+            WebLogic, WebSphere, Resin and Tomcat. It also contains Ant build
+            files for compiling your application&#39;s classes.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </section>
 
     <section>
       <title id="nef-project-file">The NEF Project File</title>

@@ -4,10 +4,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/transitional"
                 exclude-result-prefixes="#default">
 
-    <xsl:import href="../../redist/docbook-xsl-1.62.4/html/chunk.xsl"/>
+    <xsl:import href="../../redist/docbook-xsl-1.62.4/html/docbook.xsl"/>
     <xsl:import href="netspective-vars.xsl"/>
-
-    <xsl:variable name="chunk.quietly">1</xsl:variable>
-    <xsl:variable name="chunk.first.sections">1</xsl:variable>
 
 </xsl:stylesheet>

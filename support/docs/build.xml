@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project default="chunked">
+<project default="manual.chunked">
 
     <target name="setup-project-properties">
 
@@ -13,14 +13,21 @@
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.redist.dir" value="${project.lib.dir}/redist"/>
 
+        <property name="common.resources.dir" value="${nefs.docs.home}/resources"/>
+
         <property name="manual.id" value="nef-manual"/>
         <property name="manual.file-name" value="${manual.id}.xml"/>
         <property name="manual.path" value="${project.home}/${manual.id}"/>
         <property name="manual.file" value="${manual.path}/${manual.file-name}"/>
         <property name="manual.resources.dir" value="${manual.path}/resources"/>
 
-        <property name="manual.html.path" value="${project.home}/../../webapps/nefs-sampler/${manual.id}"/>
-        <property name="change-log.html.path" value="${project.home}/../../webapps/nefs-sampler/change-log"/>
+        <property name="articles.path" value="${project.home}/nef-articles"/>
+        <property name="articles.resources.dir" value="${articles.path}/resources"/>
+
+        <property name="docs.html.path" value="${project.home}/../../webapps/nefs-sampler/docs"/>
+        <property name="articles.html.path" value="${docs.html.path}/nef-articles"/>
+        <property name="manual.html.path" value="${docs.html.path}/${manual.id}"/>
+        <property name="change-log.html.path" value="${docs.html.path}/change-log"/>
 
         <property name="docbook-xsl.version" value="1.62.4"/>
         <property name="docbook-xsl-redist.home" value="${project.lib.redist.dir}/docbook-xsl-${docbook-xsl.version}"/>
@@ -36,14 +43,15 @@
         </path>
     </target>
 
-    <target name="prepare-manual-destination" depends="setup-project-properties">
+    <target name="manual.prepare-destination" depends="setup-project-properties">
         <delete dir="${manual.html.path}"/>
         <mkdir dir="${manual.html.path}"/>
     </target>
 
-    <target name="copy-resources" depends="setup-project-properties">
+    <target name="manual.copy-resources" depends="setup-project-properties">
         <mkdir dir="${manual.html.path}/resources"/>
         <copy todir="${manual.html.path}/resources">
+            <fileset dir="${common.resources.dir}"/>
             <fileset dir="${manual.resources.dir}"/>
         </copy>
         <copy todir="${manual.html.path}/images">
@@ -51,7 +59,7 @@
         </copy>
     </target>
 
-    <target name="chunked" depends="prepare-manual-destination,copy-resources">
+    <target name="manual.chunked" depends="manual.prepare-destination,manual.copy-resources">
         <echo message="Creating chunked HTML output in ${manual.html.path}"/>
         <xslt basedir="${manual.path}"
             destdir="${manual.html.path}"
@@ -61,12 +69,38 @@
         </xslt>
     </target>
 
-    <target name="prepare-change-log-destination" depends="setup-project-properties">
+    <target name="articles.prepare-destination" depends="setup-project-properties">
+        <delete dir="${articles.html.path}"/>
+        <mkdir dir="${articles.html.path}"/>
+    </target>
+
+    <target name="articles.copy-resources" depends="setup-project-properties">
+        <mkdir dir="${articles.html.path}/resources"/>
+        <copy todir="${articles.html.path}/resources">
+            <fileset dir="${common.resources.dir}"/>
+            <fileset dir="${articles.resources.dir}"/>
+        </copy>
+        <copy todir="${articles.html.path}/images">
+            <fileset dir="${docbook-xsl-redist.home}/images"/>
+        </copy>
+    </target>
+
+    <target name="articles" depends="articles.prepare-destination,articles.copy-resources">
+        <echo message="Creating HTML output in ${articles.html.path}"/>
+        <xslt basedir="${articles.path}"
+            destdir="${articles.html.path}"
+            style="${docbook-xsl.home}/html/netspective-docbook.xsl"
+            force="yes" processor="trax" classpathref="project.class.path">
+            <include name="*.xml"/>
+        </xslt>
+    </target>
+
+    <target name="change-log.prepare-destination" depends="setup-project-properties">
         <delete dir="${change-log.html.path}"/>
         <mkdir dir="${change-log.html.path}"/>
     </target>
 
-    <target name="change-log" depends="prepare-change-log-destination">
+    <target name="change-log" depends="change-log.prepare-destination">
         <property name="change-log-xslt.file" value="${nefs.docs.change-log.home}/change-log.xsl"/>
         <property name="change-log-xml.commons.dest.file" value="${nefs.docs.change-log.home}/change-log-commons.xml"/>
         <property name="change-log-xml.axiom.dest.file" value="${nefs.docs.change-log.home}/change-log-axiom.xml"/>
@@ -98,5 +132,8 @@
             <param name="module" expression="webapps"/>
         </style>
     </target>
+
+    <target name="all-docs" depends="articles,manual.chunked"/>
+    <target name="all" depends="all-docs,change-log"/>
 
 </project>
