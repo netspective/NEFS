@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmIdentifierConstantsGenerator.java,v 1.2 2003-07-08 14:18:04 shahid.shah Exp $
+ * $Id: XdmIdentifierConstantsGenerator.java,v 1.3 2003-07-09 13:10:24 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -167,7 +167,7 @@ public class XdmIdentifierConstantsGenerator
         while(idsInPackage.hasNext())
         {
             Map.Entry entry = (Map.Entry) idsInPackage.next();
-            String subPackageName = ((String) entry.getKey()).toLowerCase();
+            String subPackageName = ((String) entry.getKey());
             Map ids = (Map) entry.getValue();
             generateCode(subPackageName, ids);
         }
