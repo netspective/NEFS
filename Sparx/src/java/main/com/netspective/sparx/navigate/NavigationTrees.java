@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.6 2003-10-22 06:50:34 aye.thu Exp $
+ * $Id: NavigationTrees.java,v 1.7 2003-11-20 04:14:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -54,9 +54,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.AverageMetric;
 import com.netspective.sparx.Project;
 
-public class NavigationTrees
+public class NavigationTrees implements MetricsProducer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTrees.class);
@@ -112,7 +116,7 @@ public class NavigationTrees
 		trees.put(tree.getName(), tree);
     }
 
-    /**
+    /**                                      Ê
      * Sets the tree to be the default tree.
      * @param name  Tree name
      *
@@ -144,5 +148,32 @@ public class NavigationTrees
     public String toString()
     {
         return trees.toString();
+    }
+
+    /**
+     * Generates various metrics related to navigation trees
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric treesMetric = parent.addCountMetric("Total Navigation Trees");
+        // don't count the console tree
+        treesMetric.setSum(trees.size() > 1 ? trees.size() - 1 : 0);
+        AverageMetric avgLevelMetric = treesMetric.addAverageMetric("Avg Depth Per Tree");
+        AverageMetric avgPageMetric = treesMetric.addAverageMetric("Avg Pages Per Tree");
+        CountMetric totalPagesMetric = treesMetric.addCountMetric("Total Pages");
+        Iterator itr = trees.values().iterator();
+
+        while (itr.hasNext())
+        {
+            NavigationTree navigationTree = (NavigationTree) itr.next();
+            // exclude the CONSOLE navigation tree from the metrics
+            if (!navigationTree.getName().equals("console"))
+            {
+                avgPageMetric.incrementAverage(navigationTree.size());
+                totalPagesMetric.incrementCount(navigationTree.size());
+                avgLevelMetric.incrementAverage(navigationTree.getMaxLevel());
+            }
+        }
     }
 }

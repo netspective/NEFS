@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.5 2003-08-19 17:08:32 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.6 2003-11-20 04:14:33 aye.thu Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -59,6 +59,7 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
     private String[] hasPermissions;
     private String[] lackPermissions;
     private ValueSource hasValue = ValueSource.NULL_VALUE_SOURCE;
+    private ValueSource lackValue = ValueSource.NULL_VALUE_SOURCE;
     private ValueSource isTrue = ValueSource.NULL_VALUE_SOURCE;
     private String dataCommand;
     private NavigationPage.Flags flags = createFlags();
@@ -159,6 +160,24 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
     }
 
     /**
+     * Gets the lack-value attribute value
+     * @return
+     */
+    public ValueSource getLackValue()
+    {
+        return lackValue;
+    }
+
+    /**
+     * Sets the lack-value attribute
+     * @param lackValue
+     */
+    public void setLackValue(ValueSource lackValue)
+    {
+        this.lackValue = lackValue;
+    }
+
+    /**
      * Gets the is-true attribute value
      * @return
      */
@@ -250,6 +269,11 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         {
             String textVal = hasValue.getValue(nc).getTextValue();
             status = textVal != null && textVal.length() > 0;
+        }
+        if (status && lackValue != ValueSource.NULL_VALUE_SOURCE)
+        {
+            String textVal = lackValue.getValue(nc).getTextValue();
+            status = textVal == null || textVal.length() == 0;
         }
 
         /*
