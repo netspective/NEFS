@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.42 2004-02-24 22:42:19 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.43 2004-03-06 23:01:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -63,9 +63,6 @@ import org.apache.tools.ant.NoBannerLogger;
 
 import freemarker.template.Configuration;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectManager;
 import com.netspective.sparx.ProjectComponent;
@@ -88,6 +85,7 @@ import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.io.FileFind;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.axiom.SqlManager;
 
 public class NavigationControllerServlet extends HttpServlet implements RuntimeEnvironment, ProjectManager
 {
@@ -617,6 +615,12 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     public NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
         Project project = getProject();
+
+        // Setup the SQL Manager currently in use in case other parts of the application (like DAL) need it.
+        // This is mainly used so that the SqlManager.getThreadDefaultSchema() will work properly for the case where
+        // there is only one schema in the app (typical use). Basically this allows the generated DAL to pick up the
+        // schema instance that is wrapping.
+        SqlManager.setThreadSqlManager(project);
 
         Theme theme = getTheme(httpServletRequest);
         httpServletRequest.setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_THEME, theme);
