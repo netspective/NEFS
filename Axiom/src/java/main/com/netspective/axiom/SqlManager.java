@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.13 2003-09-02 17:06:56 roque.hernandez Exp $
+ * $Id: SqlManager.java,v 1.14 2003-09-05 22:35:26 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
@@ -280,7 +280,6 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     public void addConnectionProvider(ConnectionProvider provider)
     {
-        System.out.println("NEW NEW NEW @@@@@@@@@@@@@@@@@@ SqlManager.addConnectionProvider()");
         this.provider = provider;
     }
 
