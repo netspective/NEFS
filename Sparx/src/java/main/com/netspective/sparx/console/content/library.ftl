@@ -34,10 +34,13 @@
             </td>
             <td class="report-column-${classSuffix}">
                 <#assign summaryTemplateName = "/content${child.qualifiedName}/summary.ftl"/>
+                <#assign summaryTemplateAltName = "/content${child.qualifiedName}.ftl"/>
                 <#if templateExists(summaryTemplateName)>
                     <#include summaryTemplateName/>
+                <#elseif templateExists(summaryTemplateAltName)>
+                    <#include summaryTemplateAltName/>
                 <#else>
-                    <font color=red>${summaryTemplateName} not available.</font>
+                    Neither <font color=red>${summaryTemplateName}</font> nor <font color=red>${summaryTemplateAltName}</font> are available.
                 </#if>
             </td>
         </tr>

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.56 2003-06-23 16:46:00 shahid.shah Exp $
+  * $Id: console.xml,v 1.57 2003-06-24 17:12:37 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -92,7 +92,7 @@
 	        <page name="access-control" caption="Access Control"/>
         </page>
 
-        <page name="presentation" caption="Presentation">
+        <page name="presentation" caption="Presentation" heading="Presentation Layer">
 
             <panels>
                 <panel type="console-page-summary"/>
@@ -111,7 +111,7 @@
                 <page name="test" caption="Unit Test"/>
 	        </page>
 
-	        <page name="dialog" caption="Dialogs" retain-params="selected-dialog-id">
+	        <page name="dialogs" caption="Dialogs" retain-params="selected-dialog-id">
                 <panels>
                     <panel type="console-page-summary"/>
                     <panel type="console-children-summaries">
@@ -128,7 +128,8 @@
                         </panels>
                     </panels>
                 </page>
-				<page name="detail" caption="Dialog" heading="simple-expr:Dialog: ${request:selected-dialog-id}">
+                <page name="unit-test" caption="Unit Test" heading="simple-expr:Dialog: ${request:selected-dialog-id}" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
+                <page name="detail" caption="Documentation" heading="simple-expr:Dialog: ${request:selected-dialog-id}">
                     <panels>
                         <panels style="tabbed">
                             <frame heading="Dialog Details" allow-collapse="yes"/>
@@ -137,7 +138,15 @@
                             <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsHtmlPanel"/>
                             <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsValidationPanel"/>
                         </panels>
-                        <panel type="command" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
+                    </panels>
+                </page>
+                <page name="implementing" caption="Implementing">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Implementing and Extending Forms"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
                     </panels>
                 </page>
 		        <page name="controls" caption="Controls">
@@ -162,6 +171,15 @@
                         </panel>
                     </panels>
                 </page>
+		        <page name="web-services" caption="Web Services">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialogs as Web Services"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
 		        <page name="conditionals" caption="Conditionals">
                     <panels>
                         <panel type="console-page-summary"/>
@@ -180,15 +198,77 @@
                         </panel>
                     </panels>
                 </page>
+		        <page name="popups" caption="Popups">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Popups"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="states" caption="States">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialog and Field States"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="data-binding" caption="Data Binding">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Data Binding"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="data-validation" caption="Data Validation">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Data Validation"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="transaction" caption="Transactions">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Transaction Protection"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
 	        </page>
 
-            <page name="report" caption="Reports"/>
-	        <page name="panel" caption="Panels"/>
-	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
+            <page name="reports" caption="Reports"/>
+	        <page name="panels" caption="Panels"/>
+	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>
 
-        <page name="data-management" caption="Data Management">
-	        <page name="query" caption="Static Queries">
+        <page name="data-management" caption="Data Management" heading="Data Management Layer">
+
+            <panels>
+                <panel type="console-page-summary"/>
+
+                <panel type="console-children-summaries">
+                    <frame heading="Data Management Layer Features"/>
+                </panel>
+            </panels>
+
+	        <page name="static-queries" caption="Static Queries">
+
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Static Queries Features"/>
+                    </panel>
+                </panels>
 
 				<page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
                     <panels>
@@ -209,7 +289,16 @@
                     </panels>
                 </page>
 	        </page>
-	        <page name="dynamic-query" caption="Dynamic Queries">
+
+	        <page name="dynamic-queries" caption="Dynamic Queries">
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Dynamic Queries Features"/>
+                    </panel>
+                </panels>
+
                 <page name="catalog" caption="Catalog" heading="Dynamic SQL Queries" retain-params="query-defn-source,selected-query-defn-id">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.DynamicQueriesCatalogPanel"/>
@@ -225,8 +314,17 @@
                 <page name="test" caption="Unit Test" retain-params="query-defn-source,selected-query-defn-id"/>
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
 	        </page>
-	        <page name="schema" caption="Schemas">
-                <page name="schema" caption="Schema" heading="Schema Structure" retain-params="schema-table">
+
+	        <page name="schemas" caption="Schemas">
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Schema Management Features"/>
+                    </panel>
+                </panels>
+
+                <page name="catalog" caption="Schema" heading="Schema Structure" retain-params="schema-table">
                     <panels>
                         <panels style="tabbed">
                             <frame heading="Schema Tables"/>
@@ -267,7 +365,16 @@
                     </panels>
                 </page>
 	        </page>
-	        <page name="data-source" caption="Data Sources">
+
+	        <page name="data-sources" caption="Data Sources">
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Data Sources Features"/>
+                    </panel>
+                </panels>
+
                 <page name="catalog" caption="Catalog">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.DataSourcesCatalogPanel"/>
@@ -275,7 +382,7 @@
                 </page>
                 <page name="explorer" caption="SQL Explorer">
                     <panels>
-                        <panel type="command" command="dynamic,simple-expr:dialog,console.sql-editor"/>
+                        <panel type="command" command="dialog,console.sql-editor"/>
                     </panels>
                 </page>
             </page>
@@ -283,6 +390,14 @@
         </page>
 
         <page name="framework" caption="Framework">
+            <panels>
+                <panel type="console-page-summary"/>
+
+                <panel type="console-children-summaries">
+                    <frame heading="Framework Layer Overview"/>
+                </panel>
+            </panels>
+
             <page name="xdm" caption="XDM">
                 <panels>
                     <panel type="console-page-summary"/>

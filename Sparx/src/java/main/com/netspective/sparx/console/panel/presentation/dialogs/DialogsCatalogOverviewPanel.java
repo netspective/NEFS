@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.4 2003-05-30 23:11:33 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.5 2003-06-24 17:12:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -67,7 +67,7 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
     static
     {
         dialogIdColumn.setHeading(new StaticValueSource("Dialog"));
-        dialogIdColumn.setCommand("redirect,detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}");
+        dialogIdColumn.setCommand("redirect,unit-test?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}");
         catalogReport.addColumn(dialogIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)
