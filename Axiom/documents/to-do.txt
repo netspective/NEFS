@@ -2,6 +2,7 @@
 * Add support for "Axiom Auto-inc" column where column key value is generated using the design pattern in Java Enterprise Best Practices.
 * Add column-level or row-level encryption and support for searching encrypted columns.
 * Allow self-ref foreign keys to generate DAL code that would load a complete hierarchy.
+* Add listener support to queries so that methods are called before/after running (to allow other apps to "watch" queries).
 * Add ACLs in queries, query-defs, schemas, and DAL.
 * Add DAL-type java class generation for static queries.
 * In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
@@ -10,7 +11,7 @@
 * Allow <query> tags to be added under <schema> that would simply allow the <schema> to act as a namespace.
 * Add SchemaDoc totals (tables, columns, etc) to the application Metrics.
 * Come up with a better name for SchemaDoc and stick to it.
-* For each getXXXByYYY() method add an existsXXXWithYYY() method to check for simple existence
+* For each getXXXByYYY() method add an existsXXXWithYYY() method to check for simple existence.
 * Try and catch required, maxlength, and other DAL exceptions prior to the values getting to the JDBC driver (add additional validation rules).
 * Add more features to the bulk upload/download via XML (like updates/deletes, exporting to XML, etc).
 * Add Supertype/Subtype tables like http://jrf.sourceforge.net/advancedTopics.html#SubtypeTables.

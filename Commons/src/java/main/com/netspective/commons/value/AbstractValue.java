@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.exception.ValueException;
@@ -53,10 +55,16 @@ import com.netspective.commons.value.exception.ValueException;
 public abstract class AbstractValue implements Value
 {
     public static final String BLANK_STRING = "";
+    private int listType;
     private Object value;
 
     public AbstractValue()
     {
+    }
+
+    public AbstractValue(int listType)
+    {
+        this.listType = listType;
     }
 
     public Class getValueHolderClass()
@@ -76,7 +84,12 @@ public abstract class AbstractValue implements Value
 
     public boolean isListValue()
     {
-        return value instanceof String[];
+        return listType != VALUELISTTYPE_NONE;
+    }
+
+    public int getListValueType()
+    {
+        return listType;
     }
 
     public Object getValueForSqlBindParam()
@@ -86,7 +99,25 @@ public abstract class AbstractValue implements Value
 
     public String getTextValue()
     {
-        return value != null ? value.toString() : null;
+        switch(listType)
+        {
+            case VALUELISTTYPE_NONE:
+                return value != null ? value.toString() : null;
+
+            case VALUELISTTYPE_STRINGARRAY:
+                return value != null ? ((String[]) value)[0] : null;
+
+            case VALUELISTTYPE_LIST:
+                if(value != null)
+                {
+                    Object v = ((List) value).get(0);
+                    return v != null ? v.toString() : null;
+                }
+                return null;
+
+            default:
+                return null;
+        }
     }
 
     public int getIntValue()
@@ -130,6 +161,18 @@ public abstract class AbstractValue implements Value
         this.value = value;
     }
 
+    public void setValue(String[] value)
+    {
+        listType = VALUELISTTYPE_STRINGARRAY;
+        setValue((Object) value);
+    }
+
+    public void setValue(List value)
+    {
+        listType = VALUELISTTYPE_LIST;
+        setValue((Object) value);
+    }
+
     public void setValueFromSqlResultSet(ResultSet rs, int rowNum, int colIndex) throws SQLException, ValueException
     {
         setValue(rs.getObject(colIndex));
@@ -142,13 +185,64 @@ public abstract class AbstractValue implements Value
 
     public String[] getTextValues()
     {
-        if(isListValue())
-            return (String[]) value;
+        switch(listType)
+        {
+            case VALUELISTTYPE_NONE:
+                String text = getTextValue();
+                if(text != null)
+                    return new String[] { text };
+                else
+                    return null;
 
-        String text = getTextValue();
-        if(text != null)
-            return new String[] { text };
+            case VALUELISTTYPE_STRINGARRAY:
+                return (String[]) value;
 
-        return null;
+            case VALUELISTTYPE_LIST:
+                List list = (List) getValue();
+                if(list == null)
+                    return null;
+                String[] array = new String[list.size()];
+                for(int i = 0; i < list.size(); i++)
+                {
+                    Object item = list.get(i);
+                    array[i] = item == null ? null : item.toString();
+                }
+                return array;
+
+            default:
+                return null;
+        }
+    }
+
+    public List getListValue()
+    {
+        switch(listType)
+        {
+            case VALUELISTTYPE_NONE:
+                String text = getTextValue();
+                if(text != null)
+                {
+                    List list = new ArrayList();
+                    list.add(text);
+                    return list;
+                }
+                else
+                    return null;
+
+            case VALUELISTTYPE_STRINGARRAY:
+                String[] array = (String[]) getValue();
+                if(array == null)
+                    return null;
+                List list = new ArrayList();
+                for(int i = 0; i < array.length; i++)
+                    list.add(array[i]);
+                return list;
+
+            case VALUELISTTYPE_LIST:
+                return (List) value;
+
+            default:
+                return null;
+        }
     }
 }

@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: GenericValue.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: GenericValue.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
+
+import java.util.List;
 
 import com.netspective.commons.value.AbstractValue;
 
@@ -50,6 +52,16 @@ import com.netspective.commons.value.AbstractValue;
 public class GenericValue extends AbstractValue
 {
     public GenericValue(Object value)
+    {
+        setValue(value);
+    }
+
+    public GenericValue(String[] value)
+    {
+        setValue(value);
+    }
+
+    public GenericValue(List value)
     {
         setValue(value);
     }

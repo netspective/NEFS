@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceDocumentation.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSourceDocumentation.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 
 public class ValueSourceDocumentation
 {
-    public class Parameter
+    public static class Parameter
     {
         private String name;
         private boolean required;

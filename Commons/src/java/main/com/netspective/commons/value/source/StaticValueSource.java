@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticValueSource.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: StaticValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -80,6 +80,11 @@ public class StaticValueSource extends AbstractValueSource
     }
 
     public Value getValue(ValueContext vc) throws ValueSourceException
+    {
+        return staticValue;
+    }
+
+    public Value getPresentationValue(ValueContext vc)
     {
         return staticValue;
     }

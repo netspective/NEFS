@@ -39,39 +39,23 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: SystemPropertyValueSourceTest.java,v 1.1 2003-03-16 02:23:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceException;
+import junit.framework.TestCase;
+
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.text.ValueSourceExpressionText;
 
-public class ExpressionValueSource extends AbstractValueSource
+public class SystemPropertyValueSourceTest extends TestCase
 {
-    public static final String[] IDENTIFIERS = new String[] { "vs-expr", "simple-expr" };
-
-    public static String[] getIdentifiers()
+    public void testGetValue()
     {
-        return IDENTIFIERS;
-    }
-
-    public Value getValue(ValueContext vc) throws ValueSourceException
-    {
-        ValueSourceExpressionText vset = new ValueSourceExpressionText();
-        return new GenericValue(vset.getFinalText(vc, spec.getParams()));
-    }
-
-    public Value getPresentationValue(ValueContext vc)
-    {
-        return getValue(vc);
-    }
-
-    public boolean hasValue(ValueContext vc) throws ValueSourceException
-    {
-        return spec.getParams() != null;
+        ValueSource vs = ValueSources.getInstance().getValueSource("system-property:java.classpath", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+        Value value = vs.getValue(null);
+        System.out.println(value.getTextValue());
     }
 }

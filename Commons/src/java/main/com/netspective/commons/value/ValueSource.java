@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSource.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -54,11 +54,6 @@ public interface ValueSource
     public ValueSourceSpecification getSpecification();
 
     /**
-     * Returns the documentation for the value source.
-     */
-    public ValueSourceDocumentation getDocumentation();
-
-    /**
      * Initialize the value source from a command string.
      * @param srcTokens The actual value source tokens used to construct the class and pass along parameters
      */
@@ -66,16 +61,50 @@ public interface ValueSource
 
     /**
      * Determines whether or not a value is present in this value source.
+     *
      * @param vc The context under which determination is made.
      * @return True if there is a value available, false if there's no value available.
      */
     public boolean hasValue(ValueContext vc);
 
+    /**
+     * Returns the value associate with this value source. The value may
+     * be either a single value or a list of values. This method is called
+     * when the caller needs the value for usage in a non-presentation
+     * environment (for and algorithm or calculation or persistence). For
+     * presentation to an end user via a user interface, use the
+     * getPresentationValue() method.
+     */
     public Value getValue(ValueContext vc);
 
+    /**
+     * Returns the value associate with this value source. The value may
+     * be either a single value or a list of values. This method is called
+     * when the caller needs the value for presentation to an end user
+     * via a user interface like a combo box or select list. The main
+     * difference between getValue() and getPresentationValue() is that
+     * the value returned may contain more than one entry per item. In the
+     * case of usage within a select item list, the first entry per item
+     * will be what the user should be shown and the second entry per item
+     * will be what should be stored in the database.
+     */
+    public Value getPresentationValue(ValueContext vc);
+
+    /**
+     * Simple wrapper method that basically does and optimized version of the following:
+     * getValue(vc) != null ? getValue().getTextValue(vc) : null.
+     */
     public String getTextValue(ValueContext vc);
 
+    /**
+     * Simple wrapper method that basically does and optimized version of the following:
+     * getValue(vc) != null ? getValue().getTextValueOrBlank(vc) : null.
+     */
     public String getTextValueOrBlank(ValueContext vc);
 
+    /**
+     * Simple wrapper method that basically does and optimized version of the following:
+     * getValue() != null ? getValue().getTextValues(vc) : null.
+     */
     public String[] getTextValues(ValueContext vc);
 }

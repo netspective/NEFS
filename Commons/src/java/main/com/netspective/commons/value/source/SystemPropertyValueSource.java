@@ -39,30 +39,75 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: SystemPropertyValueSource.java,v 1.1 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceException;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.text.ValueSourceExpressionText;
+import java.util.StringTokenizer;
 
-public class ExpressionValueSource extends AbstractValueSource
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.text.GloballyUniqueIdentifier;
+
+public class SystemPropertyValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "vs-expr", "simple-expr" };
+    private static final Log log = LogFactory.getLog(SystemPropertyValueSource.class);
+    public static final String[] IDENTIFIERS = new String[] { "system-property" };
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+            "Provides access to the system property indicated by the property name.",
+            new ValueSourceDocumentation.Parameter[]
+            {
+                new ValueSourceDocumentation.Parameter("property-name", true, null, null, "The system property name that should be looked up."),
+                new ValueSourceDocumentation.Parameter("default-value", false, null, null, "The default value of the property if it was not found. This is a value source specficiation.")
+            }
+    );
+
+    private String propertyName;
+    private ValueSource defaultValue;
+
+    public SystemPropertyValueSource()
+    {
+    }
 
     public static String[] getIdentifiers()
     {
         return IDENTIFIERS;
     }
 
-    public Value getValue(ValueContext vc) throws ValueSourceException
+    public static ValueSourceDocumentation getDocumentation()
     {
-        ValueSourceExpressionText vset = new ValueSourceExpressionText();
-        return new GenericValue(vset.getFinalText(vc, spec.getParams()));
+        return DOCUMENTATION;
+    }
+
+    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
+    {
+        super.initialize(spec);
+
+        StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
+        if(st.hasMoreTokens())
+            propertyName = st.nextToken();
+
+        if(st.hasMoreTokens())
+            defaultValue = ValueSources.getInstance().getValueSourceOrStatic(st.nextToken().trim());
+    }
+
+    public Value getValue(ValueContext vc)
+    {
+        if(defaultValue != null)
+            return new GenericValue(System.getProperty(propertyName, defaultValue.getTextValue(vc)));
+        else
+            return new GenericValue(System.getProperty(propertyName));
     }
 
     public Value getPresentationValue(ValueContext vc)
@@ -70,8 +115,9 @@ public class ExpressionValueSource extends AbstractValueSource
         return getValue(vc);
     }
 
-    public boolean hasValue(ValueContext vc) throws ValueSourceException
+    public boolean hasValue(ValueContext vc)
     {
-        return spec.getParams() != null;
+        Value value = getValue(vc);
+        return value.getListValue().size() > 0;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -56,6 +56,9 @@ import com.netspective.commons.value.source.ExpressionValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.source.ExceptionValueSource;
 import com.netspective.commons.value.source.StaticListValueSource;
+import com.netspective.commons.value.source.FilesystemEntriesValueSource;
+import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
+import com.netspective.commons.value.source.SystemPropertyValueSource;
 import com.netspective.commons.value.exception.ValueSourceNotFoundException;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.exception.UnexpectedValueContextException;
@@ -80,11 +83,19 @@ public class ValueSources
         return instance;
     }
 
+    public static final ValueSourceSpecification createSpecification(String text)
+    {
+        return new ValueSourceSpecification(text);
+    }
+
     public ValueSources()
     {
         registerValueSource(ExpressionValueSource.class);
+        registerValueSource(FilesystemEntriesValueSource.class);
+        registerValueSource(GloballyUniqueIdValueSource.class);
         registerValueSource(StaticValueSource.class);
         registerValueSource(StaticListValueSource.class);
+        registerValueSource(SystemPropertyValueSource.class);
     }
 
     public Map getValueSourceClassesMap()
@@ -107,7 +118,7 @@ public class ValueSources
         catch (NoSuchMethodException e)
         {
             log.error(e);
-            throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + valueSource.getClass().getName(), e);
+            throw new NestableRuntimeException("Static method 'String[] "+ VSMETHODNAME_GETIDENTIFIERS +"()' not found in value source " + valueSource.getName(), e);
         }
 
         try
@@ -206,7 +217,7 @@ public class ValueSources
             return vs;
         else
         {
-            ValueSourceSpecification vst = new ValueSourceSpecification(source);
+            ValueSourceSpecification vst = createSpecification(source);
             if(vst.isValid())
                 return getValueSource(vst, notFoundHandlerType);
             else
@@ -216,7 +227,7 @@ public class ValueSources
 
     public ValueSource getValueSourceOrStatic(String source)
     {
-        ValueSourceSpecification vst = new ValueSourceSpecification(source);
+        ValueSourceSpecification vst = createSpecification(source);
         if(vst.isValid())
         {
             try

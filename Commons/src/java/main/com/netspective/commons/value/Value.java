@@ -39,18 +39,23 @@
  */
 
 /**
- * $Id: Value.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: Value.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.netspective.commons.value.exception.ValueException;
 
 public interface Value
 {
+    public static final int VALUELISTTYPE_NONE        = 0;
+    public static final int VALUELISTTYPE_STRINGARRAY = 1;
+    public static final int VALUELISTTYPE_LIST        = 2;
+
     /**
      * Return the class name of the actual value holder (Object, String, Integer, etc). All the values are variant, but
      * this method is used by value consumers and producers to potentially render type-safe values and validate the
@@ -74,6 +79,11 @@ public interface Value
      * Ascertains whether the instance contains a list of values or a single value
      */
     public boolean isListValue();
+
+    /**
+     * Returns one of VALUELISTTYPE_* constants to indicate the kind of list available in this value.
+     */
+    public int getListValueType();
 
     /**
      * Returns the value that is used by the application for processing.
@@ -135,4 +145,9 @@ public interface Value
      * Get the contents of this value as a text array.
      */
     public String[] getTextValues();
+
+    /**
+     * Get the contents of this value as a list
+     */
+    public List getListValue();
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceFactoryTest.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: ValueSourceFactoryTest.java,v 1.2 2003-03-16 02:23:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -61,31 +61,31 @@ public class ValueSourceFactoryTest extends TestCase
 
     public void testValueSourceTokens()
     {
-        ValueSourceSpecification vss = new ValueSourceSpecification("test-id:abc");
+        ValueSourceSpecification vss = ValueSources.createSpecification("test-id:abc");
         assertTrue(vss.isValid());
         assertTrue(vss.isEscaped() == false);
         assertEquals("test-id", vss.getIdOrClassName());
         assertEquals("abc", vss.getParams());
 
-        vss = new ValueSourceSpecification("test-id\\:abc");
+        vss = ValueSources.createSpecification("test-id\\:abc");
         assertFalse(vss.isValid());
         assertTrue(vss.isEscaped());
 
-        vss = new ValueSourceSpecification("this is a simple expression");
+        vss = ValueSources.createSpecification("this is a simple expression");
         assertFalse(vss.isValid());
         assertFalse(vss.isEscaped());
 
-        vss = new ValueSourceSpecification("test-id:[xyz]abc");
+        vss = ValueSources.createSpecification("test-id:[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
         assertEquals("xyz", vss.getProcessingInstructions());
 
-        vss = new ValueSourceSpecification("test-id:\\[xyz]abc");
+        vss = ValueSources.createSpecification("test-id:\\[xyz]abc");
         assertTrue(vss.isValid());
         assertFalse(vss.isEscaped());
         assertEquals("[xyz]abc", vss.getParams());
 
-        vss = new ValueSourceSpecification("test-id:[xyzabc");
+        vss = ValueSources.createSpecification("test-id:[xyzabc");
         assertFalse(vss.isValid());
         assertFalse(vss.isEscaped());
     }

@@ -1,9 +1,9 @@
 Library                                 Version    File                    Source                                                            
 --------------------------------------- ---------- ----------------------- ------------------------------------
-Java JDBC API                           2.0        jdbc.jar                http://java.sun.com
 Apache Xalan                            2.4.0      xalan.jar               http://xml.apache.org/xalan-j
 Apache Xalan JAXP/TrAX XML APIs         2.4.0      xml-apis.jar            http://xml.apache.org/xerces-j
 Apache Xerces                           2.0.2      xerces.jar              http://xml.apache.org/xerces-j
+Grand Central AppStats Framework        1.0 Alpha  gc-appstats.jar         http://appstats.sourceforge.net/
 Jakarta Ant                             1.5.0      ant.jar                 http://jakarta.apache.org/ant
 Jakarta Log4J                           1.2.6      log4j.jar               http://jakarta.apache.org/log4j/docs
 Jakarta ORO                             2.0.4      oro.jar                 http://jakarta.apache.org/oro
@@ -15,3 +15,4 @@ Jakarta Commons Logging                 1.0.2      commons-logging.jar     http:
 Jakarta Commons Jexl                    1.0 beta 1 commons-jexl.jar        http://jakarta.apache.org/commons
 Jenesis Source Code Generation Library  0.2.1      jenesis.jar             http://www.inxar.org/jenesis
 JUnit Testing Framework                 3.8        junit.jar               http://www.junit.org
+Sun Microsystems Java JDBC API          2.0        jdbc.jar                http://java.sun.com

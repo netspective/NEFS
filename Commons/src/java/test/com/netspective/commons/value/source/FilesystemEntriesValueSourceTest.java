@@ -39,39 +39,36 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: FilesystemEntriesValueSourceTest.java,v 1.1 2003-03-16 02:23:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceException;
+import junit.framework.TestCase;
+
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.text.ValueSourceExpressionText;
 
-public class ExpressionValueSource extends AbstractValueSource
+public class FilesystemEntriesValueSourceTest extends TestCase
 {
-    public static final String[] IDENTIFIERS = new String[] { "vs-expr", "simple-expr" };
-
-    public static String[] getIdentifiers()
+    public void testGetValue()
     {
-        return IDENTIFIERS;
-    }
+        // in 'c\\:\\' the first \\ is to escape ':' because otherwise c: will be regarded as its own value source
+        // because the rootPath in FileSystemEntriesValueSource is a ValueSource, not a string
+        String rootPath = "c\\:\\";
 
-    public Value getValue(ValueContext vc) throws ValueSourceException
-    {
-        ValueSourceExpressionText vset = new ValueSourceExpressionText();
-        return new GenericValue(vset.getFinalText(vc, spec.getParams()));
-    }
+        ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+        Value value = vs.getValue(null);
+        System.out.println(value.getTextValue());
+        System.out.println(value.getTextValues());
+        System.out.println(value.getListValue());
 
-    public Value getPresentationValue(ValueContext vc)
-    {
-        return getValue(vc);
-    }
 
-    public boolean hasValue(ValueContext vc) throws ValueSourceException
-    {
-        return spec.getParams() != null;
+        vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath + ",exe$", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+        value = vs.getValue(null);
+        System.out.println(value.getTextValue());
+        System.out.println(value.getTextValues());
+        System.out.println(value.getListValue());
     }
 }

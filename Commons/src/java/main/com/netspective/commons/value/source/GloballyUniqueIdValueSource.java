@@ -39,30 +39,73 @@
  */
 
 /**
- * $Id: ExpressionValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
+ * $Id: GloballyUniqueIdValueSource.java,v 1.1 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceException;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
-import com.netspective.commons.text.ValueSourceExpressionText;
+import java.util.StringTokenizer;
 
-public class ExpressionValueSource extends AbstractValueSource
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.text.GloballyUniqueIdentifier;
+
+public class GloballyUniqueIdValueSource extends AbstractValueSource
 {
-    public static final String[] IDENTIFIERS = new String[] { "vs-expr", "simple-expr" };
+    private static final Log log = LogFactory.getLog(GloballyUniqueIdValueSource.class);
+    public static final String[] IDENTIFIERS = new String[] { "generate-id", "guid" };
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+            "Returns a GUID each time the value source is called.",
+            new ValueSourceDocumentation.Parameter[]
+            {
+                new ValueSourceDocumentation.Parameter("secure", false, null, "no", "Whether or not to generate a secure GUID.")
+            }
+    );
+
+    boolean secure;
+
+    public GloballyUniqueIdValueSource()
+    {
+    }
 
     public static String[] getIdentifiers()
     {
         return IDENTIFIERS;
     }
 
-    public Value getValue(ValueContext vc) throws ValueSourceException
+    public static ValueSourceDocumentation getDocumentation()
     {
-        ValueSourceExpressionText vset = new ValueSourceExpressionText();
-        return new GenericValue(vset.getFinalText(vc, spec.getParams()));
+        return DOCUMENTATION;
+    }
+
+    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
+    {
+        super.initialize(spec);
+
+        StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
+        if(st.hasMoreTokens())
+            secure = TextUtils.toBoolean(st.nextToken().trim());
+    }
+
+    public Value getValue(ValueContext vc)
+    {
+        try
+        {
+            return new GenericValue(GloballyUniqueIdentifier.getRandomGUID(secure));
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+            return new GenericValue(e.getMessage());
+        }
     }
 
     public Value getPresentationValue(ValueContext vc)
@@ -70,8 +113,9 @@ public class ExpressionValueSource extends AbstractValueSource
         return getValue(vc);
     }
 
-    public boolean hasValue(ValueContext vc) throws ValueSourceException
+    public boolean hasValue(ValueContext vc)
     {
-        return spec.getParams() != null;
+        Value value = getValue(vc);
+        return value.getListValue().size() > 0;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConcatenateValueSource.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ConcatenateValueSource.java,v 1.2 2003-03-16 02:23:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -83,6 +83,11 @@ public class ConcatenateValueSource extends AbstractValueSource
             result.append(appendText);
 
         return new GenericValue(result.toString());
+    }
+
+    public Value getPresentationValue(ValueContext vc)
+    {
+        return getValue(vc);
     }
 
     public boolean hasValue(ValueContext vc)
