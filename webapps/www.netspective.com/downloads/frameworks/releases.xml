@@ -16,15 +16,17 @@
                 non-zero length string for the 'hasValue' check to return TRUE.
             </change-log-entry>
             <change-log-entry>
+                <![CDATA[
                 Removed getSelectedItem() method from the SelectField's value object
                 because this method was misleading and does not work for select fields that
                 allow multiple selections. The best way to get values from a select field is to
-                do a getTextValue() or getTextValues() on the state value object. NOTE: This breaks current code
+                do a getTextValue() or getTextValues() on the state value object. <b>NOTE</b>: This breaks current code
                 and you will need to MODIFY your code. For example:
-                myDialogContext.getMySelectField().getSelectedChoice() MUST be changed to
-                myDialogContext.getMySelectFieldState().getValue().getTextValue() or
-                myDialogContext.getMySelectFieldState().getValue().getTextValues() based on the number of
+                <code>myDialogContext.getMySelectField().getSelectedChoice()</code> MUST be changed to
+                <code>myDialogContext.getMySelectFieldState().getValue().getTextValue()</code>  or
+                <code>myDialogContext.getMySelectFieldState().getValue().getTextValues()</code>  based on the number of
                 values you are expecting from the select field.
+                ]]>
             </change-log-entry>
         </change-log>
     </release>
