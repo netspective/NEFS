@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.67 2003-07-05 19:28:07 shahid.shah Exp $
+  * $Id: console.xml,v 1.68 2003-07-07 01:02:37 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -37,7 +37,6 @@
         </page>
 
         <page name="project" caption="Project" heading="Project Home">
-
             <page name="input-source" caption="Source" heading="Sparx Project Input Source File and Dependencies">
                 <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
@@ -46,30 +45,28 @@
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="selected-command">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
-                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="selected-command">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
-                </page>
                 <page name="unit-test" caption="Unit Test" heading="Command Unit Test" retain-params="selected-command">
                     <body config="console" source="console-page-content:../unit-test.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="selected-command">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
             </page>
 	        <page name="value-sources" caption="Value Sources">
                 <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="selected-value-source">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
-                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="selected-value-source">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
-                </page>
                 <page name="unit-test" caption="Unit Test" heading="Value Source Unit Test" retain-params="selected-value-source">
                     <body config="console" source="console-page-content:../unit-test.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="selected-value-source">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
             </page>
 	        <page name="metrics" caption="Metrics"/>
 	        <page name="configuration" caption="Configuration">
 	            <page name="servlet" caption="Servlet Config"/>
-	            <page name="application" caption="App Config">
-                    <body config="console" source="content/home/app-overview.ftl"/>
-                </page>
+	            <page name="application" caption="App Config"/>
             </page>
 	        <page name="access-control" caption="Access Control"/>
             <page name="documents" caption="Documents"/>
@@ -82,8 +79,17 @@
                 <page name="test" caption="Unit Test"/>
 	        </page>
 
-	        <page name="dialogs" caption="Dialogs" retain-params="selected-dialog-id">
-
+	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
+                <page name="catalog" caption="Catalog" heading="Dialogs Catalog" retain-params="selected-dialog-id">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="unit-test" caption="Unit Test" heading="Dialog Unit Test" retain-params="selected-dialog-id">
+                    <body config="console" source="console-page-content:../unit-test.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Dialog Documentation" retain-params="selected-dialog-id">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                </page>
+                <!--
 				<page name="catalog" caption="Catalog">
                     <panels>
                         <panels style="tabbed">
@@ -105,6 +111,7 @@
                         </panels>
                     </panels>
                 </page>
+                -->
 	        </page>
 
             <page name="reports" caption="Reports"/>

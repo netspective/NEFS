@@ -61,6 +61,7 @@
 * Review Logidex Asset Center (http://www.logiclibrary.com) to see if we can use JavaDoc tags to create similar asset manager for Sparx code in Console
 * Incorporate JDiff (http://javadiff.sourceforge.net/) documentation between releases
 * See if it makes sense to include Jamon (http://www.jamon.org) as a template engine option
+* Might be interesting to see if Sparx can work with x-Desktop (http://www.x-desktop.org/).
 
 BUGS
 * SelectField:

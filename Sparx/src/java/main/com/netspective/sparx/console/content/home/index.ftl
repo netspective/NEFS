@@ -4,70 +4,38 @@
     <tr valign=top>
         <td>
             <@panel heading="Configuration Overview">
-                <@reportTable>
-                    <tr>
-                        <td class="report-column-heading">Property</td>
-                        <td class="report-column-heading">Value</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd"><nobr>Application Id</td>
-                        <td class="report-column-odd"><code>${vc.servletContext.servletContextName}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-even"><nobr>Application Home</td>
-                        <td class="report-column-even"><code>${vc.servletContext.getRealPath('')}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd"><nobr><a href="project/project-source">Sparx Project Source</a></td>
-                        <td class="report-column-odd"><code><@projectFile/></td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-even"><nobr><a href="manual/project/runtime-environment">Runtime Environment</a></td>
-                        <td class="report-column-even"><code>${vc.environmentFlags.flagsText}</code></td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd"><nobr><a href="project/configuration/servlet">Deployment Descriptor</a></td>
-                        <td class="report-column-odd"><code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}</code></td>
-                    </tr>
-                </@reportTable>
+                <@reportTable
+                        headings = ["Property", "Value"]
+                        data=[
+                          ["Application Id", "<code>${vc.servletContext.servletContextName}</code>"],
+                          ["Application Home", "<code>${vc.servletContext.getRealPath('')}</code>"],
+                          ["<a href='project/project-source'>Sparx Project Source</a>", "<code>${vc.projectComponent.inputSource.identifier}</code>"],
+                          ["<a href='manual/project/runtime-environment'>Runtime Environment</a>", "<code>${vc.environmentFlags.flagsText}</code>"],
+                          ["<a href='project/configuration/servlet'>Deployment Descriptor</a>", "<code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}</code>"]
+                          ]/>
             </@panel>
             <p>
             <@panel heading="Versions">
-                <@reportTable>
-                    <tr>
-                        <td class="report-column-heading">Component</td>
-                        <td class="report-column-heading">Version</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd">Java Developers Kit (${statics["java.lang.System"].getProperty("java.vendor")})</td>
-                        <td class="report-column-odd">${statics["java.lang.System"].getProperty("java.version")}</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-even">Java Virtual Machine (${statics["java.lang.System"].getProperty("java.vm.vendor")})</td>
-                        <td class="report-column-even">${statics["java.lang.System"].getProperty("java.vm.version")}</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd">Operating System (${statics["java.lang.System"].getProperty("os.name")})</td>
-                        <td class="report-column-odd">${statics["java.lang.System"].getProperty("os.version")}</td>
-                    </tr>
-                    <tr>
-                        <#assign serverInfo = vc.servletContext.serverInfo?split("/")/>
-                        <td class="report-column-even">Application Server<#if serverInfo?size gt 1> (${serverInfo[0]})</#if></td>
-                        <td class="report-column-even"><#if serverInfo?size gt 1>${serverInfo[1]}<#else>${vc.servletContext.serverInfo}</#if></td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd">Sparx Application Platform (Netspective)</td>
-                        <td class="report-column-odd">${statics["com.netspective.sparx.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()}</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-even">Axiom Persistence Framework (Netspective)</td>
-                        <td class="report-column-even">${statics["com.netspective.axiom.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()}</td>
-                    </tr>
-                    <tr>
-                        <td class="report-column-odd">Commons Utility Library (Netspective)</td>
-                        <td class="report-column-odd">${statics["com.netspective.commons.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()}</td>
-                    </tr>
-                </@reportTable>
+                <#assign appServerInfo = vc.servletContext.serverInfo?split("/")/>
+                <#if appServerInfo?size gt 1>
+                    <#assign appServerName = " (${appServerInfo[0]})"/>
+                    <#assign appServerVersion = appServerInfo[1]/>
+                <#else>
+                    <#assign appServerName = ""/>
+                    <#assign appServerVersion = appServerInfo/>
+                </#if>
+
+                <@reportTable
+                        headings = ["Component", "Version"]
+                        data=[
+                          ["Java Developers Kit (${statics['java.lang.System'].getProperty('java.vendor')})", statics["java.lang.System"].getProperty("java.version")],
+                          ["Java Virtual Machine (${statics['java.lang.System'].getProperty('java.vm.vendor')})", statics["java.lang.System"].getProperty("java.vm.version")],
+                          ["Operating System (${statics['java.lang.System'].getProperty('os.name')})", statics["java.lang.System"].getProperty("os.version")],
+                          ["Application Server${appServerName}", appServerVersion],
+                          ["Sparx Application Platform (Netspective)", statics["com.netspective.sparx.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()],
+                          ["Axiom Persistence Framework (Netspective)", statics["com.netspective.axiom.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()],
+                          ["Commons Utility Library (Netspective)", statics["com.netspective.commons.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()]
+                          ]/>
             </@panel>
         </td>
         <td>

@@ -216,19 +216,23 @@
 </#macro>
 
 <#macro classReference className>
+    ${getClassReference(className)}
+</#macro>
+
+<#function getClassReference className>
 
     <#assign class = getClassForName(className)/>
     <#assign packageName = class.package.name/>
     <#assign classNameNoInner = class.name?replace('$', '.')/>
 
     <#if packageName?starts_with('java.lang')>
-        <span title="${className}">${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>
+        <#return "<span title='${className}'>${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>"/>
     <#else>
-        <!-- need to HREF to something? -->
-        <span title="${className}">${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>
+        <#-- need to HREF to something? -->
+        <#return "<span title='${className}'>${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>"/>
     </#if>
 
-</#macro>
+</#function>
 
 
 <#macro contentImage image="">
@@ -238,6 +242,7 @@
     <img src='${imagePath}/${image?default(activePage.name + '.gif')}'>
 </#macro>
 
+
 <#macro classDescription className>
 
     <#assign schema = getXmlDataModelSchema(className)/>
@@ -245,10 +250,54 @@
 
 </#macro>
 
-<#macro reportTable width="100%">
+
+<#macro reportTable width="100%" headings=[] data=[] columnAttrs=[] headingAttrs=[]>
     <table class="report" border="0" cellspacing="2" cellpadding="0" width="${width}">
+    <#if data?size = 0>
+    <#nested>
+    <#else>
+        <#assign _headingAttrs = headingAttrs/>
+        <#assign _columnAttrs = columnAttrs/>
 
-        <#nested>
+        <#if _headingAttrs?size = 0>
+            <#list headings as heading>
+                <#assign _headingAttrs = _headingAttrs + [""]/>
+            </#list>
+        </#if>
 
+        <#if _columnAttrs?size = 0>
+            <#list data[0] as column>
+                <#assign _columnAttrs = _columnAttrs + [""]/>
+            </#list>
+        </#if>
+
+        <#if headings?size gt 0>
+        <tr>
+            <#list headings as heading>
+                <td class="report-column-heading" ${_headingAttrs[heading_index]}>${heading}</td>
+            </#list>
+        </tr>
+        </#if>
+        <#assign classSuffix="odd"/>
+        <#list data as row>
+            <tr>
+            <#list row as column>
+                <td class="report-column-${classSuffix}" ${_columnAttrs[column_index]}
+                    <#if column?is_sequence>${column[0]}</#if> >
+                    <#if column?is_sequence>
+                        ${column[1]}
+                    <#else>
+                        ${column}
+                    </#if>
+                </td>
+            </#list>
+            <#if classSuffix = 'odd'>
+                <#assign classSuffix='even'/>
+            <#else>
+                <#assign classSuffix='odd'/>
+            </#if>
+            </tr>
+        </#list>
+    </#if>
     </table>
 </#macro>

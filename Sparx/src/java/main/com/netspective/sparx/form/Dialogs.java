@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Dialogs.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: Dialogs.java,v 1.2 2003-07-07 01:02:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -48,14 +48,14 @@ import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class Dialogs
 {
     private List dialogs = new ArrayList();
-    private Map byName = new HashMap();
-    private Set nameSpaceNames = new HashSet();
+    private Map byName = new TreeMap();
+    private Set nameSpaceNames = new TreeSet();
 
     public Dialogs()
     {
@@ -79,6 +79,11 @@ public class Dialogs
     public Dialog get(String name)
     {
         return (Dialog) byName.get(Dialog.translateNameForMapKey(name));
+    }
+
+    public List getDialogs()
+    {
+        return dialogs;
     }
 
     public Set getNames()
