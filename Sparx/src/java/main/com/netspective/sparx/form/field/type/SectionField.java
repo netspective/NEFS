@@ -26,8 +26,6 @@ public class SectionField extends DialogField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-    private int displayCols = 1;
-
     /**
      * Default sole constructor
      */
@@ -43,21 +41,6 @@ public class SectionField extends DialogField
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
     {
         return getChildren().getDialogContextBeanMemberInfo(createDialogContextMemberInfo());
-    }
-
-    public int getDisplayColumns()
-    {
-        return displayCols;
-    }
-
-    /**
-     * Sets the number of columns for the layout  
-     *
-     * @param displayCols
-     */
-    public void setDisplayColumns(int displayCols)
-    {
-        this.displayCols = displayCols;
     }
 
 }
