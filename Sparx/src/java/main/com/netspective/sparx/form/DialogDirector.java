@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.8 2003-06-09 22:14:28 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.9 2003-06-11 03:33:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -69,12 +69,13 @@ import com.netspective.sparx.form.field.DialogField;
 public class DialogDirector extends DialogField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm" };
+    private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm", "acknowledge" };
 
     public static class DialogDirectorStyle extends XdmEnumeratedAttribute
     {
         public static final int DATA = 0;
         public static final int CONFIRM = 1;
+        public static final int ACKNOWLEDGE = 2;
 
         public DialogDirectorStyle()
         {
@@ -124,6 +125,11 @@ public class DialogDirector extends DialogField
             case DialogDirectorStyle.CONFIRM:
                 setSubmitCaption(ValueSources.getInstance().getValueSourceOrStatic("  Yes  "));
                 setCancelCaption(ValueSources.getInstance().getValueSourceOrStatic("  No   "));
+                break;
+
+            case DialogDirectorStyle.ACKNOWLEDGE:
+                setCancelCaption(null);
+                setCancelActionUrl(null);
                 break;
         }
     }
@@ -221,8 +227,8 @@ public class DialogDirector extends DialogField
         Dialog dialog = dc.getDialog();
         String attrs = dc.getSkin().getDefaultControlAttrs();
 
-        String submitCaption = this.submitCaption.getTextValue(dc);
-        String cancelCaption = this.cancelCaption.getTextValue(dc);
+        String submitCaption = (this.submitCaption != null) ? this.submitCaption.getTextValue(dc) : null;
+        String cancelCaption = (this.cancelCaption != null) ? this.cancelCaption.getTextValue(dc) : null;
 
         int dataCmd = (int) dc.getDataCommands().getFlags();
         switch(dataCmd)
@@ -271,45 +277,48 @@ public class DialogDirector extends DialogField
             writer.write(attrs);
             writer.write(">&nbsp;&nbsp;");
         }
-
-        writer.write("<input type='button' class=\"dialog-button\" value='");
-        writer.write(cancelCaption);
-        writer.write("' ");
-        if(cancelActionUrl == null)
+        if (cancelCaption != null)
         {
-            String referer = dc.getOriginalReferer();
-            if(referer != null)
+            writer.write("<input type='button' class=\"dialog-button\" value='");
+            writer.write(cancelCaption);
+            writer.write("' ");
+            if(cancelActionUrl == null)
             {
-                writer.write("onclick=\"document.location = '");
-                writer.write(referer);
-                writer.write("'\" ");
+                String referer = dc.getOriginalReferer();
+                if(referer != null)
+                {
+                    writer.write("onclick=\"document.location = '");
+                    writer.write(referer);
+                    writer.write("'\" ");
+                }
+                else
+                {
+                    writer.write("onclick=\"history.back()\" ");
+                }
             }
             else
             {
-                writer.write("onclick=\"history.back()\" ");
+                String cancelStr = cancelActionUrl != null ? cancelActionUrl.getTextValue(dc) : null;
+                if("back".equals(cancelStr))
+                {
+                    writer.write("onclick=\"history.back()\" ");
+                }
+                else if(cancelStr != null && cancelStr.startsWith("javascript:"))
+                {
+                    writer.write("onclick=\"");
+                    writer.write(cancelStr);
+                    writer.write("\" ");
+                }
+                else
+                {
+                    writer.write("onclick=\"document.location = '");
+                    writer.write(cancelStr);
+                    writer.write("'\" ");
+                }
             }
+            writer.write(attrs);
+            writer.write(">");
         }
-        else
-        {
-            String cancelStr = cancelActionUrl != null ? cancelActionUrl.getTextValue(dc) : null;
-            if("back".equals(cancelStr))
-            {
-                writer.write("onclick=\"history.back()\" ");
-            }
-            else if(cancelStr != null && cancelStr.startsWith("javascript:"))
-            {
-                writer.write("onclick=\"");
-                writer.write(cancelStr);
-                writer.write("\" ");
-            }
-            else
-            {
-                writer.write("onclick=\"document.location = '");
-                writer.write(cancelStr);
-                writer.write("'\" ");
-            }
-        }
-        writer.write(attrs);
-        writer.write("></center>");
+        writer.write("</center>");
     }
 }
