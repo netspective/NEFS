@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.5 2003-08-10 22:16:24 shahid.shah Exp $
+$Id: README.TXT,v 1.6 2003-08-21 21:31:49 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -49,21 +49,17 @@ Steps for obtaining the code
 
 First-time only steps
 ------------------------------------------------------------------------------
-1. If you are not using the standard directory locations, open
-   NEFS_HOME/Sparx/src/java/com/netspective/sparx/conf/console.xml and change
-   <register-freemarker-configuration name='console'> 'base-dir' attribute to
-   your particular location.
-2. If you are not using the standard directory locations, open the Resin
-   NEFS_HOME/webapps/nefs-resin-sde.conf configuration file and follow the
-   directions in the top of the file.
+*  If you are not using the standard directory locations, open the Resin
+   NEFS_HOME/webapps/nefs-resin-*.conf configuration files and follow the
+   directions in the top of each file.
 
 Steps for all builds (each time code is updated)
 ------------------------------------------------------------------------------
 1. Open IDEA using NEFS_HOME/tools/idea/Netspective Frameworks.ipr project
    file.
 2. Compile full project (will put classes in NEFS_HOME/tools/idea/classes)
-3. Start Resin using NEFS_HOME/webapps/resin-2.x.conf configuration file and
-   point to http://localhost:8099/ to view the NEFS Web Apps home page.
+3. Start Resin using NEFS_HOME/webapps/nefs-resin-sde.conf configuration file
+   and point to http://localhost:8099/ to view the NEFS Web Apps home page.
    Resin is started on Windows from the command line using
    RESIN_HOME/bin/httpd -conf NEFS_HOME/webapps/nefs-resin-sde.conf or on UNIX
    using RESIN_HOME/bin/httpd.sh -conf NEFS_HOME/webapps/nefs-resin-sde.
