@@ -24,7 +24,7 @@
         <property name="articles.path" value="${project.home}/nef-articles"/>
         <property name="articles.resources.dir" value="${articles.path}/resources"/>
 
-        <property name="docs.html.path" value="${project.home}/../../webapps/nefs-sampler/docs"/>
+        <property name="docs.html.path" value="${project.home}/../../webapps/www.netspective.com/resources/support/docs"/>
         <property name="articles.html.path" value="${docs.html.path}/nef-articles"/>
         <property name="manual.html.path" value="${docs.html.path}/${manual.id}"/>
         <property name="change-log.html.path" value="${docs.html.path}/change-log"/>

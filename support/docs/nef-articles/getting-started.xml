@@ -35,9 +35,7 @@
     <title>Using the Netspective Enterprise Sampler to Sample the NEF Online</title>
 
     <para>The <emphasis>Enterprise Sampler</emphasis> application (available
-    at <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>
-    or <ulink url="http://localhost:8080/nefs-sampler">http://localhost:8080/nefs-sampler</ulink>
-    if you installed the sampler application in your own app server) is an NEF
+    at <ulink url="http://www.netspective.com/sampler">http://www.netspective.com/sampler</ulink>) is an NEF
     application that helps you navigate your way through all the NEF sample
     applications, test beds, and starter projects. The Sampler may also be
     used to obtain both the latest and archived releases of the Frameworks.</para>
@@ -254,7 +252,7 @@
 
           <listitem>
             <para>Click <ulink
-            url="http://sampler.netspective.com/nefs-sampler/downloads/nefs-sample-hello-forms.war">here</ulink>
+            url="http://www.netspective.com/resources/downloads/nefs-sample-hello-forms.war">here</ulink>
             to download the Hello Forms sample application and save it in
             <filename class="directory">resin-x.y.z\webapps</filename>.</para>
           </listitem>

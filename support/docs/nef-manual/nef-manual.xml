@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0 ($Date: 2003-11-23 19:37:12 $)</releaseinfo>
+    <releaseinfo>Release 7.0 ($Date: 2003-12-03 00:37:34 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until December 15, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -1317,7 +1317,7 @@ id="declare-nav-tags-eg-5" />
     &#60;/page&#62;
 
     &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
-role="bold">redirect</emphasis>=&#34;vs-expr:${servlet-context-uri:server-root}/nefs-sampler&#34;/&#62; <co
+role="bold">redirect</emphasis>=&#34;vs-expr:${netspective-url:sampler}&#34;/&#62; <co
 id="declare-nav-tags-eg-6" />
     &#60;page name=&#34;sampler&#34; caption=&#34;Sampler&#34; <emphasis
 role="bold">include</emphasis>=&#34;/some/file.jsp&#34;/&#62; <co
@@ -3090,7 +3090,7 @@ id="project-file-basic-eg-7" />
         applications&#39; Console and click the <guimenu>XDM Tags Reference</guimenu>
         tab. If you&#39;d like to see the reference in the NEF Sampler
         application, go to <ulink
-        url="http://sampler.netspective.com/nefs-sampler/console/reference">http://sampler.netspective.com/nefs-sampler/console/reference</ulink>.
+        url="http://www.netspective.com/console/reference">http://www.netspective.com/console/reference</ulink>.
         The <guimenu>XDM Tags Reference</guimenu> pages provide three
         different views:</para>
 
