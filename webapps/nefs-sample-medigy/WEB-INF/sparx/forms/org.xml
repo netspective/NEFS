@@ -12,7 +12,8 @@
 			<xdm:include template="org.identification-information"/>
 			<xdm:include template="org.service-information"/>
             <on-add-data>
-                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active">
+                <org org-name="field:org_name" org-code="field:org_code" org-abbrev="field:org_abbrev" rec-stat-id="static:Active"
+                    ticker-symbol="field:ticker_symbol" sic-code="field:sic_code">
                 <org-classification rec-stat-id="static:Active" org-type-id="field:org_type_id"/>
                 <org-address address_name="static:Main Address" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
                     city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />

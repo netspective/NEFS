@@ -3,7 +3,7 @@
 <xdm:include file="templates/claim.xml"/>
 
 	<dialogs package="claim">
-		<dialog name="claim" >
+		<dialog name="claim" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Claim"/>
 			<composite name="batch" caption="Batch ID and Date">
 				<field type="integer" name="id" caption="" size="16"/>
@@ -12,8 +12,10 @@
 			
 			<field type="separator" heading="Demographics"/>
 
-			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients" required="yes"/>
-			<field type="select" name="visit_type_id" caption="Type of Visit" choices="schema-enum:Doctor_Visit_Type" required="yes"/>
+			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients"
+                prepend-blank="yes" required="yes"/>
+			<field type="select" name="visit_type_id" caption="Type of Visit" choices="schema-enum:Doctor_Visit_Type"
+                prepend-blank="yes" required="yes"/>
 			<field type="boolean" name="is_accident" caption="Accident?"/>
 			
 			<composite name="accident" caption="Location of Accident">
@@ -29,11 +31,13 @@
 			</composite>
 
 			<composite name="billprov" caption="Billing Provider/Facility">
-				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians" required="yes"/>
-				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs" required="yes"/>
+				<field type="select" name="provider_id" caption="" choices="query:person.get-all-physicians"
+                    prepend-blank="yes" required="yes"/>
+				<field type="select" name="facility_id" caption="" choices="query:org.get-all-orgs"
+                    prepend-blank="yes" required="yes"/>
 			</composite>
 			
-			<field type="select" name="referrer_id" caption="Referring Doctor" choices="query:person.get-all-referring-doctors"/>
+			<field type="select" name="referrer_id" caption="Referring Doctor" prepend-blank="yes" choices="query:person.get-all-referring-doctors"/>
 			
 			<composite name="similar" caption="Current/Similar Illness and Date">
 				<field type="text" name="illness" caption="" size="32"/>
@@ -269,7 +273,16 @@
 					<field type="text" name="comments" caption="Comments" size="32"/>
 				</row-->
             </grid>
-            <!--listener class="app.form.claim.ClaimDialog"/-->
+            <listener class="app.form.claim.ClaimDialog"/>
+            <!--on-add-data>
+                <claim batch-id="field:batch.id" batch-date="batch.date" accident="field:is_accident"
+                    accident-state-id="field:accident.state_id" rec-stat-id="static:Active"
+                    accident-state="field:accident-state" authorization-number="field:prior_auth_num"
+                    service-provider-id="field:servprov.provider_id" billing-provider-id="field:billprov.provider_id"
+                    service-facility-id="field:servprov.facility_id" billing-facility-id="field:billprov.facility_id">
+ 
+                </claim>
+            </on-add-data-->
 		</dialog>
 	</dialogs>
 </xdm:container>

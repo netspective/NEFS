@@ -34,7 +34,7 @@
     </template-processor-type>
     <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
         <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
-        <!--dialog-skin class="app.theme.ProfileDialogSkin" name="profile" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/-->
+        <!--dialog-skin class="app.theme.ModernDialogSkin" name="profile" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/-->
     </theme>
     <!--
        ======================================
@@ -55,8 +55,8 @@
                 <page name="nurse" caption="Nurses" command="query-defn,searchPersons,-,searchNurseDialog"/>
                 <page name="staff" caption="Staff Members" command="query-defn,searchPersons,-,searchStaffDialog"/>
             </page>
-			<page name="org" caption="Organization" command="query-defn,searchOrgs,-,searchDialog">
-                <page name="org" caption="Organization" command="query-defn,searchOrgs,-,searchDialog"/>
+			<page name="org" caption="Organization" >
+                <page name="org" caption="Organization" command="query-defn,searchOrgs,-,searchDialog" default="yes"/>
                 <page name="department" caption="Department" command="query-defn,searchOrgs,-,searchDepartmentDialog"/>
                 <page name="associated-provider" caption="Associated Providers" command="query-defn,searchOrgs,-,searchAssociatedProviderDialog"/>
                 <page name="pharmacy" caption="Pharmacy" command="query-defn,searchOrgs,-,searchPharmacyDialog"/>
@@ -189,8 +189,8 @@
         <page name="claim"  hidden="yes" require-request-param="claim_id">                                                                                                                                                                                                P
             <page name="summary" caption="Summary" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page name="hcfa1500" caption="HCFA 1500" command="query,claimAttribute.profile,-,-,-,detail"/>
-            <page name="1500pdf(pp)" caption="1500 PDF (PP)" command="query,claimAttribute.profile,-,-,-,detail"/>
-            <page name="1500pdf" caption="1500 PDF" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="pdf1500(pp)" caption="1500 PDF (PP)" command="query,claimAttribute.profile,-,-,-,detail"/>
+            <page name="pdf1500" caption="1500 PDF" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page name="errors" caption="Errors" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page name="history" caption="History" command="query,claimAttribute.profile,-,-,-,detail"/>
             <page name="notes" caption="Notes" command="query,claimAttribute.profile,-,-,-,detail"/>
