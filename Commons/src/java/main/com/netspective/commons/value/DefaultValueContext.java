@@ -39,32 +39,38 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.15 2004-04-12 17:56:43 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.16 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.bsf.BSFEngine;
+import org.apache.bsf.BSFManager;
 import org.apache.commons.discovery.tools.DiscoverClass;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
 import org.apache.commons.jexl.JexlHelper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.DefaultScriptContext;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
+import com.netspective.commons.script.ScriptsManager;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.RuntimeEnvironmentFlags;
 
-public class DefaultValueContext implements ValueContext
+public class DefaultValueContext implements ValueContext, ScriptContext, ScriptContext.Initializer
 {
     private static final Log log = LogFactory.getLog(DefaultValueContext.class);
     protected static DiscoverClass discoverClass = new DiscoverClass();
@@ -74,10 +80,37 @@ public class DefaultValueContext implements ValueContext
     private long creationTime;
     private RuntimeEnvironmentFlags environmentFlags;
     private JexlContext jexlContext;
+    private ScriptContext scriptContext;
 
     public DefaultValueContext()
     {
         this.creationTime = System.currentTimeMillis();
+    }
+
+    public void initializeScriptContext(ScriptContext sc) throws ScriptException
+    {
+        sc.registerBean("vc", this);
+    }
+
+    public void registerBean(String variableName, Object instance) throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        scriptContext.registerBean(variableName, instance);
+    }
+
+    public BSFManager getBSFManager() throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        return scriptContext.getBSFManager();
+    }
+
+    public BSFEngine getBSFEngine(Script script) throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        return scriptContext.getBSFEngine(script);
     }
 
     public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
@@ -105,6 +138,11 @@ public class DefaultValueContext implements ValueContext
     public Date getCreationDate()
     {
         return new Date(creationTime);
+    }
+
+    public ScriptsManager getScriptsManager()
+    {
+        return null;
     }
 
     public AccessControlListsManager getAccessControlListsManager()

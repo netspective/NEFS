@@ -39,13 +39,58 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ScriptEngine.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+import org.apache.bsf.BSFManager;
+
+import com.netspective.commons.text.TextUtils;
+
+public class ScriptEngine
 {
-    public TemplateProducers getTemplateProducers();
+    private String name;
+    private String engineClassName;
+    private String[] extensions;
+
+    public ScriptEngine()
+    {
+    }
+
+    public String getEngineClassName()
+    {
+        return engineClassName;
+    }
+
+    public void setEngineClassName(String engineClassName)
+    {
+        this.engineClassName = engineClassName;
+    }
+
+    public String[] getExtensions()
+    {
+        return extensions;
+    }
+
+    public void setExtensions(String extensions)
+    {
+        this.extensions = TextUtils.split(extensions, ",", true);
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public void register()
+    {
+        BSFManager.registerScriptingEngine(name, engineClassName, extensions);
+    }
 }
 

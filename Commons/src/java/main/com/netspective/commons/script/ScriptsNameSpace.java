@@ -39,13 +39,16 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ScriptsNameSpace.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+public interface ScriptsNameSpace
 {
-    public TemplateProducers getTemplateProducers();
-}
+    public Scripts getContainer();
+    public void setContainer(Scripts container);
 
+    String getNameSpaceId();
+    void setNameSpaceId(String identifier);
+}

@@ -39,13 +39,63 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: DefaultScriptContext.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.bsf.BSFEngine;
+import org.apache.bsf.BSFException;
+import org.apache.bsf.BSFManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class DefaultScriptContext implements ScriptContext
 {
-    public TemplateProducers getTemplateProducers();
-}
+    private static final Log log = LogFactory.getLog(DefaultScriptContext.class);
+    private Initializer initializer;
+    private BSFManager bsfManager = new BSFManager();
+    private Map engines = new HashMap();
 
+    public DefaultScriptContext(Initializer initializer)
+    {
+        this.initializer = initializer;
+    }
+
+    public BSFManager getBSFManager()
+    {
+        return bsfManager;
+    }
+
+    public void registerBean(String variableName, Object instance) throws ScriptException
+    {
+        this.bsfManager.registerBean(variableName, instance);
+    }
+
+    public BSFEngine getBSFEngine(Script script) throws ScriptException
+    {
+        String language = script.getLanguage();
+        BSFEngine result = (BSFEngine) engines.get(language);
+        if(result == null)
+        {
+            try
+            {
+                result = bsfManager.loadScriptingEngine(language);
+            }
+            catch (BSFException e)
+            {
+                log.error(e);
+                throw new ScriptException(e);
+            }
+            if(initializer != null)
+                initializer.initializeScriptContext(this);
+
+            engines.put(language, result);
+        }
+
+        return result;
+    }
+}

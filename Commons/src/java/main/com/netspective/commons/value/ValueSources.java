@@ -39,37 +39,43 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.19 2003-12-03 00:32:47 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.20 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
-import java.util.*;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.collections.LRUMap;
 import org.apache.commons.discovery.tools.DiscoverClass;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.collections.LRUMap;
 
-import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.ExceptionValueSource;
-import com.netspective.commons.value.source.StaticListValueSource;
-import com.netspective.commons.value.source.FilesystemEntriesValueSource;
-import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
-import com.netspective.commons.value.source.SystemPropertyValueSource;
-import com.netspective.commons.value.source.JavaExpressionValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.value.exception.ValueSourceNotFoundException;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.exception.UnexpectedValueContextException;
-import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.CountMetric;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsGroup;
-import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.value.exception.UnexpectedValueContextException;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.exception.ValueSourceNotFoundException;
+import com.netspective.commons.value.source.BeanScriptValueSource;
+import com.netspective.commons.value.source.ExceptionValueSource;
+import com.netspective.commons.value.source.FilesystemEntriesValueSource;
+import com.netspective.commons.value.source.GloballyUniqueIdValueSource;
+import com.netspective.commons.value.source.JavaExpressionValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticListValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.source.SystemPropertyValueSource;
+import com.netspective.commons.value.source.ValueSrcExpressionValueSource;
 
 public class ValueSources implements MetricsProducer
 {
@@ -146,6 +152,7 @@ public class ValueSources implements MetricsProducer
         registerValueSource(StaticListValueSource.class);
         registerValueSource(SystemPropertyValueSource.class);
         registerValueSource(RedirectValueSource.class);
+        registerValueSource(BeanScriptValueSource.class);
     }
 
     public Map getValueSourceClassesMap()

@@ -39,10 +39,27 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.55 2004-03-14 06:12:11 aye.thu Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.56 2004-04-27 04:05:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.SqlManager;
@@ -52,6 +69,7 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.lang.ClassPath;
+import com.netspective.commons.script.ScriptsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.Project;
@@ -71,22 +89,8 @@ import com.netspective.sparx.panel.editor.PanelEditorState;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.util.HttpUtils;
-import freemarker.template.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import javax.naming.NamingException;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
+import freemarker.template.Configuration;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
@@ -322,6 +326,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     }
 
     public ConfigurationsManager getConfigurationsManager()
+    {
+        return getProject();
+    }
+
+    public ScriptsManager getScriptsManager()
     {
         return getProject();
     }

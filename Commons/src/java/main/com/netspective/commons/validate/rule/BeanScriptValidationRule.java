@@ -39,13 +39,87 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: BeanScriptValidationRule.java,v 1.1 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.validate.rule;
 
-public interface TemplateProducerParent
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
+import com.netspective.commons.script.BeanScript;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.validate.ValidationContext;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+
+public class BeanScriptValidationRule extends BasicValidationRule implements XmlDataModelSchema.ConstructionFinalizeListener
 {
-    public TemplateProducers getTemplateProducers();
-}
+    private String scriptName;
+    private Script script;
 
+    public BeanScriptValidationRule()
+    {
+    }
+
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
+    {
+        if(script == null && scriptName == null)
+            throw new DataModelException(pc, "bean script expects either 'script' or 'script-name'");
+    }
+
+    public String getScriptName()
+    {
+        return scriptName;
+    }
+
+    public void setScriptName(String scriptName)
+    {
+        this.scriptName = scriptName;
+    }
+
+    public Script createScript()
+    {
+        return new BeanScript();
+    }
+
+    public void addScript(Script script)
+    {
+        this.script = script;
+    }
+
+    public boolean isValid(ValidationContext vc, Value value)
+    {
+        Script activeScript = script;
+        if(scriptName != null)
+        {
+            activeScript = vc.getValidationValueContext().getScriptsManager().getScript(scriptName);
+            if(activeScript == null)
+                throw new RuntimeException("Script '"+ scriptName +"' could not be found.");
+        }
+
+        Object result;
+        try
+        {
+            ScriptContext sc = (ScriptContext) vc;
+            sc.registerBean("value", value);
+            result = activeScript.evaluateAsExpression(sc);
+        }
+        catch (ScriptException e)
+        {
+            throw new NestableRuntimeException(e);
+        }
+
+        if(result instanceof Boolean)
+            return ((Boolean) result).booleanValue();
+
+        if(result != null)
+            return TextUtils.toBoolean(result.toString(), false);
+        else
+            return false;
+    }
+}

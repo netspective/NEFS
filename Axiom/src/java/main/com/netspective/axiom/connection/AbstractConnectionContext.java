@@ -39,18 +39,18 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.17 2004-04-12 18:24:09 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.18 2004-04-27 04:05:00 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.naming.NamingException;
 
@@ -58,14 +58,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.ScriptsManager;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.text.TextUtils;
 
 public abstract class AbstractConnectionContext implements ConnectionContext
@@ -293,5 +294,10 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public Object evaluateExpression(String expr, Map vars)
     {
         return dbvc.evaluateExpression(expr, vars);
+    }
+
+    public ScriptsManager getScriptsManager()
+    {
+        return dbvc.getScriptsManager();
     }
 }

@@ -39,26 +39,27 @@
  */
 
 /**
- * $Id: BasicDatabaseConnValueContext.java,v 1.6 2003-09-02 17:06:56 roque.hernandez Exp $
+ * $Id: BasicDatabaseConnValueContext.java,v 1.7 2004-04-27 04:05:00 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
 
 import java.sql.SQLException;
+
 import javax.naming.NamingException;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.value.DefaultValueContext;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.ConnectionProvider;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.connection.AutoCommitConnectionContext;
 import com.netspective.axiom.connection.TransactionConnectionContext;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.ScriptsManager;
+import com.netspective.commons.value.DefaultValueContext;
 
 public class BasicDatabaseConnValueContext extends DefaultValueContext implements DatabaseConnValueContext
 {
@@ -102,6 +103,11 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     public String translateDataSourceId(String dataSourceId)
     {
         return dataSourceId;
+    }
+
+    public ScriptsManager getScriptsManager()
+    {
+        return getSqlManager();
     }
 
     public AccessControlListsManager getAccessControlListsManager()

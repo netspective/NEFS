@@ -39,13 +39,77 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: BeanScripts.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.Metric;
+
+public class BeanScripts implements Scripts
 {
-    public TemplateProducers getTemplateProducers();
-}
+    private List scripts = new ArrayList();
+    private Map byName = new HashMap();
+    private Set nameSpaceNames = new HashSet();
 
+    public BeanScripts()
+    {
+    }
+
+    public BeanScript createBeanScript()
+    {
+        return new BeanScript();
+    }
+
+    public void add(Script script)
+    {
+        if(script.getName() == null)
+            throw new RuntimeException("Bean scripts must have a name");
+
+        scripts.add(script);
+        byName.put(script.getQualifiedName(), script);
+        if (null != script.getNameSpace())
+            nameSpaceNames.add(script.getNameSpace().getNameSpaceId());
+    }
+
+    public Script get(int i)
+    {
+        return (Script) scripts.get(i);
+    }
+
+    public Script get(String name)
+    {
+        return (Script) byName.get(name);
+    }
+
+    public Set getNames()
+    {
+        return byName.keySet();
+    }
+
+    public Set getNameSpaceNames()
+    {
+        return nameSpaceNames;
+    }
+
+    public int size()
+    {
+        return scripts.size();
+    }
+
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric tpMetric = parent.addCountMetric("Total Script Packages");
+        tpMetric.setSum(nameSpaceNames.size());
+        CountMetric tdMetric = parent.addCountMetric("Total Scripts");
+        tdMetric.setSum(scripts.size());
+    }
+}

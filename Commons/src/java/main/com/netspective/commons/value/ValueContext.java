@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueContext.java,v 1.8 2004-04-12 17:56:43 shahid.shah Exp $
+ * $Id: ValueContext.java,v 1.9 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -48,9 +48,10 @@ import java.util.Date;
 import java.util.Map;
 
 import com.netspective.commons.RuntimeEnvironment;
-import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.script.ScriptsManager;
+import com.netspective.commons.security.AuthenticatedUser;
 
 public interface ValueContext extends RuntimeEnvironment
 {
@@ -73,6 +74,11 @@ public interface ValueContext extends RuntimeEnvironment
      * Returns the default access control lists manager.
      */
     public AccessControlListsManager getAccessControlListsManager();
+
+    /**
+     * Returns the default scripts manager.
+     */
+    public ScriptsManager getScriptsManager();
 
     /**
      * Returns the currently logged-in user, if any (used to retrieve ACLs for a particular user)

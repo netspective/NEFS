@@ -39,49 +39,49 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.44 2004-01-20 22:45:42 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.45 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TreeSet;
-import java.util.ArrayList;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.lang.ClassJavaDoc;
+import com.netspective.commons.lang.JavaDocs;
+import com.netspective.commons.lang.MethodJavaDoc;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedAttributeException;
 import com.netspective.commons.xdm.exception.UnsupportedElementException;
 import com.netspective.commons.xdm.exception.UnsupportedTextException;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.io.InputSourceTracker;
-import com.netspective.commons.io.InputSourceLocator;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.command.Command;
-import com.netspective.commons.command.Commands;
-import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.lang.JavaDocs;
-import com.netspective.commons.lang.MethodJavaDoc;
-import com.netspective.commons.lang.ClassJavaDoc;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 
 /**
  * This class is used to introspect existing classes and allow parsing of XML
@@ -487,7 +487,7 @@ public class XmlDataModelSchema
             this.required = getOptions().getRequiredAttributes().contains(name);
         }
 
-        public ElementDetail(String name, TemplateProducer templateProducer) throws DataModelException
+        public ElementDetail(String name, TemplateProducer templateProducer)
         {
             this.elemName = name;
             this.elemType = TemplateProducer.class;
@@ -792,7 +792,7 @@ public class XmlDataModelSchema
 
             if(XdmEnumeratedAttribute.class.isAssignableFrom(attrType))
             {
-                XdmEnumeratedAttribute ea = null;
+                XdmEnumeratedAttribute ea;
                 try
                 {
                     ea = (XdmEnumeratedAttribute) attrType.newInstance();
@@ -838,11 +838,11 @@ public class XmlDataModelSchema
             if(! pNames.isPrimaryName(attrName))
                 continue;
 
-            XdmBitmaskedFlagsAttribute bfa = null;
+            XdmBitmaskedFlagsAttribute bfa;
             XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) getNestedCreators().get(attrName);
             if(creator != null)
             {
-                Object flagsGetterInstance = null;
+                Object flagsGetterInstance;
                 try
                 {
                     flagsGetterInstance = createInstance();
@@ -1222,7 +1222,7 @@ public class XmlDataModelSchema
                     nestedStorers.put(propNames[pn], new NestedStorer()
                     {
                         public void store(Object parent, Object child)
-                                throws InvocationTargetException, IllegalAccessException, InstantiationException
+                                throws InvocationTargetException, IllegalAccessException
                         {
                             m.invoke(parent, new Object[]{child});
                         }
@@ -1460,10 +1460,7 @@ public class XmlDataModelSchema
                 }
 
                 if(returnVal instanceof XdmBitmaskedFlagsAttribute)
-                {
-                    XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
                     return element;
-                }
             }
 
             UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
@@ -2061,7 +2058,7 @@ public class XmlDataModelSchema
                 {
                     try
                     {
-                        XdmBitmaskedFlagsAttribute bfa = null;
+                        XdmBitmaskedFlagsAttribute bfa;
                         NestedCreator creator = (NestedCreator) nestedCreators.get(attrName);
                         if(creator != null)
                             bfa = (XdmBitmaskedFlagsAttribute) creator.create(parent);
@@ -2113,6 +2110,47 @@ public class XmlDataModelSchema
 
                         case 4:
                             throw new DataModelException(pc, "Too many items in Locale constructor.");
+                    }
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
+            };
+        }
+        else if (ResourceBundle.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException, DataModelException
+                {
+                    String[] items = TextUtils.split(value, ",", true);
+                    switch(items.length)
+                    {
+                        case 1:
+                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0]) });
+                            break;
+
+                        case 2:
+                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1])) });
+                            break;
+
+                        case 3:
+                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], items[2])) });
+                            break;
+
+                        case 4:
+                            m.invoke(parent, new ResourceBundle[] { ResourceBundle.getBundle(items[0], new Locale(items[1], items[2], items[3])) });
+
+                        default:
+                            throw new DataModelException(pc, "Too many items in ResourceBundle constructor.");
                     }
                 }
 

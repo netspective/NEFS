@@ -39,25 +39,33 @@
  */
 
 /**
- * $Id: BasicValidationContext.java,v 1.3 2004-03-23 20:33:30 shahid.shah Exp $
+ * $Id: BasicValidationContext.java,v 1.4 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
 
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import org.apache.bsf.BSFEngine;
+import org.apache.bsf.BSFManager;
+
+import com.netspective.commons.script.DefaultScriptContext;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
 import com.netspective.commons.value.ValueContext;
 
-public class BasicValidationContext implements ValidationContext
+public class BasicValidationContext implements ValidationContext, ScriptContext, ScriptContext.Initializer
 {
     private Map errorsByKey;
     private List contextErrors;
     private List allErrors;
     private ValueContext valueContext;
     private boolean valid = true;
+    private ScriptContext scriptContext;
 
     public BasicValidationContext()
     {
@@ -78,6 +86,32 @@ public class BasicValidationContext implements ValidationContext
         errorsByKey.clear();
         contextErrors = getValidationErrorsForScope(VALIDATIONSCOPE_ENTIRE_CONTEXT);
         allErrors.clear();
+    }
+
+    public void initializeScriptContext(ScriptContext sc) throws ScriptException
+    {
+        sc.registerBean("vc", this);
+    }
+
+    public void registerBean(String variableName, Object instance) throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        scriptContext.registerBean(variableName, instance);
+    }
+
+    public BSFManager getBSFManager() throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        return scriptContext.getBSFManager();
+    }
+
+    public BSFEngine getBSFEngine(Script script) throws ScriptException
+    {
+        if(scriptContext == null)
+            scriptContext = new DefaultScriptContext(this);
+        return scriptContext.getBSFEngine(script);
     }
 
     public boolean isValid()

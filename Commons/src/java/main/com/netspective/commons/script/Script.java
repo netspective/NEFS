@@ -39,13 +39,21 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: Script.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+public interface Script
 {
-    public TemplateProducers getTemplateProducers();
-}
+    public String getName();
+    public String getQualifiedName();
+    public String getLanguage();
+    public String getScript();
+    public String getSource();
+    public ScriptsNameSpace getNameSpace();
 
+    public Object evaluateAsExpression(ScriptContext scriptContext) throws ScriptException;
+    public void execute(ScriptContext scriptContext) throws ScriptException;
+    public Object callFunction(ScriptContext scriptContext, Object className, String methodName, Object[] params) throws ScriptException;
+}

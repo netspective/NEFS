@@ -39,13 +39,31 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: ScriptException.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+import org.apache.commons.lang.exception.NestableException;
+
+public class ScriptException extends NestableException
 {
-    public TemplateProducers getTemplateProducers();
-}
+    public ScriptException()
+    {
+    }
 
+    public ScriptException(String s)
+    {
+        super(s);
+    }
+
+    public ScriptException(String s, Throwable throwable)
+    {
+        super(s, throwable);
+    }
+
+    public ScriptException(Throwable throwable)
+    {
+        super(throwable);
+    }
+}

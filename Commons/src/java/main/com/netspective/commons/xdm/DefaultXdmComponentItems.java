@@ -39,43 +39,51 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.19 2003-12-06 01:09:11 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.20 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import com.netspective.commons.config.ConfigurationsManager;
-import com.netspective.commons.config.Configurations;
-import com.netspective.commons.config.Configuration;
-import com.netspective.commons.config.SystemProperty;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.AccessControlLists;
+import java.util.Set;
+
 import com.netspective.commons.acl.AccessControlList;
+import com.netspective.commons.acl.AccessControlLists;
+import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.report.ReportsManager;
-import com.netspective.commons.report.Reports;
-import com.netspective.commons.report.Report;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.AbstractTabularReport;
-import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
-import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
+import com.netspective.commons.config.Configuration;
+import com.netspective.commons.config.Configurations;
+import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.config.SystemProperty;
 import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.report.Report;
+import com.netspective.commons.report.Reports;
+import com.netspective.commons.report.ReportsManager;
+import com.netspective.commons.report.tabular.AbstractTabularReport;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
+import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
+import com.netspective.commons.script.BeanScriptPackage;
+import com.netspective.commons.script.BeanScripts;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptEngine;
+import com.netspective.commons.script.ScriptsManager;
+import com.netspective.commons.script.ScriptsNameSpace;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.template.TemplateProcessorTypeTemplateConsumer;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 
-public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
+public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager, ScriptsManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     protected static final TemplateProducers templateProducers = new TemplateProducers();
@@ -118,6 +126,8 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     private AccessControlLists aclsManager = new AccessControlLists();
     private Configurations configsManager = new Configurations();
     private Reports reportsManager = new Reports();
+    private BeanScriptPackage activeScriptsNameSpace;
+    private BeanScripts scripts = new BeanScripts();
 
     public static TabularReportColumnTypeTemplate getTabularReportColumnTypes()
     {
@@ -209,6 +219,52 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     public Role getRole(String name) throws RoleNotFoundException
     {
         return getAccessControlLists().getRole(name);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public ScriptEngine createScriptEngine()
+    {
+        return new ScriptEngine();
+    }
+
+    public void addScriptEngine(ScriptEngine scriptEngine)
+    {
+        scriptEngine.register();
+    }
+
+    public ScriptsNameSpace createScripts()
+    {
+        activeScriptsNameSpace = new BeanScriptPackage(scripts);
+        return activeScriptsNameSpace;
+    }
+
+    public void addScripts(ScriptsNameSpace pkg)
+    {
+        activeScriptsNameSpace = null;
+    }
+
+    public Script getScript(String id)
+    {
+        return scripts.get(id);
+    }
+
+    public Set getScriptNames()
+    {
+        return scripts.getNames();
+    }
+
+    public Script createScript()
+    {
+        if(activeScriptsNameSpace != null)
+            return activeScriptsNameSpace.createScript();
+        else
+            return scripts.createBeanScript();
+    }
+
+    public void addScript(Script beanScript)
+    {
+        scripts.add(beanScript);
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

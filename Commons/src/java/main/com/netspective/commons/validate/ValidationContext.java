@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationContext.java,v 1.3 2004-03-24 01:18:07 shahid.shah Exp $
+ * $Id: ValidationContext.java,v 1.4 2004-04-27 04:05:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -68,5 +68,5 @@ public interface ValidationContext
 
     public boolean isValid();
 
-    void reset();
+    public void reset();
 }

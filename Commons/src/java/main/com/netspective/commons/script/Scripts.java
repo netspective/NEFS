@@ -39,13 +39,21 @@
  */
 
 /**
- * $Id: TemplateProducerParent.java,v 1.2 2004-04-27 04:05:32 shahid.shah Exp $
+ * $Id: Scripts.java,v 1.1 2004-04-27 04:05:31 shahid.shah Exp $
  */
 
-package com.netspective.commons.xml.template;
+package com.netspective.commons.script;
 
-public interface TemplateProducerParent
+import java.util.Set;
+
+import com.netspective.commons.metric.MetricsProducer;
+
+public interface Scripts extends MetricsProducer
 {
-    public TemplateProducers getTemplateProducers();
+    public void add(Script script);
+    public Script get(int i);
+    public Script get(String name);
+    public Set getNames();
+    public Set getNameSpaceNames();
+    public int size();
 }
-

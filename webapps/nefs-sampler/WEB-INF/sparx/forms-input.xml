@@ -10,6 +10,65 @@
 
     <!--
        ==============================================================================
+       When writing type-safe Java classes is too cumbersome (such as the prototyping
+       phase) then scripts can be defined using any BSF-enabled scripting language.
+       Scripts may be defined in the <scripts> and <script> elements and used by
+       various consumers such as value sources, validation rules, and dialog actions.
+       Keep in mind that using scripts is MUCH slower than using compiled Java.
+       ==============================================================================
+    -->
+    <scripts package="value">
+        <!-- this script is used by the selection dialog below to fill in dynamic choices;
+             note that because the valueContext is provided, you can get access to the
+             request, response, project, etc using the valueContext variable. The following
+             script may be used as a value source using 'script:value.complex' anywhere a
+             value source is valid. -->
+
+        <script name="complex" language="javascript">
+            function getPresentationValue(valueContext)
+            {
+                var result = new Packages.com.netspective.commons.value.PresentationValue();
+                var choices = result.createItems();
+
+                choices.addItem("Dynamic Choice 1", "D1");
+                choices.addItem("Dynamic Choice 2", "D2");
+                choices.addItem("Dynamic Choice 3", "D3");
+
+                return result;
+            }
+
+            function getValue(valueContext)
+            {
+                var result = new java.util.ArrayList();
+                result.add("D1");
+                result.add("D2");
+                result.add("D3");
+                return result;
+            }
+
+            function hasValue(valueContext)
+            {
+                return true;
+            }
+        </script>
+
+        <!-- if your dynamic value sources don't need to generate presentation choices
+             (such as for list boxes) you don't need to define the getPresentationValue()
+             function; the hasValue() function is optional, too. The following is a fully
+             functional value source script that can be used by calling 'script:value.simple'
+             anywhere a value source is valid. -->
+
+        <script name="simple" language="javascript">
+            function getValue(valueContext)
+            {
+                return "Server-side JavaScript expr: " + (2 + 2);
+            }
+        </script>
+
+    </scripts>
+
+    <!--
+       ==============================================================================
        This dialog package contains various dialogs for demonstrating NEFS built-in
        fields and their respective funtionalities.
        ==============================================================================
@@ -146,6 +205,8 @@
             <director submit-caption="Submit"/>
             <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+
+            <field type="select" name="sel_field_dynamic" caption="Select Field (Dynamic Choices)" choices="script:value.complex"/>
         </dialog>
 
         <dialog type="input-sample" class="app.form.input.SelectFieldsAutoSubmit" name="select-fields-auto-submit" allow-multiple-executes="yes">
