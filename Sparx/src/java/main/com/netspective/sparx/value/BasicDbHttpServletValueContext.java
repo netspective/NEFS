@@ -39,54 +39,54 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.51 2004-01-08 14:10:35 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.52 2004-03-07 20:08:18 aye.thu Exp $
  */
 
 package com.netspective.sparx.value;
 
-import java.sql.SQLException;
-import java.io.IOException;
-import java.io.File;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSession;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.naming.NamingException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import freemarker.template.Configuration;
-
-import com.netspective.axiom.value.BasicDatabaseConnValueContext;
-import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.commons.RuntimeEnvironment;
+import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.lang.ClassPath;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.sparx.ProjectManager;
-import com.netspective.sparx.util.HttpUtils;
-import com.netspective.sparx.console.ConsoleServlet;
-import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
 import com.netspective.sparx.connection.HttpSessionBindableAutoCommitConnectionContext;
-import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
+import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationControllerServletOptions;
 import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.form.DialogsManager;
-import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.panel.PanelEditor;
+import com.netspective.sparx.panel.PanelEditorState;
+import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.config.ConfigurationsManager;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.RuntimeEnvironmentFlags;
-import com.netspective.commons.RuntimeEnvironment;
-import com.netspective.commons.lang.ClassPath;
-import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.util.HttpUtils;
+import freemarker.template.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import javax.naming.NamingException;
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
@@ -529,5 +529,15 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Configuration getFreeMarkerConfiguration()
     {
         return ((NavigationControllerServlet) getHttpServlet()).getFreeMarkerConfiguration();
+    }
+
+    /**
+     * Gets the panel editor state
+     *
+     * @return  Null if the current context does not contain a panel editor state
+     */
+    public PanelEditorState getPanelEditorState()
+    {
+        return (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
     }
 }
