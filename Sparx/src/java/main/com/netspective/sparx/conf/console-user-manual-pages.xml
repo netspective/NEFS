@@ -18,6 +18,10 @@
             <page name="input-source" caption="Source">
                 <panels>
                     <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Specifying the Default Project File"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
                 </panels>
             </page>
             <page name="build" caption="Ant Build" heading="Execute Ant Build Target">
