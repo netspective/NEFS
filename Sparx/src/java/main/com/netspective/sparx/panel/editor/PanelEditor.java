@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.2 2004-03-12 06:53:14 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.3 2004-03-14 00:54:32 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -491,7 +491,10 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
-     * Renders the panel editor
+     * Renders the panel editor. When the panel editor is in ADD, EDIT, or DELETE modes, it has an active element
+     * and the display of the editor is broken into two columns. The left column is for display of the
+     * active element's "action" item while the right column contains all the elements in their inactive display
+     * mode.
      *
      * @param writer    writer to render the output to
      * @param nc        current navigation context
@@ -515,7 +518,7 @@ public class PanelEditor extends AbstractPanel
         if (mode != PanelEditor.MODE_DISPLAY && mode != PanelEditor.MODE_MANAGE)
         {
             skin = nc.getActiveTheme().getTemplateSkin("panel-editor-compressed");
-            pvc.setPanelRenderFlags(RENDERFLAG_NOFRAME | RENDERFLAG_HIDE_FRAME_HEADING);
+            //pvc.setPanelRenderFlags(RENDERFLAG_NOFRAME | RENDERFLAG_HIDE_FRAME_HEADING);
 
         }
         else
@@ -528,25 +531,31 @@ public class PanelEditor extends AbstractPanel
         skin.renderFrameBegin(writer, pvc);
 
         String activeElement = state.getActiveElement();
-        StringWriter activeWriter = new StringWriter();
+        StringWriter activeEditorWriter = new StringWriter();
+        StringWriter activeDisplayWriter = new StringWriter();
         StringWriter inactiveWriter = new StringWriter();
         PanelEditorContentElement[] elements = getElementsAsArray();
         for (int i=0; i < elements.length; i++)
         {
             if (activeElement != null && elements[i].getName().equals(activeElement))
-                elements[i].renderElement(activeWriter, nc, state, true);
+            {
+                elements[i].renderEditorContent(activeEditorWriter, nc, state);
+                elements[i].renderDisplayContent(activeDisplayWriter, nc, state);
+            }
             else
-                elements[i].renderElement(inactiveWriter, nc, state, false);
+            {
+                elements[i].renderDisplayContent(inactiveWriter, nc, state);
+            }
         }
-
-        if (activeWriter.getBuffer().length() > 0)
+        writer.write("<table class=\"panel-editor\" width=\"100%\" cellpadding==\"3\" callspacing=\"0\">\n");
+        writer.write("<tr>\n");
+        if (activeElement != null)
         {
-            writer.write(inactiveWriter.getBuffer().toString());
+            writer.write("<td valign=\"top\">" + activeEditorWriter.getBuffer().toString() + "</td>");
         }
-        else
-        {
-            writer.write(inactiveWriter.getBuffer().toString());
-        }
+        writer.write("<td valign=\"top\">" + (activeElement != null ? activeDisplayWriter.getBuffer().toString() : "") +
+                inactiveWriter.getBuffer().toString() + "</td>");
+        writer.write("</tr>\n</table>");
         skin.renderFrameEnd(writer, pvc);
 
     }
@@ -623,7 +632,7 @@ public class PanelEditor extends AbstractPanel
             HtmlPanelAction addAction = banner.createAction();
             PanelEditorContentElement element = elements[i];
             String addUrl = generatePanelActionUrl(PanelEditor.MODE_ADD);
-            addUrl = element.appendElementInfoToUrl(addUrl, PanelEditor.MODE_ADD);
+            addUrl = element.appendElementInfoToActionUrl(addUrl, PanelEditor.MODE_ADD);
             addAction.setCaption(new StaticValueSource("Add " + element.getCaption()));
             addAction.setRedirect(new RedirectValueSource(addUrl));
             actions.add(addAction);

@@ -39,16 +39,18 @@
  */
 
 /**
- * $Id: PanelEditorContentElement.java,v 1.2 2004-03-12 06:53:14 aye.thu Exp $
+ * $Id: PanelEditorContentElement.java,v 1.3 2004-03-14 00:54:32 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
 
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanel;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -61,6 +63,22 @@ import java.util.List;
  */
 public class PanelEditorContentElement extends HtmlLayoutPanel
 {
+    public static final int HIGHLIGHT_ACTIVE_ITEM = HtmlPanel.START_CUSTOM * 2;
+
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
+    {
+        new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HIGHLIGHT_ACTIVE_ITEM", HIGHLIGHT_ACTIVE_ITEM)
+
+    };
+
+    public class Flags extends  XdmBitmaskedFlagsAttribute
+    {
+        public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
+        {
+            return FLAG_DEFNS;
+        }
+    }
+
     public static final String PANELTYPE_TEMPLATE_NAMESPACE = PanelEditorContentElement.class.getName();
     public static final String PANELTYPE_ATTRNAME_TYPE = "type";
     public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
@@ -90,6 +108,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     private String caption;
     private String description;
     private PanelEditor parent;
+    private Flags flags = new Flags();
     /* flag to indicate if the record actions for this panel have been prepared or not */
     private boolean initialized = false;
     private List elementTypes = new ArrayList();
@@ -107,6 +126,16 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
     public void registerTemplateConsumption(Template template)
     {
         elementTypes.add(template.getTemplateName());
+    }
+
+    public Flags getFlags()
+    {
+        return flags;
+    }
+
+    public void setFlags(Flags flags)
+    {
+        this.flags.copy(flags);
     }
 
     public String getCaption()
@@ -169,7 +198,12 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
      * @param writer
      * @param state
      */
-    public void renderElement(Writer writer, NavigationContext nc, PanelEditorState state, boolean active) throws IOException
+    public void renderDisplayContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
+    {
+
+    }
+
+    public void renderEditorContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
     {
 
     }
@@ -179,7 +213,7 @@ public class PanelEditorContentElement extends HtmlLayoutPanel
 
     }
 
-    public String appendElementInfoToUrl(String url, int actionMode)
+    public String appendElementInfoToActionUrl(String url, int actionMode)
     {
         url = url + "," +  getName();
         return url;
