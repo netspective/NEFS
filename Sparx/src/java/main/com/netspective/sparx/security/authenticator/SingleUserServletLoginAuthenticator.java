@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.3 2003-08-24 18:48:27 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.4 2003-08-28 13:03:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -155,7 +155,7 @@ public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
         {
             String loginPasswordUnencrypted = commandLine.getOptionValue('p');
             if(loginPasswordUnencrypted != null)
-                loginPasswordEncrypted = Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, loginPasswordUnencrypted);
+                loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(loginPasswordUnencrypted);
         }
 
         if(commandLine.hasOption('s'))

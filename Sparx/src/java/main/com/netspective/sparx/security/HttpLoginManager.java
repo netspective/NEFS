@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.8 2003-08-28 00:45:43 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.9 2003-08-28 13:03:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -70,6 +70,7 @@ import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.acl.RoleNotFoundException;
 
 public class HttpLoginManager
 {
@@ -278,8 +279,10 @@ public class HttpLoginManager
      *            LoginDialogContext that was constructed by the LoginDialog.
      * @param user The authenticated user.
      */
-    public void applyAccessControls(LoginDialogContext ldc, AuthenticatedUser user)
+    public void applyAccessControls(LoginDialogContext ldc, AuthenticatedUser user) throws RoleNotFoundException
     {
+        if(ldc.getUserRoleNames() != null)
+            user.setRoles(ldc.getAccessControlListsManager(), ldc.getUserRoleNames());
     }
 
     public AuthenticatedUser getAuthenticatedUser(HttpSession session)

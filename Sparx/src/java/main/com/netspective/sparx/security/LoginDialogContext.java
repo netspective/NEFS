@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.3 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.4 2003-08-28 13:03:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -55,10 +55,16 @@ public class LoginDialogContext extends DialogContext
 {
     private boolean hasRememberedValues;
     private boolean hasEncryptedPassword;
+    private String[] userRoleNames;
 
     public LoginDialog getLoginDialog()
     {
         return (LoginDialog) getDialog();
+    }
+
+    public String encryptPlainTextPassword(String plainTextPassword)
+    {
+        return Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, plainTextPassword);
     }
 
     public String getUserIdInput()
@@ -71,7 +77,7 @@ public class LoginDialogContext extends DialogContext
     {
         LoginDialog loginDialog = (LoginDialog) getDialog();
         String password = getFieldStates().getState(loginDialog.getPasswordFieldName()).getValue().getTextValue();
-        return encrypted ? Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, password) : password;
+        return encrypted ? encryptPlainTextPassword(password) : password;
     }
 
     public boolean getRememberIdInput()
@@ -101,6 +107,16 @@ public class LoginDialogContext extends DialogContext
 
         hasRememberedValues = false;
         return false;
+    }
+
+    public String[] getUserRoleNames()
+    {
+        return userRoleNames;
+    }
+
+    public void setUserRoleNames(String[] userRoleNames)
+    {
+        this.userRoleNames = userRoleNames;
     }
 
     public boolean hasRememberedValues()
