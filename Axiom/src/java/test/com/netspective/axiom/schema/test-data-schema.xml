@@ -85,7 +85,7 @@
             <column name="auto_inc_column" primary-key="yes" type="auto-inc" descr="Auto Inc Column"/>
             <column name="text_set_column" type="text-set" descr="Text Set Column"/>
             <column xdm:param-enumerationTable="Enum_set_Lookup" name="enum_set_column" type="enum-set" descr="Enum Set Column"/>
-            <column name="column_a" indexed="yes" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+            <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
             <column name="enumIdRef" lookupref="Enum_set_Lookup" descr="Testing the EnumerationIdRefColumn"/>
             <column name="column_b" indexed="yes" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
             <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
