@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Schemas.java,v 1.2 2003-09-29 01:55:38 shahid.shah Exp $
+ * $Id: Schemas.java,v 1.3 2003-10-17 15:56:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -49,6 +49,7 @@ import java.util.Set;
 public interface Schemas
 {
     public void add(Schema schema);
+    public Schema getDefault();
     public Schema get(int i);
     public Schema getByName(String name);
     public Schema getByNameOrXmlNodeName(String name);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemasCollection.java,v 1.3 2003-09-29 01:55:38 shahid.shah Exp $
+ * $Id: SchemasCollection.java,v 1.4 2003-10-17 15:56:57 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -90,6 +90,11 @@ public class SchemasCollection implements Schemas
         return modified;
     }
 
+    public Schema getDefault()
+    {
+        return get(0);
+    }
+
     public Schema get(int i)
     {
         return (Schema) schemas.get(i);
@@ -130,7 +135,7 @@ public class SchemasCollection implements Schemas
         switch(parts.length)
         {
             case 1:
-                schema = get(0); // the "default" schema
+                schema = getDefault(); // the "default" schema
                 tableName = parts[0];
                 break;
 

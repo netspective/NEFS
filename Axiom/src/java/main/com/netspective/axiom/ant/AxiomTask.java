@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.9 2003-08-31 22:40:44 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.10 2003-10-17 15:56:24 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -240,7 +240,7 @@ public class AxiomTask extends XdmComponentTask
             if(sqlManager.getSchemas().size() > 1)
                 throw new BuildException("No schema attribute provided. Available: " + sqlManager.getSchemas().getNames());
             else if(sqlManager.getSchemas().size() == 1)
-                return sqlManager.getSchemas().get(0);
+                return sqlManager.getSchemas().getDefault();
             else
             {
                 if(throwExceptionIfNotFound)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaEnumerationsValueSource.java,v 1.2 2003-08-28 03:32:15 aye.thu Exp $
+ * $Id: SchemaEnumerationsValueSource.java,v 1.3 2003-10-17 15:57:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -148,7 +148,7 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
             if(schemas.size() == 0)
                 throw new RuntimeException("No schemas available in SQL Manager.");
 
-            Schema schema = schemaName == null ? schemas.get(0) : schemas.getByNameOrXmlNodeName(schemaName);
+            Schema schema = schemaName == null ? schemas.getDefault() : schemas.getByNameOrXmlNodeName(schemaName);
             if(schema == null)
                 throw new RuntimeException("Schema '"+ schemaName +"' not found.");
 
