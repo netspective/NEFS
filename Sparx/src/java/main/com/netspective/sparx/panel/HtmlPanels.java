@@ -39,11 +39,15 @@
  */
 
 /**
- * $Id: HtmlPanels.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: HtmlPanels.java,v 1.3 2004-03-26 14:25:16 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
 
+/**
+ * Interface providing a container for panels declared in a page.Provides
+ * functionalities to set panel style and add/retrieve individual panels.
+ */
 public interface HtmlPanels
 {
     public void add(HtmlPanel panel);

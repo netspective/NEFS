@@ -105,7 +105,7 @@ import java.util.Map;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.64 2004-03-25 15:15:01 zahara.khan Exp $
+ * @version $Id: NavigationPage.java,v 1.65 2004-03-26 14:21:45 zahara.khan Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -908,6 +908,11 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return description;
     }
 
+    /**
+     * Sets static string or dynamic text as the page description.
+     *
+     * @param description value source object conatining page description
+     */
     public void setDescription(ValueSource description)
     {
         this.description = description;
@@ -1149,6 +1154,12 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return bodyCommandExpr;
     }
 
+    /**
+     * Sets the command expression to be used by the <code>Command</code> interface for generating
+     * the page body.
+     *
+     * @param bodyCommandExpr
+     */
     public void setCommandExpr(ValueSource bodyCommandExpr)
     {
         this.bodyCommandExpr = bodyCommandExpr;
@@ -1173,6 +1184,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return dialogNextActionUrl;
     }
 
+    /**
+     * Sets the next action URL (to be used instead of a next action provider) for
+     * this particular page. The next action represents the action to be performed
+     * after dialog execution.
+     *
+     * @param dialogNextActionUrl URL for the next action in work flow
+     */
     public void setDialogNextActionUrl(ValueSource dialogNextActionUrl)
     {
         // if we have a specific next action provided, then we become our own provider

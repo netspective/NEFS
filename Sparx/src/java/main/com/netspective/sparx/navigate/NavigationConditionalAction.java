@@ -49,7 +49,7 @@
  *
  * @author Shahid N. Shah
  *
- * $Id: NavigationConditionalAction.java,v 1.4 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: NavigationConditionalAction.java,v 1.5 2004-03-26 14:23:54 zahara.khan Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -138,6 +138,11 @@ public class NavigationConditionalAction implements TemplateConsumer
         return name;
     }
 
+    /**
+     * Name of the conditional action for a navigation path item.
+     *
+     * @param name the name of the conditional action
+     */
     public void setName(String name)
     {
         this.name = name;

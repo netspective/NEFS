@@ -39,11 +39,15 @@
  */
 
 /**
- * $Id: NavigationPathListener.java,v 1.1 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPathListener.java,v 1.2 2004-03-26 14:24:06 zahara.khan Exp $
  */
 
 package com.netspective.sparx.navigate.listener;
 
+/**
+ * Interface to incorporate custom page navigation logic.  This listener is invoked
+ * when state changes occur in the navigation path.
+ */
 public interface NavigationPathListener
 {
 }

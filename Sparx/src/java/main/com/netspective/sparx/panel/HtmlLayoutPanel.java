@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.24 2004-03-16 05:49:06 aye.thu Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.25 2004-03-26 14:25:16 zahara.khan Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -57,6 +57,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 
+/**
+ * Main class for handling the XDM tag &lt;Panels&gt;. Serves as the container of
+ * multiple panels.  Provides functionalities for automatically rendering the
+ * layout, for the multiple panels, based on the set style.
+ */
 public class HtmlLayoutPanel implements HtmlPanel
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -106,6 +111,12 @@ public class HtmlLayoutPanel implements HtmlPanel
         return identifier;
     }
 
+    /**
+     * Sets the identifier to be used for this panel container. An identifier is a
+     * field whose values may only contain uppercase letters, numbers, and an underscore.
+     *
+     * @param identifier identifier for the panel container
+     */
     public void setIdentifier(String identifier)
     {
         this.identifier = identifier;
@@ -116,6 +127,12 @@ public class HtmlLayoutPanel implements HtmlPanel
         return height;
     }
 
+
+    /**
+     * Sets the height of this panel container.
+     *
+     * @param height height of this panel container
+     */
     public void setHeight(int height)
     {
         this.height = height;
@@ -126,6 +143,11 @@ public class HtmlLayoutPanel implements HtmlPanel
         return width;
     }
 
+    /**
+     * Sets the width of this panel conainer
+     *
+     * @param width width of the panel
+     */
     public void setWidth(int width)
     {
         this.width = width;
@@ -191,6 +213,13 @@ public class HtmlLayoutPanel implements HtmlPanel
         return children.getStyle();
     }
 
+    /**
+     * Sets the style for the panels container and all the panels it contains.
+     * Sparx provides some built-in panel styles such as tabbed, two-columns, vertical
+     * and horizontal.
+     *
+     * @param style style for the panels in this container
+     */
     public void setStyle(HtmlPanelsStyleEnumeratedAttribute style)
     {
         children.setStyle(style);
@@ -216,6 +245,13 @@ public class HtmlLayoutPanel implements HtmlPanel
         return allowViewSource;
     }
 
+    /**
+     * Sets whether or not to allow the user to view the XML source for the panels.
+     *
+     * @param allowViewSource if <code>true</code>, a link is displayed for viewing
+     *                        the XDM code in a separate panel.  If <code>no</code>,
+     *                        the link for viewing XDM code is not displayed.
+     */
     public void setAllowViewSource(boolean allowViewSource)
     {
         this.allowViewSource = allowViewSource;
