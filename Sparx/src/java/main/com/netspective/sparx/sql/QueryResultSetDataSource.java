@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.4 2003-08-31 23:02:24 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.5 2003-09-02 06:39:33 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.ValueSource;
 
 public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSource
@@ -88,6 +89,23 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
             {
                 log.error("Unable to close result set", e);
                 throw new NestableRuntimeException(e);
+            }
+            finally
+            {
+                // failing to close result set would mean the connection wasn't closed
+                try
+                {
+                    // if the result set was closed properly, then the connection context would be NULL
+                    if (queryResultSet.getConnectionContext() != null)
+                    {
+                        ConnectionContext cc = queryResultSet.getConnectionContext();
+                        cc.getDatabaseValueContext().returnConnection(cc);
+                    }
+                }
+                catch (SQLException e)
+                {
+                    log.error("Unable to close connection", e);
+                }
             }
         }
     }
