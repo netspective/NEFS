@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.60 2003-10-16 15:21:54 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.61 2003-10-16 15:50:12 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -95,7 +95,6 @@
 
     <dialog-type name="ant-build" class="com.netspective.sparx.ant.AntBuildDialog">
         <frame heading="Ant Build"/>
-        <name>antBuild</name>
         <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
         <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
         <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
@@ -110,11 +109,11 @@
     <dialog-execute-handler name="record-editor" class="com.netspective.sparx.form.handler.DialogExecuteRecordEditorHandler"/>
 
     <ant-project id="project" caption="Project" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-project.xml" default="yes">
-        <dialog type="ant-build"/>
+        <dialog type="ant-build" name="project_ant_build"/>
     </ant-project>
 
     <ant-project id="nefs" caption="NEFS/Sparx" file="servlet-context-path:/WEB-INF/sparx/conf/ant-build-nefs.xml">
-        <dialog type="ant-build"/>
+        <dialog type="ant-build" name="nefs_ant_build"/>
     </ant-project>
 
 </xdm:container>
