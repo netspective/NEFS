@@ -39,13 +39,12 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.2 2003-05-07 03:39:17 shahid.shah Exp $
+ * $Id: ProductRelease.java,v 1.3 2003-06-16 14:31:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
 
 import com.netspective.commons.Product;
-import com.netspective.axiom.BuildLog;
 
 public class ProductRelease implements Product
 {
