@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.3 2003-06-26 05:57:29 roque.hernandez Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.4 2003-07-02 13:54:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -867,7 +867,11 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         String sql = "update " + table.getName() + " set " + setsSql;
         if (whereCond != null)
-            sql += " where " + whereCond;
+        {
+            if(! whereCond.startsWith("where"))
+                sql += " where";
+            sql += " " + whereCond;
+        }
 
         if(execute)
         {
@@ -923,7 +927,11 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         String sql = "delete from " + table.getName();
         if (whereCond != null)
-            sql += " where " + whereCond;
+        {
+            if(! whereCond.startsWith("where"))
+                sql += " where";
+            sql += " " + whereCond;
+        }
 
         if(execute)
         {
