@@ -51,6 +51,7 @@ import com.netspective.axiom.policy.MySqlDatabasePolicy;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
 import com.netspective.axiom.policy.SqlServerDatabasePolicy;
+import com.netspective.axiom.policy.Db2DatabasePolicy;
 import com.netspective.commons.validate.ValidationUtils;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
@@ -86,6 +87,7 @@ public class DatabasePolicies
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(HSqlDbDatabasePolicy.class, HSqlDbDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(MySqlDatabasePolicy.class, MySqlDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(OracleDatabasePolicy.class, OracleDatabasePolicy.class.getName()));
+        registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(Db2DatabasePolicy.class, Db2DatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(PostgreSqlDatabasePolicy.class, PostgreSqlDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(SqlServerDatabasePolicy.class, SqlServerDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(AccessDatabasePolicy.class, AccessDatabasePolicy.class.getName()));
