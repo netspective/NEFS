@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.7 2003-10-21 15:31:56 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.8 2003-10-22 15:32:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -62,6 +62,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.value.source.SqlExpressionValueSource;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
@@ -328,6 +331,16 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
     }
 
+    private void setColumnSqlExpression(ColumnValue columnValue, ValueSource vs, SchemaRecordEditorDialogContext sredc)
+    {
+        DbmsSqlText sqlText = columnValue.createSqlExpr();
+        DatabasePolicies.DatabasePolicyEnumeratedAttribute dbms = new DatabasePolicies.DatabasePolicyEnumeratedAttribute();
+        dbms.setValue(vs.getSpecification().getProcessingInstructions());
+        sqlText.setDbms(dbms);
+        sqlText.setSql(vs.getTextValue(sredc));
+        columnValue.addSqlExpr(sqlText);
+    }
+
     /******************************************************************************************************************
      ** Data population (placing column values into fields) methods                                                  **
      ******************************************************************************************************************/
@@ -336,6 +349,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         // make sure auto-mapping expansion is taken care of
         SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
+        if(! stte.isTableFound())
+            return;
 
         DialogContext.DialogFieldStates states = sredc.getFieldStates();
         HttpServletRequest request = sredc.getHttpRequest();
@@ -573,6 +588,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
+            else if (vs instanceof SqlExpressionValueSource)
+                setColumnSqlExpression(columnValue, vs, sredc);
             else
                 columnValue.setTextValue(vs.getTextValue(sredc));
         }
@@ -675,6 +692,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
+            else if (vs instanceof SqlExpressionValueSource)
+                setColumnSqlExpression(columnValue, vs, sredc);
             else
                 columnValue.setTextValue(vs.getTextValue(sredc));
         }
@@ -774,6 +793,8 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
+            else if (vs instanceof SqlExpressionValueSource)
+                setColumnSqlExpression(columnValue, vs, sredc);
             else
                 columnValue.setTextValue(vs.getTextValue(sredc));
         }
