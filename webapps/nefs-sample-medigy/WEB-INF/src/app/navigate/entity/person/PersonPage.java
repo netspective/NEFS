@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.3 2004-03-06 17:23:02 aye.thu Exp $
+ * $Id: PersonPage.java,v 1.4 2004-03-07 02:55:14 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
@@ -53,16 +53,13 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.panel.PanelEditor;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 public abstract class PersonPage extends EntityPage implements PersonSubtypePage
@@ -166,18 +163,5 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
 
         ((PersonPageState) nc.getActiveState()).setActivePerson(activePerson);
         return true;
-    }
-
-    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
-    {
-        HttpServletRequest request = dc.getHttpRequest();
-        String peName = (String) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
-        if (peName != null)
-        {
-            String currentMode = (String) request.getAttribute(PanelEditor.CURRENT_MODE_CONTEXT_ATTRIBUTE);
-            String nextMode = (String) request.getAttribute(PanelEditor.PREV_MODE_CONTEXT_ATTRIBUTE);
-            return PanelEditor.calculateNextMode(dc, peName, currentMode, nextMode, null);
-        }
-        return super.getDialogNextActionUrl(dc, defaultUrl);
     }
 }
