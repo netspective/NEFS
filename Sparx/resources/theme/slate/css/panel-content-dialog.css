@@ -13,8 +13,13 @@
 .dialog-fields-separator-link:hover   { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; }
 
 
-.dialog-input-required              { color: #000; font-family: Tahoma; background: white url(../images/panel/input/content-required.gif) no-repeat right top; padding-left: 3px; border: solid 1px #009; width: auto }
+.dialog-input-required { color: #000; font-family: Tahoma; background: white url(../images/panel/input/content-required.gif) no-repeat right top; padding-left: 3px; border: solid 1px #009; width: auto }
 .dialog-input          { color: #000; font-family: Tahoma; padding-left: 3px; border: solid 1px #009; width: auto }
 .dialog-select         { color: black; font-family: Tahoma; border: solid 1px #009 }
+
 .dialog-fields-hint-table { padding-left: 7px; width: auto; height: 12px }
 .dialog-fields-hint { color: #696969; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top }
+.dialog-fields-hint-hidden { display: none; color: #696969; font-size: 10px; font-family: Tahoma; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top }
+
+.dialog-fields-errors { color: red; font-size: 10px; font-family: Tahoma; }
+.accesskey { text-decoration: underline;}
