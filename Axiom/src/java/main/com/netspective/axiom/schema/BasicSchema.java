@@ -77,6 +77,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     public static final String TEMPLATEELEMNAME_TABLE_TYPE = "table-type";
     public static final String TEMPLATEELEMNAME_INDEX_TYPE = "index-type";
     public static final String TEMPLATEELEMNAME_PRESENTATION = "presentation";
+    public static final String TEMPLATEELEMNAME_HIBERNATE = "hibernate";
+    public static final String TEMPLATEELEMNAME_HIBERNATE_ID = "hibernate-id";
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final TableComparator TABLE_COMPARATOR = new TableComparator();
     public static final TableTreeNodeComparator TABLE_TREE_NODE_COMPARATOR = new TableTreeNodeComparator();
@@ -148,6 +150,16 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     public String getIndexTypesTemplatesNameSpaceId()
     {
         return "/schema/" + getName() + "/index-type";
+    }
+
+    public String getHibernateIdTemplatesNameSpaceId()
+    {
+        return "/schema/" + getName() + "/hibernate-id";
+    }
+
+    public String getHibernateTemplatesNameSpaceId()
+    {
+        return "/schema/" + getName() + "/hibernate";
     }
 
     public TemplateProducers getTemplateProducers()

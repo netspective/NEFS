@@ -240,6 +240,11 @@ public class ColumnsCollection implements Columns
             return COLUMN_INDEX_NOT_FOUND;
     }
 
+    public List getList()
+    {
+        return columns;
+    }
+
     public int size()
     {
         return columns.size();

@@ -414,6 +414,16 @@ public interface Column extends TemplateConsumer
     public TemplateProducer getPresentation();
 
     /**
+     * Return the embedded Hibernate id mapping template
+     */
+    public TemplateProducer getHibernateIdMappingTemplateProducer();
+
+    /**
+     * Return the embedded Hibernate property mapping template
+     */
+    public TemplateProducer getHibernateMappingTemplateProducer();
+
+    /**
      * Find all the presentation templates defined in this column and place copies of them into the given table dialog
      * template.
      *

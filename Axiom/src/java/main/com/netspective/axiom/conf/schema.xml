@@ -27,6 +27,19 @@
         <presentation>
             <field name="${column.getName()}" type="text" caption="${column.getCaption()}" max-length="${column.getSize()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="string">
+                <column name="${column.getName()}" length="${column.getSize()}"/>
+                <generator class="assigned"/>
+            </id>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="string">
+                <column name="${column.getName()}" length="${column.getSize()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="float" class="com.netspective.axiom.schema.column.type.FloatColumn">
@@ -38,6 +51,17 @@
         <presentation>
             <field name="${column.getName()}" type="float" size="16" min="0.0" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <meta attribute="scope-set">protected</meta>
+            <id name="${column.getJavaPropertyName()}" type="float" column="${column.getName()}"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="float">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="integer" class="com.netspective.axiom.schema.column.type.IntegerColumn">
@@ -49,6 +73,17 @@
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="99999999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <meta attribute="scope-set">protected</meta>
+            <id name="${column.getJavaPropertyName()}" type="integer" column="${column.getName()}"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="integer">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="small-int" class="com.netspective.axiom.schema.column.type.ShortIntegerColumn">
@@ -60,6 +95,17 @@
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="9999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <meta attribute="scope-set">protected</meta>
+            <id name="${column.getJavaPropertyName()}" type="short" column="${column.getName()}"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="short">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="long-integer" class="com.netspective.axiom.schema.column.type.LongIntegerColumn">
@@ -71,6 +117,17 @@
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <meta attribute="scope-set">protected</meta>
+            <id name="${column.getJavaPropertyName()}" type="long" column="${column.getName()}"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="long">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="boolean" class="com.netspective.axiom.schema.column.type.BooleanColumn">
@@ -84,6 +141,11 @@
         <presentation>
             <field name="${column.getName()}" type="boolean" style="radio" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="boolean">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="data-block" class="com.netspective.axiom.schema.column.type.DataBlockColumn">
@@ -94,6 +156,11 @@
             <define dbms="postgres" xdm:replace-template-expressions="no">bytea</define>
         </sql-ddl>
         <jdbc-type>CLOB</jdbc-type>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="clob">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="xmltype" class="com.netspective.axiom.schema.column.type.DataBlockColumn">
@@ -102,6 +169,11 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">xmltype</define>
         </sql-ddl>
         <jdbc-type>CLOB</jdbc-type>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="clob">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <!-- ***************************************************************************
@@ -117,6 +189,17 @@
         <presentation>
             <field name="${column.getName()}" type="date" size="16" format="MM-dd-yyyy" min="01-01-1900" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="date" column="${column.getName()}"/>
+            <generator class="assigned"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="date">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="date-time" class="com.netspective.axiom.schema.column.type.DateTimeColumn">
@@ -129,6 +212,17 @@
         <presentation>
             <field name="${column.getName()}" type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/> <!-- escape : in 'min' since it's a value source -->
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="timestamp" column="${column.getName()}"/>
+            <generator class="assigned"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="timestamp">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <!-- this is a regular date/time column but there is no <presentation> tag and has a useful default -->
@@ -147,6 +241,17 @@
             <default dbms="hsqldb">now()</default>
             <default dbms="oracle">SYSTIMESTAMP</default>
         </value-defn>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="timestamp" column="${column.getName()}"/>
+            <generator class="assigned"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="timestamp" insert="false" update="false">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="update-stamp" type="date-time" class="com.netspective.axiom.schema.column.type.UpdateStampColumn"/>
@@ -163,6 +268,17 @@
             <!-- escape : in 'min' since it's a value source -->
             <field name="${column.getName()}" type="time" size="16" format="H:mm" min="00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
+
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="time" column="${column.getName()}"/>
+            <generator class="assigned"/>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="time">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="duration">
@@ -246,6 +362,18 @@
             <define-ref dbms="hsqldb" xdm:replace-template-expressions="no">integer</define-ref>
         </sql-ddl>
         <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.LongIntegerColumn</foreign-key-referencee-class>
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="long" column="${column.getName()}">
+                <meta attribute="scope-set">protected</meta>
+                <generator class="native"/>
+            </id>
+        </hibernate-id>
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="long">
+                <column name="${column.getName()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="guid-text" class="com.netspective.axiom.schema.column.type.GuidTextColumn">
@@ -261,6 +389,12 @@
                 <conditional action="apply-flag" flag="hidden" data-cmd="add"/>
             </field>
         </presentation>
+
+        <hibernate>
+            <property name="${column.getJavaPropertyName()}" type="string">
+                <column name="${column.getName()}" length="${column.getSize()}" not-null="${column.isRequiredByApp() || column.isPrimaryKey() || column.isRequiredByDbms()}" unique="${column.isUnique()}"/>
+            </property>
+        </hibernate>
     </data-type>
 
     <data-type name="guid32" type="guid-text" class="com.netspective.axiom.schema.column.type.GuidColumn">
@@ -268,6 +402,13 @@
         <presentation>
             <field type="guid32"/>
         </presentation>
+        <!-- <hibernate-id is used to specify the primary key information while <hibernate> defines information when it's not a primary key -->
+        <hibernate-id>
+            <id name="${column.getJavaPropertyName()}" type="string">
+                <meta attribute="scope-set">protected</meta>
+                <generator class="uuid.hex"/>
+            </id>
+        </hibernate-id>
     </data-type>
 
     <!-- ***************************************************************************

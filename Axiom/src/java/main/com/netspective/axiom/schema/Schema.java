@@ -68,6 +68,10 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
 
     public String getIndexTypesTemplatesNameSpaceId();
 
+    public String getHibernateIdTemplatesNameSpaceId();
+
+    public String getHibernateTemplatesNameSpaceId();
+
     /**
      * Sets the name used to uniquely identify this schema.
      *

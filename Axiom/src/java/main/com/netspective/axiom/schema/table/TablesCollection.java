@@ -95,6 +95,11 @@ public class TablesCollection implements Tables
         return (Table) mapByNameOrXmlNodeName.get(BasicTable.translateTableNameForMapKey(name));
     }
 
+    public List getList()
+    {
+        return tables;
+    }
+
     public int size()
     {
         return tables.size();
