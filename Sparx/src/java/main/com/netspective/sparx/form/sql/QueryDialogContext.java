@@ -47,23 +47,35 @@ import java.io.IOException;
 
 /**
  * @author Aye Thu
- * @version $Id: QueryDialogContext.java,v 1.3 2003-11-07 04:59:57 aye.thu Exp $
+ * @version $Id: QueryDialogContext.java,v 1.4 2003-11-07 05:03:40 aye.thu Exp $
  */
 public class QueryDialogContext extends DialogContext
 {
     private int rowsPerPage = 0;
-    private QueryReportPanel reportPanel;
+    private HtmlTabularReportPanel reportPanel;
 
+    /**
+     * Gets the rows per page set for the report
+     * @return
+     */
     public int getRowsPerPage()
     {
         return rowsPerPage;
     }
 
+    /**
+     * Sets the number of rows per page for the report
+     * @param rowsPerPage
+     */
     public void setRowsPerPage(int rowsPerPage)
     {
         this.rowsPerPage = rowsPerPage;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getStateHiddens()
     {
         QueryDialog qDialog = (QueryDialog) getDialog();
@@ -74,7 +86,11 @@ public class QueryDialogContext extends DialogContext
         return (super.getStateHiddens() + sb.toString());
     }
 
-    public void setReportPanel(QueryReportPanel reportPanel)
+    /**
+     * Sets the report panel
+     * @param reportPanel
+     */
+    public void setReportPanel(HtmlTabularReportPanel reportPanel)
     {
         this.reportPanel = reportPanel;
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.10 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: QueryDialog.java,v 1.11 2003-11-07 05:01:49 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -72,6 +72,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.QueryParameter;
@@ -109,7 +110,7 @@ public class QueryDialog extends Dialog
     private HtmlTabularReport report;
     private HtmlTabularReportSkin reportSkin;
     private String[] urlFormats;
-    private QueryReportPanel reportPanel;
+    private HtmlTabularReportPanel reportPanel;
 
     public QueryDialog(Project project)
     {
@@ -256,7 +257,7 @@ public class QueryDialog extends Dialog
      * Gets the report panel associated with the report
      * @return
      */
-    public QueryReportPanel getReportPanel()
+    public HtmlTabularReportPanel getReportPanel()
     {
         return reportPanel;
     }
@@ -265,7 +266,7 @@ public class QueryDialog extends Dialog
      * Sets the report panel associated with the report
      * @param reportPanel
      */
-    public void setReportPanel(QueryReportPanel reportPanel)
+    public void setReportPanel(HtmlTabularReportPanel reportPanel)
     {
         this.reportPanel = reportPanel;
     }
@@ -336,7 +337,7 @@ public class QueryDialog extends Dialog
      */
     public void renderReport(Writer writer, DialogContext dc, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
-        QueryReportPanel reportPanel = null;
+        HtmlTabularReportPanel reportPanel = null;
         QueryDialogContext qdc = (QueryDialogContext)dc;
         if (qdc.getRowsPerPage() > 0)
         {
@@ -363,7 +364,7 @@ public class QueryDialog extends Dialog
             }
             else
             {
-                reportPanel = (QueryReportPanel) scrollStateById.getPanel();
+                reportPanel = scrollStateById.getPanel();
             }
             reportPanel.render(writer, dc, dc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
