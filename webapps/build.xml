@@ -57,21 +57,27 @@
         </antcall>
     </target>
 
-    <target name="nefs.prepare-ITE-resources-and-web-app-libs-for-all-test-apps" depends="nefs.init" description="Prepare all test applications for integration testing environment (ITE).">
+    <target name="nefs.prepare-ITE-resources-and-web-app-libs-for-all-apps" depends="nefs.init" description="Prepare all test applications for integration testing environment (ITE).">
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-00"/>
+            <param name="param.test-app-id" value="nefs-sample-case-manager"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-01"/>
+            <param name="param.test-app-id" value="nefs-sample-hello-world"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-02"/>
+            <param name="param.test-app-id" value="nefs-sample-library"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-03"/>
+            <param name="param.test-app-id" value="nefs-sample-medigy"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-04"/>
+            <param name="param.test-app-id" value="nefs-sampler"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-starter-empty"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-test-miscellaneous"/>
         </antcall>
     </target>
 
@@ -91,21 +97,27 @@
         </antcall>
     </target>
 
-    <target name="nefs.prepare-SDE-resources-and-web-app-libs-for-all-test-apps" depends="nefs.init" description="Prepare all test applications for software development environment (SDE).">
+    <target name="nefs.prepare-SDE-resources-and-web-app-libs-for-all-apps" depends="nefs.init" description="Prepare all test applications for software development environment (SDE).">
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-00"/>
+            <param name="param.test-app-id" value="nefs-sample-case-manager"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-01"/>
+            <param name="param.test-app-id" value="nefs-sample-hello-world"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-02"/>
+            <param name="param.test-app-id" value="nefs-sample-library"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-03"/>
+            <param name="param.test-app-id" value="nefs-sample-medigy"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="sparx-test-app-04"/>
+            <param name="param.test-app-id" value="nefs-sampler"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-starter-empty"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-test-miscellaneous"/>
         </antcall>
     </target>
 
