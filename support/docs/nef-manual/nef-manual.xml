@@ -4,13 +4,13 @@
 <!ENTITY include_nef_faq_non_tech SYSTEM "../nef-faq-non-tech-section.xml">
 ]>
 <book>
-  <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
+  <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
   <bookinfo>
-    <title>Netspective Enterprise Frameworks 7.0 Release Candidate 1 (NEF)
+    <title>Netspective Enterprise Frameworks (NEF) 7.0 Release Candidate 1
     User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-10 21:55:46 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-11 19:47:42 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
@@ -4294,10 +4294,10 @@ id="value-source-eg-5" /></programlisting>
         <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
-&#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; 
+&#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62;
 
-    &#60;<emphasis role="bold">page</emphasis> name=&#34;home&#34; default=&#34;yes&#34; caption=&#34;Hello&#34; heading=&#34;Hello World!&#34;&#62; 
-        &#60;<emphasis role="bold">body</emphasis>&#62; 
+    &#60;<emphasis role="bold">page</emphasis> name=&#34;home&#34; default=&#34;yes&#34; caption=&#34;Hello&#34; heading=&#34;Hello World!&#34;&#62;
+        &#60;<emphasis role="bold">body</emphasis>&#62;
             &#60;![CDATA[
             This is the &#39;Hello World&#39; app. Click &#60;a href=&#34;next-steps&#34;&#62;here&#60;/a&#62; to see what&#39;s next.
             ]]&#62;
@@ -4305,11 +4305,11 @@ id="value-source-eg-5" /></programlisting>
     &#60;/page&#62;
 
     &#60;page name=&#34;next-steps&#34; caption=&#34;Next Steps&#34; heading=&#34;What&#39;s next?&#34;&#62;
-        &#60;body <emphasis role="bold">source</emphasis>=&#34;next-steps.ftl&#34;/&#62; 
+        &#60;body <emphasis role="bold">source</emphasis>=&#34;next-steps.ftl&#34;/&#62;
     &#60;/page&#62;
 
     &#60;page name=&#34;some-stuff&#34; caption=&#34;Panels instead of Body&#34;&#62;
-        &#60;<emphasis role="bold">panels</emphasis>&#62; 
+        &#60;<emphasis role="bold">panels</emphasis>&#62;
              &#60;panel type=&#34;command&#34; command=&#34;query,org.get-sponsor-info-by-id,-,-,-,detail-compressed&#34;/&#62;
              &#60;panel type=&#34;command&#34; command=&#34;query,org.get-org-addresses-by-id,-,-,-,report-compressed&#34; /&#62;
         &#60;/panels&#62;
@@ -4822,15 +4822,257 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         towards creating a dialog. Dialogs are defined using the <sgmltag
         class="starttag">dialog</sgmltag> tag and each dialog must belong to a
         package of dialogs represented by the <sgmltag class="starttag">dialogs</sgmltag>
-        tag. For example: <programlisting role="xml">&#60;project&#62;
+        tag. For example: </para>
+
+        <programlisting role="xml">&#60;project&#62;
     ....
     &#60;dialogs package=&#34;train&#34;&#62;
-        &#60;dialog name=&#34;test&#34; heading=&#34;Add Account&#34;&#62;
-            &#60;field type=&#34;text&#34; name=&#34;org_code&#34; caption=&#34;Account Code&#34; required=&#34;yes&#34; default=&#34;request:myval&#34;/&#62;
-            &#60;field type=&#34;select&#34; name=&#34;org_type&#34; caption=&#34;Type&#34; style=&#34;multidual&#34; choices=&#34;query:org.enum-types-all&#34;/&#62;
+        &#60;dialog name=&#34;test&#34; heading=&#34;Add Account&#34; retain-params=&#34;*&#34;&#62;
+            &#60;frame heading=&#34;My first dialog&#34;/&#62;
+
+            &#60;field type=&#34;text&#34; name=&#34;org_code&#34; caption=&#34;Account Code&#34; required=&#34;yes&#34; 
+                               default=&#34;request:myval&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;org_type&#34; caption=&#34;Type&#34; style=&#34;multidual&#34; 
+                                 choices=&#34;query:org.enum-types-all&#34;/&#62;
             &#60;field type=&#34;integer&#34; name=&#34;employees&#34; caption=&#34;Employees&#34; min=&#34;10&#34; max=&#34;20&#34;/&#62;
+
         &#60;/dialog&#62;
-    &#60;/dialogs&#62;       </programlisting></para>
+    &#60;/dialogs&#62;       </programlisting>
+
+        <section>
+          <title><sgmltag class="starttag">dialog</sgmltag> Tag Attributes</title>
+
+          <variablelist>
+            <varlistentry>
+              <term>class</term>
+
+              <listitem>
+                <para>Specifies a subclass of <classname>com.netspective.sparx.form.Dialog</classname>
+                to dynamically load and instantiate instead of the default
+                java class. This attribute is very useful when you want to use
+                XML for the dialog definition but want to alter the behavior
+                of the Dialog processing or want to some specific validation
+                not provided by the default class.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>dialog-context-class</term>
+
+              <listitem>
+                <para>All forms created using the <sgmltag class="starttag">dialog</sgmltag>
+                tag are shared across all users. Each user, however, gets its
+                own dialog context instance for every request/response cycle.
+                Acting as a finite state machine, the DialogContext class is
+                the only object in the entire dialog processing lifecycle that
+                is created for each user. The “form model” (Dialog) and “form
+                view” (skin) are created, cached, and reused for each user;
+                however, the DialogContext bean or DCB is a new object for
+                each user and each request. The dialog context is usually an
+                instance of the <classname>com.netspective.sparx.form.DialogContext</classname>
+                class. The <sgmltag class="attribute">dialog-context-class</sgmltag>
+                attribute specifies a subclass of <classname>DialogContext</classname>
+                to dynamically load and instantiate instead of the default
+                java class. This attribute is very useful when you want to
+                some special handling of request/response cylces that may not
+                be supported by the default class.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>name</term>
+
+              <listitem>
+                <para>The name of the dialog used by Sparx. The name may only
+                contain upper or lowercase letters, numbers, and underscores.
+                There should no punctuation characters or spaces and the name
+                should be valid JavaScript name. The fully qualified name of
+                the dialog is the package name plus this name
+                (&#34;packageName.dialogName&#34;).</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>html-form-name</term>
+
+              <listitem>
+                <para>The name of the dialog created for the HTML form. This
+                is usally the same as the Sparx <sgmltag class="starttag">dialog</sgmltag>
+                <sgmltag class="attribute">name</sgmltag> but could be
+                different if you need it to be so.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>redirect-after-execute</term>
+
+              <listitem>
+                <para>This attribute, which is normally true, specifies
+                whether the dialog will redirect after executing (performing
+                the tasks it&#39;s been instructted to perform). If this is
+                set to false, then no redirect will happen after the execute
+                -- instead, the execute will be called and control flow
+                remains on the current page. You should set this attribute to
+                false if you use either the <sgmltag class="attribute">show-field-data</sgmltag>
+                debugging option or <sgmltag class="attribute">loop</sgmltag>
+                option.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>retain-params</term>
+
+              <listitem>
+                <para>Specifies the names of the URL parameters that should be
+                retained during multiple invocations of this dialog. As
+                dialogs are processed by browsers, the same dialog may be
+                called during more than one request/response cycle. This
+                parameter provides one or more comma-separated list of URL
+                parameter names that should be kept between request/response
+                cycles. If you would like to retain all parameters, pass an
+                asterisk (*) as the value to this attribute.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>retain-initial-state</term>
+
+              <listitem>
+                <para>Specifies whether or not to keep track of what the
+                initial data values were in the form before the user made any
+                changes. Set this to true if you need to get access to the
+                original data and compare it to the final data for doing
+                partial inserts or doing something only if a value has
+                changed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>hide-hints-until-focus</term>
+
+              <listitem>
+                <para>Specifies whether to always show hints or hide them
+                until the control receives focus.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>hide-readonly-hints</term>
+
+              <listitem>
+                <para>Specifies whether or not to show hints for read-only
+                values.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>disable-client-keypress-filters</term>
+
+              <listitem>
+                <para>Sparx has built-in capabilities to not allow certain
+                keypressed in specific controls. For example, integer and
+                float fields do not allow text so alphabetic keys are
+                disabled. Set to true if you do not want client-side keypress
+                filters.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>disable-client-validation</term>
+
+              <listitem>
+                <para>Set to true if you do not want any client-side data
+                validation.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>show-data-changed-message-on-leave</term>
+
+              <listitem>
+                <para>Set to true if you wish to pop up a message if the user
+                has changed data on the form but is leaving the form without
+                pressing submit.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>loop</term>
+
+              <listitem>
+                <para>Specifies whether or not to show the dialog even after
+                the dialog executes. Many websites commonly show forms after
+                searches complete, this feature allows that capability.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>loop-separator</term>
+
+              <listitem>
+                <para>When loop is set to append or prepend, this attribute
+                specifies the HTML that will be inserted either before or
+                after the dialog and its execution content.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>readonly-fields-hidden-unless-have-data</term>
+
+              <listitem>
+                <para>Specifies whether or not fields in this dialog that are
+                flagged as read-only will be made hidden (value will still be
+                available but field is not visible) if the field does not have
+                a value.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>readonly-fields-unavailable-unless-have-data</term>
+
+              <listitem>
+                <para>Specifies whether or not fields in this dialog that are
+                flagged as read-only will be made invislble (field will not be
+                visible nor will it have any value associated with it) if the
+                field does not have a value.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>show-field-data</term>
+
+              <listitem>
+                <para>This is a debugging option and will show the dialog data
+                instead of performing the default execute action.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>translate-enter-key-to-tab-key</term>
+
+              <listitem>
+                <para>Set to true if the enter key should act the same as the
+                tab key (move to next control).</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>height</term>
+
+              <listitem>
+                <para>Set a fixed height in pixels.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term>width</term>
+
+              <listitem>
+                <para>Set a fixed width in pixels.</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </section>
       </section>
 
       <section id="Dialogs-DataFields">
@@ -4844,21 +5086,44 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         far more powerful because they can format and validate themselves
         according to rules that you declare. Currently the following general
         fields are available: <itemizedlist><listitem><para>Text</para></listitem><listitem><para>Integer</para></listitem><listitem><para>Float</para></listitem><listitem><para>Date
-        and Time</para></listitem><listitem><para>List</para></listitem><listitem><para>Checkbox</para></listitem><listitem><para>Radio
+        and Time (including duration)</para></listitem><listitem><para>List</para></listitem><listitem><para>Checkbox</para></listitem><listitem><para>Radio
         Buttons</para></listitem></itemizedlist> Based on the fields listed
         above, there are fields which serve a more specific role also:
-        <itemizedlist><listitem><para>Blood Pressure</para></listitem><listitem><para>Social
-        Security Number</para></listitem><listitem><para>Phone Number</para></listitem></itemizedlist>Although
-        this section of the documention introduces you to many of the form
-        field types available in Sparx, there are still quite a few that it
-        does not cover in detail.</para>
+        <itemizedlist><listitem><para>Credit card expiration date, number, and
+        type</para></listitem><listitem><para>E-mail</para></listitem><listitem><para>Zip
+        Code</para></listitem><listitem><para>Social Security Number</para></listitem><listitem><para>Phone
+        Number</para></listitem><listitem><para>Currency</para></listitem></itemizedlist></para>
+
+        <note>
+          <para>Using Value Sources, Sparx provides automatic SQL, a web
+          service, or other data binding to any list controls in HTML or
+          DHTML. This allows, for instance a query to be run and automatically
+          create text fields, a list box, radio buttons, check boxes, and
+          multi-select list boxes. All dialog fields have this dynamic data
+          binding capability so that arbitrary data sources can populate
+          dialog contents and selections.</para>
+        </note>
 
         <section>
           <title>Available Dialog Field Types</title>
 
-          <para>To see a list of all of the field types available, please
-          visit the Enterprise Console <menuchoice><guimenu>Presentation</guimenu><guisubmenu>Dialogs</guisubmenu><guimenuitem>Form
-          Fields</guimenuitem></menuchoice> page.</para>
+          <para>To see a list of all of the field types available, visit the
+          Enterprise Console <menuchoice><guimenu>Presentation</guimenu><guisubmenu>Dialogs</guisubmenu><guimenuitem>Form
+          Fields</guimenuitem></menuchoice> page. This Console page will
+          always display all of the available field types registered using the
+          <sgmltag class="starttag">field-type</sgmltag> template producer
+          (including all built-in field types and any custom field types you
+          register). Clicking on any field type name will show the list of
+          attributes and elements supported by the particular field type.
+          Although this section of the documention introduces you to many of
+          the form field types available in Sparx, there are still quite a few
+          that it does not cover in detail so you should browse the Console to
+          review all of them.</para>
+
+          <screenshot>
+            <graphic
+            fileref="./resources/images/screen-console-pres-dialogs-field-types.gif" />
+          </screenshot>
         </section>
 
         <section>
@@ -4870,6 +5135,14 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           features but all fields share the attributes listed below.</para>
 
           <variablelist>
+            <varlistentry>
+              <term><sgmltag class="attribute">class</sgmltag></term>
+
+              <listitem>
+                <para>Override the class used for the field.</para>
+              </listitem>
+            </varlistentry>
+
             <varlistentry>
               <term><sgmltag class="attribute">name</sgmltag></term>
 
@@ -4890,6 +5163,18 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
                 field to the end user. If this field is a member of a
                 composite or grid field thn the caption will only show if the
                 parent field&#39;s show-child-caption is set to yes.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">error-caption</sgmltag></term>
+
+              <listitem>
+                <para>Usually, when an error is displayed to the user, the
+                <sgmltag class="attribute">caption</sgmltag> attribute&#39;s
+                value is used as the identifier for the error message. If you
+                want a different caption to be used for the field in error
+                messages then specify it here.</para>
               </listitem>
             </varlistentry>
 
@@ -4927,6 +5212,16 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
+              <term><sgmltag class="attribute">required-field-missing-message</sgmltag></term>
+
+              <listitem>
+                <para>Specifies the message that appears if the field is not
+                entered and the <sgmltag class="attribute">required</sgmltag>
+                flag is set to true.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
               <term><sgmltag class="attribute">read-only</sgmltag></term>
 
               <listitem>
@@ -4936,6 +5231,52 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
                 the value is set to browser then the appropriate HTML control
                 is still created but the control is marked read-only so the
                 browser will not allow the value to be changed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">browser-read-only</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the field is read-only in the browser.
+                The difference between the <sgmltag class="attribute">read-only</sgmltag>
+                and <sgmltag class="attribute">browser-read-only</sgmltag>
+                attributes is that the <sgmltag class="attribute">read-only</sgmltag>
+                attribute will not create a browser control (the text will be
+                static). The <sgmltag class="attribute">browser-read-only</sgmltag>
+                will, however, create a browser control for the field but mark
+                it read only (using HTML properties) so that it can not be
+                changed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">readonly-hidden-unless-has-data</sgmltag></term>
+
+              <listitem>
+                <para>If a field has its <sgmltag class="attribute">read-only</sgmltag>
+                flag set to true, then the <sgmltag class="attribute">readonly-hidden-unless-has-data</sgmltag>
+                flag may be specified if the entire field should become
+                <sgmltag class="attribute">hidden</sgmltag> when there is no
+                data available in the field. This is very useful in cases
+                where a field value that is <sgmltag class="attribute">read-only</sgmltag>
+                may look confusing to a user if the field&#39;s value is null
+                or not supplied.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">readonly-unavailable-unless-has-data</sgmltag></term>
+
+              <listitem>
+                <para>If a field has its <sgmltag class="attribute">read-only</sgmltag>
+                flag set to true, then the <sgmltag class="attribute">readonly-unavailable-unless-has-data</sgmltag>
+                flag may be specified if the entire field should become
+                <sgmltag class="attribute">unavailable</sgmltag> when there is
+                no data available in the field. This is very useful in cases
+                where a field value that is <sgmltag class="attribute">read-only</sgmltag>
+                may look confusing to a user if the field&#39;s value is null
+                or not supplied.</para>
               </listitem>
             </varlistentry>
 
@@ -4986,16 +5327,35 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="attribute">col-break</sgmltag></term>
+              <term><sgmltag class="attribute">create-adjacent-area-hidden</sgmltag></term>
+
+              <listitem>
+                <para>Performs same action as create-adjacent-area but it
+                hides the area so the value will be available to the browser
+                and server processing but not visible to the end user.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">col-break-before</sgmltag></term>
 
               <listitem>
                 <para>Specifies whether a column break should be included
-                before or after this field. The actual behavior of this
-                attribute is determined by a skin, but typically if this field
-                is a primary (top-level) field, the column break will create a
-                dialog with multiple columns. If this field is a secondary
-                field (child of composite), then a simple line break will be
-                inserted between the composite siblings.</para>
+                <emphasis>before</emphasis> this field. The actual behavior of
+                this attribute is determined by a skin, but typically if this
+                field is a primary (top-level) field, the column break will
+                create a dialog with multiple columns. If this field is a
+                secondary field (child of composite), then a simple line break
+                will be inserted between the composite siblings.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">col-break-after</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether a column break should be included
+                <emphasis>after</emphasis> this field.</para>
               </listitem>
             </varlistentry>
 
@@ -5007,6 +5367,40 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
                 field as an identifier. An identifier is a field whose values
                 may only contain uppercase letters, numbers, and an
                 underscore.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">primary-key</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether or not to treat the contents of this
+                field as a primary key for a database table. When this
+                attribute is set to true, then the field acts differently
+                depending upon the Dialog&#39;s Data Perspective. If it&#39;s
+                in <emphasis>add</emphasis> mode (data needs to be inserted),
+                the field allows data entry by the end user. If the dialog is
+                in <emphasis>edit</emphasis> or <emphasis>delete</emphasis>
+                mode, the field&#39;s value becomes <sgmltag class="attribute">read-only</sgmltag>
+                (not able to be changed).</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">primary-key-generated</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether or not to treat the contents of this
+                field as an auto-generated primary key for a database table.
+                When this attribute is set to true, then the field acts
+                differently depending upon the Dialog&#39;s Data Perspective.
+                If it&#39;s in <emphasis>add</emphasis> mode (data needs to be
+                inserted), the field is made invisible to the end user because
+                the value of the field will be generated by the application or
+                the application. If the dialog is in <emphasis>edit</emphasis>
+                or <emphasis>delete</emphasis> mode, the field&#39;s value
+                becomes <sgmltag class="attribute">read-only</sgmltag> (not
+                able to be changed) but is made visible to the user.</para>
               </listitem>
             </varlistentry>
 
@@ -5039,6 +5433,15 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
               <listitem>
                 <para>The size (usually the number of characters) of text that
                 the control should display at any given time.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">min-length</sgmltag></term>
+
+              <listitem>
+                <para>The miminum length of data that the control should
+                require.</para>
               </listitem>
             </varlistentry>
 
@@ -5088,7 +5491,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="attribute">validate-pattern</sgmltag></term>
+              <term><sgmltag class="attribute">reg-expr</sgmltag></term>
 
               <listitem>
                 <para>Specifies a Perl5 regular expression that should be
@@ -5100,7 +5503,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="attribute">validate-msg</sgmltag></term>
+              <term><sgmltag class="attribute">invalid-reg-ex-message</sgmltag></term>
 
               <listitem>
                 <para>Specifies the error message to display if a
@@ -5110,7 +5513,20 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="attribute">format-pattern</sgmltag></term>
+              <term><sgmltag class="attribute">submit-pattern</sgmltag></term>
+
+              <listitem>
+                <para>Specifies a Perl5 regular expression that should be used
+                to format the input for submission to the server (for
+                processing). The pattern should be of the form
+                s/pattern/replacement/[g][i][m][o][s][x]. Please see the
+                Jakarta ORO API for more information about regular
+                expressions.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">display-pattern</sgmltag></term>
 
               <listitem>
                 <para>Specifies a Perl5 regular expression that should be used
@@ -5123,64 +5539,94 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="starttag">client-js</sgmltag></term>
+              <term><sgmltag class="attribute">double-entry</sgmltag></term>
 
               <listitem>
-                <para>Client-side JavaScript specification</para>
+                <para>Requires that the data must be entered twice before it
+                is accepted. There is still a single field, but data entry
+                happens twice and matched at the client side before data will
+                be validated.</para>
               </listitem>
             </varlistentry>
 
             <varlistentry>
-              <term><sgmltag class="starttag">conditional</sgmltag></term>
+              <term><sgmltag class="attribute">show-caption-as-child</sgmltag></term>
 
               <listitem>
-                <para>Conditional processing declaration</para>
-              </listitem>
-            </varlistentry>
-
-            <varlistentry>
-              <term><sgmltag class="starttag">popup</sgmltag></term>
-
-              <listitem>
-                <para>Popup window and automatic fill-in of data specification</para>
+                <para>Specifies the behavior of the field&#39;s caption if it
+                is being placed into a <sgmltag class="starttag">composite</sgmltag>
+                or <sgmltag class="starttag">grid</sgmltag> field.</para>
               </listitem>
             </varlistentry>
           </variablelist>
         </section>
 
         <section>
-          <title>Examples</title>
+          <title>Test Bed Examples</title>
 
-          <para><example><title>Text, Static, Integer, Float, SSN, and Zip
-          fields</title><para>The following is an example of a dialog
-          containing general fields such as text, static, integer, float and
-          specialized fields such as social security number and zip code.
-          <programlisting role="xml">&#60;project&#62;
+          <para>The following sections contains examples of various fields and
+          controls. Almost all of the examples are taken from the NEFS Test
+          Bed application, which is available within the NEFS Sampler. To see
+          these examples online, please visit http://sampler.netspective.com
+          and then click the <menuchoice><guimenu>Ted Bed</guimenu><guisubmenu>Primary
+          Test Bed</guisubmenu><guimenuitem>/console</guimenuitem></menuchoice>
+          link. Once you enter the Enterprise Console for the Test Bed
+          application, go to the Console&#39;s <menuchoice><guimenu>Presentation</guimenu><guisubmenu>Dialogs</guisubmenu><guimenuitem>Catalog</guimenuitem></menuchoice>
+          page.</para>
+
+          <screenshot>
+            <graphic
+            fileref="./resources/images/screen-console-test-bed-pres-dialogs-catalog.gif" />
+          </screenshot>
+
+          <para>Clicking on any dialog from the catalog will allow you to unit
+          test that dialog and interact with it by entering data and
+          performing validations. You will be able to test out both the
+          client- and server-side validations.</para>
+
+          <screenshot>
+            <graphic
+            fileref="./resources/images/screen-console-test-bed-pres-test-dialog-01a-val.gif" />
+          </screenshot>
+
+          <para>After entering your test data and submitting the form you can
+          test how the server-side processing will see the fields and data by
+          reviewing the dialog debugger output. When the Dialog Context Debug
+          panel appears (after submitting your form) there are multiple tabs
+          available that show a variety of debugging data.</para>
+
+          <screenshot>
+            <graphic
+            fileref="resources/images/screen-console-test-bed-pres-test-dialog-01a-debug.gif" />
+          </screenshot>
+
+          <section>
+            <title>Text, Separator, Static, and HTML fields</title>
+
+            <para>The following is an example of a dialog containing general
+            text-oriented fields such as text, static, and e-mail.</para>
+
+            <programlisting role="xml">&#60;project&#62;
     ....
     &#60;dialogs package=&#34;test&#34;&#62;
-        &#60;dialog name=&#34;DialogTest_01_A&#34; retain-params=&#34;*&#34; hide-hints-until-focus=&#34;yes&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_01_A&#34; retain-params=&#34;*&#34; hide-hints-until-focus=&#34;yes&#34; redirect-after-execute=&#34;false&#34;&#62;
             &#60;frame heading=&#34;Test String Fields&#34;/&#62;
-
             &#60;field type=&#34;separator&#34; heading=&#34;Text Fields&#34;/&#62;
-
+            &#60;field name=&#34;text_field_required&#34; type=&#34;text&#34; caption=&#34;Text Required&#34; required=&#34;yes&#34;
+                                              hint=&#34;This text field is always required&#34;/&#62;
             &#60;field name=&#34;text_field_hidden&#34; type=&#34;text&#34; hidden=&#34;yes&#34; default=&#34;request:id&#34;/&#62;
             &#60;field name=&#34;static_field1&#34; type=&#34;static&#34; caption=&#34;Static 1&#34; default=&#34;request:id&#34; 
-                   hint=&#34;Request attribute &#39;id&#39; value&#34;/&#62;
-            &#60;field name=&#34;static_field2&#34; type=&#34;static&#34; caption=&#34;Static 2 &#34; 
-                   default=&#34;Static Field&#39;s Value&#34;/&#62;
-            &#60;field name=&#34;text_field_required&#34; type=&#34;text&#34; caption=&#34;Text Required&#34;
+                                        hint=&#34;Request attribute &#39;id&#39; value&#34;/&#62;
+            &#60;field name=&#34;static_field2&#34; type=&#34;static&#34; caption=&#34;Static 2 &#34; default=&#34;Static Field&#39;s Value&#34;/&#62;
+            &#60;field name=&#34;text_field_optionally_required&#34; type=&#34;text&#34; caption=&#34;Text Required&#34;
                 hint=&#34;Text field is required when req param &#39;abc&#39; has value&#34;
                 default=&#34;conditional Required Text&#34; required=&#34;no&#34;&#62;
                 &#60;conditional action=&#34;apply-flags&#34; flags=&#34;required&#34; has-value=&#34;request:abc&#34;/&#62;
             &#60;/field&#62;
-
-            &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; 
-                                     hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34; 
-                                     max-length=&#34;5&#34; uppercase=&#34;yes&#34;/&#62;
-
+            &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; max-length=&#34;5&#34; uppercase=&#34;yes&#34;
+                                     hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34;/&#62;
             &#60;field name=&#34;email_field&#34; type=&#34;e-mail&#34; caption=&#34;Email&#34; hint=&#34;Email field&#34;/&#62;
             &#60;field name=&#34;masked_field&#34; type=&#34;text&#34; caption=&#34;Masked Field&#34; mask-entry=&#34;yes&#34; hint=&#34;e.g password&#34;/&#62;
-
             &#60;field name=&#34;properties&#34; type=&#34;html&#34; caption=&#34;HTML Template Field&#34;&#62;
                 &#60;body&#62;
                     &#60;![CDATA[
@@ -5189,286 +5635,398 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
                     &#60;/div&#62;]]&#62;
                 &#60;/body&#62;
             &#60;/field&#62;
+            &#60;director submit-caption=&#34;Submit&#34; style=&#34;acknowledge&#34;/&#62;
+        &#60;/dialog&#62;                </programlisting>
 
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-01a.gif" />
+            </screenshot>
+          </section>
+
+          <section>
+            <title>Numeric, Currency, Phone, Social Security, and Zip Code
+            fields</title>
+
+            <para>The following is an example of a dialog containing general
+            fields such as integer, float and specialized fields such as
+            currency, social security number and zip code. </para>
+
+            <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_01_B&#34; retain-params=&#34;*&#34; redirect-after-execute=&#34;false&#34;&#62;
+            &#60;frame heading=&#34;Test Numeric Fields&#34;/&#62;
             &#60;field type=&#34;separator&#34; heading=&#34;Numeric Fields&#34;/&#62;
-
             &#60;field type=&#34;integer&#34; name=&#34;integer_field&#34; caption=&#34;Integer Field&#34; hint=&#34;Integer field&#34; persist=&#34;yes&#34;/&#62;
             &#60;field type=&#34;float&#34; name=&#34;float_field&#34; caption=&#34;Float Field&#34; hint=&#34;Float field&#34;/&#62;
-
             &#60;field type=&#34;currency&#34; name=&#34;currency_field1&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
                 negative-pos=&#34;after-symbol&#34; hint=&#34;Currency field (US) with negative sign after the symbol&#34;/&#62;
             &#60;field type=&#34;currency&#34; name=&#34;currency_field2&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
                 negative-pos=&#34;before-symbol&#34; hint=&#34;Currency field (US) with negative sign before the symbol&#34;/&#62;
-
             &#60;field type=&#34;phone&#34; name=&#34;phone_field1&#34; caption=&#34;Phone Field (dash format)&#34; strip-brackets=&#34;yes&#34; 
-                                style=&#34;dash&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
+                         style=&#34;dash&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
             &#60;field type=&#34;phone&#34; name=&#34;phone_field2&#34; caption=&#34;Phone Field (bracket format)&#34; strip-brackets=&#34;yes&#34; 
-                                style=&#34;bracket&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
-
+                         style=&#34;bracket&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
             &#60;field type=&#34;zip-code&#34; name=&#34;zip_field&#34; caption=&#34;Zip Field&#34; hint=&#34;Zip code field&#34; default=&#34;12345&#34;/&#62;
             &#60;field type=&#34;ssn&#34; name=&#34;ssn_field&#34; caption=&#34;SSN&#34; strip-dashes=&#34;yes&#34; default=&#34;999999999&#34; 
-                              hint=&#34;Social Security Number field&#34;/&#62;
+                         hint=&#34;Social Security Number field&#34;/&#62;
+            &#60;director submit-caption=&#34;Submit&#34;/&#62;
+        &#60;/dialog&#62;                </programlisting>
 
-            &#60;director submit-caption=&#34;Submit&#34; style=&#34;acknowledge&#34;/&#62;
-        &#60;/dialog&#62;
-                </programlisting>The above example contains multiple fields of
-          various types and some of the attributes available for the different
-          types. The attribute <sgmltag class="attribute">retain-params</sgmltag>
-          of the <sgmltag class="starttag">dialog</sgmltag> tag is useful for
-          retaining field values (whether they were entered by the user or
-          from value sources) as the dialog goes through its different stages
-          before execution. The default values for the dialog fields can be
-          empty or they can be specified in the XML file. The attribute
-          <sgmltag class="attribute">default</sgmltag> is available for
-          specifying the default value and it can either be a static value or
-          it can be a value source. In the example above, the hidden text
-          field called <emphasis>text_field_hidden</emphasis> gets its value
-          from a request parameter value source while the static field called
-          <emphasis>static_field</emphasis> gets its value as a plain string.
-          Most dialog fields have an attribute called <sgmltag
-          class="attribute">hint</sgmltag> which is used to display a helpful
-          hint for the user on what to enter into the field. The following is
-          a screenshot of how the actual dialog looks like:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test1.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
-          <example><title>Memo, Date &#38; Time, Boolean fields</title><para>The
-          following is a definition for a dialog which contains a memo field,
-          several versions of the date and time field, and several versions of
-          the boolean field: <programlisting role="xml">
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-01b.gif" />
+            </screenshot>
+          </section>
 
-&#60;dialog name=&#34;Test2&#34; heading=&#34;Test Fields&#34; retain-params=&#34;*&#34;&#62;
-    &#60;separator name=&#34;Memo&#34; heading=&#34;Memo&#34;/&#62;
-    &#60;field type=&#34;memo&#34; name=&#34;memo_field_01&#34; caption=&#34;Memo Field&#34;
-        max-length=&#34;5&#34;
-        hint=&#34;Max length is 5 characters&#34;/&#62;
-    &#60;separator name=&#34;date_time_section&#34; heading=&#34;Date and Time Fields&#34;/&#62;
-    &#60;field type=&#34;duration&#34; name=&#34;duration&#34; caption=&#34;Duration Field&#34;
-        hint=&#34;Format is MM/dd/yyyy&#34;/&#62;
-    &#60;field type=&#34;date&#34; name=&#34;date_field_strict&#34; caption=&#34;Date (Strict Year)&#34;
-        format=&#34;MM-dd-yyyy&#34;
-        default=&#34;today&#34;
-        hint=&#34;Format is MM-dd-yyyy&#34;/&#62;
-    &#60;field type=&#34;date&#34; name=&#34;date_field_nonstrict&#34; caption=&#34;Date (Non-Strict Year)&#34;
-        format=&#34;MM/dd/yyyy&#34;
-        strict-year=&#34;no&#34;
-        default=&#34;today+1&#34;
-        hint=&#34;Format is MM/dd/yyyy&#34;/&#62;
-    &#60;field type=&#34;time&#34; name=&#34;time_field&#34; caption=&#34;Time&#34;
-        initial-focus=&#34;yes&#34;
-        default=&#34;now&#34;
-        hint=&#34;Format is HH:mm&#34;/&#62;
-    &#60;separator heading=&#34;Boolean Fields&#34;/&#62;
-    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34;/&#62;
-    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_alone&#34; caption=&#34;Boolean Field (Alone)&#34; style=&#34;checkalone&#34;/&#62;
-    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_combo&#34; caption=&#34;Boolean Field (Combo)&#34; style=&#34;combo&#34;/&#62;
-    &#60;director submit-caption=&#34;Submit&#34;/&#62;
-&#60;/dialog&#62;
+          <section>
+            <title>Memo, Date &#38; Time, Boolean fields</title>
 
-                </programlisting> <variablelist><varlistentry><term><sgmltag
-          class="element">field type=&#34;memo&#34;</sgmltag></term><listitem><para>The
-          <sgmltag class="starttag">field type=&#34;memo&#34;</sgmltag> is
-          based on the HTML TEXTAREA element and the attribute <sgmltag
-          class="attribute">max-length</sgmltag> is used to enforce the
-          maximum number of characters allowed in the memo field. Javascript
-          client-side validations are done to enforce the maximum number of
-          characters allowed.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field type=&#34;duration&#34;</sgmltag></term><listitem><para>The
-          duration field, <sgmltag class="starttag">field
-          type=&#34;duration&#34;</sgmltag>, is used to allow entry of a begin
-          date and an end date. It has client-side validations to make sure
-          that the date values are valid and that beginning date field is
-          before the end date field.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field type=&#34;date&#34;</sgmltag></term><listitem><para>By
-          default date fields, <sgmltag class="starttag">field
-          type=&#34;date&#34;</sgmltag> do not allow 2-digit years and this
-          can be changed by setting the attribute <sgmltag class="attribute">strict-year=&#34;no&#34;</sgmltag>.
-          Also the format of a date field can be specified by setting the
-          attribute <sgmltag class="attribute">format</sgmltag>. The value for
-          <sgmltag class="attribute">format</sgmltag> is based on the
-          <classname>java.text.SimpleDateFormat</classname>&#39;s pattern
-          strings. The date field also has a built-n client-side formatting
-          feature which will automatically format the user entered value: user
-          enters 11021999 and it gets displayed as 11/02/1999. The default
-          value of the date field accepts special strings such as &#34;<emphasis>today</emphasis>&#34;
-          and &#34;<emphasis>now</emphasis>&#34; and interprets them as
-          present date. Any numerical operation defined after the special
-          string is used to recalculate the default date (for example, &#34;<emphasis>today+1</emphasis>&#34;
-          will display tomorrow&#39;s date)</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field type=&#34;time&#34;</sgmltag></term><listitem><para>The
-          time field, <sgmltag class="starttag">field type=&#34;time&#34;</sgmltag>,
-          is used to allow entry of a time value. It has client-side
-          validations to make sure that the time entered is valid. It also
-          accepts the special string &#34;<emphasis>now</emphasis>&#34; as a
-          default value.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field type=&#34;boolean&#34;</sgmltag></term><listitem><para>The
-          boolean field, <sgmltag class="starttag">field
-          type=&#34;boolean&#34;</sgmltag>, represents different HTML
-          elements: a single checkbox, a Yes/No select list, and a Yes/No
-          radio buttons. These different elements are represented by the
-          <sgmltag class="attribute">style</sgmltag> attribute with the
-          following values respectively: <emphasis>radio</emphasis>,
-          <emphasis>checkalone</emphasis>, and <emphasis>combo</emphasis>. A
-          &#34;No&#34; selection submits a value of 0 and a &#34;Yes&#34;
-          selection submits a value of 1.</para></listitem></varlistentry></variablelist>
-          The XML definition above is shown as:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test2.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
-          <example><title>Select fields</title><para>The following is a XML
-          definition example to show the different styles available for select
-          fields: <programlisting role="xml">
+            <para>The following is a definition for a dialog which contains a
+            memo field, several versions of the date and time field, and
+            several versions of the boolean field.</para>
 
-&#60;dialog name=&#34;Test3&#34; heading=&#34;Test Fields&#34; retain-params=&#34;*&#34;&#62;
-    &#60;separator heading=&#34;Select Fields&#34; /&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_combo&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Combo)&#34;
-        style=&#34;combo&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; prepend-blank=&#34;yes&#34; append-blank=&#34;yes&#34;
-        /&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_radio&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Radio)&#34;
-        style=&#34;radio&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;A&#34;/&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; read-only=&#34;no&#34; caption=&#34;Select Field (List)&#34;
-        style=&#34;list&#34; size=&#34;5&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;A&#34;/&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_multilist&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiList)&#34;
-        style=&#34;multilist&#34; size=&#34;5&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34;
-        default=&#34;A&#34;/&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_multicheck&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiCheck)&#34;
-        style=&#34;multicheck&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;B&#34;/&#62;
-    &#60;field type=&#34;select&#34; name=&#34;sel_field_multidual&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiDual)&#34;
-        style=&#34;multidual&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; caption-left=&#34;Left Caption&#34;
-        caption-right=&#34;Right Caption&#34; multi-width=&#34;100&#34;
-        default=&#34;A&#34;/&#62;
-     &#60;director submit-caption=&#34;Submit&#34;/&#62;
-&#60;/dialog&#62;
+            <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_02&#34; retain-params=&#34;*&#34; redirect-after-execute=&#34;false&#34;&#62;
+            &#60;frame heading=&#34;Test Memo, Date/Time, Boolean Fields&#34;/&#62;
+            &#60;field type=&#34;separator&#34; name=&#34;memo_section&#34; heading=&#34;Memo&#34;/&#62;
+            &#60;field type=&#34;memo&#34; name=&#34;memo_field_01&#34; caption=&#34;Memo Field&#34; default=&#34;A fox jumped over the fence&#34; 
+                               max-length=&#34;10&#34; hint=&#34;Max length is 5 characters&#34;/&#62;
+            &#60;field type=&#34;separator&#34; name=&#34;date_time_section&#34; heading=&#34;Date and Time Fields&#34;/&#62;
+            &#60;field type=&#34;date&#34; name=&#34;date_field_strict&#34; caption=&#34;Date (Strict Year)&#34; format=&#34;MM-dd-yyyy&#34; 
+                               client-calendar-format=&#34;MM-dd-yyyy&#34;
+                               default=&#34;today&#34; hint=&#34;Format is MM-dd-yyyy&#34;/&#62;
+            &#60;field type=&#34;date&#34; name=&#34;date_field_nonstrict&#34; caption=&#34;Date (Non-Strict Year)&#34; 
+                               client-calendar-format=&#34;MM/dd/yyyy&#34; strict-year=&#34;no&#34; 
+                               default=&#34;today+1&#34; hint=&#34;Format is MM/dd/yyyy&#34;/&#62;
+            &#60;field type=&#34;time&#34; name=&#34;time_field&#34; caption=&#34;Time&#34; strict-time=&#34;no&#34; initial-focus=&#34;yes&#34; 
+                               default=&#34;now&#34; hint=&#34;Format is HH\:mm&#34;/&#62;
+            &#60;field type=&#34;date-time&#34; name=&#34;datetime_field&#34; caption=&#34;Date and Time&#34; format=&#34;MM-dd-yyyy HH:mm&#34; 
+                                    client-calendar-format=&#34;MM-dd-yyyy&#34; default=&#34;today&#34; hint=&#34;Format is MM-dd-yyyy&#34;/&#62;
+            &#60;field type=&#34;separator&#34; name=&#34;boolean_section&#34; heading=&#34;Boolean Fields&#34;/&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34;/&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;bool_field_alone&#34; caption=&#34;Boolean Field (Alone)&#34; style=&#34;check-alone&#34;/&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;bool_field_combo&#34; caption=&#34;Boolean Field (Combo)&#34; style=&#34;combo&#34;/&#62;
+            &#60;director submit-caption=&#34;Submit&#34;/&#62;
+        &#60;/dialog&#62;                </programlisting>
 
-                    </programlisting> The XML tag, <sgmltag class="starttag">field
-          type=&#34;select&#34;</sgmltag>, is based upon the SELECT HTML
-          element. It can be used as a list capable of allowing the user to
-          choose one selection or multiple selections based on the
-          configuration. There are six styles of selection list available (<emphasis>combo</emphasis>,
-          <emphasis>radio</emphasis>, <emphasis>list</emphasis>,
-          <emphasis>multilist</emphasis>, <emphasis>multicheck</emphasis>, and
-          <emphasis>multidual</emphasis>) and they can be defined using the
-          <sgmltag class="attribute">style</sgmltag> attribute. The
-          <emphasis>multilist</emphasis>, <emphasis>multicheck</emphasis>, and
-          <emphasis>multidual</emphasis> styles allow a selection of more than
-          one option.</para><para>The choices available for a selection are
-          defined by the <sgmltag class="attribute">choices</sgmltag>
-          attribute. The syntax for the choices is <emphasis>choice_1=value_1;choice_2=value_2;...</emphasis>
-          where the <emphasis>choice_x</emphasis> is the displayed choice and
-          the <emphasis>value_x</emphasis> is the actual value that is
-          submitted. There is another way to define the choices available for
-          a selection and it is by using a value source called
-          <emphasis>query</emphasis>. This way builds the option list from the
-          result of a static query (the query must be defined elsewhere in the
-          Project File). For example, the following SQL can be used as
-          <emphasis>choices=&#34;query:test.user_list</emphasis> attribute
-          setting: <programlisting role="xml">
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-02.gif" />
+            </screenshot>
 
-&#60;sql-statements package=&#34;test&#34;&#62;
-    &#60;statement name=&#34;user_list&#34;&#62;
-        select
-            name,
-            id
-        from User
-    &#60;/statement&#62;
-&#60;/sql-statements&#62;
+            <variablelist>
+              <varlistentry>
+                <term><sgmltag class="element">field type=&#34;memo&#34;</sgmltag></term>
 
-                    </programlisting> The above SQL&#39;s
-          <emphasis>name</emphasis> and <emphasis>id</emphasis> result will be
-          used to construct a choice list with the <emphasis>name</emphasis>
-          entry being the displayed string and the corrsponding
-          <emphasis>id</emphasis> being the submitted value. There are two
-          other attributes that effect the display of the choices for
-          selection and they are <sgmltag class="attribute">prepend-blank</sgmltag>
-          and <sgmltag class="attribute">append-blank</sgmltag>. The
-          functionality of these two attributes is to prepend a blank to the
-          choice list and to append a blank to the choice list respectively.
-          The following is a screenshot of the dialog defined above:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test3.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
-          <example><title>Conditional fields</title><para>Sparx provides a
-          dynamic field displaying and hiding functionality which is defined
-          by the <sgmltag class="starttag">conditional </sgmltag> XML element.
-          The following is an example dialog definition: <programlisting
-          role="xml">
+                <listitem>
+                  <para>The <sgmltag class="starttag">field
+                  type=&#34;memo&#34;</sgmltag> is based on the HTML TEXTAREA
+                  element and the attribute <sgmltag class="attribute">max-length</sgmltag>
+                  is used to enforce the maximum number of characters allowed
+                  in the memo field. Javascript client-side validations are
+                  done to enforce the maximum number of characters allowed.</para>
+                </listitem>
+              </varlistentry>
 
-        &#60;dialog name=&#34;Test6&#34; heading=&#34;Test Conditionals&#34; loop=&#34;yes&#34;&#62;
-            &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; caption=&#34;Select Field (Combo)&#34; style=&#34;combo&#34;
-                size=&#34;5&#34; choices=&#34;-;Choice 1=A;Choice 2=B;Choice 3=C&#34;/&#62;
-            &#60;field type=&#34;text&#34; name=&#34;text_field&#34; caption=&#34;Hidden Text&#34; default=&#34;Here I am!&#34;&#62;
-                &#60;conditional action=&#34;display&#34; partner=&#34;sel_field_list&#34;
-                 js-expr=&#34;control.selectedIndex != 0&#34;/&#62;
+              <varlistentry>
+                <term><sgmltag class="element">field type=&#34;duration&#34;</sgmltag></term>
+
+                <listitem>
+                  <para>The duration field, <sgmltag class="starttag">field
+                  type=&#34;duration&#34;</sgmltag>, is used to allow entry of
+                  a begin date and an end date. It has client-side validations
+                  to make sure that the date values are valid and that
+                  beginning date field is before the end date field.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term><sgmltag class="element">field type=&#34;date&#34;</sgmltag></term>
+
+                <listitem>
+                  <para>By default date fields, <sgmltag class="starttag">field
+                  type=&#34;date&#34;</sgmltag> do not allow 2-digit years and
+                  this can be changed by setting the attribute <sgmltag
+                  class="attribute">strict-year=&#34;no&#34;</sgmltag>. Also
+                  the format of a date field can be specified by setting the
+                  attribute <sgmltag class="attribute">format</sgmltag>. The
+                  value for <sgmltag class="attribute">format</sgmltag> is
+                  based on the <classname>java.text.SimpleDateFormat</classname>&#39;s
+                  pattern strings. The date field also has a built-n
+                  client-side formatting feature which will automatically
+                  format the user entered value: user enters 11021999 and it
+                  gets displayed as 11/02/1999. The default value of the date
+                  field accepts special strings such as &#34;<emphasis>today</emphasis>&#34;
+                  and &#34;<emphasis>now</emphasis>&#34; and interprets them
+                  as present date. Any numerical operation defined after the
+                  special string is used to recalculate the default date (for
+                  example, &#34;<emphasis>today+1</emphasis>&#34; will display
+                  tomorrow&#39;s date)</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term><sgmltag class="element">field type=&#34;time&#34;</sgmltag></term>
+
+                <listitem>
+                  <para>The time field, <sgmltag class="starttag">field
+                  type=&#34;time&#34;</sgmltag>, is used to allow entry of a
+                  time value. It has client-side validations to make sure that
+                  the time entered is valid. It also accepts the special
+                  string &#34;<emphasis>now</emphasis>&#34; as a default
+                  value.</para>
+                </listitem>
+              </varlistentry>
+
+              <varlistentry>
+                <term><sgmltag class="element">field type=&#34;boolean&#34;</sgmltag></term>
+
+                <listitem>
+                  <para>The boolean field, <sgmltag class="starttag">field
+                  type=&#34;boolean&#34;</sgmltag>, represents different HTML
+                  elements: a single checkbox, a Yes/No select list, and a
+                  Yes/No radio buttons. These different elements are
+                  represented by the <sgmltag class="attribute">style</sgmltag>
+                  attribute with the following values respectively:
+                  <emphasis>radio</emphasis>, <emphasis>checkalone</emphasis>,
+                  and <emphasis>combo</emphasis>. A &#34;No&#34; selection
+                  submits a value of 0 and a &#34;Yes&#34; selection submits a
+                  value of 1.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </section>
+
+          <section>
+            <title>Select fields</title>
+
+            <para>This section provides examples to show the different styles
+            available for select fields. The XML tag, <sgmltag
+            class="starttag">field type=&#34;select&#34;</sgmltag>, is based
+            upon the SELECT HTML element. It can be used as a list capable of
+            allowing the user to choose one selection or multiple selections
+            based on the configuration. There are six styles of selection list
+            available (<emphasis>combo</emphasis>, <emphasis>radio</emphasis>,
+            <emphasis>list</emphasis>, <emphasis>multilist</emphasis>,
+            <emphasis>multicheck</emphasis>, and <emphasis>multidual</emphasis>)
+            and they can be defined using the <sgmltag class="attribute">style</sgmltag>
+            attribute. The <emphasis>multilist</emphasis>,
+            <emphasis>multicheck</emphasis>, and <emphasis>multidual</emphasis>
+            styles allow a selection of more than one option.</para>
+
+            <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_03&#34; retain-params=&#34;*&#34; redirect-after-execute=&#34;false&#34;&#62;
+            &#60;frame heading=&#34;Test Select Fields&#34;/&#62;
+            &#60;field type=&#34;separator&#34; heading=&#34;Select Fields&#34;/&#62;.
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_combo&#34; caption=&#34;Select Field (Combo)&#34; style=&#34;combo&#34;
+                choices=&#34;text-list:Choice 1=A&#39;S;Choice 2=B;Choice 3=C&#34; persist=&#34;true&#34;
+                default=&#34;A&#39;S&#34; hidden=&#34;no&#34; prepend-blank=&#34;yes&#34; append-blank=&#34;yes&#34;/&#62;
+
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_combo_xml_items&#34; caption=&#34;Select Field (Combo with XML Items)&#34; 
+                style=&#34;combo&#34; persist=&#34;true&#34; default=&#34;A&#39;S&#34; hidden=&#34;no&#34; prepend-blank=&#34;yes&#34; append-blank=&#34;yes&#34;&#62;
+                &#60;items&#62;
+                    &#60;item value=&#34;A&#34; caption=&#34;Choice 1 (in XML Item)&#34;/&#62;
+                    &#60;item value=&#34;B&#34; caption=&#34;Choice 2 (in XML Item)&#34;/&#62;
+                    &#60;item value=&#34;C&#34; caption=&#34;Choice 3 (in XML Item)&#34;/&#62;
+                    &#60;item value=&#34;D&#34; caption=&#34;Choice 4 (in XML Item)&#34;/&#62;
+                    &#60;item value=&#34;E&#34; caption=&#34;Choice 5 (in XML Item)&#34;/&#62;
+                &#60;/items&#62;
             &#60;/field&#62;
-            &#60;field type=&#34;boolean&#34; name=&#34;checkbox_field&#34; caption=&#34;Checkbox&#34; style=&#34;checkalone&#34; /&#62;
-            &#60;field type=&#34;static&#34; name=&#34;static_field2&#34; default=&#34;Checkbox checked!&#34;&#62;
-                &#60;conditional action=&#34;display&#34; partner=&#34;checkbox_field&#34;
-                 js-expr=&#34;control.checked == true&#34;/&#62;
-            &#60;/field&#62;
-        &#60;/dialog&#62;
 
-                    </programlisting> In the above example, the text field
-          named <emphasis>text_field</emphasis> is dependent upon the select
-          field named <emphasis>sel_field_list</emphasis>. This is done by
-          adding the <sgmltag class="starttag">conditional</sgmltag> element
-          as a child node to the text field and setting the attribute <sgmltag
-          class="attribute">partner</sgmltag> to the name of the select field.
-          The condition for displaying the text field is created by setting
-          the <sgmltag class="attribute">js-expr</sgmltag> (Javascript
-          expression) attribute. In the definition above, the text field named
-          <emphasis>text_field</emphasis> will only be displayed if the
-          selected option of the <emphasis>sel_field_list</emphasis> is not
-          the first option.</para><para>The second conditional field of the
-          dialog is a static field named <emphasis>static_field</emphasis> and
-          its&#39; display status is dependent upon the <emphasis>checkbox_field</emphasis>
-          being &#34;checked&#34;. The following is a screen shot of the
-          initial stage of the dialog:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_1.jpg" format="JPEG" /></imageobject></mediaobject></para><para>The
-          following is a screen shot of the dialog after the select
-          field&#39;s selection has been changed:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_2.jpg" format="JPEG" /></imageobject></mediaobject></para><para>The
-          following is a screen shot of the dialog after the checkbox has been
-          checked:</para><para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/test6_3.jpg" format="JPEG" /></imageobject></mediaobject></para><para>Aside
-          from the <sgmltag class="attribute">action</sgmltag> attribute,
-          there are other useful attributes available such as <sgmltag
-          class="attribute">apply-flag</sgmltag> and <sgmltag
-          class="attribute">clear-flag</sgmltag>. The following values are
-          available for these two attributes: For setting or removing these
-          flags depend upon other attributes such as <sgmltag
-          class="attribute"> data-cmd</sgmltag>, <sgmltag class="attribute">has-permission</sgmltag>,
-          and <sgmltag class="attribute">lack-permission</sgmltag>. The
-          <sgmltag class="attribute">data-cmd</sgmltag> is used to indicate
-          the dialog data mode (add, edit, or delete) in which the defined
-          flag should be cleared or set. The <sgmltag class="attribute">has-permission</sgmltag>
-          and <sgmltag class="attribute"> lack-permission</sgmltag> attributes
-          are used to modify the flag dependent upon the security access level
-          of the user. These two attributes can only be used when Sparx&#39;s
-          security access control list is being used.</para></example>
-          <example><title>Popup field</title><para>Sparx provides a feature to
-          display a popup dialog box when a popup icon is clicked and values
-          from a selection in the popup can be returned to the main window.
-          The following XML definition creates a field that has a popup dialog
-          associated with it: <programlisting role="xml">
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_radio&#34; caption=&#34;Select Field (Radio)&#34; style=&#34;radio&#34;
+                choices=&#34;text-list:[;!]Choice 1!A;Choice 2!B;Choice 3!C&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; caption=&#34;Select Field (List)&#34; style=&#34;list&#34; size=&#34;5&#34; 
+                default=&#34;B&#34; hidden=&#34;no&#34; choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_multilist&#34; caption=&#34;Select Field (MultiList)&#34; style=&#34;multilist&#34; 
+                size=&#34;5&#34; default=&#34;text-list:A,B&#34;
+                choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_multicheck&#34; caption=&#34;Select Field (MultiCheck)&#34; 
+                style=&#34;multicheck&#34; required=&#34;yes&#34; choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34; 
+                default=&#34;text-list:A,C&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_multidual&#34; caption=&#34;Select Field (MultiDual)&#34; style=&#34;multidual&#34; 
+                required=&#34;yes&#34; choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;text-list:A&#34; 
+                persist=&#34;true&#34;
+                multi-dual-caption-left=&#34;Left Caption&#34; multi-dual-caption-right=&#34;Right Caption&#34; 
+                multi-dual-width=&#34;100&#34;/&#62;
+            &#60;director submit-caption=&#34;Submit&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_popup&#34; caption=&#34;Select Field (Popup)&#34; style=&#34;popup&#34;
+                choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34;/&#62;
+        &#60;/dialog&#62;                </programlisting>
 
-    &#60;dialog name=&#34;Test7&#34; heading=&#34;Test Popup&#34; loop=&#34;yes&#34;&#62;
-        &#60;field type=&#34;text&#34; name=&#34;text_field_1&#34; caption=&#34;Text Field 1&#34; /&#62;
-        &#60;field type=&#34;text&#34; name=&#34;text_field_2&#34; caption=&#34;Text Field 2&#34; read-only=&#34;browser&#34;
-            hint=&#34;Click on the icon to select a value&#34;&#62;
-            &#60;popup action=&#34;create-app-url:/textJS.html&#34; fill=&#34;text_field_1,text_field_2&#34;/&#62;
-        &#60;/field&#62;
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-03.gif" />
+            </screenshot>
+
+            <para>The choices for the select field may be provided using one
+            of the following techniques:</para>
+
+            <variablelist>
+              <varlistentry>
+                <term><sgmltag class="attribute">choices</sgmltag> attribute</term>
+
+                <listitem>
+                  <para>The choices attribute may supply a static value using
+                  the <sgmltag class="attvalue">text-list:xxx</sgmltag> value
+                  source or a dynamic value source such as <sgmltag
+                  class="attvalue">query:abc.def</sgmltag> or <sgmltag
+                  class="attvalue">session:xyz</sgmltag>. For example, you
+                  could specify that the choices should be bound to the
+                  results of a query by using <sgmltag class="attribute">choices</sgmltag>=<sgmltag
+                  class="attvalue">query:test.user_list</sgmltag>. In a query,
+                  the first column will be the caption and the second column
+                  (if any) will be the value sent to the server.</para>
+
+                  <programlisting>&#60;project&#62;
+    ....
+    &#60;dialog ...&#62;
+        ....
+        &#60;field type=&#34;select&#34; ... choices=&#34;<emphasis
+role="bold">query:test.user_list</emphasis>&#34;/&#62;
+        ....
     &#60;/dialog&#62;
 
-                    </programlisting> The above example displays a dialog with
-          a text field named <emphasis>text_field_2</emphasis> which cannot be
-          filled in by the user but can only be filled in from a popup box
-          associated with it. By clicking on the popup icon (<inlinemediaobject><imageobject><imagedata
-          fileref="../../resources/images/dialog/magnifying-glass-sm.gif"
-          format="GIF" /></imageobject></inlinemediaobject>) the URL defined
-          as the action, <literal>textJS.html</literal>, will be displayed in
-          a popup window. The process through a value or multiple values being
-          returned into the <emphasis>text_field_2</emphasis> is to invoke a
-          Javascript method called <literal>populateValues()</literal>
-          provided by Sparx. The following is an example of a HTML string to
-          invoke the Javascript method: <programlisting role="html">
+    &#60;queries package=&#34;<emphasis role="bold">test</emphasis>&#34;&#62;
+        &#60;query name=&#34;<emphasis role="bold">user_list</emphasis>&#34;&#62;
+            select name, id
+            from User
+        &#60;/query&#62;
+    &#60;/queries&#62;</programlisting>
+                </listitem>
+              </varlistentry>
 
-    &#60;input type=&#34;button&#34; value=&#34;OK&#34; onClick=&#34;populateValues(&#39;This is the filled in text!&#39;);&#34;/&#62;
+              <varlistentry>
+                <term><sgmltag class="starttag">items</sgmltag> tag</term>
 
-                    </programlisting></para></example></para>
+                <listitem>
+                  <para>The items tag may specify all the value/caption pairs
+                  as sub-tags. Each of the captions are also value sources
+                  that may be dynamic.</para>
+                </listitem>
+              </varlistentry>
+            </variablelist>
+          </section>
+
+          <section>
+            <title>Conditional fields</title>
+
+            <para>Sparx provides dynamic client-side field displaying and
+            hiding functionality which is defined by the <sgmltag
+            class="starttag">conditional</sgmltag> tag. In the example below,
+            the text field named <emphasis>text_field</emphasis> is dependent
+            upon the select field named <emphasis>sel_field_list</emphasis>.
+            This is done by adding the <sgmltag class="starttag">conditional</sgmltag>
+            element as a child node to the text field and setting the
+            attribute <sgmltag class="attribute">partner</sgmltag> to the name
+            of the select field. The condition for displaying the text field
+            is created by setting the <sgmltag class="attribute">js-expr</sgmltag>
+            (Javascript expression) attribute. In the XML definition, the text
+            field named <emphasis>text_field</emphasis> will only be displayed
+            if the selected option of the <emphasis>sel_field_list</emphasis>
+            is not the first option. The second conditional field of the
+            dialog is a static field named <emphasis>static_field</emphasis>
+            and its&#39; display status is dependent upon the
+            <emphasis>checkbox_field</emphasis> being &#34;checked&#34;.</para>
+
+            <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_06&#34; redirect-after-execute=&#34;false&#34;&#62;
+            &#60;frame heading=&#34;Test Conditionals&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; caption=&#34;Select Field (Combo)&#34; 
+                   style=&#34;combo&#34; size=&#34;5&#34;
+                   choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34; prepend-blank=&#34;yes&#34; 
+                   hint=&#34;Partner field is hidden. Select &#39;Choice 2&#39; to see it.&#34;/&#62;
+            &#60;field type=&#34;text&#34; name=&#34;static_field&#34; default=&#34;Here I am!&#34; 
+                hint=&#34;Partner field is Select Field (Combo)&#34;&#62;
+                &#60;conditional action=&#34;display&#34; partner-field-name=&#34;sel_field_list&#34; 
+                             expression=&#34;control.selectedIndex == 2&#34;/&#62;
+            &#60;/field&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;checkbox_field&#34; caption=&#34;Checkbox&#34; 
+                  style=&#34;check-alone&#34; hint=&#34;Click me to see my hidden static field.&#34;/&#62;
+            &#60;field type=&#34;static&#34; name=&#34;static_field2&#34; default=&#34;Checkbox checked!&#34;&#62;
+                &#60;conditional action=&#34;display&#34; partner-field-name=&#34;checkbox_field&#34; 
+                             expression=&#34;control.checked == true&#34;/&#62;
+            &#60;/field&#62;
+        &#60;/dialog&#62;                </programlisting>
+
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-06.gif" />
+            </screenshot>
+
+            <para>Aside from the <sgmltag class="attribute">action</sgmltag>
+            attribute, there are other useful attributes available such as
+            <sgmltag class="attribute">apply-flag</sgmltag> and <sgmltag
+            class="attribute">clear-flag</sgmltag>. The following values are
+            available for these two attributes: For setting or removing these
+            flags depend upon other attributes such as <sgmltag
+            class="attribute">data-cmd</sgmltag>, <sgmltag class="attribute">has-permission</sgmltag>,
+            and <sgmltag class="attribute">lack-permission</sgmltag>. The
+            <sgmltag class="attribute">data-cmd</sgmltag> is used to indicate
+            the dialog data mode (add, edit, or delete) in which the defined
+            flag should be cleared or set. The <sgmltag class="attribute">has-permission</sgmltag>
+            and <sgmltag class="attribute">lack-permission</sgmltag>
+            attributes are used to modify the flag dependent upon the security
+            access level of the user. These two attributes can only be used
+            when Sparx&#39;s security access control list is being used.</para>
+          </section>
+
+          <section>
+            <title>Popup fields</title>
+
+            <para>Sparx provides a feature to display a popup dialog box when
+            a popup icon is clicked and values from a selection in the popup
+            can be returned to the main window.</para>
+
+            <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_06&#34; redirect-after-execute=&#34;false&#34;&#62;
+            &#60;frame heading=&#34;Test Conditionals&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; caption=&#34;Select Field (Combo)&#34; 
+                   style=&#34;combo&#34; size=&#34;5&#34;
+                   choices=&#34;text-list:Choice 1=A;Choice 2=B;Choice 3=C&#34; prepend-blank=&#34;yes&#34; 
+                   hint=&#34;Partner field is hidden. Select &#39;Choice 2&#39; to see it.&#34;/&#62;
+            &#60;field type=&#34;text&#34; name=&#34;static_field&#34; default=&#34;Here I am!&#34; 
+                hint=&#34;Partner field is Select Field (Combo)&#34;&#62;
+                &#60;conditional action=&#34;display&#34; partner-field-name=&#34;sel_field_list&#34; 
+                             expression=&#34;control.selectedIndex == 2&#34;/&#62;
+            &#60;/field&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;checkbox_field&#34; caption=&#34;Checkbox&#34; 
+                  style=&#34;check-alone&#34; hint=&#34;Click me to see my hidden static field.&#34;/&#62;
+            &#60;field type=&#34;static&#34; name=&#34;static_field2&#34; default=&#34;Checkbox checked!&#34;&#62;
+                &#60;conditional action=&#34;display&#34; partner-field-name=&#34;checkbox_field&#34; 
+                             expression=&#34;control.checked == true&#34;/&#62;
+            &#60;/field&#62;
+        &#60;/dialog&#62;                </programlisting>
+
+            <para>The above example displays a dialog with a text field named
+            <emphasis>text_field_2</emphasis> which cannot be filled in by the
+            user but can only be filled in from a popup box associated with
+            it. By clicking on the popup icon () the URL defined as the
+            action, <literal>textJS.html</literal>, will be displayed in a
+            popup window. The process through a value or multiple values being
+            returned into the <emphasis>text_field_2</emphasis> is to invoke a
+            Javascript method called <literal>populateValues()</literal>
+            provided by Sparx. The following is an example of a HTML string to
+            invoke the Javascript method:</para>
+
+            <programlisting>&#60;a href=&#34;javascript:opener.activeDialogPopup.populateControls(&#39;Here it is!&#39;)&#34;&#62;
+    Click here to fill in the field
+&#60;/a&#62;</programlisting>
+
+            <screenshot>
+              <graphic
+              fileref="./resources/images/screen-console-test-bed-pres-test-dialog-07.gif" />
+            </screenshot>
+          </section>
         </section>
 
         <section>
@@ -5515,40 +6073,6 @@ public class NewField extends DialogField
             &#60;field <emphasis role="bold">type=&#34;newField&#34;</emphasis> name=&#34;new_field&#34; caption=&#34;My New Field&#34; ... /&#62;
             ...</programlisting>
         </section>
-      </section>
-
-      <section>
-        <title>Dialog State Management</title>
-
-        <para></para>
-
-        <section>
-          <title>Transactions</title>
-
-          <para>All Sparx dialogs have unique identifiers at both development
-          and run-time. Features are provided to prevent duplicate data entry
-          through the use of Dialog Transactions (preventing users from
-          hitting the &#34;back&#34; button and re-running an older
-          transaction).</para>
-        </section>
-      </section>
-
-      <section>
-        <title>Dialog Field Data Binding</title>
-
-        <para>Using Value Sources, Sparx provides automatic SQL, a web
-        service, or other data binding to any list controls in HTML or DHTML.
-        This allows, for instance a query to be run and automatically create
-        text fields, a list box, radio buttons, check boxes, and multi-select
-        list boxes. All dialog fields have this dynamic data binding
-        capability so that arbitrary data sources can populate dialog contents
-        and selections.</para>
-      </section>
-
-      <section>
-        <title>Dialog Execute Handlers</title>
-
-        <para></para>
       </section>
 
       <section id="Dialogs-DataCommands">
@@ -5657,48 +6181,114 @@ public class NewField extends DialogField
         has conditions defined based upon the mode of the dialog. When the
         dialog is in edit or delete mode, the <emphasis>unavailable</emphasis>
         flag is applied to the fields. For more information on conditional
-        fields, go to <xref linkend="Dialogs-DataFields" />. As mentioned
-        before, a data command can be passed to the dialog through a request
-        parameter by appending a query string after the URL,
-        <literal>http:\\myapp\index.jsp?data_cmd=add</literal>. A request
-        attribute can also be used to pass the data command as shown in the
-        JSP example below:</para>
-
-        <example>
-          <title>Setting a data command</title>
-
-          <programlisting role="xml">&#60;%
-                    request.setAttribute(&#34;data_cmd&#34;, &#34;add&#34;); %&#62;
-                    &#60;xaf:dialog name=&#34;registration&#34; /&#62;</programlisting>
-        </example>
+        fields, go to <xref linkend="Dialogs-DataFields" />. </para>
       </section>
 
-      <section id="Testing-Dialog">
-        <title>Testing the dialog</title>
+      <section>
+        <title>Using Dialogs</title>
+
+        <para>Up to this point we&#39;ve focused on the definition and
+        declaration process. Now we&#39;ll talk about how to call and process
+        dialogs once they&#39;re been defined.</para>
+
+        <figure>
+          <title>Dialog Definition, Call, and Processing Overview</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata
+              fileref="./resources/images/sparx-dialog-decl-call-process-steps.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <orderedlist>
+          <listitem>
+            <para>The first step in using a dialog is to declare it using all
+            of the descriptor tags discussed in previous sections. This step
+            defines the dialog object but does not declare usage. A single
+            dialog could be used on multiple pages so we declare the dialog
+            once.</para>
+          </listitem>
+
+          <listitem>
+            <para>The second step in using a dialog is to declare the actual
+            call to a dialog. You can use either the &#34;dialog
+            <emphasis>is</emphasis> the page&#34; or the &#34;dialog is a
+            <emphasis>part</emphasis> of the page&#34; model. If the dialog
+            will be the main portion of the page then you just use the dialog
+            command in the page tag. If the dialog is a part of other content
+            on the page then just define it as a command panel.</para>
+          </listitem>
+
+          <listitem>
+            <para>In order for a dialog to actually execute, the <sgmltag
+            class="starttag">page</sgmltag> defined in the <sgmltag
+            class="starttag">navigation-tree</sgmltag> must be visted using a
+            browser (or you can unit test it in the Console). </para>
+          </listitem>
+
+          <listitem>
+            <para>From this point on, Sparx handles all dialog processing and
+            will call your code when specific events need to be processed.</para>
+          </listitem>
+
+          <listitem>
+            <para>Although Sparx handles almost all general validation for
+            non-application-specific data you can ask for a callback (using a
+            listener) to perform additional validation.</para>
+          </listitem>
+
+          <listitem>
+            <para>Once all validation has been performed (both client- and
+            server-side) and all the data is assumed to be valid then it is
+            your responsiblity to do something useful with the data.</para>
+          </listitem>
+
+          <listitem>
+            <para>After performing your application logic you will redirect
+            the navigation system to the next action using a variety of
+            techniques.</para>
+          </listitem>
+        </orderedlist>
 
         <section>
-          <title>Unit Testing</title>
+          <title>Dialog State Management with Dialog Context Beans (DCBs)</title>
 
-          <para>All dialogs defined in the Project File are listed in the
-          Console under the <menuchoice role="bold"><guimenu>Presentation</guimenu><guimenuitem>Dialogs</guimenuitem></menuchoice>
-          menu item.</para>
+          <para>Acting as a finite state machine, the DialogContext class is
+          the only object in the entire dialog processing lifecycle that is
+          created for each user. The “form model” (Dialog) and “form view”
+          (skin) are created, cached, and reused for each user; however, the
+          DialogContext bean or DCB is a new object for each user and each
+          request.</para>
 
-          <para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/ace-dialogs.jpg" format="JPEG" /></imageobject></mediaobject></para>
+          <section>
+            <title>Transactions</title>
 
-          <para>Clicking on the Action icon of any dialog displays a test page
-          with the dialog in it. Each dialog can be tested by entering values
-          for the dialog and then pressing the OK button:</para>
+            <para>All Sparx dialogs have unique identifiers at both
+            development and run-time. Features are provided to prevent
+            duplicate data entry through the use of Dialog Transactions
+            (preventing users from hitting the &#34;back&#34; button and
+            re-running an older transaction).</para>
+          </section>
 
-          <para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/ace-testdialog.jpg"
-          format="JPEG" /></imageobject></mediaobject></para>
+          <section>
+            <title>Generating form-specific Dialog Context Beans (DCBs)</title>
 
-          <para>This will display the entered values:</para>
+            <para></para>
+          </section>
+        </section>
 
-          <para><mediaobject><imageobject><imagedata
-          fileref="./resources/images/dialogs/ace-testresult.jpg"
-          format="JPEG" /></imageobject></mediaobject></para>
+        <section>
+          <title>Dialog Processing Events</title>
+
+          <para></para>
+        </section>
+
+        <section>
+          <title>Dialog Execute Handlers</title>
+
+          <para></para>
         </section>
       </section>
 
@@ -5822,22 +6412,6 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         </section>
       </section>
 
-      <section id="Dialog-Context">
-        <title>Dialog Context Beans (Form Beans)</title>
-
-        <para>Acting as a finite state machine, the DialogContext class is the
-        only object in the entire dialog processing lifecycle that is created
-        for each user. The “form model” (Dialog) and “form view” (skin) are
-        created, cached, and reused for each user; however, the DialogContext
-        bean or DCB is a new object for each user and each request.</para>
-
-        <section>
-          <title>Generating form-specific Dialog Context Beans (DCBs)</title>
-
-          <para></para>
-        </section>
-      </section>
-
       <section>
         <title>Server and Client-side Validation</title>
 
@@ -5917,7 +6491,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         caching, state management, and output.</para>
 
         <figure>
-          <title>Sparx Forms Processing Overview</title>
+          <title>Sparx Forms Processing Class Interactions Overview</title>
 
           <mediaobject>
             <imageobject>
