@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.7 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.8 2003-10-20 15:56:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -52,8 +52,6 @@ import java.util.StringTokenizer;
 
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.axiom.schema.Column;
 
 public class DialogFields
 {
