@@ -39,94 +39,11 @@
  */
 package com.netspective.medigy.reference.custom;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.party.Party;
-
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.Transient;
-
-
-public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
+public interface CustomCachedReferenceEntity
 {
-    private Long systemId;
-    private String code;
-    private String label;
-    private String description;
-
-    private Party party;
-
-    public AbstractCustomReferenceEntity()
-    {
-    }
-
-    @Transient
-    public Long getSystemId()
-    {
-        return systemId;
-    }
-
-    protected void setSystemId(Long systemId)
-    {
-        this.systemId = systemId;
-    }
-
-    @Column(name = "code", length = 8, nullable = false)
-    public String getCode()
-    {
-        return code;
-    }
-
-    public void setCode(String code)
-    {
-        this.code = code;
-    }
-
-    @Column(length = 100, nullable = false)
-    public String getLabel()
-    {
-        return label;
-    }
-
-    public void setLabel(final String label)
-    {
-        this.label = label;
-    }
-
-    @Column(length = 256)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id", nullable = false)
-    public Party getParty()
-    {
-        return party;
-    }
-
-    public void setParty(final Party party)
-    {
-        this.party = party;
-    }
-
-    public int compareTo(Object o)
-    {
-        if (o == this)
-            return 0;
-
-        final CustomReferenceEntity otherType = (CustomReferenceEntity) o;
-        if (otherType.getSystemId().longValue() == this.getSystemId().longValue())
-            return 0;
-        else
-            return -1;
-    }
+    public String getId();
+    public String getLabel();
+    public String getDescription();
+    public CustomReferenceEntity getEntity();
+    public void setEntity(final CustomReferenceEntity entity);
 }
