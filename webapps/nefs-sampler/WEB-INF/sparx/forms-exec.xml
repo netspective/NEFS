@@ -162,8 +162,8 @@
     <dialogs package="form.exec.inheritance">
 
         <!--
-          * both exec1a and exec1b will be handled by the same custom Java class: app.inheritance.SampleExecuteDialog
-          * see WEB-INF/classes/app/inheritance/ExecDialog.java for the code
+          * both exec1a and exec1b will be handled by the same custom Java class: app.form.exec.inheritance.SampleExecuteDialog
+          * see WEB-INF/classes/app/form/exec/inheritance/ExecDialog.java for the code
         -->
 
         <dialog type="exec-sample" name="exec1a" class="app.form.exec.inheritance.SampleExecuteDialog">
@@ -207,7 +207,7 @@
             <field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/>
             <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
 
-            <!-- The <listener> tag will automatically figure out all the the interfaces that the given class
+            <!-- The <listener> tag will automatically figure out all the interfaces that the given class
                  implements (such as population of values, validation, execution, etc) and register all the
                  listeners automatically. -->
             <listener class="app.form.exec.delegation.SampleValidateHandler"/>
