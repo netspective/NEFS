@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.24 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.25 2003-09-29 02:06:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -109,6 +109,7 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 
@@ -207,6 +208,15 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
 
             return state;
+        }
+
+        public DialogField.State getState(Column column)
+        {
+            DialogField field = dialog.getFields().getFieldForColumn(column);
+            if(field != null)
+                return getState(field);
+            else
+                return null;
         }
 
         public DialogField.State getState(String qualifiedName)
