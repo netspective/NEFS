@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.5 2003-04-25 16:41:03 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.6 2003-04-26 17:25:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -63,6 +63,7 @@ import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 
 public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
@@ -110,7 +111,7 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
 
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
     {
-        return new ColumnsDataSource(nc, vc, table);
+        return new ColumnsDataSource(nc, vc, table.getColumns());
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
@@ -134,14 +135,14 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         protected NavigationContext nc;
         protected int row = -1;
         protected int lastRow;
-        protected Table table;
+        protected Columns columns;
 
-        public ColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+        public ColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
         {
             super(vc);
             this.nc = nc;
-            this.table = table;
-            lastRow = table.getColumns().size() - 1;
+            this.columns = columns;
+            lastRow = columns.size() - 1;
         }
 
         public String getSqlTexts(DbmsSqlTexts sqlTexts)
@@ -170,14 +171,9 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
             return allSql.toString();
         }
 
-        public String createColumnHref(Column column)
-        {
-            return "<a href=\"column?schema-table-column="+ table.getSchema().getName() + "." + table.getName() + "." + column.getName() +"\">" + column.getName() + "</a>";
-        }
-
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            Column column = table.getColumns().get(row);
+            Column column = columns.get(row);
 
             switch(columnIndex)
             {

@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsDescrsPanel.java,v 1.2 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPriKeysPanel.java,v 1.1 2003-04-26 17:25:15 shahid.shah Exp $
  */
 
 import java.util.List;
@@ -58,72 +58,16 @@ import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Columns;
 
-public class SchemaTableColumnsDescrsPanel extends SchemaTableColumnsPanel
+public class SchemaTableColumnsPriKeysPanel extends SchemaTableColumnsPanel
 {
-    private static final Log log = LogFactory.getLog(SchemaTableColumnsDescrsPanel.class);
-    public static final String REQPARAMNAME_SHOW_DETAIL_COLUMN = "schema-table-column";
-    private static final HtmlTabularReport columnsDescrsReport = new BasicHtmlTabularReport();
-    private static final GeneralColumn schemaTableColumn = new GeneralColumn();
-
-    static
+    public SchemaTableColumnsPriKeysPanel()
     {
-        GeneralColumn column = new GeneralColumn();
-        columnsDescrsReport.addColumn(column);
-
-        schemaTableColumn.setHeading(new StaticValueSource("Column"));
-        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}");
-        columnsDescrsReport.addColumn(schemaTableColumn);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Domain"));
-        columnsDescrsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Description"));
-        columnsDescrsReport.addColumn(column);
-    }
-
-    public SchemaTableColumnsDescrsPanel()
-    {
-        getFrame().setHeading(new StaticValueSource("Descriptions"));
+        getFrame().setHeading(new StaticValueSource("Primary Keys"));
     }
 
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
     {
-        return new ColumnsDescrsDataSource(nc, vc, table.getColumns());
-    }
-
-    public HtmlTabularReport getReport(NavigationContext nc)
-    {
-        return columnsDescrsReport;
-    }
-
-    protected class ColumnsDescrsDataSource extends ColumnsDataSource
-    {
-        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
-        {
-            super(nc, vc, columns);
-        }
-
-        public Object getActiveRowColumnData(int columnIndex, int flags)
-        {
-            Column column = columns.get(row);
-
-            switch(columnIndex)
-            {
-                case 0:
-                case 1:
-                case 2:
-                    return super.getActiveRowColumnData(columnIndex, flags);
-
-                case 3:
-                    return column.getDescr();
-
-                default:
-                    return null;
-            }
-        }
+        return new ColumnsDataSource(nc, vc, table.getPrimaryKeyColumns());
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.5 2003-04-25 02:23:03 shahid.shah Exp $
+ * $Id: SchemaStructurePanel.java,v 1.6 2003-04-26 17:25:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -259,7 +259,8 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
             StructureRow structureRow = (StructureRow) structureRows.get(i);
             if(structureRow.isTable(selectedTable))
             {
-                nc.setPageHeading(selectedTable);
+                String abbrev = structureRow.getTable().getAbbrev();
+                nc.setPageHeading(abbrev.equals(structureRow.getTable().getName()) ? selectedTable : (selectedTable + " (" + abbrev + ")"));
                 return structureRow;
             }
         }

@@ -1,5 +1,3 @@
-package com.netspective.sparx.console.panel.data.schema;
-
 /*
  * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
  *
@@ -41,89 +39,122 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsDescrsPanel.java,v 1.2 2003-04-26 17:25:15 shahid.shah Exp $
+ * $Id: SchemaTableIndexesPanel.java,v 1.1 2003-04-26 17:25:15 shahid.shah Exp $
  */
 
+package com.netspective.sparx.console.panel.data.schema;
+
 import java.util.List;
+import java.util.Set;
+import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.Indexes;
+import com.netspective.axiom.schema.Index;
+import com.netspective.axiom.sql.DbmsSqlTexts;
 
-public class SchemaTableColumnsDescrsPanel extends SchemaTableColumnsPanel
+public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
 {
-    private static final Log log = LogFactory.getLog(SchemaTableColumnsDescrsPanel.class);
-    public static final String REQPARAMNAME_SHOW_DETAIL_COLUMN = "schema-table-column";
-    private static final HtmlTabularReport columnsDescrsReport = new BasicHtmlTabularReport();
-    private static final GeneralColumn schemaTableColumn = new GeneralColumn();
+    private static final HtmlTabularReport indexesReport = new BasicHtmlTabularReport();
 
     static
     {
         GeneralColumn column = new GeneralColumn();
-        columnsDescrsReport.addColumn(column);
-
-        schemaTableColumn.setHeading(new StaticValueSource("Column"));
-        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}");
-        columnsDescrsReport.addColumn(schemaTableColumn);
+        column.setHeading(new StaticValueSource("Name"));
+        indexesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Domain"));
-        columnsDescrsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Type"));
+        indexesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Description"));
-        columnsDescrsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Columns"));
+        indexesReport.addColumn(column);
     }
 
-    public SchemaTableColumnsDescrsPanel()
+    public SchemaTableIndexesPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Descriptions"));
+        getFrame().setHeading(new StaticValueSource("Table Indexes"));
     }
 
-    public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        return new ColumnsDescrsDataSource(nc, vc, table.getColumns());
+        List rows = SchemaStructurePanel.createStructureRows(nc.getSqlManager().getSchemas());
+        SchemaStructurePanel.StructureRow selectedRow = SchemaStructurePanel.getSelectedStructureRow(nc, rows);
+
+        if(selectedRow == null)
+            return new SimpleMessageDataSource(vc, SchemaStructurePanel.noTableSelected);
+        else
+            return new IndexesDataSource(vc, selectedRow.tableTreeNode != null ? selectedRow.tableTreeNode.getTable().getIndexes() : selectedRow.enumTable.getIndexes());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return columnsDescrsReport;
+        return indexesReport;
     }
 
-    protected class ColumnsDescrsDataSource extends ColumnsDataSource
+    protected class IndexesDataSource extends AbstractHtmlTabularReportDataSource
     {
-        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        protected int row = -1;
+        protected int lastRow;
+        protected Indexes indexes;
+
+        public IndexesDataSource(HtmlTabularReportValueContext vc, Indexes indexes)
         {
-            super(nc, vc, columns);
+            super(vc);
+            this.indexes = indexes;
+            this.lastRow = indexes.size() - 1;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            Column column = columns.get(row);
+            Index index = indexes.get(row);
 
             switch(columnIndex)
             {
                 case 0:
-                case 1:
-                case 2:
-                    return super.getActiveRowColumnData(columnIndex, flags);
+                    return index.getName();
 
-                case 3:
-                    return column.getDescr();
+                case 1:
+                    return index.isUnique() ? "unique" : null;
+
+                case 2:
+                    return index.getColumns().getOnlyNames(", ");
 
                 default:
                     return null;
             }
+        }
+
+        public boolean next()
+        {
+            if(row < lastRow)
+            {
+                row++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return row + 1;
         }
     }
 }

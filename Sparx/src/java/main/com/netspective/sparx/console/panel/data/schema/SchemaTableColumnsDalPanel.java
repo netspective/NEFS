@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsDalPanel.java,v 1.1 2003-04-25 02:23:03 shahid.shah Exp $
+ * $Id: SchemaTableColumnsDalPanel.java,v 1.2 2003-04-26 17:25:15 shahid.shah Exp $
  */
 
 import java.util.List;
@@ -58,6 +58,7 @@ import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.Columns;
 
 public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
 {
@@ -91,7 +92,7 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
 
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
     {
-        return new ColumnsDescrsDataSource(nc, vc, table);
+        return new ColumnsDescrsDataSource(nc, vc, table.getColumns());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -101,14 +102,14 @@ public class SchemaTableColumnsDalPanel extends SchemaTableColumnsPanel
 
     protected class ColumnsDescrsDataSource extends ColumnsDataSource
     {
-        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
+        public ColumnsDescrsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
         {
-            super(nc, vc, table);
+            super(nc, vc, columns);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            Column column = table.getColumns().get(row);
+            Column column = columns.get(row);
 
             switch(columnIndex)
             {
