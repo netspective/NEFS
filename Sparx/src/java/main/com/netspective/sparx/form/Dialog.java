@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.22 2003-07-11 20:53:15 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.23 2003-07-12 03:33:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -77,6 +77,9 @@ import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -92,10 +95,26 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
  * For dialog objects that need more complex actions for data population, validation,
  * and execution, the <code>Dialog</code> class can be subclassed to implement customized actions.
  */
-public class Dialog extends AbstractPanel
+public class Dialog extends AbstractPanel implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(Dialog.class);
+    public static final String ATTRNAME_TYPE = "type";
+    public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
+
+    protected static class DialogTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public DialogTypeTemplateConsumerDefn()
+        {
+            super(null, ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+
+        public String getNameSpaceId()
+        {
+            return Dialog.class.getName();
+        }
+    }
 
     /**
      * Request parameter which indicates whether or not the dialog should be automatically executed when it is being loaded
@@ -149,6 +168,7 @@ public class Dialog extends AbstractPanel
     private int layoutColumnsCount = 1;
     private String[] retainRequestParams;
     private Class dialogContextClass = DialogContext.class;
+    private List dialogTypes = new ArrayList();
     private List clientJavascripts = new ArrayList();
 
     /**
@@ -165,6 +185,16 @@ public class Dialog extends AbstractPanel
     {
         this();
         setNameSpace(pkg);
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return dialogTypeConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        dialogTypes.add(template.getTemplateName());
     }
 
     public DialogFields constructFields()
