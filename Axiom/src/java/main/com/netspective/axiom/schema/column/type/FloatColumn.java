@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FloatColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: FloatColumn.java,v 1.2 2003-06-13 03:45:30 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -62,9 +62,24 @@ public class FloatColumn extends BasicColumn
             return Float.class;
         }
 
+        public void setValue(Object value)
+        {
+            if (value != null && !value.getClass().isAssignableFrom(Float.class))
+                throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
+
+            super.setValue(value);
+        }
+
         public void setTextValue(String value) throws ValueException
         {
-            setValue(new Float(Float.parseFloat(value)));
+            try
+            {
+                setValue(new Float(Float.parseFloat(value)));
+            }
+            catch (NumberFormatException e)
+            {
+                throw new ValueException(e);
+            }
         }
     }
 
