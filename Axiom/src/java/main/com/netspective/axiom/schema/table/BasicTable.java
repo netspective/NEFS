@@ -976,7 +976,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             }
             finally
             {
-                if(qrs != null) qrs.close(true);
+                if(qrs != null) qrs.close(false);
             }
         }
 
