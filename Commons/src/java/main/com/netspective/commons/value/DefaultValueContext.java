@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.18 2004-04-27 20:12:14 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.19 2004-04-28 01:11:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -93,7 +93,6 @@ public class DefaultValueContext implements ValueContext
         if(result == null)
         {
             result = script.createScriptContext();
-            result.registerBean("vc", this);
             scriptContexts.put(script.getQualifiedName(), result);
         }
 
