@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.12 2003-08-25 15:59:10 shahid.shah Exp $
+ * $Id: Query.java,v 1.13 2003-08-31 22:41:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -415,18 +415,16 @@ public class Query
     protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        int ownership = scrollable ? ConnectionContext.OWNERSHIP_AUTHENTICATED_USER: ConnectionContext.OWNERSHIP_DEFAULT;
         return executeAndRecordStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false, ownership) : dbvc.getConnection(dbvc.getDefaultDataSource(), false, ownership),
+                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
 
     protected QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        int ownership = scrollable ? ConnectionContext.OWNERSHIP_AUTHENTICATED_USER: ConnectionContext.OWNERSHIP_DEFAULT;
         return executeAndIgnoreStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false, ownership) : dbvc.getConnection(dbvc.getDefaultDataSource(), false, ownership),
+                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
 

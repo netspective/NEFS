@@ -28,7 +28,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.7 2003-08-17 00:02:04 shahid.shah Exp $
+ * $Id: DynamicSqlTest.java,v 1.8 2003-08-31 22:42:33 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -636,7 +636,7 @@ public class DynamicSqlTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 		String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (column_03 like ?) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
 

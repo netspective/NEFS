@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.12 2003-08-19 16:08:33 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.13 2003-08-31 22:42:34 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -188,7 +188,7 @@ public class SqlManagerQueryTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
         assertNotNull(cc);
 
         QueryParameters.ValueRetrieveContext vrc = params.retrieve(cc);
@@ -323,7 +323,7 @@ public class SqlManagerQueryTest extends TestCase
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
 	    dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 		// No stats recorded...
 	    QueryResultSet qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
@@ -389,7 +389,7 @@ public class SqlManagerQueryTest extends TestCase
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
 	    dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded this time...
         QueryResultSet qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
@@ -505,7 +505,7 @@ public class SqlManagerQueryTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded...
         boolean exceptionThrown = true;
@@ -536,7 +536,7 @@ public class SqlManagerQueryTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded this time...
         QueryResultSet qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
@@ -674,7 +674,7 @@ public class SqlManagerQueryTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // No stats recorded...
         QueryResultSet qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MiscSqlObjectsTest.java,v 1.4 2003-08-17 00:02:04 shahid.shah Exp $
+ * $Id: MiscSqlObjectsTest.java,v 1.5 2003-08-31 22:42:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -162,7 +162,7 @@ public class MiscSqlObjectsTest extends TestCase
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
         assertNotNull(cc);
 
         QueryParameters.ValueRetrieveContext vrc = params.retrieve(cc);

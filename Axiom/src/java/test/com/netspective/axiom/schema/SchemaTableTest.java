@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableTest.java,v 1.5 2003-08-17 00:02:04 shahid.shah Exp $
+ * $Id: SchemaTableTest.java,v 1.6 2003-08-31 22:42:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -169,7 +169,7 @@ public class SchemaTableTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         Row initialRow = table.createRow();
         QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));
@@ -239,7 +239,7 @@ public class SchemaTableTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         Row initialRow = table.createRow();
         QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));

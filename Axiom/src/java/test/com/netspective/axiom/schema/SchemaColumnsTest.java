@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.11 2003-08-28 01:17:33 shahid.shah Exp $
+ * $Id: SchemaColumnsTest.java,v 1.12 2003-08-31 22:42:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -325,7 +325,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         //Asser the data inserted
         table.getAccessorByColumnEquality(colA);
@@ -371,7 +371,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         //Asser the data inserted
         table.getAccessorByColumnEquality(colA);
@@ -473,7 +473,7 @@ public class SchemaColumnsTest extends TestCase
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
-        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true, ConnectionContext.OWNERSHIP_DEFAULT);
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 
 
