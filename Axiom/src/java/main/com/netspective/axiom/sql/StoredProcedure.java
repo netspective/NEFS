@@ -30,8 +30,6 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-
 package com.netspective.axiom.sql;
 
 import java.sql.CallableStatement;
@@ -58,12 +56,6 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-/**
- * Class for handling stored procedure calls
- *
- * @author Aye Thu
- * @version $Id: StoredProcedure.java,v 1.14 2004-08-15 02:13:09 shahid.shah Exp $
- */
 public class StoredProcedure
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
