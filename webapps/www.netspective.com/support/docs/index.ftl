@@ -20,6 +20,11 @@
         <td>Provides a history of the changes to NEFS since 7.0 was released.</td>
     </tr>
 
+    <tr>
+        <td><a href="${resourcesPath}/NEFS_Sales_Tech_Intro.ppt">NEFS Introduction Presentation</a></td>
+        <td>A PowerPoint presentation that introduces the main features and functions of the NEFS.</td>
+    </tr>
+
     <#list sampleApps as app>
     <#if app.tutorialUrl?exists>
     <tr>
