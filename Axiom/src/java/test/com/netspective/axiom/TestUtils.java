@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: TestUtils.java,v 1.2 2003-04-12 05:47:57 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom;
 
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.commons.io.Resource;
+
+import java.io.File;
 
 public class TestUtils
 {
@@ -57,6 +59,6 @@ public class TestUtils
     {
         String classDir = TestUtils.class.getPackage().getName().replace('.', '/');
         Resource resource = new Resource(TestUtils.class.getClassLoader(), classDir + "/hsqldb-data/"+ DB +".properties");
-        connProvider.addDataSourceInfo(DATASRCID_DEFAULT, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + resource.getFile().getParent() + "/" + DB, "sa", "");
+        connProvider.addDataSourceInfo(DATASRCID_DEFAULT, "org.hsqldb.jdbcDriver", "jdbc:hsqldb:" + resource.getFile().getParent() + File.separator + DB, "sa", "");
     }
 }
