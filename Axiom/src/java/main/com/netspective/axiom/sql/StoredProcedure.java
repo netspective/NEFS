@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -259,14 +260,14 @@ public class StoredProcedure
         return text.toString();
     }
 
-
-    // TODO: All methods after this needs to be worked on
-    public QueryResultSet execute(DatabaseConnValueContext dbvc, Object[] overrideParams) throws NamingException, SQLException
-    {
-        return log.isInfoEnabled() ? executeAndRecordStatistics(dbvc, overrideParams) : executeAndIgnoreStatistics(dbvc, overrideParams);
-    }
-
-    protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
+    /**
+     *
+     * @param cc
+     * @param overrideParams
+     * @throws NamingException
+     * @throws SQLException
+     */
+    protected void executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         //if(log.isTraceEnabled()) trace(cc, overrideParams);
         try
@@ -285,29 +286,28 @@ public class StoredProcedure
                 parameters.apply(cc, stmt);
 
             boolean executeStmtResult = stmt.execute();
-
-
-            //return new QueryResultSet(this, cc, executeStmtResult, stmt.getResultSet());
+            parameters.extract(cc, stmt);
+            //StoredProcedureParameter[] outParams = parameters.getOuts();
         }
         catch(SQLException e)
         {
             log.error(createExceptionMessage(cc, overrideParams), e);
             throw e;
         }
-        return null;
     }
 
-    protected QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams) throws SQLException, NamingException
+    /**
+     * Executes the stored procedure
+     * @param dbvc
+     * @param overrideParams
+     * @throws SQLException
+     * @throws NamingException
+     */
+    public void execute(DatabaseConnValueContext dbvc, Object[] overrideParams) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeAndIgnoreStatistics(
+         executeAndIgnoreStatistics(
                     dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams);
     }
-
-    private QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams)
-    {
-        return null;
-    }
-
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameterType.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
+ * $Id: QueryParameterType.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -71,12 +71,15 @@ public class QueryParameterType
         add(TEXT);
 
         // added to support stored procedures
+        add("real", Types.REAL, Float.class);
         add("float", Types.FLOAT, Float.class);
         //add("char", Types.CHAR, char.class);
         add("clob", Types.CLOB, Clob.class);
         add("decimal", Types.DECIMAL, Double.class);
         add("date", Types.DATE, Date.class);
         add("blob", Types.BLOB, Blob.class);
+        add("smallint", Types.SMALLINT, Byte.class);
+        add("bigint", Types.BIGINT, Long.class);
     }
 
     public final static void add(QueryParameterType type)

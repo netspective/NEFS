@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -50,13 +50,13 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.axiom.ConnectionContext;
 
 import java.sql.Types;
 import java.sql.SQLException;
 import java.sql.CallableStatement;
-import java.util.Map;
-import java.util.HashMap;
+import java.sql.Clob;
 
 /**
  * Class representing an in or out parameter of a callable statement object
@@ -67,9 +67,13 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     {
         public static final int IN = 0;
         public static final int OUT = 1;
-        public static final int IN_AND_OUT = 2;
+        public static final int IN_OUT = 2;
 
-        public static final String[] VALUES = new String[] { "in", "out", "in-out" };
+        public static final String IN_NAME = "in";
+        public static final String OUT_NAME = "out";
+        public static final String IN_OUT_NAME = "in-out";
+
+        public static final String[] VALUES = new String[] { IN_NAME, OUT_NAME, IN_OUT_NAME };
 
         public Type()
         {
@@ -151,6 +155,14 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
      */
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
+        // The In, out, or in/out type MUST be defined
+        if(type == null)
+        {
+            RuntimeException e = new RuntimeException(QueryParameter.class.getName() + " '" +
+                    this.parent.getProcedure().getQualifiedName() + "' has no 'type' attribute.");
+            this.parent.getProcedure().getLog().error(e.getMessage(), e);
+            throw e;
+        }
         if(value == null)
         {
             RuntimeException e = new RuntimeException(QueryParameter.class.getName() + " '" +
@@ -158,6 +170,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
             this.parent.getProcedure().getLog().error(e.getMessage(), e);
             throw e;
         }
+        // NOTE: The Sql Type MUST be defined, if it is not it will default to VARCHAR!
     }
 
     /**
@@ -171,7 +184,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     {
         int paramNum = vac.getNextParamNum();
         Value sv = value.getValue(cc);
-        if (getType().getValueIndex() == Type.IN)
+        if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
             switch (sqlType)
             {
@@ -197,12 +210,40 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                     break;
             }
         }
-        else if (getType().getValueIndex() == Type.OUT)
+        if (getType().getValueIndex() == Type.OUT || getType().getValueIndex() == Type.IN_OUT)
         {
-            // sqlType MUST be of java.sqlTypes value always!
+            // sqlType MUST be of java.sql.Types value always!
             stmt.registerOutParameter(paramNum, sqlType);
         }
     }
+
+    public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
+    {
+        if (getType().getValueIndex() == StoredProcedureParameter.Type.IN)
+            return;
+
+        int index = 0;
+        Object result = null;
+        switch (sqlType)
+        {
+            case Types.VARCHAR:
+                value.getValue(cc).setTextValue(stmt.getString(index));
+                break;
+            case Types.INTEGER:
+                value.getValue(cc).setValue(new Integer(stmt.getInt(index)));
+                break;
+            case Types.DOUBLE:
+                value.getValue(cc).setValue(new Double(stmt.getDouble(index)));
+                break;
+            case Types.CLOB:
+                Clob clob = stmt.getClob(index);
+                value.getValue(cc).setTextValue(clob.getSubString(1,(int) clob.length()));
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      *
      * @param vrc

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameters.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
+ * $Id: StoredProcedureParameters.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -112,6 +112,7 @@ public class StoredProcedureParameters
             return (StoredProcedureParameter.Type[]) inOutTypes.toArray();
         }
     }
+
 
     private StoredProcedure procedure;
     private List params = new ArrayList();
@@ -201,14 +202,110 @@ public class StoredProcedureParameters
         return vac.getActiveParamNum();
     }
 
+    /**
+     * Retrieve the values of the parameters in this list which are OUT parameters
+     */
+    public void extract(ConnectionContext cc, CallableStatement stmt) throws SQLException
+    {
+        int paramsCount = params.size();
+        for(int i = 0; i < paramsCount; i++)
+        {
+            StoredProcedureParameter spp = (StoredProcedureParameter) params.get(i);
+            if (spp.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
+                spp.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+            {
+                spp.extract(cc, stmt);
+            }
+        }
+    }
+
+    /**
+     * Gets the stored procedure parameter by index
+     * @param index
+     * @return
+     */
     public StoredProcedureParameter get(int index)
     {
         return (StoredProcedureParameter) params.get(index);
     }
 
+    /**
+     * Gets the total number of parameters
+     * @return
+     */
     public int size()
     {
         return params.size();
+    }
+
+    public StoredProcedureParameter[] getIns()
+    {
+        return getByType(StoredProcedureParameter.Type.IN);
+    }
+
+    public StoredProcedureParameter[] getOuts()
+    {
+        return getByType(StoredProcedureParameter.Type.OUT);
+    }
+
+    public StoredProcedureParameter[] getInOuts()
+    {
+        return getByType(StoredProcedureParameter.Type.IN_OUT);
+    }
+
+    /**
+     * Gets an array of stored procedures by their type. In/out parameters will satisfy
+     * both in and out criterias.
+     * @param type
+     * @return
+     */
+    public StoredProcedureParameter[] getByType(int type)
+    {
+        ArrayList list = new ArrayList();
+        int paramsCount = params.size();
+        if (type == StoredProcedureParameter.Type.IN)
+        {
+            // this will get all IN parameters and also IN/OUT params
+            for(int i = 0; i < paramsCount; i++)
+            {
+                StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
+                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN ||
+                    spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                {
+                    list.add(spParameter);
+                }
+            }
+        }
+        else if (type == StoredProcedureParameter.Type.OUT)
+        {
+            // this will get all OUT parameters and also IN/OUT params
+            for(int i = 0; i < paramsCount; i++)
+            {
+                StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
+                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.OUT ||
+                    spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                {
+                    list.add(spParameter);
+                }
+            }
+        }
+        else if (type == StoredProcedureParameter.Type.IN_OUT)
+        {
+            // this will get only IN/OUT params
+            for(int i = 0; i < paramsCount; i++)
+            {
+                StoredProcedureParameter spParameter = (StoredProcedureParameter) params.get(i);
+                if (spParameter.getType().getValueIndex() == StoredProcedureParameter.Type.IN_OUT)
+                {
+                    list.add(spParameter);
+                }
+            }
+        }
+        else
+            return null;
+
+        return (StoredProcedureParameter[]) list.toArray();
+
     }
 
 }
