@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.9 2003-05-09 01:23:35 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.10 2003-05-16 02:54:33 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -222,6 +222,8 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
             if(! found)
                 throw new RuntimeException("Invalid "+ this.getClass().getName() +" value: " + value + " (flag '"+ flagName +"' not found)");
         }
+
+        flagsChanged();
     }
 
     public void setValue(XdmParseContext pc, Object element, String attribute, String value) throws DataModelException
@@ -252,11 +254,13 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
     public void setFlag(long flag)
     {
         flags |= flag;
+        flagsChanged();
     }
 
     public void clearFlag(long flag)
     {
         flags &= ~flag;
+        flagsChanged();
     }
 
     public final void updateFlag(long flag, boolean set)
@@ -330,6 +334,11 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
 
         return text.toString();
+    }
+
+    public void flagsChanged()
+    {
+
     }
 
     public String toString()
