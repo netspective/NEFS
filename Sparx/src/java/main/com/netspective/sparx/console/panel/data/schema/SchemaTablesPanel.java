@@ -50,6 +50,7 @@ import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTable;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
@@ -106,6 +107,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
         protected String heading;
         protected Schema.TableTreeNode tableTreeNode;
         protected EnumerationTable enumTable;
+        protected EntityVariantRecordTypeTable variantTypeTable;
 
         protected StructureRow(int level, StructureRow parentRow, String heading)
         {
@@ -130,6 +132,14 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             this.enumTable = enumTable;
         }
 
+        protected StructureRow(int level, EntityVariantRecordTypeTable enumTable, List ancestors)
+        {
+            this.level = level;
+            this.parentRow = (StructureRow) ancestors.get(0);
+            this.ancestors = ancestors;
+            this.variantTypeTable = enumTable;
+        }
+
         public StructureRow getParentRow()
         {
             return parentRow;
@@ -142,6 +152,9 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
             if(enumTable != null)
                 return enumTable;
+
+            if(variantTypeTable != null)
+                return variantTypeTable;
 
             return null;
         }
@@ -158,6 +171,10 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
 
             if(enumTable != null && enumTable.getName().equalsIgnoreCase(tableName) &&
                enumTable.getSchema().getName().equalsIgnoreCase(schemaName))
+                return true;
+
+            if(variantTypeTable != null && variantTypeTable.getName().equalsIgnoreCase(tableName) &&
+               variantTypeTable.getSchema().getName().equalsIgnoreCase(schemaName))
                 return true;
 
             return false;
@@ -215,6 +232,24 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             for(int c = 0; c < children.size(); c++)
                 addStructurRow(rows, 2, (Schema.TableTreeNode) children.get(c), appTableAncestors);
 
+            StructureRow variantRecTypeTablesRow = new StructureRow(1, schemaRow, "Variant Record Type Tables");
+            rows.add(variantRecTypeTablesRow);
+
+            List variantRecTypeTableAncestors = new ArrayList();
+            variantRecTypeTableAncestors.add(schemaRow);
+            variantRecTypeTableAncestors.add(variantRecTypeTablesRow);
+
+            Set sortedVariantRecTypeTables = new TreeSet(BasicSchema.TABLE_COMPARATOR);
+            Tables tables = schema.getTables();
+            for(int c = 0; c < tables.size(); c++)
+            {
+                Table table = tables.get(c);
+                if(table instanceof EntityVariantRecordTypeTable)
+                    sortedVariantRecTypeTables.add(table);
+            }
+            for(Iterator iter = sortedVariantRecTypeTables.iterator(); iter.hasNext();)
+                rows.add(new StructureRow(2, (EntityVariantRecordTypeTable) iter.next(), variantRecTypeTableAncestors));
+
             StructureRow enumTablesRow = new StructureRow(1, schemaRow, "Enumeration Tables");
             rows.add(enumTablesRow);
 
@@ -223,7 +258,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
             enumTableAncestors.add(enumTablesRow);
 
             Set sortedEnumTables = new TreeSet(BasicSchema.TABLE_COMPARATOR);
-            Tables tables = schema.getTables();
+            tables = schema.getTables();
             for(int c = 0; c < tables.size(); c++)
             {
                 Table table = tables.get(c);
@@ -397,6 +432,8 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
                         return reportValueContext.getSkin().constructClassRef(activeRow.tableTreeNode.getTable().getClass());
                     else if(activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.enumTable.getClass());
+                    else if(activeRow.variantTypeTable != null && (selectedRow == activeRow || activeRow.variantTypeTable.getClass() != EntityVariantRecordTypeTable.class))
+                        return reportValueContext.getSkin().constructClassRef(activeRow.variantTypeTable.getClass());
 
                 default:
                     return null;

@@ -113,8 +113,7 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
         {
-            final Table activeTable = selectedRow.tableTreeNode != null
-                                      ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable;
+            final Table activeTable = selectedRow.getTable();
             nc.setAttribute(ATTRID_ACTIVE_TABLE, activeTable);
             return createColumnsDataSource(nc, activeTable);
         }

@@ -179,6 +179,52 @@ location.getParametersCount = function()
 	return this.search.substring(1).split("&").length;
 };
 
+function constructUrlWithAdditionalParams(url, addParamsArray, retainParams)
+{
+    if(addParamsArray == null || addParamsArray.length == 0)
+        return constructUrlWithParamsRetained(url, retainParams);
+
+    var addParamsText = ""; // array is name,value,name,value,etc
+    for(var i = 0; i < addParamsArray.length; i += 2)
+    {
+        var name = addParamsArray[0+i];
+        var value = addParamsArray[1+i];
+        addParamsText += (i > 0 ? "&" : "") + name + "=" + value;
+    }
+
+    return constructUrlWithParamsRetained((url.indexOf('?') > -1 ? (url + "&") : (url + "?")) + addParamsText, retainParams);
+}
+
+function constructUrlWithParamsRetained(url, retainParams)
+{
+    if(retainParams == null || retainParams == "")
+        return url;
+
+    if(location.getParametersCount() > 0)
+    {
+        var curPageParams = location.getParameterMap();
+        var newUrl = url.indexOf('?') > -1 ? (url + "&") : (url + "?");
+        if(retainParams == "*")
+        {
+            for(var paramName in curPageParams)
+                newUrl += paramName + "=" + curPageParams[paramName] + "&";
+        }
+        else
+        {
+            var keepParams = typeof(retainParams) == 'array' ? retainParams : retainParams.split(",");
+            for(var i = 0; i < keepParams.length; i++)
+            {
+                var paramName = keepParams[i];
+                if(curParams[paramName] != null)
+                    newUrl += paramName + "=" + curPageParams[paramName] + "&";
+            }
+        }
+        return newUrl;
+    }
+    else
+        return url;
+}
+
 // **************************************************************************
 // Server side communications manager
 // **************************************************************************
@@ -322,7 +368,7 @@ function HttpClient(url, retainParams)
     this.retainParams = retainParams;
 
     if(this.retainParams != null)
-        this.url = HttpClient_prepareUrlRetainParams(url, retainParams);
+        this.url = constructUrlWithParamsRetained(url, retainParams);
 
     this.asyncMessage = true;   // by default, it is an async operation
     this.messageType = 'GET';   // by default, it is a GET message
@@ -343,36 +389,6 @@ function HttpClient(url, retainParams)
     this.afterErrorResponseAlertMessage = "A HttpClient error occurred after sending message.";
 
     return this;
-}
-
-function HttpClient_prepareUrlRetainParams(url, retainParams)
-{
-    if(retainParams == null || retainParams == "")
-        return url;
-
-    if(location.getParametersCount() > 0)
-    {
-        var curPageParams = location.getParameterMap();
-        var newUrl = url.indexOf('?') > -1 ? (url + "&") : (url + "?");
-        if(retainParams == "*")
-        {
-            for(var paramName in curPageParams)
-                newUrl += paramName + "=" + curPageParams[paramName] + "&";
-        }
-        else
-        {
-            var keepParams = typeof(retainParams) == 'array' ? retainParams : retainParams.split(",");
-            for(var i = 0; i < keepParams.length; i++)
-            {
-                var paramName = keepParams[i];
-                if(curParams[paramName] != null)
-                    newUrl += paramName + "=" + curPageParams[paramName] + "&";
-            }
-        }
-        return newUrl;
-    }
-    else
-        return url;
 }
 
 function HttpClient_sendMessage()

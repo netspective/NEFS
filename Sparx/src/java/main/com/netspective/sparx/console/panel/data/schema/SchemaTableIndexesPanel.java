@@ -77,9 +77,7 @@ public class SchemaTableIndexesPanel extends AbstractHtmlTabularReportPanel
         if(selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return new IndexesDataSource(selectedRow.tableTreeNode != null
-                                         ? selectedRow.tableTreeNode.getTable().getIndexes()
-                                         : selectedRow.enumTable.getIndexes());
+            return new IndexesDataSource(selectedRow.getTable().getIndexes());
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)

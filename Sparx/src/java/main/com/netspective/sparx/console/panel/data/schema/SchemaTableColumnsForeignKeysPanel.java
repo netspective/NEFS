@@ -39,6 +39,7 @@ import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.table.type.EntityVariantRecordTypeTable;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
@@ -145,7 +146,8 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                     if(fKey == null) return null;
                     fKeyTable = fKey.getReferencedColumns().getFirst().getTable();
 
-                    if(fKeyTable instanceof EnumerationTable && fKeyTable.getData() != null && fKeyTable.getData().size() > 0)
+                    if((fKeyTable instanceof EnumerationTable || fKeyTable instanceof EntityVariantRecordTypeTable)
+                       && fKeyTable.getData() != null && fKeyTable.getData().size() > 0)
                     {
                         HtmlTabularReportValueContext thisVC = (HtmlTabularReportValueContext) reportValueContext;
                         HtmlTabularReportValueContext dataVC = new HtmlTabularReportValueContext(thisVC.getServlet(),
