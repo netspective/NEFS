@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.2 2003-06-20 20:52:51 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.3 2003-08-17 00:24:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -113,36 +113,36 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             super();
         }
 
-        public String getHtml(FileTracker ft)
+        public String getHtml(InputSourceTracker inputSourceTracker)
         {
             StringBuffer src = new StringBuffer();
 
-            FileTracker parentFt = ft.getParent();
-            String parentPath = parentFt != null ? ft.getParent().getFile().getParent() : "--";
-            String thisPath = ft.getFile().getAbsolutePath();
+            InputSourceTracker parentFt = inputSourceTracker.getParent();
+            String parentPath = parentFt != null && parentFt instanceof FileTracker ? ((FileTracker) inputSourceTracker.getParent()).getFile().getParent() : "--";
+            String thisPath = inputSourceTracker.getIdentifier();
 
             if(thisPath.startsWith(parentPath))
                 src.append("." + thisPath.substring(parentPath.length()));
             else
-                src.append(ft.getFile().getAbsolutePath());
+                src.append(inputSourceTracker.getIdentifier());
 
-            if(ft.getDependenciesCount() > 0)
-                src.append(" (Dependencies: " + ft.getDependenciesCount() + ")");
-            List preProcs = ft.getPreProcessors();
+            if(inputSourceTracker.getDependenciesCount() > 0)
+                src.append(" (Dependencies: " + inputSourceTracker.getDependenciesCount() + ")");
+            List preProcs = inputSourceTracker.getPreProcessors();
             if(preProcs != null && preProcs.size() > 0)
             {
                 src.append("<ul>");
                 for(int i = 0; i < preProcs.size(); i++)
-                    src.append("<li>"+ getHtml((FileTracker) preProcs.get(i)) +" (pre-processors)</li>");
+                    src.append("<li>"+ getHtml((InputSourceTracker) preProcs.get(i)) +" (pre-processors)</li>");
                 src.append("</ul>");
             }
 
-            List dependencies = ft.getIncludes();
+            List dependencies = inputSourceTracker.getIncludes();
             if(dependencies != null && dependencies.size() > 0)
             {
                 src.append("<ul>");
                 for(int i = 0; i < dependencies.size(); i++)
-                    src.append("<li>"+ getHtml((FileTracker) dependencies.get(i)) +"</li>");
+                    src.append("<li>"+ getHtml((InputSourceTracker) dependencies.get(i)) +"</li>");
                 src.append("</ul>");
             }
 

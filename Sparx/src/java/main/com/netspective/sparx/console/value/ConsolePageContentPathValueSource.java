@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsolePageContentPathValueSource.java,v 1.2 2003-07-02 18:23:17 shahid.shah Exp $
+ * $Id: ConsolePageContentPathValueSource.java,v 1.3 2003-08-17 00:24:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.value;
@@ -114,7 +114,7 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
         {
             public Object getValue()
             {
-                return "content/" + (inParent ? nc.getActivePage().getParent().getQualifiedName() : nc.getActivePage().getQualifiedName()) + "/" + source;
+                return "content" + (inParent ? nc.getActivePage().getParent().getQualifiedName() : nc.getActivePage().getQualifiedName()) + "/" + source;
             }
 
             public String getTextValue()
