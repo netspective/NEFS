@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.45 2004-04-21 22:29:35 aye.thu Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.46 2004-07-16 01:54:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -423,7 +423,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if(isShowErrorHeader())
             HttpUtils.renderDevelopmentEnvironmentHeader(writer, nc);
 
-        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
+        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
             return;
 
         renderPageMasthead(writer, nc);
@@ -527,7 +527,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("<p align=right>Render time: " + (startTime != null ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;") : "unknown&nbsp;&nbsp;"));
         }
 
-        if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
+        if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
             return;
 
         writer.write("	        </div>\n");

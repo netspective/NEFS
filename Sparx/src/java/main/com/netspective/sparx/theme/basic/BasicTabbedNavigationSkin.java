@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.38 2004-04-29 12:32:07 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.39 2004-07-16 01:54:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -434,7 +434,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         // in case any errors or messages need to appear, they'll show up at the top of our app
         HttpUtils.renderDevelopmentEnvironmentHeader(writer, nc);
 
-        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
+        if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
             return;
 
         renderPageMasthead(writer, nc);
@@ -539,7 +539,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
             writer.write("<p align=right>Render time: " + (startTime != null ? (Long.toString((System.currentTimeMillis() - startTime.longValue())) + " milliseconds&nbsp;&nbsp;") : "unknown&nbsp;&nbsp;"));
         }
 
-        if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
+        if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.IS_PRINT_MODE))
             return;
 
         writer.write("            </td>");
