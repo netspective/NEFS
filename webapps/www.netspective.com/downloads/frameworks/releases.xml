@@ -2,6 +2,29 @@
 
 <netspective>
     <release>
+        <product name="Axiom" version="7.1.3"/>
+        <change-log>
+            <summary>Minor enhancements</summary>
+            <change-log-entry>
+                In com/netspective/axiom/conf/schema.xml, changed the Lookup_Result_Type and Record_Status tables to be
+                table-types. This will break any code that depends on either one of those tables. This change was made
+                so that by default, the schema.xml only defines data-types and table-types and not physical tables.
+                To create the physical tables if your app depends upon it, code should be added that instantiates the
+                table-types like so:
+                <![CDATA[<pre>
+&lt;table name="Lookup_Result_Type" type="Lookup_Result_Type"/>
+&lt;table name="Record_Status" type="RecordStatus"/>
+                </pre>]]>
+            </change-log-entry>
+            <change-log-entry>
+                In com/netspective/axiom/conf/schema.xml, added future-date, past-date, future-time, past-time,
+                future-stamp, past-stamp, date-of-birth, date-of-death, age, ssn, stock-symbol, time-zone,
+                internet-hostname, and internet-ip-address data-types. Also made minor changes to Relationship_Map table-type.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Sparx" version="7.1.3"/>
         <change-log>
             <summary>Major enhancements</summary>
