@@ -439,6 +439,7 @@ public class AxiomTask extends XdmComponentTask
             final DefaultSchemaDiagramFilter defaultSchemaDiagramFilter = new DefaultSchemaDiagramFilter();
             if(graphVizErdIgnoreTableNames != null) defaultSchemaDiagramFilter.setIgnoreTableNamesAndPatterns(graphVizErdIgnoreTableNames);
             if(graphVizErdIgnoreColumnNames != null) defaultSchemaDiagramFilter.setIgnoreColumnNamesAndPatterns(graphVizErdIgnoreColumnNames);
+            defaultSchemaDiagramFilter.setShowLookupForeignKeyTypeEdges(false);
 
             GraphvizDiagramGenerator diagramGenerator = new GraphvizDiagramGenerator(schema.getName(), true, GraphvizLayoutType.DOT);
             GraphvizSchemaDiagramGenerator schemaDiagramGenerator = new GraphvizSchemaDiagramGenerator(null, schema, diagramGenerator, defaultSchemaDiagramFilter);
@@ -465,6 +466,7 @@ public class AxiomTask extends XdmComponentTask
                     final FocusedTableSchemaDiagramFilter focusedSchemaDiagramFilter = new FocusedTableSchemaDiagramFilter(tableName);
                     if(graphVizErdIgnoreTableNames != null) focusedSchemaDiagramFilter.setIgnoreTableNamesAndPatterns(graphVizErdIgnoreTableNames);
                     if(graphVizErdIgnoreColumnNames != null) focusedSchemaDiagramFilter.setIgnoreColumnNamesAndPatterns(graphVizErdIgnoreColumnNames);
+                    focusedSchemaDiagramFilter.setShowLookupForeignKeyTypeEdges(false);
 
                     diagramGenerator = new GraphvizDiagramGenerator(tableName, true, GraphvizLayoutType.DOT);
                     schemaDiagramGenerator = new GraphvizSchemaDiagramGenerator(null, schema, diagramGenerator, focusedSchemaDiagramFilter);
