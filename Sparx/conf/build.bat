@@ -1,6 +1,6 @@
 @echo off
 
-REM $Id: build.bat,v 1.1 2003-06-13 02:04:20 shahid.shah Exp $
+REM $Id: build.bat,v 1.2 2003-08-01 15:57:12 shahid.shah Exp $
 
 REM **************************************************************************
 REM ** This script should be be run from the PROJECT_HOME\conf directory.   **
@@ -9,8 +9,9 @@ REM ** the build.xml file.                                                  **
 REM **************************************************************************
 
 if "%JAVA_HOME%" == "" echo Error: JAVA_HOME environment variable is not set. && goto end
-if "%NS_COMMONS_HOME%" == "" set NS_COMMONS_HOME=..\..\Commons
-if "%NS_COMMONS_REDIST_LIB%" == "" set NS_COMMONS_REDIST_LIB=%NS_COMMONS_HOME%\lib\redist
+if "%NEFS_HOME%" == "" set NEFS_HOME=..\..
+if "%NEFS_COMMONS_HOME%" == "" set NEFS_COMMONS_HOME=%NEFS_HOME%\Commons
+if "%NEFS_COMMONS_REDIST_LIB%" == "" set NEFS_COMMONS_REDIST_LIB=%NEFS_COMMONS_HOME%\lib\redist
 
 if "%JAVACMD%" == "" set JAVACMD=%JAVA_HOME%\bin\java
 if not exist "%JAVACMD%.exe" echo Error: "%JAVACMD%.exe" not found - check JAVA_HOME && goto end
@@ -18,6 +19,6 @@ if not exist "%JAVACMD%.exe" echo Error: "%JAVACMD%.exe" not found - check JAVA_
 if exist "%JAVA_HOME%/lib/tools.jar" set JAVACP=%JAVA_HOME%\lib\tools.jar
 if exist "%JAVA_HOME%/lib/classes.zip" set JAVACP=%JAVACP%;%JAVA_HOME%\lib\classes.zip
 
-%JAVACMD% -classpath %NS_COMMONS_REDIST_LIB%\ant.jar;%NS_COMMONS_REDIST_LIB%\ant-optional.jar;%NS_COMMONS_REDIST_LIB%\junit.jar;%NS_COMMONS_REDIST_LIB%\clover.jar;%NS_COMMONS_REDIST_LIB%\xerces.jar;%JAVACP% org.apache.tools.ant.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
+%JAVACMD% -classpath %NEFS_COMMONS_REDIST_LIB%\ant.jar;%NEFS_COMMONS_REDIST_LIB%\ant-optional.jar;%NEFS_COMMONS_REDIST_LIB%\junit.jar;%NEFS_COMMONS_REDIST_LIB%\clover.jar;%NEFS_COMMONS_REDIST_LIB%\xerces.jar;%JAVACP% org.apache.tools.ant.Main %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 :end
