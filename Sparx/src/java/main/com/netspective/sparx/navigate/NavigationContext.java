@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.23 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.24 2003-12-22 13:10:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -80,7 +80,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private NavigationTree ownerTree;
     private NavigationPage activePage;
     private boolean activePageValid;
-    private boolean redirectToAlternateChildRequired;
+    private boolean redirectRequired;
     private boolean missingRequiredReqParams;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
@@ -108,7 +108,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         if(firstDescendantWithBody != null)
         {
             if(firstDescendantWithBody != activePage || (activePathId == null || activePathId.equals("/")))
-                redirectToAlternateChildRequired = true;
+                redirectRequired = true;
             activePage = firstDescendantWithBody;
         }
 
@@ -117,6 +117,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
             activePageValid = activePage.isValid(this);
             if(activePageValid)
                 activePage.makeStateChanges(this);
+
+            if(activePage.getRedirect() != null)
+                redirectRequired = true;
         }
     }
 
@@ -125,9 +128,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         return activePageValid;
     }
 
-    public boolean isRedirectToAlternateChildRequired()
+    public boolean isRedirectRequired()
     {
-        return redirectToAlternateChildRequired;
+        return redirectRequired;
     }
 
     public void setMissingRequiredReqParam(String name)

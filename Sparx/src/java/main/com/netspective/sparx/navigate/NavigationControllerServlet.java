@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.38 2003-12-18 21:45:58 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.39 2003-12-22 13:10:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -792,7 +792,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             return;
         }
 
-        if(nc.isRedirectToAlternateChildRequired())
+        if(nc.isRedirectRequired())
         {
             String url =nc.getActivePage().getUrl(nc);
             if(url.indexOf('?') == -1) // see if we've appened any parameters (if not, we want to include all)
