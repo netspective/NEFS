@@ -89,7 +89,6 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
                 String name = fields[i].getName();
                 // Get field value
                 Integer value = (Integer) fields[i].get(null);
-                System.out.println(name + " " + value);
                 // Add to map
                 map.put(name, value);
             }
