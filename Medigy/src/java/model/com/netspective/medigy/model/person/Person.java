@@ -72,6 +72,7 @@ public class Person extends Party
     private String middleName;
     private String suffix;
     private Date birthDate;
+    private Date deathDate;
 
     private Set<Gender> genders = new HashSet<Gender>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
@@ -235,6 +236,16 @@ public class Person extends Party
         this.maritalStatuses = maritalStatuses;
     }
 
+    public Date getDeathDate()
+    {
+        return deathDate;
+    }
+
+    public void setDeathDate(final Date deathDate)
+    {
+        this.deathDate = deathDate;
+    }
+
 
     public String toString()
     {
@@ -244,6 +255,8 @@ public class Person extends Party
                 ", firstName='" + firstName + "'" +
                 ", middleName='" + middleName + "'" +
                 ", suffix=" + suffix + "'" +
+                ", birthdate= '" + birthDate + "'" +
+                ", deathdate= '" + deathDate + "'" + 
                 ", gender='" + getCurrentGender().getTypeLabel() + "'" +
                 ", maritalStatuses=" + maritalStatuses +
                 //", contactMechanisms=" + getContactMechanisms() +
