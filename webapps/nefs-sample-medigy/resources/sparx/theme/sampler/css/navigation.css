@@ -1,3 +1,4 @@
 @import url(../../../../../sparx/theme/sampler/css/navigation.css);
 
 .masthead-left      { background: url(../images/masthead/masthead-left.gif) no-repeat left top }
+.masthead-top-right  { background: url(../images/masthead/masthead-right.gif) no-repeat right top; width: 25px; height: 65px }
