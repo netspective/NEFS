@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.100 2003-10-09 18:19:26 shahid.shah Exp $
+  * $Id: console.xml,v 1.101 2003-10-09 18:45:07 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -213,14 +213,6 @@
 	        </page>
 
 	        <page name="data-sources" caption="Data Sources">
-                <panels>
-                    <panel type="console-page-summary"/>
-
-                    <panel type="console-children-summaries">
-                        <frame heading="Data Sources Features"/>
-                    </panel>
-                </panels>
-
                 <page name="catalog" caption="Catalog">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.DataSourcesCatalogPanel"/>
