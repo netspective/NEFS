@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.6 2003-07-01 01:02:57 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.7 2003-08-17 00:07:05 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -85,6 +85,8 @@ import org.xml.sax.SAXException;
 
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.FileTracker;
+import com.netspective.commons.io.InputSourceTracker;
+import com.netspective.commons.io.URLTracker;
 
 public class ParseContext
 {
@@ -113,8 +115,8 @@ public class ParseContext
     private ZipFile sourceJarFile;
     private ZipEntry sourceJarEntry;
 
-    private FileTracker parentFileTracker;
-    private FileTracker inputFileTracker;
+    private InputSourceTracker parentSrcTracker;
+    private InputSourceTracker inputSrcTracker;
     private InputSource inputSource;
     private XMLReader parser;
     private Locator locator;
@@ -127,7 +129,7 @@ public class ParseContext
     {
         this.parentPC = parentPC;
         if(parentPC != null)
-            setParentFileTracker(parentPC.getInputFileTracker());
+            setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(text));
     }
 
@@ -135,7 +137,7 @@ public class ParseContext
     {
         this.parentPC = parentPC;
         if(parentPC != null)
-            setParentFileTracker(parentPC.getInputFileTracker());
+            setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(srcFile));
     }
 
@@ -143,7 +145,7 @@ public class ParseContext
     {
         this.parentPC = parentPC;
         if(parentPC != null)
-            setParentFileTracker(parentPC.getInputFileTracker());
+            setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(resource));
     }
 
@@ -151,7 +153,7 @@ public class ParseContext
     {
         this.parentPC = parentPC;
         if(parentPC != null)
-            setParentFileTracker(parentPC.getInputFileTracker());
+            setParentSrcTracker(parentPC.getInputSrcTracker());
         init(createInputSource(jarFile, jarFileEntry));
     }
 
@@ -160,14 +162,14 @@ public class ParseContext
         return parentPC;
     }
 
-    public FileTracker getParentFileTracker()
+    public InputSourceTracker getParentSrcTracker()
     {
-        return parentFileTracker;
+        return parentSrcTracker;
     }
 
-    public void setParentFileTracker(FileTracker parentFileTracker)
+    public void setParentSrcTracker(InputSourceTracker parentSrcTracker)
     {
-        this.parentFileTracker = parentFileTracker;
+        this.parentSrcTracker = parentSrcTracker;
     }
 
     public String getTransformInstruction()
@@ -195,10 +197,10 @@ public class ParseContext
         InputSource inputSource = new InputSource(inputStream);
         inputSource.setSystemId(uri);
 
-        this.inputFileTracker = new FileTracker();
-        this.inputFileTracker.setFile(srcFile);
-        if(parentFileTracker != null)
-            this.inputFileTracker.setParent(parentFileTracker);
+        this.inputSrcTracker = new FileTracker();
+        ((FileTracker) this.inputSrcTracker).setFile(srcFile);
+        if(parentSrcTracker != null)
+            this.inputSrcTracker.setParent(parentSrcTracker);
         this.sourceFile = srcFile;
 
         return inputSource;
@@ -213,6 +215,12 @@ public class ParseContext
         {
             InputSource inputSource = new InputSource(stream);
             inputSource.setSystemId(resource.getSystemId());
+
+            this.inputSrcTracker = new URLTracker();
+            ((URLTracker) this.inputSrcTracker).setUrl(resource.getResource());
+            if(parentSrcTracker != null)
+                this.inputSrcTracker.setParent(parentSrcTracker);
+
             return inputSource;
         }
         else
@@ -231,10 +239,10 @@ public class ParseContext
             InputSource inputSource = new InputSource(stream);
             inputSource.setSystemId(sourceJarFile.getName() + "!" + jarFileEntry.getName());
 
-            this.inputFileTracker = new FileTracker();
-            this.inputFileTracker.setFile(jarFile);
-            if(parentFileTracker != null)
-                this.inputFileTracker.setParent(parentFileTracker);
+            this.inputSrcTracker = new FileTracker();
+            ((FileTracker) this.inputSrcTracker).setFile(jarFile);
+            if(parentSrcTracker != null)
+                this.inputSrcTracker.setParent(parentSrcTracker);
 
             return inputSource;
         }
@@ -296,11 +304,11 @@ public class ParseContext
                 File sourceFile = resolveFile(styleSheets[i].trim());
                 try
                 {
-                    if(inputFileTracker != null)
+                    if(inputSrcTracker != null)
                     {
                         FileTracker preProcessor = new FileTracker();
                         preProcessor.setFile(sourceFile);
-                        inputFileTracker.addPreProcessor(preProcessor);
+                        inputSrcTracker.addPreProcessor(preProcessor);
                     }
                     sources.add(new StreamSource(new FileInputStream(sourceFile)));
                 }
@@ -413,7 +421,7 @@ public class ParseContext
         if(file.isAbsolute())
             return file;
         else
-            return inputFileTracker != null ? new File(inputFileTracker.getFile().getParent(), src) : file;
+            return inputSrcTracker != null && inputSrcTracker instanceof FileTracker ? new File(((FileTracker) inputSrcTracker).getFile().getParent(), src) : file;
     }
 
     public void setThrowErrorException(boolean throwErrorException)
@@ -421,9 +429,9 @@ public class ParseContext
         this.throwErrorException = throwErrorException;
     }
 
-    public FileTracker getInputFileTracker()
+    public InputSourceTracker getInputSrcTracker()
     {
-        return inputFileTracker;
+        return inputSrcTracker;
     }
 
     public InputSource getInputSource()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.3 2003-06-30 15:32:54 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.4 2003-08-17 00:06:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -201,7 +201,7 @@ public class XdmHandler extends AbstractContentHandler
         {
             try
             {
-                ((XmlDataModelSchema.InputSourceTrackerListener) activeEntry.getInstance()).setInputSourceTracker(getParseContext().getInputFileTracker());
+                ((XmlDataModelSchema.InputSourceTrackerListener) activeEntry.getInstance()).setInputSourceTracker(getParseContext().getInputSrcTracker());
             }
             catch (Exception e)
             {
