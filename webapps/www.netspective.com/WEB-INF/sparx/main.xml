@@ -226,6 +226,10 @@
                 <page name="upgrading" caption="NEFS Upgrade Guide">
                     <body source="support/docs/upgrading.ftl"/>
                 </page>
+
+                <page name="nefs-build" caption="NEFS Build Guide" hidden="yes">
+                    <body source="support/docs/nefs-build.ftl"/>
+                </page>
             </page>
             <page name="faqs" caption="FAQs (AnswerDesk)">
                 <summary>This area is not completed yet but will be available very soon. Please check back later.</summary>
