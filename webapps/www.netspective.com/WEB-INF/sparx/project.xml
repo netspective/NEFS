@@ -146,24 +146,43 @@
 
                 <page name="buy" caption="Buy" heading="NEFS is Very Affordable">
                     <summary>
-                        Simple license provisions, complete source code, and a very affordable price let you buy
-                        our Frameworks with confidence.
+                        Simple license provisions, complete source code, and a very affordable price let you easily
+                        justify the cost to your boss.
                     </summary>
                     <body source="products/frameworks/buy.ftl"/>
                 </page>
             </page>
         </page>
 
-        <page class="app.AppPage" name="services" caption="Services">
-            <body source="index.ftl"/>
+        <page class="app.AppPage" name="services" caption="Services" heading="We Can Get Your Projects Done">
+            <body source="services/index.ftl"/>
         </page>
 
-        <page class="app.AppPage" name="support" caption="Support">
-            <body source="index.ftl"/>
+        <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help">
+            <body source="support/index.ftl"/>
         </page>
 
         <page class="app.AppPage" name="company" caption="Company">
-            <body source="index.ftl"/>
+            <page name="about-us" caption="About Us" heading="About Netspective">
+                <summary>
+                    We extend enterprise computing further faster.
+                </summary>
+                <body source="company/index.ftl"/>
+            </page>
+
+            <page name="contact" caption="Contact Us" heading="Contact Us Anytime">
+                <summary>
+                    Feel free to contact us via phone, e-mail, or just stop by our offices.
+                </summary>
+                <body source="company/contact.ftl"/>
+            </page>
+
+            <page name="customers" caption="Customers" heading="You Won't Be The First To Depend On Us">
+                <summary>
+                    Our customers include large, medium, and small firms (both public and private).
+                </summary>
+                <body source="company/customers.ftl"/>
+            </page>
         </page>
     </navigation-tree>
 

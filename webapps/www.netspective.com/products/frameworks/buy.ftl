@@ -1,9 +1,9 @@
-<h1>NEFS is Cheaper than Hiring Extra Engineers</h1>
+<h1>NEFS is much less expensive than hiring software engineers</h1>
 When you consider that one NEFS license costs about the same as 8 hours of engineering work, you will realize
 that its cost is easy to justify. The price is usually insignificant compared to the cost of hiring a single engineer
 to write even a single complex form.
 
-<h1>Netspective Enterprise Frameworks Suite License Options</h1>
+<h1>Netspective Enterprise Frameworks Suite (NEFS) Pricing</h1>
 <table class="data-table">
     <tr>
         <th>Option</th>
@@ -22,7 +22,7 @@ to write even a single complex form.
     <tr>
         <td>Developer Workstation License</td>
         <td>Free for one year, $99/workstation afterwards</td>
-        <td>Free point revisions (7.x.y)</td>
+        <td>Free point revisions</td>
         <td>Online</td>
     </tr>
 
@@ -33,7 +33,7 @@ to write even a single complex form.
             <nobr>$595/CPU Win32</nobr><br>
             <nobr>$895/CPU Solaris/AIX/*nix</nobr>
         </td>
-        <td>Free point revisions (7.x.y)</td>
+        <td>Free point revisions</td>
         <td>Online</td>
     </tr>
 
@@ -44,20 +44,20 @@ to write even a single complex form.
             <nobr>$295/CPU Win32</nobr><br>
             <nobr>$595/CPU Solaris/AIX/*nix</nobr>
         </td>
-        <td>Free point revisions (7.x.y)</td>
+        <td>Free point revisions</td>
         <td>Online</td>
     </tr>
 
     <tr>
         <td>Gold Maintenance</td>
-        <td>$2,495 plus 15% of commercial license cost.</td>
+        <td>$2,495 plus 15% of aggregate license cost (based on # of licenses purchased) per year</td>
         <td>Free upgrades during maintenance period</td>
         <td>Priority online, e-mail support, 24-hour turnaround on most defects</td>
     </tr>
 
     <tr>
         <td>Platinum Maintenance</td>
-        <td>$14,995 plus 25% of commercial license cost.</td>
+        <td>$14,995 plus 25% of aggregate license cost (based on # of licenses purchased) per year</td>
         <td>Free upgrades during maintenance period</td>
         <td>Priority phone, online, e-mail support, 24-hour turnaround on most defects and enhancements</td>
     </tr>
@@ -90,6 +90,15 @@ to write even a single complex form.
     <tr>
         <th>Term</th>
         <th>Description</th>
+    </tr>
+
+    <tr>
+        <td>Free Point Revisions</td>
+        <td>
+            Point revisions are usually defect-related upgrades that occur in the third number in our Release
+            identifiers. For example, an ugrade from 7.0.1 to 7.0.2 (the third digit) would constitute a point release
+            but from 7.1 to 7.2 would not (since those are larger enhancement releases).
+        </td>
     </tr>
 
     <tr>

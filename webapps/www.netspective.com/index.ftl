@@ -46,7 +46,7 @@
         let you focus on your customers' requirements instead of J2EE infrastructure.</p>
         <ul class="check-list" style="margin-bottom:0px; ">
             <li class="home-page">Automate navigation and workflow</li>
-            <li class="home-page">Create auto-validating forms</li>
+            <li class="home-page">Create auto-validating data entry forms</li>
             <li class="home-page">Auto-generate DAOs and SQL DDL/DML</li>
             <li class="home-page">Protect data with role-based security</li>
         </ul>
