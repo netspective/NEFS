@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.33 2003-11-25 00:52:12 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.34 2003-11-25 01:03:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -639,7 +639,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                     // If the client sent an If-Modified-Since header equal or after the
                     // servlet's last modified time, send a short "Not Modified" status code
                     // Round down to the nearest second since client headers are in seconds
-                    if (lastModfTime != null && !httpRequest.getMethod().equals("GET") &&
+                    if (lastModfTime != null && httpRequest.getMethod().equals("GET") &&
                         (lastModfTime.getTime() / 1000 * 1000) <= httpRequest.getDateHeader("If-Modified-Since"))
                     {
                         nc.getHttpResponse().setStatus(HttpServletResponse.SC_NOT_MODIFIED);
