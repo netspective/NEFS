@@ -133,19 +133,16 @@
 
     <!-- this is a regular date/time column but there is no <presentation> tag and has a useful default -->
     <data-type name="creation-stamp" class="com.netspective.axiom.schema.column.type.DateTimeColumn">
-        <required>dbms</required>
         <descr>Date/time record was created</descr>
         <sql-ddl>
             <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
+            <define dbms="hsqldb" xdm:replace-template-expressions="no">timestamp</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
             <define dbms="postgres" xdm:replace-template-expressions="no">timestamp</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
             <default dbms="oracle">sysdate</default>
+            <default dbms="hsqldb">CURRENT_TIMESTAMP</default>
         </sql-ddl>
-        <value-defn>
-            <default dbms="hsqldb">now()</default>
-            <default dbms="oracle">sysdate</default>
-        </value-defn>
     </data-type>
 
     <data-type name="update-stamp" type="date-time" class="com.netspective.axiom.schema.column.type.UpdateStampColumn"/>
