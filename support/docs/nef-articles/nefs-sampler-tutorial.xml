@@ -3,6 +3,7 @@
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY __nef-assumptions__drd5vrj0 SYSTEM "../nef-reusable-content/nef-assumptions.xml">
 <!ENTITY __nef-sampler-setup__drd8289e SYSTEM "../nef-reusable-content/nef-sampler-setup.xml">
+<!ENTITY __sparx-nav-tree-overview__drq9ifdi SYSTEM "sparx-nav-tree-overview.xml">
 ]>
 <article>
   <title>NEFS Sampler Tutorial</title>
@@ -63,6 +64,8 @@
       All you need is a web browser and you can start using the NEF Sampler
       immediately.</para>
 
+      <para></para>
+
       <screenshot>
         <graphic fileref="./resources/images/screen-sampler-test-online.gif" />
       </screenshot>
@@ -117,6 +120,8 @@
 
     <para>The <guiicon>XML</guiicon> icon also appears under various panels
     (like forms/dialogs) to see their code as well.</para>
+
+    <para></para>
 
     <screenshot>
       <graphic fileref="./resources/images/screen-sampler-view-panel-XDM.gif" />
@@ -188,6 +193,8 @@
       <graphic fileref="./resources/images/screen-sampler-prj-folder.gif" />
     </screenshot>
   </section>
+
+  &__sparx-nav-tree-overview__drq9ifdi;
 
   <section>
     <title>NEFS Sampler Main Components</title>
@@ -619,33 +626,37 @@
 
           <programlisting>&lt;project&gt;
 ...
- &lt;dialog <emphasis>type="exec-sample"</emphasis> name="director-next-action" redirect-after-execute="yes"&gt; <co
-              id="declare-director-tags-eg-1" />
-    &lt;frame heading="Test Dialog Director's Next Action"/&gt;
-    &lt;field type="html"&gt;
-        &lt;body&gt;
-            &lt;![CDATA[
-            &lt;div class="textbox"&gt;
-            Every dialog is associated with a &lt;i&gt;Director&lt;/i&gt; which controls the actions available inside&lt;br&gt;
-            the form (such as the &lt;i&gt;Submit&lt;/i&gt; and &lt;i&gt;Cancel&lt;/i&gt; buttons) and the destination page to&lt;br&gt;
-            redirect to after the execution of the dialog. Visually the &lt;i&gt;Director&lt;/i&gt; can be configured&lt;br&gt;
-            to display multiple destinations to allow users to select the destination as shown in&lt;br&gt;
-            this dialog.
-            &lt;/div&gt;
-            &lt;hr/&gt;
-            ]]&gt;
-        &lt;/body&gt;
-    &lt;/field&gt;
-    &lt;field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
+ &lt;dialog <emphasis>type="exec-sample"</emphasis> name="director-next-action" 
+         redirect-after-execute="yes"&gt; <co id="declare-director-tags-eg-1" />
+  &lt;frame heading="Test Dialog Director's Next Action"/&gt;
+   &lt;field type="html"&gt;
+    &lt;body&gt;
+      &lt;![CDATA[
+        &lt;div class="textbox"&gt;
+         Every dialog is associated with a &lt;i&gt;Director&lt;/i&gt; which controls the 
+         actions available inside&lt;br&gt;
+         the form (such as the &lt;i&gt;Submit&lt;/i&gt; and &lt;i&gt;Cancel&lt;/i&gt; buttons) and the 
+         destination page to&lt;br&gt;
+         redirect to after the execution of the dialog. Visually the &lt;i&gt;Director&lt;/i&gt; 
+         can be configured&lt;br&gt;
+         to display multiple destinations to allow users to select the destination 
+         as shown in&lt;br&gt;
+         this dialog.
+        &lt;/div&gt;
+        &lt;hr/&gt;
+      ]]&gt;
+    &lt;/body&gt;
+   &lt;/field&gt;
+   &lt;field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
         default="request:value"/&gt;
-    &lt;<emphasis>director</emphasis>&gt; <co id="declare-director-tags-eg-2" />
-        &lt;<emphasis>next-actions</emphasis> caption="Next Action\:" <emphasis>choices="text-list:Netspective=http://www.netspective.com;
-                                                                 Google=http://www.google.com"</emphasis>
-            display-single-action="yes"/&gt; <co
+   &lt;<emphasis>director</emphasis>&gt; <co id="declare-director-tags-eg-2" />
+     &lt;<emphasis>next-actions</emphasis> caption="Next Action\:" <emphasis>
+                   choices="text-list:Netspective=http\://www.netspective.com;
+                                      Google=http\://www.google.com"</emphasis>
+                   display-single-action="yes"/&gt; <co
               id="declare-director-tags-eg-3" />
-    &lt;/director&gt;
+   &lt;/director&gt;
 &lt;/dialog&gt;
-
 ...
 &lt;/project&gt;</programlisting>
 
@@ -718,8 +729,9 @@
                 id="declare-template-in-prj-file-eg-3" />
         ${vc.fieldStates.getState("last_name").value.textValue}.
         &lt;p&gt;Form1 demonstrated how you can take two
-        pieces of data and execute an arbritrary &lt;a href="http://www.freemarker.org"&gt;FreeMarker&lt;/a&gt; 
-        template embedded in the project.xml file.
+        pieces of data and execute an arbritrary 
+        &lt;a href="http://www.freemarker.org"&gt;FreeMarker&lt;/a&gt; template embedded in 
+        the project.xml file.
         ]]&gt;
     &lt;/on-execute&gt;
  &lt;/dialog&gt;
@@ -802,7 +814,8 @@
                 id="declare-template-in-sep-file-eg-1" />
     &lt;frame heading="Hello World Form"/&gt;
     &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
-    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/&gt; 
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" 
+                       popup-calendar="yes"/&gt; 
 
     &lt;on-execute handler="template"&gt;
         <emphasis>&lt;source&gt;form/exec/template-body-file.ftl&lt;/source&gt;</emphasis> <co
@@ -871,7 +884,8 @@
  &lt;dialog type="exec-sample" name="inc-jsp" loop="no"&gt;
     &lt;frame heading="Hello World Form"/&gt;
     &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
-    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" 
+           popup-calendar="yes"/&gt;
 
     &lt;on-execute <emphasis>handler="include"</emphasis>&gt; <co
                 id="declare-template-in-jsp-eg-1" />
@@ -955,7 +969,8 @@
     <emphasis>&lt;loop-separator&gt;&amp;lt;hr size=1&amp;gt;&amp;lt;p&amp;gt;&lt;/loop-separator&gt;</emphasis> <co
                 id="declare-include-url-eg-1" />
     &lt;frame heading="Get contents of URL"/&gt;
-    &lt;field type="text" name="url" caption="URL" size="60" required="yes" default="http\://www.yahoo.com"&gt;
+    &lt;field type="text" name="url" caption="URL" size="60" required="yes" 
+           default="http\://www.yahoo.com"&gt;
         &lt;hint&gt;
             Please provide a complete URL such as http\://www.google.com.&amp;lt;br&amp;gt;
             This form will read the contents of the URL and show it below.
@@ -1033,10 +1048,13 @@
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="send-mail" loop="append" allow-multiple-executes="yes"&gt;
+ &lt;dialog type="exec-sample" name="send-mail" loop="append" 
+                                             allow-multiple-executes="yes"&gt;
     &lt;frame heading="Send Mail Handler Example"/&gt;
-    &lt;field type="text" name="host" caption="Host" required="yes" default="mail.netspective.com"/&gt;
-    &lt;field type="text" name="from" caption="From" required="yes" default="dummy@mail.com"/&gt;
+    &lt;field type="text" name="host" caption="Host" required="yes" 
+                                   default="mail.netspective.com"/&gt;
+    &lt;field type="text" name="from" caption="From" required="yes" 
+                                   default="dummy@mail.com"/&gt;
     &lt;field type="text" name="to" caption="To" required="yes"/&gt;
     &lt;field type="text" name="subject" caption="Subject" required="yes"/&gt;
     &lt;field type="memo" name="body" caption="Body"/&gt;
@@ -1047,16 +1065,19 @@
         &lt;from&gt;dialog-field:from&lt;/from&gt;
         &lt;to&gt;dialog-field:to&lt;/to&gt;
         &lt;subject&gt;dialog-field:subject&lt;/subject&gt;
-        &lt;body&gt;You entered this e-mail body: ${vc.fieldStates.getState("body").value.textValue}&lt;/body&gt; <co
+        &lt;body&gt;You entered this e-mail body: 
+                 ${vc.fieldStates.getState("body").value.textValue}&lt;/body&gt; <co
                 id="declare-mail-eg-3" />
         &lt;success-message&gt; <co id="declare-mail-eg-4" />
             &lt;![CDATA[
-            Thank you for sending e-mail to &lt;code&gt;&lt;b&gt;${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.
+            Thank you for sending e-mail to &lt;code&gt;&lt;b&gt;
+                ${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.
             ]]&gt;
         &lt;/success-message&gt;
         &lt;failure-message&gt; <co id="declare-mail-eg-5" />
             &lt;![CDATA[
-            Unable to send e-mail to &lt;code&gt;&lt;b&gt;${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.&lt;p&gt;
+            Unable to send e-mail to &lt;code&gt;&lt;b&gt;
+                ${vc.fieldStates.getState("to").value.textValue}&lt;/b&gt;&lt;/code&gt;.&lt;p&gt;
             Exception:&lt;br&gt;
             &lt;pre&gt;${exception}&lt;/pre&gt; <co id="declare-mail-eg-6" />
             ]]&gt;
@@ -1198,10 +1219,10 @@
 ...
  &lt;dialog type="exec-sample" name="exec-panels" allow-multiple-executes="yes"&gt;
     &lt;frame heading="Panels Handler Example"/&gt;
-    &lt;field type="text" name="local-include" caption="Include local" required="yes" size="60" 
-                       default="/jsp/panel-inc-test.jsp"/&gt;
-    &lt;field type="text" name="remote-include" caption="Command 2" required="yes" size="60" 
-                       default="http\://www.yahoo.com"/&gt;
+    &lt;field type="text" name="local-include" caption="Include local" required="yes" 
+                       size="60" default="/jsp/panel-inc-test.jsp"/&gt;
+    &lt;field type="text" name="remote-include" caption="Command 2" required="yes" 
+                       size="60" default="http\://www.yahoo.com"/&gt;
 
     &lt;on-execute <emphasis>handler="panels"</emphasis> <emphasis>style="two-columns"</emphasis>&gt; <co
                 id="declare-panels-eg-1" />
@@ -1297,17 +1318,19 @@
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="transform-xslt-dc" loop="prepend" allow-multiple-executes="yes"&gt;
-    &lt;frame heading="XSLT Handler Example"/&gt;
-    &lt;field type="select" name="style-sheet-file" caption="Style sheet File" required="yes" 
-           <emphasis>choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"</emphasis>/&gt; <co
+ &lt;dialog type="exec-sample" name="transform-xslt-dc" loop="prepend" 
+                                                     allow-multiple-executes="yes"&gt;
+  &lt;frame heading="XSLT Handler Example"/&gt;    
+   &lt;field type="select" name="style-sheet-file" caption="Style sheet File" 
+                                                     required="yes" 
+          <emphasis>choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"</emphasis>/&gt; <co
                 id="declare-transform-bean-eg-1" />
 
-    &lt;on-execute <emphasis>handler="style-sheet"</emphasis>&gt; <co
+  &lt;on-execute <emphasis>handler="style-sheet"</emphasis>&gt; <co
                 id="declare-transform-bean-eg-2" />
-        <emphasis>&lt;style-sheet-file&gt;dialog-field:style-sheet-file&lt;/style-sheet-file&gt;</emphasis> <co
+      <emphasis>&lt;style-sheet-file&gt;dialog-field:style-sheet-file&lt;/style-sheet-file&gt;</emphasis> <co
                 id="declare-transform-bean-eg-3" />
-    &lt;/on-execute&gt;
+  &lt;/on-execute&gt;
  &lt;/dialog&gt;
 ...
 &lt;/project&gt;</programlisting>
@@ -1399,7 +1422,8 @@
     &lt;frame heading="XSLT Handler Example"/&gt;
     &lt;field type="select" name="source-file" caption="Source File" required="yes" 
            choices="filesystem-entries:servlet-context-path:/form/exec,\.x[sm]l$,yes"/&gt;
-    &lt;field type="select" name="style-sheet-file" caption="Stylesheet File" required="yes" 
+    &lt;field type="select" name="style-sheet-file" caption="Stylesheet File" 
+           required="yes" 
            choices="filesystem-entries:servlet-context-path:/form/exec,\.xsl$,yes"/&gt;
 
     &lt;on-execute handler="style-sheet"&gt;
@@ -1475,7 +1499,8 @@
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="exec1a" <emphasis>class="app.form.exec.inheritance.SampleExecuteDialog"</emphasis>&gt; <co
+ &lt;dialog type="exec-sample" name="exec1a" <emphasis>
+                            class="app.form.exec.inheritance.SampleExecuteDialog"</emphasis>&gt; <co
                 id="declare-inherit-handler-eg-1" />
     &lt;frame heading="Inheritance Execute Sample 1a"/&gt;
     &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
@@ -1536,36 +1561,40 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
         super(project, pkg);
     }
 
-    <emphasis>public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException</emphasis> <co
+    <emphasis>public void execute(Writer writer, DialogContext dc) 
+                      throws IOException, DialogExecuteException</emphasis> <co
                 id="declare-inherit-class-eg-4" />
     {
       writer.write("Welcome to NEFS &lt;b&gt;" + 
-                    <emphasis>dc.getFieldStates().getState("full_name").getValue().getTextValue()</emphasis> + <co
+            <emphasis>dc.getFieldStates().getState("full_name").getValue().getTextValue()</emphasis> + <co
                 id="declare-inherit-class-eg-5" />
-                   "&lt;/b&gt;. ");
+            "&lt;/b&gt;. ");
       writer.write("You are running the dialog called &lt;b&gt;"+ dc.getDialog().getName() 
-                   +"&lt;/b&gt; in package &lt;b&gt;"+
-                   dc.getDialog().getNameSpace().getNameSpaceId() +"&lt;/b&gt;.");
+            +"&lt;/b&gt; in package &lt;b&gt; "+
+            dc.getDialog().getNameSpace().getNameSpaceId() +"&lt;/b&gt;.");
 
       <emphasis>if(dc.getDialog().getQualifiedName().equals("form.exec.inheritance.exec1b"))</emphasis> <co
                 id="declare-inherit-class-eg-6" />
-          writer.write("&lt;p&gt;You are &lt;b&gt;"+ dc.getFieldStates().getState("age").getValue().getIntValue() 
+          writer.write("&lt;p&gt;You are &lt;b&gt;"+ 
+                        dc.getFieldStates().getState("age").getValue().getIntValue() 
                         + "&lt;/b&gt; years old."); 
 
       writer.write("&lt;p&gt;");
-      writer.write("This code demonstrated how you can take two pieces of data and execute an " + 
-                   "arbritrary class by setting the 'class' attribute of the dialog. ");
+      writer.write("This code demonstrated how you can take two pieces of data and " +
+                   "execute an arbritrary class by setting the 'class' attribute of "+ 
+                   "the dialog. ");
       writer.write("This method of execution is called &lt;i&gt;Dialog Inheritance&lt;/i&gt;. ");
 
-      <emphasis>String relativePath = "/WEB-INF/classes/app/form/exec/inheritance/SampleExecuteDialog.java"; </emphasis><co
+      <emphasis>String relativePath = 
+             /WEB-INF/classes/app/form/exec/inheritance/SampleExecuteDialog.java"; </emphasis><co
                 id="declare-inherit-class-eg-7" />
-      <emphasis>String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(
-                              dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
-                              relativePath);</emphasis> <co
+      <emphasis>String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
+                  relativePath);</emphasis> <co
                 id="declare-inherit-class-eg-8" />
       writer.write("You may review the code at " + sourceFileLink + ".");
       writer.write("&lt;p&gt;");
-      writer.write("&lt;a href=\""+ <emphasis>dc.getNavigationContext().getActivePage().getName()</emphasis> +"\"&gt;Clear the dialog&lt;/a&gt;"); <co
+      writer.write("&lt;a href=\""+ <emphasis>dc.getNavigationContext().getActivePage().getName()</emphasis> +
+                   "\"&gt;Clear the dialog&lt;/a&gt;"); <co
                 id="declare-inherit-class-eg-9" />
     }
 }</programlisting>
@@ -1708,12 +1737,14 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
 
             <programlisting>&lt;project&gt;
 ...
- &lt;dialog type="exec-sample" name="validate" <emphasis>class="app.form.exec.inheritance.SampleValidateDialog"</emphasis> 
-                            <emphasis>generate-dcb="yes"</emphasis>&gt; <co
+ &lt;dialog type="exec-sample" name="validate" <emphasis>
+         class="app.form.exec.inheritance.SampleValidateDialog"</emphasis> 
+         <emphasis>generate-dcb="yes"</emphasis>&gt; <co
                 id="declare-inherit-valid-eg-1" />
     &lt;frame heading="Inheritance Validate Sample"/&gt;
     &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
-    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" 
+                                                              max="today"/&gt;
     &lt;field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/&gt;
  &lt;/dialog&gt;
 ...
@@ -1769,7 +1800,8 @@ public class SampleValidateDialog extends Dialog
  {
      super.populateValues(dc, formatType);
 
-     if(dc.getDialogState().isInitialEntry() &amp;&amp; formatType == DialogField.DISPLAY_FORMAT) <co
+     if(dc.getDialogState().isInitialEntry() &amp;&amp; 
+        formatType == DialogField.DISPLAY_FORMAT) <co
                 id="declare-inherit-valid-handler-eg-2" />
      {
          ValidateContext validateContext = new ValidateContext(dc); <co
@@ -1778,7 +1810,9 @@ public class SampleValidateDialog extends Dialog
          if(birthDate == null) 
          {
              Calendar cal = Calendar.getInstance();
-             cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); // assume we're 25 years old
+             // assume we're 25 years old  
+             cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); 
+
              validateContext.getBirthDate().setValue(cal.getTime());
          }
      }
@@ -1801,38 +1835,39 @@ public class SampleValidateDialog extends Dialog
 
       if(currentYear - yearOfBirth != age) 
       {
-         dc.getValidationContext().addError("The Age and Birth Date fields do not match."); <co
+       dc.getValidationContext().addError("The Age and Birth Date fields "+
+                                              "do not match."); <co
                 id="declare-inherit-valid-handler-eg-7" />
 
                                  <co id="declare-inherit-valid-handler-eg-8" />
-         validateContext.getBirthDateField().invalidate(dc, "If you want the age to be "+ age +
-                          " then birth date should be in year " + (currentYear - age));
-         validateContext.getAgeField().invalidate(dc, "If you want the birth year to be "+ 
-                          yearOfBirth +" then age should be " + (currentYear - yearOfBirth));
+       validateContext.getBirthDateField().invalidate(dc, "If you want the age to be "+ 
+                age + " then birth date should be in year " + (currentYear - age));
+       validateContext.getAgeField().invalidate(dc, "If you want the birth year to be "+ 
+                yearOfBirth +" then age should be " + (currentYear - yearOfBirth));
 
-         return false; <co id="declare-inherit-valid-handler-eg-9" />
+       return false; <co id="declare-inherit-valid-handler-eg-9" />
       }
 
       return true;
  }
 
- public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException <co
+ public void execute(Writer writer, DialogContext dc) 
+                                        throws IOException, DialogExecuteException <co
                 id="declare-inherit-valid-handler-eg-10" />
  {
   writer.write("Congratulations &lt;b&gt;" 
-                + dc.getFieldStates().getState("full_name").getValue().getTextValue() + "&lt;/b&gt;! ");
+                + dc.getFieldStates().getState("full_name").getValue().getTextValue() + 
+                "&lt;/b&gt;! ");
   writer.write("It seems that your birthdate and ages match correctly.");
   writer.write("&lt;p&gt;");
-  writer.write("This code demonstrated how you can take two three pieces of data, have Sparx " +
-                " individually validate " +
-                "the general fields such as text, date, and integer but add your own custom " +
-                "validator some other logic by overriding the isValid() method of the " + 
-                "com.netspective.sparx.form.Dialog class.&lt;p&gt;");
+  writer.write("This code demonstrated how you can take two three pieces of data, "+
+              "have Sparx individually validate the general fields such as text, "+
+              "date, and integer but add your own custom validator some other logic"+
+              " by overriding the isValid() method of the "+
+              "com.netspective.sparx.form.Dialog class.&lt;p&gt;");
 
   String relativePath = "/WEB-INF/classes/app/inheritance/SampleValidateDialog.java";
-  writer.write("You may review the code at " + 
-   c.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), 
-                                         relativePath));
+  writer.write("You may review the code at " + dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), relativePath));
   writer.write("&lt;p&gt;");
   writer.write("&lt;a href=\""+ 
   dc.getNavigationContext().getActivePage().getName() +"\"&gt;Clear the dialog&lt;/a&gt;");
@@ -2032,31 +2067,33 @@ public class SampleExecuteHandler implements DialogExecuteHandler <co
                               throws IOException, DialogExecuteException <co
                 id="declare-delegate-class-eg-4" />
     {
-        writer.write("Welcome to NEFS &lt;b&gt;" + 
-                     dc.getFieldStates().getState("full_name").getValue().getTextValue() + <co
+      writer.write("Welcome to NEFS &lt;b&gt;" + 
+       dc.getFieldStates().getState("full_name").getValue().getTextValue() + "&lt;/b&gt;. ");<co
                 id="declare-delegate-class-eg-5" />
-                     "&lt;/b&gt;. ");
-        writer.write("You are running the dialog called &lt;b&gt;"+ dc.getDialog().getName() 
-                      +"&lt;/b&gt; in package &lt;b&gt;"+
-                     dc.getDialog().getNameSpace().getNameSpaceId() +"&lt;/b&gt;.");
+                     
+      writer.write("You are running the dialog called &lt;b&gt;"+ dc.getDialog().getName() +
+        "&lt;/b&gt; in package &lt;b&gt;"+ dc.getDialog().getNameSpace().getNameSpaceId() +
+        "&lt;/b&gt;.");
 
-        if(dc.getDialog().getQualifiedName().equals("form.exec.delegation.exec1b")) <co
+      if (dc.getDialog().getQualifiedName().equals("form.exec.delegation.exec1b")) <co
                 id="declare-delegate-class-eg-6" />
-            writer.write("&lt;p&gt;You are &lt;b&gt;"+ dc.getFieldStates().getState("age").getValue().getIntValue() 
-                           + "&lt;/b&gt; " + "years old.");
+        writer.write("&lt;p&gt;You are &lt;b&gt;"+ 
+                     dc.getFieldStates().getState("age").getValue().getIntValue() 
+                     + "&lt;/b&gt; " + "years old.");
 
         writer.write("&lt;p&gt;");
-        writer.write("This code demonstrated how you can take two pieces of data and execute an " + 
-                     "arbritrary class by supplying an &amp;lt;on-execute&amp;gt; tag in the &amp;lt;dialog&amp;gt;. ");
-        writer.write("This method of execution is called &lt;i&gt;Dialog Delegation&lt;/i&gt; because a class separate" +
-                     " from the Dialog class handles the execution.&lt;p&gt;");
+        writer.write("This code demonstrated how you can take two pieces of data and "+
+                     "execute an arbritrary class by supplying an &amp;lt;on-execute&amp;gt; "+
+                     "tag in the &amp;lt;dialog&amp;gt;. ");
+        writer.write("This method of execution is called &lt;i&gt;Dialog Delegation&lt;/i&gt; "+
+                     "because a class separate from the Dialog class handles the "+
+                     "execution.&lt;p&gt;");
 
-        String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleExecuteHandler.java"; <co
+        String relativePath = 
+               "/WEB-INF/classes/app/form/exec/delegation/SampleExecuteHandler.java"; <co
                 id="declare-delegate-class-eg-7" />
-        String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt( 
-                                dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
-                                relativePath); <co
-                id="declare-delegate-class-eg-8" />
+        String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
+                      relativePath); <co id="declare-delegate-class-eg-8" />
         writer.write("You may review the code at " + sourceFileLink + ".");
         writer.write("&lt;p&gt;");
         writer.write("&lt;a href=\""+ dc.getNavigationContext().getActivePage().getName() 
@@ -2230,7 +2267,8 @@ public class SampleExecuteHandler implements DialogExecuteHandler <co
                 id="declare-delegate-valid-eg-1" />
     &lt;frame heading="Delegation Validate Sample"/&gt;
     &lt;field type="text" name="full_name" caption="Full Name" required="yes"/&gt;
-    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" max="today"/&gt;
+    &lt;field type="date" name="birth_date" caption="Birth Date" required="yes" 
+                                                              max="today"/&gt;
     &lt;field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/&gt;
 
     &lt;<emphasis>listener</emphasis> <emphasis>class="app.form.exec.delegation.SampleValidateHandler"</emphasis>/&gt; <co
@@ -2283,13 +2321,14 @@ import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.listener.DialogPopulateListener;
 import com.netspective.sparx.form.field.DialogField;
 
-public class SampleValidateHandler implements DialogValidateListener, DialogPopulateListener, 
+public class SampleValidateHandler implements DialogValidateListener, 
+                                              DialogPopulateListener, 
                                               DialogExecuteHandler 
 {
  <emphasis>public void populateDialogValues(DialogContext dc, int formatType)</emphasis> <co
                 id="declare-delegate-valid-handler-eg-1" />
  {
-  if(dc.getDialogState().isInitialEntry() &amp;&amp; formatType == DialogField.DISPLAY_FORMAT) <co
+  if(dc.getDialogState().isInitialEntry() &amp;&amp; formatType==DialogField.DISPLAY_FORMAT) <co
                 id="declare-delegate-valid-handler-eg-2" />
   {
     ValidateContext validateContext = new ValidateContext(dc); <co
@@ -2298,7 +2337,8 @@ public class SampleValidateHandler implements DialogValidateListener, DialogPopu
     if(birthDate == null)
     {
      Calendar cal = Calendar.getInstance();
-     cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); // assume we're 25 years old
+     // assume we're 25 years old
+     cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 25); 
      validateContext.getBirthDate().setValue(cal.getTime());
     }
   }
@@ -2321,30 +2361,35 @@ public class SampleValidateHandler implements DialogValidateListener, DialogPopu
    {
     <emphasis>dvc.addError</emphasis>("The Age and Birth Date fields do not match."); <co
                 id="declare-delegate-valid-handler-eg-6" />
-    <emphasis>validateContext.getBirthDateField().</emphasis><emphasis>invalidate</emphasis>(dvc.getDialogContext(), "If you want the age to be "+ age +
-                                " then birth date should be in year " + (currentYear - age)); <co
+    <emphasis>validateContext.getBirthDateField().</emphasis><emphasis>invalidate</emphasis>(dvc.getDialogContext(), "If you "+
+                 "want the age to be "+ age +" then birth date should be in year " + 
+                  (currentYear - age)); <co
                 id="declare-delegate-valid-handler-eg-7" />
-    validateContext.getAgeField().invalidate(dvc.getDialogContext(), "If you want the birth year to be "
-                                + yearOfBirth +" then age should be " + (currentYear - yearOfBirth));
+    validateContext.getAgeField().invalidate(dvc.getDialogContext(), "If you want "+
+                 " the birth year to be " + yearOfBirth +" then age should be " + 
+                  (currentYear - yearOfBirth));
    }
  }<emphasis>
  public void executeDialog(Writer writer, DialogContext dc) 
              throws IOException, DialogExecuteException</emphasis> <co
                 id="declare-delegate-valid-handler-eg-8" />
  {
-   writer.write("Congratulations &lt;b&gt;" + dc.getFieldStates().getState("full_name").getValue().getTextValue() 
-                   + "&lt;/b&gt;! "); 
+   writer.write("Congratulations &lt;b&gt;" + 
+                 dc.getFieldStates().getState("full_name").getValue().getTextValue() 
+                 + "&lt;/b&gt;! "); 
    writer.write("It seems that your birthdate and ages match correctly.");
    writer.write("&lt;p&gt;");
-   writer.write("This code demonstrated how you can take two three pieces of data, have Sparx individually"+
-                " validate the general fields such as text, date, and integer but add your own custom " +
-                "validator some other logic by creating listeners for various events such as population, "+
-                "validation, and execution.&lt;p&gt;");
+   writer.write("This code demonstrated how you can take two three pieces of data, "+
+                "have Sparx individually validate the general fields such as text, "+
+                "date, and integer but add your own custom validator some other "+
+                "logic by creating listeners for various events such as population,"+
+                " validation, and execution.&lt;p&gt;");
 
-   String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleValidateHandler.java";
-   writer.write("You may review the code at " + 
-    dc.getConsoleFileBrowserLinkShowAlt(
-      dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), relativePath));
+   String relativePath = 
+              "/WEB-INF/classes/app/form/exec/delegation/SampleValidateHandler.java";
+   writer.write("You may review the code at " + dc.getConsoleFileBrowserLinkShowAlt(
+    dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), 
+                                                           relativePath));
    writer.write("&lt;p&gt;");
    writer.write("&lt;a href=\""+ dc.getNavigationContext().getActivePage().getName() 
                 +"\"&gt;Clear the dialog&lt;/a&gt;");
