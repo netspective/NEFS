@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.4 2003-06-11 23:24:38 roque.hernandez Exp $
+ * $Id: TestUtils.java,v 1.5 2003-06-13 04:43:12 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
@@ -182,13 +182,12 @@ public class TestUtils {
       sqlExec.setPassword("");
       sqlExec.execute();
 
-      //TODO: If we ever nee to generate the dal for a unit test, then we'll have to figure out how to
-      //      go up the tree hirearchy and generate the dal at the c:\...\test folder
-      //task.setDestDir(new File("C:/Projects/Frameworks/Axiom/src/java/test/com/netspective/axiom"));
-      //task.setDalPackage("sql.dal");
-      //task.generateDalFiles(manager);
-      //System.out.println("TASK: dal");
-      //System.out.println("destDir: " + "C:/Projects/Frameworks/Axiom/src/java/test");
+      //TODO: If we ever need to generate the DAL, then the trick is how to compile the classes that use it.
+      //      For now, we leve it here for code coverage purposes, since it is excercising the DAL Generator
+      String testRoot = rootPath.substring(0,rootPath.length() - connProviderId.length() - 1);
+      task.setDestDir(new File(testRoot));
+      task.setDalPackage(connProviderId + ".dal");
+      task.generateDalFiles(manager);
 
       if (!loadData)
         return;
