@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.8 2003-10-14 14:39:21 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.9 2003-10-20 15:43:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -100,6 +100,9 @@ public class XdmComponentFactory
             component.removedFromCache(componentsBySystemId, systemId, flags);
             componentsBySystemId.remove(systemId);
             component = null;
+
+            // call the garbage-collector at the earliest convenience because all the old components should now be freed
+            System.gc();
         }
         return component;
     }
