@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnsCollection.java,v 1.4 2003-11-04 16:31:54 shahid.shah Exp $
+ * $Id: ColumnsCollection.java,v 1.5 2004-03-05 03:43:41 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -222,7 +222,10 @@ public class ColumnsCollection implements Columns
         while(st.hasMoreTokens())
         {
             String colName = st.nextToken().trim();
-            sublist.add(getByName(colName));
+            Column column = getByName(colName);
+            if(column == null)
+                return null;
+            sublist.add(column);
         }
         return sublist;
     }
