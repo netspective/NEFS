@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RuntimeEnvironmentFlags.java,v 1.3 2003-06-11 03:05:31 shahid.shah Exp $
+ * $Id: RuntimeEnvironmentFlags.java,v 1.4 2003-08-24 20:07:16 shahid.shah Exp $
  */
 
 package com.netspective.commons;
@@ -62,17 +62,11 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
     public static final int UNDERGOING_MAINTENANCE = DEMONSTRATION * 2;
 
     /**
-     * Checks whether the current runtime environment, based on the given value source, is running in the
-     * Netspective Enterprise Console.
-     */
-    public static final int CONSOLE_MODE = UNDERGOING_MAINTENANCE * 2;
-
-    /**
      * Checks whether the current environment is running in "framework debugging" mode (where the framework
      * itself it being development, as opposed to an application using the framework).
      * Netspective Enterprise Console.
      */
-    public static final int FRAMEWORK_DEVELOPMENT = CONSOLE_MODE * 2;
+    public static final int FRAMEWORK_DEVELOPMENT = UNDERGOING_MAINTENANCE * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -83,7 +77,6 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "PRODUCTION", PRODUCTION),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "DEMONSTRATION", DEMONSTRATION),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "UNDERGOING_MAINTENANCE", UNDERGOING_MAINTENANCE),
-        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "CONSOLE_MODE", CONSOLE_MODE),
         new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "FRAMEWORK_DEVELOPMENT", FRAMEWORK_DEVELOPMENT),
     };
 

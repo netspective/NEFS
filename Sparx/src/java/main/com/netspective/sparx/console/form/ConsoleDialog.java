@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleDialog.java,v 1.2 2003-08-24 18:41:28 shahid.shah Exp $
+ * $Id: ConsoleDialog.java,v 1.3 2003-08-24 20:07:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -50,6 +50,7 @@ import java.io.IOException;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 
 /**
@@ -60,7 +61,7 @@ public class ConsoleDialog extends Dialog
 {
     protected void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        if(! dc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.CONSOLE_MODE))
+        if(! (dc.getServlet() instanceof ConsoleServlet))
         {
             writer.write("This is a privileged form and may only execute within the Netspective Enterprise Console.");
             return;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProjectPage.java,v 1.4 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: AntProjectPage.java,v 1.5 2003-08-24 20:07:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -76,6 +76,14 @@ public class AntProjectPage extends ConsoleServletPage
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        antProject.getDialog().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        try
+        {
+            antProject.getDialog().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        }
+        catch (Exception e)
+        {
+            writer.flush();
+            throw new ServletException(e);
+        }
     }
 }

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.10 2003-08-24 18:41:58 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.11 2003-08-24 20:07:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -61,13 +61,13 @@ import org.apache.commons.logging.Log;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.Value;
-import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
+import com.netspective.sparx.console.ConsoleServlet;
 
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
@@ -256,9 +256,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         boolean lackPermissionFlg = false;
         if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
-            if(dc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.CONSOLE_MODE))
+            if(dc.getServlet() instanceof ConsoleServlet)
             {
-                // if the dialog is being run in ACE, don't allow conditionals to be executed since
+                // if the dialog is being run in the console, don't allow conditionals to be executed since
                 // conditionals can contain permission checking which is dependent upon the application
                 getSourceField().invalidate(dc,
                         "Conditionals using permission checking are not allowed to run in ACE since " +
