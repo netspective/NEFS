@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicRow.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: BasicRow.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -92,7 +92,7 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
     {
         PrimaryKeyColumns primaryKeyColumns = rowTable.getPrimaryKeyColumns();
         PrimaryKeyColumnValues pkValues = primaryKeyColumns.constructPrimaryKeyValuesInstance();
-        pkValues.copy(values, ColumnValues.COPYTYPE_MATCH_BY_COLUMN_INSTANCE);
+        pkValues.copyValuesUsingColumnInstances(values);
         return pkValues;
     }
 

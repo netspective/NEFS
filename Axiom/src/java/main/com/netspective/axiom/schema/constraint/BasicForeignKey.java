@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicForeignKey.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: BasicForeignKey.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
@@ -54,13 +54,15 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.TableColumnReference;
+import com.netspective.axiom.schema.TableColumnsReference;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
+import com.netspective.axiom.schema.column.ColumnsCollection;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.ConnectionContext;
@@ -70,30 +72,38 @@ public class BasicForeignKey implements ForeignKey
 {
     private static final Log log = LogFactory.getLog(BasicForeignKey.class);
 
-    private TableColumnReference reference;
-    private Column source;
-    private Column referenced;
+    private TableColumnsReference reference;
+    private Columns source;
+    private Columns referenced;
 
-    public BasicForeignKey(Column source, TableColumnReference reference)
+    public BasicForeignKey(Column source, TableColumnsReference reference)
     {
-        setSourceColumn(source);
+        Columns srcCols = new ColumnsCollection();
+        srcCols.add(source);
+        setSourceColumns(srcCols);
         setReference(reference);
     }
 
-    public TableColumnReference getReference()
+    public BasicForeignKey(Columns source, TableColumnsReference reference)
+    {
+        setSourceColumns(source);
+        setReference(reference);
+    }
+
+    public TableColumnsReference getReference()
     {
         return reference;
     }
 
     public String getConstraintName()
     {
-        return ("FK_" + source.getTable().getAbbrev() + "_" + source.getAbbrev()).toUpperCase();
+        return ("FK_" + source.getFirst().getTable().getAbbrev() + "_" + source.getOnlyAbbreviations("_")).toUpperCase();
     }
 
-    public void setReference(TableColumnReference reference)
+    public void setReference(TableColumnsReference reference)
     {
         this.reference = reference;
-        setReferencedColumn(null);
+        setReferencedColumns(null);
     }
 
     public short getType()
@@ -101,47 +111,67 @@ public class BasicForeignKey implements ForeignKey
         return ForeignKey.FKEYTYPE_LOOKUP;
     }
 
-    public Column getSourceColumn()
+    public Columns getSourceColumns()
     {
         return source;
     }
 
-    public void setSourceColumn(Column value)
+    public void setSourceColumns(Columns columns)
     {
-        source = value;
+        source = columns;
     }
 
-    public Column getReferencedColumn()
+    public Columns getReferencedColumns()
     {
         if(reference != null && referenced == null)
         {
-            Column refCol = reference.getColumn(source.getSchema());
-            setReferencedColumn(refCol);
+            Columns refCol = reference.getColumns(source.getFirst().getSchema());
+            setReferencedColumns(refCol);
             return refCol;
         }
         else
             return referenced;
     }
 
-    public void setReferencedColumn(Column value)
+    public void setReferencedColumns(Columns columns)
     {
         // never store a placeholder
-        if(value instanceof ForeignKeyPlaceholderColumn)
+        if(columns instanceof ForeignKeyPlaceholderColumn)
             return;
 
         // if we have an existing referenced column, remove it from the dependencies
         if(referenced != null)
-            referenced.removeForeignKeyDependency(this);
+        {
+            for(int i = 0; i < referenced.size(); i++)
+                referenced.get(i).removeForeignKeyDependency(this);
+        }
 
         // now add the dependency
-        referenced = value;
+        referenced = columns;
         if(referenced != null)
-            referenced.registerForeignKeyDependency(this);
+        {
+            for(int i = 0; i < referenced.size(); i++)
+                referenced.get(i).registerForeignKeyDependency(this);
+        }
+    }
+
+    public void fillSourceValuesFromReferencedConnector(ColumnValues sourceValues, ColumnValues refValues)
+    {
+        Columns srcColumns = getSourceColumns();
+        Columns refColumns = getReferencedColumns();
+
+        for(int i = 0; i < srcColumns.size(); i++)
+        {
+            ColumnValue parentValue = refValues.getByColumn(refColumns.get(i));
+            ColumnValue childValue = sourceValues.getByColumn(srcColumns.get(i));
+
+            childValue.setValue(parentValue);
+        }
     }
 
     public Row getFirstReferencedRow(ConnectionContext cc, ColumnValue value) throws NamingException, SQLException
     {
-        Column refColumn = getReferencedColumn();
+        Column refColumn = getReferencedColumns().getSole();
         Table refTable = refColumn.getTable();
 
         QueryDefnSelect accessor = refColumn.getTable().getAccessorByColumnEquality(refColumn);
@@ -169,7 +199,7 @@ public class BasicForeignKey implements ForeignKey
 
     public Rows getReferencedRows(ConnectionContext cc, ColumnValue value) throws NamingException, SQLException
     {
-        Column refColumn = getReferencedColumn();
+        Column refColumn = getReferencedColumns().getSole();
         Table refTable = refColumn.getTable();
 
         QueryDefnSelect accessor = refColumn.getTable().getAccessorByColumnEquality(refColumn);
@@ -190,53 +220,30 @@ public class BasicForeignKey implements ForeignKey
 
     public Rows getReferencedRows(ConnectionContext cc, ColumnValues values) throws NamingException, SQLException
     {
-        ColumnValue referencedValue = values.getByColumn(getReferencedColumn());
-        if(referencedValue == null)
-            throw new SQLException("Referenced value is null while trying to retrieve referenced rows in " + this + ". Available: " + values);
-        return getReferencedRows(cc, referencedValue);
-    }
+        Columns refColumns = getReferencedColumns();
+        Table refTable = refColumns.getFirst().getTable();
 
-    public Rows getReferencedRows(ConnectionContext cc, Row row) throws NamingException, SQLException
-    {
-        if(row.getTable() != getReferencedColumn().getTable())
-            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumn().getTable().getName() + "'.");
-        return getReferencedRows(cc, row.getColumnValues());
-    }
-
-    public Rows getSourceRows(ConnectionContext cc, ColumnValue value) throws NamingException, SQLException
-    {
-        Column srcColumn = getSourceColumn();
-        Table srcTable = srcColumn.getTable();
-
-        QueryDefnSelect accessor = srcColumn.getTable().getAccessorByColumnEquality(srcColumn);
+        QueryDefnSelect accessor = refTable.getAccessorByColumnsEquality(refColumns);
         if(accessor == null)
-            throw new SQLException("Unable to accessor for selecting source column " + srcColumn);
+            throw new SQLException("Unable to accessor for selecting reference columns " + refColumns);
 
-        Object bindValue = value.getValueForSqlBindParam();
-        if(bindValue == null)
-            throw new SQLException("No bind value provided for source column " + srcColumn);
+        Object[] bindValues = values.getByColumns(refColumns).getValuesForSqlBindParams();
+        if(bindValues == null)
+            throw new SQLException("No bind value provided for reference columns " + refColumns);
 
-        Rows resultRows = srcTable.createRows();
-        QueryResultSet qrs = accessor.execute(cc, new Object[] { bindValue }, false);
+        Rows resultRows = refTable.createRows();
+        QueryResultSet qrs = accessor.execute(cc, bindValues, false);
         if(qrs != null)
             resultRows.populateDataByIndexes(qrs.getResultSet());
         qrs.close(false);
         return resultRows;
     }
 
-    public Rows getSourceRowsByReferencedValue(ConnectionContext cc, ColumnValues values) throws NamingException, SQLException
+    public Rows getReferencedRows(ConnectionContext cc, Row row) throws NamingException, SQLException
     {
-        ColumnValue referencedValue = values.getByColumn(getReferencedColumn());
-        if(referencedValue == null)
-            throw new SQLException("Referenced value is null while trying to retrieve referenced rows in " + this + ". Available: " + values);
-        return getSourceRows(cc, referencedValue);
-    }
-
-    public Rows getSourceRowsByReferencedValue(ConnectionContext cc, Row row) throws NamingException, SQLException
-    {
-        if(row.getTable() != getReferencedColumn().getTable())
-            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumn().getTable().getName() + "'.");
-        return getSourceRowsByReferencedValue(cc, row.getColumnValues());
+        if(row.getTable() != getReferencedColumns().getFirst().getTable())
+            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
+        return getReferencedRows(cc, row.getColumnValues());
     }
 
     public String toString()
@@ -245,11 +252,17 @@ public class BasicForeignKey implements ForeignKey
         sb.append(TextUtils.getRelativeClassName(BasicForeignKey.class, getClass()));
         sb.append(" ");
 
-        Column refCol = getReferencedColumn();
-        sb.append("Source: ");
-        sb.append(source.getQualifiedName());
-        sb.append(", Referenced Column: ");
-        sb.append(refCol != null ? (refCol.getQualifiedName() + " " + refCol) : null);
+        Columns srcCols = getSourceColumns();
+        Columns refCols = getReferencedColumns();
+
+        sb.append("Sources: ");
+        sb.append(srcCols.getFirst().getTable().getName());
+        sb.append(".");
+        sb.append(srcCols.getOnlyNames(","));
+        sb.append("; Referenced Columns: ");
+        sb.append(refCols.getFirst().getTable().getName());
+        sb.append(".");
+        sb.append(refCols != null ? (refCols.getOnlyNames(",")) : null);
 
         return sb.toString();
     }

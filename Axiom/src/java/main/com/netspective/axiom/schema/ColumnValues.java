@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnValues.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: ColumnValues.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -53,13 +53,10 @@ import com.netspective.commons.value.Values;
 public interface ColumnValues extends Values
 {
     public final static int RESULTSETROWNUM_SINGLEROW = -1;
-    public final static int COPYTYPE_DIRECT = 0;
-    public final static int COPYTYPE_MATCH_BY_COLUMN_NAME = 1;
-    public final static int COPYTYPE_MATCH_BY_COLUMN_INSTANCE = 2;
-    public final static int COPYTYPE_MATCH_BY_COLUMN_FKEY_REF = 3;
 
     public ColumnValue getByColumnIndex(int columnIndex);
     public ColumnValue getByColumn(Column column);
+    public ColumnValues getByColumns(Columns columns);
     public ColumnValue getByName(String columnName);
     public ColumnValue getByNameOrXmlNodeName(String colXmlNodeName);
 
@@ -69,7 +66,13 @@ public interface ColumnValues extends Values
      * Copy the values from the given source values into this column object. Only the columns that match will be copied
      * and all other other values will be ignored.
      */
-    public void copy(ColumnValues source, int copyType);
+    void copyValuesUsingColumnNames(ColumnValues source);
+
+    /**
+     * Copy the values from the given source values into this column object. Only the columns that match will be copied
+     * and all other other values will be ignored.
+     */
+    void copyValuesUsingColumnInstances(ColumnValues source);
 
     /**
      * Given a ResultSet, populate the values of the Row with the values provided in the

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Columns.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: Columns.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -70,10 +70,14 @@ public interface Columns
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public Column getSole();
+    public Column getFirst();
     public Column get(int i);
     public Column getByName(String name);
+    public Columns getByNames(String names, String delimiter);
     public List getOnlyNames();
     public String getOnlyNames(String delimiter);
+    public String getOnlyAbbreviations(String delimiter);
+    public String getOnlyXmlNodeNames(String delimiter);
     public Column getByNameOrXmlNodeName(String name);
     public int getColumnIndexInRowByName(String name);
     public int getColumnIndexInRowByNameOrXmlNodeName(String name);

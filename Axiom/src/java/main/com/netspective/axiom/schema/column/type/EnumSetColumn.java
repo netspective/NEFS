@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumSetColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: EnumSetColumn.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -111,7 +111,7 @@ public class EnumSetColumn extends TextColumn implements DatabasePolicy.ColumnIn
 
         Column primaryKeyColumn = getTable().getPrimaryKeyColumns().getSole();
         Table setTable = getColumnTables().getSole();
-        EnumerationTable enumTable = (EnumerationTable) setTable.getColumns().get(COLINDEX_ENUM_VALUE).getForeignKey().getReferencedColumn().getTable();
+        EnumerationTable enumTable = (EnumerationTable) setTable.getColumns().get(COLINDEX_ENUM_VALUE).getForeignKey().getReferencedColumns().getFirst().getTable();
         EnumerationTableRows enumRows = enumTable.getEnums();
 
         for(int i = 0; i < values.length; i++)

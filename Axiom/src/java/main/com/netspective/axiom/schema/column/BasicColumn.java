@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -67,6 +67,7 @@ import com.netspective.axiom.schema.column.ForeignKeyPlaceholderColumn;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.Rows;
+import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.constraint.BasicTableColumnReference;
 import com.netspective.axiom.schema.constraint.BasicForeignKey;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
@@ -196,8 +197,8 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             ForeignKey fKey = getForeignKey();
             if(fKey != null)
             {
-                Column fkCol = fKey.getReferencedColumn();
-                Table fkTable = fkCol.getTable();
+                Columns fkCol = fKey.getReferencedColumns();
+                Table fkTable = fkCol.getFirst().getTable();
                 if(fkTable instanceof EnumerationTable)
                 {
                     int id = getIntValue();
@@ -219,8 +220,8 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             ForeignKey fKey = getForeignKey();
             if(fKey != null)
             {
-                Column fkCol = fKey.getReferencedColumn();
-                Table fkTable = fkCol.getTable();
+                Columns fkCol = fKey.getReferencedColumns();
+                Table fkTable = fkCol.getFirst().getTable();
                 if(fkTable instanceof EnumerationTable)
                 {
                     int id = getIntValue();
@@ -376,7 +377,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         if(this instanceof ForeignKeyPlaceholderColumn)
         {
             ForeignKey fkey = getForeignKey();
-            Column referenced = fkey.getReferencedColumn();
+            Column referenced = fkey.getReferencedColumns().getSole();
             if(referenced == null)
                 throw new RuntimeException("Unable to finish construction of '"+ getQualifiedName() +"': referenced foreign key '"+ fkey +"' not found.");
 
@@ -416,7 +417,9 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         setIndexInRow(column.getIndexInRow());
         setDescr(column.getDescr());
         setForeignKey(column.getForeignKey());
-        foreignKey.setSourceColumn(this);
+        Columns srcColumns = new ColumnsCollection();
+        srcColumns.add(this);
+        foreignKey.setSourceColumns(srcColumns);
         setSequenceName(column.getSequenceName());
         setRequired(new RequirementEnumeratedAttribute(column.getRequirement()));
         setPrimaryKey(column.isPrimaryKey());
@@ -618,14 +621,14 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         if (dependentFKeys != null)
             dependentFKeys.remove(fKey);
-        fKey.getSourceColumn().getTable().removeForeignKeyDependency(fKey);
+        fKey.getSourceColumns().getFirst().getTable().removeForeignKeyDependency(fKey);
     }
 
     public void registerForeignKeyDependency(ForeignKey fKey)
     {
         if (dependentFKeys == null) dependentFKeys = new HashSet();
         dependentFKeys.add(fKey);
-        fKey.getSourceColumn().getTable().registerForeignKeyDependency(fKey);
+        fKey.getSourceColumns().getFirst().getTable().registerForeignKeyDependency(fKey);
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
@@ -731,7 +734,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         StringBuffer sb = new StringBuffer();
         sb.append(TextUtils.getRelativeClassName(BasicColumn.class, getClass()));
-        sb.append(" ");
+        sb.append(" [" + getIndexInRow() + "] ");
         sb.append(getName());
 
         ForeignKey fkey = getForeignKey();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationIdRefColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: EnumerationIdRefColumn.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -86,7 +86,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
 
         public void setTextValue(String value) throws ColumnValueException
         {
-            EnumerationTable enumTable = (EnumerationTable) getForeignKey().getReferencedColumn().getTable();
+            EnumerationTable enumTable = (EnumerationTable) getForeignKey().getReferencedColumns().getFirst().getTable();
             EnumerationTableRow row = enumTable.getEnums().getByIdOrCaptionOrAbbrev(value);
             if(row != null)
                 super.setValue(row.getIdAsInteger());
@@ -98,7 +98,7 @@ public class EnumerationIdRefColumn extends IntegerColumn
         {
             if(value instanceof Integer)
             {
-                EnumerationTable enumTable = (EnumerationTable) getForeignKey().getReferencedColumn().getTable();
+                EnumerationTable enumTable = (EnumerationTable) getForeignKey().getReferencedColumns().getFirst().getTable();
                 EnumerationTableRow row = ((EnumerationTableRows) enumTable.getData()).getById((Integer) value);
                 if(row != null)
                     super.setValue(value);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -219,7 +219,7 @@ public class DataImportDtd
             }
             else if (column instanceof EnumerationIdRefColumn)
             {
-                EnumerationTable enumTable = (EnumerationTable) column.getForeignKey().getReferencedColumn().getTable();
+                EnumerationTable enumTable = (EnumerationTable) column.getForeignKey().getReferencedColumns().getFirst().getTable();
                 EnumerationTableRows enumRows = (EnumerationTableRows) enumTable.getData();
 
                 if(enumRows != null)

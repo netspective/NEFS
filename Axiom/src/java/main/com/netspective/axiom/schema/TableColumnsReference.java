@@ -39,18 +39,18 @@
  */
 
 /**
- * $Id: TableColumnReference.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: TableColumnsReference.java,v 1.1 2003-03-18 22:33:19 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-public interface TableColumnReference
+public interface TableColumnsReference
 {
     public String QUALIFIED_TABLENAME_COLUMNNAME_SEPARATOR = ".";
 
-    public String getColumnName();
-    public Column getColumn(Schema schema);
+    public String getColumnNames();
+    public Columns getColumns(Schema schema);
     public String getReference();
     public String getTableName();
-    public boolean hasColumnName();
+    public boolean hasColumnNames();
 }

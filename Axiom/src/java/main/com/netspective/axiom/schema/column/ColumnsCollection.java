@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ColumnsCollection.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: ColumnsCollection.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -58,7 +59,6 @@ import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValuesProducer;
 import com.netspective.axiom.schema.Index;
 import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.validate.BasicValidationContext;
@@ -129,6 +129,11 @@ public class ColumnsCollection implements Columns
         return columns.indexOf(column) != -1;
     }
 
+    public Column getFirst()
+    {
+        return get(0);
+    }
+
     public List getOnlyNames()
     {
         return namesOnly;
@@ -159,6 +164,30 @@ public class ColumnsCollection implements Columns
         return sb.toString();
     }
 
+    public String getOnlyAbbreviations(String delimiter)
+    {
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < columns.size(); i++)
+        {
+            if(i > 0)
+                sb.append(delimiter);
+            sb.append(((Column) columns.get(i)).getAbbrev());
+        }
+        return sb.toString();
+    }
+
+    public String getOnlyXmlNodeNames(String delimiter)
+    {
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0; i < columns.size(); i++)
+        {
+            if(i > 0)
+                sb.append(delimiter);
+            sb.append(((Column) columns.get(i)).getXmlNodeName());
+        }
+        return sb.toString();
+    }
+
     public Column getSole()
     {
         if(size() != 1)
@@ -174,6 +203,18 @@ public class ColumnsCollection implements Columns
     public Column getByName(String name)
     {
         return (Column) mapByName.get(BasicColumn.translateColumnNameForMapKey(name));
+    }
+
+    public Columns getByNames(String names, String delimiter)
+    {
+        Columns sublist = new ColumnsCollection();
+        StringTokenizer st = new StringTokenizer(names, delimiter);
+        while(st.hasMoreTokens())
+        {
+            String colName = st.nextToken().trim();
+            sublist.add(getByName(colName));
+        }
+        return sublist;
     }
 
     public Column getByNameOrXmlNodeName(String name)
@@ -244,51 +285,25 @@ public class ColumnsCollection implements Columns
             return result;
         }
 
-        public void copy(ColumnValues source, int copyType)
+        public void copyValuesUsingColumnNames(ColumnValues source)
         {
-            switch(copyType)
+            for(int i = 0; i < source.size(); i++)
             {
-                case COPYTYPE_DIRECT:
-                    for(int i = 0; i < values.length; i++)
-                        values[i].setValue(source.getByColumnIndex(i));
-                    break;
+                ColumnValue copyValue = source.getByColumnIndex(i);
+                ColumnValue cv = getByName(copyValue.getColumn().getName());
+                if(cv != null)
+                    cv.setValue(copyValue);
+            }
+        }
 
-                case COPYTYPE_MATCH_BY_COLUMN_NAME:
-                    for(int i = 0; i < values.length; i++)
-                    {
-                        ColumnValue cv = values[i];
-                        ColumnValue copyValue = source.getByName(cv.getColumn().getName());
-                        if(copyValue != null)
-                            cv.setValue(copyValue);
-                    }
-                    break;
-
-                case COPYTYPE_MATCH_BY_COLUMN_INSTANCE:
-                    for(int i = 0; i < values.length; i++)
-                    {
-                        ColumnValue cv = values[i];
-                        ColumnValue copyValue = source.getByColumn(cv.getColumn());
-                        if(copyValue != null)
-                            cv.setValue(copyValue);
-                    }
-                    break;
-
-                case COPYTYPE_MATCH_BY_COLUMN_FKEY_REF:
-                    for(int i = 0; i < values.length; i++)
-                    {
-                        ColumnValue cv = values[i];
-                        ForeignKey fKey = cv.getColumn().getForeignKey();
-                        if(fKey != null)
-                        {
-                            ColumnValue copyValue = source.getByColumn(fKey.getReferencedColumn());
-                            if(copyValue != null)
-                                cv.setValue(copyValue);
-                        }
-                    }
-                    break;
-
-                default:
-                    throw new RuntimeException("Unknown copyType " + copyType);
+        public void copyValuesUsingColumnInstances(ColumnValues source)
+        {
+            for(int i = 0; i < values.length; i++)
+            {
+                ColumnValue cv = values[i];
+                ColumnValue copyValue = source.getByColumn(cv.getColumn());
+                if(copyValue != null)
+                    cv.setValue(copyValue);
             }
         }
 
@@ -296,6 +311,13 @@ public class ColumnsCollection implements Columns
         {
             int index = columns.indexOf(column);
             return index != -1 ? getByColumnIndex(index) : null;
+        }
+
+        public ColumnValues getByColumns(Columns retrieveCols)
+        {
+            ColumnValues retrieveValues = retrieveCols.constructValuesInstance();
+            retrieveValues.copyValuesUsingColumnInstances(this);
+            return retrieveValues;
         }
 
         public ColumnValue getByColumnIndex(int columnIndex)
@@ -308,7 +330,7 @@ public class ColumnsCollection implements Columns
             Object[] result = new Object[values.length];
 
             for(int i = 0; i < values.length; i++)
-                result[i] = values[i].getValueForSqlBindParam();
+                result[i] = values[i] != null ? values[i].getValueForSqlBindParam() : null;
 
             return result;
         }
@@ -328,18 +350,18 @@ public class ColumnsCollection implements Columns
         {
             Column column = ColumnsCollection.this.getByName(columnName);
             if(column == null)
-                throw new RuntimeException("Column named '"+ columnName +"' not found in columns collection " + ColumnsCollection.this + ". Available: " + getOnlyNames());
-
-            return values[column.getIndexInRow()];
+                return null;
+            else
+                return values[column.getIndexInRow()];
         }
 
         public ColumnValue getByNameOrXmlNodeName(String colXmlNodeName)
         {
             Column column = ColumnsCollection.this.getByNameOrXmlNodeName(colXmlNodeName);
             if(column == null)
-                throw new RuntimeException("Column named by xml-node '"+ colXmlNodeName +"' not found in columns collection " + ColumnsCollection.this + ". Available: " + getOnlyNames());
-
-            return values[column.getIndexInRow()];
+                return null;
+            else
+                return values[column.getIndexInRow()];
         }
 
         public int size()

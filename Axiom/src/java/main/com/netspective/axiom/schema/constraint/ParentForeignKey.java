@@ -39,19 +39,31 @@
  */
 
 /**
- * $Id: ParentForeignKey.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: ParentForeignKey.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
 
+import java.sql.SQLException;
+import javax.naming.NamingException;
+
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.TableColumnReference;
+import com.netspective.axiom.schema.TableColumnsReference;
+import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.Rows;
+import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.constraint.BasicForeignKey;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.QueryResultSet;
 
 public class ParentForeignKey extends BasicForeignKey
 {
-    public ParentForeignKey(Column source, TableColumnReference reference)
+    public ParentForeignKey(Column source, TableColumnsReference reference)
     {
         super(source, reference);
     }
@@ -60,4 +72,48 @@ public class ParentForeignKey extends BasicForeignKey
     {
         return ForeignKey.FKEYTYPE_PARENT;
     }
+
+    public void fillChildValuesFromParentConnector(ColumnValues childValues, ColumnValues parentValues)
+    {
+        Columns srcColumns = getSourceColumns();
+        Columns refColumns = getReferencedColumns();
+
+        for(int i = 0; i < srcColumns.size(); i++)
+        {
+            ColumnValue parentValue = parentValues.getByColumn(refColumns.get(i));
+            ColumnValue childValue = childValues.getByColumn(srcColumns.get(i));
+
+            childValue.setValue(parentValue);
+        }
+    }
+
+    public Rows getChildRowsByParentValues(ConnectionContext cc, ColumnValues parentValues) throws NamingException, SQLException
+    {
+        Columns srcColumns = getSourceColumns();
+        Columns refColumns = getReferencedColumns();
+        Table srcTable = srcColumns.getFirst().getTable();
+
+        QueryDefnSelect accessor = srcTable.getAccessorByColumnsEquality(srcColumns);
+        if(accessor == null)
+            throw new SQLException("Unable to accessor for selecting source columns " + srcColumns);
+
+        Object[] bindValues = parentValues.getByColumns(refColumns).getValuesForSqlBindParams();
+        if(bindValues == null)
+            throw new SQLException("No bind value provided for source columns " + srcColumns);
+
+        Rows resultRows = srcTable.createRows();
+        QueryResultSet qrs = accessor.execute(cc, bindValues, false);
+        if(qrs != null)
+            resultRows.populateDataByIndexes(qrs.getResultSet());
+        qrs.close(false);
+        return resultRows;
+    }
+
+    public Rows getChildRowsByParentRow(ConnectionContext cc, Row row) throws NamingException, SQLException
+    {
+        if(row.getTable() != getReferencedColumns().getFirst().getTable())
+            throw new SQLException("Row value is from table '"+ row.getTable().getName() +"' while referenced column is from table '" + getReferencedColumns().getFirst().getTable().getName() + "'.");
+        return getChildRowsByParentValues(cc, row.getColumnValues());
+    }
+
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ForeignKey.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: ForeignKey.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -57,19 +57,19 @@ public interface ForeignKey extends Constraint
     public static short FKEYTYPE_PARENT = 2;
     public static short FKEYTYPE_LOOKUP = 3;
 
-    public TableColumnReference getReference();
+    public TableColumnsReference getReference();
 
-    public void setReference(TableColumnReference reference);
+    public void setReference(TableColumnsReference reference);
 
     public short getType();
 
-    public Column getSourceColumn();
+    public Columns getSourceColumns();
 
-    public void setSourceColumn(Column value);
+    public void setSourceColumns(Columns columns);
 
-    public Column getReferencedColumn();
+    public Columns getReferencedColumns();
 
-    public void setReferencedColumn(Column value);
+    public void setReferencedColumns(Columns columns);
 
     /**
      * Find the first row in the referenced table with the given value.
@@ -91,18 +91,5 @@ public interface ForeignKey extends Constraint
      */
     public Rows getReferencedRows(ConnectionContext cc, Row row) throws NamingException, SQLException;
 
-    /**
-     * Return all the rows in the source table with the given value.
-     */
-    public Rows getSourceRows(ConnectionContext cc, ColumnValue value) throws NamingException, SQLException;
-
-    /**
-     * Return all the rows in the source table with the value of the referenced colum from the given Row.
-     */
-    public Rows getSourceRowsByReferencedValue(ConnectionContext cc, ColumnValues values) throws NamingException, SQLException;
-
-    /**
-     * Return all the rows in the source table with the value of the referenced colum from the given Row.
-     */
-    public Rows getSourceRowsByReferencedValue(ConnectionContext cc, Row row) throws NamingException, SQLException;
+    void fillSourceValuesFromReferencedConnector(ColumnValues sourceValues, ColumnValues refValues);
 }

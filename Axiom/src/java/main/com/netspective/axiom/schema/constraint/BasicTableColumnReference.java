@@ -39,17 +39,18 @@
  */
 
 /**
- * $Id: BasicTableColumnReference.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: BasicTableColumnReference.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
 
-import com.netspective.axiom.schema.TableColumnReference;
+import com.netspective.axiom.schema.TableColumnsReference;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.Columns;
 
-public class BasicTableColumnReference implements TableColumnReference
+public class BasicTableColumnReference implements TableColumnsReference
 {
     private String reference;
     private String tableName;
@@ -77,7 +78,7 @@ public class BasicTableColumnReference implements TableColumnReference
         }
     }
 
-    public String getColumnName()
+    public String getColumnNames()
     {
         return columnName;
     }
@@ -92,20 +93,20 @@ public class BasicTableColumnReference implements TableColumnReference
         return tableName;
     }
 
-    public boolean hasColumnName()
+    public boolean hasColumnNames()
     {
         return columnName != null;
     }
 
-    public Column getColumn(Schema schema)
+    public Columns getColumns(Schema schema)
     {
         Table table = schema.getTables().getByName(getTableName());
         if (table == null)
             return null;
 
-        return hasColumnName() ?
-                    table.getColumns().getByName(getColumnName()) :
-                    table.getPrimaryKeyColumns().getSole();
+        return hasColumnNames() ?
+                    table.getColumns().getByNames(getColumnNames(), ",") :
+                    table.getPrimaryKeyColumns();
     }
 
     public String toString()

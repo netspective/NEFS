@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: Query.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -276,18 +276,32 @@ public class Query
         return sqlText != null ? sqlText.getSql(cc) : null;
     }
 
-    public void trace(ConnectionContext cc) throws NamingException, SQLException
+    public void trace(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         StringBuffer traceMsg = new StringBuffer();
         traceMsg.append(QueryExecutionLogEntry.class.getName() + " '"+ getQualifiedName() +"' at "+ cc.getContextLocation() +"\n");
         traceMsg.append(getSqlText(cc));
-        QueryParameters params = getParams();
-        if(params != null)
+        if(overrideParams != null)
         {
-            for(int i = 0; i <= params.size(); i++)
-                ((QueryParameter) params.get(i)).appendBindText(traceMsg, cc, "\n");
+            for(int i = 0; i < overrideParams.length; i++)
+            {
+                traceMsg.append("["+ i +"] ");
+                traceMsg.append(overrideParams[i]);
+                if(overrideParams[i] != null)
+                    traceMsg.append(" (" + overrideParams[i].getClass().getName() + ")");
+                traceMsg.append("\n");
+            }
         }
-        Query.log.trace(traceMsg);
+        else
+        {
+            QueryParameters params = getParams();
+            if(params != null)
+            {
+                for(int i = 0; i < params.size(); i++)
+                    ((QueryParameter) params.get(i)).appendBindText(traceMsg, cc, "\n");
+            }
+        }
+        log.trace(traceMsg);
     }
 
     public String createExceptionMessage(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
@@ -323,7 +337,7 @@ public class Query
 
     protected QueryResultSet executeAndRecordStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
-        if(log.isTraceEnabled()) trace(cc);
+        if(log.isTraceEnabled()) trace(cc, overrideParams);
         QueryExecutionLogEntry logEntry = execLog.createNewEntry(cc, this.getQualifiedName());
         try
         {
@@ -366,7 +380,7 @@ public class Query
 
     protected QueryResultSet executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
     {
-        if(log.isTraceEnabled()) trace(cc);
+        if(log.isTraceEnabled()) trace(cc, overrideParams);
         try
         {
             Connection conn = cc.getConnection();

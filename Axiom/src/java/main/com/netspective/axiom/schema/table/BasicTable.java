@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -69,7 +69,6 @@ import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
 import com.netspective.axiom.schema.PrimaryKeyColumns;
 import com.netspective.axiom.schema.ColumnValues;
-import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Index;
@@ -416,18 +415,8 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public Row createRow(ParentForeignKey pfKey, Row parentRow)
     {
-        ColumnValue referencedValue = parentRow.getColumnValues().getByColumn(pfKey.getReferencedColumn());
-        if(referencedValue == null)
-            throw new RuntimeException("Parent foreign key reference column " + pfKey.getReferencedColumn().getQualifiedName() + " not found in table " + parentRow.getTable().getName() + ". Available: " + parentRow.getTable().getColumns().getOnlyNames());
-
         Row childRow = createRow();
-        ColumnValues childValues = childRow.getColumnValues();
-        ColumnValue sourceValue = childValues.getByColumn(pfKey.getSourceColumn());
-        if(sourceValue == null)
-            throw new RuntimeException("Parent foreign key source column " + pfKey.getSourceColumn().getQualifiedName() + " not found in table " + getName() + ". Available: " + getColumns().getOnlyNames());
-
-        sourceValue.setValue(referencedValue);
-
+        pfKey.fillChildValuesFromParentConnector(childRow.getColumnValues(), parentRow.getColumnValues());
         return childRow;
     }
 
@@ -473,7 +462,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         // if we are the "referenced" foreign key, then the source is a child of ours
         if (fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
         {
-            Table parentTable = fKey.getReferencedColumn().getTable();
+            Table parentTable = fKey.getReferencedColumns().getFirst().getTable();
             parentTable.registerChildTable(this);
         }
     }
@@ -483,7 +472,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         // if we are the "referenced" foreign key, then the source is a child of ours
         if (fKey.getType() == ForeignKey.FKEYTYPE_PARENT)
         {
-            Table parentTable = fKey.getReferencedColumn().getTable();
+            Table parentTable = fKey.getReferencedColumns().getFirst().getTable();
             parentTable.removeChildTable(this);
         }
     }
@@ -772,6 +761,32 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         return tqd.getSelects().get("by-"+ column.getXmlNodeName() +"-equality");
     }
 
+    public QueryDefnSelect getAccessorByColumnsEquality(Columns columns)
+    {
+        TableQueryDefinition tqd = getQueryDefinition();
+        String accessorName = "by-"+ columns.getOnlyXmlNodeNames("-") +"-equality";
+        QueryDefnSelect qds = tqd.getSelects().get("by-"+ columns.getOnlyXmlNodeNames("-") +"-equality");
+        if(qds == null)
+        {
+            qds = queryDefn.createSelect();
+            qds.setName(accessorName);
+            qds.setDistinct(false);
+            tqd.addSelect(qds);
+
+            try
+            {
+                populateTableColumnsAsDisplayFields(qds);
+                populateColumnEqualityConditions(qds, columns);
+            }
+            catch (QueryDefinitionException e)
+            {
+                log.error(e.getMessage(), e);
+                e.printStackTrace();
+            }
+        }
+        return qds;
+    }
+
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public Schema.TableTreeNode createTreeNode(Schema.TableTree owner, Schema.TableTreeNode parent, int level)
@@ -799,7 +814,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             {
                 Column parentRefColumn = parentRefColumns.get(i);
                 ParentForeignKey fKey = (ParentForeignKey) parentRefColumn.getForeignKey();
-                if(fKey.getReferencedColumn().getTable() == parent.getTable())
+                if(fKey.getReferencedColumns().getFirst().getTable() == parent.getTable())
                     parentForeignKey = fKey;
             }
 

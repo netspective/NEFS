@@ -1,4 +1,3 @@
-* Add multiple columns referencing support to foreign keys (currently foreign keys only support single column references).
 * Add support for "Axiom Auto-inc" column where column key value is generated using the design pattern in Java Enterprise Best Practices.
 * Add column-level or row-level encryption and support for searching encrypted columns.
 * Allow self-ref foreign keys to generate DAL code that would load a complete hierarchy.

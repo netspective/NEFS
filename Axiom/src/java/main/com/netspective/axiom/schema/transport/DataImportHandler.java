@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -61,6 +61,7 @@ import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
+import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.DatabasePolicies;
@@ -99,6 +100,7 @@ public class DataImportHandler extends AbstractContentHandler
         private String sqlExprDbmsId;
         private boolean written;
         private String storeId;
+        private PrimaryKeyColumnValues idRefValues;
 
         public NodeStackEntry(String qName, int depth)
         {
@@ -161,17 +163,11 @@ public class DataImportHandler extends AbstractContentHandler
             String idRef = attributes.getValue(ATTRNAME_RETRIEVE_ID);
             if(idRef != null)
             {
-                PrimaryKeyColumnValues storedPkValues = (PrimaryKeyColumnValues) idReferences.get(idRef);
-                if(storedPkValues != null)
-                {
-                    ColumnValue cv = row.getColumnValues().getByNameOrXmlNodeName(rowColumnName);
-                    if(cv != null)
-                        cv.setValue(storedPkValues.getByColumnIndex(0));
-                    else
-                        getParseContext().addError("IDREF '"+ idRef +"' was found for column '"+ rowColumnName +"' in table '"+ row.getTable().getName() +"' but the ColumnValue was null.");
-                }
+                idRefValues = (PrimaryKeyColumnValues) idReferences.get(idRef);
+                if(idRefValues != null)
+                    row.getColumnValues().copyValuesUsingColumnNames(idRefValues);
                 else
-                    getParseContext().addError("IDREF '"+ idRef +"' not found for column '"+ rowColumnName +"' in table '"+ row.getTable().getName() +"'. Available: " + idReferences.keySet() + " ");
+                    getParseContext().addError("IDREF '"+ idRef +"' not found in table '"+ row.getTable().getName() +"'. Available: " + idReferences.keySet() + " ");
             }
         }
 
@@ -218,7 +214,7 @@ public class DataImportHandler extends AbstractContentHandler
                     }
                     catch (SQLException e)
                     {
-                        throw new SQLException(e.getMessage() + "\n" + row);
+                        throw new SQLException(e.getMessage() + "\n" + row + "\nIDREF values: " + idRefValues + "\n" + getParseContext().getLocator().getSystemId() + " line " + getParseContext().getLocator().getLineNumber());
                     }
                     finally
                     {

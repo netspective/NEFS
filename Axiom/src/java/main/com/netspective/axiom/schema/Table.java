@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: Table.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -88,6 +88,7 @@ public interface Table
     public TableQueryDefinition getQueryDefinition();
 
     public QueryDefnSelect getAccessorByColumnEquality(Column column);
+    public QueryDefnSelect getAccessorByColumnsEquality(Columns columns);
     public QueryDefnSelect getAccessorByPrimaryKeyEquality();
 
     public QueryDefnSelect createAccessor() throws QueryDefinitionException;

@@ -39,20 +39,20 @@
  */
 
 /**
- * $Id: SelfForeignKey.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: SelfForeignKey.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
 
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;
-import com.netspective.axiom.schema.TableColumnReference;
+import com.netspective.axiom.schema.TableColumnsReference;
 import com.netspective.axiom.schema.constraint.BasicForeignKey;
 
 
 public class SelfForeignKey extends BasicForeignKey
 {
-    public SelfForeignKey(Column source, TableColumnReference reference)
+    public SelfForeignKey(Column source, TableColumnsReference reference)
     {
         super(source, reference);
     }

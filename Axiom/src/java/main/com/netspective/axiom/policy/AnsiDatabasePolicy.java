@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -124,8 +124,8 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             setDropIndexStatementFormat("DROP INDEX ${index.name}");
             setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment 1 start 1");
             setDropSequenceStatementFormat("DROP SEQUENCE ${column.sequenceName}");
-            setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumn.name}) REFERENCES ${fkey.referencedColumn.table.name} (${fkey.referencedColumn.name}) ON DELETE CASCADE");
-            setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumn.table.name} ADD " + getFkeyConstraintTableClauseFormat());
+            setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')}) ON DELETE CASCADE");
+            setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
             setCreatePrimaryKeyIndex(true);
             setCreateParentKeyIndex(true);
         }
@@ -1218,7 +1218,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                              table has already been defined; otherwise, we'll assume fkeys will be created later using "alter table"
                         */
 
-                        if(gc.visitedTables.contains(fKey.getReferencedColumn().getTable()))
+                        if(gc.visitedTables.contains(fKey.getReferencedColumns().getFirst().getTable()))
                             tableConstraints.add(fKey);
                         else
                         {
@@ -1272,7 +1272,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
                         writer.write("/* DELAYED: ");
                         renderSqlDdlConstraintClause(gc, table, fKey);
-                        writer.write(" ("+ fKey.getReferencedColumn().getTable().getName() +" table not created yet) */");
+                        writer.write(" ("+ fKey.getReferencedColumns().getFirst().getTable().getName() +" table not created yet) */");
 
                         writer.write("\n");
                         constrIndex++;

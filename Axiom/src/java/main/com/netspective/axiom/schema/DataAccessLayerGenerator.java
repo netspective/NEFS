@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.3 2003-03-13 22:10:37 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.4 2003-03-18 22:32:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -343,11 +343,11 @@ public class DataAccessLayerGenerator
 
             // the rest of the code assumes we're a child table with a parent foreign key available
             TableAccessorGenerator parentTag = (TableAccessorGenerator) tableAccessorGenerators.get(parentNode);
-            String fKeyVarName = TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumn().getName(), false) + "ForeignKey";
+            String fKeyVarName = TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), false) + "ForeignKey";
 
             addImport(accessorClass, parentTag.accessorNameSpace + "." + parentTag.classNameNoPackage);
 
-            ClassMethod method = accessorClass.newMethod(vm.newType(recordInnerClassName), "createChildLinkedBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumn().getName(), true));
+            ClassMethod method = accessorClass.newMethod(vm.newType(recordInnerClassName), "createChildLinkedBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true));
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.addParameter(vm.newType(parentTag.recordInnerClassName), "parentRecord");
@@ -356,7 +356,7 @@ public class DataAccessLayerGenerator
             method = parentTag.recordInnerClass.newMethod(vm.newType(recordInnerClassName), "create"+ classNameNoPackage +"Record");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumn().getName(), true) +"(this)"));
+            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true) +"(this)"));
 
             ClassField field = parentTag.recordInnerClass.newField(vm.newType(recordsInnerClassName), fieldName + "Records");
             field.setAccess(Access.PRIVATE);
@@ -366,7 +366,7 @@ public class DataAccessLayerGenerator
             else
                 parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get"+ classNameNoPackage +"Records(cc)"));
 
-            String getParentRecsByFKeyMethodName = "getParentRecordsBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumn().getName(), true);
+            String getParentRecsByFKeyMethodName = "getParentRecordsBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
             method = accessorClass.newMethod(vm.newType(recordsInnerClassName), getParentRecsByFKeyMethodName);
             method.setComment(Comment.D, "Parent reference: " + parentFKey);
             method.setAccess(Access.PUBLIC);
@@ -377,7 +377,7 @@ public class DataAccessLayerGenerator
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             if(node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
-            method.newStmt((vm.newFree("Records result = new Records(parentRecord, "+ fKeyVarName + ".getSourceRowsByReferencedValue(cc, parentRecord.getRow()))")));
+            method.newStmt((vm.newFree("Records result = new Records(parentRecord, "+ fKeyVarName + ".getChildRowsByParentRow(cc, parentRecord.getRow()))")));
             if(node.hasChildren())
             {
                 if(node.hasGrandchildren())
