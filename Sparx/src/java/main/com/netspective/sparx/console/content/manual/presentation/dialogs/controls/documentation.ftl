@@ -1,3 +1,3 @@
 <#include "*/library.ftl">
 
-<@templateProducerInstances templateProducer=vc.project.fieldTypes consumerTag="field" detailUrl="controls/detail?type-name="/>
+<@templateProducerInstances templateProducer=vc.project.fieldTypes consumerTag="field" detailUrl="?type-name="/>
