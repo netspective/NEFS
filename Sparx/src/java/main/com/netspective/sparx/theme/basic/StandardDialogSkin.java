@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.14 2003-08-01 21:27:58 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.15 2003-08-05 04:21:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -913,7 +913,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_KEYPRESS_FILTERS))
             writer.write("<script>ENABLE_KEYPRESS_FILTERS = flase;</script>");
         if(dflags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
-            writer.write("<script>HIDE_HINTS_UNITL_FOCUS = true;</script>");
+            writer.write("<script>HIDE_HINTS_UNTIL_FOCUS = true;</script>");
 
         String dialogName = dialog.getHtmlFormName();
         String encType = dialog.getDialogFlags().flagIsSet(DialogFlags.ENCTYPE_MULTIPART_FORMDATA) ? "enctype=\"multipart/form-data\"" : "";
