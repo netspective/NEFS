@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: panel.js,v 1.4 2003-12-12 17:20:38 shahid.shah Exp $
+ * $Id: panel.js,v 1.5 2004-06-01 04:14:11 shahid.shah Exp $
  */
 
 // **************************************************************************
@@ -681,3 +681,12 @@ function ViewXmlSource(panelId)
     setDisplay(viewSourceContentElemId, DISPLAYTYPE_TOGGLEVISIBLILITY, true);
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+// -- Online help
+// -------------------------------------------------------------------------------------------------------------------
+
+function showHelp(url, windowName, windowFeatures)
+{
+    var helpWindow = open(url, windowName, windowFeatures);
+  	helpWindow.focus();
+}

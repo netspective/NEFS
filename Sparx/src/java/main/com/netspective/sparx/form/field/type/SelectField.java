@@ -51,10 +51,18 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.20 2004-03-22 07:49:33 aye.thu Exp $
+ * $Id: SelectField.java,v 1.21 2004-06-01 04:14:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.ValueSource;
@@ -67,12 +75,6 @@ import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.navigate.NavigationPage;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.Writer;
 
 public class SelectField extends TextField
 {
@@ -80,9 +82,10 @@ public class SelectField extends TextField
     protected static final int PRESENTATIONITEMFLAG_IS_SELECTED = 1;
 
     public static final Flags.FlagDefn[] SELECT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 4];
+
     static
     {
-        for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
+        for (int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
             SELECT_FIELD_FLAG_DEFNS[i] = TextField.TEXT_FIELD_FLAG_DEFNS[i];
         SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SORT_CHOICES", Flags.SORT_CHOICES);
         SELECT_FIELD_FLAG_DEFNS[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "PREPEND_BLANK", Flags.PREPEND_BLANK);
@@ -124,7 +127,9 @@ public class SelectField extends TextField
         public static final int POPUP = 6;
         public static final int TEXT = 7;
 
-        public static final String[] VALUES = new String[] { "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text" };
+        public static final String[] VALUES = new String[]{
+            "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text"
+        };
 
         public Style()
         {
@@ -144,8 +149,8 @@ public class SelectField extends TextField
         {
             int style = getValueIndex();
             return style == MULTICHECK ||
-                   style == MULTILIST ||
-                   style == MULTIDUAL;
+                    style == MULTILIST ||
+                    style == MULTIDUAL;
         }
     }
 
@@ -159,13 +164,15 @@ public class SelectField extends TextField
             {
                 super();
             }
+
             /**
              * Checks to see if there are values in the field
+             *
              * @return
              */
             public boolean hasValue()
             {
-                if(isMulti())
+                if (isMulti())
                     return size() > 0;
                 else
                 {
@@ -176,6 +183,7 @@ public class SelectField extends TextField
 
             /**
              * Gets all the choices available in the field.
+             *
              * @return
              */
             public PresentationValue.Items getChoices()
@@ -186,25 +194,25 @@ public class SelectField extends TextField
             /**
              * Calculates the selected items in the field.
              *
-             * @param choices   Available choices in the field
+             * @param choices Available choices in the field
              */
             public void calcSelections(PresentationValue.Items choices)
             {
                 this.choices = choices;
 
                 // make everthing "unselected" by default
-                for(int i = 0; i < choices.size(); i++)
+                for (int i = 0; i < choices.size(); i++)
                     choices.getItem(i).setFlags(0);
 
-                if(getField().isMulti())
+                if (getField().isMulti())
                 {
                     String[] values = getTextValues();
-                    if(values != null)
+                    if (values != null)
                     {
-                        for(int v = 0; v < values.length; v++)
+                        for (int v = 0; v < values.length; v++)
                         {
                             PresentationValue.Items.Item item = choices.getItemWithValue(values[v]);
-                            if(item != null)
+                            if (item != null)
                                 item.setFlags(PRESENTATIONITEMFLAG_IS_SELECTED);
                         }
                     }
@@ -212,10 +220,10 @@ public class SelectField extends TextField
                 else
                 {
                     String value = getTextValue();
-                    if(value != null)
+                    if (value != null)
                     {
                         PresentationValue.Items.Item item = choices.getItemWithValue(value);
-                        if(item != null)
+                        if (item != null)
                         {
                             item.setFlags(PRESENTATIONITEMFLAG_IS_SELECTED);
                         }
@@ -250,7 +258,7 @@ public class SelectField extends TextField
             if (popupPage != null)
             {
                 String actionString = "list,instance|session:" + getChoicesSessionAttributeName() + "|report";
-                setAction(new StaticValueSource(popupPage.getUrl(dc)+"?cmd=" + actionString));
+                setAction(new StaticValueSource(popupPage.getUrl(dc) + "?cmd=" + actionString));
             }
             else
             {
@@ -269,6 +277,7 @@ public class SelectField extends TextField
 
         /**
          * Gets the name of the html field that will be filled when an item is selected in the popup
+         *
          * @return html field name
          */
         public String getFillFieldName()
@@ -278,11 +287,12 @@ public class SelectField extends TextField
 
         /**
          * Gets the name of the session attribute that contains the choices for the select field
+         *
          * @return session attribute name
          */
         public String getChoicesSessionAttributeName()
         {
-             return "LVSPOPUP_"+ getQualifiedName();
+            return "LVSPOPUP_" + getQualifiedName();
         }
     }
 
@@ -356,11 +366,11 @@ public class SelectField extends TextField
     {
         this.style = style;
 
-        switch(style.getValueIndex())
+        switch (style.getValueIndex())
         {
             case Style.POPUP:
                 Flags flags = (Flags) getFlags();
-                if(! flags.flagIsSet(Flags.CREATE_ADJACENT_AREA | Flags.CREATE_ADJACENT_AREA_HIDDEN))
+                if (!flags.flagIsSet(Flags.CREATE_ADJACENT_AREA | Flags.CREATE_ADJACENT_AREA_HIDDEN))
                     flags.setFlag(Flags.CREATE_ADJACENT_AREA);
                 addPopup(new SelectFieldPopup());
                 break;
@@ -434,19 +444,19 @@ public class SelectField extends TextField
         SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
         SelectFieldState.SelectFieldValue sfValue = (SelectFieldState.SelectFieldValue) state.getValue();
 
-        if(isMulti())
+        if (isMulti())
         {
             // multi select list
             String[] values = sfValue.getTextValues();
-            if(values == null || values.length == 0)
+            if (values == null || values.length == 0)
                 values = dc.getRequest().getParameterValues(getHtmlFormControlId());
 
             // initial display of the dialog
-            if(dc.getDialogState().getRunSequence() == 1)
+            if (dc.getDialogState().getRunSequence() == 1)
             {
                 // if no request parameter is passed in and the XML defined default value exists
                 ValueSource defaultValue = getDefault();
-                if((values != null && values.length == 0 && defaultValue != ValueSource.NULL_VALUE_SOURCE) ||
+                if ((values != null && values.length == 0 && defaultValue != ValueSource.NULL_VALUE_SOURCE) ||
                         (values == null && defaultValue != ValueSource.NULL_VALUE_SOURCE))
                     sfValue.setValue(defaultValue.getValue(dc).getListValue());
             }
@@ -456,11 +466,11 @@ public class SelectField extends TextField
         else
         {
             super.populateValue(dc, formatType);
-            if(style.getValueIndex() == Style.POPUP && choices != null)
+            if (style.getValueIndex() == Style.POPUP && choices != null)
             {
                 ((SelectFieldPopup) getPopup()).prepareForPopup(dc);
                 PresentationValue.Items.Item selectedItem = choices.getPresentationItem(dc, sfValue.getTextValue());
-                if(selectedItem != null)
+                if (selectedItem != null)
                     state.setAdjacentAreaValue(selectedItem.getValue());
             }
         }
@@ -480,10 +490,10 @@ public class SelectField extends TextField
         StringBuffer selectOptions = new StringBuffer();
         StringBuffer selectOptionsSelected = new StringBuffer();
 
-        for(int i = 0; i < choices.size(); i++)
+        for (int i = 0; i < choices.size(); i++)
         {
             PresentationValue.Items.Item item = choices.getItem(i);
-            if((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
+            if ((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
                 selectOptionsSelected.append("<option value=\"" + item.getValue() + "\">" + item.getCaption() + "</option>\n");
             else
                 selectOptions.append("<option value=\"" + item.getValue() + "\">" + item.getCaption() + "</option>\n");
@@ -525,14 +535,14 @@ public class SelectField extends TextField
         String id = getHtmlFormControlId();
         StringBuffer html = new StringBuffer();
 
-        if(showCaptions)
+        if (showCaptions)
         {
-            for(int i = 0; i < choices.size(); i++)
+            for (int i = 0; i < choices.size(); i++)
             {
                 PresentationValue.Items.Item item = choices.getItem(i);
-                if((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
+                if ((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
                 {
-                    if(html.length() > 0)
+                    if (html.length() > 0)
                         html.append("<br>");
                     html.append("<input type='hidden' name='" + id + "' value=\"" + item.getValue() + "\"><span id='" + getQualifiedName() + "'>" + item.getCaption() + "</span>");
                 }
@@ -540,10 +550,10 @@ public class SelectField extends TextField
         }
         else
         {
-            for(int i = 0; i < choices.size(); i++)
+            for (int i = 0; i < choices.size(); i++)
             {
                 PresentationValue.Items.Item item = choices.getItem(i);
-                if((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
+                if ((item.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0)
                     html.append("<input type='hidden' name='" + id + "' value=\"" + item.getValue() + "\">");
             }
         }
@@ -555,7 +565,7 @@ public class SelectField extends TextField
     {
         // we do this first because popups don't want to pull in all the data at once like other select styles do
         final int styleValueIndex = style.getValueIndex();
-        if(styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT)
+        if (styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT)
         {
             renderPopupControlHtml(writer, dc);
             return;
@@ -564,7 +574,7 @@ public class SelectField extends TextField
         SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
 
         PresentationValue pValue;
-        if(choices != null)
+        if (choices != null)
         {
             try
             {
@@ -588,13 +598,13 @@ public class SelectField extends TextField
         SelectFieldState.SelectFieldValue sfValue = (SelectFieldState.SelectFieldValue) state.getValue();
         sfValue.calcSelections(choices);
 
-        if(isInputHidden(dc))
+        if (isInputHidden(dc))
         {
             writer.write(getHiddenControlHtml(dc, choices, false));
             return;
         }
 
-        if(isReadOnly(dc))
+        if (isReadOnly(dc))
         {
             writer.write(getHiddenControlHtml(dc, choices, true));
             return;
@@ -607,16 +617,17 @@ public class SelectField extends TextField
         StringBuffer options = new StringBuffer();
         int itemIndex = 0;
 
-        switch(styleValueIndex)
+        switch (styleValueIndex)
         {
             case Style.RADIO:
-                for(int i = 0; i < choices.size(); i++)
+                for (int i = 0; i < choices.size(); i++)
                 {
                     PresentationValue.Items.Item choice = choices.getItem(i);
                     boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
-                    if(options.length() > 0)
+                    if (options.length() > 0)
                         options.append(controlSeparator);
-                    options.append("<nobr><input type='radio' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected ? "checked " : "") + defaultControlAttrs + "> " +
+                    options.append("<nobr><input type='radio' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected
+                            ? "checked " : "") + defaultControlAttrs + "> " +
                             "<label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
                 }
                 writer.write(options.toString());
@@ -625,7 +636,7 @@ public class SelectField extends TextField
             case Style.MULTICHECK:
                 options.append("<table class=\"dialog-field-select-options\">\n");
                 int itemCount = 0;
-                for(int i = 0; i < choices.size(); i++)
+                for (int i = 0; i < choices.size(); i++)
                 {
                     if (itemCount == 0)
                         options.append("<tr>\n");
@@ -634,7 +645,8 @@ public class SelectField extends TextField
                     //if(options.length() > 0)
                     //    options.append(controlSeparator);
                     options.append("<td>\n");
-                    options.append("<nobr><input type='checkbox' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
+                    options.append("<nobr><input type='checkbox' name='" + id + "' id='" + id + itemIndex + "' value=\"" + choice.getValue() + "\" " + (selected
+                            ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + itemIndex + "'>" + choice.getCaption() + "</label></nobr>");
                     options.append("</td>\n");
                     itemCount++;
                     if (itemCount == maxItemPerRow)
@@ -654,15 +666,15 @@ public class SelectField extends TextField
             case Style.COMBO:
             case Style.LIST:
             case Style.MULTILIST:
-                if(readOnly)
+                if (readOnly)
                 {
-                    for(int i = 0; i < choices.size(); i++)
+                    for (int i = 0; i < choices.size(); i++)
                     {
                         PresentationValue.Items.Item choice = choices.getItem(i);
                         boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
-                        if(selected)
+                        if (selected)
                         {
-                            if(options.length() > 0)
+                            if (options.length() > 0)
                                 options.append(", ");
                             options.append("<input type='hidden' name='" + id + "' value=\"" + choice.getValue() + "\">");
                             options.append(choice.getCaption());
@@ -676,43 +688,44 @@ public class SelectField extends TextField
                     boolean prependBlank = false;
                     boolean appendBlank = false;
 
-                    if(styleValueIndex == Style.COMBO || styleValueIndex == Style.LIST)
+                    if (styleValueIndex == Style.COMBO || styleValueIndex == Style.LIST)
                     {
                         prependBlank = getFlags().flagIsSet(Flags.PREPEND_BLANK);
                         appendBlank = getFlags().flagIsSet(Flags.APPEND_BLANK);
                     }
 
-                    if(prependBlank)
+                    if (prependBlank)
                         options.append("    <option value=''></option>\n");
 
-                    for(int i = 0; i < choices.size(); i++)
+                    for (int i = 0; i < choices.size(); i++)
                     {
                         PresentationValue.Items.Item choice = choices.getItem(i);
                         boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
-                        options.append("    <option value=\"" + choice.getValue() + "\" " + (selected ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
+                        options.append("    <option value=\"" + choice.getValue() + "\" " + (selected
+                                ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
                     }
 
-                    if(appendBlank)
+                    if (appendBlank)
                         options.append("    <option value=''></option>\n");
 
-                    switch(styleValueIndex)
+                    switch (styleValueIndex)
                     {
                         case Style.COMBO:
                             writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
-                                    ">\n" + options + "</select>\n");
+                                    ">\n" + options + "</select>");
                             break;
 
                         case Style.LIST:
                             writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
-                                    ">\n" + options + "</select>\n");
+                                    ">\n" + options + "</select>");
                             break;
 
                         case Style.MULTILIST:
                             writer.write("<select id=\"" + id + "\" class=\"" + dc.getSkin().getControlAreaStyleClass() + "\" name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
                                     (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
-                                    ">\n" + options + "</select>\n");
+                                    ">\n" + options + "</select>");
                             break;
                     }
 
@@ -730,7 +743,9 @@ public class SelectField extends TextField
 
     /**
      * Produce select field specific Javascript definitions
+     *
      * @param dc
+     *
      * @return String
      */
     public String getCustomJavaScriptDefn(DialogContext dc)
@@ -748,7 +763,7 @@ public class SelectField extends TextField
             captionBuf.append("field.choicesCaption = new Array(");
             valueBuf.append("field.choicesValue = new Array(");
 
-            for(int i = 0; i < choices.size(); i++)
+            for (int i = 0; i < choices.size(); i++)
             {
                 PresentationValue.Items.Item choice = choices.getItem(i);
                 captionBuf.append((i != 0 ? ", \"" : "\"") + choice.getCaption() + "\"");

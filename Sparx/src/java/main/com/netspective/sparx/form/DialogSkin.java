@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogSkin.java,v 1.2 2003-05-16 02:53:57 shahid.shah Exp $
+ * $Id: DialogSkin.java,v 1.3 2004-06-01 04:14:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -59,11 +59,9 @@ package com.netspective.sparx.form;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.w3c.dom.Element;
-
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
-import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.theme.ThemeSkin;
 
 /**
@@ -120,22 +118,22 @@ public interface DialogSkin extends ThemeSkin
 
     /**
      * Gets the CSS style class for a dialog field control area
+     *
      * @return String
      */
     public String getControlAreaStyleClass();
 
     /**
      * Gets the CSS style class for a required dialog field control area
+     *
      * @return String
      */
     public String getControlAreaRequiredStyleClass();
 
     /**
      * Gets the CSS style class for a read only dialog field control area
+     *
      * @return String
      */
     public String getControlAreaReadonlyStyleClass();
-
-    public void importFromXml(Element elem);
-
 }

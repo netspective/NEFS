@@ -2,11 +2,11 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.82 2004-05-11 12:22:47 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.83 2004-06-01 04:14:12 shahid.shah Exp $
   *****************************************************************************************
  -->
 
- <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
@@ -20,7 +20,7 @@
     <value-source class="com.netspective.sparx.value.source.NetspectiveUrlValueSource"/>
     <value-source class="com.netspective.sparx.value.source.PageIdValueSource"/>
     <value-source class="com.netspective.sparx.value.source.SchemaRecordEditorLastAddedPrimaryKeyValueSource"/>
-    <value-source class="com.netspective.sparx.value.source.ActivePageUrlValueSource"/>     
+    <value-source class="com.netspective.sparx.value.source.ActivePageUrlValueSource"/>
 
     <command class="com.netspective.sparx.command.RedirectCommand"/>
     <command class="com.netspective.sparx.command.DialogCommand"/>
@@ -72,7 +72,7 @@
     <dialog-field-type name="time" class="com.netspective.sparx.form.field.type.DateTimeField">
         <data-type>time-only</data-type>
     </dialog-field-type>
-    <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField" >
+    <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField">
         <data-type>date-and-time</data-type>
     </dialog-field-type>
     <dialog-field-type name="duration" class="com.netspective.sparx.form.field.type.DurationField"/>
@@ -92,8 +92,8 @@
     <dialog-field-type name="guid32" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
             <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
-                  reg-expr="^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$"
-                  invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
+                reg-expr="^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$"
+                invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
         </validation>
     </dialog-field-type>
 
@@ -149,6 +149,7 @@
 
     <page-body-handler name="html-sub-site" class="com.netspective.sparx.navigate.handler.NavigationPageHtmlSubsiteBodyHandler"/>
     <page-body-handler name="transform" class="com.netspective.sparx.navigate.handler.NavigationPageTransformBodyHandler"/>
+    <page-body-handler name="help" class="com.netspective.sparx.navigate.handler.NavigationPageHelpBodyHandler"/>
 
     <template-processor-type name="freemarker" class="com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor"/>
     <template-processor-type name="wiki" class="com.netspective.sparx.template.RadeoxTemplateProcessor"/>
