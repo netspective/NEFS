@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.22 2004-02-04 23:26:49 min-gu.lee Exp $
+ * $Id: ProductRelease.java,v 1.23 2004-02-10 16:31:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -55,7 +55,7 @@ public class ProductRelease implements Product
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
     public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 17;
+    public static final int PRODUCT_VERSION_MINOR = 18;
 
     public ProductRelease()
     {
