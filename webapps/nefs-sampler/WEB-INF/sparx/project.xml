@@ -371,25 +371,49 @@
             <page name="test-acl1" caption="Test 1" heading="Test has-permissions">
                 <summary>
                      <![CDATA[
-                    This page is hidden when the user has the following permission: <code>/acl/app/forms/execution </code>
+                    This page is hidden in the navigation menu when the user has the following permission: <code>/acl/app/forms/execution </code>
                     ]]>
                 </summary>
+                <body>
+                <![CDATA[
+                <div class="textbox">
+                Hello! If you are able to view this page by using the navigation menu, then you DON'T have the <code>/acl/app/forms/execution </code>
+                permission included in your role <code> ${vc.authenticatedUser.userRoleNamesAsString}</code>.
+                </div>
+                ]]>
+                </body>
                 <conditional action="apply-flags" hidden="yes" has-permissions="/acl/app/forms/execution"/>
             </page>
             <page name="test-acl2" caption="Test 2" heading="Test lack-permissions">
                 <summary>
                     <![CDATA[
-                    This page is hidden when the user lacks the following permission: <code>/acl/app/forms/execution</code>
+                    This page is hidden in the navigation menu when the user lacks the following permission: <code>/acl/app/forms/execution</code>
                     ]]>
                 </summary>
+                <body>
+                <![CDATA[
+                <div class="textbox">
+                Hello! If you are able to view this page by using the navigation menu, then you DO have the <code>/acl/app/forms/execution </code>
+                permission included in your role.
+                </div>
+                ]]>
+                </body>
                 <conditional action="apply-flags" hidden="yes" lack-permissions="/acl/app/forms/execution"/>
             </page>
             <page name="test-acl3" caption="Test 3" heading="Test lack-permissions">
                 <summary>
                     <![CDATA[
-                    This page is hidden when the user lacks the following permission: <code>/acl/app/forms</code>
+                    This page is hidden in the navigation menu when the user lacks the following permission: <code>/acl/app/forms</code>
                     ]]>
                 </summary>
+                <body>
+                <![CDATA[
+                <div class="textbox">
+                Hello! If you are able to view this page by using the navigation menu, then you DO have the <code>/acl/app/forms </code>
+                permission included in your role.
+                </div>
+                ]]>
+                </body>
                 <conditional action="apply-flags" hidden="yes" lack-permissions="/acl/app/forms"/>
             </page>
         </page>
@@ -469,14 +493,14 @@
     **********************************************************************
     -->
     <login-manager name="app" default="yes">
-          <login-authenticator class="com.netspective.sparx.security.simulate.SimulatedLoginAuthenticator"/>
-
-          <login-dialog class="com.netspective.sparx.security.simulate.SimulatedLoginDialog">
+        <login-authenticator class="com.netspective.sparx.security.simulate.SimulatedLoginAuthenticator">
+            <authenticated-user-class>com.netspective.commons.security.BasicAuthenticatedUser</authenticated-user-class>
+        </login-authenticator>
+        <login-dialog class="com.netspective.sparx.security.simulate.SimulatedLoginDialog">
               <user-id>MyUserName</user-id>
               <password>MyPassword</password>
               <user-roles>/acl/role/super-user</user-roles>
               <!-- other settings can be provided too, see source code -->
-          </login-dialog>
-      </login-manager>
-
+        </login-dialog>
+    </login-manager>
 </project>
