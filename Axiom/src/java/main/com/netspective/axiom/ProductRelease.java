@@ -32,6 +32,15 @@
  */
 package com.netspective.axiom;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import com.netspective.commons.Product;
 
 public class ProductRelease implements Product
@@ -105,5 +114,29 @@ public class ProductRelease implements Product
     public final String getVersionAndBuildShort()
     {
         return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+    }
+
+    public Date getBuildDate()
+    {
+        DateFormat format = DateFormat.getDateTimeInstance();
+        try
+        {
+            return format.parse(com.netspective.commons.BuildLog.BUILD_DATE);
+        }
+        catch(ParseException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return new Date();
+        }
+    }
+
+    public String getBuildDateText()
+    {
+        return BuildLog.BUILD_DATE;
+    }
+
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
+    {
+        com.netspective.commons.ProductRelease.handleCommandLineOutput(PRODUCT_RELEASE, args);
     }
 }
