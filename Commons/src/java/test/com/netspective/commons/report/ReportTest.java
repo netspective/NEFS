@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.2 2003-04-01 22:36:32 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.3 2003-04-03 18:39:25 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report;
@@ -47,18 +47,19 @@ package com.netspective.commons.report;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.xdm.exception.DataModelException;
 import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReportTest extends TestCase
 {
 	public static String RESOURCE_NAME_ONE = "ReportTest-One.xml";
+	protected ReportsComponent component = null;
+	protected ReportsManager reportsManager = null;
+	protected Reports reports = null;
 
     public class TestReportDataSource extends AbstractTabularReportDataSource
     {
@@ -71,7 +72,7 @@ public class ReportTest extends TestCase
         {
             for(int i = 0; i < 25; i++)
             {
-                rows.add(new Object[] { "row " + i, new Integer(100 + i), new Double(200 + i) });
+                rows.add(new Object[] { "row " + i, new Integer(100 + i), new Double(200 + i + (200.0 + i)/1000.0) });
             }
             lastRowNum = rows.size() - 1;
         }
@@ -92,31 +93,180 @@ public class ReportTest extends TestCase
         {
             return activeRow[columnIndex];
         }
+
+	    public int getActiveRowNumber () {
+		    return activeRowNum;
+	    }
     }
 
-    public void testComponent() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
-    {
-	    ReportsComponent component =
-	            (ReportsComponent) XdmComponentFactory.get(
-	                    ReportsComponent.class,
-	                    new Resource(ReportTest.class, RESOURCE_NAME_ONE),
-	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+	public void testDataSource()
+	{
+		TabularReportDataSource trds = new TestReportDataSource();
 
-        if(component.getErrors().size() > 0)
-                System.out.println(component.getErrors());
-        assertEquals(0, component.getErrors().size());
+		assertNotNull(trds);
+		assertFalse(trds.isHierarchical());
 
-        ReportsManager reportsManager = component.getItems();
-        Reports reports = reportsManager.getReports();
-        TabularReport report = (TabularReport) reports.get(0);
+		for (int i = 0; i < 25; i ++)
+		{
+			assertTrue(trds.next());
+			assertEquals(i, trds.getActiveRowNumber());
 
-        TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
-        TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
-        vc.getState(3).setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+			// Verify stored data...
+			assertEquals("row " + i, trds.getActiveRowColumnData(null, 0, 0));
+			assertEquals(new Integer(100 + i), trds.getActiveRowColumnData(null, 1, 0));
+			assertEquals(new Double(200 + i + (200.0 + i)/1000.0), trds.getActiveRowColumnData(null, 2, 0));
+		}
+	}
 
-        StringWriter sw = new StringWriter();
-        vc.produceReport(sw, new TestReportDataSource());
+	protected void setUp () throws Exception {
+		super.setUp();
 
-        //System.out.println(sw);
-    }
+		component =	(ReportsComponent) XdmComponentFactory.get(
+			ReportsComponent.class,
+			new Resource(ReportTest.class, RESOURCE_NAME_ONE),
+			XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+		assertNotNull(component);
+
+		if(component.getErrors().size() > 0)
+			System.out.println(component.getErrors());
+		assertEquals(0, component.getErrors().size());
+
+		reportsManager = component.getItems();
+		assertNotNull(reportsManager);
+		reports = reportsManager.getReports();
+		assertNotNull(reports);
+	}
+
+	public void testReports()
+	{
+		assertEquals(2, reports.size());
+
+		Report reportOne = reports.get(0);
+		Report reportTwo = reports.get("test-001");
+
+		assertEquals(reportOne, reportTwo);
+	}
+
+	public void testTabularReport()
+	{
+		TabularReport report = (TabularReport) reports.get(0);
+        assertEquals("test-001", report.getName());
+
+		// This is the Add/Edit/Delete area under the report banner... non-existent in this one
+        TabularReportColumns trColumns = report.getColumns();
+		assertNotNull(trColumns);
+		assertEquals(4, trColumns.size());
+
+		TabularReportColumn columnFourA = report.getColumn(3);
+		TabularReportColumn columnFourB = (TabularReportColumn) trColumns.get(3);
+		assertEquals(columnFourA, columnFourB);
+		assertEquals("Column D", columnFourA.getHeading().getTextValue(null));
+	}
+
+	public void testReportSkins()
+	{
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TextReportSkin trSkin = (TextReportSkin) skin;
+
+		assertEquals(".txt", skin.getFileExtension());
+		assertEquals("", skin.getBlankValue());
+        assertEquals(String.class.getName(), skin.constructClassRef(String.class));
+
+		assertEquals(".txt", trSkin.getFileExtension());
+		assertEquals("\t", trSkin.getDelimiter());
+		assertNull(trSkin.getTextQualifier());
+		assertTrue(trSkin.firstRowContainsFieldNames());
+		assertEquals("", trSkin.getBlankValue());
+        assertEquals(String.class.getName(), trSkin.constructClassRef(String.class));
+	}
+
+	public void testReportValueContext() throws IOException
+	{
+		TabularReport report = (TabularReport) reports.get(0);
+
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
+		BasicTabularReportValueContext bvc = (BasicTabularReportValueContext) vc;
+
+        assertEquals(0, vc.getListeners().size());
+		assertEquals(report, vc.getReport());
+		assertEquals(skin, vc.getSkin());
+
+		vc.getState(3).setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+
+		StringWriter sw = new StringWriter();
+		vc.produceReport(sw, new TestReportDataSource());
+
+//		System.out.println(sw);
+	}
+
+	public void testTabularReportColumnState() throws IOException
+	{
+		TabularReport report = (TabularReport) reports.get(0);
+
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
+
+		TabularReportColumnState[] trcState = vc.getStates();
+		String[] colHeadings = new String[] { "Column A", "Column B", "Column C", "Column D" };
+		for (int i = 0; i < trcState.length; i ++)
+		{
+			assertEquals(trcState[i], vc.getState(i));
+			assertTrue(trcState[i].isVisible());
+			assertEquals(colHeadings[i], trcState[i].getHeading());
+
+			trcState[i].setHeading("Column #" + i);
+			assertEquals("Column #" + i, trcState[i].getHeading());
+			trcState[i].setHeading(colHeadings[i]);
+
+			String origOutputFormat = trcState[i].getOutputFormat();
+			trcState[i].setOutputFormat("${" + i + "}");
+			assertEquals("${" + i + "}", trcState[i].getOutputFormat());
+			trcState[i].setOutputFormat(origOutputFormat);
+
+			assertNull(trcState[i].getUrl());
+			trcState[i].setUrl("http://developer.netspective.com");
+			assertEquals("http://developer.netspective.com", trcState[i].getUrl());
+			trcState[i].setUrl(null);
+
+            assertEquals("", trcState[i].getUrlAnchorAttrs());
+			trcState[i].setUrlAnchorAttrs("target=\"_blank\"");
+			assertEquals("target=\"_blank\"", trcState[i].getUrlAnchorAttrs());
+			trcState[i].setUrlAnchorAttrs(null);
+
+			if (1 == i || 2 == i)
+				assertEquals("text-align: right;", trcState[i].getCssStyleAttrValue());
+			else
+				assertEquals("", trcState[i].getCssStyleAttrValue());
+
+			if (i < 3)
+			{
+				trcState[i].setOutputFormat(null);
+
+				assertTrue(trcState[i].haveCalc());
+				assertNotNull(trcState[i].getCalc());
+
+				assertEquals(0, trcState[i].getFlags());
+				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+				trcState[i].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+				assertTrue(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+				trcState[i].clearFlag(TabularReportColumn.COLFLAG_HIDDEN);
+				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+				trcState[i].updateFlag(TabularReportColumn.COLFLAG_HIDDEN, true);
+				assertTrue(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+				trcState[i].updateFlag(TabularReportColumn.COLFLAG_HIDDEN, false);
+				assertFalse(trcState[i].flagIsSet(TabularReportColumn.COLFLAG_HIDDEN));
+
+				assertNull(trcState[i].getOutputFormat());
+			}
+			else
+			{
+				assertFalse(trcState[i].haveCalc());
+				assertEquals("${0} ${1} ${2}", trcState[i].getOutputFormat());
+			}
+		}
+	}
+
 }
+
