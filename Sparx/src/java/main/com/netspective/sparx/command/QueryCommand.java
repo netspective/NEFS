@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.10 2003-09-10 04:02:18 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.11 2003-10-20 22:20:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -289,9 +289,9 @@ public class QueryCommand extends AbstractHttpServletCommand
         }
 
         if(queryDialogName == null || queryDialogName.equals("default"))
-            return ((com.netspective.sparx.sql.Query) query).getPresentation().getDefaultDialog();
+            return query.getPresentation().getDefaultDialog();
         else
-            return ((com.netspective.sparx.sql.Query) query).getPresentation().getDialog(queryDialogName);
+            return query.getPresentation().getDialog(queryDialogName);
     }
 
     /**
@@ -307,8 +307,8 @@ public class QueryCommand extends AbstractHttpServletCommand
         Query query = (com.netspective.sparx.sql.Query)sqlManager.getQuery(queryName);
         if(query == null)
         {
-            writer.write("Query " + queryName + " not found.");
-            return null;
+            log.error("Query " + queryName + " not found in "+ this +".");
+            throw new RuntimeException("Query " + queryName + " not found in "+ this +".");
         }
         QueryReportPanel result = null;
         if (reportId != null)
@@ -388,7 +388,7 @@ public class QueryCommand extends AbstractHttpServletCommand
             if(queryDialog != null)
             {
                 if (autoExecute)
-                    ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                    nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
 
                 QueryReportPanel panel = createQueryReportPanel(writer, sqlManager, theme);
                 // create the context for which the dialog can run in
@@ -406,7 +406,7 @@ public class QueryCommand extends AbstractHttpServletCommand
             boolean isSelectable = flags != null? flags.flagIsSet(HtmlTabularReport.Flags.SELECTABLE) : false;
             if (isSelectable)
             {
-                ((HttpServletRequest)nc.getRequest()).setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+                nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
                 com.netspective.sparx.form.sql.QueryDialog queryDialog = createQueryDialog(writer, sqlManager, theme);
                 QueryDialogContext qdc = (QueryDialogContext)queryDialog.createContext(nc, theme.getDefaultDialogSkin());
                 qdc.setReportPanel(panel);
