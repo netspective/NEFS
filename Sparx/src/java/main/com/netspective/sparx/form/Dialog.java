@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.34 2003-10-11 14:39:52 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.35 2003-10-16 12:46:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -94,8 +94,10 @@ import com.netspective.sparx.form.listener.DialogListener;
 import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -136,6 +138,24 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         public String getNameSpaceId()
         {
             return Dialog.class.getName();
+        }
+    }
+
+    public static class ConnectionShareType extends XdmEnumeratedAttribute
+    {
+        public ConnectionShareType()
+        {
+            super(BasicDbHttpServletValueContext.SHARED_CONN_TYPE_NONE);
+        }
+
+        public ConnectionShareType(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return BasicDbHttpServletValueContext.SHARED_CONN_TYPES;
         }
     }
 
@@ -203,6 +223,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     private Table bindTable;
     private Map bindColumnFieldsMap = new HashMap();  // key is a Column instance, value is a DialogField
     private Set bindColumnTablesSet = new HashSet(); // a list of all the tables the fields map to (in case of child tables, etc)
+    private ConnectionShareType sharedType = new ConnectionShareType();
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -239,6 +260,24 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     {
         this();
         setNameSpace(pkg);
+    }
+
+    /**
+     * Gets the connection sharing mode
+     * @return
+     */
+    public ConnectionShareType getConnectionShareType()
+    {
+        return sharedType;
+    }
+
+    /**
+     * Sets the connection sharing mode
+     * @param share
+     */
+    public void setConnectionShareType(ConnectionShareType share)
+    {
+        sharedType = share;
     }
 
     public InputSourceLocator getInputSourceLocator()
