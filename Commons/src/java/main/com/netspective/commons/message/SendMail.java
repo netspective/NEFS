@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SendMail.java,v 1.1 2003-08-31 22:46:24 shahid.shah Exp $
+ * $Id: SendMail.java,v 1.2 2003-11-14 19:43:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.message;
@@ -49,6 +49,7 @@ import java.io.StringWriter;
 import java.util.Properties;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.mail.Transport;
 import javax.mail.Message;
@@ -245,7 +246,7 @@ public class SendMail
             return new InternetAddress[] { new InternetAddress(value.getTextValue()) };
     }
 
-    public void send(ValueContext vc) throws IOException, AddressException, MessagingException, SendMailNoFromAddressException, SendMailNoRecipientsException
+    public void send(ValueContext vc, Map bodyTemplateVars) throws IOException, AddressException, MessagingException, SendMailNoFromAddressException, SendMailNoRecipientsException
     {
         if(from == null)
             throw new SendMailNoFromAddressException("No FROM address provided.");
@@ -290,7 +291,7 @@ public class SendMail
         if(body != null)
         {
             StringWriter messageText = new StringWriter();
-            body.process(messageText, vc, null);
+            body.process(messageText, vc, bodyTemplateVars);
             message.setText(messageText.toString());
         }
 
