@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportSelectedItemsField.java,v 1.1 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: ReportSelectedItemsField.java,v 1.2 2003-08-06 04:50:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -83,35 +83,17 @@ public class ReportSelectedItemsField extends SelectField
 
         StringBuffer options = new StringBuffer();
 
-        if (readOnly)
+        // this field is always hidden no matter what the flags are set to
+        for(int i = 0; i < choices.size(); i++)
         {
-            for(int i = 0; i < choices.size(); i++)
-            {
-                PresentationValue.Items.Item choice = choices.getItem(i);
-                if((choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0);
-                {
-                    if (options.length() > 0)
-                        options.append(", ");
-                    options.append("<input type='hidden' name='" + id + "' value=\"" + choice.getValue() + "\">");
-                    options.append(choice.getCaption());
-                }
-            }
-            writer.write(options.toString());
-            return;
+            PresentationValue.Items.Item choice = choices.getItem(i);
+            boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
+            options.append("    <option value=\"" + choice.getValue() + "\" " + (selected ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
         }
-        else
-        {
-            for(int i = 0; i < choices.size(); i++)
-            {
-                PresentationValue.Items.Item choice = choices.getItem(i);
-                boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
-                options.append("    <option value=\"" + choice.getValue() + "\" " + (selected ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
-            }
-            writer.write("<select name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
-                    (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
-                    ">\n" + options + "</select>\n");
+        writer.write("<select name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
+                (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
+                ">\n" + options + "</select>\n");
 
-        }
     }
 
 }
