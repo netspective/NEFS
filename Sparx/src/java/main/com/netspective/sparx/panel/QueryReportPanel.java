@@ -39,10 +39,14 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.13 2004-03-29 14:10:56 zahara.khan Exp $
+ * $Id: QueryReportPanel.java,v 1.14 2004-06-07 00:11:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
@@ -54,9 +58,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Class handling the panel display for presentation of query result.
@@ -159,7 +160,9 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 
     /**
      * Executes the query and assigns the result set to a new report data source object
+     *
      * @param nc
+     *
      * @return
      */
     public TabularReportDataSource createDataSource(NavigationContext nc)
@@ -167,14 +170,19 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         try
         {
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute(getCachedResultSetAttributeId());
-            if(resultSet == null)
+            if (resultSet == null)
             {
                 if (isScrollable())
                     resultSet = query.execute(nc, null, true);
                 else
                     resultSet = query.execute(nc, null, false);
             }
-            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(noDataMsg != null? noDataMsg : NO_DATA_MSG);
+            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(noDataMsg != null ? noDataMsg : NO_DATA_MSG);
+            if (getSelectedRowColumnSpecifier() != -1)
+            {
+                qrsds.setSelectedRowColumnSpecifier(getSelectedRowColumnSpecifier());
+                qrsds.setSelectedRowColumnValue(getSelectedRowColumnValue().getValue(nc).getValue());
+            }
             qrsds.setQueryResultSet(resultSet);
             return qrsds;
         }
@@ -188,7 +196,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         HtmlTabularReport activeReport = getReport();
-        if(activeReport == null)
+        if (activeReport == null)
         {
             // if the report is null, we need to create it by running the query and getting the meta data
             activeReport = new BasicHtmlTabularReport();

@@ -39,10 +39,18 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.7 2004-06-02 23:29:29 aye.thu Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.8 2004-06-07 00:11:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel.editor;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.util.StringTokenizer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.value.source.RedirectValueSource;
@@ -68,36 +76,28 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
-import java.util.StringTokenizer;
 
 /**
  * Content item for report type panel editors
- *
  */
 public class ReportPanelEditorContentElement extends PanelEditorContentElement
 {
     private static final Log log = LogFactory.getLog(ReportPanelEditorContentElement.class);
 
-    public static final String RECORD_EDIT_ACTION     = "Edit";
-    public static final String RECORD_ADD_ACTION      = "Add";
-    public static final String RECORD_DELETE_ACTION   = "Delete";
-    public static final String RECORD_MANAGE_ACTION   = "Manage";
+    public static final String RECORD_EDIT_ACTION = "Edit";
+    public static final String RECORD_ADD_ACTION = "Add";
+    public static final String RECORD_DELETE_ACTION = "Delete";
+    public static final String RECORD_MANAGE_ACTION = "Manage";
 
 
-    public static final String PANEL_CONTENT_MANAGE_ACTION   = "Manage";
-    public static final String PANEL_RECORD_DONE_ACTION     = "Done";
+    public static final String PANEL_CONTENT_MANAGE_ACTION = "Manage";
+    public static final String PANEL_RECORD_DONE_ACTION = "Done";
 
     /* default skin to use to display query report panel */
     public static final String DEFAULT_EDITOR_SKIN = "panel-editor";
 
     /**
-     *  default name assigned to the dialog defined in the panel editor
+     * default name assigned to the dialog defined in the panel editor
      */
     public static final String DEFAULT_DIALOG_NAME = "com.netspective.sparx.panel.editor.PanelEditorContentElement.defaultDialogName";
 
@@ -160,7 +160,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Sets the query defined for the display mode of the record manager
      *
-     * @param queryName     query name
+     * @param queryName query name
      */
     public void setQueryRef(String queryName)
     {
@@ -175,7 +175,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Creates a query object
      *
-     * @return          query
+     * @return query
      */
     public Query createQuery()
     {
@@ -196,7 +196,9 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
      * Creates a dialog object. Mainly used by XDM to construct a child element dialog.
      *
      * @param cls
+     *
      * @return
+     *
      * @throws NoSuchMethodException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -210,7 +212,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Adds a query object
      *
-     * @param query     query
+     * @param query query
      */
     public void addQuery(Query query)
     {
@@ -223,7 +225,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Gets the column index to use as the primary key when a record is to be edited
      *
-     * @return      report column index
+     * @return report column index
      */
     public int getPkColumnIndex()
     {
@@ -243,7 +245,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Gets the query defined for the default display mode of the panel editor
      *
-     * @return   query name (NULL if query definition is defined instead)
+     * @return query name (NULL if query definition is defined instead)
      */
     public Query getQuery()
     {
@@ -264,7 +266,6 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Creates all the panel editor actions for the  panel editor. This method SHOULD only be called once to populate the
      * panel editor.
-     *
      */
     public void initialize()
     {
@@ -337,7 +338,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Creates actions (EDIT and DELETE) for the report content
      *
-     * @param qrp       the query report panel
+     * @param qrp the query report panel
      */
     public void createPanelContentActions(QueryReportPanel qrp)
     {
@@ -368,10 +369,10 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Calculate and process the state of the all the panel actions based on current context
      *
-     * @param nc                current navigation context
-     * @param vc                current report panel context
-     * @param panelRecordCount  total number of records being displayed
-     * @param mode              panel mode
+     * @param nc               current navigation context
+     * @param vc               current report panel context
+     * @param panelRecordCount total number of records being displayed
+     * @param mode             panel mode
      */
     public void prepareQueryReportState(NavigationContext nc, HtmlPanelValueContext vc, int panelRecordCount, int mode)
     {
@@ -387,9 +388,10 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
     /**
      * Appends additional 'information' to the URL specific to this content element type
      *
-     * @param url           URL generated by the parent panel editor
-     * @param actionMode    the mode of the panel editor
-     * @return              the appended URL
+     * @param url        URL generated by the parent panel editor
+     * @param actionMode the mode of the panel editor
+     *
+     * @return the appended URL
      */
     public String appendElementInfoToActionUrl(String url, int actionMode)
     {
@@ -405,6 +407,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
      * @param writer
      * @param nc
      * @param state
+     *
      * @throws IOException
      */
     public void renderEditorContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
@@ -448,6 +451,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
      * @param writer
      * @param nc
      * @param state
+     *
      * @throws IOException
      */
     public void renderDisplayContent(Writer writer, NavigationContext nc, PanelEditorState state) throws IOException
@@ -472,8 +476,8 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         {
             if (getPkColumnIndex() != -1)
             {
-                dataRoot.setSelectedRowPkValue(ReportPanelEditorContentElement.getPkValueFromState(state));
-                dataRoot.setSelectedRowPkColumn(getPkColumnIndex());
+                dataRoot.setSelectedRowColumnValue(ReportPanelEditorContentElement.getPkValueFromState(state));
+                dataRoot.setSelectedRowColumnSpecifier(getPkColumnIndex());
             }
             context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME | PanelEditorContentElement.HIGHLIGHT_ACTIVE_ITEM);
         }
@@ -486,7 +490,7 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
             elementState.setEmptyContent(true);
         state.addElementState(elementState);
         // process the context to calculate the states of the panel actions
-        prepareQueryReportState(nc, context, totalRows, mode);                
+        prepareQueryReportState(nc, context, totalRows, mode);
         context.produceReport(writer, dataRoot);
     }
 }

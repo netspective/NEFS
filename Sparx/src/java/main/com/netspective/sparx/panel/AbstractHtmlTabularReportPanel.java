@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.27 2004-06-02 23:28:59 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.28 2004-06-07 00:11:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -80,6 +80,8 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     private int scrollRowsPerPage = 25; // the rows per page count when the report is pageable
     private String reportSkin;          // the skin to use to display the report
     private CustomRenderer customRenderer; // if a custom renderer should be used specify it here
+    private int selectedRowColumnSpecifier; // if greater than or equal to zero, specifies the index of the column that decides if the row is selected
+    private ValueSource selectedRowColumnValue = ValueSource.NULL_VALUE_SOURCE;  // if non-null, specifies the value of the selectedRowColumn index'th column that decides if the row is selected
 
     public AbstractHtmlTabularReportPanel()
     {
@@ -125,7 +127,25 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         this.reportSkin = reportSkin;
     }
 
+    public int getSelectedRowColumnSpecifier()
+    {
+        return selectedRowColumnSpecifier;
+    }
 
+    public void setSelectedRowColumnSpecifier(int selectedRowColumnSpecifier)
+    {
+        this.selectedRowColumnSpecifier = selectedRowColumnSpecifier;
+    }
+
+    public ValueSource getSelectedRowColumnValue()
+    {
+        return selectedRowColumnValue;
+    }
+
+    public void setSelectedRowColumnValue(ValueSource selectedRowColumnValue)
+    {
+        this.selectedRowColumnValue = selectedRowColumnValue;
+    }
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
@@ -139,12 +159,14 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, Theme theme)
     {
-        return createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null )? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
+        return createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null)
+                ? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
     }
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        HtmlTabularReportValueContext vc = createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null )? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
+        HtmlTabularReportValueContext vc = createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null)
+                ? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
         vc.setPanelRenderFlags(flags);
         TabularReportDataSource ds = createDataSource(nc);
         vc.produceReport(writer, ds);
@@ -153,22 +175,24 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 
     /**
      * Render the html tabular report panel
+     *
      * @param writer
      * @param dc
      * @param theme
      * @param flags
+     *
      * @throws IOException
      */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
-        if(isScrollable())
+        if (isScrollable())
         {
             // TODO: Need to add handling of selection of report rows
             HtmlTabularReportDataSourceScrollStates scrollStates = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStates.getScrollStateByDialogTransactionId(dc);
             HtmlTabularReportValueContext vc = null;
 
-            if(scrollState != null)
+            if (scrollState != null)
             {
                 // reuse the scroll state object
                 vc = createContext(dc.getNavigationContext(), theme.getDefaultReportSkin(), scrollState);
@@ -226,7 +250,8 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         {
             // not scrollable
             HtmlTabularReportValueContext vc = null;
-            vc = createContext(dc.getNavigationContext(), (reportSkin == null || theme.getReportSkin(reportSkin) == null )? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
+            vc = createContext(dc.getNavigationContext(), (reportSkin == null || theme.getReportSkin(reportSkin) == null)
+                    ? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
             vc.setDialogContext(dc);
             vc.setPanelRenderFlags(flags);
             TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
@@ -299,19 +324,19 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 
     public static final HtmlTabularReport constructReportFromList(List list)
     {
-        if(list == null || list.size() == 0)
+        if (list == null || list.size() == 0)
             throw new RuntimeException("List has no contents.");
 
         List firstRow = (List) list.get(0);
 
         HtmlTabularReport result = new BasicHtmlTabularReport();
-        for(int i = 0; i < firstRow.size(); i++)
+        for (int i = 0; i < firstRow.size(); i++)
         {
             TabularReportColumn column = new GeneralColumn();
             Object value = firstRow.get(0);
-            if(value instanceof ValueSource)
+            if (value instanceof ValueSource)
                 column.setHeading((ValueSource) value);
-            else if(value != null)
+            else if (value != null)
                 column.setHeading(new StaticValueSource(value.toString()));
         }
 
@@ -354,7 +379,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 
         public boolean next()
         {
-            if(activeRowIndex < lastRowIndex)
+            if (activeRowIndex < lastRowIndex)
             {
                 activeRowIndex++;
                 return true;

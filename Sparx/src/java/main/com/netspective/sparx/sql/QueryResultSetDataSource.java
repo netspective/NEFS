@@ -39,22 +39,23 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.10 2004-05-10 22:49:34 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.11 2004-06-07 00:11:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.ResultSetMetaData;
 
 public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSource
 {
@@ -70,10 +71,8 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     protected ValueSource message;
     protected boolean calculatedTotalRows;
     protected int totalRows = TOTAL_ROWS_UNKNOWN;
-    /* primary key value of the selected row */
-    protected String selectedRowPkValue;
-    /* primary key column of the selected row */
-    protected int selectedRowPkColumn = -1;
+    protected int selectedRowColumnSpecifier = -1;
+    protected Object selectedRowColumnValue;
 
     public QueryResultSetDataSource(ValueSource noDataMessage)
     {
@@ -91,37 +90,37 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         this.cacheColumnData = cacheColumnData;
     }
 
-    public String getSelectedRowPkValue()
+    public Object getSelectedRowColumnValue()
     {
-        return selectedRowPkValue;
+        return selectedRowColumnValue;
     }
 
-    public void setSelectedRowPkValue(String selectedRowPkValue)
+    public void setSelectedRowColumnValue(Object selectedRowColumnValue)
     {
-        this.selectedRowPkValue = selectedRowPkValue;
+        this.selectedRowColumnValue = selectedRowColumnValue;
     }
 
-    public int getSelectedRowPkColumn()
+    public int getSelectedRowColumnSpecifier()
     {
-        return selectedRowPkColumn;
+        return selectedRowColumnSpecifier;
     }
 
-    public void setSelectedRowPkColumn(int selectedRowPkColumn)
+    public void setSelectedRowColumnSpecifier(int selectedRowColumnSpecifier)
     {
-        this.selectedRowPkColumn = selectedRowPkColumn;
+        this.selectedRowColumnSpecifier = selectedRowColumnSpecifier;
     }
 
     public boolean isActiveRowSelected()
     {
-        if (selectedRowPkValue == null || selectedRowPkColumn == -1)
+        if (selectedRowColumnValue == null || selectedRowColumnSpecifier == -1)
             return false;
         else
-            return (selectedRowPkValue.equals(getActiveRowColumnData(selectedRowPkColumn, 0)));
+            return (selectedRowColumnValue.equals(getActiveRowColumnData(selectedRowColumnSpecifier, 0)));
     }
 
     public void close()
     {
-        if(! isClosed())
+        if (!isClosed())
         {
             super.close();
             try
@@ -170,7 +169,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
         try
         {
-            if(cacheColumnData)
+            if (cacheColumnData)
             {
                 final ResultSetMetaData metaData = resultSet.getMetaData();
                 retrievedColumnData = new boolean[metaData.getColumnCount()];
@@ -192,9 +191,9 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            if(cacheColumnData)
+            if (cacheColumnData)
             {
-                if(retrievedColumnData[columnIndex])
+                if (retrievedColumnData[columnIndex])
                     return cachedColumnData[columnIndex];
 
                 cachedColumnData[columnIndex] = resultSet.getObject(columnIndex + 1);
@@ -206,7 +205,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         }
         catch (SQLException e)
         {
-            log.error("Unable to retrieve column data: columnIndex = " + columnIndex + ", row = "+ activeRowIndex +", flags = " + flags, e);
+            log.error("Unable to retrieve column data: columnIndex = " + columnIndex + ", row = " + activeRowIndex + ", flags = " + flags, e);
             return e.toString();
         }
     }
@@ -214,16 +213,17 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     /**
      * Calculates the total number of rows in the result set by moving the cursor to the last row and getting
      * the row number. It then returns the cursor to the original row position.
+     *
      * @return
      */
     public int getTotalRows()
     {
-        if(calculatedTotalRows)
+        if (calculatedTotalRows)
             return totalRows;
 
         try
         {
-            if(scrollable)
+            if (scrollable)
             {
                 // get the current row number
                 int currentRow = resultSet.getRow();
@@ -259,7 +259,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            return ! resultSet.isAfterLast();
+            return !resultSet.isAfterLast();
         }
         catch (SQLException e)
         {
@@ -278,7 +278,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
         try
         {
-            if(scrollable)
+            if (scrollable)
             {
                 resultSet.absolute(rowNum);
                 resultSet.previous();
@@ -288,12 +288,12 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
                 queryResultSet.reExecute();
                 setResultSet(queryResultSet.getResultSet());
 
-                if(rowNum > 0)
+                if (rowNum > 0)
                 {
                     int atRow = 0;
-                    while(resultSet.next())
+                    while (resultSet.next())
                     {
-                        if(atRow >= rowNum)
+                        if (atRow >= rowNum)
                             break;
 
                         atRow++;
@@ -313,13 +313,13 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     {
         try
         {
-            if(cacheColumnData)
+            if (cacheColumnData)
             {
-                for(int i = 0; i < retrievedColumnData.length; i++)
+                for (int i = 0; i < retrievedColumnData.length; i++)
                     retrievedColumnData[i] = false;
             }
 
-            if(resultSet.next())
+            if (resultSet.next())
             {
                 activeRowIndex++;
                 return true;
