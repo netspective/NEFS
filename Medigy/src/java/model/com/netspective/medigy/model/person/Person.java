@@ -44,6 +44,7 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 
 import javax.ejb.CascadeType;
@@ -54,7 +55,6 @@ import javax.ejb.InheritanceJoinColumn;
 import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
-import javax.ejb.OneToOne;
 import javax.ejb.Transient;
 import java.util.Collections;
 import java.util.Date;
@@ -76,7 +76,7 @@ public class Person extends Party
     private Date birthDate;
     private String ssn;
 
-    private Gender gender = new Gender();
+    private Set<Gender> genders = new HashSet<Gender>();
 
     private Set<ContactMechanism> contactMechanisms = new HashSet<ContactMechanism>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
@@ -193,17 +193,29 @@ public class Person extends Party
         this.birthDate = birthDate;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "partyId")
-    public Gender getGender()
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<Gender> getGenders()
     {
-        return gender;
+        return genders;
     }
 
-    protected void setGender(final Gender gender)
+    protected void setGenders(final Set<Gender> genders)
     {
-        this.gender = gender;
+        this.genders = genders;
     }
+
+    @Transient
+    public GenderType getCurrentGender()
+    {
+        final Set<Gender> genders = getGenders();
+        if (genders.size() == 0)
+            return GenderType.Cache.UNKNOWN.getEntity();
+        TreeSet<Gender> inverseSorted = new TreeSet<Gender>(Collections.reverseOrder());
+        inverseSorted.addAll(genders);
+        return inverseSorted.first().getType();
+    }
+
     @Column(name="ssn", length=9)
     public String getSsn()
     {
@@ -261,7 +273,7 @@ public class Person extends Party
                 ", middleName='" + middleName + "'" +
                 ", suffix=" + suffix + "'" +
                 ", ssn=" + ssn + "'" +
-                ", gender='" + gender + "'" +
+                ", gender='" + getCurrentGender().getTypeLabel() + "'" +
                 ", maritalStatuses=" + maritalStatuses +
                 ", contactMechanisms=" + contactMechanisms +
                 "}";
