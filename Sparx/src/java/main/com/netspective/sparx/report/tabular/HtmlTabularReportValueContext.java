@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.9 2004-03-03 08:20:36 aye.thu Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.10 2004-03-07 02:52:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -65,6 +65,7 @@ import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.HtmlPanelAction;
 import com.netspective.sparx.panel.HtmlPanelActionStates;
@@ -97,6 +98,12 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private int rowCurrent, rowStart, rowEnd;
     private TabularReportDataSourceScrollState scrollState;
     private HtmlPanelActionStates panelActionStates = new HtmlPanelActionStates(this);
+
+    public HtmlTabularReportValueContext(NavigationContext nc, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
+    {
+        this(nc.getServlet(), nc.getRequest(), nc.getResponse(), panel, reportDefn,skin);
+        setNavigationContext(nc);
+    }
 
     public HtmlTabularReportValueContext(Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
