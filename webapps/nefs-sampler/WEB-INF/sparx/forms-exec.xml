@@ -28,7 +28,7 @@
             <field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
                 default="request:value"/>
             <director>
-                <next-actions caption="Next Action\:" choices="text-list:Netspective=a;Google=y"
+                <next-actions caption="Next Action\:" choices="text-list:Netspective=http\://www.netspective.com;Google=http\://www.google.com"
                     display-single-action="yes"/>
             </director>
         </dialog>
