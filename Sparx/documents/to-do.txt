@@ -1,4 +1,5 @@
 * Add DHTML popup calendar from http://students.infoiasi.ro/~mishoo/site/calendar/cal.html.
+* Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
 * Convert all ValueSource objects so their default points to ValueSource.NULL_VALUE_SOURCE -- this will eliminate many "if null" checks
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
