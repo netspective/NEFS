@@ -32,6 +32,8 @@
                                      hint="Text field optional (max-length=5, uppercase=yes)" />
             <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
             <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
+            <field name="reg_ex_field" type="text" caption="RegExpr Field" reg-expr="[A-Z]{3}-[a-z]{3}-[A-Z][a-z][A-Z]-[A-Z]{3}$"
+                invalid-reg-ex-message="Invalid regular expression - try AAA-bbb-CcC-DDD." hint="Regular expression of the form AAA-bbb-CcC-DDD"/>
         </dialog>
 
         <dialog type="input-sample" name="memo-and-html-fields">
@@ -315,7 +317,7 @@
 			<field type="text" name="text_field_required" caption="Text Required" hint="Text field required" required="yes"/>
 			<field type="text" name="text_field" caption="Text" hint="Text field optional" default="Sponsor's name" max-length="5" uppercase="yes"/>
 			<field type="text" name="text_field_email" caption="Text Email" hint="Text field with regular expression checking"
-                regexpr="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/"
+                regexpr="^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$"
                 invalid-reg-ex-message="Invalid email format."/>
 			<field type="e-mail" name="email_field" caption="Email"/>
 			<field type="separator" heading="Numeric Fields"/>
