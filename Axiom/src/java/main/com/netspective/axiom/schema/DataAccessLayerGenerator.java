@@ -506,7 +506,22 @@ public class DataAccessLayerGenerator
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             if(node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
-            method.newStmt(vm.newFree("if (" + recordsFieldName + " != null) return " + recordsFieldName));
+            if(node.hasChildren())
+                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "." + getParentRecsByFKeyMethodName + "(this, cc, retrieveChildren)"));
+            else
+                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "." + getParentRecsByFKeyMethodName + "(this, cc)"));
+            method.newReturn().setExpression(vm.newVar(recordsFieldName));
+
+            method = parentTag.recordInnerClass.newMethod(vm.newType(recordsInnerClassName), "get" + classNameNoPackage + "Records");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.addParameter(vm.newType(Type.BOOLEAN), "useCachedIfAvailable");
+            if(node.hasChildren())
+                method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
+            method.newStmt(vm.newFree("if (useCachedIfAvailable && " + recordsFieldName + " != null) return " + recordsFieldName));
             if(node.hasChildren())
                 method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "." + getParentRecsByFKeyMethodName + "(this, cc, retrieveChildren)"));
             else
