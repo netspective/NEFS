@@ -70,7 +70,7 @@ public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implem
         this.systemId = systemId;
     }
 
-    @Column(name = "code", length = 8)
+    @Column(name = "code", length = 8, nullable = false)
     public String getCode()
     {
         return code;
