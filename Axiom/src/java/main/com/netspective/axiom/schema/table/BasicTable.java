@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.22 2003-11-16 15:15:59 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.23 2003-12-04 09:06:45 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -878,6 +878,18 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     {
         TableQueryDefinition tqd = getQueryDefinition();
         return tqd.getSelects().get("by-"+ column.getXmlNodeName() +"-equality");
+    }
+
+    public QueryDefnSelect getAccessorByIndexEquality(Index index)
+    {
+        TableQueryDefinition tqd = getQueryDefinition();
+
+        String accessorName = "by-index-"+ index.getName() +"-equality";
+
+        if (index.getColumns().size() == 1)
+            accessorName = "by-"+ index.getColumns().get(0).getName() +"-equality";
+
+        return tqd.getSelects().get(accessorName);
     }
 
     public QueryDefnSelect getAccessorByColumnsEquality(Columns columns)
