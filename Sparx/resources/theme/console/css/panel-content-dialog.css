@@ -26,5 +26,5 @@
 
 
 .login-dialog-fields            { color: white; font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px }
-.login-dialog-fields-header      { background: url(../images/login/logo.gif) no-repeat left center; width: 100% }
+.login-dialog-fields-header      { background: url(../images/login/nec.gif) no-repeat left center; width: 100% }
 .login-dialog-button  { color: #333; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #dcdcdc; text-transform: uppercase; padding: 1px 3px; border: solid 1px black }
