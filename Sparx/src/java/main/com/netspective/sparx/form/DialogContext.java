@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.36 2004-03-02 07:42:38 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.37 2004-03-23 05:15:22 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -727,7 +727,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                     hiddens.append("<input type='hidden' name='");
                     hiddens.append(paramName);
                     hiddens.append("' value='");
-                    hiddens.append(request.getParameter(paramName));
+                    hiddens.append(request.getParameter(paramName) != null ? request.getParameter(paramName) : "");
                     hiddens.append("'>\n");
                 }
             }
@@ -745,7 +745,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                     hiddens.append("<input type='hidden' name='");
                     hiddens.append(paramName);
                     hiddens.append("' value='");
-                    hiddens.append(request.getParameter(paramName));
+                    hiddens.append(request.getParameter(paramName) != null ? request.getParameter(paramName) : "");
                     hiddens.append("'>\n");
                 }
             }

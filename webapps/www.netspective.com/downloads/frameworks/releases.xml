@@ -139,6 +139,12 @@
                 WILL BREAK until the new method is implemented.
                 ]]>
             </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Fixed problem where the dialog's retain-param values were being saved as hidden fields with a
+                value of "null" (4 char) instead  of an empty string.
+                ]]>
+            </change-log-entry>
         </change-log>
     </release>
 
