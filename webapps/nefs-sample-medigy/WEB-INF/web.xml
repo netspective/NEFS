@@ -17,6 +17,10 @@
     <classpath id='c:\Projects\Frameworks\Axiom\lib\redist' library-dir='true'/>
     <classpath id='c:\Projects\Frameworks\Sparx\lib\redist' library-dir='true'/>
     <classpath id='c:\Projects\Frameworks\tools\idea\classes'/>
+    <!-- these are added because of conf/*.xml resource files are here -->
+    <classpath id='c:\Projects\Frameworks\Commons\src\java\main' compile='false'/>
+    <classpath id='c:\Projects\Frameworks\Axiom\src\java\main' compile='false'/>
+    <classpath id='c:\Projects\Frameworks\Sparx\src\java\main' compile='false'/>
 
 	<path-mapping url-pattern='/sparx/*' real-path='c:\Projects\Frameworks\Sparx\resources'/>
 
