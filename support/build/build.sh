@@ -1,7 +1,7 @@
 #!/bin/sh
 #@echo off
 
-#$Id: build.sh,v 1.1 2004-02-16 17:41:56 shahid.shah Exp $
+#$Id: build.sh,v 1.2 2004-02-16 17:48:20 shahid.shah Exp $
 
 #**************************************************************************
 #** This script should be be run from the PROJECT_HOME\conf directory.   **
@@ -69,7 +69,7 @@ fi
 #--------------------------------------------------------------------------
 
 if [ -n "$NEFS_HOME" ] ; then
-  NEFS_HOME=..
+  NEFS_HOME=../..
 fi
 
 if [ -n "$NEFS_COMMONS_HOME" ] ; then
