@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.47 2003-06-14 22:16:21 shahid.shah Exp $
+  * $Id: console.xml,v 1.48 2003-06-15 20:32:16 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -95,7 +95,15 @@
                         <panel type="command" command="dynamic,simple-expr:dialog,${request:selected-dialog-id}"/>
                     </panels>
                 </page>
-		        <page name="fields" caption="Field Types"/>
+		        <page name="controls" caption="Controls">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Controls (Field Types)"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
 		        <page name="perspectives" caption="Perspectives">
                     <panels>
                         <panel type="console-page-summary"/>

@@ -51,18 +51,28 @@
  */
 
 /**
- * $Id: DialogFieldClientJavascript.java,v 1.2 2003-06-14 22:16:21 shahid.shah Exp $
+ * $Id: DialogFieldClientJavascript.java,v 1.3 2003-06-15 20:32:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+
 /**
- * Manages custom JavaScript defined as the action script for an event generated from a dialog field.
+ * Manages custom JavaScript defined as the action script for an event generated from a dialog field within a client
+ * browser. The programmer may specify the control event, whether to override or extend an event, and an arbitrary
+ * JavaScript expression.
  */
 public class DialogFieldClientJavascript
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+    static
+    {
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addRequiredAttributes(new String[] { "js-expr" });
+    }
+
     private ControlEvent event = new ControlEvent(ControlEvent.IS_VALID);
     private ScriptType type = new ScriptType(ScriptType.EXTENDS);
     private ValueSource jsExpr;
@@ -80,7 +90,7 @@ public class DialogFieldClientJavascript
     }
 
     /**
-     * Specify the event that the client javascript should handle.
+     * Declare the event that the client javascript should handle.
      */
     public void setEvent(ControlEvent event)
     {
@@ -96,9 +106,9 @@ public class DialogFieldClientJavascript
     }
 
     /**
-     * Specify the actual JavaScript expression. Although the expression is arbitrary, the programmer should usually
-     * define a JavaScript method and simply call that method in this expression.
-     * @xdm-param jsExpr
+     * Declare the JavaScript expression that will be executed when the control event is fired. Although the expression
+     * is arbitrary, the programmer should usually define a JavaScript method in separate file, include the file, and
+     * then call that method in this expression.
      */
     public void setJsExpr(ValueSource jsExpr)
     {
@@ -114,7 +124,7 @@ public class DialogFieldClientJavascript
     }
 
     /**
-     * Specify the type of client java-script being provided. The extends option will run the normal processing and
+     * Declare the type of client java-script being provided. The extends option will run the normal processing and
      * then call your code. The overrides option only calls your code.
      */
     public void setType(ScriptType type)
