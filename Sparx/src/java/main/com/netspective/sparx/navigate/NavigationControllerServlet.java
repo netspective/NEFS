@@ -743,8 +743,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         }
 
         NavigationPage activePage = nc.getActivePage();
-        Writer writer = nc.getResponse().getWriter();
-
         if(activePage != null)
         {
             nc.getResponse().setContentType("text/html");
@@ -780,13 +778,18 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
                 // if we get to there we're not static content or we're static but being rendered for the first
                 // time in this instance of the servlet
-                activePage.handlePage(writer, nc);
+                if(activePage.isRawHandler(nc))
+                    activePage.handlePageRaw(nc);
+                else
+                    activePage.handlePage(nc.getResponse().getWriter(), nc);
             }
             else
-                activePage.handleInvalidPage(writer, nc);
+                activePage.handleInvalidPage(nc.getResponse().getWriter(), nc);
         }
         else
         {
+            Writer writer = nc.getResponse().getWriter();
+
             NavigationSkin skin = nc.getSkin();
             NavigationTree tree = nc.getOwnerTree();
 
@@ -806,8 +809,9 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     protected void renderPageNotFound(NavigationContext nc) throws IOException, ServletException
     {
         final String queryString = nc.getHttpRequest().getQueryString();
-        final String rootUrl = nc.getRootUrl() + (queryString != null && queryString.length() > 0 ? ("?" + queryString) : "");
-        log.warn("Redirecting to the ROOT URL "+ rootUrl +": no active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree? For example <page name=\"foo\" default=\"yes\"/>? This could also be a timeout event in the case of a user-based multiple navigation-tree application.");
+        final String rootUrl = nc.getRootUrl() + (queryString != null && queryString.length() > 0
+                                                  ? ("?" + queryString) : "");
+        log.warn("Redirecting to the ROOT URL " + rootUrl + ": no active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree? For example <page name=\"foo\" default=\"yes\"/>? This could also be a timeout event in the case of a user-based multiple navigation-tree application.");
         nc.getHttpResponse().sendRedirect(rootUrl);
     }
 

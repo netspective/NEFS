@@ -39,11 +39,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.net.URLEncoder;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -91,7 +91,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.80 2004-09-24 15:49:25 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.81 2004-10-15 02:34:15 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -169,7 +169,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public static final int ALLOW_PANEL_EDITING = ALLOW_VIEW_SOURCE * 2;
         public static final int VALIDATE_PANEL_EDITOR_IN_PAGE = ALLOW_PANEL_EDITING * 2;
         public static final int ANNOUNCE_PAGE_VISIT_ACTIVITY = VALIDATE_PANEL_EDITOR_IN_PAGE * 2;
-        public static final int START_CUSTOM = ANNOUNCE_PAGE_VISIT_ACTIVITY * 2;
+        public static final int IS_RAW_HANDLER = ANNOUNCE_PAGE_VISIT_ACTIVITY * 2;
+        public static final int START_CUSTOM = IS_RAW_HANDLER * 2;
 
         public Flags()
         {
@@ -1126,7 +1127,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         for(int i = 0; i < additionalParams.length; i += 2)
         {
             String paramName = additionalParams[i];
-            String paramValue = URLEncoder.encode(additionalParams[i+1]);
+            String paramValue = URLEncoder.encode(additionalParams[i + 1]);
 
             if(i > 0)
                 result.append('&');
@@ -1569,6 +1570,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             return true;
         else
             return nc.getActiveState().getFlags().flagIsSet(Flags.BODY_AFFECTS_NAVIGATION);
+    }
+
+    public boolean isRawHandler(NavigationContext nc)
+    {
+        return nc.getActiveState().getFlags().flagIsSet(Flags.IS_RAW_HANDLER);
+    }
+
+    /**
+     * Main method for handling the logic and content of the page when the isRawHandler() is set to true.
+     * This method is usually reserved for servlet pages that need to handle low-level functionality like sending data
+     * directly through the stream (for downloading files). This method will not assume anything about the output.
+     */
+    public void handlePageRaw(NavigationContext nc) throws ServletException, IOException
+    {
+        throw new ServletException("No body provided for handlePage(OutputStream, NavigationContext). Must be overriden.");
     }
 
     /**
