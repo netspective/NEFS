@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.10 2003-05-30 23:08:01 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.11 2003-06-10 02:51:35 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -247,6 +247,7 @@ public class ReportTest extends TestCase
 
 		StringWriter sw = new StringWriter();
         TabularReportDataSource ds = new TestReportDataSource(vc);
+        ds.setReportValueContext(vc);
 		vc.produceReport(sw, ds);
         ds.close();
 
