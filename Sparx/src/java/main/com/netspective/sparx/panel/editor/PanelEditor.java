@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.5 2004-03-15 05:12:01 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.6 2004-04-27 04:13:34 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -536,17 +536,17 @@ public class PanelEditor extends AbstractPanel
             }
         }
         preparePanelActionStates(nc, pvc, state, mode);
-
+        writer.write("<table class=\"panel-editor-table\"><tr>\n");
         if (activeElement != null)
-            writer.write("<div class=\"panel-editor-active-content\">" + activeEditorWriter.getBuffer().toString() + "</div>");
+            writer.write("<td class=\"active-content\">" + activeEditorWriter.getBuffer().toString() + "</td>");
 
-        writer.write("<div class=\"panel-editor-display-content\">");
+        writer.write("<td class=\"display-content\">");
         skin.renderPanelRegistration(writer, pvc);
         skin.renderFrameBegin(writer, pvc);
         writer.write((activeElement != null ? activeDisplayWriter.getBuffer().toString() : "") +
                 inactiveWriter.getBuffer().toString());
         skin.renderFrameEnd(writer, pvc);
-        writer.write("</div><p/>");
+        writer.write("</td></tr></table>\n");
     }
 
     /**
