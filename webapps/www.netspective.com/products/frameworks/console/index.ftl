@@ -28,30 +28,16 @@ collects all relevant project metrics, documentation, and details. Managers can 
 
 <ul class="check-list">
     <li>Automatically documents web dialogs, SQL statements, schema objects, and other programming artifacts.
-    <table align=center cellpadding=7>
-        <tr>
-            <td><@screenShot name="console-schema-doc"/></td>
-            <td><@screenShot name="console-dynamic-qry"/></td>
-        </tr>
-        <tr>
-            <td><@screenShot name="console-dialog-catalog"/></td>
-        </tr>        
-    </table>
+        <@screenShot name="console-schema-doc"/><p>
+        <@screenShot name="console-dynamic-qry"/><p>
+        <@screenShot name="console-dialog-catalog"/>
 
     <li>Automatically provides browser-based testing of forms and statements.
-    <table align=center cellpadding=7>
-        <tr>
-            <td><@screenShot name="console-dialog-unit-test"/></td>
-            <td><@screenShot name="console-sql-unit-test"/></td>
-        </tr>
-    </table>
-    
+        <@screenShot name="console-dialog-unit-test"/><p>
+        <@screenShot name="console-sql-unit-test"/>
+
     <li>Automatically maintains application metrics.
-    <table align=center cellpadding=7>
-        <tr>
-            <td><@screenShot name="console-app-matrics"/></td>
-        </tr>
-    </table>
+        <@screenShot name="console-app-matrics"/><p>
     
     <li>Tracks execution statistics for SQL statements, servlet and JSP pages, dialogs/forms, and security.
     <li>Provides a browser-based repository for all project documentation alongside application code.
