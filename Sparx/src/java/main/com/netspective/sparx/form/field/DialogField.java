@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.19 2003-06-16 00:23:37 aye.thu Exp $
+ * $Id: DialogField.java,v 1.20 2003-06-20 02:16:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -509,6 +509,11 @@ public class DialogField implements TemplateConsumer
         if(popup.getFill() == null)
             popup.setFill(getQualifiedName());
         this.popup = popup;
+    }
+
+    public DialogFieldPopup createPopup()
+    {
+        return new DialogFieldPopup();
     }
 
 	/**
