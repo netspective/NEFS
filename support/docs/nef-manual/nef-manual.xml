@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 21:55:46 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-30 01:35:31 $)</releaseinfo>
 
     <authorgroup>
       <author>
@@ -1533,7 +1533,7 @@
         Sparx.</para>
 
         <section>
-          <title>Navigation Declaration Tags</title>
+          <title>Introduction to Navigation Declaration Tags</title>
 
           <para>The navigation tags are comprised primarily of the <sgmltag
           class="starttag">navigation-tree</sgmltag>, <sgmltag
@@ -1704,7 +1704,7 @@ id="declare-nav-tags-eg-10" />
         </section>
 
         <section>
-          <title>Forms Declaration Tags</title>
+          <title>Introduction to Forms Declaration Tags</title>
 
           <para>The forms tags are comprised primarily of the <sgmltag
           class="starttag">dialogs</sgmltag>, <sgmltag class="starttag">dialog</sgmltag>,
@@ -1872,7 +1872,8 @@ id="declare-form-tags-eg-8" />
         management layer tags are managed by Axiom.</para>
 
         <section>
-          <title>Static Query Declarations (Static Data Access Objects)</title>
+          <title>Introduction to Static Query Declarations (Static Data Access
+          Objects)</title>
 
           <para>That static query and data access objects (DAOs) declarations
           are comprised of the <sgmltag class="starttag">queries</sgmltag>,
@@ -1969,7 +1970,8 @@ id="declare-data-query-static-eg-5" />
         </section>
 
         <section>
-          <title>Dynamic Query Declarations (Dynamic Data Access Objects)</title>
+          <title>Introduction to Dynamic Query Declarations (Dynamic Data
+          Access Objects)</title>
 
           <para>The dynamic queries data access objects (DAOs) declarations
           are comprised of the <sgmltag class="starttag">query-defn</sgmltag>,
@@ -2030,9 +2032,9 @@ id="declare-data-query-defn-eg-3" />
         </section>
 
         <section>
-          <title>Schema Management Declarations</title>
+          <title>Introduction to Schema Management Declarations</title>
 
-          <para>The schema management declarations are comprised of the
+          <para>The schema management descriptors are specified using the
           <sgmltag class="starttag">schema</sgmltag>, <sgmltag
           class="starttag">table</sgmltag>, and <sgmltag class="starttag">column</sgmltag>
           tags. Once declared, the schema descriptor supports completely
@@ -2046,7 +2048,10 @@ id="declare-data-query-defn-eg-3" />
           <example>
             <title>Examples of Schema Tags in Data Management Layer</title>
 
-            <programlisting>&#60;<emphasis role="bold">schema</emphasis> name=&#34;db&#34;&#62; <co
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">schema</emphasis> name=&#34;db&#34;&#62; <co
 id="declare-data-schema-eg-1" />
     <emphasis role="bold">&#60;xdm:include resource=&#34;com/netspective/axiom/conf/schema.xml&#34;/&#62;</emphasis> <co
 id="declare-data-schema-eg-2" />
@@ -2203,7 +2208,203 @@ id="declare-data-schema-eg-10" />
       <section>
         <title>Declaring the Security Layer</title>
 
-        <para></para>
+        <para>The security layer is declared using the <sgmltag
+        class="starttag">login-manager</sgmltag>, <sgmltag class="starttag">access-control</sgmltag>,
+        <sgmltag class="starttag">permission</sgmltag> and <sgmltag
+        class="starttag">roles</sgmltag> tags.</para>
+
+        <section>
+          <title>Introduction to Login Management and User Authentication Tags</title>
+
+          <para>All sophisticated applications require logins based on
+          appropriate privileges so NEF has built-in support for such user
+          authentication using the <sgmltag class="starttag">login-manager</sgmltag>,
+          <sgmltag class="starttag">login-authenticator</sgmltag>, <sgmltag
+          class="starttag">authenticated-user-class</sgmltag>, <sgmltag
+          class="starttag">password-query</sgmltag>, and <sgmltag
+          class="starttag">login-dialog</sgmltag> tags.</para>
+
+          <example>
+            <title>Examples of Login an Authentication Tags in Security Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">login-manager</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; <co
+id="declare-security-login-mgr-eg-1" />
+    &#60;<emphasis role="bold">login-authenticator</emphasis> class=&#34;com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator&#34;&#62; <co
+id="declare-security-login-mgr-eg-2" />
+        &#60;<emphasis role="bold">authenticated-user-class</emphasis>&#62;app.cts.AppAuthenticatedUser&#60;/authenticated-user-class&#62; <co
+id="declare-security-login-mgr-eg-3" />
+        &#60;<emphasis role="bold">password-query</emphasis>&#62; <co
+id="declare-security-login-mgr-eg-4" />
+            select
+                password
+            from
+                person_login
+            where
+                user_id = ?
+        &#60;/password-query&#62;
+        &#60;<emphasis role="bold">role-query</emphasis>&#62; <co
+id="declare-security-login-mgr-eg-5" />
+            select
+                role_id
+            from
+                person_role
+            where
+                user_id = ?
+        &#60;/password-query&#62;
+    &#60;/login-authenticator&#62;
+
+    &#60;<emphasis role="bold">login-dialog</emphasis> retain-params=&#34;*&#34;&#62; <co
+id="declare-security-login-mgr-eg-6" />
+        &#60;frame heading=&#34;Welcome to the Clinical Trial System&#34;/&#62;
+        &#60;field name=&#34;user-id&#34; type=&#34;text&#34; caption=&#34;Login ID&#34; required=&#34;yes&#34; persist=&#34;yes&#34; initial-focus=&#34;yes&#34;/&#62;
+        &#60;field name=&#34;password&#34; type=&#34;text&#34; caption=&#34;Password&#34; mask-entry=&#34;yes&#34; required=&#34;yes&#34;/&#62;
+    &#60;/login-dialog&#62;
+&#60;/login-manager&#62;</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-security-login-mgr-eg-1">
+              <para>A login manager is defined using the <sgmltag
+              class="starttag">login-manager</sgmltag> tag and is uniquely
+              identified with a name. You may define multiple login managers
+              for different areas of your application or for multiple
+              servlets. If no default login manager is specified no user
+              authentication is required to enter an application.</para>
+            </callout>
+
+            <callout arearefs="declare-security-login-mgr-eg-2">
+              <para>A <sgmltag class="starttag">login-authenticator</sgmltag>
+              tag is used to specify all the options that will be used to
+              actually perform the authentication. The
+              DatabaseLoginAuthenticator class is built-in and is suitable for
+              most uses. If you need alternate authentication schemes such as
+              JAAS or your own custom routines those are also supported.</para>
+            </callout>
+
+            <callout arearefs="declare-security-login-mgr-eg-3">
+              <para>The <sgmltag class="starttag">authenticated-user-class</sgmltag>
+              tag is used to specify a class that will be used to manage an
+              authenticated user. There are routines for managing the user id,
+              the user&#39;s roles, permissions, and other attributes.</para>
+            </callout>
+
+            <callout arearefs="declare-security-login-mgr-eg-4">
+              <para>The <sgmltag class="starttag">password-query</sgmltag> tag
+              is used to specify the SQL that should be executed to obtain a
+              valid passoword. This query is sent a single parameter (the user
+              id typed into the dialog) and if it returns a single value it is
+              considered the password. That password is then matched against
+              what the user types in. Support for encrypted passwords is also
+              built-in.</para>
+            </callout>
+
+            <callout arearefs="declare-security-login-mgr-eg-5">
+              <para>The <sgmltag class="starttag">role-query</sgmltag> tag is
+              used to specify the SQL that should be executed to obtain a list
+              of access control list roles assigned to an authenticated user.
+              This query is sent a single parameter (the user id typed into
+              the dialog) and it should return the list of roles assigned to
+              the user.</para>
+            </callout>
+
+            <callout arearefs="declare-security-login-mgr-eg-6">
+              <para>The <sgmltag class="starttag">login-dialog</sgmltag> tag
+              is used to declare the contents of the dialog that will be used
+              to get the username and password.</para>
+            </callout>
+          </calloutlist>
+        </section>
+
+        <section>
+          <title>Introduction to Access Control and User Authorization Tags</title>
+
+          <para>Once a user has been authenticated they may still require
+          authorization to perform certain activities. NEF has built-in
+          support for building user authorization rules and declartively
+          controlling access to application components based on authorization
+          rules such as roles and permissions.</para>
+
+          <example>
+            <title>Examples of Access Control and Authorization Tags in
+            Security Layer</title>
+
+            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+...
+
+&#60;<emphasis role="bold">access-control-list</emphasis> name=&#34;acl&#34;&#62; <co
+id="declare-security-acl-eg-1" />
+    &#60;<emphasis role="bold">permission</emphasis> name=&#34;app&#34;&#62; <co
+id="declare-security-acl-eg-2" />
+        &#60;<emphasis role="bold">permission</emphasis> name=&#34;orders&#34;&#62; <co
+id="declare-security-acl-eg-3" />
+            &#60;permission name=&#34;order_list&#34;/&#62;
+            &#60;permission name=&#34;create_order&#34;/&#62;
+            &#60;permission name=&#34;edit_order&#34;/&#62;
+            &#60;permission name=&#34;view_order&#34;/&#62;
+            &#60;permission name=&#34;delete_order&#34;/&#62;
+        &#60;/permission&#62;
+    &#60;/permission&#62;
+
+    &#60;<emphasis role="bold">role</emphasis> name=&#34;role&#34;&#62; <co
+id="declare-security-acl-eg-4" />
+        &#60;<emphasis role="bold">role</emphasis> name=&#34;super-user&#34;&#62; <co
+id="declare-security-acl-eg-5" />
+            &#60;grant permission=&#34;/acl/app/orders&#34;/&#62;
+        &#60;/role&#62;
+        &#60;role name=&#34;normal-user&#34;&#62;
+            &#60;<emphasis role="bold">grant</emphasis> permission=&#34;/acl/app/orders&#34;/&#62; <co
+id="declare-security-acl-eg-6" />
+            &#60;<emphasis role="bold">revoke</emphasis> permission=&#34;/acl/app/orders/delete_order&#34;/&#62; <co
+id="declare-security-acl-eg-7" />
+        &#60;/role&#62;
+    &#60;/role&#62;
+&#60;/access-control-list&#62;</programlisting>
+          </example>
+
+          <calloutlist>
+            <callout arearefs="declare-security-acl-eg-1">
+              <para>An access control list is defined using the <sgmltag
+              class="starttag">access-control-list</sgmltag> tag and is
+              uniquely identified with a name. You may define multiple access
+              control list managers for different areas of your application or
+              for multiple servlets.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-2">
+              <para>The <sgmltag class="starttag">permission</sgmltag> tag
+              defines a feature or function that needs to be protected.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-3">
+              <para>The <sgmltag class="starttag">permission</sgmltag> tag may
+              be defined hierarchically.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-4">
+              <para>The <sgmltag class="starttag">role</sgmltag> tag defines a
+              user role.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-5">
+              <para>The <sgmltag class="starttag">role</sgmltag> tag may be
+              defined hierarchically.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-6">
+              <para>Each <sgmltag class="starttag">role</sgmltag> tag may
+              grant one or more permissions. Roles may be permissive or
+              restrive.</para>
+            </callout>
+
+            <callout arearefs="declare-security-acl-eg-7">
+              <para>Each <sgmltag class="starttag">role</sgmltag> tag may
+              revoke one or more permissions.</para>
+            </callout>
+          </calloutlist>
+        </section>
       </section>
     </section>
 
