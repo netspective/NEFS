@@ -214,13 +214,7 @@ Setup instructions:
 	    <mkdir dir="${tools.clover.reports.pdf}"/>
 
 	    <clover-setup initstring="${tools.clover.db.home}/code-coverage.db">
-	        <files>
-	            <exclude name="**/*Test.java"/>
-	            <exclude name="**/*Suite.java"/>
-	            <exclude name="**/Suite.java"/>
-	            <exclude name="**/ant//**"/>
-		        <exclude name="**/app/dal//**"/>
-	        </files>
+	        <fileset dir="../src/java/main"/>
 	    </clover-setup>
 	</target>
 
