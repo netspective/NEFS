@@ -85,7 +85,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.2 2004-03-03 06:28:59 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.3 2004-03-03 08:25:09 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -1508,9 +1508,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     if(generated.length() > 0)
                         generated.append(" / ");
                     if (childField.isRequired(dc))
-                        generated.append("<span class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + "</span>");
+                        generated.append("<span class=\"" + getCaptionRequiredStyleClass() + "\">" + childCaption + ":</span>");
                     else
-                        generated.append("<span class=\"" + getCaptionStyleClass() + "\">" + childCaption + "</span>");
+                        generated.append("<span class=\"" + getCaptionStyleClass() + "\">" + childCaption + ":</span>");
                 }
             }
             caption = generated.toString();
@@ -1526,10 +1526,10 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if(getCaptionSuffix() != null && caption != null && caption.length() > 0) caption += getCaptionSuffix();
 
             if(caption != null && field.isRequired(dc))
-                caption = "<span class=\"" + getCaptionRequiredStyleClass() + "\">" +caption + "</span>";
+                caption = "<span class=\"" + getCaptionRequiredStyleClass() + "\">" +caption + ":</span>";
             else
                 caption = "<span class=\"" + getCaptionStyleClass() + "\">" +
-                        (caption != null ? caption : "") + "</span>";
+                        (caption != null ? caption : "") + ":</span>";
         }
 
         return caption;
