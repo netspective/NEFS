@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.17 2003-06-15 20:30:47 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.18 2003-06-17 11:49:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -558,7 +558,7 @@ public class XmlDataModelSchema
     {
     }
 
-    public AttributeDetailList getSettableAttributesWithFlagsExpanded() throws IllegalAccessException, InstantiationException, InvocationTargetException, DataModelException
+    public AttributeDetailList getSettableAttributesDetail(boolean expandFlagAliases) throws IllegalAccessException, InstantiationException, InvocationTargetException, DataModelException
     {
         Map childPropertyNames = getPropertyNames();
 
@@ -584,12 +584,15 @@ public class XmlDataModelSchema
             if(bfa != null)
             {
                 flagSetterPrimaries.put(attrName, bfa);
-                Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
-                for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                if(expandFlagAliases)
                 {
-                    String xmlNodeName = (String) xmliter.next();
-                    if(! childPropertyNames.containsKey(xmlNodeName))
-                        flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+                    Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
+                    for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                    {
+                        String xmlNodeName = (String) xmliter.next();
+                        if(! childPropertyNames.containsKey(xmlNodeName))
+                            flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+                    }
                 }
             }
         }

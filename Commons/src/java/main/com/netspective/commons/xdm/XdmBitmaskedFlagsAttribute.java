@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.12 2003-05-24 20:28:15 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.13 2003-06-17 11:49:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -72,12 +72,32 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         private int access;
         private String name;
         private int mask;
+        private String description;
+        private String aliasDescription;
 
         public FlagDefn(int access, String name, int mask)
         {
             this.access = access;
             this.name = name;
             this.mask = mask;
+        }
+
+        public FlagDefn(int access, String name, int mask, String description)
+        {
+            this.access = access;
+            this.name = name;
+            this.mask = mask;
+            this.description = description;
+            this.aliasDescription = description;
+        }
+
+        public FlagDefn(int access, String name, int mask, String description, String aliasDescription)
+        {
+            this.access = access;
+            this.name = name;
+            this.mask = mask;
+            this.description = description;
+            this.aliasDescription = aliasDescription;
         }
 
 	    public FlagDefn(String name, int mask)
@@ -93,6 +113,26 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         public void setAccess(int access)
         {
             this.access = access;
+        }
+
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public void setDescription(String description)
+        {
+            this.description = description;
+        }
+
+        public String getAliasDescription()
+        {
+            return aliasDescription;
+        }
+
+        public void setAliasDescription(String aliasDescription)
+        {
+            this.aliasDescription = aliasDescription;
         }
 
         public int getMask()
