@@ -6,7 +6,7 @@
 		<dialog name="address"  retain-params="*" generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
-			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="no"/>
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="yes"/>
 
 			<field type="separator" heading="Address Classification"/>
 			<field type="text" name="address_name" caption="Address Label" size="32"/>
@@ -40,8 +40,7 @@
 		<dialog name="classification"  retain-params="*" type="schema-record-editor">
         <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
-			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id">
-				<conditional flags="hidden" perspective="add" action="apply-flags"/>
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="yes">
 			</field>
 			<field type="select" name="org_id" caption="Organization" required="yes" choices="query:person.get-person-related-organizations"/>
 			<composite name="personType" caption="Person Type" >
@@ -69,7 +68,7 @@
 		<dialog name="contact" retain-params="*" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
-			<field type="text" name="parent_id" caption="Person ID" required="yes" hidden="no" default="request:person_id"/>
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="yes"/>
 
 			<composite name="contactType" caption="Contact Type">
 				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"
@@ -79,7 +78,7 @@
 				</field>
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
-            
+
             <on-add-data>
                 <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
                     rec-stat-id="static:Active"/>
