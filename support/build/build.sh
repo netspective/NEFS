@@ -1,7 +1,7 @@
 #!/bin/sh
 #@echo off
 
-#$Id: build.sh,v 1.3 2003-10-20 15:54:52 shahid.shah Exp $
+#$Id: build.sh,v 1.1 2004-02-16 17:41:56 shahid.shah Exp $
 
 #**************************************************************************
 #** This script should be be run from the PROJECT_HOME\conf directory.   **

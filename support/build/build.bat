@@ -1,6 +1,6 @@
 @echo off
 
-REM $Id: build.bat,v 1.2 2003-08-10 01:16:09 shahid.shah Exp $
+REM $Id: build.bat,v 1.1 2004-02-16 17:41:56 shahid.shah Exp $
 
 REM **************************************************************************
 REM ** This script should be be run from the PROJECT_HOME\conf directory.   **

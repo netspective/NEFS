@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
+ * Copyright (c) 2000-2004 Netspective Communications LLC. All rights reserved.
  *
  * Netspective Communications LLC ("Netspective") permits redistribution, modification and use of this file in source
  * and binary form ("The Software") under the Netspective Source License ("NSL" or "The License"). The following
@@ -17,10 +17,10 @@
  * 3. Redistributions of The Software in any form must include an unmodified copy of The License, normally in a plain
  *    ASCII text file unless otherwise agreed to, in writing, by Netspective.
  *
- * 4. The names "Netspective", "Axiom", "Commons", "Junxion", and "Sparx" are trademarks of Netspective and may not be
- *    used to endorse products derived from The Software without without written consent of Netspective. "Netspective",
- *    "Axiom", "Commons", "Junxion", and "Sparx" may not appear in the names of products derived from The Software
- *    without written consent of Netspective.
+ * 4. The names "Netspective", "Axiom", "Commons", "Junxion", "Medigy", and "Sparx" are trademarks of Netspective and
+ *    may not be used to endorse products derived from The Software without without written consent of Netspective.
+ *    "Netspective", "Axiom", "Commons", "Junxion", "Medigy", and "Sparx" may not appear in the names of products
+ *    derived from The Software without written consent of Netspective.
  *
  * 5. Please attribute functionality where possible. We suggest using the "powered by Netspective" button or creating
  *    a "powered by Netspective(tm)" link to http://www.netspective.com for each application using The Software.
@@ -39,18 +39,6 @@
  */
 
 /**
- * $Id: ActionID.java,v 1.1 2003-03-13 18:39:01 shahid.shah Exp $
+ * $Id: java-license.txt,v 1.1 2004-02-16 17:41:56 shahid.shah Exp $
  */
 
-package org.netspective.intellij;
-
-/**
- * Common Action Ids
- * @author <a href="mailto:aefimov@spklabs.com>Alexey Efimov</a>
- */
-public class ActionID {
-  public static final String MAIN_TOOLBAR = "MainToolBar";
-  public static final String MAIN_MENU = "MainMenu";
-  public static final String WINDOW_MENU = "WindowMenu";
-  public static final String WINDOW_MENU_INSPECTION = "ViewInspectionWindow";
-}
