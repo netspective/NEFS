@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReportSkin.java,v 1.4 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: TabularReportSkin.java,v 1.5 2003-09-10 04:06:12 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -59,13 +59,13 @@ package com.netspective.commons.report.tabular;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.commons.command.Command;
+import com.netspective.commons.value.ValueSource;
 
 public interface TabularReportSkin
 {
     public String getFileExtension();
     public String getBlankValue();
     public String constructClassRef(Class cls);
-    public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target);
+    public String constructRedirect(TabularReportValueContext rc, ValueSource redirect, String label, String hint, String target);
     public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException;
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.5 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.6 2003-09-10 04:06:12 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -60,6 +60,7 @@ import java.text.Format;
 import java.util.List;
 
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
@@ -148,9 +149,9 @@ public interface TabularReportColumn
 
     public void setHeadingCommand(String command) throws CommandNotFoundException;
 
-    public Command getCommand();
+    public RedirectValueSource getRedirect();
 
-    public void setCommand(String command) throws CommandNotFoundException;
+    public void setRedirect(RedirectValueSource redirect);
 
     public int getWidth();
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextReportSkin.java,v 1.6 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: TextReportSkin.java,v 1.7 2003-09-10 04:06:12 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -47,7 +47,7 @@ package com.netspective.commons.report.tabular;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.commons.command.Command;
+import com.netspective.commons.value.ValueSource;
 
 public class TextReportSkin implements TabularReportSkin
 {
@@ -87,7 +87,7 @@ public class TextReportSkin implements TabularReportSkin
         return cls.getName();
     }
 
-    public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target)
+    public String constructRedirect(TabularReportValueContext rc, ValueSource redirect, String label, String hint, String target)
     {
         return label;
     }

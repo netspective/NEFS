@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.10 2003-04-23 15:41:52 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.11 2003-09-10 04:06:12 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -71,6 +71,7 @@ import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -102,7 +103,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     private int colIndex = -1;
     private ValueSource heading;
     private Command headingCommand;
-    private Command command;
+    private RedirectValueSource redirectUrl;
     private String calcCmd;
     private Format formatter;
     private String outputPattern;
@@ -172,14 +173,14 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         this.heading = heading;
     }
 
-    public Command getCommand()
+    public RedirectValueSource getRedirect()
     {
-        return command;
+        return redirectUrl;
     }
 
-    public void setCommand(String command) throws CommandNotFoundException
+    public void setRedirect(RedirectValueSource vs)
     {
-        this.command = Commands.getInstance().getCommand(command);;
+        this.redirectUrl = vs;
     }
 
     public Command getHeadingCommand()
@@ -322,7 +323,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
         this.heading = rc.getHeading();
         this.headingCommand = rc.getHeadingCommand();
-        this.command = rc.getCommand();
+        this.redirectUrl = rc.getRedirect();
         this.conditionals = rc.getConditionals();
         setAlign(new AlignStyle(rc.getAlign()));
         setWidth(rc.getWidth());
