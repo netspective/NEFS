@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.18 2003-08-23 16:05:57 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.19 2003-08-24 18:50:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -47,8 +47,16 @@ package com.netspective.sparx.navigate;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Iterator;
+import java.util.Vector;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,11 +66,19 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.tools.ant.BuildLogger;
+import org.apache.tools.ant.NoBannerLogger;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.ProjectManager;
+import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.ProjectLifecyleListener;
+import com.netspective.sparx.ProjectEvent;
+import com.netspective.sparx.ant.AntProject;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.commons.io.MultipleUriAddressableFileLocators;
 import com.netspective.commons.io.UriAddressableFileLocator;
@@ -72,24 +88,26 @@ import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.RuntimeEnvironment;
+import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.io.FileFind;
 import com.netspective.commons.text.TextUtils;
 
-public class NavigationControllerServlet extends HttpServlet
+public class NavigationControllerServlet extends HttpServlet implements RuntimeEnvironment, ProjectManager
 {
     private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
-    public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
-    public static final String INITPARAMNAME_NAVIGATION_TREE_NAME = "com.netspective.sparx.navigate.NAVIGATION_TREE_NAME";
-    public static final String INITPARAMNAME_THEME_NAME = "com.netspective.sparx.theme.THEME_NAME";
-    public static final String INITPARAMNAME_LOGIN_MANAGER_NAME = "com.netspective.sparx.security.LOGIN_MANAGER_NAME";
-    public static final String INITPARAMNAME_LOGOUT_ACTION_REQ_PARAM_NAME = "com.netspective.sparx.security.LOGOUT_ACTION_REQ_PARAM_NAME";
-    public static final String DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME = "_logout";
 
+    public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
+    public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
+
+    private NavigationControllerServletOptions servletOptions;
     private String loginManagerName;
     private String themeName;
     private String navigationTreeName;
-    private String logoutActionReqParamName = DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME;
-
+    private String logoutActionReqParamName;
+    private String projectSourceFileName;
+    private Class projectComponentClass;
+    private ProjectComponent lastProjectComponentRetrieved;
     private Project project;
     private HttpLoginManager loginManager;
     private Theme theme;
@@ -97,31 +115,203 @@ public class NavigationControllerServlet extends HttpServlet
     private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
     private UriAddressableFileLocator resourceLocator;
     private boolean cacheComponents;
+    private String executionPropertiesFileName;
+    private Properties executionProperties;
+    private long initializationCount;
+    private boolean initCountWritten;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
 
-        ServletContext servletContext = servletConfig.getServletContext();
+        servletOptions = new NavigationControllerServletOptions(servletConfig);
+        if(servletOptions.isHelpRequested())
+            servletOptions.printHelp();
+        if(servletOptions.isDebugOptionsRequested())
+            System.out.println("** Servlet Options:\n" + servletOptions);
 
-        loginManagerName = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_MANAGER_NAME);
-        logoutActionReqParamName = servletConfig.getInitParameter(INITPARAMNAME_LOGOUT_ACTION_REQ_PARAM_NAME);
-        if(logoutActionReqParamName == null)
-            logoutActionReqParamName = DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME;
+        loadExecutionProperties(servletConfig);
+        if(getInitializationCount() == 1)
+            initOnlyFirstExecution(servletConfig);
+        initEachExecution(servletConfig);
 
-        themeName = servletConfig.getInitParameter(INITPARAMNAME_THEME_NAME);
-        navigationTreeName = servletConfig.getInitParameter(INITPARAMNAME_NAVIGATION_TREE_NAME);
+        // if the init success is determined to be END_INIT we persist now, otherwise it will be done on first GET/POST
+        if(servletOptions.getInitSuccessType().equals("END_INIT"))
+            persistInitCount();
+    }
 
-        File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(servletContext));
+    protected void loadExecutionProperties(ServletConfig servletConfig) throws ServletException
+    {
+        executionPropertiesFileName = checkWebInfAndGetRealPath(servletOptions.getServletExecutionPropertiesFileName());
+        executionProperties = new Properties();
+        try
+        {
+            executionProperties.load(new FileInputStream(new File(executionPropertiesFileName)));
+            initializationCount = Long.valueOf(executionProperties.getProperty(getClass().getName() + '.' + PROPNAME_INIT_COUNT, "0")).longValue();
+        }
+        catch (FileNotFoundException e)
+        {
+            initializationCount = 0;
+        }
+        catch (IOException e)
+        {
+            throw new ServletException(e);
+        }
+        initializationCount++;
+        log.debug("Initialization count is " + getInitializationCount());
+    }
+
+    protected void persistInitCount() throws ServletException
+    {
+        executionProperties.setProperty(getClass().getName() + '.' + PROPNAME_INIT_COUNT, Long.toString(initializationCount));
+        saveExecutionProperties();
+        initCountWritten = true;
+    }
+
+    protected void saveExecutionProperties() throws ServletException
+    {
+        try
+        {
+            executionProperties.store(new FileOutputStream(new File(executionPropertiesFileName)), "Project execution properties");
+        }
+        catch (IOException e)
+        {
+            throw new ServletException(e);
+        }
+    }
+
+    protected void initRuntimeEnvironmentFlags(ServletConfig servletConfig)
+    {
+        String envFlagsText = servletOptions.getRuntimeEnvFlags();
+        try
+        {
+            Class envClass = Class.forName(servletOptions.getRuntimeEnvClassName());
+            runtimeEnvironmentFlags = (RuntimeEnvironmentFlags) envClass.newInstance();
+        }
+        catch (Exception e)
+        {
+            log.error("Unable to instantiate environment flags using SPI -- creating statically instead", e);
+            runtimeEnvironmentFlags = new RuntimeEnvironmentFlags();
+        }
+        runtimeEnvironmentFlags.setValue(envFlagsText);
+        setCacheComponents(! runtimeEnvironmentFlags.flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT));
+    }
+
+    protected void executAntBuild(ServletConfig servletConfig, File buildFile, String target) throws ServletException
+    {
+        org.apache.tools.ant.Project antProject = AntProject.getConfiguredProject(buildFile);
+        antProject.setProperty("app.home", servletConfig.getServletContext().getRealPath("/"));
+        antProject.setProperty("app.init-count", Long.toString(getInitializationCount()));
+
+        Properties servletOptionsProps = servletOptions.setProperties(new Properties(), "app.servlet-options", false);
+        for(Iterator i = servletOptionsProps.keySet().iterator(); i.hasNext(); )
+        {
+            String propName = (String) i.next();
+            antProject.setProperty(propName, servletOptionsProps.getProperty(propName));
+        }
+
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        PrintStream pstream = new PrintStream(ostream);
+
+        BuildLogger logger = new NoBannerLogger();
+        logger.setMessageOutputLevel(org.apache.tools.ant.Project.MSG_INFO);
+        logger.setOutputPrintStream(pstream);
+        logger.setErrorPrintStream(pstream);
+
+        PrintStream saveOut = System.out;
+        PrintStream saveErr = System.err;
+        System.setOut(pstream);
+        System.setErr(pstream);
+
+        antProject.addBuildListener(logger);
+        Exception exceptionThrown = null;
+        try
+        {
+            Vector targets = new Vector();
+            if(target != null)
+            {
+                String[] targetNames = TextUtils.split(target, ",", true);
+                for(int i = 0; i < targetNames.length; i++)
+                    targets.add(targetNames[i]);
+            }
+            else
+                targets.add(antProject.getDefaultTarget());
+            antProject.executeTargets(targets);
+        }
+        catch (Exception e)
+        {
+            exceptionThrown = e;
+            e.printStackTrace();
+        }
+
+        if(exceptionThrown != null)
+        {
+            log.error(ostream.toString());
+            log.error("Error running ant build file " + buildFile + " target " + target, exceptionThrown);
+        }
+        else
+            log.debug(ostream.toString());
+
+        System.setOut(saveOut);
+        System.setErr(saveErr);
+    }
+
+    protected void initUsingAnt(ServletConfig servletConfig, String optionText) throws ServletException
+    {
+        String buildFileName = optionText;
+        String target = null;
+        int targetNameDelimPos = optionText.lastIndexOf(':');
+        if(targetNameDelimPos > 0)
+        {
+            buildFileName = optionText.substring(0, targetNameDelimPos);
+            target = optionText.substring(targetNameDelimPos+1);
+        }
+
+        executAntBuild(servletConfig, new File(checkWebInfAndGetRealPath(buildFileName)), target);
+    }
+
+    /**
+     * Called when the servlet is intialized for the very first time in this servlet container. The init count is
+     * stored in a properties file.
+     * @param servletConfig
+     */
+    protected void initOnlyFirstExecution(ServletConfig servletConfig) throws ServletException
+    {
+        if(servletOptions.getInitFirstTimeUsingAnt() != null)
+            initUsingAnt(servletConfig, servletOptions.getInitFirstTimeUsingAnt());
+    }
+
+    protected void initEachExecution(ServletConfig servletConfig) throws ServletException
+    {
+        if(servletOptions.getInitUsingAnt() != null)
+            initUsingAnt(servletConfig, servletOptions.getInitUsingAnt());
+
+        try
+        {
+            projectComponentClass = Class.forName(servletOptions.getProjectComponentClassName());
+        }
+        catch (ClassNotFoundException e)
+        {
+            log.error("Unable to find class for ProjectComponent instance.", e);
+            throw new ServletException(e);
+        }
+
+        loginManagerName = servletOptions.getLoginManagerName();
+        logoutActionReqParamName = servletOptions.getLogoutActionReqParamName();
+        themeName = servletOptions.getThemeName();
+        navigationTreeName = servletOptions.getNavigationTreeName();
+        projectSourceFileName = checkWebInfAndGetRealPath(servletOptions.getProjectFileName());
+
+        File xdmSourceFile = new File(projectSourceFileName);
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
-                    "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
+                    "correct the servlet-param called '"+ NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS +"' in your WEB-INF/web.xml file.");
 
-        setRuntimeEnvironmentFlags(BasicDbHttpServletValueContext.getEnvironmentFlags(servletContext));
+        initRuntimeEnvironmentFlags(servletConfig);
         initResourceLocators(servletConfig);
         if(isCacheComponents())
         {
-            // go ahead and grab all the components now -- so that we don't have to synchronize calls
+            // go ahead and grab all the components now -- so that we don't have to synchronize calls later
             getProject();
             getTheme();
             getLoginManager();
@@ -134,25 +324,21 @@ public class NavigationControllerServlet extends HttpServlet
      *   - APP_ROOT/resources/sparx (will only exist if user is overriding any defaults)
      *   - APP_ROOT/sparx (will exist in ITE mode when sparx directory is inside application)
      *   - [CLASS_PATH]/Sparx/resources (only useful during development in SDE, not production since it won't be found)
-     *   - TODO: allow locators to be specified in servlet init parameters?
      * @param servletConfig
      * @throws ServletException
      */
-    private void initResourceLocators(ServletConfig servletConfig) throws ServletException
+    protected void initResourceLocators(ServletConfig servletConfig) throws ServletException
     {
         ServletContext servletContext = servletConfig.getServletContext();
         try
         {
             String sparxUrl = "/sparx";
 
-            List webAppLocations = new ArrayList();
-            webAppLocations.add("/resources/sparx"); // this allows each app to override any sparx resource
-            webAppLocations.add(sparxUrl);           // these are the actual sparx resources
-
+            String[] webAppLocations = TextUtils.split(servletOptions.getSparxResourceLocators(), ",", false);
             List locators = new ArrayList();
-            for(int i = 0; i < webAppLocations.size(); i++)
+            for(int i = 0; i < webAppLocations.length; i++)
             {
-                String webAppRelativePath = (String) webAppLocations.get(i);
+                String webAppRelativePath = webAppLocations[i];
                 File webAppPhysicalDir = new File(servletContext.getRealPath(webAppRelativePath));
                 if(webAppPhysicalDir.exists() && webAppPhysicalDir.isDirectory())
                     locators.add(new UriAddressableInheritableFileResource(servletContext.getServletContextName() + sparxUrl, webAppPhysicalDir, isCacheComponents()));
@@ -180,17 +366,43 @@ public class NavigationControllerServlet extends HttpServlet
         }
     }
 
+    public String checkWebInfAndGetRealPath(String path)
+    {
+        if(path.startsWith("/WEB-INF"))
+            return getServletContext().getRealPath(path);
+        if(path.startsWith("WEB-INF"))
+            return getServletContext().getRealPath("/" + path);
+        return path;
+    }
+
+    public UriAddressableFileLocator getResourceLocator()
+    {
+        return resourceLocator;
+    }
+
+    public NavigationControllerServletOptions getServletOptions()
+    {
+        return servletOptions;
+    }
+
+    public String getExecutionPropertiesFileName()
+    {
+        return executionPropertiesFileName;
+    }
+
+    public Properties getExecutionProperties()
+    {
+        return executionProperties;
+    }
+
+    public long getInitializationCount()
+    {
+        return initializationCount;
+    }
+
     public RuntimeEnvironmentFlags getRuntimeEnvironmentFlags()
     {
         return runtimeEnvironmentFlags;
-    }
-
-    protected void setRuntimeEnvironmentFlags(RuntimeEnvironmentFlags runtimeEnvironmentFlags)
-    {
-        this.runtimeEnvironmentFlags = runtimeEnvironmentFlags;
-
-        // don't cache if we're in development mode -- we want XML files to be automatically reloaded when they change
-        setCacheComponents(! runtimeEnvironmentFlags.flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT));
     }
 
     public boolean isCacheComponents()
@@ -280,10 +492,71 @@ public class NavigationControllerServlet extends HttpServlet
         return loginManager;
     }
 
-    public Project getProject() throws ServletException
+    public ProjectComponent getProjectComponent()
+    {
+        try
+        {
+            int compFlags = XdmComponentFactory.XDMCOMPFLAG_CACHE_ALWAYS;
+            if(getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
+                compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
+
+            // never store the ProjectComponent instance since it may change if it needs to be reloaded
+            // (always use the factory get() method)
+            ProjectComponent projectComponent =
+                (ProjectComponent) XdmComponentFactory.get(projectComponentClass, projectSourceFileName, compFlags);
+
+            if(lastProjectComponentRetrieved != projectComponent)
+            {
+                if(projectComponent.getErrors().size() > 0)
+                {
+                    String message = "You have " + projectComponent.getErrors().size() + " error(s) in the project. To see the messages, visit\nhttp://<your-host>"+ getServletContext().getServletContextName() +"/console/project/input-source#errors.";
+                    if(log.isErrorEnabled())
+                        log.error(message);
+                    else
+                        System.err.println(message);
+                }
+                if(projectComponent.getWarnings().size() > 0)
+                {
+                    String message = "You have " + projectComponent.getWarnings().size() + " warning(s) in the project. To see the messages, visit\nhttp://<your-host>"+ getServletContext().getServletContextName() +"/console/project/input-source#warnings.";
+                    if(log.isWarnEnabled())
+                        log.warn(message);
+                    else
+                        System.out.println(message);
+                }
+
+                String[] listeners = servletOptions.getProjectLifecycleListenerClassNames();
+                if(listeners != null)
+                {
+                    for(int i = 0; i < listeners.length; i++)
+                    {
+                        ProjectEvent event = new ProjectEvent(projectComponent.getProject());
+                        Class listenerClass = Class.forName(listeners[i]);
+                        if(ProjectLifecyleListener.class.isAssignableFrom(listenerClass))
+                        {
+                            ProjectLifecyleListener pll = (ProjectLifecyleListener) listenerClass.newInstance();
+                            pll.projectLoadedFromXml(event);
+                        }
+                        else
+                            log.error("Unknown listener: " + listenerClass);
+                    }
+                }
+
+                // save this for the next time so that we don't reinitialize or run the listeners again
+                lastProjectComponentRetrieved = projectComponent;
+            }
+
+            return projectComponent;
+        }
+        catch(Exception e)
+        {
+            throw new NestableRuntimeException(e);
+        }
+    }
+
+    public Project getProject()
     {
         if(project == null || ! isCacheComponents())
-            project = BasicDbHttpServletValueContext.getProjectComponent(getServletContext()).getProject();
+            project = getProjectComponent().getProject();
         return project;
     }
 
@@ -355,7 +628,7 @@ public class NavigationControllerServlet extends HttpServlet
             skin.renderPageMetaData(writer, nc);
             skin.renderPageHeader(writer, nc);
             writer.write("No page located for path '"+ nc.getActivePathFindResults().getSearchedForPath() +"'.");
-            if(nc.getEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT))
+            if(nc.getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT))
             {
                 writer.write("<pre>\n");
                 writer.write(tree.toString());
@@ -382,6 +655,11 @@ public class NavigationControllerServlet extends HttpServlet
         }
         else
             renderPage(nc);
+
+        // if we get to here it means no exceptions were thrown during initialization and the first get/post -- this
+        // means we're going to assume our initialization was properly done and increment the persistent init count
+        if(! initCountWritten)
+            persistInitCount();
     }
 
     protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
