@@ -50,15 +50,11 @@ import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.util.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
 
 import java.util.Set;
 
 public class TestOrganization  extends TestCase
 {
-
-
     public void testOrg()
     {
         Session session = new ProcessSession();
@@ -71,14 +67,6 @@ public class TestOrganization  extends TestCase
 
         final Organization org2 = new Organization();
         org2.setOrganizationName("Acme Subsidiary");
-
-        Criteria criteria = HibernateUtil.getSession().createCriteria(PartyRoleType.class);
-        criteria.add(Expression.eq("code", PartyRoleType.Cache.SUBSIDIARY.getCode()));
-        final PartyRoleType subsidiaryRoleType = (PartyRoleType) criteria.uniqueResult(); // we know that its unique for now
-
-        criteria = HibernateUtil.getSession().createCriteria(PartyRoleType.class);
-        criteria.add(Expression.eq("code", PartyRoleType.Cache.PARENT_ORG.getCode()));
-        final PartyRoleType parentRoleType = (PartyRoleType) criteria.uniqueResult(); // we know that its unique for now
 
         HibernateUtil.beginTransaction();
 
@@ -102,27 +90,23 @@ public class TestOrganization  extends TestCase
         // add a new role belonging to the parent org
         final PartyRole role1 = new PartyRole();
         role1.setParty(parentOrg);
-        role1.setType(subsidiaryRoleType);
+        role1.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
         parentOrg.getPartyRoles().add(role1);
         HibernateUtil.getSession().update(parentOrg);
         // add a new role belonging to the child org
         final PartyRole role2 = new PartyRole();
         role2.setParty(childOrg);
-        role2.setType(subsidiaryRoleType);
+        role2.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
         childOrg.getPartyRoles().add(role2);
         HibernateUtil.getSession().update(childOrg);
 
-        final Criteria relCriteria =  HibernateUtil.getSession().createCriteria(PartyRelationshipType.class);
-        relCriteria.add(Expression.eq("code", PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getCode()));
-        PartyRelationshipType relType = (PartyRelationshipType) relCriteria.uniqueResult();
-
         PartyRelationship rel = new PartyRelationship();
-        rel.setRelationshipType(relType);
+        rel.setRelationshipType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
         rel.setPartyRole(role1);
         HibernateUtil.getSession().save(rel);
 
         rel = new PartyRelationship();
-        rel.setRelationshipType(relType);
+        rel.setRelationshipType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
         rel.setPartyRole(role2);
         HibernateUtil.getSession().save(rel);
 
@@ -135,7 +119,7 @@ public class TestOrganization  extends TestCase
                 parentOrg.getOrgId());
         // verify that the parent org has one role defined
         assertEquals(1, updatedParentOrg.getPartyRoles().size());
-        assertEquals(subsidiaryRoleType.getPartyRoleTypeId(),
+        assertEquals(PartyRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
                 ((PartyRole) updatedParentOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
 
         final Organization updatedChildOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
@@ -143,7 +127,7 @@ public class TestOrganization  extends TestCase
         // verify that the child org has one role
         assertEquals(1, updatedChildOrg.getPartyRoles().size());
         // verify that the child org's roles are the right ones
-        assertEquals(subsidiaryRoleType.getPartyRoleTypeId(),
+        assertEquals(PartyRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
                 ((PartyRole) updatedChildOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
 
         // verify that the parent org's one role has one relationship
