@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+<dialogs package="form.acl">
+    <dialog name="role" generate-dcb="yes">
+        <frame heading="Assign a role"/>
+        <field type="select" style="multilist" name="role_list" caption="Available Roles" required="yes"/>
+        <!--listener class="app.form.acl.AccessControlListDialog"/-->
+    </dialog>
+</dialogs>
+
+</xdm:container>
