@@ -106,7 +106,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.68 2004-06-24 19:02:17 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.69 2004-07-16 01:57:56 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -117,7 +117,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
     public static final String REQATTRNAME_NAVIGATION_CONTEXT = "navigationContext";
     private static final int INHERIT_PAGE_FLAGS_FROM_PARENT = NavigationPath.INHERIT_PATH_FLAGS_FROM_PARENT | Flags.REQUIRE_LOGIN | Flags.ALLOW_PAGE_CMD_PARAM | Flags.ALLOW_VIEW_SOURCE;
-    private static final String ATTRNAME_PAGE_ACTIVITY = "NAVIGATION_PAGE_ACTIVITY";
 
     static
     {
