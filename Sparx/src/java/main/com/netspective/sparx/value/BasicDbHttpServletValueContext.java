@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.46 2003-11-20 06:00:28 roque.hernandez Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.47 2003-11-27 19:35:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -53,7 +53,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
@@ -72,7 +71,6 @@ import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.connection.HttpSessionBindableTransactionConnectionContext;
 import com.netspective.sparx.connection.HttpSessionBindableAutoCommitConnectionContext;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationControllerServletOptions;
@@ -474,13 +472,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public Configuration getFreeMarkerConfiguration()
     {
-        final ServletContext servletContext = getHttpServlet().getServletContext();
-        Configuration result = (Configuration) servletContext.getAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG);
-        if(result == null)
-        {
-            result = FreeMarkerConfigurationAdapters.getInstance().constructWebAppConfiguration(this);
-            servletContext.setAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG, result);
-        }
-        return result;
+        return ((NavigationControllerServlet) getHttpServlet()).getFreeMarkerConfiguration();
     }
 }
