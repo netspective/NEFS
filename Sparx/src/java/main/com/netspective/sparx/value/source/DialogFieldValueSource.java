@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldValueSource.java,v 1.3 2003-05-13 19:52:04 shahid.shah Exp $
+ * $Id: DialogFieldValueSource.java,v 1.4 2003-07-03 22:03:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -60,6 +60,8 @@ import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.Dialog;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.value.DatabaseConnValueContext;
 
 public class DialogFieldValueSource extends AbstractValueSource
 {
@@ -106,12 +108,32 @@ public class DialogFieldValueSource extends AbstractValueSource
         }
         else
         {
-            ServletRequest request = ((ServletValueContext) vc).getRequest();
-            DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
-            if(dc != null)
-                return dc.getFieldStates().getState(fieldName).getValue();
+            if (vc instanceof ConnectionContext)
+            {
+                DatabaseConnValueContext databaseValueContext = ((ConnectionContext) vc).getDatabaseValueContext();
+                if (databaseValueContext instanceof DialogContext)
+                    return ((DialogContext) databaseValueContext).getFieldStates().getState(fieldName).getValue();
+                else
+                {
+                    ServletValueContext svc = (ServletValueContext) databaseValueContext;
+                    ServletRequest request =  svc.getRequest();
+                    DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
+                    if(dc != null)
+                        return dc.getFieldStates().getState(fieldName).getValue();
+                    else
+                        return servletRequestParameterValueSource.getValue(vc);
+                }
+            }
             else
-                return servletRequestParameterValueSource.getValue(vc);
+            {
+               ServletRequest request = ((ServletValueContext) vc).getRequest();
+                DialogContext dc = (DialogContext) request.getAttribute(DialogContext.DIALOG_CONTEXT_ATTR_NAME);
+                if(dc != null)
+                    return dc.getFieldStates().getState(fieldName).getValue();
+                else
+                    return servletRequestParameterValueSource.getValue(vc);
+            }
+
         }
 
     }
