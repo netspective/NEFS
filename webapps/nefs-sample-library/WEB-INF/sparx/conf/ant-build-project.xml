@@ -4,7 +4,7 @@
 
     <target name=".init-app-path" unless="app.home" description="If app.home property is not passed in, set the application path relative to the location of the build project file.">
         <path id="app.home.path">
-            <pathelement location="${basedir}/../../"/>
+            <pathelement location="${basedir}/../../../"/>
         </path>
         <pathconvert targetos="unix" property="app.home" refid="app.home.path"/>
     </target>

@@ -10,7 +10,7 @@
     <navigation-tree name="app" default="yes">
         <page name="home" default="yes" caption="Home">
             <body>
-                Welcome to the home page.
+                Welcome to the Home page for the Sparx starter app.
                 <![CDATA[<p>
                 <ul>
                     <li>Click <a href="console">here</a> to see the console or
