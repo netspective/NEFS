@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialogContext.java,v 1.4 2003-10-27 04:28:27 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialogContext.java,v 1.5 2004-04-12 18:06:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -49,6 +49,7 @@ import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
+import com.netspective.axiom.ConnectionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,9 +64,20 @@ public class SchemaRecordEditorDialogContext extends DialogContext
 {
     private static final Log log = LogFactory.getLog(SchemaRecordEditorDialogContext.class);
 
+    private ConnectionContext activeConnectionContext;
     private List rowsAdded = new ArrayList();
     private List rowsUpdated = new ArrayList();
     private List rowsDeleted = new ArrayList();
+
+    public ConnectionContext getActiveConnectionContext()
+    {
+        return activeConnectionContext;
+    }
+
+    public void setActiveConnectionContext(ConnectionContext activeConnectionContext)
+    {
+        this.activeConnectionContext = activeConnectionContext;
+    }
 
     /**
      * Gets a List object of recently added rows
