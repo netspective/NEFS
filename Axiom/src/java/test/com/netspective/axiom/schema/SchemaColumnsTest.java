@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.4 2003-06-15 05:54:56 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.5 2003-06-15 15:08:24 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -70,8 +70,6 @@ import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.*;
 import com.netspective.axiom.schema.column.type.*;
-import com.netspective.axiom.schema.dal.db.model.TestThree;
-import com.netspective.axiom.schema.dal.db.DataAccessLayer;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
