@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSet.java,v 1.4 2003-06-26 07:00:47 aye.thu Exp $
+ * $Id: QueryResultSet.java,v 1.5 2003-08-30 16:39:02 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -146,7 +146,7 @@ public class QueryResultSet
             }
 
             column.setColIndex(c - 1);
-            column.setHeading(new StaticValueSource(TextUtils.sqlIdentifierToText(rsmd.getColumnName(c), true)));
+            column.setHeading(new StaticValueSource(TextUtils.sqlIdentifierToText(rsmd.getColumnLabel(c), true)));
             column.setDataType(dataType);
             column.setWidth(rsmd.getColumnDisplaySize(c));
 
