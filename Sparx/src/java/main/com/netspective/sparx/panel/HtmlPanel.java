@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.14 2003-12-12 17:20:39 shahid.shah Exp $
+ * $Id: HtmlPanel.java,v 1.15 2004-02-23 19:22:53 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -56,8 +56,9 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public interface HtmlPanel extends TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
-    public final int RENDERFLAG_NOFRAME = 1;
-    public final int RENDERFLAGS_DEFAULT = 0;
+    public static final int RENDERFLAGS_DEFAULT = 0;
+    public static final int RENDERFLAG_NOFRAME = 1;
+    public static final int RENDERFLAG_HIDE_FRAME_HEADING = RENDERFLAG_NOFRAME * 2;
 
     public String getPanelIdentifier();
 
