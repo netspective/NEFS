@@ -24,7 +24,7 @@ demonstration and sample application.
 
 <h1>Automatic Documentation</h1>
 Your development team concentrates on implementation of business functionality while the Enterprise Console automatically
-collects all relevant project metrics, documentation, and details. Managers can use ACE in real-time to track programmer work and productivity.
+collects all relevant project metrics, documentation, and details. Managers can use Console in real-time to track programmer work and productivity.
 
 <ul class="check-list">
     <li>Automatically documents web dialogs, SQL statements, schema objects, and other programming artifacts.<p>
