@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.26 2003-06-19 03:27:04 aye.thu Exp $
+  * $Id: sparx.xml,v 1.27 2003-06-19 04:52:59 aye.thu Exp $
   *****************************************************************************************
  -->
 
@@ -60,7 +60,7 @@
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
             <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
-                  reg-expr="/^\\w+((-\\w+)|(\\.\\w+))*\\@[A-Za-z0-9]+((\\.|-)[A-Za-z0-9]+)*\\.[A-Za-z0-9]+$/"
+                  reg-expr="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]{2,4}$/"
                   invalid-reg-ex-message="Email must be in xxx@xxxx.xxx format."/>
         </validation>
     </dialog-field-type>
