@@ -154,8 +154,22 @@
             </page>
         </page>
 
-        <page class="app.AppPage" name="services" caption="Services" heading="We Can Get Your Projects Done">
-            <body source="services/index.ftl"/>
+        <page class="app.AppPage" name="services" caption="Services" >
+            <page name="overview" caption="Services" heading="We Can Get Your Projects Done">
+                <summary>
+                    We have been delivering information technology solutions to global Fortune 1000 corporations
+                    for years.
+                </summary>
+                <body source="services/index.ftl"/>
+            </page>
+
+            <page name="methodology" caption="Methodology" heading="We Use Repeatable Processes">
+                <summary>
+                    Since we've done dozens of projects over many years we've come up with repeatable processes that
+                    have proven highly effective.
+                </summary>
+                <body source="services/methodology.ftl"/>
+            </page>
         </page>
 
         <page class="app.AppPage" name="support" caption="Support" heading="We're Here to Help">
