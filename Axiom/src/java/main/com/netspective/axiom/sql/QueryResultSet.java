@@ -191,7 +191,8 @@ public class QueryResultSet
         //resultSet.getStatement().close();
         try
         {
-            resultSet.close();
+            if(resultSet != null)
+                resultSet.close();
         }
         catch(SQLException e)
         {
