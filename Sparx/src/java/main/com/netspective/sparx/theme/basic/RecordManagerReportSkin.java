@@ -67,7 +67,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * @version $Id: RecordManagerReportSkin.java,v 1.5 2004-02-10 16:55:19 aye.thu Exp $
+ * @version $Id: RecordManagerReportSkin.java,v 1.6 2004-06-23 15:17:08 aye.thu Exp $
  */
 public class RecordManagerReportSkin extends RecordEditorReportSkin
 {
@@ -98,11 +98,11 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
         HtmlReportActions actions = report.getActions();
         if (actions != null)
         {
-            HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_ADD));
-            if (reportAction != null)
+            HtmlReportAction[] addReportActions = actions.getByType(HtmlReportAction.Type.RECORD_ADD);
+            if (addReportActions != null && addReportActions.length > 0)
             {
                 Theme theme = rc.getActiveTheme();
-                RedirectValueSource redirect = reportAction.getRedirect();
+                RedirectValueSource redirect = addReportActions[0].getRedirect();
                 if (redirect != null)
                 {
                     writer.write("<td align=right valign=bottom bgcolor=white><table cellspacing=0 cellpadding=0 class='"+ panelClassNamePrefix +"'><tr>");
@@ -111,7 +111,7 @@ public class RecordManagerReportSkin extends RecordEditorReportSkin
                     {
                          writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\" height=14>" +
                             "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
-                            "\"><nobr>&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
+                            "\"><nobr>&nbsp;" + addReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</nobr></a></td>");
                     }
                     writer.write("</td></tr></table></td>");
                 }

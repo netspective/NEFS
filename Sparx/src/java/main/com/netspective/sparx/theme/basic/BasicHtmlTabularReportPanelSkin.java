@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.31 2004-04-30 01:36:18 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.32 2004-06-23 15:17:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -496,22 +496,20 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         sb.append("    <tr>");
         if (actions != null)
         {
-            HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
-            if (reportAction != null)
+            HtmlReportAction[] reportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
+            if (reportActions != null && reportActions.length > 0)
             {
                 TabularReportColumns columns = rc.getColumns();
                 int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc) + getRowDecoratorAppendColsCount(rc);
-
-                Theme theme = rc.getActiveTheme();
-                RedirectValueSource redirect = (RedirectValueSource)reportAction.getRedirect();
+                RedirectValueSource redirect = (RedirectValueSource)reportActions[0].getRedirect();
                 if (redirect != null)
                 {
-                    String title = reportAction.getTitle() != null ? reportAction.getTitle().getTextValue(rc) : "";
+                    String title = reportActions[0].getTitle() != null ? reportActions[0].getTitle().getTextValue(rc) : "";
                     sb.append("            <td colspan=\"" + colsCount + "\" class=\"report-column-heading\">" +
                             "<a class=\""+ panelClassNamePrefix +"-frame-action\" title=\""+ title + "\" href=\"" +
                              redirect.getUrl(rc)  + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
                             ", '"+ redirect.getUrl(rc)  +
-                            "')\">&nbsp;" + reportAction.getCaption().getTextValue(rc) + "&nbsp;</a></td>");
+                            "')\">&nbsp;" + reportActions[0].getCaption().getTextValue(rc) + "&nbsp;</a></td>");
                 }
             }
         }
@@ -535,8 +533,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             // no actions are defined in the report
             return;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
-        if (reportAction != null)
+        HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
+        if (selectReportActions != null && selectReportActions.length > 0)
         {
             // use the active row rumber within the result set as the checkbox name
             int activeRowNumber = ds.getActiveRowNumber();
@@ -602,8 +600,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             // no actions are defined in the report so return 0
             return 0;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
-        if (reportAction != null)
+        HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
+        if (selectReportActions != null && selectReportActions.length > 0)
             return 1;
         else
             return 0;

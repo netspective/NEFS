@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentSkin.java,v 1.2 2004-03-14 06:09:26 aye.thu Exp $
+ * $Id: ReportPanelEditorContentSkin.java,v 1.3 2004-06-23 15:17:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -247,10 +247,10 @@ public class ReportPanelEditorContentSkin extends RecordEditorReportSkin
             // no actions are defined in the report
             return;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
+        HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
+        if (editReportActions != null && editReportActions.length > 0)
         {
-            ValueSource redirect = reportAction.getRedirect();
+            ValueSource redirect = editReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-edit.gif") + "\" " +
@@ -274,13 +274,13 @@ public class ReportPanelEditorContentSkin extends RecordEditorReportSkin
             // no actions are defined in the report
             return;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
-        if (reportAction != null)
+        HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
+        if (deleteReportActions != null && deleteReportActions.length > 0)
         {
-            HtmlPanelAction.State state = actionStates.getState(reportAction);
+            HtmlPanelAction.State state = actionStates.getState(deleteReportActions[0]);
             if (state != null &&  state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return;
-            ValueSource redirect = reportAction.getRedirect();
+            ValueSource redirect = deleteReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/panel-editor-action-delete.gif") + "\" alt=\"\" height=\"7\" width=\"7\" border=\"0\">";
@@ -310,10 +310,10 @@ public class ReportPanelEditorContentSkin extends RecordEditorReportSkin
             // no actions are defined in the report so return 0
             return cols;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
-        if (reportAction != null)
+        HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
+        if (deleteReportActions != null && deleteReportActions.length > 0)
         {
-            HtmlPanelAction.State state = actionStates.getState(reportAction);
+            HtmlPanelAction.State state = actionStates.getState(deleteReportActions[0]);
             if (state != null &&  state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return cols;
             else
@@ -340,10 +340,10 @@ public class ReportPanelEditorContentSkin extends RecordEditorReportSkin
             // no actions are defined in the report so return 0
             return cols;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
+        HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
+        if (editReportActions != null && editReportActions.length > 0)
         {
-            HtmlPanelAction.State state = actionStates.getState(reportAction);
+            HtmlPanelAction.State state = actionStates.getState(editReportActions[0]);
             if (state != null &&  state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
                 return cols;
             else

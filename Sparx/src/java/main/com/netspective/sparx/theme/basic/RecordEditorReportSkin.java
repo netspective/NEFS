@@ -66,7 +66,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.11 2003-09-10 04:02:19 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.12 2004-06-23 15:17:08 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -89,11 +89,10 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             // no actions are defined in the report
             return;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
-
-        if (reportAction != null)
+        HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
+        if (deleteReportActions != null && deleteReportActions.length > 0)
         {
-            ValueSource redirect = reportAction.getRedirect();
+            ValueSource redirect = deleteReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-delete.gif") + "\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
@@ -125,10 +124,10 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             // no actions are defined in the report
             return;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
+        HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
+        if (editReportActions != null && editReportActions.length > 0)
         {
-            ValueSource redirect = reportAction.getRedirect();
+            ValueSource redirect = editReportActions[0].getRedirect();
             Theme theme = getTheme();
 
             String label = "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/content-action-edit.gif") + "\" " +
@@ -156,8 +155,8 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             // no actions are defined in the report so return 0
             return cols;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_DELETE));
-        if (reportAction != null)
+        HtmlReportAction[] deleteReportActions = actions.getByType(HtmlReportAction.Type.RECORD_DELETE);
+        if (deleteReportActions != null && deleteReportActions.length > 0)
             return cols+1;
         else
             return cols;
@@ -179,8 +178,8 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             // no actions are defined in the report so return 0
             return cols;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_EDIT));
-        if (reportAction != null)
+        HtmlReportAction[] editReportActions = actions.getByType(HtmlReportAction.Type.RECORD_EDIT);
+        if (editReportActions != null)
             return cols+1;
         else
             return cols;

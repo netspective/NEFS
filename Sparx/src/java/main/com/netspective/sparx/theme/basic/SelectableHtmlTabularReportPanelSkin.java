@@ -20,7 +20,7 @@ import java.io.Writer;
 
 /**
  * @author aye
- * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.6 2003-09-15 03:58:35 aye.thu Exp $
+ * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.7 2004-06-23 15:17:08 aye.thu Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularReportPanelSkin
 {
@@ -46,11 +46,11 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
         HtmlPanelActions frameActions = frame.getActions();
         if (actions != null)
         {
-            HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
-            if (reportAction != null)
+            HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);
+            if (selectReportActions != null && selectReportActions.length > 0)
             {
                 Theme theme = rc.getActiveTheme();
-                RedirectValueSource redirect = (RedirectValueSource) reportAction.getRedirect();
+                RedirectValueSource redirect = (RedirectValueSource) selectReportActions[0].getRedirect();
                 if (frameActions.size() > 0)
                     writer.write("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
@@ -58,7 +58,7 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
                 {
                      writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
                         "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ redirect.getUrl(rc)  +
-                        "\">&nbsp;" + reportAction.getCaption().getTextValue(vc) + "&nbsp;</a></td>");
+                        "\">&nbsp;" + selectReportActions[0].getCaption().getTextValue(vc) + "&nbsp;</a></td>");
                 }
             }
         }
@@ -102,8 +102,8 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
             // no actions are defined in the report so return 0
             return 0;
         }
-        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
-        if (reportAction != null)
+        HtmlReportAction[] selectReportActions = actions.getByType(HtmlReportAction.Type.RECORD_SELECT);               
+        if (selectReportActions != null && selectReportActions.length > 0)
             return 1;
         else
             return 0;
