@@ -13,15 +13,15 @@
             </panels>
         </page>
         <page name="application" caption="Application">
-	        <page name="metrics" caption="Metrics"/>
-	        <page name="configuration" caption="Configuration Properties"/>
-	        <page name="access-control" caption="Access Control"/>
-	        <page name="xdm" caption="XDM Components">
+            <page name="xdm" caption="XDM Components">
                 <panels>
                     <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
                     <panel class="com.netspective.sparx.console.panel.XmlDataModelSchemaStructurePanel"/>
                 </panels>
             </page>
+	        <page name="metrics" caption="Metrics"/>
+	        <page name="configuration" caption="Configuration Properties"/>
+	        <page name="access-control" caption="Access Control"/>
 	        <page name="value-source" caption="Value Sources">
                 <panels>
                     <panel class="com.netspective.sparx.console.panel.ValueSourcesDocumentationPanel"/>

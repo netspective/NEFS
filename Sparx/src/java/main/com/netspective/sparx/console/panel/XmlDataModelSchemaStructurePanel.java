@@ -39,18 +39,17 @@
  */
 
 /**
- * $Id: XmlDataModelSchemaStructurePanel.java,v 1.3 2003-03-28 04:12:53 shahid.shah Exp $
+ * $Id: XmlDataModelSchemaStructurePanel.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +65,10 @@ import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xdm.exception.UnsupportedElementException;
+import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 
@@ -77,7 +79,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
 
     static
     {
-        report.getFrame().setHeading(new StaticValueSource("XDM Components Usage"));
+        report.getFrame().setHeading(new StaticValueSource("XDM Structure"));
 
         GeneralColumn elementName = new GeneralColumn();
         elementName.setHeading(new StaticValueSource("Element"));
@@ -102,7 +104,142 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
         report.addColumn(isRecursive);
     }
 
+    protected class Row
+    {
+        private int level;
+        private List ancestors;
+        private XmlDataModelSchema schema;
+        private TemplateProducer templateProducer;
+        private String elementName;
+        private boolean recursive;
+
+        protected Row(int level, String elementName, List ancestors, XmlDataModelSchema schema, boolean recursive)
+        {
+            this.elementName = elementName;
+            this.level = level;
+            this.ancestors = ancestors;
+            this.recursive = recursive;
+            this.schema = schema;
+        }
+
+        protected Row(int level, String elementName, List ancestors, TemplateProducer templateProducer, boolean recursive)
+        {
+            this.elementName = elementName;
+            this.level = level;
+            this.ancestors = ancestors;
+            this.recursive = recursive;
+            this.templateProducer = templateProducer;
+        }
+    }
+
     private XmlDataModel dataModel;
+    private static Map dataModelRows = new HashMap();
+
+    public void addRow(List rows, int level, List ancestors, Object parent, String name)
+    {
+        XmlDataModelSchema parentSchema = (XmlDataModelSchema) ancestors.get(0);
+        XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) parentSchema.getPropertyNames().get(name);
+
+        boolean recursive = false;
+        XmlDataModelSchema schema = null;
+        Object childInstance = null;
+
+        if(name != null)
+        {
+            try
+            {
+                childInstance = parentSchema.createElement(null, null, parent, name, true);
+                if(childInstance != null)
+                    schema = XmlDataModelSchema.getSchema(childInstance.getClass());
+                else
+                {
+                    log.error("Unable to create child for " + name);
+                    return;
+                }
+
+            }
+            catch (DataModelException e)
+            {
+                log.error(e);
+                return;
+            }
+            catch (UnsupportedElementException e)
+            {
+                log.error(e);
+                return;
+            }
+
+            recursive = ancestors.contains(schema);
+
+            rows.add(new Row(level, propNames.getPrimaryName(), ancestors, schema, recursive));
+        }
+        else
+        {
+            schema = XmlDataModelSchema.getSchema(parent.getClass());
+            childInstance = parent;
+        }
+
+        if(recursive)
+            return;
+
+        List childElemNames = new ArrayList();
+        Map schemaPropertyNames = schema.getPropertyNames();
+
+        Iterator iterator = schema.getNestedElements().keySet().iterator();
+        while (iterator.hasNext())
+        {
+            String nestedName = (String) iterator.next();
+            if(schema.getOptions().ignoreNestedElement(nestedName) || ! ((XmlDataModelSchema.PropertyNames) schemaPropertyNames.get(nestedName)).isPrimaryName(nestedName))
+                continue;
+
+            childElemNames.add(nestedName);
+        }
+
+        TemplateProducers templateProducers = null;
+        if(childInstance instanceof TemplateProducerParent)
+        {
+            templateProducers = ((TemplateProducerParent) childInstance).getTemplateProducers();
+            for(int i = 0; i < templateProducers.size(); i++)
+            {
+                TemplateProducer templateProducer = templateProducers.get(i);
+                childElemNames.add(templateProducer.getElementName());
+            }
+        }
+
+        if(childElemNames.size() > 0)
+        {
+            String[] nested = (String[]) childElemNames.toArray(new String[childElemNames.size()]);
+            Arrays.sort(nested);
+
+            List childAncestors = new ArrayList();
+            childAncestors.add(schema);
+            childAncestors.addAll(ancestors);
+
+            for(int i = 0; i < nested.length; i++)
+            {
+                String nestedName = nested[i];
+                if(templateProducers != null && templateProducers.get(nestedName) != null)
+                    rows.add(new Row(level+1, nestedName, ancestors, templateProducers.get(nestedName), false));
+                else
+                    addRow(rows, level+1, childAncestors, childInstance, nestedName);
+            }
+        }
+    }
+
+    public List createRows(XmlDataModel dataModel)
+    {
+        List rows = (List) dataModelRows.get(dataModel);
+        if(rows != null)
+            return rows;
+
+        rows = new ArrayList();
+        List ancestors = new ArrayList();
+        ancestors.add(XmlDataModelSchema.getSchema(dataModel.getClass()));
+        addRow(rows, -1, ancestors, dataModel, null);
+
+        dataModelRows.put(dataModel, rows);
+        return rows;
+    }
 
     public XmlDataModel getDataModel()
     {
@@ -116,9 +253,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
 
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        if(dataModel == null)
-            dataModel = nc.getApplicationManagerComponent();
-        return new StructureDataSource();
+        return new StructureDataSource(createRows(dataModel == null ? nc.getApplicationManagerComponent() : dataModel));
     }
 
     public TabularReport getReport()
@@ -129,40 +264,10 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
     protected class StructureDataSource implements TabularReportDataSource
     {
         protected int row = -1;
-        protected List rows = new ArrayList();
         protected int lastRow;
         protected Row activeRow;
+        protected List rows;
         protected Hierarchy hierarchy = new ActiveHierarchy();
-        protected Set visitedElements = new HashSet();
-        protected Set visitedTemplateProducers = new HashSet();
-
-        protected class Row
-        {
-            private int level;
-            private XmlDataModelSchema parentSchema;
-            private XmlDataModelSchema schema;
-            private String templateProducerElemName;
-            private String elementName;
-            private boolean recursive;
-
-            public Row(int level, String elementName, XmlDataModelSchema parentSchema, XmlDataModelSchema schema, boolean recursive)
-            {
-                this.elementName = elementName;
-                this.level = level;
-                this.parentSchema = parentSchema;
-                this.recursive = recursive;
-                this.schema = schema;
-            }
-
-            public Row(int level, String elementName, XmlDataModelSchema parentSchema, String templateProducerElemName, boolean recursive)
-            {
-                this.elementName = elementName;
-                this.level = level;
-                this.parentSchema = parentSchema;
-                this.recursive = recursive;
-                this.templateProducerElemName = templateProducerElemName;
-            }
-        }
 
         protected class ActiveHierarchy implements Hierarchy
         {
@@ -192,58 +297,10 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
             return hierarchy;
         }
 
-        public StructureDataSource()
+        public StructureDataSource(List rows)
         {
-            addRow(-1, XmlDataModelSchema.getSchema(dataModel.getClass()), dataModel.getClass(), null);
+            this.rows = rows;
             lastRow = rows.size() - 1;
-        }
-
-        public void addRow(int level, XmlDataModelSchema parentSchema, Class activeClass, String name)
-        {
-            XmlDataModelSchema schema = XmlDataModelSchema.getSchema(activeClass);
-            XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) parentSchema.getPropertyNames().get(name);
-
-            boolean recursive = visitedElements.contains(schema);
-
-            if(name != null)
-                rows.add(new Row(level, propNames.getPrimaryName(), parentSchema, schema, recursive));
-
-            if(recursive)
-                return;
-
-            visitedElements.add(schema);
-
-            List children = new ArrayList();
-            Map schemaPropertyNames = schema.getPropertyNames();
-
-            Iterator iterator = schema.getNestedElements().keySet().iterator();
-            while (iterator.hasNext())
-            {
-                String nestedName = (String) iterator.next();
-                if(schema.getOptions().ignoreNestedElement(nestedName) || ! ((XmlDataModelSchema.PropertyNames) schemaPropertyNames.get(nestedName)).isPrimaryName(nestedName))
-                    continue;
-
-                children.add(nestedName);
-            }
-
-            if(children.size() > 0)
-            {
-                String[] nested = (String[]) children.toArray(new String[children.size()]);
-                Arrays.sort(nested);
-
-                for(int i = 0; i < nested.length; i++)
-                {
-                    String nestedName = nested[i];
-                    try
-                    {
-                        addRow(level+1, schema, schema.getElementType(nestedName), nestedName);
-                    }
-                    catch(DataModelException e)
-                    {
-                        log.error(e);
-                    }
-                }
-            }
         }
 
         public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
@@ -254,19 +311,24 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
                     return activeRow.elementName;
 
                 case 1:
-                    if(activeRow.templateProducerElemName != null)
-                        return "Template producer";
+                    if(activeRow.templateProducer != null)
+                    {
+                        if(activeRow.templateProducer.isStatic())
+                            return "Template producer (namespace '" + activeRow.templateProducer.getNameSpaceId() + "')";
+                        else
+                            return "Template producer (dynamic namespace: "+ vc.getSkin().constructClassRef(activeRow.templateProducer.getClass()) +")";
+                    }
                     else
-                        return activeRow.schema.getBean().getName();
+                        return vc.getSkin().constructClassRef(activeRow.schema.getBean());
 
                 case 2:
-                    if(activeRow.templateProducerElemName == null)
-                        return activeRow.schema.supportsCharacters() ? "Yes" : "&nbsp;";
+                    if(activeRow.templateProducer == null)
+                        return activeRow.schema.supportsCharacters() ? "Yes" : vc.getSkin().getBlankValue();
                     else
-                        return "&nbsp;";
+                        return vc.getSkin().getBlankValue();
 
                 case 3:
-                    return activeRow.recursive ? "Yes" : "&nbsp;";
+                    return activeRow.recursive ? "Yes" : vc.getSkin().getBlankValue();
 
                 default:
                     return "Unknown column " + columnIndex;

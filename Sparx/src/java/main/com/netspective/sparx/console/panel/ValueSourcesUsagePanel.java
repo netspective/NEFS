@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -49,10 +49,8 @@ import java.util.Iterator;
 
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.BasicTabularReport;
-import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -110,7 +108,7 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
                     return new Integer(getActiveRowNumber());
 
                 case 1:
-                    return ConsoleServlet.constructClassRefHtml(vsClass);
+                    return vc.getSkin().constructClassRef(vsClass);
 
                 case 2:
                     int count = 0;

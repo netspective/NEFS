@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -73,6 +73,7 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.ReportHttpServletValueContext;
 import com.netspective.sparx.report.HtmlTabularReportSkin;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.lang.ClassPath;
 
 public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularReportSkin
 {
@@ -93,6 +94,16 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
         setFlag(HTMLFLAG_SHOW_BANNER | HTMLFLAG_SHOW_HEAD_ROW | HTMLFLAG_SHOW_FOOT_ROW | HTMLFLAG_ADD_ROW_SEPARATORS);
         if(fullWidth)
             setFlag(HTMLFLAG_FULL_WIDTH);
+    }
+
+    public String constructClassRef(Class cls)
+    {
+        return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + cls.getName() + "</span>";
+    }
+
+    public String getBlankValue()
+    {
+        return "&nbsp;";
     }
 
     public String getPanelStyle()
@@ -564,7 +575,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
             if(summary == null)
                 summary = "&nbsp;";
 
-            writer.write("<td class=\"report-summary\""+ states[i].getCssStyleAttrValue() +">" + summary + "</td>");
+            writer.write("<td class=\"report-summary\" style=\""+ states[i].getCssStyleAttrValue() +"\">" + summary + "</td>");
         }
         writer.write("</tr>");
     }

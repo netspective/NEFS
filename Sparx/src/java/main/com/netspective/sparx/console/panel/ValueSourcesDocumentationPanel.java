@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.4 2003-03-29 13:00:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -49,9 +49,7 @@ import java.util.Iterator;
 
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.report.tabular.*;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSourceDocumentation;
@@ -149,10 +147,10 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
                     if(doc != null)
                     {
                         String usage = (identifiers.length > 1 ? "<i>id</i>" : identifiers[0]) + ":" + doc.getUsageHtml();
-                        return "<font color=green>" + usage + "</font><br>" + doc.getDescription() + "<br><font color=#999999>" + ConsoleServlet.constructClassRefHtml(vsClass) + "</font>";
+                        return "<font color=green>" + usage + "</font><br>" + doc.getDescription() + "<br><font color=#999999>" + vc.getSkin().constructClassRef(vsClass) + "</font>";
                     }
                     else
-                        return "No documentation available in " + ConsoleServlet.constructClassRefHtml(vsClass) + ".";
+                        return "No documentation available in " + vc.getSkin().constructClassRef(vsClass) + ".";
 
                 default:
                     return "Invalid column: " + columnIndex;

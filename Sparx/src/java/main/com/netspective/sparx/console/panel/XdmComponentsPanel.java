@@ -39,36 +39,22 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.4 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.5 2003-03-29 13:00:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
 
-import java.io.Writer;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
 
-import javax.servlet.ServletException;
-
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.BasicTabularReport;
 import com.netspective.commons.report.tabular.TabularReport;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportException;
-import com.netspective.sparx.report.ReportHttpServletValueContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
-import com.netspective.sparx.report.HtmlTabularReportPanel;
-import com.netspective.sparx.report.HtmlTabularReportSkin;
-import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -162,7 +148,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
                     return new Integer(getActiveRowNumber());
 
                 case 1:
-                    return ConsoleServlet.constructClassRefHtml(component.getClass());
+                    return vc.getSkin().constructClassRef(component.getClass());
 
                 case 2:
                     InputSourceTracker ist = component.getInputSource();
