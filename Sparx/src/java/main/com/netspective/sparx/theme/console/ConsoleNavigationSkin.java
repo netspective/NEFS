@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.43 2004-03-16 16:19:54 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.44 2004-03-21 19:15:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -139,7 +139,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-report.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-text.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/docbook.css") + "\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");

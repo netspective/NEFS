@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.17 2004-02-04 23:15:47 min-gu.lee Exp $
+ * $Id: DateTimeField.java,v 1.18 2004-03-21 19:15:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -232,7 +232,7 @@ public class DateTimeField extends TextField
 
     private DataType dataType = null;
     private DateValueValidationRule dateValidationRule;
-    private String clientCalendarFormat = "mm/dd/yyyy";
+    private String clientCalendarFormat = DataType.CLIENT_FORMATS[0];
 
     public DateTimeField()
     {
@@ -306,7 +306,7 @@ public class DateTimeField extends TextField
         setFormat(dataType.getFormat());
         setClientCalendarFormat(dataType.getClientFormatPattern());
         dateValidationRule.getFormat().setLenient(false);
-        setSize(dataType.getServerFormatPattern().length());
+        setSize(dataType.getServerFormatPattern().length() + 1);
         setMaxLength(getSize());
     }
 
@@ -414,17 +414,15 @@ public class DateTimeField extends TextField
         else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
-            final String formatPattern = dateValidationRule.toPattern();
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
-                    textValue + "\" maxlength=\"" + formatPattern.length() + "\" size=\"" +
-                    formatPattern.length() + "\" " + controlAreaStyle +
+                    textValue + "\" maxlength=\"" + getMaxLength() + "\" size=\"" +
+                    getSize() + "\" " + controlAreaStyle +
                     " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else if(!stateFlags.flagIsSet(TextField.Flags.MASK_ENTRY))
         {
-            final String formatPattern = dateValidationRule.toPattern();
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
-                    formatPattern.length() + "\" size=\"" + formatPattern.length() + "\" " +
+                    getMaxLength() + "\" size=\"" + getSize() + "\" " +
                     controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }
@@ -434,8 +432,8 @@ public class DateTimeField extends TextField
         if (getDataType().getValueIndex() != DataType.TIME_ONLY)
         {
             Theme theme = dc.getSkin().getTheme();
-            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/calendar.js") + "'></script>\n");
-            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/lang/calendar-en.js") + "'></script>\n");
+            writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/calendar.js") + "'></script>\n");
+            writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/lang/calendar-en.js") + "'></script>\n");
             writer.write("<script src='" + theme.getResourceUrl("/scripts/calendar-helper.js") + "'></script>\n");
 
             writer.write(
