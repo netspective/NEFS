@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.6 2003-06-21 21:35:35 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.7 2003-07-16 19:31:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -387,39 +387,44 @@ public class DataImportHandler extends AbstractContentHandler
             }
             else
             {
-                NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
-                if (entry.row != null)
+                if(haveActiveNodeEntry())
                 {
-                    Tables childTables = entry.row.getTable().getChildTables();
-                    Table childTable = childTables.size() > 0 ? childTables.getByNameOrXmlNodeName(qName) : null;
-
-                    if (childTable != null)
+                    NodeStackEntry entry = (NodeStackEntry) getActiveNodeEntry();
+                    if (entry.row != null)
                     {
-                        // if we're starting a child row, be sure to write out the active entry so that if there
-                        // are relational dependencies everything will work
-                        entry.write();
+                        Tables childTables = entry.row.getTable().getChildTables();
+                        Table childTable = childTables.size() > 0 ? childTables.getByNameOrXmlNodeName(qName) : null;
 
-                        Column parentRefCol = childTable.getParentRefColumns().getSole();
-                        Row childRow = childTable.createRow((ParentForeignKey) parentRefCol.getForeignKey(), entry.row);
-                        NodeStackEntry newEntry = new NodeStackEntry(qName, childRow, depth);
-                        newEntry.handleAttributes(attributes, true);
-                        getNodeStack().push(newEntry);
-                    }
-                    else
-                    {
-                        Column column = entry.row.getTable().getColumns().getByNameOrXmlNodeName(qName);
-                        if (column != null)
+                        if (childTable != null)
                         {
-                            NodeStackEntry newEntry = new NodeStackEntry(qName, entry.row, qName, depth);
-                            newEntry.handleAttributes(attributes, false);
+                            // if we're starting a child row, be sure to write out the active entry so that if there
+                            // are relational dependencies everything will work
+                            entry.write();
+
+                            Column parentRefCol = childTable.getParentRefColumns().getSole();
+                            Row childRow = childTable.createRow((ParentForeignKey) parentRefCol.getForeignKey(), entry.row);
+                            NodeStackEntry newEntry = new NodeStackEntry(qName, childRow, depth);
+                            newEntry.handleAttributes(attributes, true);
                             getNodeStack().push(newEntry);
                         }
                         else
                         {
-                            getNodeStack().push(new NodeStackEntry(qName, depth));
-                            getParseContext().addError("Column '" + qName + "' not found in table '" + entry.row.getTable().getName() + "'. Available: " + entry.row.getTable().getColumns().getOnlyNames());
+                            Column column = entry.row.getTable().getColumns().getByNameOrXmlNodeName(qName);
+                            if (column != null)
+                            {
+                                NodeStackEntry newEntry = new NodeStackEntry(qName, entry.row, qName, depth);
+                                newEntry.handleAttributes(attributes, false);
+                                getNodeStack().push(newEntry);
+                            }
+                            else
+                            {
+                                getNodeStack().push(new NodeStackEntry(qName, depth));
+                                getParseContext().addError("Column '" + qName + "' not found in table '" + entry.row.getTable().getName() + "'. Available: " + entry.row.getTable().getColumns().getOnlyNames());
+                            }
                         }
                     }
+                    else
+                        getParseContext().addError("Don't know what to do with element '" + qName + "'");
                 }
                 else
                     getParseContext().addError("Don't know what to do with element '" + qName + "'");
