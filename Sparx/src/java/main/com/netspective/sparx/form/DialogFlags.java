@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.6 2003-08-06 05:30:56 aye.thu Exp $
+ * $Id: DialogFlags.java,v 1.7 2003-09-29 02:09:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -49,9 +49,9 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 public class DialogFlags extends XdmBitmaskedFlagsAttribute
 {
     // NOTE: when adding new flags, make sure to create them before the
-    // last DLGFLAG_CUSTOM_START entry. This is because QueryBuilderDialog
+    // last CUSTOM_START entry. This is because QueryBuilderDialog
     // extends this class and has additional flags that is based on the value
-    // of DLGFLAG_CUSTOM_START.
+    // of CUSTOM_START.
     public static final int CONTENTS_FINALIZED = 1;
     public static final int RETAIN_ALL_REQUEST_PARAMS = CONTENTS_FINALIZED * 2;
     public static final int HIDE_READONLY_HINTS = RETAIN_ALL_REQUEST_PARAMS * 2;
@@ -65,7 +65,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int DISABLE_CLIENT_KEYPRESS_FILTERS = SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE * 2;
     public static final int HIDE_HINTS_UNTIL_FOCUS = DISABLE_CLIENT_KEYPRESS_FILTERS * 2;
     static public final int RETAIN_INITIAL_STATE = HIDE_HINTS_UNTIL_FOCUS * 2;
-    public static final int CUSTOM_START = RETAIN_INITIAL_STATE * 2;
+    static public final int AUTO_BIND_FIELDS_TO_COLUMNS = RETAIN_INITIAL_STATE * 2;
+    public static final int CUSTOM_START = AUTO_BIND_FIELDS_TO_COLUMNS * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -81,7 +82,8 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE", SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_KEYPRESS_FILTERS", DISABLE_CLIENT_KEYPRESS_FILTERS),
         new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_HINTS_UNTIL_FOCUS", HIDE_HINTS_UNTIL_FOCUS),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "AUTO_BIND_FIELDS_TO_COLUMNS", AUTO_BIND_FIELDS_TO_COLUMNS)
     };
 
     public DialogFlags()
