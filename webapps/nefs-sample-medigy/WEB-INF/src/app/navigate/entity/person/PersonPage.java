@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.2 2004-03-05 01:04:43 aye.thu Exp $
+ * $Id: PersonPage.java,v 1.3 2004-03-06 17:23:02 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
@@ -174,8 +174,9 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
         String peName = (String) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
         if (peName != null)
         {
+            String currentMode = (String) request.getAttribute(PanelEditor.CURRENT_MODE_CONTEXT_ATTRIBUTE);
             String nextMode = (String) request.getAttribute(PanelEditor.PREV_MODE_CONTEXT_ATTRIBUTE);
-            return PanelEditor.generatePanelEditorActionUrl(dc.getNavigationContext(), peName, nextMode, null, null);
+            return PanelEditor.calculateNextMode(dc, peName, currentMode, nextMode, null);
         }
         return super.getDialogNextActionUrl(dc, defaultUrl);
     }
