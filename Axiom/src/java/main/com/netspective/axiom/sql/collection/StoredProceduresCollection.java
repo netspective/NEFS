@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProceduresCollection.java,v 1.2 2003-10-31 03:35:12 aye.thu Exp $
+ * $Id: StoredProceduresCollection.java,v 1.3 2003-11-18 03:38:27 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -76,7 +76,6 @@ public class StoredProceduresCollection implements StoredProcedures
     public void add(StoredProcedure sp)
     {
         storedProcs.add(sp);
-        System.out.println(sp.getName()  +  " " + sp.getNameForMapKey());
         byName.put(sp.getNameForMapKey(), sp);
 
 		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
