@@ -5,6 +5,8 @@
     <target name="setup-project-properties">
 
         <property name="nefs.home" value="${basedir}/../.."/>
+        <property name="nefs.docs.home" value="${basedir}"/>
+        <property name="nefs.docs.change-log.home" value="${nefs.docs.home}/change-log"/>
         <property name="commons.lib.redist.dir" value="${nefs.home}/Commons/lib/redist"/>
 
         <property name="project.home" value="${basedir}"/>
@@ -18,6 +20,7 @@
         <property name="manual.resources.dir" value="${manual.path}/resources"/>
 
         <property name="manual.html.path" value="${project.home}/../../webapps/nefs-sampler/${manual.id}"/>
+        <property name="change-log.html.path" value="${project.home}/../../webapps/nefs-sampler/change-log"/>
 
         <property name="docbook-xsl.version" value="1.62.4"/>
         <property name="docbook-xsl-redist.home" value="${project.lib.redist.dir}/docbook-xsl-${docbook-xsl.version}"/>
@@ -33,7 +36,7 @@
         </path>
     </target>
 
-    <target name="prepare-destination" depends="setup-project-properties">
+    <target name="prepare-manual-destination" depends="setup-project-properties">
         <delete dir="${manual.html.path}"/>
         <mkdir dir="${manual.html.path}"/>
     </target>
@@ -48,26 +51,59 @@
         </copy>
     </target>
 
-    <target name="chunked" depends="prepare-destination,copy-resources">
+    <target name="chunked" depends="prepare-manual-destination,copy-resources">
         <echo message="Creating chunked HTML output in ${manual.html.path}"/>
         <xslt basedir="${manual.path}"
             destdir="${manual.html.path}"
             style="${docbook-xsl.home}/html/netspective-chunk.xsl"
             force="yes" processor="trax" classpathref="project.class.path">
-
             <include name="${manual.file-name}"/>
-
         </xslt>
-        <!--
-	<java classname="com.icl.saxon.StyleSheet"
-		      fork="yes"
-		      dir="${manual.html.path}"
-		      failonerror="true">
-		    <classpath refid="project.class.path" />
+    </target>
 
-	     <arg line="${manual.file} ${docbook-xsl.home}/html/netspective-chunk.xsl" />
-    	</java>
-        -->
+    <target name="prepare-change-log-destination" depends="setup-project-properties">
+        <delete dir="${change-log.html.path}"/>
+        <mkdir dir="${change-log.html.path}"/>
+    </target>
+
+    <target name="change-log" depends="prepare-change-log-destination">
+        <property name="change-log-xslt.file" value="${nefs.docs.change-log.home}/change-log.xsl"/>
+        <property name="change-log-xml.all.dest.file" value="${nefs.docs.change-log.home}/change-log-all.xml"/>
+        <property name="change-log-xml.commons.dest.file" value="${nefs.docs.change-log.home}/change-log-commons.xml"/>
+        <property name="change-log-xml.axiom.dest.file" value="${nefs.docs.change-log.home}/change-log-axiom.xml"/>
+        <property name="change-log-xml.sparx.dest.file" value="${nefs.docs.change-log.home}/change-log-sparx.xml"/>
+        <property name="change-log-xml.webapps.dest.file" value="${nefs.docs.change-log.home}/change-log-webapps.xml"/>
+
+        <cvschangelog dir="${nefs.home}" destfile="${change-log-xml.all.dest.file}"/>
+        <cvschangelog dir="${nefs.home}/Commons" destfile="${change-log-xml.commons.dest.file}"/>
+        <cvschangelog dir="${nefs.home}/Axiom" destfile="${change-log-xml.axiom.dest.file}"/>
+        <cvschangelog dir="${nefs.home}/Sparx" destfile="${change-log-xml.sparx.dest.file}"/>
+        <cvschangelog dir="${nefs.home}/webapps" destfile="${change-log-xml.webapps.dest.file}"/>
+
+        <style in="${change-log-xml.all.dest.file}" out="${change-log.html.path}/change-log-all.html" style="${change-log-xslt.file}">
+            <param name="title" expression="Netspective Enterprise Frameworks (NEF) ChangeLog"/>
+            <param name="module" expression="Frameworks"/>
+        </style>
+
+        <style in="${change-log-xml.commons.dest.file}" out="${change-log.html.path}/change-log-commons.html" style="${change-log-xslt.file}">
+            <param name="title" expression="Netspective Commons ChangeLog"/>
+            <param name="module" expression="Commons"/>
+        </style>
+
+        <style in="${change-log-xml.axiom.dest.file}" out="${change-log.html.path}/change-log-axiom.html" style="${change-log-xslt.file}">
+            <param name="title" expression="Netspective Axiom ChangeLog"/>
+            <param name="module" expression="Axiom"/>
+        </style>
+
+        <style in="${change-log-xml.sparx.dest.file}" out="${change-log.html.path}/change-log-sparx.html" style="${change-log-xslt.file}">
+            <param name="title" expression="Netspective Sparx ChangeLog"/>
+            <param name="module" expression="Sparx"/>
+        </style>
+
+        <style in="${change-log-xml.webapps.dest.file}" out="${change-log.html.path}/change-log-webapps.html" style="${change-log-xslt.file}">
+            <param name="title" expression="NEF WebApps ChangeLog"/>
+            <param name="module" expression="webapps"/>
+        </style>
     </target>
 
 </project>
