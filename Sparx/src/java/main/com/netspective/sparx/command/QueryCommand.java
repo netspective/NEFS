@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.5 2003-06-30 02:44:27 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.6 2003-07-11 05:31:24 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -284,6 +284,7 @@ public class QueryCommand extends AbstractHttpServletCommand
 
         QueryReportPanel result = new QueryReportPanel();
         result.setQuery(query);
+        result.setReportSkin(reportSkinName);
 
         return result;
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.13 2003-06-28 05:26:11 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.14 2003-07-11 05:31:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -72,9 +72,20 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
 {
     private boolean scrollable;
     private int scrollRowsPerPage = 25;
+    private String reportSkin;
 
     public AbstractHtmlTabularReportPanel()
     {
+    }
+
+    public String getReportSkin()
+    {
+        return reportSkin;
+    }
+
+    public void setReportSkin(String reportSkin)
+    {
+        this.reportSkin = reportSkin;
     }
 
     public boolean isScrollable()
@@ -183,7 +194,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         }
         else
         {
-            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+            HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), reportSkin != null ? theme.getReportSkin(reportSkin) : theme.getReportSkin());
             vc.setDialogContext(dc);
             vc.setPanelRenderFlags(flags);
             TabularReportDataSource ds = createDataSource(dc.getNavigationContext());
