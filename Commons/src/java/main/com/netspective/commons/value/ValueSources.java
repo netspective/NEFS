@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.17 2003-10-28 10:55:34 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.18 2003-11-19 17:25:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -307,7 +307,7 @@ public class ValueSources implements MetricsProducer
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public ValueSource getValueSource(ValueSourceSpecification vss, int notFoundHandlerType) throws ValueSourceNotFoundException, ValueSourceInitializeException
+    public ValueSource getValueSource(ValueSourceSpecification vss, int notFoundHandlerType, boolean cacheInstance) throws ValueSourceNotFoundException, ValueSourceInitializeException
     {
         ValueSource vs;
         String idOrClassName = vss.getIdOrClassName();
@@ -348,7 +348,9 @@ public class ValueSources implements MetricsProducer
         {
             vs = (ValueSource) vsClass.newInstance();
             vs.initialize(vss);
-            srcInstancesMap.put(vs.getSpecification().getSpecificationText(), vs);
+
+            if(cacheInstance)
+                srcInstancesMap.put(vs.getSpecification().getSpecificationText(), vs);
         }
         catch (InstantiationException e)
         {
@@ -371,20 +373,53 @@ public class ValueSources implements MetricsProducer
         {
             ValueSourceSpecification vst = createSpecification(source);
             if(vst.isValid())
-                return getValueSource(vst, notFoundHandlerType);
+                return getValueSource(vst, notFoundHandlerType, true);
             else
                 return null;
         }
     }
 
+    public ValueSource createValueSource(String source, int notFoundHandlerType) throws ValueSourceInitializeException
+    {
+        ValueSourceSpecification vst = createSpecification(source);
+        if(vst.isValid())
+            return getValueSource(vst, notFoundHandlerType, false);
+        else
+            return null;
+    }
+
     public ValueSource getValueSourceOrStatic(String source)
+    {
+        ValueSource vs = (ValueSource) srcInstancesMap.get(source);
+        if(vs != null)
+            return vs;
+        else
+        {
+            ValueSourceSpecification vst = createSpecification(source);
+            if(vst.isValid())
+            {
+                try
+                {
+                    return getValueSource(vst, VSNOTFOUNDHANDLER_NULL, true);
+                }
+                catch (ValueSourceInitializeException e)
+                {
+                    return createExceptionValueSource(e);
+                }
+            }
+            else
+                return vst.getStaticValueSource();
+        }
+    }
+
+    public ValueSource createValueSourceOrStatic(String source)
     {
         ValueSourceSpecification vst = createSpecification(source);
         if(vst.isValid())
         {
             try
             {
-                return getValueSource(vst, VSNOTFOUNDHANDLER_NULL);
+                return getValueSource(vst, VSNOTFOUNDHANDLER_NULL, false);
             }
             catch (ValueSourceInitializeException e)
             {
