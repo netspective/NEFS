@@ -2,9 +2,295 @@
 
 <component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
+    <!--
+    **********************************************************************
+    ** NETSPECTIVE FRAMEWORKS' RESOURCE FILES                           **
+    ********************************************************************** -->
+
     <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
     <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+    <!--
+    **********************************************************************
+    ** USER INTERFACE (PRESENTATION) DECLARATIONS                       **
+    ********************************************************************** -->
+
+    <dialogs package="test">
+        <dialog name="DialogTest_01_A"  retain-params="*">
+            <frame heading="Test String Fields"/>
+            <field type="separator" heading="Text Fields"/>
+            <field name="text_field_hidden"   type="text"   hidden="yes"    default="request:id"/>
+            <field name="static_field1" type="static" caption="Static 1" default="request:id" hint="Request attribute 'id' value"/>
+            <field name="static_field2" type="static" caption="Static 2 " default="Static Field's Value"/>
+            <field name="text_field_required" type="text" caption="Text Required"
+                hint="Text field is required when req param 'abc' has value"
+                default="conditional Required Text" required="no">
+                <conditional action="apply-flags" flags="required" has-value="request:abc"/>
+            </field>
+            <!-- When max-length is turned on then the default text should be truncated or an error should be displayed??? -->
+            <field name="text_field" type="text" caption="Text" hint="Text field optional (max-length=5, uppercase=yes)" max-length="5" uppercase="yes"/>
+            <!--field name="text_field_email" type="text" caption="Text Email" hint="Text field with regular expression checking"
+                display-pattern="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/"
+                invalid-reg-ex-message="Invalid email format."/-->
+            <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
+            <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
+            <director submit-caption="Submit" style="acknowledge"/>
+        </dialog>
+        <dialog name="DialogTest_01_B" retain-params="*">
+            <frame heading="Test Numeric Fields"/>
+            <field type="separator" heading="Numeric Fields"/>
+            <field type="integer" name="integer_field" caption="Integer Field" hint="Integer field" persist="yes"/>
+            <field type="float" name="float_field" caption="Float Field" hint="Float field"/>
+            <field type="currency" name="currency_field1" caption="Currency" decimals-required="2" default="123.45"
+                negative-pos="after-symbol" hint="Currency field (US) with negative sign after the symbol"/>
+            <field type="currency" name="currency_field2" caption="Currency" decimals-required="2" default="123.45"
+                negative-pos="before-symbol" hint="Currency field (US) with negative sign before the symbol"/>
+            <field type="phone" name="phone_field1" caption="Phone Field (dash format)" strip-brackets="yes" style="dash" hint="Phone field" default="8001234567"/>
+            <field type="phone" name="phone_field2" caption="Phone Field (bracket format)" strip-brackets="yes" style="bracket" hint="Phone field" default="8001234567"/>
+            <field type="zip-code" name="zip_field" caption="Zip Field" hint="Zip code field" default="12345"/>
+            <field type="ssn" name="ssn_field" caption="SSN" strip-dashes="yes" default="999999999" hint="Social Security Number field"/>
+            <director submit-caption="Submit"/>
+        </dialog>
+        <dialog name="DialogTest_02" retain-params="*">
+            <frame heading="Test Memo, Date/Time, Boolean Fields"/>
+            <field type="separator" name="memo_section" heading="Memo"/>
+            <field type="memo" name="memo_field_01" caption="Memo Field" default="A fox jumped over the fence" max-length="10"
+                hint="Max length is 5 characters"/>
+            <field type="separator" name="date_time_section" heading="Date and Time Fields"/>
+            <!--field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today" hint="Format is MM/dd/yyyy"/-->
+            <field type="date" name="date_field_strict" caption="Date (Strict Year)" client-calendar-format="MM-dd-yyyy"
+                default="today" hint="Format is MM-dd-yyyy"/>
+            <field type="date" name="date_field_nonstrict" caption="Date (Non-Strict Year)" client-calendar-format="MM/dd/yyyy"
+                strict-year="no" default="today+1" hint="Format is MM/dd/yyyy"/>
+            <field type="time" name="time_field" caption="Time" strict-time="no" initial-focus="yes" default="now" hint="Format is HH\:mm"/>
+            <field type="date-time" name="datetime_field" caption="Date and Time" client-calendar-format="MM-dd-yyyy"
+                default="today" hint="Format is MM-dd-yyyy"/>
+            <field type="separator" name="boolean_section" heading="Boolean Fields"/>
+            <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio" />
+            <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone"/>
+            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"/>
+            <director submit-caption="Submit"/>
+       </dialog>
+        <!-- The text-list value source accepts a process instruction [] which can contain two
+                 characters: second one is used for value assignment and first one is for choice item
+                 seperation. For example, [;=] indicates that the ';' is used to separate the choice items
+                 while the '=' is used for value assignment.
+        -->
+        <dialog name="DialogTest_03" retain-params="*">
+            <frame heading="Test Select Fields" />
+            <field type="separator" heading="Select Fields"/>
+            <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo"
+                choices="text-list:Choice 1=A'S,Choice 2=B,Choice 3=C"   persist="true"
+                default="A'S" hidden="no" prepend-blank="yes" append-blank="yes"/>
+
+            <field type="select" name="sel_field_radio" caption="Select Field (Radio)" style="radio" required="no"
+                choices="text-list:[;!]Choice 1!A;Choice 2!B;Choice 3!C"/>
+            <field type="select" name="sel_field_list" caption="Select Field (List)" style="list" size="5" default="B"
+                hidden="no" choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="select" name="sel_field_multilist" caption="Select Field (MultiList)" style="multilist" size="5"
+                default="text-list:A,B"
+                choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="select" name="sel_field_multicheck" caption="Select Field (MultiCheck)" style="multicheck" required="yes"
+                choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C" default="text-list:A,C"/>
+            <field type="select" name="sel_field_multidual" caption="Select Field (MultiDual)" style="multidual" required="yes"
+                choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"  default="text-list:A" persist="true"
+                multi-dual-caption-left="Left Caption" multi-dual-caption-right="Right Caption" multi-dual-width="100"/>
+            <director submit-caption="Submit"/>
+            <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup"
+                choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+        </dialog>
+        <!-- SELECTABLE REPORTS ARE REPLACING THIS??? -->
+        <!--dialog name="DialogTest_04" loop="yes" retain-params="*">
+            <frame heading="Test Report Field"/>
+            <field type="report" name="report_field">
+                <statement name="list">
+                            select 0 as "checkbox", org_id as "ID", org_name as "Name", 2  from org
+                            <report skin="eimo-report">
+                        <column type="checkbox" align="center" field-name="my_name" field-value="my_name_row_${1}"/>
+                        <column heading="ID" output="abc% $ ${2}" format="%"/>
+                        <column heading="Last Name" url="create-app-url:/${2}" calc="count"/>
+                        <column heading="Index" calc="sum"/>
+                    </report>
+                </statement>
+            </field>
+        </dialog-->
+        <dialog name="DialogTest_05" retain-params="*">
+            <frame heading="Test Grid and Composite Field" />
+            <field type="separator" heading="Column 1"/>
+            <grid name="grid-01" caption="Grid Test">
+				<row name="row-01" caption="Row 1">
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A" default="1"/>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B" default="2"/>
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C" default="3"/>
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D" default="4"/>
+                </row>
+                <row name="row-02" caption="Row 2">
+                    <field type="integer" name="integer_field_01" size="3" max-length="3" caption="A"/>
+                    <field type="integer" name="integer_field_02" size="3" max-length="3" caption="B"/>
+                    <field type="integer" name="integer_field_03" size="3" max-length="3" caption="C"/>
+                    <field type="integer" name="integer_field_04" size="3" max-length="3" caption="D"/>
+                    <field type="integer" name="integer_field_05" size="3" max-length="3" caption="E"/>
+                </row>
+            </grid>
+            <field type="separator" heading="Column 2"/>
+            <composite name="composite-01" caption="*">
+				<field type="text" caption="Field A" size="5" name="text_field_01" default="default" hint="Testing..."/>
+				<field type="text" caption="Field B" size="6" name="text_field_02" default="default" hint="Testing..."/>
+				<field type="text" caption="Field C" size="7" name="text_field_03" default="default" hint="Testing..."/>
+			</composite>
+        </dialog>
+        <dialog name="DialogTest_06">
+            <frame heading="Test Conditionals"/>
+            <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
+                choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C" prepend-blank="yes"/>
+            <field type="text" name="static_field" default="Here I am!" hint="Partner field is Select Field (Combo)">
+                <conditional action="display" partner-field-name="sel_field_list" expression="control.selectedIndex == 2"/>
+            </field>
+            <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
+            <field type="static" name="static_field2" default="Checkbox checked!">
+                <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
+            </field>
+        </dialog>
+        <dialog name="DialogTest_07">
+            <frame  heading="Test Popup" />
+            <field type="select" name="sel_field_list" caption="Select Field" style="combo"
+                prepend-blank="yes" choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="text" name="text_field" caption="Text Field" read-only="browser" default="None at this moment"
+                hint="Click on the icon to select a value">
+                <popup action="/test/testPopup.html" fill="text_field"/>
+            </field>
+        </dialog>
+
+        <dialog name="DialogTest_08" retain-params="*">
+            <frame heading="Test Dialog-SQL" />
+            <field type="ssn" name="ssn_field" caption="SSN"/>
+            <field type="date" name="date_field" caption="Date" format="MM/dd/yyyy" default="today"/>
+            <field type="phone" name="phone_field" caption="Phone" strip-brackets="yes" style="bracket"/>
+        </dialog>
+        <dialog name="DialogTest_09" retain-params="*">
+            <frame heading="Test Hidden Fields" />
+            <field type="memo" name="memo_field" caption="Memo Field" default="There are two hidden fields\: text_field_hidden and select_field_hidden"/>
+            <field type="text" name="text_field" caption="Text Field" default="Text Field's entry"/>
+            <field type="select" name="select_field" caption="Select Field" style="combo"
+                choices="text-list:Choice 1=Choice 1's value,Choice 2=Choice 2's value,Choice 3=Choice 3's value"
+                default="Choice 1's value"/>
+            <field type="text" name="text_field_hidden" caption="Text Field Hidden" hidden="yes"
+                default="Hidden Text Field's entry"/>
+            <field type="select" name="select_field_hidden" hidden="yes" style="combo"
+                choices="text-list:Choice 1=Choice 1's hidden value,Choice 2=Choice 2's hidden value,Choice 3=Choice 3's hidden value"
+                default="Choice 1's hidden value" prepend-blank="yes" append-blank="yes"/>
+        </dialog>
+
+        <dialog name="DialogTest_10">
+            <frame heading="Test Data Command and Conditionals" />
+            <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone"/>
+            <field type="static" name="static_field2" default="Checkbox checked!" hint="Hidden static field">
+                <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
+            </field>
+            <field type="text" name="text_field_1" caption="Text Field" size="50" hint="Unavailable when data_perspective is 'ADD'"
+                default="I guess the data command is not 'add'">
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
+            </field>
+            <field type="select" name="select_field" caption="Select Field" style="combo"
+                choices="text-list:Choice 1=Choice 1's value,Choice 2=Choice 2's value,Choice 3=Choice 3's value" default="Choice 1's value">
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
+            </field>
+            <field type="static" name="static_field_4" default="The data command is not 'add' or 'edit'">
+                <conditional action="apply-flags" flags="unavailable" perspective="add"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="edit"/>
+            </field>
+        </dialog>
+        <!--dialog name="DialogTest_11" retain-params="*">
+            <frame heading="Test Select Fields w/ seperator" />
+            <field type="separator" heading="Select Fields"/>
+            <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo" choices="text-list:[;=]Choice 1=A'S;Choice 2=B;Choice 3=C" default="A'S" hidden="no" prepend-blank="yes" append-blank="yes"/>
+            <field type="select" name="sel_field_radio" caption="Select Field (Radio)" style="radio" required="yes" control-separator=", " choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+            <field type="select" name="sel_field_list" caption="Select Field (List)" style="list" size="5" default="A" choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="select" name="sel_field_multilist" caption="Select Field (MultiList)" style="multilist" size="5" default="B" choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="select" name="sel_field_multicheck" caption="Select Field (MultiCheck)" style="multicheck" control-separator=" " choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C"/>
+            <field type="select" name="sel_field_multidual" caption="Select Field (MultiDual)" style="multidual" choices="text-list:Choice 1=A,Choice 2=B,Choice 3=C" multi-dual-caption-left="Left Caption" multi-dual-caption-right="Right Caption" multi-dual-width="100"/>
+            <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup" choices="query:library.get-all-books"/>
+            <director submit-caption="Submit"/>
+        </dialog-->
+        <dialog name="DialogTest_12" retain-params="*">
+            <client-js href="servlet-context-path:/resources/scripts/test1.js"/>
+            <client-js href="servlet-context-path:/resources/scripts/test2.js"/>
+            <frame heading="Test Custom Javascript" />
+            <field type="float" name="float_field" caption="Float">
+                <client-js event="is-valid" type="extends" js-expr="return testValid(field, control);"/>
+                <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
+            </field>
+            <field type="integer" name="integer_field" caption="Integer">
+                <!--client-js event="is-valid" type="override" js-expr="return testValid(field, control);"/-->
+                <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
+                <client-js event="click" type="extends" js-expr="alert('onClick');return true;"/>
+                <!-- DON'T TEST get-focus and lose-focus at the same time for Mozilla-based browsers.
+                     It throws them into an inifinite alert loop -->
+                <!--client-js event="get-focus" type="extends" js-expr="alert('onFocus!');return true;"/-->
+                <client-js event="lose-focus" type="extends" js-expr="alert('onBlur!');return true;"/>
+                <client-js event="key-press" type="extends" js-expr="alert('onKeypress!');"/>
+            </field>
+            <field type="ssn" name="ssn_field" caption="SSN">
+                <client-js event="is-valid" type="override" js-expr="return true;"/>
+                <client-js event="value-changed" type="override" js-expr="return true;"/>
+            </field>
+        </dialog>
+        <dialog name="DialogTest_13">
+            <frame heading="Test Dialog Director's Next Action" />
+			<field type="text" name="text_field" caption="Text Field (formOrRequestAttr)" default="request:value"/>
+            <director>
+                <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
+            </director>
+		</dialog>
+
+		<dialog name="DialogTest_14">
+            <frame  heading="Test Data Binding" />
+			<field type="text" name="text_field" caption="Text Field" default="query:org.name-only?request:org_id"
+                hint="The parameter is being provided in the value source"/>
+			<field type="select" name="select_field_01" caption="Combo Field showing Query Columns" style="combo"
+                choices="query:library.get-all-book-types" hint="The parameters are specified inside the SQL XML"/>
+			<field type="select" name="select_field_02" caption="Radio Field showing Query Rows" style="radio"
+                choices="query:library.get-all-book-types" hint="The parameters are specified inside the SQL XML"/>
+			<field type="select" name="select_field_03" caption="Checkbox Field showing Query Rows" style="multicheck"
+                choices="query:library.get-all-book-types"/>
+			<field type="select" name="select_field_04" caption="Listbox Field showing Query Rows" style="multilist"
+                choices="query:library.get-all-book-types"/>
+		</dialog>
+        <!--dialog name="DialogTest_15" retain-params="*">
+            <frame  heading="Test Pending Data" />
+			<field type="separator" heading="Text Fields"/>
+			<field type="text" name="text_field_hidden" hidden="yes" default="request:id"/>
+			<field type="static" name="static_field" caption="Test " default="Static Field's Value"/>
+			<field type="text" name="text_field_required" caption="Text Required" hint="Text field required" required="yes"/>
+			<field type="text" name="text_field" caption="Text" hint="Text field optional" default="Sponsor's name" max-length="5" uppercase="yes"/>
+			<field type="text" name="text_field_email" caption="Text Email" hint="Text field with regular expression checking"
+                regexpr="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/"
+                invalid-reg-ex-message="Invalid email format."/>
+			<field type="e-mail" name="email_field" caption="Email"/>
+			<field type="separator" heading="Numeric Fields"/>
+			<field type="integer" name="integer_field" caption="Integer Field" hint="Integer field"/>
+			<field type="float" name="float_field" caption="Float Field" hint="Float field"/>
+			<field type="currency" name="currency_field" caption="Currency" decimals-required="2" type="US" default="123.45" negative-pos="after-symbol"/>
+			<field type="phone" name="phone_field1" caption="Phone Field (dash format)" strip-brackets="yes" style="dash" hint="Phone field" default="8001234567"/>
+			<field type="phone" name="phone_field2" caption="Phone Field (bracket format)" strip-brackets="yes" style="bracket" hint="Phone field" default="8001234567"/>
+			<field type="zip-code" name="zip_field" caption="Zip Field" hint="Zip code field" default="12345"/>
+			<field type="ssn" name="ssn_field" caption="SSN" strip-dashes="yes" default="999999999"/>
+
+			<director submit-caption="Submit" pending-caption=" Pending "/>
+		</dialog-->
+
+		<dialog name="DialogTest_16" retain-params="*">
+            <frame heading="Test Upload Data" />
+			<field type="text" name="text_field_required" caption="Text Required" hint="Text field required" required="yes"/>
+			<field type="file" name="file" caption="File" required="yes"/>
+		</dialog>
+    </dialogs>
+
+    <!--
+    **********************************************************************
+    ** DATA MANAGEMENT DECLARATIONS                                     **
+    ********************************************************************** -->
 
 </component>
