@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialog.java,v 1.7 2004-02-15 21:20:37 shahid.shah Exp $
+ * $Id: LoginDialog.java,v 1.8 2004-07-14 19:05:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -140,7 +140,7 @@ public class LoginDialog extends Dialog
         LoginDialogContext ldc = (LoginDialogContext) dc;
         HttpLoginManager loginManager = getLoginManager();
         AuthenticatedUser user = loginManager.createAuthenticatedUser(ldc, ldc.getUserIdInput(),
-                ldc.getPasswordInput(true), ((LoginDialogContext) dc).hasRememberedValues());
+                ldc.getPasswordInput(! ldc.hasEncryptedPassword()), ((LoginDialogContext) dc).hasRememberedValues());
         loginManager.login(dc, user, ldc.getRememberIdInput());
     }
 }

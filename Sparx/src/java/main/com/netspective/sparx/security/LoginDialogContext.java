@@ -39,23 +39,32 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.6 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: LoginDialogContext.java,v 1.7 2004-07-14 19:05:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.Crypt;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldStates;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.LoginDialog;
-import com.netspective.commons.security.Crypt;
-import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.sparx.navigate.NavigationContext;
 
 public class LoginDialogContext extends DialogContext
 {
     private boolean hasRememberedValues;
     private boolean hasEncryptedPassword;
+
+    public void initialize(NavigationContext nc, Dialog aDialog, DialogSkin aSkin)
+    {
+        super.initialize(nc, aDialog, aSkin);
+        LoginDialog loginDialog = (LoginDialog) aDialog;
+        DialogField.State passwordField = getFieldStates().getState(loginDialog.getPasswordFieldName());
+        hasEncryptedPassword = passwordField.getField().getClientEncryption() != null;
+    }
 
     public LoginDialog getLoginDialog()
     {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.63 2004-06-23 21:06:45 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.64 2004-07-14 19:05:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -84,6 +84,7 @@ import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.value.source.ThemeResourceUrlValueSource;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFields;
@@ -817,12 +818,29 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      */
     public void finalizeContents()
     {
+        boolean includedUnixCryptJS = false;
+
         fields.finalizeContents();
         for (int i = 0; i < fields.size(); i++)
         {
             DialogField field = fields.get(i);
             if (field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
                 layoutColumnsCount++;
+
+            if(field.getClientEncryption() != null)
+            {
+                ClientDataEncryption encryption = field.getClientEncryption();
+                if(encryption.getStyle().getValueIndex() == DataEncryptionStyle.UNIX_CRYPT)
+                {
+                    if(! includedUnixCryptJS)
+                    {
+                        DialogIncludeJavascriptFile js = new DialogIncludeJavascriptFile();
+                        js.setHref(new ThemeResourceUrlValueSource("/scripts/javacrypt.js"));
+                        addClientJs(js);
+                        includedUnixCryptJS = true;
+                    }
+                }
+            }
         }
     }
 

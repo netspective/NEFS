@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.54 2004-06-23 21:03:53 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.55 2004-07-14 19:05:34 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -89,6 +89,7 @@ import com.netspective.sparx.form.DialogContextBeanMemberInfo;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.ClientDataEncryption;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalData;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
@@ -477,6 +478,7 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     private String requiredFieldMissingMessage = "{0} is required.";
     private String accessKey;
     private int[] childCarryFlags = CHILD_CARRY_FLAGS;
+    private ClientDataEncryption encryption;
 
     public DialogField()
     {
@@ -1123,6 +1125,21 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         addField(field);
     }
 
+    public ClientDataEncryption createClientEncryption()
+    {
+        return new ClientDataEncryption(this);
+    }
+
+    public void addClientEncryption(ClientDataEncryption dataEncryptionType)
+    {
+        this.encryption = dataEncryptionType;
+    }
+
+    public ClientDataEncryption getClientEncryption()
+    {
+        return encryption;
+    }
+
     /**
      * Finalize the dialog field's contents: loops through each conditional action of the field to
      * assign partner fields and loops through each child field to finalize their contents.
@@ -1699,6 +1716,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
             else
                 sb.append("field.submitOnBlurCustomScript = '';\n");
         }
+
+        if(encryption != null)
+            encryption.addCustomJavaScriptDefn(dc, sb);
 
         return sb.toString();
     }
