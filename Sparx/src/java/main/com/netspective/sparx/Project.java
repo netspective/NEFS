@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.2 2003-06-26 16:35:38 shahid.shah Exp $
+ * $Id: Project.java,v 1.3 2003-06-30 02:34:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -49,6 +49,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.sparx.navigate.NavigationTreesManager;
@@ -234,7 +235,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
         if(dialog == null && log.isDebugEnabled())
         {
-            log.debug("Unable to find query object '"+ name +"' as '"+ actualName +"'. Available: " + dialogs);
+            log.debug("Unable to find dialog '"+ name +"' as '"+ actualName +"'. Available: " + dialogs);
             return null;
         }
         return dialog;
