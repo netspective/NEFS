@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.18 2003-10-11 14:33:44 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.19 2003-12-06 01:09:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -68,15 +68,31 @@ import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessorTypeTemplateConsumer;
 
 public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     protected static final TemplateProducers templateProducers = new TemplateProducers();
+
+    public static final String TEMPLATEELEMNAME_TEMPLATE_PROCESSOR_TYPE = "template-processor-type";
     public static final String TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE = "tabular-report-column-type";
+
+    private static final TemplateProcessorTypeTemplate TEMPLATE_PROCESSOR_TYPES = new TemplateProcessorTypeTemplate();
+    private static final TabularReportColumnTypeTemplate TABULAR_REPORT_COLUMN_TYPES = new TabularReportColumnTypeTemplate();
+
+    protected static class TemplateProcessorTypeTemplate extends TemplateProducer
+    {
+        public TemplateProcessorTypeTemplate()
+        {
+            super(TemplateProcessor.class.getName(), TEMPLATEELEMNAME_TEMPLATE_PROCESSOR_TYPE, "name", "extends", true, false);
+        }
+    }
 
     protected static class TabularReportColumnTypeTemplate extends TemplateProducer
     {
@@ -89,7 +105,9 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     static
     {
         NetspectiveComponent.getInstance().registerProduct(com.netspective.commons.ProductRelease.PRODUCT_RELEASE);
-        templateProducers.add(new TabularReportColumnTypeTemplate());
+        TemplateCatalog.registerConsumerDefnForClass(TemplateProcessorTypeTemplateConsumer.INSTANCE, TemplateProcessor.class, true, true);
+        templateProducers.add(TABULAR_REPORT_COLUMN_TYPES);
+        templateProducers.add(TEMPLATE_PROCESSOR_TYPES);
     }
 
     public TemplateProducers getTemplateProducers()
@@ -100,6 +118,18 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     private AccessControlLists aclsManager = new AccessControlLists();
     private Configurations configsManager = new Configurations();
     private Reports reportsManager = new Reports();
+
+    public static TabularReportColumnTypeTemplate getTabularReportColumnTypes()
+    {
+        return TABULAR_REPORT_COLUMN_TYPES;
+    }
+
+    public static TemplateProcessorTypeTemplate getTemplateProcessorTypes()
+    {
+        return TEMPLATE_PROCESSOR_TYPES;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
 
     public void addValueSource(ValueSource vs)
     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateProcessor.java,v 1.2 2003-11-27 19:21:38 shahid.shah Exp $
+ * $Id: TemplateProcessor.java,v 1.3 2003-12-06 01:09:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.template;
@@ -49,8 +49,9 @@ import java.io.IOException;
 import java.util.Map;
 
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.xml.template.TemplateConsumer;
 
-public interface TemplateProcessor
+public interface TemplateProcessor extends TemplateConsumer
 {
     /**
      * The name of the ValueContext attribute that allows template variables to be shared. This attribute,

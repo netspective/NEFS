@@ -39,53 +39,25 @@
  */
 
 /**
- * $Id: AbstractTemplateProcessor.java,v 1.2 2003-12-06 01:09:11 shahid.shah Exp $
+ * $Id: TemplateProcessorTypeTemplateConsumer.java,v 1.1 2003-12-06 01:09:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.template;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.template.TemplateProcessor;
 
-public abstract class AbstractTemplateProcessor implements TemplateProcessor, XmlDataModelSchema.ConstructionFinalizeListener
+public class TemplateProcessorTypeTemplateConsumer extends TemplateConsumerDefn
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+    public static final TemplateProcessorTypeTemplateConsumer INSTANCE = new TemplateProcessorTypeTemplateConsumer();
 
-    private StringBuffer templateContent = new StringBuffer();
-
-    static
+    public TemplateProcessorTypeTemplateConsumer()
     {
-        XML_DATA_MODEL_SCHEMA_OPTIONS.setPcDataHandlerMethodName("addTemplateContent");
+        super(null, "type", null);
     }
 
-    public AbstractTemplateProcessor()
+    public String getNameSpaceId()
     {
-    }
-
-    public TemplateConsumerDefn getTemplateConsumerDefn()
-    {
-        return TemplateProcessorTypeTemplateConsumer.INSTANCE;
-    }
-
-    public void registerTemplateConsumption(Template template)
-    {
-
-    }
-
-    public String getTemplateContent()
-    {
-        return templateContent.toString();
-    }
-
-    public void addTemplateContent(String text)
-    {
-        templateContent.append(text);
-    }
-
-    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
-    {
+        return TemplateProcessor.class.getName();
     }
 }
