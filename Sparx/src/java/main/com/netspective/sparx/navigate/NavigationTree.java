@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -266,6 +267,11 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public NavigationErrorPage createErrorPage()
     {
         return root.createErrorPage();
+    }
+
+    public NavigationErrorPage createErrorPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        return root.createErrorPage(cls);
     }
 
     public void addErrorPage(NavigationErrorPage page)
