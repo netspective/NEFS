@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.2 2003-03-21 13:54:46 shahbaz.javeed Exp $
+ * $Id: FilesystemEntriesValueSourceTest.java,v 1.3 2003-03-23 16:49:03 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
 
 import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
 import junit.framework.TestCase;
 
 import com.netspective.commons.value.ValueSources;
@@ -59,30 +60,62 @@ public class FilesystemEntriesValueSourceTest extends TestCase
         // in 'c\\:\\' the first \\ is to escape ':' because otherwise c: will be regarded as its own value source
         // because the rootPath in FileSystemEntriesValueSource is a ValueSource, not a string
         String rootPath = "c\\:\\";
+	    String unescapedRootPath = "c:\\";
 
         ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+	    FilesystemEntriesValueSource fsVS = new FilesystemEntriesValueSource();
+	    fsVS.setRootPath(rootPath);
         Value value = vs.getValue(null);
+
+	    assertEquals(unescapedRootPath, fsVS.getRootPath().getTextValue(null));
+		// Verify the presence of the default filter...
+	    assertEquals("/.*/", fsVS.getFilter());
 	    assertTrue(0 < vs.getTextValues(null).length);
 	    assertNotNull(vs.getTextValueOrBlank(null));
 
 		String[] theValue = value.getTextValues();
-	    List altValue = vs.getPresentationValue(null).getListValue();
+	    List altValue = fsVS.getPresentationValue(null).getListValue();
 
 		assertEquals(theValue.length, altValue.size());
+	    assertFalse(fsVS.isPathInSelection());
 	    for (int i = 0; i < theValue.length; i ++)
-	        assertTrue(altValue.contains(theValue[i]));
+	        assertFalse(altValue.contains(theValue[i]));
 
-	    assertTrue(vs.hasValue(null));
+		fsVS.setIncludePathInSelection(true);
+	    List altValueWithPath = fsVS.getPresentationValue(null).getListValue();
 
-        System.out.println(value.getTextValue());
-        System.out.println(value.getTextValues());
-        System.out.println(value.getListValue());
+	    assertEquals(theValue.length, altValueWithPath.size());
+	    assertTrue(fsVS.isPathInSelection());
+	    for (int i = 0; i < theValue.length; i ++)
+	    {
+	        assertEquals(theValue[i], ((String[]) altValueWithPath.get(i))[1]);
+		    assertEquals(altValue.get(i), ((String[]) altValueWithPath.get(i))[0]);
+	    }
+
+	    // Try the same tests with a filter...
+		// only files/dirs that contain the letter s in them...
+	    fsVS.setFilter("[sS]");
+	    assertEquals("/[sS]/", fsVS.getFilter());
+	    assertTrue(fsVS.isPathInSelection());
+
+	    List filterValue = fsVS.getPresentationValue(null).getListValue();
+	    assertTrue(filterValue.size() <= altValue.size());
+
+	    List altValueWithPathList  = new ArrayList();
+	    for (int i = 0; i < altValueWithPath.size(); i ++)
+		    altValueWithPathList.add(((String[]) altValueWithPath.get(i))[1]);
+
+	    assertEquals(altValueWithPath.size(), altValueWithPathList.size());
+
+	    for (int i = 0; i < filterValue.size(); i ++)
+		    assertTrue(altValueWithPathList.contains(((String[]) filterValue.get(i))[1]));
+
 
 
         vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath + ",exe$", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         value = vs.getValue(null);
-        System.out.println(value.getTextValue());
-        System.out.println(value.getTextValues());
-        System.out.println(value.getListValue());
+//        System.out.println(value.getTextValue());
+//        System.out.println(value.getTextValues());
+//        System.out.println(value.getListValue());
     }
 }

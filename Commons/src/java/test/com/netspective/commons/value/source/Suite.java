@@ -5,7 +5,7 @@ import junit.framework.TestSuite;
 import com.netspective.commons.value.ValueSourcesTest;
 
 /**
- * $Id: Suite.java,v 1.1 2003-03-21 13:54:46 shahbaz.javeed Exp $
+ * $Id: Suite.java,v 1.2 2003-03-23 16:49:03 shahbaz.javeed Exp $
  */
 public class Suite
 {
@@ -15,6 +15,10 @@ public class Suite
 
 		suite.addTest(new TestSuite(ExpressionValueSourceTest.class));
 		suite.addTest(new TestSuite(GlobabllyUniqueIdValueSourceTest.class));
+		suite.addTest(new TestSuite(FilesystemEntriesValueSourceTest.class));
+		suite.addTest(new TestSuite(StaticListValueSourceTest.class));
+		suite.addTest(new TestSuite(SystemPropertyValueSourceTest.class));
+		suite.addTest(new TestSuite(ConcatValueSourceTest.class));
 
 		return suite;
 	}

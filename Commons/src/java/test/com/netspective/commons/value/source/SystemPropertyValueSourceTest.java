@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SystemPropertyValueSourceTest.java,v 1.1 2003-03-16 02:23:21 shahid.shah Exp $
+ * $Id: SystemPropertyValueSourceTest.java,v 1.2 2003-03-23 16:49:03 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -56,6 +56,11 @@ public class SystemPropertyValueSourceTest extends TestCase
     {
         ValueSource vs = ValueSources.getInstance().getValueSource("system-property:java.classpath", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
         Value value = vs.getValue(null);
-        System.out.println(value.getTextValue());
+		assertNull(value.getTextValue());
+
+	    SystemPropertyValueSource spVS = (SystemPropertyValueSource) ValueSources.getInstance().getValueSource("system-property:java.class.path", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+	    assertTrue(spVS.hasValue(null));
+	    assertEquals(System.getProperty("java.class.path"), spVS.getValue(null).getTextValue());
+	    assertEquals(System.getProperty("java.class.path"), spVS.getPresentationValue(null).getTextValue());
     }
 }
