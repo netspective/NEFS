@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.5 2003-07-11 17:39:43 aye.thu Exp $
+ * $Id: Query.java,v 1.6 2003-07-12 02:16:40 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -123,6 +123,11 @@ public class Query extends com.netspective.axiom.sql.Query
         public QueryReportPanel getPanel(String name)
         {
             return (QueryReportPanel) reportPanels.get(name);
+        }
+
+        public Map getPanels()
+        {
+            return reportPanels;
         }
 
         public QueryDialog getDialog(String name)
