@@ -17,8 +17,10 @@
         <taskdef name="sparx" classname="com.netspective.sparx.ant.SparxTask"/>
 
         <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
+        <property name="app.WEB-INF.src.path" value="${app.WEB-INF.path}/src"/>
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
         <property name="app.WEB-INF.lib.path" value="${app.WEB-INF.path}/lib"/>
+        <available file="${app.WEB-INF.src.path}" type="dir" property="app.WEB-INF.src.path.exists"/>
         <available file="${app.WEB-INF.classes.path}" type="dir" property="app.WEB-INF.classes.path.exists"/>
 
         <property name="app.auto.jar-name" value="${app.name}-auto.jar"/>
@@ -46,6 +48,7 @@
         <echo message="app.home = '${app.home}'"/>
         <echo message="app.name = '${app.name}'"/>
         <echo message="app.WEB-INF.path = '${app.WEB-INF.path}'"/>
+        <echo message="app.WEB-INF.src.path = '${app.WEB-INF.src.path}'"/>
         <echo message="app.WEB-INF.classes.path = '${app.WEB-INF.classes.path}'"/>
         <echo message="app.WEB-INF.lib.path = '${app.WEB-INF.lib.path}'"/>
         <echo message="app.auto.jar-name = '${app.auto.jar-name}'"/>
@@ -57,14 +60,15 @@
         <echo message="app.database.default-schema-name = '${app.database.default-schema-name}'"/>
     </target>
 
-    <target name="compile" depends=".init" if="app.WEB-INF.classes.path.exists" description="Compiles all the Java source files in WEB-INF/classes.">
-        <javac srcdir="${app.WEB-INF.classes.path}" deprecation="on" classpathref="project.class.path"/>
+    <target name="compile" depends=".init" if="app.WEB-INF.src.path.exists" description="Compiles all the Java source files in WEB-INF/src into WEB-INF/classes.">
+        <mkdir dir="${app.WEB-INF.classes.path}"/>
+        <javac srcdir="${app.WEB-INF.src.path}" destdir="${app.WEB-INF.classes.path}" deprecation="on" classpathref="project.class.path"/>
     </target>
 
-    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
+    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/src/app/auto/id directory first before generating identifiers.">
         <sparx action="generate-id-constants"
                projectFile="${app.sparx.project.file}"
-               destDir="${app.WEB-INF.classes.path}"
+               destDir="${app.WEB-INF.src.path}"
                idConstantsClass="auto.id"
                cleanFirst="preserve-cvs"/>
     </target>
@@ -72,7 +76,7 @@
     <target name="generate-dialog-context-beans" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
         <sparx action="generate-dcb"
                projectFile="${app.sparx.project.file}"
-               destDir="${app.WEB-INF.classes.path}"
+               destDir="${app.WEB-INF.src.path}"
                dcbPackage="auto.dcb"
                cleanFirst="preserve-cvs"/>
     </target>
@@ -87,7 +91,7 @@
     <target name="generate-data-access-layer" depends=".init" if="app.database.default-schema-name" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
         <sparx action="generate-dal"
                projectFile="${app.sparx.project.file}"
-               destDir="${app.WEB-INF.classes.path}"
+               destDir="${app.WEB-INF.src.path}"
                dalPackage="auto.dal"
                cleanFirst="preserve-cvs"/>
     </target>
@@ -106,7 +110,7 @@
 
     <target name="generate-auto-classes" depends="generate-id-constants,generate-dialog-context-beans,generate-data-access-layer" description="Generates only the classes in the auto package."/>
 
-    <target name="generate-java-doc" depends="generate-auto-classes" description="Generates the javadocs for all the classes in WEB-INF/classes">
+    <target name="generate-java-doc" depends="generate-auto-classes" description="Generates the javadocs for all the classes in WEB-INF/src directory">
         <mkdir dir="${app.documents.javadoc.home}"/>
         <javadoc packagenames="app.*,auto.*"
              destdir="${app.documents.javadoc.home}"
@@ -116,15 +120,16 @@
              doctitle="${app.name} Class Documentation"
              bottom="Copyright &#169; 2003 Netspective. All Rights Reserved.">
              <sourcepath>
-                 <pathelement path="${app.WEB-INF.classes.path}"/>
+                 <pathelement path="${app.WEB-INF.src.path}"/>
              </sourcepath>
         </javadoc>
     </target>
 
-    <target name="generate-auto-classes-and-jar" depends="generate-auto-classes" description="Generates only the classes in the auto package and puts them into a JAR file called WEB-INF/lib/[appName]-auto.jar">
+    <target name="generate-auto-classes-and-jar" depends="generate-auto-classes,compile" description="Generates only the classes in the auto package, compiles all the classes, and put the auto classes into a JAR file called WEB-INF/lib/[appName]-auto.jar">
+        <mkdir dir="${app.WEB-INF.lib.path}"/>
         <property name="dest" value="${app.WEB-INF.lib.path}/${app.auto.jar-name}"/>
         <delete file="${dest}"/>
-        <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}">
+        <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}/auto">
             <include name="**/*.class"/>
         </jar>
     </target>

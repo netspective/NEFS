@@ -706,11 +706,11 @@ CREATE TABLE Person
     death_date DATE, /* type.DateColumn */
     age INTEGER, /* type.IntegerColumn */
 
-    CONSTRAINT FK_PER_BLOOD_TYPE_ID FOREIGN KEY (blood_type_id) REFERENCES Blood_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PER_NAME_PREFIX_ID FOREIGN KEY (name_prefix_id) REFERENCES Name_Prefix_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PER_GENDER_ID FOREIGN KEY (gender_id) REFERENCES Gender_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PER_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PER_BLOOD_TYPE_ID FOREIGN KEY (blood_type_id) REFERENCES Blood_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PER_MARITAL_STATUS_ID FOREIGN KEY (marital_status_id) REFERENCES Marital_Status_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PER_NAME_PREFIX_ID FOREIGN KEY (name_prefix_id) REFERENCES Name_Prefix_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PER_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PER_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -725,8 +725,8 @@ CREATE TABLE Per_ethnicity_id_Set
     enum_index INTEGER, /* type.IntegerColumn */
     enum_value INTEGER, /* type.EnumerationIdRefColumn */
 
-    CONSTRAINT FK_PERETHST_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERETHST_ENUM_VALUE FOREIGN KEY (enum_value) REFERENCES Ethnicity_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERETHST_ENUM_VALUE FOREIGN KEY (enum_value) REFERENCES Ethnicity_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERETHST_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE
 );
 CREATE  INDEX PK_Per_ethnicity_id_Set on Per_ethnicity_id_Set (system_id);
 CREATE  INDEX PR_PerethSt_parent_id on Per_ethnicity_id_Set (parent_id);
@@ -764,10 +764,10 @@ CREATE TABLE Person_Address
     zip VARCHAR(128), /* type.TextColumn */
     country VARCHAR(128), /* type.TextColumn */
 
-    CONSTRAINT FK_PERADDR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PERADDR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERADDR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERADDR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERADDR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERADDR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -788,9 +788,9 @@ CREATE TABLE Person_Note
     note_type VARCHAR(32), /* type.TextColumn */
     notes VARCHAR(1024), /* type.TextColumn */
 
-    CONSTRAINT FK_PERNOTE_NOTE_TYPE_ID FOREIGN KEY (note_type_id) REFERENCES Person_Note_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERNOTE_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERNOTE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERNOTE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERNOTE_NOTE_TYPE_ID FOREIGN KEY (note_type_id) REFERENCES Person_Note_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERNOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -808,9 +808,9 @@ CREATE TABLE Person_Classification
     person_type_id INTEGER, /* type.EnumerationIdRefColumn */
     person_type VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_PERCLASS_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERCLASS_PERSON_TYPE_ID FOREIGN KEY (person_type_id) REFERENCES Person_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERCLASS_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERCLASS_PERSON_TYPE_ID FOREIGN KEY (person_type_id) REFERENCES Person_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERCLASS_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERCLASS_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERCLASS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -833,9 +833,9 @@ CREATE TABLE Person_Contact
     phone_prefix INTEGER, /* type.IntegerColumn */
     phone_suffix INTEGER, /* type.IntegerColumn */
 
-    CONSTRAINT FK_PERCONT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERCONT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERCONT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -861,9 +861,9 @@ CREATE TABLE Person_Ethnicity
     ethnicity_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     ethnicity VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_PERETH_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERETH_ETHNICITY_ID FOREIGN KEY (ethnicity_id) REFERENCES Ethnicity_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERETH_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERETH_ETHNICITY_ID FOREIGN KEY (ethnicity_id) REFERENCES Ethnicity_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERETH_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERETH_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -897,8 +897,8 @@ CREATE TABLE Person_Flag
     flag_id INTEGER, /* type.EnumerationIdRefColumn */
 
     CONSTRAINT FK_PERFLG_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERFLG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Person_Flag_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERFLG_FLAG_ID FOREIGN KEY (flag_id) REFERENCES Person_Flag_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERFLG_FLAG_ID FOREIGN KEY (flag_id) REFERENCES Person_Flag_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERFLG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Person_Flag_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERFLG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -923,8 +923,8 @@ CREATE TABLE Person_Identifier
     CONSTRAINT FK_PERID_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERID_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_PERID_ID_TYPE_ID FOREIGN KEY (id_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE (Org_PersonId_Src_Type table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERID_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
+    /* DELAYED: CONSTRAINT FK_PERID_ID_TYPE_ID FOREIGN KEY (id_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE (Org_PersonId_Src_Type table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERID_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE (Org_PersonId_Src_Type table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -944,14 +944,14 @@ CREATE TABLE Person_Insurance
     member_number VARCHAR(64), /* type.TextColumn */
     policy_id VARCHAR(36), /* type.GuidTextColumn */
 
-    CONSTRAINT FK_PERINS_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERINS_GUAR_PERSON_ID FOREIGN KEY (guar_person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERINS_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
+    CONSTRAINT FK_PERINS_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERINS_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_PERINS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
-    /* DELAYED: CONSTRAINT FK_PERINS_GUAR_REL_ID FOREIGN KEY (guar_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE (Person_Relationship table not created yet) */
-    /* DELAYED: CONSTRAINT FK_PERINS_INS_REL_ID FOREIGN KEY (ins_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE (Person_Relationship table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERINS_POLICY_ID FOREIGN KEY (policy_id) REFERENCES Ins_Policy (policy_id) ON DELETE CASCADE (Ins_Policy table not created yet) */
+    /* DELAYED: CONSTRAINT FK_PERINS_INS_REL_ID FOREIGN KEY (ins_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE (Person_Relationship table not created yet) */
+    /* DELAYED: CONSTRAINT FK_PERINS_GUAR_REL_ID FOREIGN KEY (guar_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE (Person_Relationship table not created yet) */
+    /* DELAYED: CONSTRAINT FK_PERINS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX PK_Person_Insurance on Person_Insurance (system_id);
 CREATE  INDEX PR_PerIns_person_id on Person_Insurance (person_id);
@@ -966,8 +966,8 @@ CREATE TABLE Person_Language
     language_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     language VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_PERLANG_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PERLANG_LANGUAGE_ID FOREIGN KEY (language_id) REFERENCES Language_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERLANG_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PERLANG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERLANG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1031,9 +1031,9 @@ CREATE TABLE Person_Relationship
     rel_end DATE, /* type.DateColumn */
     rel_descr VARCHAR(1024), /* type.TextColumn */
 
-    CONSTRAINT FK_PERREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Person_Relationship_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERREL_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Person_Relationship_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PERREL_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES Person_Relationship_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1050,9 +1050,9 @@ CREATE TABLE Person_Relationship_Map
     rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
     inv_rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
 
-    CONSTRAINT FK_PERRELMP_INV_REL_TYPE_ID FOREIGN KEY (inv_rel_type_id) REFERENCES Person_Relationship_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERRELMP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PERRELMP_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES Person_Relationship_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERRELMP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_PERRELMP_INV_REL_TYPE_ID FOREIGN KEY (inv_rel_type_id) REFERENCES Person_Relationship_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PERRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1076,11 +1076,11 @@ CREATE TABLE Person_Role
     person_id VARCHAR(36), /* type.GuidTextColumn */
     role_name_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
-    CONSTRAINT FK_PERRL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERRL_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
+    CONSTRAINT FK_PERRL_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PERRL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_PERRL_ROLE_NAME_ID FOREIGN KEY (role_name_id) REFERENCES Org_Role_Declaration (role_name_id) ON DELETE CASCADE (Org_Role_Declaration table not created yet) */
     /* DELAYED: CONSTRAINT FK_PERRL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_PERRL_ROLE_NAME_ID FOREIGN KEY (role_name_id) REFERENCES Org_Role_Declaration (role_name_id) ON DELETE CASCADE (Org_Role_Declaration table not created yet) */
 );
 CREATE  INDEX PerRl_person_id on Person_Role (person_id);
 CREATE  INDEX PerRl_role_name_id on Person_Role (role_name_id);
@@ -1113,9 +1113,9 @@ CREATE TABLE PersonOrg_Relationship
     relationship_name VARCHAR(64), /* type.TextColumn */
     relationship_code VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_PEOREL_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES PersonOrg_Rel_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PEOREL_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PEOREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES PersonOrg_Rel_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_PEOREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES PersonOrg_Rel_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PEOREL_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES PersonOrg_Rel_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PEOREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_PEOREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1152,12 +1152,12 @@ CREATE TABLE Staff_Benefit
     benefit_type VARCHAR(64), /* type.TextColumn */
     benefit_detail VARCHAR(1024), /* type.TextColumn */
 
-    CONSTRAINT FK_STFBEN_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_STFBEN_BENEFIT_TYPE_ID FOREIGN KEY (benefit_type_id) REFERENCES Staff_Benefit_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_STFBEN_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_STFBEN_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_STFBEN_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_STFBEN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_STFBEN_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
 );
 CREATE  INDEX StfBen_person_id on Staff_Benefit (person_id);
 CREATE  INDEX PK_Staff_Benefit on Staff_Benefit (system_id);
@@ -1179,14 +1179,14 @@ CREATE TABLE Staff_License
     license_state VARCHAR(64), /* type.TextColumn */
     speciality_type_id INTEGER, /* type.EnumerationIdRefColumn */
 
-    CONSTRAINT FK_STFLIC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_STFLIC_LICENSE_STATE_ID FOREIGN KEY (license_state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_STFLIC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_STFLIC_SPECIALITY_TYPE_ID FOREIGN KEY (speciality_type_id) REFERENCES Staff_Speciality_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_STFLIC_LICENSE_TYPE_ID FOREIGN KEY (license_type_id) REFERENCES Person_License_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_STFLIC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_STFLIC_LICENSE_TYPE_ID FOREIGN KEY (license_type_id) REFERENCES Person_License_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_STFLIC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_STFLIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_STFLIC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
+    /* DELAYED: CONSTRAINT FK_STFLIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX StfLic_person_id on Staff_License (person_id);
 CREATE  INDEX PK_Staff_License on Staff_License (system_id);
@@ -1215,8 +1215,8 @@ CREATE TABLE Org_Appt_Type
 
     CONSTRAINT FK_ORGAPTY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_ORGAPTY_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_ORGAPTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_ORGAPTY_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
 );
 CREATE  INDEX OrgApTy_org_id on Org_Appt_Type (org_id);
 CREATE  INDEX OrgApTy_caption on Org_Appt_Type (caption);
@@ -1249,13 +1249,13 @@ CREATE TABLE Appt_Type_Resource
     other_id VARCHAR(36), /* type.TextColumn */
     appt_type_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
-    CONSTRAINT FK_APTYRSRC_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
     CONSTRAINT FK_APTYRSRC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_APTYRSRC_RESOURCE_TYPE_ID FOREIGN KEY (resource_type_id) REFERENCES Resource_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_APTYRSRC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_APTYRSRC_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
+    CONSTRAINT FK_APTYRSRC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_APTYRSRC_RESOURCE_TYPE_ID FOREIGN KEY (resource_type_id) REFERENCES Resource_Type (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_APTYRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_APTYRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE (Asset table not created yet) */
+    /* DELAYED: CONSTRAINT FK_APTYRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_APTYRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX ApTyRsrc_appt_type_id on Appt_Type_Resource (appt_type_id);
@@ -1280,8 +1280,8 @@ CREATE TABLE Org_Sch_Template
 
     CONSTRAINT FK_SCTMPL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_SCTMPL_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_SCTMPL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_SCTMPL_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
 );
 CREATE  INDEX ScTmpl_org_id on Org_Sch_Template (org_id);
 CREATE  INDEX ScTmpl_caption on Org_Sch_Template (caption);
@@ -1301,14 +1301,14 @@ CREATE TABLE Template_Resource
     other_id VARCHAR(36), /* type.TextColumn */
     template_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
-    CONSTRAINT FK_TMPLRSRC_RESOURCE_TYPE_ID FOREIGN KEY (resource_type_id) REFERENCES Resource_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_TMPLRSRC_TEMPLATE_ID FOREIGN KEY (template_id) REFERENCES Org_Sch_Template (template_id) ON DELETE CASCADE,
+    CONSTRAINT FK_TMPLRSRC_RESOURCE_TYPE_ID FOREIGN KEY (resource_type_id) REFERENCES Resource_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_TMPLRSRC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_TMPLRSRC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_TMPLRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE (Asset table not created yet) */
-    /* DELAYED: CONSTRAINT FK_TMPLRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_TMPLRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
+    /* DELAYED: CONSTRAINT FK_TMPLRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX TmplRsrc_template_id on Template_Resource (template_id);
 CREATE  INDEX PR_TmplRsrc_template_id on Template_Resource (template_id);
@@ -1324,8 +1324,8 @@ CREATE TABLE Appt_Chain_Entry
     sequence INTEGER, /* type.IntegerColumn */
     org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
-    CONSTRAINT FK_APCHAINE_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
     CONSTRAINT FK_APCHAINE_CHAIN_ID FOREIGN KEY (chain_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
+    CONSTRAINT FK_APCHAINE_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
     CONSTRAINT FK_APCHAINE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_APCHAINE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1354,16 +1354,16 @@ CREATE TABLE Event
     waiting_list BOOLEAN, /* type.BooleanColumn */
     start_time VARCHAR(8), /* type.TextColumn */
 
+    CONSTRAINT FK_EVENT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_EVENT_EVENT_STATUS_ID FOREIGN KEY (event_status_id) REFERENCES Event_Status_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_EVENT_EVENT_TYPE_ID FOREIGN KEY (event_type_id) REFERENCES Event_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_EVENT_SCHEDULED_BY_ID FOREIGN KEY (scheduled_by_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVENT_STATUS_CHGRSN_ID FOREIGN KEY (status_chgrsn_id) REFERENCES Event_Status_ChgRsn_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_EVENT_EVENT_TYPE_ID FOREIGN KEY (event_type_id) REFERENCES Event_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_EVENT_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE,
-    CONSTRAINT FK_EVENT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_EVENT_APPT_TYPE_ID FOREIGN KEY (appt_type_id) REFERENCES Org_Appt_Type (appt_type_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_EVENT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Event (event_id) ON DELETE CASCADE (Event table not created yet) */
-    /* DELAYED: CONSTRAINT FK_EVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_EVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_EVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
 );
 CREATE  INDEX Event_org_id on Event (org_id);
 CREATE  INDEX Event_start_stamp on Event (start_stamp);
@@ -1382,14 +1382,14 @@ CREATE TABLE Event_Resource
     other_id VARCHAR(36), /* type.TextColumn */
     event_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
-    CONSTRAINT FK_EVRSRC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVRSRC_EVENT_ID FOREIGN KEY (event_id) REFERENCES Event (event_id) ON DELETE CASCADE,
+    CONSTRAINT FK_EVRSRC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVRSRC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_EVRSRC_RESOURCE_TYPE_ID FOREIGN KEY (resource_type_id) REFERENCES Resource_Type (id) ON DELETE CASCADE
 
+    /* DELAYED: CONSTRAINT FK_EVRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
     /* DELAYED: CONSTRAINT FK_EVRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_EVRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE (Asset table not created yet) */
-    /* DELAYED: CONSTRAINT FK_EVRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE (Org table not created yet) */
 );
 CREATE  INDEX EvRsrc_event_id on Event_Resource (event_id);
 CREATE  INDEX PR_EvRsrc_event_id on Event_Resource (event_id);
@@ -1409,10 +1409,10 @@ CREATE TABLE Event_Attendee
     discard_by_id VARCHAR(36), /* type.GuidTextColumn */
     discard_stamp TIMESTAMP, /* type.DateTimeColumn */
 
-    CONSTRAINT FK_EVATNDEE_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_EVATNDEE_CHECKIN_BY_ID FOREIGN KEY (checkin_by_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVATNDEE_EVENT_ID FOREIGN KEY (event_id) REFERENCES Event (event_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVATNDEE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_EVATNDEE_CHECKIN_BY_ID FOREIGN KEY (checkin_by_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_EVATNDEE_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVATNDEE_CHECKOUT_BY_ID FOREIGN KEY (checkout_by_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_EVATNDEE_DISCARD_BY_ID FOREIGN KEY (discard_by_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
@@ -1442,10 +1442,10 @@ CREATE TABLE Org
     org_level_id INTEGER, /* type.EnumerationIdRefColumn */
     hcfa_servplace_id INTEGER, /* type.EnumerationIdRefColumn */
 
-    CONSTRAINT FK_ORG_ORG_LEVEL_ID FOREIGN KEY (org_level_id) REFERENCES Org_Level_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORG_OWNERSHIP_ID FOREIGN KEY (ownership_id) REFERENCES Org_Ownership_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORG_FISCAL_YEAR_MONTH_ID FOREIGN KEY (fiscal_year_month_id) REFERENCES Month_Of_Year (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORG_OWNERSHIP_ID FOREIGN KEY (ownership_id) REFERENCES Org_Ownership_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORG_ORG_LEVEL_ID FOREIGN KEY (org_level_id) REFERENCES Org_Level_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORG_HCFA_SERVPLACE_ID FOREIGN KEY (hcfa_servplace_id) REFERENCES HCFA1500_Service_Place_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1471,10 +1471,10 @@ CREATE TABLE Org_Address
     zip VARCHAR(128), /* type.TextColumn */
     country VARCHAR(128), /* type.TextColumn */
 
-    CONSTRAINT FK_ORGADR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGADR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGADR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGADR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGADR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGADR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGADR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGADR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1495,9 +1495,9 @@ CREATE TABLE Org_Note
     note_type VARCHAR(32), /* type.TextColumn */
     notes VARCHAR(1024), /* type.TextColumn */
 
+    CONSTRAINT FK_ONOTE_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
     CONSTRAINT FK_ONOTE_NOTE_TYPE_ID FOREIGN KEY (note_type_id) REFERENCES Org_Note_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ONOTE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ONOTE_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE
+    CONSTRAINT FK_ONOTE_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ONOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1538,9 +1538,9 @@ CREATE TABLE Org_Contact
     phone_prefix INTEGER, /* type.IntegerColumn */
     phone_suffix INTEGER, /* type.IntegerColumn */
 
-    CONSTRAINT FK_ORGCNT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGCNT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGCNT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGCNT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGCNT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGCNT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1569,12 +1569,12 @@ CREATE TABLE Org_Inv_Claim_Rel
     inv_type VARCHAR(64), /* type.TextColumn */
 
     CONSTRAINT FK_ORGINVCLMREL_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGINVCLMREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGINVCLMREL_INV_TYPE_ID FOREIGN KEY (inv_type_id) REFERENCES Invoice_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGINVCLMREL_INV_TYPE_ID FOREIGN KEY (inv_type_id) REFERENCES Invoice_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGINVCLMREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_ORGINVCLMREL_INVOICE_ID FOREIGN KEY (invoice_id) REFERENCES Org_Inv_Visit (invoice_id) ON DELETE CASCADE (Org_Inv_Visit table not created yet) */
     /* DELAYED: CONSTRAINT FK_ORGINVCLMREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_ORGINVCLMREL_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE (Claim table not created yet) */
+    /* DELAYED: CONSTRAINT FK_ORGINVCLMREL_INVOICE_ID FOREIGN KEY (invoice_id) REFERENCES Org_Inv_Visit (invoice_id) ON DELETE CASCADE (Org_Inv_Visit table not created yet) */
 );
 CREATE  INDEX PK_Org_Inv_Claim_Rel on Org_Inv_Claim_Rel (system_id);
 CREATE  INDEX PR_OrgInvClmRel_org_id on Org_Inv_Claim_Rel (org_id);
@@ -1590,9 +1590,9 @@ CREATE TABLE Org_Identifier
     identifier_type VARCHAR(64), /* type.TextColumn */
     identifier VARCHAR(256), /* type.TextColumn */
 
+    CONSTRAINT FK_ORGID_IDENTIFIER_TYPE_ID FOREIGN KEY (identifier_type_id) REFERENCES Org_Identifier_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGID_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGID_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGID_IDENTIFIER_TYPE_ID FOREIGN KEY (identifier_type_id) REFERENCES Org_Identifier_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGID_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1629,8 +1629,8 @@ CREATE TABLE Org_PersonId_Src_Type
     caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32), /* type.TextColumn */
 
-    CONSTRAINT FK_OPERSRCIDTY_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_OPERSRCIDTY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_OPERSRCIDTY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_OPERSRCIDTY_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_OPERSRCIDTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1651,9 +1651,9 @@ CREATE TABLE Org_Product
     measurement_unit VARCHAR(16), /* type.TextColumn */
     unit_measure INTEGER, /* type.IntegerColumn */
 
-    CONSTRAINT FK_OPRD_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_OPRD_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_OPRD_MEASUREMENT_UNIT_ID FOREIGN KEY (measurement_unit_id) REFERENCES Measurement_Unit_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_OPRD_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_OPRD_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_OPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1692,9 +1692,9 @@ CREATE TABLE Org_Relationship
     rel_end DATE, /* type.DateColumn */
     rel_descr VARCHAR(1024), /* type.TextColumn */
 
-    CONSTRAINT FK_ORGREL_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES Org_Relationship_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGREL_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Org_Relationship_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGREL_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGREL_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES Org_Relationship_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1711,9 +1711,9 @@ CREATE TABLE Org_Relationship_Map
     rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
     inv_rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
 
+    CONSTRAINT FK_ORGRELMP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGRELMP_REL_TYPE_ID FOREIGN KEY (rel_type_id) REFERENCES Org_Relationship_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGRELMP_INV_REL_TYPE_ID FOREIGN KEY (inv_rel_type_id) REFERENCES Org_Relationship_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGRELMP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGRELMP_INV_REL_TYPE_ID FOREIGN KEY (inv_rel_type_id) REFERENCES Org_Relationship_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1749,8 +1749,8 @@ CREATE TABLE Org_Service
     org_id VARCHAR(36), /* type.GuidTextColumn */
     service_name VARCHAR(256), /* type.TextColumn */
 
-    CONSTRAINT FK_OSVC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_OSVC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_OSVC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_OSVC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_OSVC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1776,8 +1776,8 @@ CREATE TABLE Ins_Plan
     CONSTRAINT FK_INSPLN_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLN_REMIT_TYPE_ID FOREIGN KEY (remit_type_id) REFERENCES Bill_Remittance_Type (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_INSPLN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE (Ins_Product table not created yet) */
     /* DELAYED: CONSTRAINT FK_INSPLN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_INSPLN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE (Ins_Product table not created yet) */
 );
 CREATE  INDEX PK_Ins_Plan on Ins_Plan (plan_id);
 CREATE  INDEX PR_InsPln_product_id on Ins_Plan (product_id);
@@ -1797,10 +1797,10 @@ CREATE TABLE Ins_Policy
     coverage_begin_date DATE, /* type.DateColumn */
     coverage_end_date DATE, /* type.DateColumn */
 
-    CONSTRAINT FK_INSPLCY_BILL_SEQUENCE_ID FOREIGN KEY (bill_sequence_id) REFERENCES Bill_Sequence_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLCY_PLAN_ID FOREIGN KEY (plan_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLCY_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLCY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPLCY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPLCY_PLAN_ID FOREIGN KEY (plan_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPLCY_BILL_SEQUENCE_ID FOREIGN KEY (bill_sequence_id) REFERENCES Bill_Sequence_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPLCY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1822,10 +1822,10 @@ CREATE TABLE Ins_Product
     remit_type VARCHAR(32), /* type.TextColumn */
     remit_payer_name VARCHAR(256), /* type.TextColumn */
 
-    CONSTRAINT FK_INSPRD_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPRD_PRD_TYPE_ID FOREIGN KEY (prd_type_id) REFERENCES Ins_Product_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRD_REMIT_TYPE_ID FOREIGN KEY (remit_type_id) REFERENCES Bill_Remittance_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRD_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPRD_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPRD_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPRD_REMIT_TYPE_ID FOREIGN KEY (remit_type_id) REFERENCES Bill_Remittance_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1852,8 +1852,8 @@ CREATE TABLE InsPlan_Address
     country VARCHAR(128), /* type.TextColumn */
 
     CONSTRAINT FK_INSPLNADDR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLNADDR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLNADDR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPLNADDR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLNADDR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPLNADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -1879,9 +1879,9 @@ CREATE TABLE InsPlan_Contact
     phone_prefix INTEGER, /* type.IntegerColumn */
     phone_suffix INTEGER, /* type.IntegerColumn */
 
+    CONSTRAINT FK_INSPLNCONT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLNCONT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLNCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLNCONT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPLNCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPLNCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1912,9 +1912,9 @@ CREATE TABLE InsPlan_Coverage
     threshold_amt NUMERIC(12,2), /* type.CurrencyColumn */
     copay_amt NUMERIC(12,2), /* type.CurrencyColumn */
 
-    CONSTRAINT FK_INSPLNCOV_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPLNCOV_CVG_TYPE_ID FOREIGN KEY (cvg_type_id) REFERENCES Ins_Coverage_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPLNCOV_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPLNCOV_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPLNCOV_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPLNCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1966,10 +1966,10 @@ CREATE TABLE InsProduct_Address
     zip VARCHAR(128), /* type.TextColumn */
     country VARCHAR(128), /* type.TextColumn */
 
-    CONSTRAINT FK_INSPRDADDR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRDADDR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPRDADDR_ADDRESS_TYPE_ID FOREIGN KEY (address_type_id) REFERENCES Contact_Address_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRDADDR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPRDADDR_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPRDADDR_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_INSPRDADDR_STATE_ID FOREIGN KEY (state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPRDADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -1994,9 +1994,9 @@ CREATE TABLE InsProduct_Contact
     phone_prefix INTEGER, /* type.IntegerColumn */
     phone_suffix INTEGER, /* type.IntegerColumn */
 
+    CONSTRAINT FK_INSPRDCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_INSPRDCONT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRDCONT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE,
-    CONSTRAINT FK_INSPRDCONT_METHOD_TYPE FOREIGN KEY (method_type) REFERENCES Contact_Method_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_INSPRDCONT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_INSPRDCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2050,8 +2050,8 @@ CREATE TABLE Asset
     location VARCHAR(256), /* type.TextColumn */
     serial_num VARCHAR(512), /* type.TextColumn */
 
-    CONSTRAINT FK_AST_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_AST_ASSET_TYPE_ID FOREIGN KEY (asset_type_id) REFERENCES Asset_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_AST_ASSET_TYPE_ID FOREIGN KEY (asset_type_id) REFERENCES Asset_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_AST_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_AST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2068,8 +2068,8 @@ CREATE TABLE Asset_Maint
     breakdown_date DATE, /* type.DateColumn */
     maintenance_date DATE, /* type.DateColumn */
 
-    CONSTRAINT FK_ASTMAINT_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ASTMAINT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ASTMAINT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ASTMAINT_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ASTMAINT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2091,11 +2091,11 @@ CREATE TABLE Org_Inv_Visit
     invoice_date DATE NOT NULL, /* type.DateColumn */
     submit_date DATE, /* type.DateColumn */
 
+    CONSTRAINT FK_ORGINVVIS_INVOICE_STAT_ID FOREIGN KEY (invoice_stat_id) REFERENCES Invoice_Status_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ORGINVVIS_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGINVVIS_TARGET_ID FOREIGN KEY (target_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ORGINVVIS_SUBMITTER_ID FOREIGN KEY (submitter_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGINVVIS_INVOICE_STAT_ID FOREIGN KEY (invoice_stat_id) REFERENCES Invoice_Status_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGINVVIS_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ORGINVVIS_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ORGINVVIS_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ORGINVVIS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_ORGINVVIS_ACT_ID FOREIGN KEY (act_id) REFERENCES Action_Visit (act_id) ON DELETE CASCADE (Action_Visit table not created yet) */
@@ -2129,8 +2129,8 @@ CREATE TABLE Org_Medication
     med_name VARCHAR(64), /* type.TextColumn */
     generic_name VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_MED_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_MED_MED_TYPE_ID FOREIGN KEY (med_type_id) REFERENCES Medication_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_MED_MED_TYPE_ID FOREIGN KEY (med_type_id) REFERENCES Medication_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_MED_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 );
 CREATE unique INDEX Org_Medication_unq on Org_Medication (org_id, med_id);
 CREATE  INDEX PK_Org_Medication on Org_Medication (med_id);
@@ -2147,9 +2147,9 @@ CREATE TABLE Patient_Indication
     indication_type VARCHAR(64), /* type.TextColumn */
     indication VARCHAR(1024), /* type.TextColumn */
 
+    CONSTRAINT FK_PATINDIC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PATINDIC_INDICATION_TYPE_ID FOREIGN KEY (indication_type_id) REFERENCES Person_Indication_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATINDIC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATINDIC_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
+    CONSTRAINT FK_PATINDIC_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PATINDIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2191,13 +2191,13 @@ CREATE TABLE Patient_Medication
     label_language INTEGER, /* type.EnumerationIdRefColumn */
     signed BOOLEAN, /* type.BooleanColumn */
 
-    CONSTRAINT FK_PATMED_LABEL_LANGUAGE FOREIGN KEY (label_language) REFERENCES Language_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATMED_MED_ID FOREIGN KEY (med_id) REFERENCES Org_Medication (med_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATMED_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATMED_PRESCRIBER_ID FOREIGN KEY (prescriber_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PATMED_RECORD_TYPE FOREIGN KEY (record_type) REFERENCES Medication_Record_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATMED_PHARMACY_ID FOREIGN KEY (pharmacy_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATMED_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_PATMED_LABEL_LANGUAGE FOREIGN KEY (label_language) REFERENCES Language_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATMED_PRESCRIBER_ID FOREIGN KEY (prescriber_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATMED_MED_ID FOREIGN KEY (med_id) REFERENCES Org_Medication (med_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATMED_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATMED_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATMED_PHARMACY_ID FOREIGN KEY (pharmacy_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PATMED_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2230,15 +2230,15 @@ CREATE TABLE Patient_Referral
     referral_reason VARCHAR(512), /* type.TextColumn */
     comments VARCHAR(512), /* type.TextColumn */
 
-    CONSTRAINT FK_PATREF_REFEREE_ID FOREIGN KEY (referee_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_REFERRAL_TYPE_ID FOREIGN KEY (referral_type_id) REFERENCES Referral_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_COMM_TYPE_ID FOREIGN KEY (comm_type_id) REFERENCES Referral_Communication (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_REFERRER_ID FOREIGN KEY (referrer_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_REFERRAL_STATUS_ID FOREIGN KEY (referral_status_id) REFERENCES Referral_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PATREF_USER_ID FOREIGN KEY (user_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PATREF_REFERRAL_URGENCY FOREIGN KEY (referral_urgency) REFERENCES Referral_Urgency (id) ON DELETE CASCADE
+    CONSTRAINT FK_PATREF_REFEREE_ID FOREIGN KEY (referee_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_REFERRAL_TYPE_ID FOREIGN KEY (referral_type_id) REFERENCES Referral_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_REFERRAL_URGENCY FOREIGN KEY (referral_urgency) REFERENCES Referral_Urgency (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_COMM_TYPE_ID FOREIGN KEY (comm_type_id) REFERENCES Referral_Communication (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_REFERRAL_STATUS_ID FOREIGN KEY (referral_status_id) REFERENCES Referral_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PATREF_REFERRER_ID FOREIGN KEY (referrer_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PATREF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2269,16 +2269,16 @@ CREATE TABLE Claim
     accident_state VARCHAR(32), /* type.TextColumn */
     authorization_number VARCHAR(64), /* type.TextColumn */
 
-    CONSTRAINT FK_CLM_SERVICE_FACILITY_ID FOREIGN KEY (service_facility_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_BILLING_FACILITY_ID FOREIGN KEY (billing_facility_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_ACCIDENT_STATE_ID FOREIGN KEY (accident_state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_REFERRAL_ID FOREIGN KEY (referral_id) REFERENCES Patient_Referral (referral_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_SERVICE_PROVIDER_ID FOREIGN KEY (service_provider_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_VISIT_TYPE_ID FOREIGN KEY (visit_type_id) REFERENCES Doctor_Visit_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_CLAIM_STATUS_ID FOREIGN KEY (claim_status_id) REFERENCES Claim_Status_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_CLM_BILLING_PROVIDER_ID FOREIGN KEY (billing_provider_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_CLM_VISIT_TYPE_ID FOREIGN KEY (visit_type_id) REFERENCES Doctor_Visit_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_ACCIDENT_STATE_ID FOREIGN KEY (accident_state_id) REFERENCES US_State_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_SERVICE_PROVIDER_ID FOREIGN KEY (service_provider_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_SERVICE_FACILITY_ID FOREIGN KEY (service_facility_id) REFERENCES Org (org_id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_REFERRAL_ID FOREIGN KEY (referral_id) REFERENCES Patient_Referral (referral_id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_CLAIM_STATUS_ID FOREIGN KEY (claim_status_id) REFERENCES Claim_Status_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLM_BILLING_FACILITY_ID FOREIGN KEY (billing_facility_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_CLM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2295,8 +2295,8 @@ CREATE TABLE Claim_Diagnosis
     diag_code VARCHAR(32), /* type.TextColumn */
     modifier VARCHAR(32), /* type.TextColumn */
 
-    CONSTRAINT FK_CLMDIAG_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE,
     CONSTRAINT FK_CLMDIAG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLMDIAG_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE,
     CONSTRAINT FK_CLMDIAG_DIAG_CODE_TYPE_ID FOREIGN KEY (diag_code_type_id) REFERENCES Claim_Diagnosis_Code_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_CLMDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -2314,11 +2314,11 @@ CREATE TABLE Claim_DiagProc_Rel
     procedure_id VARCHAR(36), /* type.GuidTextColumn */
     comments VARCHAR(256), /* type.TextColumn */
 
-    CONSTRAINT FK_CLMDPREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLMDPREL_DIAGNOSIS_ID FOREIGN KEY (diagnosis_id) REFERENCES Claim_Diagnosis (system_id) ON DELETE CASCADE
+    CONSTRAINT FK_CLMDPREL_DIAGNOSIS_ID FOREIGN KEY (diagnosis_id) REFERENCES Claim_Diagnosis (system_id) ON DELETE CASCADE,
+    CONSTRAINT FK_CLMDPREL_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_CLMDPREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_CLMDPREL_PROCEDURE_ID FOREIGN KEY (procedure_id) REFERENCES Claim_Procedure (system_id) ON DELETE CASCADE (Claim_Procedure table not created yet) */
+    /* DELAYED: CONSTRAINT FK_CLMDPREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX PK_Claim_DiagProc_Rel on Claim_DiagProc_Rel (system_id);
 CREATE  INDEX PR_ClmDPRel_diagnosis_id on Claim_DiagProc_Rel (diagnosis_id);
@@ -2337,9 +2337,9 @@ CREATE TABLE Claim_Data_History
     field_old_value VARCHAR(256), /* type.TextColumn */
     field_new_value VARCHAR(256), /* type.TextColumn */
 
+    CONSTRAINT FK_CLMHIST_CHANGE_TYPE_ID FOREIGN KEY (change_type_id) REFERENCES Field_Change_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_CLMHIST_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_CLMHIST_CHANGED_FIELD_ID FOREIGN KEY (changed_field_id) REFERENCES Claim_Table_Field_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_CLMHIST_CHANGE_TYPE_ID FOREIGN KEY (change_type_id) REFERENCES Field_Change_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_CLMHIST_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_CLMHIST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -2418,10 +2418,10 @@ CREATE TABLE Action_Patient_Comm
     rcpt_cont VARCHAR(256), /* type.TextColumn */
 
     CONSTRAINT FK_ACTPATCOMM_ACT_STATUS_ID FOREIGN KEY (act_status_id) REFERENCES Patient_Comm_Status_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTPATCOMM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTPATCOMM_RECEPTOR_ID FOREIGN KEY (receptor_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTPATCOMM_INITIATOR_ID FOREIGN KEY (initiator_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTPATCOMM_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Patient_Comm_Act_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTPATCOMM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ACTPATCOMM_INITIATOR_ID FOREIGN KEY (initiator_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ACTPATCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2447,10 +2447,10 @@ CREATE TABLE Action_Diagnosis
     diagnosis VARCHAR(256), /* type.TextColumn */
 
     CONSTRAINT FK_ACTDIAG_DIAG_CODETYPE_ID FOREIGN KEY (diag_codetype_id) REFERENCES Claim_Diagnosis_Code_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTDIAG_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTDIAG_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTDIAG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTDIAG_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Diag_Term_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ACTDIAG_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Diag_Term_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTDIAG_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTDIAG_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ACTDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2476,8 +2476,8 @@ CREATE TABLE Action_Directive
 
     CONSTRAINT FK_ACTDCTV_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTDCTV_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTDCTV_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTDCTV_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Directive_Act_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ACTDCTV_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Directive_Act_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTDCTV_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ACTDCTV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2536,16 +2536,16 @@ CREATE TABLE Action_Ins_Verify
     verify_action VARCHAR(64), /* type.TextColumn */
     owner_org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
 
+    CONSTRAINT FK_ACTINSVFY_INS_VERIFIED_BY FOREIGN KEY (ins_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTINSVFY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTINSVFY_PER_VERIFIED_BY FOREIGN KEY (per_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTINSVFY_MED_VERIFIED_BY FOREIGN KEY (med_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTINSVFY_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Action_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTINSVFY_EVENT_ID FOREIGN KEY (event_id) REFERENCES Event (event_id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTINSVFY_OWNER_ORG_ID FOREIGN KEY (owner_org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_MED_VERIFIED_BY FOREIGN KEY (med_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_PROVIDER_ID FOREIGN KEY (provider_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Action_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTINSVFY_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTINSVFY_APP_VERIFIED_BY FOREIGN KEY (app_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_PER_VERIFIED_BY FOREIGN KEY (per_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_INS_VERIFIED_BY FOREIGN KEY (ins_verified_by) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTINSVFY_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
+    CONSTRAINT FK_ACTINSVFY_PROVIDER_ID FOREIGN KEY (provider_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ACTINSVFY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2573,11 +2573,11 @@ CREATE TABLE Action_Provider_Comm
     receptor VARCHAR(128), /* type.TextColumn */
     rcpt_cont VARCHAR(256), /* type.TextColumn */
 
+    CONSTRAINT FK_ACTPRVCOMM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTPRVCOMM_RECEPTOR_ID FOREIGN KEY (receptor_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTPRVCOMM_ACT_STATUS_ID FOREIGN KEY (act_status_id) REFERENCES Provider_Comm_Status_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTPRVCOMM_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Provider_Comm_Act_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ACTPRVCOMM_INITIATOR_ID FOREIGN KEY (initiator_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ACTPRVCOMM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ACTPRVCOMM_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Provider_Comm_Act_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ACTPRVCOMM_ACT_STATUS_ID FOREIGN KEY (act_status_id) REFERENCES Provider_Comm_Status_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ACTPRVCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2602,11 +2602,11 @@ CREATE TABLE Action_Procedure
     proc_code VARCHAR(32), /* type.TextColumn */
     procedure VARCHAR(256), /* type.TextColumn */
 
+    CONSTRAINT FK_PROCACT_PROC_CODETYPE_ID FOREIGN KEY (proc_codetype_id) REFERENCES Claim_Procedure_Code_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_PROCACT_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_PROCACT_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Proc_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PROCACT_PROC_CODETYPE_ID FOREIGN KEY (proc_codetype_id) REFERENCES Claim_Procedure_Code_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PROCACT_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_PROCACT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_PROCACT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_PROCACT_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PROCACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2629,9 +2629,9 @@ CREATE TABLE Action_Visit
     physician VARCHAR(128), /* type.TextColumn */
     reason VARCHAR(256), /* type.TextColumn */
 
-    CONSTRAINT FK_VISITACT_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_VISITACT_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_VISITACT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_VISITACT_PHYSICIAN_ID FOREIGN KEY (physician_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_VISITACT_PATIENT_ID FOREIGN KEY (patient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_VISITACT_ACT_TYPE_ID FOREIGN KEY (act_type_id) REFERENCES Doctor_Visit_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_VISITACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -2671,9 +2671,9 @@ CREATE TABLE Artifact
     content_small VARCHAR(4000), /* type.TextColumn */
     content_large BYTEA, /* type.DataBlockColumn */
 
+    CONSTRAINT FK_ARTF_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_ARTF_SPEC_TYPE_ID FOREIGN KEY (spec_type_id) REFERENCES Artifact_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARTF_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Artifact_Source_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARTF_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_ARTF_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Artifact_Source_Type (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ARTF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2713,14 +2713,14 @@ CREATE TABLE Artifact_State
     content_small VARCHAR(4000), /* type.TextColumn */
     content_large BYTEA, /* type.DataBlockColumn */
 
+    CONSTRAINT FK_ARTFST_SPEC_TYPE_ID FOREIGN KEY (spec_type_id) REFERENCES Artifact_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ARTFST_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARTFST_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Artifact_Source_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ARTFST_ARTIFACT_ID FOREIGN KEY (artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
     CONSTRAINT FK_ARTFST_REC_STATE_ID FOREIGN KEY (rec_state_id) REFERENCES Record_State (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARTFST_SPEC_TYPE_ID FOREIGN KEY (spec_type_id) REFERENCES Artifact_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ARTFST_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Artifact_Source_Type (id) ON DELETE CASCADE
 
-    /* DELAYED: CONSTRAINT FK_ARTFST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
     /* DELAYED: CONSTRAINT FK_ARTFST_UPD_SESS_ID FOREIGN KEY (upd_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
+    /* DELAYED: CONSTRAINT FK_ARTFST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
 CREATE  INDEX ArtfSt_spec_type_id on Artifact_State (spec_type_id);
 CREATE  INDEX ArtfSt_spec_subtype on Artifact_State (spec_subtype);
@@ -2748,13 +2748,13 @@ CREATE TABLE Artifact_Association
     assn_data_b VARCHAR(1024), /* type.TextColumn */
     assn_data_c VARCHAR(1024), /* type.TextColumn */
 
+    CONSTRAINT FK_ARFASSN_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFASSN_ASSOC_ARTIFACT_ID FOREIGN KEY (assoc_artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFASSN_ASSN_TYPE_ID FOREIGN KEY (assn_type_id) REFERENCES Artifact_Association_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_ARFASSN_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
     CONSTRAINT FK_ARFASSN_ASSN_STATUS_ID FOREIGN KEY (assn_status_id) REFERENCES Artifact_Association_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFASSN_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFASSN_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFASSN_ASSOC_ARTIFACT_ID FOREIGN KEY (assoc_artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
     CONSTRAINT FK_ARFASSN_ARTIFACT_ID FOREIGN KEY (artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFASSN_ASSN_TYPE_ID FOREIGN KEY (assn_type_id) REFERENCES Artifact_Association_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ARFASSN_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ARFASSN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2779,10 +2779,10 @@ CREATE TABLE Artifact_Keyword
     person_id VARCHAR(36), /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
 
-    CONSTRAINT FK_ARFKEYW_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFKEYW_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_ARFKEYW_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFKEYW_ARTIFACT_ID FOREIGN KEY (artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFKEYW_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE
+    CONSTRAINT FK_ARFKEYW_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFKEYW_ARTIFACT_ID FOREIGN KEY (artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ARFKEYW_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2807,12 +2807,12 @@ CREATE TABLE Artifact_Event
     event_info VARCHAR(1024), /* type.TextColumn */
     event_info_extra VARCHAR(1024), /* type.TextColumn */
 
-    CONSTRAINT FK_ARFEVENT_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFEVENT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFEVENT_REL_ARTIFACT_ID FOREIGN KEY (rel_artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
     CONSTRAINT FK_ARFEVENT_ARTIFACT_ID FOREIGN KEY (artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFEVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE,
-    CONSTRAINT FK_ARFEVENT_EVENT_TYPE_ID FOREIGN KEY (event_type_id) REFERENCES Artifact_Event_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_ARFEVENT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFEVENT_PERSON_ID FOREIGN KEY (person_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFEVENT_EVENT_TYPE_ID FOREIGN KEY (event_type_id) REFERENCES Artifact_Event_Type (id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFEVENT_REL_ARTIFACT_ID FOREIGN KEY (rel_artifact_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
+    CONSTRAINT FK_ARFEVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_ARFEVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2842,8 +2842,8 @@ CREATE TABLE Service_Catalog
     catalog_name VARCHAR(128), /* type.TextColumn */
     ins_plan_id VARCHAR(36), /* type.GuidTextColumn */
 
-    CONSTRAINT FK_SVCCAT_INS_PLAN_ID FOREIGN KEY (ins_plan_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE,
-    CONSTRAINT FK_SVCCAT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_SVCCAT_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_SVCCAT_INS_PLAN_ID FOREIGN KEY (ins_plan_id) REFERENCES Ins_Plan (plan_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_SVCCAT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2861,8 +2861,8 @@ CREATE TABLE Service_Catalog_Item
     cost NUMERIC(12,2), /* type.CurrencyColumn */
 
     CONSTRAINT FK_SVCCATITM_CATALOG_ID FOREIGN KEY (catalog_id) REFERENCES Service_Catalog (catalog_id) ON DELETE CASCADE,
-    CONSTRAINT FK_SVCCATITM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_SVCCATITM_ITEM_ID FOREIGN KEY (item_id) REFERENCES Org_Service (service_id) ON DELETE CASCADE
+    CONSTRAINT FK_SVCCATITM_ITEM_ID FOREIGN KEY (item_id) REFERENCES Org_Service (service_id) ON DELETE CASCADE,
+    CONSTRAINT FK_SVCCATITM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_SVCCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2896,8 +2896,8 @@ CREATE TABLE Product_Catalog_Item
     item VARCHAR(256), /* type.TextColumn */
     cost NUMERIC(12,2), /* type.CurrencyColumn */
 
-    CONSTRAINT FK_PRDCATITM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PRDCATITM_ITEM_ID FOREIGN KEY (item_id) REFERENCES Org_Product (product_id) ON DELETE CASCADE,
+    CONSTRAINT FK_PRDCATITM_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
     CONSTRAINT FK_PRDCATITM_CATALOG_ID FOREIGN KEY (catalog_id) REFERENCES Product_Catalog (catalog_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_PRDCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
@@ -2916,9 +2916,9 @@ CREATE TABLE Message
     sender_id VARCHAR(36), /* type.GuidTextColumn */
     content VARCHAR(2048), /* type.TextColumn */
 
-    CONSTRAINT FK_MESG_SENDER_ID FOREIGN KEY (sender_id) REFERENCES Person (person_id) ON DELETE CASCADE,
     CONSTRAINT FK_MESG_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
-    CONSTRAINT FK_MESG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
+    CONSTRAINT FK_MESG_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
+    CONSTRAINT FK_MESG_SENDER_ID FOREIGN KEY (sender_id) REFERENCES Person (person_id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_MESG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2936,11 +2936,11 @@ CREATE TABLE Message_Recipient
     reception_type_id INTEGER, /* type.EnumerationIdRefColumn */
     recipient_id VARCHAR(36), /* type.GuidTextColumn */
 
+    CONSTRAINT FK_MESGRECP_RECIPIENT_ID FOREIGN KEY (recipient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
+    CONSTRAINT FK_MESGRECP_RECIPIENT_TYPE_ID FOREIGN KEY (recipient_type_id) REFERENCES Message_Recipient_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_MESGRECP_RECEPTION_TYPE_ID FOREIGN KEY (reception_type_id) REFERENCES Message_Reception_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_MESGRECP_MESSAGE_ID FOREIGN KEY (message_id) REFERENCES Message (message_id) ON DELETE CASCADE,
-    CONSTRAINT FK_MESGRECP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE,
-    CONSTRAINT FK_MESGRECP_RECIPIENT_ID FOREIGN KEY (recipient_id) REFERENCES Person (person_id) ON DELETE CASCADE,
-    CONSTRAINT FK_MESGRECP_RECIPIENT_TYPE_ID FOREIGN KEY (recipient_type_id) REFERENCES Message_Recipient_Type (id) ON DELETE CASCADE
+    CONSTRAINT FK_MESGRECP_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
     /* DELAYED: CONSTRAINT FK_MESGRECP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE (Person_Session table not created yet) */
 );
@@ -2959,8 +2959,8 @@ CREATE TABLE Message_Attach
     forwarded_id VARCHAR(36), /* type.GuidTextColumn */
 
     CONSTRAINT FK_MESGATCH_MESSAGE_ID FOREIGN KEY (message_id) REFERENCES Message (message_id) ON DELETE CASCADE,
-    CONSTRAINT FK_MESGATCH_ATTACHMENT_TYPE_ID FOREIGN KEY (attachment_type_id) REFERENCES Message_Attachment_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_MESGATCH_DOCUMENT_ID FOREIGN KEY (document_id) REFERENCES Artifact (artifact_id) ON DELETE CASCADE,
+    CONSTRAINT FK_MESGATCH_ATTACHMENT_TYPE_ID FOREIGN KEY (attachment_type_id) REFERENCES Message_Attachment_Type (id) ON DELETE CASCADE,
     CONSTRAINT FK_MESGATCH_FORWARDED_ID FOREIGN KEY (forwarded_id) REFERENCES Message (message_id) ON DELETE CASCADE,
     CONSTRAINT FK_MESGATCH_REC_STAT_ID FOREIGN KEY (rec_stat_id) REFERENCES Record_Status (id) ON DELETE CASCADE
 
@@ -2997,9 +2997,9 @@ CREATE TABLE PersonSession_Activity
     detail_level INTEGER, /* type.IntegerColumn */
     activity_data VARCHAR(1024), /* type.TextColumn */
 
+    CONSTRAINT FK_PERSESSACT_SESSION_ID FOREIGN KEY (session_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE,
     CONSTRAINT FK_PERSESSACT_ACTION_TYPE FOREIGN KEY (action_type) REFERENCES Session_Action_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERSESSACT_ACTIVITY_TYPE FOREIGN KEY (activity_type) REFERENCES Session_Activity_Type (id) ON DELETE CASCADE,
-    CONSTRAINT FK_PERSESSACT_SESSION_ID FOREIGN KEY (session_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE
+    CONSTRAINT FK_PERSESSACT_ACTIVITY_TYPE FOREIGN KEY (activity_type) REFERENCES Session_Activity_Type (id) ON DELETE CASCADE
 );
 CREATE  INDEX PerSessAct_session_id on PersonSession_Activity (session_id);
 CREATE  INDEX PerSessAct_activity_stamp on PersonSession_Activity (activity_stamp);
@@ -3023,118 +3023,118 @@ CREATE  INDEX PerSessCnt_session_id on PersonSession_View_Count (session_id);
 CREATE  INDEX PerSessCnt_view_init on PersonSession_View_Count (view_init);
 CREATE  INDEX PR_PerSessCnt_session_id on PersonSession_View_Count (session_id);
 
-ALTER TABLE Action_Provider_Comm ADD CONSTRAINT FK_ACTPRVCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Role_Declaration ADD CONSTRAINT FK_ORGRLDC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Product_Catalog_Item ADD CONSTRAINT FK_PRDCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_INVOICE_ID FOREIGN KEY (invoice_id) REFERENCES Org_Inv_Visit (invoice_id) ON DELETE CASCADE;
-ALTER TABLE Event ADD CONSTRAINT FK_EVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Org_Inv_Visit ADD CONSTRAINT FK_ORGINVVIS_ACT_ID FOREIGN KEY (act_id) REFERENCES Action_Visit (act_id) ON DELETE CASCADE;
-ALTER TABLE Asset ADD CONSTRAINT FK_AST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Patient_Referral ADD CONSTRAINT FK_PATREF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Catalog ADD CONSTRAINT FK_CATALOG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_PersonId_Src_Type ADD CONSTRAINT FK_OPERSRCIDTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Ins_Plan ADD CONSTRAINT FK_INSPLN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE;
-ALTER TABLE Org_Sch_Template ADD CONSTRAINT FK_SCTMPL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsPlan_Address ADD CONSTRAINT FK_INSPLNADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action ADD CONSTRAINT FK_ACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Artifact_State ADD CONSTRAINT FK_ARTFST_UPD_SESS_ID FOREIGN KEY (upd_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Template_Resource ADD CONSTRAINT FK_TMPLRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
 ALTER TABLE Person_Address ADD CONSTRAINT FK_PERADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Artifact ADD CONSTRAINT FK_ARTF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE PersonOrg_Relationship ADD CONSTRAINT FK_PEOREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Ins_Plan ADD CONSTRAINT FK_INSPLN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Classification ADD CONSTRAINT FK_ORGCLASS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsPlan_Address ADD CONSTRAINT FK_INSPLNADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Inv_Visit ADD CONSTRAINT FK_ORGINVVIS_ACT_ID FOREIGN KEY (act_id) REFERENCES Action_Visit (act_id) ON DELETE CASCADE;
+ALTER TABLE Org_Note ADD CONSTRAINT FK_ONOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Org_Relationship ADD CONSTRAINT FK_ORGREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE;
+ALTER TABLE Claim ADD CONSTRAINT FK_CLM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Sch_Template ADD CONSTRAINT FK_SCTMPL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Staff_License ADD CONSTRAINT FK_STFLIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Inv_Visit ADD CONSTRAINT FK_ORGINVVIS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Appt_Chain_Entry ADD CONSTRAINT FK_APCHAINE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_INS_REL_ID FOREIGN KEY (ins_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE;
+ALTER TABLE Action_Procedure ADD CONSTRAINT FK_PROCACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Patient_Medication ADD CONSTRAINT FK_PATMED_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Ins_Product ADD CONSTRAINT FK_INSPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_INVOICE_ID FOREIGN KEY (invoice_id) REFERENCES Org_Inv_Visit (invoice_id) ON DELETE CASCADE;
+ALTER TABLE Claim_Data_History ADD CONSTRAINT FK_CLMHIST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Claim_Procedure ADD CONSTRAINT FK_CLMPROC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsPlan_Contact ADD CONSTRAINT FK_INSPLNCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Ins_Plan ADD CONSTRAINT FK_INSPLN_PRODUCT_ID FOREIGN KEY (product_id) REFERENCES Ins_Product (product_id) ON DELETE CASCADE;
+ALTER TABLE InsProduct_Address ADD CONSTRAINT FK_INSPRDADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Message ADD CONSTRAINT FK_MESG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Artifact_State ADD CONSTRAINT FK_ARTFST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_POLICY_ID FOREIGN KEY (policy_id) REFERENCES Ins_Policy (policy_id) ON DELETE CASCADE;
+ALTER TABLE Person_Login ADD CONSTRAINT FK_PERLG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Product_Catalog ADD CONSTRAINT FK_PRDCAT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Org_Appt_Type ADD CONSTRAINT FK_ORGAPTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsPolicy_Coverage ADD CONSTRAINT FK_INSPOLCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsProduct_Coverage ADD CONSTRAINT FK_INSPRDCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Claim_Data_Archive ADD CONSTRAINT FK_CLMDATAARC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Sch_Template ADD CONSTRAINT FK_SCTMPL_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Claim_Diagnosis ADD CONSTRAINT FK_CLMDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Industry ADD CONSTRAINT FK_OIND_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Action_Provider_Comm ADD CONSTRAINT FK_ACTPRVCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org ADD CONSTRAINT FK_ORG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Action_Ins_Verify ADD CONSTRAINT FK_ACTINSVFY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
+ALTER TABLE Action_Diagnosis ADD CONSTRAINT FK_ACTDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
+ALTER TABLE Person_Flag ADD CONSTRAINT FK_PERFLG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE PersonOrg_Relationship_Map ADD CONSTRAINT FK_PERORELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_PersonId_Src_Type ADD CONSTRAINT FK_OPERSRCIDTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Action_Patient_Comm ADD CONSTRAINT FK_ACTPATCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Role ADD CONSTRAINT FK_PERRL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Visit_Line_Item ADD CONSTRAINT FK_VISLNITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Product_Catalog_Item ADD CONSTRAINT FK_PRDCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Contact ADD CONSTRAINT FK_PERCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Contact ADD CONSTRAINT FK_ORGCNT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Service_Catalog_Item ADD CONSTRAINT FK_SVCCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Template_Resource ADD CONSTRAINT FK_TMPLRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
+ALTER TABLE Event ADD CONSTRAINT FK_EVENT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Event (event_id) ON DELETE CASCADE;
+ALTER TABLE Person_Note ADD CONSTRAINT FK_PERNOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Asset ADD CONSTRAINT FK_AST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Staff_License ADD CONSTRAINT FK_STFLIC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Org_Address ADD CONSTRAINT FK_ORGADR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsProduct_Contact ADD CONSTRAINT FK_INSPRDCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Artifact_Association ADD CONSTRAINT FK_ARFASSN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Person_Classification ADD CONSTRAINT FK_PERCLASS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Message ADD CONSTRAINT FK_MESG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_INS_REL_ID FOREIGN KEY (ins_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE;
-ALTER TABLE Person ADD CONSTRAINT FK_PER_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Relationship ADD CONSTRAINT FK_PERREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Role_Declaration ADD CONSTRAINT FK_ORGRLDC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Claim_DiagProc_Rel ADD CONSTRAINT FK_CLMDPREL_PROCEDURE_ID FOREIGN KEY (procedure_id) REFERENCES Claim_Procedure (system_id) ON DELETE CASCADE;
+ALTER TABLE Org_Inv_Claim_Rel ADD CONSTRAINT FK_ORGINVCLMREL_CLAIM_ID FOREIGN KEY (claim_id) REFERENCES Claim (claim_id) ON DELETE CASCADE;
+ALTER TABLE Person_Relationship_Map ADD CONSTRAINT FK_PERRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event ADD CONSTRAINT FK_EVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_GUAR_REL_ID FOREIGN KEY (guar_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE;
 ALTER TABLE Message_Recipient ADD CONSTRAINT FK_MESGRECP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Artifact_State ADD CONSTRAINT FK_ARTFST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Staff_License ADD CONSTRAINT FK_STFLIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Artifact_Event ADD CONSTRAINT FK_ARFEVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event ADD CONSTRAINT FK_EVENT_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Action ADD CONSTRAINT FK_ACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Asset_Maint ADD CONSTRAINT FK_ASTMAINT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Event_Attendee ADD CONSTRAINT FK_EVATNDEE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Artifact_Keyword ADD CONSTRAINT FK_ARFKEYW_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Template_Resource ADD CONSTRAINT FK_TMPLRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Appt_Chain_Entry ADD CONSTRAINT FK_APCHAINE_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Staff_Benefit ADD CONSTRAINT FK_STFBEN_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Org_Identifier ADD CONSTRAINT FK_ORGID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE;
+ALTER TABLE Claim_DiagProc_Rel ADD CONSTRAINT FK_CLMDPREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Action_Visit ADD CONSTRAINT FK_VISITACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Relationship_Map ADD CONSTRAINT FK_ORGRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Action_Directive ADD CONSTRAINT FK_ACTDCTV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Relationship ADD CONSTRAINT FK_PERREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Service_Catalog ADD CONSTRAINT FK_SVCCAT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE InsPlan_Coverage ADD CONSTRAINT FK_INSPLNCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_ID_TYPE_ID FOREIGN KEY (id_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE;
+ALTER TABLE Message_Attach ADD CONSTRAINT FK_MESGATCH_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Ethnicity ADD CONSTRAINT FK_PERETH_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Service ADD CONSTRAINT FK_OSVC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE PersonOrg_Relationship ADD CONSTRAINT FK_PEOREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Patient_Referral ADD CONSTRAINT FK_PATREF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Org_Appt_Type ADD CONSTRAINT FK_ORGAPTY_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
 ALTER TABLE Person_Language ADD CONSTRAINT FK_PERLANG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org ADD CONSTRAINT FK_ORG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE PersonOrg_Relationship ADD CONSTRAINT FK_PEOREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action_Procedure ADD CONSTRAINT FK_PROCACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Artifact_Event ADD CONSTRAINT FK_ARFEVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Contact ADD CONSTRAINT FK_PERCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Claim_DiagProc_Rel ADD CONSTRAINT FK_CLMDPREL_PROCEDURE_ID FOREIGN KEY (procedure_id) REFERENCES Claim_Procedure (system_id) ON DELETE CASCADE;
-ALTER TABLE Org_Address ADD CONSTRAINT FK_ORGADR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Note ADD CONSTRAINT FK_ONOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Relationship_Map ADD CONSTRAINT FK_PERRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Industry ADD CONSTRAINT FK_OIND_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Asset_Maint ADD CONSTRAINT FK_ASTMAINT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Org_Sch_Template ADD CONSTRAINT FK_SCTMPL_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Message_Attach ADD CONSTRAINT FK_MESGATCH_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Role ADD CONSTRAINT FK_PERRL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Visit_Line_Item ADD CONSTRAINT FK_VISLNITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action_Visit ADD CONSTRAINT FK_VISITACT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_POLICY_ID FOREIGN KEY (policy_id) REFERENCES Ins_Policy (policy_id) ON DELETE CASCADE;
-ALTER TABLE Ins_Plan ADD CONSTRAINT FK_INSPLN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Staff_Benefit ADD CONSTRAINT FK_STFBEN_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Ins_Policy ADD CONSTRAINT FK_INSPLCY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Classification ADD CONSTRAINT FK_PERCLASS_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Claim_DiagProc_Rel ADD CONSTRAINT FK_CLMDPREL_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action_Directive ADD CONSTRAINT FK_ACTDCTV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Service_Catalog ADD CONSTRAINT FK_SVCCAT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Claim_Data_Archive ADD CONSTRAINT FK_CLMDATAARC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Artifact ADD CONSTRAINT FK_ARTF_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event ADD CONSTRAINT FK_EVENT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Login ADD CONSTRAINT FK_PERLG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Contact ADD CONSTRAINT FK_ORGCNT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Relationship_Map ADD CONSTRAINT FK_ORGRELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Appt_Type ADD CONSTRAINT FK_ORGAPTY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Flag ADD CONSTRAINT FK_PERFLG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Template_Resource ADD CONSTRAINT FK_TMPLRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
-ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
-ALTER TABLE Patient_Medication ADD CONSTRAINT FK_PATMED_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event_Resource ADD CONSTRAINT FK_EVRSRC_ASSET_ID FOREIGN KEY (asset_id) REFERENCES Asset (asset_id) ON DELETE CASCADE;
-ALTER TABLE Org_Classification ADD CONSTRAINT FK_ORGCLASS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Ethnicity ADD CONSTRAINT FK_PERETH_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Staff_Benefit ADD CONSTRAINT FK_STFBEN_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Appt_Chain_Entry ADD CONSTRAINT FK_APCHAINE_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Org_Service ADD CONSTRAINT FK_OSVC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE PersonOrg_Relationship_Map ADD CONSTRAINT FK_PERORELMP_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Artifact_Keyword ADD CONSTRAINT FK_ARFKEYW_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Appt_Chain_Entry ADD CONSTRAINT FK_APCHAINE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Patient_Indication ADD CONSTRAINT FK_PATINDIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event_Attendee ADD CONSTRAINT FK_EVATNDEE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Product ADD CONSTRAINT FK_OPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Claim_Diagnosis ADD CONSTRAINT FK_CLMDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action_Diagnosis ADD CONSTRAINT FK_ACTDIAG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsPlan_Coverage ADD CONSTRAINT FK_INSPLNCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsProduct_Coverage ADD CONSTRAINT FK_INSPRDCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Org_Inv_Visit ADD CONSTRAINT FK_ORGINVVIS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Product_Catalog ADD CONSTRAINT FK_PRDCAT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_SOURCE_TYPE_ID FOREIGN KEY (source_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE;
+ALTER TABLE Ins_Policy ADD CONSTRAINT FK_INSPLCY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Template_Resource ADD CONSTRAINT FK_TMPLRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Note ADD CONSTRAINT FK_PERNOTE_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_GUAR_REL_ID FOREIGN KEY (guar_rel_id) REFERENCES Person_Relationship (system_id) ON DELETE CASCADE;
-ALTER TABLE Org_Identifier ADD CONSTRAINT FK_ORGID_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsPolicy_Coverage ADD CONSTRAINT FK_INSPOLCOV_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsProduct_Address ADD CONSTRAINT FK_INSPRDADDR_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE InsProduct_Contact ADD CONSTRAINT FK_INSPRDCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Event ADD CONSTRAINT FK_EVENT_PARENT_ID FOREIGN KEY (parent_id) REFERENCES Event (event_id) ON DELETE CASCADE;
-ALTER TABLE Person_Identifier ADD CONSTRAINT FK_PERID_ID_TYPE_ID FOREIGN KEY (id_type_id) REFERENCES Org_PersonId_Src_Type (system_id) ON DELETE CASCADE;
-ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE Claim ADD CONSTRAINT FK_CLM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Classification ADD CONSTRAINT FK_PERCLASS_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Person ADD CONSTRAINT FK_PER_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Org_Product ADD CONSTRAINT FK_OPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Artifact_State ADD CONSTRAINT FK_ARTFST_UPD_SESS_ID FOREIGN KEY (upd_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Person_Insurance ADD CONSTRAINT FK_PERINS_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 ALTER TABLE Person_Role ADD CONSTRAINT FK_PERRL_ROLE_NAME_ID FOREIGN KEY (role_name_id) REFERENCES Org_Role_Declaration (role_name_id) ON DELETE CASCADE;
-ALTER TABLE Action_Ins_Verify ADD CONSTRAINT FK_ACTINSVFY_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Action_Patient_Comm ADD CONSTRAINT FK_ACTPATCOMM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Service_Catalog_Item ADD CONSTRAINT FK_SVCCATITM_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Ins_Product ADD CONSTRAINT FK_INSPRD_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Claim_Data_History ADD CONSTRAINT FK_CLMHIST_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Staff_License ADD CONSTRAINT FK_STFLIC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
-ALTER TABLE InsPlan_Contact ADD CONSTRAINT FK_INSPLNCONT_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE Claim_Procedure ADD CONSTRAINT FK_CLMPROC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
-ALTER TABLE PersonOrg_Relationship ADD CONSTRAINT FK_PEOREL_REL_ENTITY_ID FOREIGN KEY (rel_entity_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Catalog ADD CONSTRAINT FK_CATALOG_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Patient_Indication ADD CONSTRAINT FK_PATINDIC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
+ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_ORG_ID FOREIGN KEY (org_id) REFERENCES Org (org_id) ON DELETE CASCADE;
+ALTER TABLE Appt_Type_Resource ADD CONSTRAINT FK_APTYRSRC_CR_SESS_ID FOREIGN KEY (cr_sess_id) REFERENCES Person_Session (session_id) ON DELETE CASCADE;
 
 insert into Lookup_Result_Type (id, caption, abbrev) values (0, 'ID', NULL);
 insert into Lookup_Result_Type (id, caption, abbrev) values (1, 'Caption', NULL);
