@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.122 2004-06-13 22:11:47 shahid.shah Exp $
+  * $Id: console.xml,v 1.123 2004-07-14 18:58:00 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -98,6 +98,7 @@
                     <handler class="com.netspective.sparx.navigate.fs.LocalFileSystemImageContentHandler" file-type="jpeg"/>
                 </content-handlers>
             </page>
+            <page name="crypt" caption="Calc Crypt Keys" command="dialog,console.crypt-calc"/>
         </page>
 
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
@@ -325,6 +326,13 @@
             <field name="sql" type="memo" caption="SQL" rows="10" cols="60"/>
             <field name="name" type="text" caption="Name"/>
             <field name="rows-per-page" type="integer" caption="Rows per page" default="25"/>
+        </dialog>
+
+        <dialog name="crypt-calc" class="com.netspective.sparx.console.form.CryptCalcDialog">
+            <frame heading="Calculate Cryptographic Keys"/>
+            <field name="type" type="select" caption="Crypt Type" read-only="yes" default="UNIX Crypt"/>
+            <field name="salt" type="text" caption="Crypt Salt" default="NC"/>
+            <field name="original" type="memo" caption="Encrypt (one item per line)" rows="15" cols="60"/>
         </dialog>
 
         <dialog name="value-source-test" class="com.netspective.sparx.form.TemplateDialog">
