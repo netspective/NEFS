@@ -86,12 +86,14 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.partyRelationshipId = partyRelationshipId;
     }
 
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name = "party_rel_type_id")
     public PartyRelationshipType getRelationshipType()
     {
         return relationshipType;
     }
 
-    protected void setRelationshipType(final PartyRelationshipType relationshipType)
+    public void setRelationshipType(final PartyRelationshipType relationshipType)
     {
         this.relationshipType = relationshipType;
     }
@@ -103,7 +105,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         return partyRole;
     }
 
-    protected void setPartyRole(final PartyRole partyRole)
+    public void setPartyRole(final PartyRole partyRole)
     {
         this.partyRole = partyRole;
     }
@@ -117,18 +119,6 @@ public class PartyRelationship extends AbstractDateDurationEntity
     protected void setComment(final String comment)
     {
         this.comment = comment;
-    }
-
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_type_id")
-    public PartyRelationshipType getType()
-    {
-        return relationshipType;
-    }
-
-    public void setType(final PartyRelationshipType type)
-    {
-        this.relationshipType = type;
     }
 
     @OneToOne(cascade={CascadeType.ALL})

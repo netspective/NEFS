@@ -39,8 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -52,13 +52,12 @@ import javax.ejb.ManyToOne;
 import javax.ejb.OneToMany;
 import javax.ejb.OneToOne;
 import javax.ejb.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-        @Table(name = "Party_Role")
-        public class PartyRole extends AbstractDateDurationEntity implements Comparable
+@Table(name = "Party_Role")
+public class PartyRole extends AbstractDateDurationEntity implements Comparable
 {
     public static final String PK_COLUMN_NAME = "party_role_id";
 
@@ -88,8 +87,8 @@ import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 
     @OneToMany(cascade = CascadeType.ALL)
-            @JoinColumn(name = "party_role_id")
-            public Set<PartyRelationship> getPartyRelationships()
+    @JoinColumn(name = "party_role_id")
+    public Set<PartyRelationship> getPartyRelationships()
     {
         return partyRelationships;
     }
@@ -101,8 +100,8 @@ import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 
     @ManyToOne(cascade = {CascadeType.ALL})
-            @JoinColumn(name = "party_id")
-            public Party getParty()
+    @JoinColumn(name = "party_id")
+    public Party getParty()
     {
         return party;
     }
@@ -113,8 +112,8 @@ import com.netspective.medigy.reference.custom.party.PartyRoleType;
     }
 
     @OneToOne(cascade = {CascadeType.ALL})
-            @JoinColumn(name = "party_role_type_id")
-            public PartyRoleType getType()
+    @JoinColumn(name = "party_role_type_id")
+    public PartyRoleType getType()
     {
         return type;
     }
