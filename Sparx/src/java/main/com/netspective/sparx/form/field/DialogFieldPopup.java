@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldPopup.java,v 1.3 2004-03-24 15:20:38 zahara.khan Exp $
+ * $Id: DialogFieldPopup.java,v 1.4 2004-07-14 20:58:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -69,11 +69,12 @@ public class DialogFieldPopup
     private ValueSource imageSrc = ValueSource.NULL_VALUE_SOURCE;
     private String windowClass = DEFAULT_WINDOW_CLASS;
     private ValueSource action = ValueSource.NULL_VALUE_SOURCE;
+    private String preActionScript;
     private String[] fill = null;
     private boolean allowMulti = false;
     private boolean closeAfterSelect = true;
     private String[] extract = null; // these are the fields whose values will be appended to the popup's URL
-
+                                                                                    
     protected DialogFieldPopup()
     {
 
@@ -82,6 +83,21 @@ public class DialogFieldPopup
     public ValueSource getAction()
     {
         return action;
+    }
+
+    public String getPreActionScript()
+    {
+        return preActionScript;
+    }
+
+    /**
+     * Sets the  javascript expression that is evaluated before allowing the action
+     *
+     * @param preActionScript
+     */
+    public void setPreActionScript(String preActionScript)
+    {
+        this.preActionScript = preActionScript;
     }
 
     /**

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.33 2004-07-11 02:15:42 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.34 2004-07-14 20:58:55 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -440,24 +440,31 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     }
 
     public String getPopupHtml(DialogContext dc, DialogField field)
-    {
+    {        
         DialogFieldPopup popup = field.getPopup();
         if (popup == null)
             return null;
+
         String expression = "new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
                 "', '" + popup.getAction().getTextValueOrBlank(dc) + "', '" + popup.getWindowClass() + "', " + popup.isCloseAfterSelect() +
-                ", " + popup.isAllowMulti();
+                ", " + popup.isAllowMulti() + ", ";
+
+        StringBuffer expressionBuffer = new StringBuffer();
         String[] fillFields = popup.getFill();
-
-        StringBuffer expr = new StringBuffer(expression);
-        expr.append(", new Array(");
-        for (int i = 0; i < fillFields.length; i++)
+        if (fillFields != null && fillFields.length > 0)
         {
-            expr.append("'" + fillFields[i] + (i < fillFields.length - 1 ? "', " : "'"));
+            expressionBuffer.append("new Array(");
+            for (int i = 0; i < fillFields.length; i++)
+            {
+                expressionBuffer.append("'" + fillFields[i] + (i < fillFields.length - 1 ? "', " : "'"));
+            }
+            expressionBuffer.append(")");
         }
-        expr.append(")");
-        expression = expr.toString();
+        else
+            expressionBuffer.append("null");
+        expression += expressionBuffer.toString() + ", ";
 
+        expressionBuffer = new StringBuffer();
         String[] extractFields = popup.getExtract();
         // append the list of extract fields if they exist
         if (extractFields != null && extractFields.length > 0)
@@ -471,6 +478,14 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             buf.append(")");
             expression = buf.toString();
         }
+        else
+            expressionBuffer.append("null");
+        expression += expressionBuffer.toString() + ", ";
+
+        // append evaluation script
+        if (popup.getPreActionScript() != null)
+            expression = expression + "'" + popup.getPreActionScript() +  "'";
+
         expression += ")";
 
         String imageUrl = popup.getImageSrc().getTextValue(dc);
