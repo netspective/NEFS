@@ -46,14 +46,6 @@
                         <body source="products/frameworks/suite/why-you-need-it.ftl"/>
                     </page>
 
-                    <page name="features" caption="Features" heading="Features that Jump-start Development">
-                        <summary>
-                            Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
-                            Frameworks contain everything you need in one integrated Suite.
-                        </summary>
-                        <body source="products/frameworks/suite/features.ftl"/>
-                    </page>
-
                     <page name="process" caption="Process" heading="NEFS Supports Your Development Process">
                         <summary>
                             Since there is no room for mistakes at today's rapid development pace, whether you use
@@ -91,6 +83,14 @@
                             <body source="products/frameworks/suite/competitors/open-source.ftl"/>
                         </page>
                     </page>
+                </page>
+
+                <page name="features" caption="Features" heading="Features that Jump-start Development">
+                    <summary>
+                        Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
+                        Frameworks contain everything you need in one integrated Suite.
+                    </summary>
+                    <body source="products/frameworks/suite/features.ftl"/>
                 </page>
 
                 <page name="screen-shots" caption="Screen shots" heading="Your J2EE Applications will Look Great">

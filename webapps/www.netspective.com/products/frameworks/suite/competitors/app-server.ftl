@@ -15,7 +15,7 @@ issues you'll face with these frameworks are:
 <ul>
     <li>They are usually vendor-specific and tie you to a particular application server, operating system, or database server
     <li>The frameworks are not designed for complete coverage of sophisticated applications and engineers end up having to do a great deal of infrastructure work on their own.
-    <li>Unlike <a href="${servletPath}/products/frameworks/suite/features">NEF's feature list</a>, most embedded application server frameworks are very light on functionality.
+    <li>Unlike <a href="${servletPath}/products/frameworks/features">NEF's feature list</a>, most embedded application server frameworks are very light on functionality.
 </ul>
 With its unique architecture, NEF can supplement or replace your application server vendor's frameworks with a
 good mix of easy to use components for faster development and the sophistication that senior architects need to create
