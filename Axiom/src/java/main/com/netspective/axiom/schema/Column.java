@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.2 2003-04-23 15:42:09 shahid.shah Exp $
+ * $Id: Column.java,v 1.3 2003-06-30 02:33:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -50,8 +50,10 @@ import java.util.List;
 import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
+import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.commons.validate.ValidationRules;
+import com.netspective.commons.xml.template.TemplateProducer;
 
 public interface Column
 {
@@ -309,4 +311,9 @@ public interface Column
      * Given a bind value, provide the string text that can be used to place into SQL text
      */
     public String formatSqlLiteral(Object value);
+
+    /**
+     * Return the embedded presentation template
+     */
+    public TemplateProducer getPresentation();
 }
