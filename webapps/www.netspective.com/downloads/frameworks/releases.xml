@@ -2,6 +2,17 @@
 
 <netspective>
     <release>
+        <product name="Axiom" version="7.0.11"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                Added a minor enhancement to the stored procedure feature to support a new
+                datatype, <code>CHAR</code>. Developers can utilize this new data type for stored procedure parameters
+                using the following setting: <code>sql-type="char"</code>. 
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
         <product name="Sparx" version="7.0.16"/>
         <change-log>
             <summary>Minor bug fixes</summary>
