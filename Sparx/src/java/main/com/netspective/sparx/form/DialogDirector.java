@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.6 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.7 2003-05-19 00:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -62,11 +62,13 @@ import java.io.Writer;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.field.type.DirectorNextActionsSelectField;
 import com.netspective.sparx.form.field.DialogField;
 
 public class DialogDirector extends DialogField
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm" };
 
     public class DialogDirectorStyle extends XdmEnumeratedAttribute

@@ -39,58 +39,27 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.5 2003-05-19 00:58:56 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.1 2003-05-19 00:58:56 shahid.shah Exp $
  */
 
-package com.netspective.sparx.panel;
+package com.netspective.sparx.ant;
 
-import java.io.Writer;
-import java.io.IOException;
+import org.apache.tools.ant.BuildException;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.template.TemplateProcessor;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.axiom.ant.AxiomTask;
+import com.netspective.axiom.SqlManager;
+import com.netspective.commons.xdm.XdmComponent;
+import com.netspective.sparx.ApplicationManagerComponent;
 
-public class TemplateContentPanel extends AbstractPanel
+public class SparxTask extends AxiomTask
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private TemplateProcessor bodyTemplate;
-
-    public TemplateContentPanel()
+    public XdmComponent getComponent()
     {
+        return getComponent(ApplicationManagerComponent.class);
     }
 
-    public TemplateProcessor createBody()
+    public SqlManager getSqlManager() throws BuildException
     {
-        return new FreeMarkerTemplateProcessor();
-    }
-
-    public void addBody(TemplateProcessor templateProcessor)
-    {
-        bodyTemplate = templateProcessor;
-    }
-
-    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
-    {
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
-        vc.setNavigationContext(nc);
-        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
-        templatePanelSkin.renderFrameBegin(writer, vc);
-        bodyTemplate.process(writer, vc);
-        templatePanelSkin.renderFrameEnd(writer, vc);
-    }
-
-    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
-    {
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServletContext(), dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
-        vc.setNavigationContext(dc.getNavigationContext());
-        vc.setDialogContext(dc);
-        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
-        templatePanelSkin.renderFrameBegin(writer, vc);
-        bodyTemplate.process(writer, vc);
-        templatePanelSkin.renderFrameEnd(writer, vc);
+        return ((ApplicationManagerComponent) getComponent()).getManager();
     }
 }

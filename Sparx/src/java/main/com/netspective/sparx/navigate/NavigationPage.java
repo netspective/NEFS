@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.18 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.19 2003-05-19 00:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,6 +59,7 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -88,6 +89,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
     public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 7];
     public static final String ATTRNAME_TYPE = "type";

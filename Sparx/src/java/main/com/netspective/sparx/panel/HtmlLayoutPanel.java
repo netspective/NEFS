@@ -39,21 +39,23 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.14 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.15 2003-05-19 00:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private static int panelNumber = 0;
     private int height = -1, width = -1;
     private HtmlPanels children = new BasicHtmlPanels();

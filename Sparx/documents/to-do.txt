@@ -1,3 +1,4 @@
+* Add ID constants generator to Sparx components (just like Axiom components)
 * Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
 * Add DHTML popup calendar from http://students.infoiasi.ro/~mishoo/site/calendar/cal.html.
 * Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities

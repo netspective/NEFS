@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.11 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.12 2003-05-19 00:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -76,6 +76,7 @@ import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -93,6 +94,7 @@ import com.netspective.commons.text.TextUtils;
  */
 public class Dialog extends AbstractPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(Dialog.class);
 
     /**
