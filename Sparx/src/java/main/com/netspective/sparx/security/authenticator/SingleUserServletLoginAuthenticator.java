@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.5 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.6 2004-07-21 18:04:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.security.HttpLoginManager;
@@ -73,11 +74,59 @@ import org.apache.commons.logging.Log;
  * -s,--show-encrypted-password               Prints the encrypted password to stdout (useful if you want to know what the plain-text password is when encrypted).
  * -?,--help                                  Print options to stdout.
  * </pre>
+ *
+ * Another alternative is to provide the user-id, plain-text-password, and encrypted-password as part of the XDM
+ * definition in the Project declaration.
  */
-public class SingleUserServletLoginAuthenticator  extends AbstractLoginAuthenticator
+public class SingleUserServletLoginAuthenticator extends AbstractLoginAuthenticator
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(SingleUserServletLoginAuthenticator.class);
-    public static final String INITPARAMNAME_OPTIONS = SingleUserServletLoginAuthenticator.class.getName() + ".OPTIONS";
+
+    private String userId;
+    private String plainTextPassword;
+    private String encryptedPassword;
+    private String optionsInitParamsName = SingleUserServletLoginAuthenticator.class.getName() + ".OPTIONS";
+
+    public String getUserId()
+    {
+        return userId;
+    }
+
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
+    public String getPlainTextPassword()
+    {
+        return plainTextPassword;
+    }
+
+    public void setPlainTextPassword(String plainTextPassword)
+    {
+        this.plainTextPassword = plainTextPassword;
+    }
+
+    public String getEncryptedPassword()
+    {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword)
+    {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public String getOptionsInitParamsName()
+    {
+        return optionsInitParamsName;
+    }
+
+    public void setOptionsInitParamsName(String optionsInitParamsName)
+    {
+        this.optionsInitParamsName = optionsInitParamsName;
+    }
 
     private Options createAuthenticatorOptions()
     {
@@ -132,38 +181,52 @@ public class SingleUserServletLoginAuthenticator  extends AbstractLoginAuthentic
 
     public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
-        ServletConfig servletConfig = loginDialogContext.getServlet().getServletConfig();
-        LoginDialog loginDialog = loginDialogContext.getLoginDialog();
-        String optionsText = servletConfig.getInitParameter(INITPARAMNAME_OPTIONS);
-        if(optionsText == null)
+        if(userId != null && (plainTextPassword != null || encryptedPassword != null))
         {
-            log.error("Servlet param " + INITPARAMNAME_OPTIONS + " not specified.");
-            loginDialog.getUserIdField().invalidate(loginDialogContext, "Servlet param " + INITPARAMNAME_OPTIONS + " not specified.");
-            return false;
+            String loginPasswordEncrypted = encryptedPassword;
+            if(loginPasswordEncrypted == null)
+                loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(plainTextPassword);
+
+            if(! userId.equals(loginDialogContext.getUserIdInput()))
+                return false;
+
+            if(! loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
+                return false;
         }
-
-        CommandLine commandLine = getOptionsCommandLine(loginDialogContext, optionsText);
-        if(commandLine == null)
-            return false;
-
-        String loginUserId = commandLine.getOptionValue('u');
-        String loginPasswordEncrypted = commandLine.getOptionValue('P');
-        if(loginPasswordEncrypted == null)
+        else
         {
-            String loginPasswordUnencrypted = commandLine.getOptionValue('p');
-            if(loginPasswordUnencrypted != null)
-                loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(loginPasswordUnencrypted);
+            ServletConfig servletConfig = loginDialogContext.getServlet().getServletConfig();
+            LoginDialog loginDialog = loginDialogContext.getLoginDialog();
+            String optionsText = servletConfig.getInitParameter(optionsInitParamsName);
+            if(optionsText == null)
+            {
+                log.error("Servlet param " + optionsInitParamsName + " not specified.");
+                loginDialog.getUserIdField().invalidate(loginDialogContext, "Servlet param " + optionsInitParamsName + " not specified.");
+                return false;
+            }
+
+            CommandLine commandLine = getOptionsCommandLine(loginDialogContext, optionsText);
+            if(commandLine == null)
+                return false;
+
+            String loginUserId = commandLine.getOptionValue('u');
+            String loginPasswordEncrypted = commandLine.getOptionValue('P');
+            if(loginPasswordEncrypted == null)
+            {
+                String loginPasswordUnencrypted = commandLine.getOptionValue('p');
+                if(loginPasswordUnencrypted != null)
+                    loginPasswordEncrypted = loginDialogContext.encryptPlainTextPassword(loginPasswordUnencrypted);
+            }
+
+            if(commandLine.hasOption('s'))
+                System.out.println(TextUtils.getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
+
+            if(! loginUserId.equals(loginDialogContext.getUserIdInput()))
+                return false;
+
+            if(! loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
+                return false;
         }
-
-        if(commandLine.hasOption('s'))
-            System.out.println(TextUtils.getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
-
-        if(! loginUserId.equals(loginDialogContext.getUserIdInput()))
-            return false;
-
-        if(! loginPasswordEncrypted.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
-            return false;
-
         return true;
     }
 
