@@ -62,7 +62,7 @@ table.panel-layout-table div  { padding: 3px; width: auto }
 .panel-editor-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma, Arial; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
 
 .panel-editor-frame-heading-action-left-blank   { background: url(../images/panel/output/frame-heading-action-left.gif) no-repeat left top; width: 17px; height: 19px }
-.panel-editor-frame-heading-action-right-blank   { background: url(../images/panel/output/frame-heading-action-right-full.gif) no-repeat right top; height: 19px }
+.panel-editor-frame-heading-action-right-blank   { background: url(../images/panel/output/frame-heading-action-right.gif) no-repeat right top; height: 19px }
 .panel-editor-frame-heading-action-collapse   { background: url(../images/panel/output/frame-heading-action-up.gif) no-repeat; width: 22px; height: 19px; cursor: hand; }
 .panel-editor-frame-heading-action-expand  { background: url(../images/panel/output/frame-heading-action-down.gif) no-repeat; width: 22px; height: 19px; cursor: hand; }
 .panel-editor-frame-heading-action-drag { background: url(../images/panel/output/frame-heading-action-drag.gif) no-repeat; width: 17px; height: 19px }
@@ -72,19 +72,19 @@ table.panel-layout-table div  { padding: 3px; width: auto }
 .panel-editor-frame-end-cap { background: url(../images/panel/output/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
 .panel-editor-frame-begin-cap { background: url(../images/panel/output/begin-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
-.panel-editor-frame-action-item           { background: url(../images/panel/output/frame-heading.gif);  padding-right: 1px; margin:0px;}
-.panel-editor-frame-action-item a         { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase }
-.panel-editor-frame-action-item a:link    { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase }
-.panel-editor-frame-action-item a:visited { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase }
-.panel-editor-frame-action-item a:hover   { border-left: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-top: 1px solid #696969; border-right: 1px solid #dcdcdc; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
+.panel-editor-frame-action-item           { background: url(../images/panel/output/mid.gif);  padding-right: 1px; margin:0px; vertical-align: top}
+.panel-editor-frame-action-item a         { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
+.panel-editor-frame-action-item a:link    { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
+.panel-editor-frame-action-item a:visited { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
+.panel-editor-frame-action-item a:hover   { border-left: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-top: 1px solid #696969; border-right: 1px solid #dcdcdc; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #ffffff }
 .panel-editor-frame-action-box   { background-image: url(../images/panel/output/mid.gif);text-transform: uppercase; padding-top: 0px; vertical-align: top; min-width: 100px; text-align: right;}
 
 /* styles for the banner of a panel */
 td.panel-editor-banner           { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-right: 4px; border-right: 1px solid #696969; border-left: 1px solid #696969 }
-td.panel-editor-banner a         { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; border-bottom: 1px solid #696969; padding: 0px 3px 0px 3px; margin: 0px 3px 0px 3px}
-td.panel-editor-banner a:link    { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
-td.panel-editor-banner a:hover   { color: #900; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
-td.panel-editor-banner a:visited { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
+td.panel-editor-banner a         { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; border-bottom: 1px solid #696969; padding: 0px 3px 0px 3px; margin: 0px 3px 0px 3px}
+td.panel-editor-banner a:link    { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
+td.panel-editor-banner a:hover   { border-left: 1px solid #696969; border-bottom: 1px solid #dcdcdc; border-top: 1px solid #696969; border-right: 1px solid #dcdcdc; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; background: #dddddd}
+td.panel-editor-banner a:visited { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; text-align: left; }
 .panel-editor-banner-footer      { color: #696969; font-size: 9px; font-family: Verdana; text-decoration: none; background-color: #f1eeee; text-align: left; padding-left: 3px; border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 
 .panel-editor-content     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }

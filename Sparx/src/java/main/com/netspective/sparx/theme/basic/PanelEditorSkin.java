@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelEditorSkin.java,v 1.5 2004-03-14 06:09:26 aye.thu Exp $
+ * $Id: PanelEditorSkin.java,v 1.6 2004-03-15 05:12:59 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -120,9 +120,10 @@ public class PanelEditorSkin extends RecordEditorReportSkin
                 }
                 writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
                         "</td>\n");
-                //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
-                //    "</td>\n");
-                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
+                    "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\">" +
+                    "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"100%\" border=\"0\">--></td>\n");
                 //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
                 produceHeadingExtras(writer, vc, frame);
                 writer.write("        </tr>\n");
@@ -176,7 +177,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
                 if (displayedItems == 0)
                 {
-                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-heading\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
+                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-mid\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
                     displayedItems++;
                 }
 
@@ -193,7 +194,7 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             }
             if (itemBuffer.length() > 0)
                 writer.write(itemBuffer.toString());
-            writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
+            writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
                     "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"2\" height=\"5\"></td>\n");
 
         }
