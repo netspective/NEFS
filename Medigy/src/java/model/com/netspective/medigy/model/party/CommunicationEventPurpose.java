@@ -39,8 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.reference.type.CommunicationEventPurposeType;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.CommunicationEventPurposeType;
 
 import javax.ejb.OneToOne;
 import javax.ejb.JoinColumn;
@@ -65,7 +65,7 @@ public class CommunicationEventPurpose extends AbstractTopLevelEntity
     }
 
     @Id(generate = GeneratorType.AUTO)
-            @Column(name = "comm_event_purpose_id")
+    @Column(name = "comm_event_purpose_id")
     public Long getPurposeId()
     {
         return purposeId;
