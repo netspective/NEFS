@@ -39,22 +39,23 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.22 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.23 2004-02-25 04:47:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.Writer;
-import java.io.IOException;
-
+import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.io.InputSourceLocator;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
@@ -270,6 +271,33 @@ public class HtmlLayoutPanel implements HtmlPanel
                 }
                 if (counter != 0)
                     writer.write("<td>&nbsp;</td></tr>");
+                writer.write("</table>");
+                break;
+
+            case HtmlPanelsStyleEnumeratedAttribute.TWO_COLUMNS_STACKED:
+                StringWriter columnOne = new StringWriter();
+                StringWriter columnTwo = new StringWriter();
+                int column = 0;
+                for(int i = 0; i < children.size(); i++)
+                {
+                    column++;
+                    if (column == 1)
+                    {
+                        columnOne.write("<div>");
+                        children.get(i).render(columnOne, nc, theme, flags);
+                        columnOne.write("</div>");
+                    }
+                    else if (column == 2)
+                    {
+                        columnTwo.write("<div>");
+                        children.get(i).render(columnTwo, nc, theme, flags);
+                        columnTwo.write("</div>");
+                        column = 0;
+                    }
+                }
+                writer.write("<table class=\"panel-layout-table\">");
+                writer.write("<tr valign=\"top\"><td>" + columnOne + "</td>");
+                writer.write("<td>" + columnTwo + "</td></tr>");
                 writer.write("</table>");
                 break;
 

@@ -45,3 +45,6 @@ td.panel-output-banner a:visited { color: #696969; font-size: 11px; font-family:
 .panel-output-tree-collapse  { background: url(../images/panel/output/tree-collapse.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-output-tree-expand  { background: url(../images/panel/output/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-output-tree-leaf  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }
+
+table.panel-layout-table      { padding: 3px }
+table.panel-layout-table div  { padding: 3px; width: auto }

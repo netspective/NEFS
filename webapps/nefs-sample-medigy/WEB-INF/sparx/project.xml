@@ -153,7 +153,7 @@
         <!-- Entities -->
         <page name="person" hidden="yes">
             <page name="summary" caption="Summary" require-request-param="person_id">
-                <panels style="two-columns">
+                <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
                     <panel type="command" command="query,personAttribute.address,-,-,-,record-viewer"/>
                     <panel type="command" command="query,personAttribute.language,-,-,-,record-viewer"/>
