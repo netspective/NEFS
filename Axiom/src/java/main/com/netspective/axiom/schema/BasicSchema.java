@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.6 2003-04-13 02:36:50 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.7 2003-06-28 00:47:06 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -93,6 +93,8 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private String name = "schema" + (counter++);
     private String xmlNodeName;
     private Tables tables = new TablesCollection();
+    private TemplateProducer tableTypes;
+    private TemplateProducer dataTypes;
     private TemplateProducers templateProducers;
     private Schema.TableTree structure;
 
@@ -120,10 +122,24 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
-            templateProducers.add(new TemplateProducer(getDataTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_DATA_TYPE, "name", "type", false, false));
-            templateProducers.add(new TemplateProducer(getTableTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_TABLE_TYPE, "name", "type", false, false));
+            templateProducers.add(getTableTypes());
+            templateProducers.add(getDataTypes());
         }
         return templateProducers;
+    }
+
+    public TemplateProducer getDataTypes()
+    {
+        if(dataTypes == null)
+            dataTypes = new TemplateProducer(getDataTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_DATA_TYPE, "name", "type", false, false);
+        return dataTypes;
+    }
+
+    public TemplateProducer getTableTypes()
+    {
+        if(tableTypes == null)
+            tableTypes = new TemplateProducer(getTableTypesTemplatesNameSpaceId(), TEMPLATEELEMNAME_TABLE_TYPE, "name", "type", false, false);
+        return tableTypes;
     }
 
     /**

@@ -24,7 +24,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
         </sql-ddl>
         <presentation>
-            <field.text size="20"/>
+            <field type="text" size="20"/>
         </presentation>
     </data-type>
 
@@ -34,7 +34,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(20,6)</define>
         </sql-ddl>
         <presentation>
-            <field.float size="16" min="0.0"/>
+            <field type="float" size="16" min="0.0"/>
         </presentation>
     </data-type>
 
@@ -44,7 +44,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(8)</define>
         </sql-ddl>
         <presentation>
-            <field.integer size="16" min="0" max="99999999"/>
+            <field type="integer" size="16" min="0" max="99999999"/>
         </presentation>
     </data-type>
 
@@ -54,7 +54,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(4)</define>
         </sql-ddl>
         <presentation>
-            <field.integer size="16" min="0" max="9999"/>
+            <field type="integer" size="16" min="0" max="9999"/>
         </presentation>
     </data-type>
 
@@ -64,7 +64,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
         </sql-ddl>
         <presentation>
-            <field.integer size="16" min="0"/>
+            <field type="integer" size="16" min="0"/>
         </presentation>
     </data-type>
 
@@ -76,7 +76,7 @@
             <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
         </sql-ddl>
         <presentation>
-            <field.boolean size="16" style="radio"/>
+            <field type="boolean" size="16" style="radio"/>
         </presentation>
     </data-type>
 
@@ -99,7 +99,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
         <presentation>
-            <field.date size="16" format="MM-dd-yyyy" min="01-01-1900"/>
+            <field type="date" size="16" format="MM-dd-yyyy" min="01-01-1900"/>
         </presentation>
     </data-type>
 
@@ -111,7 +111,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
         </sql-ddl>
         <presentation>
-            <field.datetime size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00:00"/>
+            <field type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00:00"/>
         </presentation>
     </data-type>
 
@@ -124,7 +124,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
         <presentation>
-            <field.time size="16" format="H:mm" min="00:00"/>
+            <field type="time" size="16" format="H:mm" min="00:00"/>
         </presentation>
     </data-type>
 
@@ -172,7 +172,7 @@
             <define-ref dbms="hsqldb" xdm:replace-template-expressions="no">integer</define-ref>
         </sql-ddl>
         <presentation>
-            <field.integer size="16" min="0"/>
+            <field type="integer" size="16" min="0"/>
         </presentation>
     </data-type>
 
@@ -240,7 +240,7 @@
             <define dbms="postgres" xdm:replace-template-expressions="no">numeric(12,2)</define>
         </sql-ddl>
         <presentation>
-            <field.currency size="16"/>
+            <field type="currency" size="16"/>
         </presentation>
     </data-type>
 
@@ -249,7 +249,7 @@
             <rule class="com.netspective.commons.validate.rule.PercentageValueValidationRule"/>
         </validation>
         <presentation>
-            <field.float size="16" min="0.0" max="100.0"/>
+            <field type="float" size="16" min="0.0" max="100.0"/>
         </presentation>
     </data-type>
 
@@ -259,7 +259,7 @@
             <rule class="com.netspective.commons.validate.rule.EmailValueValidationRule"/>
         </validation>
         <presentation>
-            <field.email size="20"/>
+            <field type="email" size="20"/>
         </presentation>
     </data-type>
 
@@ -280,14 +280,14 @@
         <composite>
             <column name="${params.name}_id" lookupref="${params.enumerationTable}" caption="${params.caption}" descr="${params.descr}">
                 <presentation>
-                    <field.select caption="${params.caption}"/>
+                    <field type="select" caption="${params.caption}"/>
                 </presentation>
             </column>
             <column name="${params.name}" type="text" size="${params.size}" caption="${params.caption}" descr="${params.descr} (if 'Other' chosen above)">
                 <presentation>
-                    <field.text caption="Other ${params.caption}" size="16">
+                    <field type="text" caption="Other ${params.caption}" size="16">
                         <conditional action="display" partner="${params.name}_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
-                    </field.text>
+                    </field>
                 </presentation>
             </column>
         </composite>
@@ -339,6 +339,8 @@
     ** Relationship Tables and Enumerations
     *********************************************************************
     -->
+
+    <!-- TODO: need to implement the class and template -->
 
     <table-type name="Relationship_Map" class="com.netspective.axiom.schema.table.type.RelationshipMapTable">
         <description>

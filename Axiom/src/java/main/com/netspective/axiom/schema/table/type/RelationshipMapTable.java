@@ -39,84 +39,24 @@
  */
 
 /**
- * $Id: SchemasCollection.java,v 1.2 2003-06-28 00:47:06 shahid.shah Exp $
+ * $Id: RelationshipMapTable.java,v 1.1 2003-06-28 00:47:06 shahid.shah Exp $
  */
 
-package com.netspective.axiom.schema;
+package com.netspective.axiom.schema.table.type;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import com.netspective.axiom.schema.Schemas;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.Schema;
 
-public class SchemasCollection implements Schemas
+public class RelationshipMapTable extends BasicTable
 {
-    private List schemas = new ArrayList();
-    private Map mapByName = new TreeMap();
-    private Map mapByNameOrXmlNodeName = new TreeMap();
-    private boolean modified;
-
-    public void add(Schema schema)
+    public RelationshipMapTable(Column parentColumn)
     {
-        schemas.add(schema);
-        mapByName.put(schema.getNameForMapKey(), schema);
-        mapByNameOrXmlNodeName.put(schema.getNameForMapKey(), schema);
-        mapByNameOrXmlNodeName.put(BasicTable.translateTableNameForMapKey(schema.getXmlNodeName()), schema);
-        modified = true;
+        super(parentColumn);
     }
 
-    public void remove(Schema schema)
+    public RelationshipMapTable(Schema schema)
     {
-        schemas.remove(schema);
-        mapByName.remove(schema.getNameForMapKey());
-        mapByNameOrXmlNodeName.remove(BasicTable.translateTableNameForMapKey(schema.getXmlNodeName()));
-        modified = true;
-    }
-
-    public boolean isModified()
-    {
-        return modified;
-    }
-
-    public Schema get(int i)
-    {
-        return (Schema) schemas.get(i);
-    }
-
-    public Schema getByName(String name)
-    {
-        return (Schema) mapByName.get(BasicSchema.translateNameForMapKey(name));
-    }
-
-    public Schema getByNameOrXmlNodeName(String name)
-    {
-        return (Schema) mapByNameOrXmlNodeName.get(BasicSchema.translateNameForMapKey(name));
-    }
-
-    public int size()
-    {
-        return schemas.size();
-    }
-
-    public Set getNames()
-    {
-        return mapByName.keySet();
-    }
-
-    public String toString()
-    {
-        StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < schemas.size(); i++)
-        {
-            sb.append(schemas.get(i).toString());
-            sb.append("\n");
-        }
-        return sb.toString();
+        super(schema);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.10 2003-06-26 04:58:19 roque.hernandez Exp $
+ * $Id: BasicTable.java,v 1.11 2003-06-28 00:47:06 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -155,6 +155,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private QueryDefnSelect selectByParentKey;
     private Rows staticData;
     private Indexes indexes = new IndexesCollection();
+    private TablePresentationTemplate presentation;
     private TemplateProducers templateProducers;
     private TemplateConsumerDefn templateConsumer;
 
@@ -180,12 +181,19 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         return tableTypesConsumed;
     }
 
+    public TablePresentationTemplate getPresentation()
+    {
+        if(presentation == null)
+            presentation = new TablePresentationTemplate();
+        return presentation;
+    }
+
     public TemplateProducers getTemplateProducers()
     {
         if(templateProducers == null)
         {
             templateProducers = new TemplateProducers();
-            templateProducers.add(new TablePresentationTemplate());
+            templateProducers.add(getPresentation());
         }
         return templateProducers;
     }
