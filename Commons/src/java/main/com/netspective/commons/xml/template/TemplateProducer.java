@@ -39,15 +39,12 @@
  */
 
 /**
- * $Id: TemplateProducer.java,v 1.3 2003-06-13 02:17:11 shahid.shah Exp $
+ * $Id: TemplateProducer.java,v 1.4 2003-06-23 16:44:55 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -66,7 +63,8 @@ public class TemplateProducer
     private String templateInhAttrName; // the name of the attribute of the element that specifies what other templates to inherit
     private boolean unmarshallContents; // true to treat this producer as both a template and a instance/object of the data model, false to only treat as template and not unmarshall to actual data
     private boolean isStatic; // true if the producer is not instance-dependent
-    private List instances = new ArrayList(); // the templates defined for this producer
+    private List instances = new ArrayList(); // the templates defined for this producer (in order that they were defined)
+    private Map instancesMap = new TreeMap(); // the templates defined for this producer (indexed by the sorted name attribute)
 
     public TemplateProducer(String nameSpaceId, String elementName, String templateNameAttrName, String templateInhAttrName, boolean isStatic, boolean unmarshallContents)
     {
@@ -121,9 +119,15 @@ public class TemplateProducer
         return instances;
     }
 
+    public Map getInstancesMap()
+    {
+        return instancesMap;
+    }
+
     public void addInstance(String templateName, Template template)
     {
         instances.add(template);
+        instancesMap.put(templateName, template);
     }
 }
 
