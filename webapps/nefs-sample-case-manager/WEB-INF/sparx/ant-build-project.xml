@@ -2,94 +2,102 @@
 
 <project default="generate-all">
 
-    <target name=".init-app-path" unless="app.path" description="If app.path property is not passed in, set the application path relative to the location of the build project file.">
+    <target name=".init-app-path" unless="app.home" description="If app.home property is not passed in, set the application path relative to the location of the build project file.">
         <path id="app.home.path">
             <pathelement location="${basedir}/../../"/>
         </path>
-        <pathconvert targetos="unix" property="app.path" refid="app.home.path"/>
+        <pathconvert targetos="unix" property="app.home" refid="app.home.path"/>
     </target>
 
     <target name=".init" depends=".init-app-path" description="Private target that performs intialization for all tasks. This target is designed for use as a dependent, not to be called directly.">
         <taskdef name="sparx" classname="com.netspective.sparx.ant.SparxTask"/>
 
-        <property name="app.WEB-INF.path" value="${app.path}/WEB-INF"/>
+        <property name="app.WEB-INF.path" value="${app.home}/WEB-INF"/>
         <property name="app.WEB-INF.classes.path" value="${app.WEB-INF.path}/classes"/>
-        <property name="app.database.path" value="${app.WEB-INF.path}/database"/>
 
-        <property name="sparx.resources.path" value="${app.path}/sparx"/>
-        <property name="sparx.project.path" value="${app.WEB-INF.path}/sparx"/>
-        <property name="sparx.project.file" value="${sparx.project.path}/project.xml"/>
+        <property name="app.sparx.project.home" value="${app.WEB-INF.path}/sparx"/>
+        <property name="app.sparx.project.file" value="${app.sparx.project.home}/project.xml"/>
 
-        <sparx action="get-default-schema-name" projectFile="${sparx.project.file}" property="app.database.schema.default-name"/>
+        <property name="app.database.home" value="${app.WEB-INF.path}/database"/>
+        <property name="app.database.defn.path" value="${app.database.home}/defn"/>
+        <sparx action="get-default-schema-name" projectFile="${app.sparx.project.file}" property="app.database.default-schema-name"/>
+    </target>
+
+    <target name="show-properties" depends=".init" description="Displays the properties that will be used by all the targets. Mainly used for debugging.">
+        <echo message="app.home = '${app.home}'"/>
+        <echo message="app.WEB-INF.path = '${app.WEB-INF.path}'"/>
+        <echo message="app.WEB-INF.classes.path = '${app.WEB-INF.classes.path}'"/>
+        <echo message="app.sparx.project.home = '${app.sparx.project.home}'"/>
+        <echo message="app.sparx.project.file = '${app.sparx.project.file}'"/>
+        <echo message="app.database.home = '${app.database.home}'"/>
+        <echo message="app.database.default-schema-name = '${app.database.default-schema-name}'"/>
     </target>
 
     <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
-        <delete dir="${app.WEB-INF.classes.path}/app/auto/id"/>
         <sparx action="generate-id-constants"
-               projectFile="${sparx.project.file}"
+               projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
-               idConstantsClass="app.auto.id"/>
+               idConstantsClass="auto.id"
+               cleanFirst="yes"/>
     </target>
 
     <target name="generate-dialog-context-beans" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
-        <delete dir="${app.WEB-INF.classes.path}/app/auto/dcb"/>
         <sparx action="generate-dcb"
-               projectFile="${sparx.project.file}"
+               projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
-               dcbPackage="app.auto.dcb"/>
+               dcbPackage="auto.dcb"
+               cleanFirst="yes"/>
     </target>
 
-    <target name="generate-sql-ddl" depends=".init" if="app.database.schema.default-name" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
+    <target name="generate-sql-ddl" depends=".init" if="app.database.default-schema-name" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
         <sparx action="generate-ddl"
-               projectFile="${sparx.project.file}"
-               destDir="${app.database.path}/ddl"
+               projectFile="${app.sparx.project.file}"
+               destDir="${app.database.defn.path}"
                ddl="*"/>
     </target>
 
-    <target name="generate-data-access-layer" depends=".init" if="app.database.schema.default-name" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
-        <delete dir="${app.WEB-INF.classes.path}/app/auto/dal/${app.database.schema.default-name}"/>
+    <target name="generate-data-access-layer" depends=".init" if="app.database.default-schema-name" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
         <sparx action="generate-dal"
-               projectFile="${sparx.project.file}"
+               projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
-               dalPackage="app.auto.dal"/>
+               dalPackage="auto.dal"
+               cleanFirst="yes"/>
     </target>
 
-    <target name="generate-import-data-dtd" depends=".init" if="app.database.schema.default-name" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
+    <target name="generate-import-data-dtd" depends=".init" if="app.database.default-schema-name" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
         <sparx action="generate-import-data-dtd"
-               projectFile="${sparx.project.file}"
-               dtdFile="${app.database.path}/data/${app.database.schema.default-name}-import.dtd"/>
+               projectFile="${app.sparx.project.file}"
+               dtdFile="${app.database.defn.path}/${app.database.default-schema-name}-import.dtd"/>
     </target>
 
-    <target name="generate-graphviz-erd" depends=".init" if="app.database.schema.default-name" description="Generates a DOT file used by GraphViz to produce entity-relationship diagrams (ERDs) for the default schema.">
+    <target name="generate-graphviz-erd" depends=".init" if="app.database.default-schema-name" description="Generates a DOT file used by GraphViz to produce entity-relationship diagrams (ERDs) for the default schema.">
         <sparx action="generate-graphviz-erd"
-               projectFile="${sparx.project.file}"
-               graphVizDot="${app.database.path}/data/${app.database.schema.default-name}-erd.dot"/>
+               projectFile="${app.sparx.project.file}"
+               graphVizDot="${app.database.defn.path}/${app.database.default-schema-name}-erd.dot"/>
     </target>
 
     <target name="generate-all" depends="generate-id-constants,generate-dialog-context-beans,generate-sql-ddl,generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
 
     <target name="create-database-hsqldb" depends="generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
-        <property name="app.database.instance.path" value="${app.database.path}/instance"/>
+        <property name="app.database.instance.path" value="${app.database.home}/instance"/>
         <property name="jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-        <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/${app.database.schema.default-name}"/>
+        <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/${app.database.default-schema-name}"/>
         <property name="jdbc.userid" value="sa"/>
         <property name="jdbc.password" value=""/>
 
         <!-- recreate the Hypersonic database by deleting existing files and making sure the database directory exists -->
         <mkdir dir="${app.database.instance.path}"/>
         <delete>
-            <fileset dir="${app.database.instance.path}" includes="${app.database.schema.default-name}*"/>
+            <fileset dir="${app.database.instance.path}" includes="${app.database.default-schema-name}*"/>
         </delete>
 
-        <echo message="Hypersonic database name is '${app.database.schema.default-name}' and will be stored in ${app.database.instance.path}"/>
+        <echo message="Hypersonic database name is '${app.database.default-schema-name}' and will be stored in ${app.database.instance.path}"/>
 
-        <!-- generate the Hypersonic DDL -->
-        <sparx action="generate-ddl"
-               projectFile="${sparx.project.file}"
-               destDir="${app.database.path}/ddl"
+        <!-- generate only the Hypersonic DDL file -->
+        <sparx action="generate-ddl" projectFile="${app.sparx.project.file}" destDir="${app.database.defn.path}"
                ddl="/^hsqldb/"/>
         <property name="app.database.schema.ddl.loader.file"
-                  value="${app.database.path}/ddl/${app.database.schema.default-name}-hsqldb.sql"/>
+                  value="${app.database.defn.path}/${app.database.default-schema-name}-hsqldb.sql"/>
 
         <!-- load the Hypersonic DDL -->
         <sql src="${app.database.schema.ddl.loader.file}"
@@ -97,8 +105,8 @@
 
         <!-- import the "starter" data into the Hypersonic database -->
         <sparx action="import-data"
-               projectFile="${sparx.project.file}"
-               import="${app.database.path}/data/initial-and-test-data.xml"
+               projectFile="${app.sparx.project.file}"
+               import="${app.database.home}/data/initial-and-test-data.xml"
                driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password="" />
     </target>
 
