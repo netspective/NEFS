@@ -35,7 +35,6 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
 package com.netspective.medigy.reference.custom.party;
 
@@ -54,36 +53,27 @@ public class PartyRoleType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
     {
-        /**
-     * PROSPECT, SHAREHOLDER
-     * <p/>
-     * // PERSON ROLES
-     * EMPLOYEE CONTRACTOR FAMILY_MEMBER CONTACT
-     * <p/>
-     * // ORGANIZATION ROLES
-     * PARENT_ORGANIZATION DEPARTMENT SUBSIDIARY DIVISION OTHER_ORGANIZATION_UNIT INTERNAL_ORGANIZATION
-     * PARTNER HOUSEHOLD SUPPLIER ASSOCIATION COMPETITOR REGULATORY_AGENCY AGENT DISTRIBUTOR
-     * <p/>
-     * // CUSTOMER ROLES
-     * BILL_TO_CUSTOMER SHIP_TO_CUSTOMER END_USER_CUSTOMER
-     */
-        PROSPECT("P", "Prospect", "A sales prospect"),
-        DIVISION("DIV", "Division", null),
-        OTHER_ORG_UNIT("OORG", "Other Organization Unit", null),
-        DEPARTMENT("DEPT", "Department", null),
-        SUBSIDIARY("SORG", "Subsidiary", null),
-        PARENT_ORG("PORG", "Parent Organization", null),
-        FAMILY_MEMBER("F", "Family Member", null),
-        CONTRACTOR("C", "Contractor", null),
-        EMPLOYEE("E", "Employee", null) ;
+        PROSPECT("P"),
+        DIVISION("DIV"),
+        OTHER_ORG_UNIT("OORG"),
+        DEPARTMENT("DEPT"),
+        SUBSIDIARY("SORG"),
+        PARENT_ORG("PORG"),
+        FAMILY_MEMBER("F"),
+        CONTRACTOR("C"),
+        EMPLOYEE("E") ;
 
-        private PartyRoleType entity = new PartyRoleType();
+        private final String code;
+        private PartyRoleType entity;
 
-        Cache(final String code, final String label, final String description)
+        Cache(final String code)
         {
-            entity.setCode(code);
-            entity.setLabel(label);
-            entity.setDescription(description);
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
         }
 
         public PartyRoleType getEntity()
