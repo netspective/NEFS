@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DateValueValidationRule.java,v 1.1 2003-05-16 02:54:33 shahid.shah Exp $
+ * $Id: DateValueValidationRule.java,v 1.2 2003-10-01 15:21:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -78,6 +78,30 @@ public class DateValueValidationRule extends BasicValidationRule
         this.format = format;
     }
 
+    public String format(Date date)
+    {
+        synchronized(format)
+        {
+            return format.format(date);
+        }
+    }
+
+    public Date parse(String text) throws ParseException
+    {
+        synchronized(format)
+        {
+            return format.parse(text);
+        }
+    }
+
+    public String toPattern()
+    {
+        synchronized(format)
+        {
+            return format.toPattern();
+        }
+    }
+
     public Date getMaxDate()
     {
         return maxDate;
@@ -106,7 +130,7 @@ public class DateValueValidationRule extends BasicValidationRule
     public void setMaxDateSource(ValueSource maxDate) throws ParseException
     {
         if(maxDate instanceof StaticValueSource)
-            this.maxDate = format.parse(maxDate.getTextValue(null));
+            this.maxDate = parse(maxDate.getTextValue(null));
         else
             maxDateSource = maxDate;
     }
@@ -119,7 +143,7 @@ public class DateValueValidationRule extends BasicValidationRule
     public void setMinDateSource(ValueSource minDate) throws ParseException
     {
         if(minDate instanceof StaticValueSource)
-            this.minDate = format.parse(minDate.getTextValue(null));
+            this.minDate = parse(minDate.getTextValue(null));
         else
             minDateSource = minDate;
     }
@@ -205,12 +229,12 @@ public class DateValueValidationRule extends BasicValidationRule
 
         try
         {
-            return format.parse(dateText);
+            return parse(dateText);
         }
         catch (ParseException e)
         {
             vc.addValidationError(value, getInvalidNamedDateMessage(),
-                                new Object[] { getValueCaption(vc), name, dateText, format.toPattern() });
+                                new Object[] { getValueCaption(vc), name, dateText, toPattern() });
             return date;
         }
     }
@@ -229,12 +253,12 @@ public class DateValueValidationRule extends BasicValidationRule
             Date now = new Date();
             if(pastOnly && dateValue.after(now))
             {
-                vc.addValidationError(value, getPastOnlyDateMessage(), new Object[] { getValueCaption(vc), format.format(now) });
+                vc.addValidationError(value, getPastOnlyDateMessage(), new Object[] { getValueCaption(vc), format(now) });
                 return false;
             }
             if(futureOnly && dateValue.before(now))
             {
-                vc.addValidationError(value, getFutureOnlyDateMessage(), new Object[] { getValueCaption(vc), format.format(now) });
+                vc.addValidationError(value, getFutureOnlyDateMessage(), new Object[] { getValueCaption(vc), format(now) });
                 return false;
             }
         }
@@ -242,14 +266,14 @@ public class DateValueValidationRule extends BasicValidationRule
         Date minimumDate = getValueSourceOrDate("Minimum", value, minDateSource, vc, minDate);
         if(minimumDate != null && dateValue.before(minimumDate))
         {
-            vc.addValidationError(value, getPreMinDateDateMessage(), new Object[] { getValueCaption(vc), format.format(minimumDate) });
+            vc.addValidationError(value, getPreMinDateDateMessage(), new Object[] { getValueCaption(vc), format(minimumDate) });
             return false;
         }
 
         Date maximumDate = getValueSourceOrDate("Maximum", value, maxDateSource, vc, maxDate);
         if(maximumDate != null && dateValue.after(maximumDate))
         {
-            vc.addValidationError(value, getPostMaxDateMessage(), new Object[] { getValueCaption(vc), format.format(maximumDate) });
+            vc.addValidationError(value, getPostMaxDateMessage(), new Object[] { getValueCaption(vc), format(maximumDate) });
             return false;
         }
 
