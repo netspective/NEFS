@@ -86,6 +86,11 @@ public class FileSearchPath
         {
             return path != null && (path.exists() && path.isDirectory());
         }
+
+        public String toString()
+        {
+            return path.toString();
+        }
     }
 
     private List directories = new ArrayList();
@@ -207,4 +212,14 @@ public class FileSearchPath
         }
     }
 
+    public String toString()
+    {
+        return "FileSearchPath{" +
+               "directories=" + directories +
+               ", relativeToFile=" + relativeToFile +
+               ", relativeToLocator=" + relativeToLocator +
+               ", searchPathPropertyName='" + searchPathPropertyName + "'" +
+               ", searchPathSeparatorPropertyName='" + searchPathSeparatorPropertyName + "'" +
+               "}";
+    }
 }
