@@ -995,7 +995,7 @@
               id="declare-pres-tags-eg-5" />
                &lt;<emphasis>action</emphasis> <emphasis>type="add"</emphasis> caption="Add Book" redirect="page-id:/add"/&gt; <co
               id="declare-pres-tags-eg-6" />
-               &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=${0}"/&gt; <co
+               &lt;action type="<emphasis><literal>edit</literal></emphasis>" <emphasis>redirect</emphasis>="page-id:/edit?id=<emphasis>${0}</emphasis>"/&gt; <co
               id="declare-pres-tags-eg-7" />
                &lt;action type="<emphasis>delete</emphasis>" redirect="page-id:/delete?id=${0}"/&gt; <co
               id="declare-pres-tags-eg-8" />
@@ -1066,8 +1066,17 @@
             <callout arearefs="declare-pres-tags-eg-7">
               <para>Declaring <literal>edit</literal> action. You may also
               supply parameters and their values within the redirect URL
-              (selected record's <literal>id</literal> field in this
-              case).</para>
+              (selected record's <literal>id</literal> field in this case).
+              </para>
+
+              <para>Any ${XXX} specifies a dynamic replacement. Usually, value
+              sources are used within the brackets but when the dynamic
+              replacement definition is used within a report definition
+              (declared using <sgmltag>report</sgmltag> tag), you can insert a
+              number within the brackets to indicate the column index of the
+              report. In the above example, <emphasis>${0}</emphasis> is used
+              to indicate that it should be replaced with the value of the
+              first column of current row.</para>
             </callout>
 
             <callout arearefs="declare-pres-tags-eg-8">
