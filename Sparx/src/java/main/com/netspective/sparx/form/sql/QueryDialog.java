@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.7 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.8 2003-09-02 05:38:54 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -406,6 +406,10 @@ public class QueryDialog extends Dialog
             if (qdc.getRowsPerPage() > 0)
             {
                 states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
+            }
+            else
+            {
+                states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             }
         }
         else
