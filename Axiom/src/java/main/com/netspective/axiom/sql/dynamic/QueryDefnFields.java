@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnFields.java,v 1.3 2003-05-31 17:16:58 shahid.shah Exp $
+ * $Id: QueryDefnFields.java,v 1.4 2003-06-21 21:40:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -67,6 +67,12 @@ public class QueryDefnFields
     {
         fields.add(field);
         fieldsByName.put(field.getName(), field);
+    }
+
+    public void add(QueryDefnFields fields)
+    {
+        for(int i = 0; i < fields.size(); i++)
+            add(fields.get(i));
     }
 
     public QueryDefnField get(int i)

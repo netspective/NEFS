@@ -39,14 +39,17 @@
  */
 
 /**
- * $Id: QueryDefnFieldReference.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefnFieldReference.java,v 1.2 2003-06-21 21:40:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
 
+import com.netspective.commons.text.TextUtils;
+
 public class QueryDefnFieldReference
 {
     private QueryDefinition queryDefn;
+    private boolean multi;
     private String fieldName;
 
     public QueryDefnFieldReference(QueryDefinition queryDefn)
@@ -64,8 +67,41 @@ public class QueryDefnFieldReference
         this.fieldName = fieldName;
     }
 
+    public void setFields(String fieldName)
+    {
+        this.fieldName = fieldName;
+        this.multi = true;
+    }
+
+    public boolean isMulti()
+    {
+        return multi;
+    }
+
     public QueryDefnField findFieldInstance()
     {
+        if(fieldName == null)
+            throw new RuntimeException("No field specified in QueryDefnFieldsReference in query definition " + queryDefn.getName());
+
         return queryDefn.getFields().get(fieldName);
+    }
+
+    public QueryDefnFields findFieldsInstances()
+    {
+        if(fieldName == null)
+            throw new RuntimeException("No fields specified in QueryDefnFieldsReference in query definition " + queryDefn.getName());
+
+        String[] fieldNames = TextUtils.split(fieldName, ",", true);
+
+        QueryDefnFields fields = new QueryDefnFields();
+        for(int i = 0; i < fieldNames.length; i++)
+        {
+            QueryDefnField field = queryDefn.getFields().get(fieldNames[i]);
+            if(field == null)
+                return null;
+            fields.add(field);
+        }
+
+        return fields;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefnSelect.java,v 1.4 2003-05-31 17:16:58 shahid.shah Exp $
+ * $Id: QueryDefnSelect.java,v 1.5 2003-06-21 21:40:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -125,10 +125,20 @@ public class QueryDefnSelect extends Query
 
     public void addGroupBy(QueryDefnFieldReference fieldRef) throws QueryDefinitionException
     {
-        QueryDefnField field = fieldRef.findFieldInstance();
-        if(field == null)
-            throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <group-by> tag");
-        groupByFields.add(field);
+        if(fieldRef.isMulti())
+        {
+            QueryDefnFields fields = fieldRef.findFieldsInstances();
+            if(fields == null)
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <group-by> tag");
+            groupByFields.add(fields);
+        }
+        else
+        {
+            QueryDefnField field = fieldRef.findFieldInstance();
+            if(field == null)
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <group-by> tag");
+            groupByFields.add(field);
+        }
         isDirty = true;
     }
 
@@ -167,10 +177,21 @@ public class QueryDefnSelect extends Query
 
     public void addDisplay(QueryDefnFieldReference fieldRef) throws QueryDefinitionException
     {
-        QueryDefnField field = fieldRef.findFieldInstance();
-        if(field == null)
-            throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in "+ this.getClass().getName() +" <display> tag");
-        displayFields.add(field);
+        if(fieldRef.isMulti())
+        {
+            QueryDefnFields fields = fieldRef.findFieldsInstances();
+            if(fields == null)
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Fields '"+ fieldRef.getField() +"' not found in query definition '"+ getQualifiedName() +"' <display> tag");
+            displayFields.add(fields);
+
+        }
+        else
+        {
+            QueryDefnField field = fieldRef.findFieldInstance();
+            if(field == null)
+                throw new QueryDefnFieldNotFoundException(this.queryDefn, fieldRef.getField(), "Field '"+ fieldRef.getField() +"' not found in query definition '"+ getQualifiedName() +"' <display> tag");
+            displayFields.add(field);
+        }
     }
 
     public QueryDefnFields getDisplayFields()
