@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.4 2003-03-29 13:00:07 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.5 2003-04-09 16:57:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -62,6 +62,8 @@ import com.netspective.axiom.schema.Tables;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TablesCollection;
+import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateProducerParent;
@@ -200,6 +202,18 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     {
         Table table = tables.getByName(tableName);
         return table != null ? table.getColumns().getByName(tableColumn) : null;
+    }
+
+    public QueryDefinitions getQueryDefinitions()
+    {
+        QueryDefinitions result = new QueryDefinitionsCollection();
+        for(int i = 0; i < tables.size(); i++)
+        {
+            Table table = tables.get(i);
+            if(table.isApplicationTable())
+                result.add(table.getQueryDefinition());
+        }
+        return result;
     }
 
     public void generateGraphVizErd(Writer writer) throws IOException

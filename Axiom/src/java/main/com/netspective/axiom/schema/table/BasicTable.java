@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.3 2003-03-29 13:00:07 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.4 2003-04-09 16:57:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -566,6 +566,8 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     public void initQueryDefinition(TableQueryDefinition tqd)
     {
+        tqd.setName(getName());
+
         for(int i = 0; i < columns.size(); i++)
         {
             tqd.addField(columns.get(i).createQueryDefnField(tqd));

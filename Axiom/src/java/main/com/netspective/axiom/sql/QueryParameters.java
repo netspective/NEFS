@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameters.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryParameters.java,v 1.2 2003-04-09 16:57:37 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -52,7 +52,7 @@ import java.sql.SQLException;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-public class QueryParameters extends ArrayList
+public class QueryParameters
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
@@ -105,6 +105,7 @@ public class QueryParameters extends ArrayList
     }
 
     private Query query;
+    private List params = new ArrayList();
 
     public QueryParameters(Query parent)
     {
@@ -128,8 +129,8 @@ public class QueryParameters extends ArrayList
 
     public void addParam(QueryParameter param)
     {
-        add(param);
-        param.setIndex(size());
+        params.add(param);
+        param.setIndex(params.size());
     }
 
     /**
@@ -142,12 +143,12 @@ public class QueryParameters extends ArrayList
     {
         ValueRetrieveContext vrc = new ValueRetrieveContext();
 
-        if(size() == 0)
+        if(params.size() == 0)
             return vrc;
 
-        int paramsCount = size();
+        int paramsCount = params.size();
         for(int i = 0; i < paramsCount; i++)
-            ((QueryParameter) get(i)).retrieve(vrc, cc);
+            ((QueryParameter) params.get(i)).retrieve(vrc, cc);
 
         return vrc;
     }
@@ -163,16 +164,25 @@ public class QueryParameters extends ArrayList
     {
         ValueApplyContext vac = new ValueApplyContext();
 
-        if(size() == 0)
+        if(params.size() == 0)
             return 0;
 
-        int paramsCount = size();
+        int paramsCount = params.size();
         for(int i = 0; i < paramsCount; i++)
         {
-            ((QueryParameter) get(i)).apply(vac, cc, stmt);
+            ((QueryParameter) params.get(i)).apply(vac, cc, stmt);
         }
 
         return vac.getActiveParamNum();
     }
 
+    public QueryParameter get(int index)
+    {
+        return (QueryParameter) params.get(index);
+    }
+
+    public int size()
+    {
+        return params.size();
+    }
 }
