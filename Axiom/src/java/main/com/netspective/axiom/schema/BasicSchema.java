@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.14 2003-11-07 17:31:16 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.15 2003-12-10 20:58:44 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -180,7 +180,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
             Template dialogsPackage = new Template(
                     "schema." + getName() + "-tables",
                     handler,
-                    new InputSourceLocator(pc.getInputSrcTracker(), pc.getLocator().getLineNumber()),
+                    new InputSourceLocator(pc.getInputSrcTracker(), pc.getLocator().getLineNumber(), pc.getLocator().getColumnNumber()),
                     handler.getTemplatCatalog(),
                     handler.getDynamicTemplatesProducer(),
                     null, "dialogs", "dialogs", dialogsPackageAttrs);
