@@ -1,5 +1,3 @@
-<#include "*/header.ftl"/>
-
     <table border="0" cellspacing="0" cellpadding="0">
         <tbody><tr>
             <td><img src="${resourcesPath}/images/home/home_13.gif" width="600" height="13" alt=""></td>
@@ -104,5 +102,3 @@
 
     </tr>
 </tbody></table>
-
-<#include "*/footer.ftl"/>

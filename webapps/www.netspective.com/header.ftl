@@ -1,13 +1,6 @@
 <html><head>
 
-<#include "macros.ftl"/>
-
 <title>${vc.navigationContext.getPageTitle()}</title>
-
-<#assign resourcesPath = vc.servletRootUrl + "resources"/>
-<#assign activePage = vc.navigationContext.activePage/>
-<#assign activePageId = activePage.qualifiedName/>
-<#assign theme = vc.activeTheme/>
 
 <link rel="SHORTCUT ICON" href="${theme.getResourceUrl('/images/favicon.ico')}">
 <link rel="stylesheet" href="${theme.getResourceUrl('/css/panel-input.css')}" type="text/css">

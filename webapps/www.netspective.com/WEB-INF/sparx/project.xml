@@ -18,7 +18,7 @@
             <page name="frameworks" caption="Frameworks" tag-line="Developing J2EE Applications Gets Easier">
                 <body source="products/frameworks/index.ftl"/>
                 <summary>
-                    The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production ready,
+                    The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
                     secure, data-driven web applications. Ease development using &amp;lt;declarative&amp;gt; constructs
                     instead of hand coding.
                 </summary>

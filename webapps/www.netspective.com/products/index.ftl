@@ -1,5 +1,3 @@
-<#include "*/header.ftl"/>
-
 Some heading goes here
 
 <@pageBody>
@@ -9,5 +7,3 @@ ${vc.navigationContext.pageHeading} in area ${vc.navigationContext.activePage.pr
 <p>
 
 </@pageBody>
-
-<#include "*/footer.ftl"/>

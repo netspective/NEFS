@@ -39,21 +39,19 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.1 2003-11-24 03:17:33 shahid.shah Exp $
+ * $Id: AppTheme.java,v 1.2 2003-11-27 19:44:56 shahid.shah Exp $
  */
 
 package app;
 
-import app.AppNavigationSkin;
-
 import com.netspective.sparx.theme.basic.BasicTheme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.theme.basic.StandardTemplateNavigationSkin;
 import com.netspective.sparx.navigate.NavigationSkin;
 
 public class AppTheme extends BasicTheme
 {
     public NavigationSkin createNavigationSkin()
     {
-        return new AppNavigationSkin(this, "default");
+        return new StandardTemplateNavigationSkin(this, "default");
     }
 }

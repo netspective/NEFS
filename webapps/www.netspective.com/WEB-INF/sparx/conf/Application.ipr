@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="3" relativePaths="true">
   <component name="ProjectRootManager" version="2">
-    <jdk name="java version &quot;1.3.1_07&quot;" />
+    <jdk name="java version &quot;1.3.1_02&quot;" />
     <projectPath>
       <root type="composite">
         <root type="simple" url="file://$PROJECT_DIR$/../../.." />
@@ -9,13 +9,13 @@
     </projectPath>
     <sourcePath>
       <root type="composite">
-        <root type="jdk" rootType="sourcePath" name="java version &quot;1.3.1_07&quot;" />
+        <root type="jdk" rootType="sourcePath" name="java version &quot;1.3.1_02&quot;" />
         <root type="simple" url="file://$PROJECT_DIR$/../../classes" />
       </root>
     </sourcePath>
     <classPath>
       <root type="composite">
-        <root type="jdk" rootType="classPath" name="java version &quot;1.3.1_07&quot;" />
+        <root type="jdk" rootType="classPath" name="java version &quot;1.3.1_02&quot;" />
         <root type="output" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../../../../Commons/lib/redist/XmlDoclet.jar!/" />
         <root type="simple" url="jar://$PROJECT_DIR$/../../../../../Commons/lib/redist/commons-jexl.jar!/" />
@@ -46,7 +46,7 @@
     </excludePath>
     <javadocPath>
       <root type="composite">
-        <root type="jdk" rootType="javadocPath" name="java version &quot;1.3.1_07&quot;" />
+        <root type="jdk" rootType="javadocPath" name="java version &quot;1.3.1_02&quot;" />
       </root>
     </javadocPath>
     <assert_keyword enabled="no" />
