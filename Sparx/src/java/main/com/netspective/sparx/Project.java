@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.29 2003-10-07 01:36:34 shahid.shah Exp $
+ * $Id: Project.java,v 1.30 2003-10-15 18:03:12 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -58,7 +58,6 @@ import org.xml.sax.SAXException;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
-import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
