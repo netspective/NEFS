@@ -50,9 +50,6 @@ import com.netspective.sparx.panel.QueryReportPanel;
  * declared fields are actually displayed in the dialog.  It also determines how
  * each field will be interpreted by the query definition engine once the dialog
  * is submitted
- *
- * @author aye
- *         $Id: QueryDefnSelect.java,v 1.5 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QueryDefnSelect extends com.netspective.axiom.sql.dynamic.QueryDefnSelect
 {

@@ -50,10 +50,6 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.theme.Theme;
 
-/**
- * @author aye
- *         $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.9 2004-08-15 02:27:29 shahid.shah Exp $
- */
 public class SelectableHtmlTabularReportPanelSkin extends BasicHtmlTabularReportPanelSkin
 {
     private boolean highlightRow = false;

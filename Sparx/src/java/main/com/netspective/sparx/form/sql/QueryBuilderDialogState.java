@@ -40,9 +40,6 @@ import com.netspective.sparx.value.HttpServletValueContext;
 
 /**
  * Dialog state class for the query builder dialog and its child classes.
- *
- * @author Aye Thu
- * @version $Id: QueryBuilderDialogState.java,v 1.3 2004-08-15 02:27:28 shahid.shah Exp $
  */
 public class QueryBuilderDialogState extends DialogState
 {

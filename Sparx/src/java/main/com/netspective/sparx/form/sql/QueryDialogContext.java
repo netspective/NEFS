@@ -35,10 +35,6 @@ package com.netspective.sparx.form.sql;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 
-/**
- * @author Aye Thu
- * @version $Id: QueryDialogContext.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
- */
 public class QueryDialogContext extends DialogContext
 {
     private int rowsPerPage = 0;

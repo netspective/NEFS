@@ -30,7 +30,6 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
@@ -44,10 +43,6 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.theme.Theme;
 
-/**
- * @author aye
- *         $Id: RecordEditorReportSkin.java,v 1.14 2004-08-15 02:27:29 shahid.shah Exp $
- */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
     public RecordEditorReportSkin()

@@ -30,8 +30,6 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-
-
 package com.netspective.sparx.command;
 
 import java.io.IOException;
@@ -60,9 +58,6 @@ import com.netspective.sparx.theme.Theme;
 
 /**
  * Command for executing a stored procedure and producing a report returned from the stored procedure as a result set
- *
- * @author Aye Thu
- * @version $Id: StoredProcedureCommand.java,v 1.5 2004-08-15 02:27:26 shahid.shah Exp $
  */
 public class StoredProcedureCommand extends AbstractHttpServletCommand
 {

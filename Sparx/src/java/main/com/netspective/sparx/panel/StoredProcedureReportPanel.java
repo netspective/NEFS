@@ -48,10 +48,6 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.sql.QueryResultSetDataSource;
 import com.netspective.sparx.sql.StoredProcedure;
 
-/**
- * @author Aye Thu
- * @version $Id: StoredProcedureReportPanel.java,v 1.6 2004-08-15 02:27:28 shahid.shah Exp $
- */
 public class StoredProcedureReportPanel extends AbstractHtmlTabularReportPanel
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
