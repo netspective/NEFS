@@ -39,74 +39,80 @@
  */
 
 /**
- * $Id: ImportConfigurationTask.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.1 2003-03-14 03:56:08 shahid.shah Exp $
  */
 
-package com.netspective.commons.ant;
+package com.netspective.commons.xdm;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.io.File;
-
-import org.apache.tools.ant.BuildException;
-
+import com.netspective.commons.config.ConfigurationsManagerContainer;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.config.Configuration;
-import com.netspective.commons.config.Property;
-import com.netspective.commons.config.ConfigurationsManagerComponent;
-import com.netspective.commons.xdm.XdmComponentTask;
+import com.netspective.commons.acl.AccessControlListsManagerContainer;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.acl.AccessControlList;
+import com.netspective.commons.acl.Permission;
+import com.netspective.commons.acl.PermissionNotFoundException;
 
-public class ImportConfigurationTask extends XdmComponentTask
+public class DefaultXdmComponentItems implements ConfigurationsManagerContainer, AccessControlListsManagerContainer
 {
-    private File file;
-    private String configId = ConfigurationsManager.DEFAULT_CONFIG_NAME;
-    private String prefix = "config.";
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private AccessControlListsManager aclsManager;
+    private ConfigurationsManager configsManager;
 
-    public ImportConfigurationTask()
+    /* ------------------------------------------------------------------------------------------------------------- */
+    public ConfigurationsManager getConfigsManager()
     {
+        if(configsManager == null)
+            configsManager = new ConfigurationsManager();
+        return configsManager;
     }
 
-    public void setFile(File file)
+    public void addConfiguration(Configuration config)
     {
-        this.file = file;
+        getConfigsManager().addConfiguration(config);
     }
 
-    public void setConfigId(String configId)
+    public Configuration getDefaultConfiguration()
     {
-        this.configId = configId;
+        return getConfigsManager().getConfiguration();
     }
 
-    public void setPrefix(String prefix)
+    public Configuration getConfiguration(final String name)
     {
-        this.prefix = prefix;
+        return getConfigsManager().getConfiguration(name);
     }
 
-    public void execute() throws BuildException
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public AccessControlListsManager getAclsManager()
     {
-        // because there's no "servlet context" available from Ant (command line) we need to simulate it so that if the
-        // configuration items refer to the value source servlet-context-path the variables should still work
-        File simulatedPath = new File(project.getProperty("app.root.dir"));
-        System.setProperty("com.netspective.sparx.util.value.ServletContextPathValue.simulate", simulatedPath.getAbsolutePath());
+        if(aclsManager == null)
+            aclsManager = new AccessControlListsManager();
+        return aclsManager;
+    }
 
-        ConfigurationsManagerComponent component = (ConfigurationsManagerComponent) getComponent(ConfigurationsManagerComponent.class);
-        ConfigurationsManager manager = component.getItems().getConfigsManager();
+    public AccessControlList createAccessControlList()
+    {
+        return getAclsManager().createAccessControlList();
+    }
 
-        int imported = 0;
-        Configuration config = manager.getConfiguration(configId);
-        for(Iterator i = config.getChildrenMap().keySet().iterator(); i.hasNext();)
-        {
-            Map.Entry configEntry = (Map.Entry) i.next();
-            Property property = (Property) configEntry.getValue();
+    public void addAccessControlList(AccessControlList acl)
+    {
+        getAclsManager().addAccessControlList(acl);
+    }
 
-            String antPropertyName = prefix + property.getName();
-            if(! property.isDynamic())
-            {
-                project.setProperty(antPropertyName, config.getTextValue(null, property.getName()));
-                if(isDebug()) log(antPropertyName + " = " + project.getProperty(antPropertyName));
-                imported++;
-            }
-        }
+    public AccessControlList getDefaultAccessControList()
+    {
+        return getAclsManager().getAccessControlList();
+    }
 
-        log("Imported " + imported + " configuration items from '" + component.getInputSource().getIdentifier() + "' (prefix = '" + prefix + "')");
+    public AccessControlList getAccessControlList(final String name)
+    {
+        return getAclsManager().getAccessControlList(name);
+    }
+
+    public Permission getPermission(String name) throws PermissionNotFoundException
+    {
+        return getAclsManager().getPermission(name);
     }
 }

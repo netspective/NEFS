@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.2 2003-03-13 22:37:43 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.3 2003-03-14 03:56:13 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -54,6 +54,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
+import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
@@ -74,7 +75,7 @@ import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.SchemasCollection;
 
-public class SqlManager implements MetricsProducer
+public class SqlManager extends DefaultXdmComponentItems implements MetricsProducer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(SqlManager.class);

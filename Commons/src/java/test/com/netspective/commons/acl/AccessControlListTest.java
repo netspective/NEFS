@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -70,8 +70,8 @@ public class AccessControlListTest extends TestCase
 
         aclc.printErrorsAndWarnings();
 
-        System.out.println(aclc.getAclsManager().size());
-        System.out.println(aclc.getAclsManager().getPermissionsByName().size());
-        System.out.println(aclc.getDefaultAccessControList());
+        System.out.println(aclc.getItems().getAclsManager().size());
+        System.out.println(aclc.getItems().getAclsManager().getPermissionsByName().size());
+        System.out.println(aclc.getItems().getDefaultAccessControList());
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConfigurationTest.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: ConfigurationTest.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
@@ -107,7 +107,7 @@ public class ConfigurationTest extends TestCase
 
         assertTrue(pc.getErrors().size() == 0);
 
-        Configuration defaultConfig = component.getDefaultConfiguration();
+        Configuration defaultConfig = component.getItems().getDefaultConfiguration();
         assertNotNull(defaultConfig);
 
         //defaultConfig.dumpProperties();
@@ -138,7 +138,7 @@ public class ConfigurationTest extends TestCase
 
         assertTrue(pc.getErrors().size() == 0);
 
-        Configuration notDefaultConfig = component.getConfigsManager().getConfiguration("not-default");
+        Configuration notDefaultConfig = component.getItems().getConfigsManager().getConfiguration("not-default");
         assertNotNull(notDefaultConfig);
 
         //notDefaultConfig.dumpProperties();

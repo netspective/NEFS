@@ -39,22 +39,31 @@
  */
 
 /**
- * $Id: ConfigurationsManagerComponent.java,v 1.2 2003-03-14 03:37:54 shahid.shah Exp $
+ * $Id: ConfigurationsManagerComponent.java,v 1.3 2003-03-14 03:56:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
 import com.netspective.commons.xdm.DefaultXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponentItems;
 
 public class ConfigurationsManagerComponent extends DefaultXdmComponent
 {
-    public ConfigurationsManager createComponent()
+    private DefaultXdmComponentItems items;
+
+    public DefaultXdmComponentItems createComponent()
     {
-        return getConfigsManager();
+        items = new DefaultXdmComponentItems();
+        return items;
     }
 
-    public void addComponent(ConfigurationsManager manager)
+    public void addComponent(DefaultXdmComponentItems manager)
     {
-        // just a placeholder since the actual configurations are managed by parent class
+        // not required
+    }
+
+    public DefaultXdmComponentItems getItems()
+    {
+        return items;
     }
 }
