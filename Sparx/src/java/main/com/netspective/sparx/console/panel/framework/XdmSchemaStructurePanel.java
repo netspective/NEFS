@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.6 2003-09-15 03:57:45 aye.thu Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.7 2003-11-07 17:47:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -245,7 +245,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             templateProducers = ((TemplateProducerParent) childInstance).getTemplateProducers();
             for(int i = 0; i < templateProducers.size(); i++)
             {
-                TemplateProducer templateProducer = templateProducers.get(i);
+                TemplateProducer templateProducer = templateProducers.getByIndex(i);
                 childElemNames.add(templateProducer.getElementName());
             }
         }

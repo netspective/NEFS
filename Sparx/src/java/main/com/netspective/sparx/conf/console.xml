@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.111 2003-11-05 11:55:21 shahid.shah Exp $
+  * $Id: console.xml,v 1.112 2003-11-07 17:47:09 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -279,8 +279,13 @@
         <page name="documentation" caption="Documentation" require-login="no">
             <body config="console" source="content/documentation.ftl"/>
         </page>
-        <page name="reference" caption="XDM Tags Reference" require-login="no" body-affects-navigation="yes">
-            <body config="console" source="content/xdm-doc.ftl"/>
+        <page name="reference" caption="XDM Tags Reference" require-login="no">
+            <page name="tags" caption="Tags" require-login="no" body-affects-navigation="yes">
+                <body config="console" source="content/xdm-tags-doc.ftl"/>
+            </page>
+            <page name="templates" caption="Template Catalog" require-login="no" body-affects-navigation="yes">
+                <body config="console" source="content/xdm-tmpl-catalog.ftl"/>
+            </page>
         </page>
     </navigation-tree>
 

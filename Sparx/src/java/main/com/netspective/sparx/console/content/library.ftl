@@ -157,7 +157,7 @@
 
         <!-- start from 1 because of the leading / -->
         <#list 1..tagsList?size-1 as index>
-            ${separator}<code>&lt;<a href="${vc.consoleUrl}/reference?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
+            ${separator}<code>&lt;<a href="${vc.consoleUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
             <#assign activeTags = "${activeTags}/${tagsList[index]}"/>
             <#assign activeClasses = "${activeClasses}/${classesList[index]}"/>
         </#list>
@@ -208,6 +208,25 @@
         <p>
         Source: <code>${vc.getConsoleFileBrowserLink(inputSourceLocator.inputSourceTracker.identifier, true)} line ${inputSourceLocator.lineNumber}</code>
     </#if>
+
+    <#assign templateCatalog = vc.projectComponent.templateCatalog/>
+
+    <#if schema.isTemplateConsumer()>
+        <#assign consumerData = templateCatalog.getTemplateConsumerDataForClass(schema.bean)?default('-')/>
+        <#if consumerData != '-'>
+            <#assign templates = consumerData.getTemplates(templateCatalog)?default('-')/>
+            <#if templates != '-'>
+            <p>
+            <b>Templates that may be applied to this tag</b>
+            <ol>
+                <#list templates.entrySet() as templateEntry>
+                    <li>${consumerData.templateRefAttrName}="<a href="${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}"><b>${templateEntry.key}</b></a>"</li>
+                </#list>
+            </ol>
+            </#if>
+        </#if>
+    </#if>
+
     <p>
     <b>Attributes</b><br>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
@@ -282,21 +301,24 @@
             <td class="report-column-${classSuffix}" rowspan=2>
                 <#if childDetail.isTemplateProducer()>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-template-producer.gif")}" title="Template Producer"/>
-                    <#assign href=""/>
                 <#else>
                     <img src="${vc.activeTheme.getResourceUrl("/images/xml/xml-node-element.gif")}" title="Element"/>
-                    <#assign href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
                 </#if>
             </td>
             <td class="report-column-${classSuffix}">
                 <nobr>
-                <#if href != ''><a href="${vc.consoleUrl}/reference?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"></#if>
+                <#if childDetail.isTemplateProducer()>
+                    <a href="${vc.consoleUrl}/reference/templates?ns=${childDetail.getTemplateProducer().nameSpaceId}">
+                <#else>
+                    <#assign href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
+                    <a href="${vc.consoleUrl}/reference/tags?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}">
+                </#if>
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
                     &lt;${childDetail.elemName}&gt;
                 </#if>
-                <#if href != ''></a></#if>
+                </a>
                 </nobr>
             </td>
             <td class="report-column-${classSuffix}">
@@ -306,18 +328,35 @@
                 <#if getXmlDataModelSchema(childDetail.elemType.name).supportsCharacters()>Yes<#else>&nbsp;</#if>
             </td>
             <td class="report-column-${classSuffix}">
-                <#if childDetail.isTemplateConsumer()>Consumer<#else>&nbsp;</#if>
+                <#if childDetail.isTemplateConsumer()>
+                    <#assign consumerData = templateCatalog.getTemplateConsumerDataForClass(childDetail.elemType)?default('-')/>
+                    <#if consumerData != '-'>
+                        <#assign templates = consumerData.getTemplates(templateCatalog)?default('-')/>
+                        <#if templates != '-'>
+                        <select onChange="document.location = this.options[this.selectedIndex].value">
+                            <option>${templates.size()} templates</option>
+                            <#list templates.entrySet() as templateEntry>
+                                <option value="${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}">${consumerData.templateRefAttrName}="${templateEntry.key}"</option>
+                            </#list>
+                        </select>
+                        <#else>
+                            No templates defined.
+                        </#if>
+                    <#else>
+                        &nbsp;
+                    </#if>
+                <#else>
+                    &nbsp;
+                </#if>
                 <#if childDetail.isTemplateProducer()>
-                    <#assign templates = childDetail.templateProducer.instancesMap?default('-')/>
-                    <#if templates != '-'>
-                    <select>
-                        <#list templates as template>
-                        <option><${template.templateName}</option>
+                    <#assign producer = childDetail.getTemplateProducer()/>
+                    <#assign templates = templateCatalog.getProducerTemplates(producer)/>
+                    <select onChange="document.location = this.options[this.selectedIndex].value">
+                        <option>${templates.size()} templates</option>
+                        <#list templates.values() as template>
+                            <option value="${vc.consoleUrl}/reference/templates?ns=${producer.nameSpaceId}&tmpl=${template.templateName}">${template.templateName}</option>
                         </#list>
                     </select>
-                    <#else>
-                        Producer
-                    </#if>
                 <#else>
                     &nbsp;
                 </#if>
