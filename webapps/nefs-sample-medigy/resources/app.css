@@ -1,0 +1,31 @@
+p { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 9pt; }
+
+table.data-table {}
+table.data-table th { color: #333; font-weight: bold; font-size: 8pt; font-family: tahoma, arial; text-align: left; padding-left: 5px; padding-right: 5px; border: 1px solid #EFEFEF; }
+table.data-table td { color: #333; font-weight: normal; font-size: 8pt; font-family: tahoma, arial; text-align: left; padding-left: 5px; padding-right: 5px; border-bottom: 1px solid #EFEFEF; }
+table.data-table td a { color: #800000 }
+table.data-table td a:visited { color: #000000 }
+table.data-table td a:hover { background-color: #EEEEEE; }
+
+table.page-children {}
+table.page-children th { color: #333; font-weight: bold; font-size: 9pt; font-family: verdana, arial; text-align: left; padding-left: 5px; padding-right: 5px; border: 1px solid #EFEFEF; }
+table.page-children td { color: #333; font-weight: normal; font-size: 9pt; font-family: verdana, arial; text-align: left; padding-left: 5px; padding-right: 5px; border-bottom: 1px solid #EFEFEF; }
+table.page-children td a { color: #800000 }
+table.page-children td a:visited { color: #000000 }
+table.page-children td a:hover { background-color: #EEEEEE; }
+
+table.sitemap  { font-size: 8pt; font-family: tahoma, arial; text-align: left; vertical-align: top; }
+table.site-map td { font-size: 8pt; font-family: tahoma, arial; text-align: left; vertical-align: top; padding: 10px 5px 0px 0px }
+table.site-map a         { font-family: verdana, arial, helvetica, sans; font-size: 8pt; vertical-align: top; }
+table.site-map a:link    { font-family: verdana, arial, helvetica, sans; font-size: 8pt; vertical-align: top; }
+table.site-map a:visited { font-family: verdana, arial, helvetica, sans; font-size: 8pt; vertical-align: top; }
+table.site-map a:hover   { font-family: verdana, arial, helvetica, sans; font-size: 8pt; vertical-align: top; }
+table.site-map td.L1 { padding-left:   0px;  }
+table.site-map td.L2 { padding-left:  25px; padding-top: 5px;  }
+table.site-map td.L3 { padding-left:  50px; }
+table.site-map td.L4 { padding-left:  75px; }
+table.site-map td.L5 { padding-left: 100px; }
+table.site-map td.L6 { padding-left: 125px; }
+table.site-map td.L7 { padding-left: 150px; }
+
+div.scrollbox { overflow:scroll; height: 250px; width: 100% }

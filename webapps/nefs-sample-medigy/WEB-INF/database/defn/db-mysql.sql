@@ -1,7 +1,7 @@
 CREATE TABLE Lookup_Result_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Lookup_Result_Type on Lookup_Result_Type (id);
@@ -9,15 +9,16 @@ CREATE  INDEX PK_Lookup_Result_Type on Lookup_Result_Type (id);
 CREATE TABLE Record_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_RecStatus_abbrev on Record_Status (abbrev);
 CREATE  INDEX PK_Record_Status on Record_Status (id);
 
 CREATE TABLE Record_State
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Record_State on Record_State (id);
@@ -25,7 +26,7 @@ CREATE  INDEX PK_Record_State on Record_State (id);
 CREATE TABLE Contact_Method_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Contact_Method_Type on Contact_Method_Type (id);
@@ -33,7 +34,7 @@ CREATE  INDEX PK_Contact_Method_Type on Contact_Method_Type (id);
 CREATE TABLE Contact_Address_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Contact_Address_Type on Contact_Address_Type (id);
@@ -41,7 +42,7 @@ CREATE  INDEX PK_Contact_Address_Type on Contact_Address_Type (id);
 CREATE TABLE Contact_Telephone_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Contact_Telephone_Type on Contact_Telephone_Type (id);
@@ -49,7 +50,7 @@ CREATE  INDEX PK_Contact_Telephone_Type on Contact_Telephone_Type (id);
 CREATE TABLE Contact_Email_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Contact_Email_Type on Contact_Email_Type (id);
@@ -57,7 +58,7 @@ CREATE  INDEX PK_Contact_Email_Type on Contact_Email_Type (id);
 CREATE TABLE Action_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Action_Type on Action_Type (id);
@@ -65,7 +66,7 @@ CREATE  INDEX PK_Action_Type on Action_Type (id);
 CREATE TABLE Patient_Comm_Act_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Patient_Comm_Act_Type on Patient_Comm_Act_Type (id);
@@ -73,7 +74,7 @@ CREATE  INDEX PK_Patient_Comm_Act_Type on Patient_Comm_Act_Type (id);
 CREATE TABLE Patient_Comm_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Patient_Comm_Status_Type on Patient_Comm_Status_Type (id);
@@ -81,7 +82,7 @@ CREATE  INDEX PK_Patient_Comm_Status_Type on Patient_Comm_Status_Type (id);
 CREATE TABLE Provider_Comm_Act_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Provider_Comm_Act_Type on Provider_Comm_Act_Type (id);
@@ -89,7 +90,7 @@ CREATE  INDEX PK_Provider_Comm_Act_Type on Provider_Comm_Act_Type (id);
 CREATE TABLE Provider_Comm_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Provider_Comm_Status_Type on Provider_Comm_Status_Type (id);
@@ -97,7 +98,7 @@ CREATE  INDEX PK_Provider_Comm_Status_Type on Provider_Comm_Status_Type (id);
 CREATE TABLE Directive_Act_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Directive_Act_Type on Directive_Act_Type (id);
@@ -105,7 +106,7 @@ CREATE  INDEX PK_Directive_Act_Type on Directive_Act_Type (id);
 CREATE TABLE Diag_Term_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Diag_Term_Type on Diag_Term_Type (id);
@@ -113,7 +114,7 @@ CREATE  INDEX PK_Diag_Term_Type on Diag_Term_Type (id);
 CREATE TABLE Proc_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Proc_Type on Proc_Type (id);
@@ -121,7 +122,7 @@ CREATE  INDEX PK_Proc_Type on Proc_Type (id);
 CREATE TABLE Artifact_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Artifact_Type on Artifact_Type (id);
@@ -129,7 +130,7 @@ CREATE  INDEX PK_Artifact_Type on Artifact_Type (id);
 CREATE TABLE Artifact_Event_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Artifact_Event_Type on Artifact_Event_Type (id);
@@ -137,7 +138,7 @@ CREATE  INDEX PK_Artifact_Event_Type on Artifact_Event_Type (id);
 CREATE TABLE Artifact_Source_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Artifact_Source_Type on Artifact_Source_Type (id);
@@ -145,7 +146,7 @@ CREATE  INDEX PK_Artifact_Source_Type on Artifact_Source_Type (id);
 CREATE TABLE Artifact_Association_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Artifact_Association_Type on Artifact_Association_Type (id);
@@ -153,7 +154,7 @@ CREATE  INDEX PK_Artifact_Association_Type on Artifact_Association_Type (id);
 CREATE TABLE Claim_Table_Field_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Claim_Table_Field_Type on Claim_Table_Field_Type (id);
@@ -161,7 +162,7 @@ CREATE  INDEX PK_Claim_Table_Field_Type on Claim_Table_Field_Type (id);
 CREATE TABLE Claim_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Claim_Status_Type on Claim_Status_Type (id);
@@ -169,7 +170,7 @@ CREATE  INDEX PK_Claim_Status_Type on Claim_Status_Type (id);
 CREATE TABLE Claim_Diagnosis_Code_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Claim_Diagnosis_Code_Type on Claim_Diagnosis_Code_Type (id);
@@ -177,7 +178,7 @@ CREATE  INDEX PK_Claim_Diagnosis_Code_Type on Claim_Diagnosis_Code_Type (id);
 CREATE TABLE Claim_Procedure_Code_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Claim_Procedure_Code_Type on Claim_Procedure_Code_Type (id);
@@ -185,7 +186,7 @@ CREATE  INDEX PK_Claim_Procedure_Code_Type on Claim_Procedure_Code_Type (id);
 CREATE TABLE Document_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Document_Type on Document_Type (id);
@@ -193,7 +194,7 @@ CREATE  INDEX PK_Document_Type on Document_Type (id);
 CREATE TABLE Document_Mime_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Document_Mime_Type on Document_Mime_Type (id);
@@ -201,7 +202,7 @@ CREATE  INDEX PK_Document_Mime_Type on Document_Mime_Type (id);
 CREATE TABLE HCFA1500_Service_Place_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_HCFA1500_Service_Place_Type on HCFA1500_Service_Place_Type (id);
@@ -209,7 +210,7 @@ CREATE  INDEX PK_HCFA1500_Service_Place_Type on HCFA1500_Service_Place_Type (id)
 CREATE TABLE Procedure_Code_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Procedure_Code_Type on Procedure_Code_Type (id);
@@ -217,7 +218,7 @@ CREATE  INDEX PK_Procedure_Code_Type on Procedure_Code_Type (id);
 CREATE TABLE Bill_Remittance_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Bill_Remittance_Type on Bill_Remittance_Type (id);
@@ -225,7 +226,7 @@ CREATE  INDEX PK_Bill_Remittance_Type on Bill_Remittance_Type (id);
 CREATE TABLE Bill_Sequence_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Bill_Sequence_Type on Bill_Sequence_Type (id);
@@ -233,7 +234,7 @@ CREATE  INDEX PK_Bill_Sequence_Type on Bill_Sequence_Type (id);
 CREATE TABLE Ins_Coverage_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Ins_Coverage_Type on Ins_Coverage_Type (id);
@@ -241,7 +242,7 @@ CREATE  INDEX PK_Ins_Coverage_Type on Ins_Coverage_Type (id);
 CREATE TABLE Ins_Product_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Ins_Product_Type on Ins_Product_Type (id);
@@ -249,7 +250,7 @@ CREATE  INDEX PK_Ins_Product_Type on Ins_Product_Type (id);
 CREATE TABLE Insured_Relationship
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Insured_Relationship on Insured_Relationship (id);
@@ -257,7 +258,7 @@ CREATE  INDEX PK_Insured_Relationship on Insured_Relationship (id);
 CREATE TABLE Invoice_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Invoice_Status_Type on Invoice_Status_Type (id);
@@ -265,7 +266,7 @@ CREATE  INDEX PK_Invoice_Status_Type on Invoice_Status_Type (id);
 CREATE TABLE Invoice_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Invoice_Type on Invoice_Type (id);
@@ -273,7 +274,7 @@ CREATE  INDEX PK_Invoice_Type on Invoice_Type (id);
 CREATE TABLE Doctor_Visit_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Doctor_Visit_Type on Doctor_Visit_Type (id);
@@ -281,7 +282,7 @@ CREATE  INDEX PK_Doctor_Visit_Type on Doctor_Visit_Type (id);
 CREATE TABLE Lab_Order_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Lab_Order_Status on Lab_Order_Status (id);
@@ -289,7 +290,7 @@ CREATE  INDEX PK_Lab_Order_Status on Lab_Order_Status (id);
 CREATE TABLE Lab_Order_Priority
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Lab_Order_Priority on Lab_Order_Priority (id);
@@ -297,7 +298,7 @@ CREATE  INDEX PK_Lab_Order_Priority on Lab_Order_Priority (id);
 CREATE TABLE Lab_Order_Transmission
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Lab_Order_Transmission on Lab_Order_Transmission (id);
@@ -305,7 +306,7 @@ CREATE  INDEX PK_Lab_Order_Transmission on Lab_Order_Transmission (id);
 CREATE TABLE Medication_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Medication_Type on Medication_Type (id);
@@ -313,7 +314,7 @@ CREATE  INDEX PK_Medication_Type on Medication_Type (id);
 CREATE TABLE Medication_Record_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Medication_Record_Type on Medication_Record_Type (id);
@@ -321,7 +322,7 @@ CREATE  INDEX PK_Medication_Record_Type on Medication_Record_Type (id);
 CREATE TABLE Referral_Communication
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Referral_Communication on Referral_Communication (id);
@@ -329,7 +330,7 @@ CREATE  INDEX PK_Referral_Communication on Referral_Communication (id);
 CREATE TABLE Referral_Urgency
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Referral_Urgency on Referral_Urgency (id);
@@ -337,7 +338,7 @@ CREATE  INDEX PK_Referral_Urgency on Referral_Urgency (id);
 CREATE TABLE Referral_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Referral_Status on Referral_Status (id);
@@ -345,7 +346,7 @@ CREATE  INDEX PK_Referral_Status on Referral_Status (id);
 CREATE TABLE Referral_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Referral_Type on Referral_Type (id);
@@ -353,7 +354,7 @@ CREATE  INDEX PK_Referral_Type on Referral_Type (id);
 CREATE TABLE Message_Attachment_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Message_Attachment_Type on Message_Attachment_Type (id);
@@ -361,7 +362,7 @@ CREATE  INDEX PK_Message_Attachment_Type on Message_Attachment_Type (id);
 CREATE TABLE Message_Recipient_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Message_Recipient_Type on Message_Recipient_Type (id);
@@ -369,7 +370,7 @@ CREATE  INDEX PK_Message_Recipient_Type on Message_Recipient_Type (id);
 CREATE TABLE Message_Reception_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Message_Reception_Type on Message_Reception_Type (id);
@@ -377,7 +378,7 @@ CREATE  INDEX PK_Message_Reception_Type on Message_Reception_Type (id);
 CREATE TABLE Table_Activity_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Table_Activity_Type on Table_Activity_Type (id);
@@ -385,7 +386,7 @@ CREATE  INDEX PK_Table_Activity_Type on Table_Activity_Type (id);
 CREATE TABLE Field_Change_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Field_Change_Type on Field_Change_Type (id);
@@ -393,7 +394,7 @@ CREATE  INDEX PK_Field_Change_Type on Field_Change_Type (id);
 CREATE TABLE Measurement_Unit_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Measurement_Unit_Type on Measurement_Unit_Type (id);
@@ -401,7 +402,7 @@ CREATE  INDEX PK_Measurement_Unit_Type on Measurement_Unit_Type (id);
 CREATE TABLE Month_Of_Year
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Month_Of_Year on Month_Of_Year (id);
@@ -409,7 +410,7 @@ CREATE  INDEX PK_Month_Of_Year on Month_Of_Year (id);
 CREATE TABLE Session_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Session_Status_Type on Session_Status_Type (id);
@@ -417,7 +418,7 @@ CREATE  INDEX PK_Session_Status_Type on Session_Status_Type (id);
 CREATE TABLE US_State_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_US_State_Type on US_State_Type (id);
@@ -425,7 +426,7 @@ CREATE  INDEX PK_US_State_Type on US_State_Type (id);
 CREATE TABLE Org_Note_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Note_Type on Org_Note_Type (id);
@@ -433,7 +434,7 @@ CREATE  INDEX PK_Org_Note_Type on Org_Note_Type (id);
 CREATE TABLE Org_Identifier_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Identifier_Type on Org_Identifier_Type (id);
@@ -441,7 +442,7 @@ CREATE  INDEX PK_Org_Identifier_Type on Org_Identifier_Type (id);
 CREATE TABLE Org_Industry_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Industry_Type on Org_Industry_Type (id);
@@ -449,7 +450,7 @@ CREATE  INDEX PK_Org_Industry_Type on Org_Industry_Type (id);
 CREATE TABLE Org_Level_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Level_Type on Org_Level_Type (id);
@@ -457,7 +458,7 @@ CREATE  INDEX PK_Org_Level_Type on Org_Level_Type (id);
 CREATE TABLE Org_Ownership_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Ownership_Type on Org_Ownership_Type (id);
@@ -465,7 +466,7 @@ CREATE  INDEX PK_Org_Ownership_Type on Org_Ownership_Type (id);
 CREATE TABLE Org_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Org_Type on Org_Type (id);
@@ -473,7 +474,7 @@ CREATE  INDEX PK_Org_Type on Org_Type (id);
 CREATE TABLE Person_Note_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Note_Type on Person_Note_Type (id);
@@ -481,7 +482,7 @@ CREATE  INDEX PK_Person_Note_Type on Person_Note_Type (id);
 CREATE TABLE Blood_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Blood_Type on Blood_Type (id);
@@ -489,7 +490,7 @@ CREATE  INDEX PK_Blood_Type on Blood_Type (id);
 CREATE TABLE Ethnicity_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Ethnicity_Type on Ethnicity_Type (id);
@@ -497,7 +498,7 @@ CREATE  INDEX PK_Ethnicity_Type on Ethnicity_Type (id);
 CREATE TABLE Gender_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Gender_Type on Gender_Type (id);
@@ -505,7 +506,7 @@ CREATE  INDEX PK_Gender_Type on Gender_Type (id);
 CREATE TABLE Language_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Language_Type on Language_Type (id);
@@ -513,7 +514,7 @@ CREATE  INDEX PK_Language_Type on Language_Type (id);
 CREATE TABLE Marital_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Marital_Status_Type on Marital_Status_Type (id);
@@ -521,7 +522,7 @@ CREATE  INDEX PK_Marital_Status_Type on Marital_Status_Type (id);
 CREATE TABLE Name_Prefix_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Name_Prefix_Type on Name_Prefix_Type (id);
@@ -529,7 +530,7 @@ CREATE  INDEX PK_Name_Prefix_Type on Name_Prefix_Type (id);
 CREATE TABLE Person_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Type on Person_Type (id);
@@ -537,7 +538,7 @@ CREATE  INDEX PK_Person_Type on Person_Type (id);
 CREATE TABLE Person_Indication_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Indication_Type on Person_Indication_Type (id);
@@ -545,7 +546,7 @@ CREATE  INDEX PK_Person_Indication_Type on Person_Indication_Type (id);
 CREATE TABLE Person_License_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_License_Type on Person_License_Type (id);
@@ -553,7 +554,7 @@ CREATE  INDEX PK_Person_License_Type on Person_License_Type (id);
 CREATE TABLE Person_Relationship_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Relationship_Type on Person_Relationship_Type (id);
@@ -561,7 +562,7 @@ CREATE  INDEX PK_Person_Relationship_Type on Person_Relationship_Type (id);
 CREATE TABLE PersonOrg_Rel_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_PersonOrg_Rel_Type on PersonOrg_Rel_Type (id);
@@ -569,7 +570,7 @@ CREATE  INDEX PK_PersonOrg_Rel_Type on PersonOrg_Rel_Type (id);
 CREATE TABLE Person_Role_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Role_Type on Person_Role_Type (id);
@@ -577,7 +578,7 @@ CREATE  INDEX PK_Person_Role_Type on Person_Role_Type (id);
 CREATE TABLE Asset_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Asset_Type on Asset_Type (id);
@@ -585,7 +586,7 @@ CREATE  INDEX PK_Asset_Type on Asset_Type (id);
 CREATE TABLE Event_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Event_Type on Event_Type (id);
@@ -593,7 +594,7 @@ CREATE  INDEX PK_Event_Type on Event_Type (id);
 CREATE TABLE Event_Status_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Event_Status_Type on Event_Status_Type (id);
@@ -601,7 +602,7 @@ CREATE  INDEX PK_Event_Status_Type on Event_Status_Type (id);
 CREATE TABLE Event_Status_ChgRsn_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Event_Status_ChgRsn_Type on Event_Status_ChgRsn_Type (id);
@@ -609,7 +610,7 @@ CREATE  INDEX PK_Event_Status_ChgRsn_Type on Event_Status_ChgRsn_Type (id);
 CREATE TABLE Resource_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Resource_Type on Resource_Type (id);
@@ -617,7 +618,7 @@ CREATE  INDEX PK_Resource_Type on Resource_Type (id);
 CREATE TABLE Session_Activity_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Session_Activity_Type on Session_Activity_Type (id);
@@ -625,7 +626,7 @@ CREATE  INDEX PK_Session_Activity_Type on Session_Activity_Type (id);
 CREATE TABLE Session_Action_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Session_Action_Type on Session_Action_Type (id);
@@ -633,7 +634,7 @@ CREATE  INDEX PK_Session_Action_Type on Session_Action_Type (id);
 CREATE TABLE Staff_Benefit_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Staff_Benefit_Type on Staff_Benefit_Type (id);
@@ -641,7 +642,7 @@ CREATE  INDEX PK_Staff_Benefit_Type on Staff_Benefit_Type (id);
 CREATE TABLE Staff_Speciality_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Staff_Speciality_Type on Staff_Speciality_Type (id);
@@ -649,7 +650,7 @@ CREATE  INDEX PK_Staff_Speciality_Type on Staff_Speciality_Type (id);
 CREATE TABLE Transaction_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Transaction_Type on Transaction_Type (id);
@@ -657,7 +658,7 @@ CREATE  INDEX PK_Transaction_Type on Transaction_Type (id);
 CREATE TABLE Comm_Trns_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Comm_Trns_Type on Comm_Trns_Type (id);
@@ -665,7 +666,7 @@ CREATE  INDEX PK_Comm_Trns_Type on Comm_Trns_Type (id);
 CREATE TABLE PhyComm_Trns_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_PhyComm_Trns_Type on PhyComm_Trns_Type (id);
@@ -673,1134 +674,22 @@ CREATE  INDEX PK_PhyComm_Trns_Type on PhyComm_Trns_Type (id);
 CREATE TABLE Directive_Trns_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Directive_Trns_Type on Directive_Trns_Type (id);
-
-CREATE TABLE Action
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER /* type.EnumerationIdRefColumn */
-);
-
-CREATE TABLE Action_Patient_Comm
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    act_status_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_status VARCHAR(64), /* type.TextColumn */
-    subject VARCHAR(256), /* type.TextColumn */
-    initiator_id VARCHAR(36), /* type.GuidTextColumn */
-    initiator VARCHAR(128), /* type.TextColumn */
-    receptor_id VARCHAR(36), /* type.GuidTextColumn */
-    receptor VARCHAR(128), /* type.TextColumn */
-    rcpt_cont VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Patient_Comm on Action_Patient_Comm (act_id);
-
-CREATE TABLE Action_Diagnosis
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    patient VARCHAR(128), /* type.TextColumn */
-    physician_id VARCHAR(36), /* type.GuidTextColumn */
-    physician VARCHAR(128), /* type.TextColumn */
-    diag_codetype_id INTEGER, /* type.EnumerationIdRefColumn */
-    diag_code VARCHAR(32), /* type.TextColumn */
-    diagnosis VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Diagnosis on Action_Diagnosis (act_id);
-
-CREATE TABLE Action_Directive
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    patient VARCHAR(128), /* type.TextColumn */
-    physician_id VARCHAR(36), /* type.GuidTextColumn */
-    physician VARCHAR(128), /* type.TextColumn */
-    issuer VARCHAR(64), /* type.TextColumn */
-    reason VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Directive on Action_Directive (act_id);
-
-CREATE TABLE Action_Ins_Verify
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    event_id VARCHAR(36), /* type.GuidTextColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    effective_begin_date DATE, /* type.DateColumn */
-    deductible FLOAT, /* type.CurrencyColumn */
-    deductible_met FLOAT, /* type.CurrencyColumn */
-    ovcopay FLOAT, /* type.CurrencyColumn */
-    labcopay FLOAT, /* type.CurrencyColumn */
-    xraycopay FLOAT, /* type.CurrencyColumn */
-    referral_required BOOLEAN, /* type.BooleanColumn */
-    sep_copay_xray BOOLEAN, /* type.BooleanColumn */
-    lab VARCHAR(128), /* type.TextColumn */
-    provider_id VARCHAR(36), /* type.GuidTextColumn */
-    coverage_req VARCHAR(128), /* type.TextColumn */
-    coverage_on VARCHAR(128), /* type.TextColumn */
-    referral_or_precert BOOLEAN, /* type.BooleanColumn */
-    precert_phone VARCHAR(20), /* type.TextColumn */
-    annual_pe_ww VARCHAR(128), /* type.TextColumn */
-    gyn_exam VARCHAR(128), /* type.TextColumn */
-    thin_prep_pap VARCHAR(128), /* type.TextColumn */
-    depo_inj VARCHAR(128), /* type.TextColumn */
-    iud VARCHAR(128), /* type.TextColumn */
-    tubal_lig VARCHAR(128), /* type.TextColumn */
-    surgery VARCHAR(128), /* type.TextColumn */
-    flex_sig VARCHAR(128), /* type.TextColumn */
-    output_xray VARCHAR(128), /* type.TextColumn */
-    mammogram VARCHAR(128), /* type.TextColumn */
-    amniocenteses VARCHAR(128), /* type.TextColumn */
-    pelvic_ultrasound VARCHAR(128), /* type.TextColumn */
-    fertility_test VARCHAR(128), /* type.TextColumn */
-    circumcision VARCHAR(128), /* type.TextColumn */
-    ins_rep_name VARCHAR(128), /* type.TextColumn */
-    ins_verified_by VARCHAR(36), /* type.GuidTextColumn */
-    ins_verify_date DATE, /* type.DateColumn */
-    app_verified_by VARCHAR(36), /* type.GuidTextColumn */
-    app_verify_date DATE, /* type.DateColumn */
-    med_verified_by VARCHAR(36), /* type.GuidTextColumn */
-    med_verify_date DATE, /* type.DateColumn */
-    per_verified_by VARCHAR(36), /* type.GuidTextColumn */
-    per_verify_date DATE, /* type.DateColumn */
-    verify_action VARCHAR(64), /* type.TextColumn */
-    owner_org_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX ActInsVfy_person_id on Action_Ins_Verify (person_id);
-CREATE  INDEX ActInsVfy_owner_org_id on Action_Ins_Verify (owner_org_id);
-CREATE  INDEX PK_Action_Ins_Verify on Action_Ins_Verify (act_id);
-
-CREATE TABLE Action_Provider_Comm
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    act_status_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_status VARCHAR(64), /* type.TextColumn */
-    subject VARCHAR(256), /* type.TextColumn */
-    initiator_id VARCHAR(36), /* type.GuidTextColumn */
-    initiator VARCHAR(128), /* type.TextColumn */
-    receptor_id VARCHAR(36), /* type.GuidTextColumn */
-    receptor VARCHAR(128), /* type.TextColumn */
-    rcpt_cont VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Provider_Comm on Action_Provider_Comm (act_id);
-
-CREATE TABLE Action_Procedure
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    patient VARCHAR(128), /* type.TextColumn */
-    physician_id VARCHAR(36), /* type.GuidTextColumn */
-    physician VARCHAR(128), /* type.TextColumn */
-    proc_codetype_id INTEGER, /* type.EnumerationIdRefColumn */
-    proc_code VARCHAR(32), /* type.TextColumn */
-    procedure VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Procedure on Action_Procedure (act_id);
-
-CREATE TABLE Action_Visit
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    act_type VARCHAR(64), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
-    end_stamp DATE, /* type.DateTimeColumn */
-    comments VARCHAR(1024), /* type.TextColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    patient VARCHAR(128), /* type.TextColumn */
-    physician_id VARCHAR(36), /* type.GuidTextColumn */
-    physician VARCHAR(128), /* type.TextColumn */
-    reason VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Action_Visit on Action_Visit (act_id);
-
-CREATE TABLE Artifact_Association_Status
-(
-    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
-    abbrev VARCHAR(32) /* type.TextColumn */
-);
-CREATE  INDEX PK_Artifact_Association_Status on Artifact_Association_Status (id);
-
-CREATE TABLE Artifact
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    artifact_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    artifact_id_alias VARCHAR(64), /* type.TextColumn */
-    message_digest VARCHAR(32), /* type.TextColumn */
-    mime_type VARCHAR(128), /* type.TextColumn */
-    header VARCHAR(4000), /* type.TextColumn */
-    spec_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    spec_subtype VARCHAR(128), /* type.TextColumn */
-    source_id VARCHAR(255), /* type.TextColumn */
-    source_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    source_subtype VARCHAR(255), /* type.TextColumn */
-    source_system VARCHAR(255), /* type.TextColumn */
-    name VARCHAR(1024), /* type.TextColumn */
-    description VARCHAR(4000), /* type.TextColumn */
-    orig_stamp DATE, /* type.DateTimeColumn */
-    recv_stamp DATE, /* type.DateTimeColumn */
-    content_uri VARCHAR(512), /* type.TextColumn */
-    content_small VARCHAR(4000), /* type.TextColumn */
-    content_large No definition found in column 'type.DataBlockColumn [20] content_large' for policy 'mysql' or ANSI. Available: [postgres, oracle, mssql, hsqldb] /* type.DataBlockColumn */
-);
-CREATE  INDEX Artf_spec_type_id on Artifact (spec_type_id);
-CREATE  INDEX Artf_spec_subtype on Artifact (spec_subtype);
-CREATE  INDEX Artf_source_id on Artifact (source_id);
-CREATE  INDEX Artf_source_type_id on Artifact (source_type_id);
-CREATE  INDEX Artf_source_subtype on Artifact (source_subtype);
-CREATE  INDEX Artf_source_system on Artifact (source_system);
-CREATE  INDEX PK_Artifact on Artifact (artifact_id);
-
-CREATE TABLE Artifact_State
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    upd_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    upd_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_state_id INTEGER, /* type.EnumerationIdRefColumn */
-    artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    artifact_id_alias VARCHAR(64), /* type.TextColumn */
-    message_digest VARCHAR(32), /* type.TextColumn */
-    mime_type VARCHAR(128), /* type.TextColumn */
-    header VARCHAR(4000), /* type.TextColumn */
-    spec_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    spec_subtype VARCHAR(128), /* type.TextColumn */
-    source_id VARCHAR(255), /* type.TextColumn */
-    source_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    source_subtype VARCHAR(255), /* type.TextColumn */
-    source_system VARCHAR(255), /* type.TextColumn */
-    name VARCHAR(1024), /* type.TextColumn */
-    description VARCHAR(4000), /* type.TextColumn */
-    orig_stamp DATE, /* type.DateTimeColumn */
-    recv_stamp DATE, /* type.DateTimeColumn */
-    content_uri VARCHAR(512), /* type.TextColumn */
-    content_small VARCHAR(4000), /* type.TextColumn */
-    content_large No definition found in column 'type.DataBlockColumn [24] content_large' for policy 'mysql' or ANSI. Available: [postgres, oracle, mssql, hsqldb] /* type.DataBlockColumn */
-);
-CREATE  INDEX ArtfSt_spec_type_id on Artifact_State (spec_type_id);
-CREATE  INDEX ArtfSt_spec_subtype on Artifact_State (spec_subtype);
-CREATE  INDEX ArtfSt_source_id on Artifact_State (source_id);
-CREATE  INDEX ArtfSt_source_type_id on Artifact_State (source_type_id);
-CREATE  INDEX ArtfSt_source_subtype on Artifact_State (source_subtype);
-CREATE  INDEX ArtfSt_source_system on Artifact_State (source_system);
-CREATE  INDEX PK_Artifact_State on Artifact_State (system_id);
-CREATE  INDEX PR_ArtfSt_artifact_id on Artifact_State (artifact_id);
-
-CREATE TABLE Artifact_Association
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    assn_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    assn_status_id INTEGER, /* type.EnumerationIdRefColumn */
-    assn_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    assn_sequence INTEGER, /* type.IntegerColumn */
-    artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    assoc_artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    assn_data_a VARCHAR(1024), /* type.TextColumn */
-    assn_data_b VARCHAR(1024), /* type.TextColumn */
-    assn_data_c VARCHAR(1024) /* type.TextColumn */
-);
-CREATE  INDEX ArfAssn_assn_status_id on Artifact_Association (assn_status_id);
-CREATE  INDEX ArfAssn_assn_type_id on Artifact_Association (assn_type_id);
-CREATE  INDEX ArfAssn_assn_sequence on Artifact_Association (assn_sequence);
-CREATE  INDEX ArfAssn_artifact_id on Artifact_Association (artifact_id);
-CREATE  INDEX ArfAssn_assoc_artifact_id on Artifact_Association (assoc_artifact_id);
-CREATE  INDEX ArfAssn_person_id on Artifact_Association (person_id);
-CREATE  INDEX ArfAssn_org_id on Artifact_Association (org_id);
-CREATE  INDEX PK_Artifact_Association on Artifact_Association (assn_id);
-CREATE  INDEX PR_ArfAssn_artifact_id on Artifact_Association (artifact_id);
-
-CREATE TABLE Artifact_Keyword
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    keyword_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    keyword VARCHAR(512), /* type.TextColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    org_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX ArfKeyw_keyword on Artifact_Keyword (keyword);
-CREATE  INDEX ArfKeyw_person_id on Artifact_Keyword (person_id);
-CREATE  INDEX ArfKeyw_org_id on Artifact_Keyword (org_id);
-CREATE  INDEX PK_Artifact_Keyword on Artifact_Keyword (keyword_id);
-CREATE  INDEX PR_ArfKeyw_artifact_id on Artifact_Keyword (artifact_id);
-
-CREATE TABLE Artifact_Event
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    event_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    event_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    event_status VARCHAR(1024), /* type.TextColumn */
-    artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_artifact_id VARCHAR(36), /* type.GuidTextColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    event_info VARCHAR(1024), /* type.TextColumn */
-    event_info_extra VARCHAR(1024) /* type.TextColumn */
-);
-CREATE  INDEX ArfEvent_event_type_id on Artifact_Event (event_type_id);
-CREATE  INDEX ArfEvent_person_id on Artifact_Event (person_id);
-CREATE  INDEX ArfEvent_org_id on Artifact_Event (org_id);
-CREATE  INDEX PK_Artifact_Event on Artifact_Event (event_id);
-CREATE  INDEX PR_ArfEvent_artifact_id on Artifact_Event (artifact_id);
-
-CREATE TABLE Catalog
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER /* type.EnumerationIdRefColumn */
-);
-
-CREATE TABLE Service_Catalog
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    catalog_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    catalog_name VARCHAR(128), /* type.TextColumn */
-    ins_plan_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX PK_Service_Catalog on Service_Catalog (catalog_id);
-
-CREATE TABLE Service_Catalog_Item
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    catalog_id VARCHAR(36), /* type.GuidTextColumn */
-    item_id VARCHAR(36), /* type.GuidTextColumn */
-    item VARCHAR(256), /* type.TextColumn */
-    cost FLOAT /* type.CurrencyColumn */
-);
-CREATE  INDEX PK_Service_Catalog_Item on Service_Catalog_Item (system_id);
-CREATE  INDEX PR_SvcCatItm_catalog_id on Service_Catalog_Item (catalog_id);
-
-CREATE TABLE Product_Catalog
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    catalog_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    catalog_name VARCHAR(128), /* type.TextColumn */
-    ins_plan_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX PK_Product_Catalog on Product_Catalog (catalog_id);
-
-CREATE TABLE Product_Catalog_Item
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    catalog_id VARCHAR(36), /* type.GuidTextColumn */
-    item_id VARCHAR(36), /* type.GuidTextColumn */
-    item VARCHAR(256), /* type.TextColumn */
-    cost FLOAT /* type.CurrencyColumn */
-);
-CREATE  INDEX PK_Product_Catalog_Item on Product_Catalog_Item (system_id);
-CREATE  INDEX PR_PrdCatItm_catalog_id on Product_Catalog_Item (catalog_id);
-
-CREATE TABLE Claim
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    claim_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    batch_id INTEGER, /* type.IntegerColumn */
-    batch_date DATE, /* type.DateColumn */
-    visit_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    claim_status_id INTEGER, /* type.EnumerationIdRefColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    referral_id VARCHAR(36), /* type.GuidTextColumn */
-    service_provider_id VARCHAR(36), /* type.GuidTextColumn */
-    billing_provider_id VARCHAR(36), /* type.GuidTextColumn */
-    service_facility_id VARCHAR(36), /* type.GuidTextColumn */
-    billing_facility_id VARCHAR(36), /* type.GuidTextColumn */
-    accident BOOLEAN, /* type.BooleanColumn */
-    accident_state_id INTEGER, /* type.EnumerationIdRefColumn */
-    accident_state VARCHAR(32), /* type.TextColumn */
-    authorization_number VARCHAR(64) /* type.TextColumn */
-);
-CREATE  INDEX PK_Claim on Claim (claim_id);
-
-CREATE TABLE Claim_Diagnosis
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    claim_id VARCHAR(36), /* type.GuidTextColumn */
-    diag_code_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    diag_code VARCHAR(32), /* type.TextColumn */
-    modifier VARCHAR(32) /* type.TextColumn */
-);
-CREATE  INDEX PK_Claim_Diagnosis on Claim_Diagnosis (system_id);
-CREATE  INDEX PR_ClmDiag_claim_id on Claim_Diagnosis (claim_id);
-
-CREATE TABLE Claim_DiagProc_Rel
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    diagnosis_id VARCHAR(36), /* type.GuidTextColumn */
-    procedure_id VARCHAR(36), /* type.GuidTextColumn */
-    comments VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Claim_DiagProc_Rel on Claim_DiagProc_Rel (system_id);
-CREATE  INDEX PR_ClmDPRel_diagnosis_id on Claim_DiagProc_Rel (diagnosis_id);
-CREATE  INDEX PR_ClmDPRel_procedure_id on Claim_DiagProc_Rel (procedure_id);
-
-CREATE TABLE Claim_Data_History
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    claim_id VARCHAR(36), /* type.GuidTextColumn */
-    change_time DATE, /* type.DateTimeColumn */
-    change_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    changed_field_id INTEGER, /* type.EnumerationIdRefColumn */
-    field_old_value VARCHAR(256), /* type.TextColumn */
-    field_new_value VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Claim_Data_History on Claim_Data_History (system_id);
-CREATE  INDEX PR_ClmHist_claim_id on Claim_Data_History (claim_id);
-
-CREATE TABLE Claim_Procedure
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    claim_id VARCHAR(36), /* type.GuidTextColumn */
-    proc_code_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    proc_code VARCHAR(32), /* type.TextColumn */
-    modifier VARCHAR(32), /* type.TextColumn */
-    date_begin_date DATE, /* type.DateColumn */
-    date_end_date DATE /* type.DateColumn */
-);
-CREATE  INDEX PK_Claim_Procedure on Claim_Procedure (system_id);
-CREATE  INDEX PR_ClmProc_claim_id on Claim_Procedure (claim_id);
-
-CREATE TABLE Claim_Data_Archive
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    claim_id VARCHAR(36), /* type.GuidTextColumn */
-    x12_xml_data VARCHAR(2048) /* type.TextColumn */
-);
-CREATE  INDEX PK_Claim_Data_Archive on Claim_Data_Archive (system_id);
-CREATE  INDEX PR_ClmDataArc_claim_id on Claim_Data_Archive (claim_id);
-
-CREATE TABLE Ins_Plan
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    plan_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    product_id VARCHAR(36), /* type.GuidTextColumn */
-    plan_name VARCHAR(64), /* type.TextColumn */
-    remit_payer_id VARCHAR(64), /* type.TextColumn */
-    remit_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    remit_type VARCHAR(32), /* type.TextColumn */
-    remit_payer_name VARCHAR(256), /* type.TextColumn */
-    medigap_id VARCHAR(64), /* type.TextColumn */
-    initiation_date DATE, /* type.DateColumn */
-    expiration_date DATE /* type.DateColumn */
-);
-CREATE  INDEX PK_Ins_Plan on Ins_Plan (plan_id);
-CREATE  INDEX PR_InsPln_product_id on Ins_Plan (product_id);
-
-CREATE TABLE Ins_Policy
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    policy_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    plan_id VARCHAR(36), /* type.GuidTextColumn */
-    policy_number VARCHAR(32), /* type.TextColumn */
-    group_number VARCHAR(32), /* type.TextColumn */
-    group_name VARCHAR(32), /* type.TextColumn */
-    bill_sequence_id INTEGER, /* type.EnumerationIdRefColumn */
-    coverage_begin_date DATE, /* type.DateColumn */
-    coverage_end_date DATE /* type.DateColumn */
-);
-CREATE  INDEX PK_Ins_Policy on Ins_Policy (policy_id);
-CREATE  INDEX PR_InsPlcy_plan_id on Ins_Policy (plan_id);
-
-CREATE TABLE Ins_Product
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    product_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    prd_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    prd_type VARCHAR(32), /* type.TextColumn */
-    product_name VARCHAR(64), /* type.TextColumn */
-    remit_payer_id VARCHAR(64), /* type.TextColumn */
-    remit_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    remit_type VARCHAR(32), /* type.TextColumn */
-    remit_payer_name VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Ins_Product on Ins_Product (product_id);
-CREATE  INDEX PR_InsPrd_org_id on Ins_Product (org_id);
-
-CREATE TABLE InsPlan_Address
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    address_name VARCHAR(128), /* type.TextColumn */
-    mailing BOOLEAN, /* type.BooleanColumn */
-    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    line1 VARCHAR(256), /* type.TextColumn */
-    line2 VARCHAR(256), /* type.TextColumn */
-    city VARCHAR(128), /* type.TextColumn */
-    county VARCHAR(128), /* type.TextColumn */
-    state_id INTEGER, /* type.EnumerationIdRefColumn */
-    state VARCHAR(128), /* type.TextColumn */
-    zip VARCHAR(128), /* type.TextColumn */
-    country VARCHAR(128) /* type.TextColumn */
-);
-CREATE unique INDEX InsPlan_Address_unq on InsPlan_Address (parent_id, address_name);
-CREATE  INDEX InsPlnAddr_parent_id on InsPlan_Address (parent_id);
-CREATE  INDEX InsPlnAddr_address_name on InsPlan_Address (address_name);
-CREATE  INDEX PK_InsPlan_Address on InsPlan_Address (system_id);
-CREATE  INDEX PR_InsPlnAddr_parent_id on InsPlan_Address (parent_id);
-
-CREATE TABLE InsPlan_Contact
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    method_type INTEGER, /* type.EnumerationIdRefColumn */
-    method_name VARCHAR(128), /* type.TextColumn */
-    method_value VARCHAR(255), /* type.TextColumn */
-    phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
-);
-CREATE unique INDEX InsPlan_Contact_unq on InsPlan_Contact (parent_id, method_value);
-CREATE  INDEX InsPlnCont_parent_id on InsPlan_Contact (parent_id);
-CREATE  INDEX InsPlnCont_method_type on InsPlan_Contact (method_type);
-CREATE  INDEX InsPlnCont_method_name on InsPlan_Contact (method_name);
-CREATE  INDEX InsPlnCont_method_value on InsPlan_Contact (method_value);
-CREATE  INDEX InsPlnCont_phone_cc on InsPlan_Contact (phone_cc);
-CREATE  INDEX InsPlnCont_phone_ac on InsPlan_Contact (phone_ac);
-CREATE  INDEX InsPlnCont_phone_prefix on InsPlan_Contact (phone_prefix);
-CREATE  INDEX InsPlnCont_phone_suffix on InsPlan_Contact (phone_suffix);
-CREATE  INDEX PK_InsPlan_Contact on InsPlan_Contact (system_id);
-CREATE  INDEX PR_InsPlnCont_parent_id on InsPlan_Contact (parent_id);
-
-CREATE TABLE InsPlan_Coverage
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    cvg_type VARCHAR(32), /* type.TextColumn */
-    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
-    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
-    percent_pmt FLOAT, /* type.FloatColumn */
-    threshold_amt FLOAT, /* type.CurrencyColumn */
-    copay_amt FLOAT /* type.CurrencyColumn */
-);
-CREATE  INDEX InsPlnCov_parent_id on InsPlan_Coverage (parent_id);
-CREATE  INDEX PK_InsPlan_Coverage on InsPlan_Coverage (system_id);
-CREATE  INDEX PR_InsPlnCov_parent_id on InsPlan_Coverage (parent_id);
-
-CREATE TABLE InsPolicy_Coverage
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    cvg_type VARCHAR(32), /* type.TextColumn */
-    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
-    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
-    percent_pmt FLOAT, /* type.FloatColumn */
-    threshold_amt FLOAT, /* type.CurrencyColumn */
-    copay_amt FLOAT /* type.CurrencyColumn */
-);
-CREATE  INDEX InsPolCov_parent_id on InsPolicy_Coverage (parent_id);
-CREATE  INDEX PK_InsPolicy_Coverage on InsPolicy_Coverage (system_id);
-CREATE  INDEX PR_InsPolCov_parent_id on InsPolicy_Coverage (parent_id);
-
-CREATE TABLE InsProduct_Address
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    address_name VARCHAR(128), /* type.TextColumn */
-    mailing BOOLEAN, /* type.BooleanColumn */
-    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    line1 VARCHAR(256), /* type.TextColumn */
-    line2 VARCHAR(256), /* type.TextColumn */
-    city VARCHAR(128), /* type.TextColumn */
-    county VARCHAR(128), /* type.TextColumn */
-    state_id INTEGER, /* type.EnumerationIdRefColumn */
-    state VARCHAR(128), /* type.TextColumn */
-    zip VARCHAR(128), /* type.TextColumn */
-    country VARCHAR(128) /* type.TextColumn */
-);
-CREATE unique INDEX InsProduct_Address_unq on InsProduct_Address (parent_id, address_name);
-CREATE  INDEX InsPrdAddr_parent_id on InsProduct_Address (parent_id);
-CREATE  INDEX InsPrdAddr_address_name on InsProduct_Address (address_name);
-CREATE  INDEX PK_InsProduct_Address on InsProduct_Address (system_id);
-CREATE  INDEX PR_InsPrdAddr_parent_id on InsProduct_Address (parent_id);
-
-CREATE TABLE InsProduct_Contact
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    method_type INTEGER, /* type.EnumerationIdRefColumn */
-    method_name VARCHAR(128), /* type.TextColumn */
-    method_value VARCHAR(255), /* type.TextColumn */
-    phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
-);
-CREATE unique INDEX InsProduct_Contact_unq on InsProduct_Contact (parent_id, method_value);
-CREATE  INDEX InsPrdCont_parent_id on InsProduct_Contact (parent_id);
-CREATE  INDEX InsPrdCont_method_type on InsProduct_Contact (method_type);
-CREATE  INDEX InsPrdCont_method_name on InsProduct_Contact (method_name);
-CREATE  INDEX InsPrdCont_method_value on InsProduct_Contact (method_value);
-CREATE  INDEX InsPrdCont_phone_cc on InsProduct_Contact (phone_cc);
-CREATE  INDEX InsPrdCont_phone_ac on InsProduct_Contact (phone_ac);
-CREATE  INDEX InsPrdCont_phone_prefix on InsProduct_Contact (phone_prefix);
-CREATE  INDEX InsPrdCont_phone_suffix on InsProduct_Contact (phone_suffix);
-CREATE  INDEX PK_InsProduct_Contact on InsProduct_Contact (system_id);
-CREATE  INDEX PR_InsPrdCont_parent_id on InsProduct_Contact (parent_id);
-
-CREATE TABLE InsProduct_Coverage
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    cvg_type VARCHAR(32), /* type.TextColumn */
-    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
-    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
-    percent_pmt FLOAT, /* type.FloatColumn */
-    threshold_amt FLOAT, /* type.CurrencyColumn */
-    copay_amt FLOAT /* type.CurrencyColumn */
-);
-CREATE  INDEX InsPrdCov_parent_id on InsProduct_Coverage (parent_id);
-CREATE  INDEX PK_InsProduct_Coverage on InsProduct_Coverage (system_id);
-CREATE  INDEX PR_InsPrdCov_parent_id on InsProduct_Coverage (parent_id);
-
-CREATE TABLE Org_Inv_Visit
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    invoice_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    act_id VARCHAR(36), /* type.GuidTextColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    submitter_id VARCHAR(36), /* type.GuidTextColumn */
-    target_id VARCHAR(36), /* type.GuidTextColumn */
-    invoice_num VARCHAR(64), /* type.TextColumn */
-    invoice_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    invoice_date DATE, /* type.DateColumn */
-    submit_date DATE /* type.DateColumn */
-);
-CREATE  INDEX OrgInvVis_invoice_stat_id on Org_Inv_Visit (invoice_stat_id);
-CREATE  INDEX PK_Org_Inv_Visit on Org_Inv_Visit (invoice_id);
-CREATE  INDEX PR_OrgInvVis_org_id on Org_Inv_Visit (org_id);
-
-CREATE TABLE Visit_Line_Item
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    invoice_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX PK_Visit_Line_Item on Visit_Line_Item (system_id);
-CREATE  INDEX PR_VisLnItm_invoice_id on Visit_Line_Item (invoice_id);
-
-CREATE TABLE Org_Medication
-(
-    med_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    med_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    med_type VARCHAR(64), /* type.TextColumn */
-    med_name VARCHAR(64), /* type.TextColumn */
-    generic_name VARCHAR(64) /* type.TextColumn */
-);
-CREATE unique INDEX Org_Medication_unq on Org_Medication (org_id, med_id);
-CREATE  INDEX PK_Org_Medication on Org_Medication (med_id);
-CREATE  INDEX PR_Med_org_id on Org_Medication (org_id);
-
-CREATE TABLE Patient_Indication
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
-    indication_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    indication_type VARCHAR(64), /* type.TextColumn */
-    indication VARCHAR(1024) /* type.TextColumn */
-);
-CREATE  INDEX PK_Patient_Indication on Patient_Indication (system_id);
-CREATE  INDEX PR_PatIndic_person_id on Patient_Indication (person_id);
-
-CREATE TABLE Patient_Medication
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    record_type INTEGER, /* type.EnumerationIdRefColumn */
-    med_id VARCHAR(36), /* type.GuidTextColumn */
-    prescriber_id VARCHAR(36), /* type.GuidTextColumn */
-    pharmacy_id VARCHAR(36), /* type.GuidTextColumn */
-    pharmacy_name VARCHAR(256), /* type.TextColumn */
-    first_dose VARCHAR(64), /* type.TextColumn */
-    dose FLOAT, /* type.FloatColumn */
-    dose_units VARCHAR(32), /* type.TextColumn */
-    sale_units VARCHAR(32), /* type.TextColumn */
-    route VARCHAR(32), /* type.TextColumn */
-    frequency VARCHAR(32), /* type.TextColumn */
-    prn VARCHAR(32), /* type.TextColumn */
-    start_date DATE, /* type.DateColumn */
-    end_date DATE, /* type.DateColumn */
-    ongoing BOOLEAN, /* type.BooleanColumn */
-    duration INTEGER, /* type.IntegerColumn */
-    duration_units VARCHAR(32), /* type.TextColumn */
-    quantity FLOAT, /* type.FloatColumn */
-    num_refills INTEGER, /* type.IntegerColumn */
-    allow_generic BOOLEAN, /* type.BooleanColumn */
-    allow_substitutions BOOLEAN, /* type.BooleanColumn */
-    notes VARCHAR(1024), /* type.TextColumn */
-    sig VARCHAR(1024), /* type.TextColumn */
-    status INTEGER, /* type.IntegerColumn */
-    label BOOLEAN, /* type.BooleanColumn */
-    label_language INTEGER, /* type.EnumerationIdRefColumn */
-    signed BOOLEAN /* type.BooleanColumn */
-);
-CREATE  INDEX PK_Patient_Medication on Patient_Medication (system_id);
-CREATE  INDEX PR_PatMed_patient_id on Patient_Medication (patient_id);
-
-CREATE TABLE Patient_Referral
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    referral_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
-    referrer_id VARCHAR(36), /* type.GuidTextColumn */
-    referee_id VARCHAR(36), /* type.GuidTextColumn */
-    user_id VARCHAR(36), /* type.GuidTextColumn */
-    request_date DATE, /* type.DateColumn */
-    referral_urgency INTEGER, /* type.EnumerationIdRefColumn */
-    code VARCHAR(60), /* type.TextColumn */
-    speciality VARCHAR(512), /* type.TextColumn */
-    referral_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    allowed_visits INTEGER, /* type.IntegerColumn */
-    auth_number VARCHAR(64), /* type.TextColumn */
-    referral_begin_date DATE, /* type.DateColumn */
-    referral_end_date DATE, /* type.DateColumn */
-    comm_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    completion_date DATE, /* type.DateTimeColumn */
-    referral_status_id INTEGER, /* type.EnumerationIdRefColumn */
-    referral_status_date DATE, /* type.DateColumn */
-    referral_reason VARCHAR(512), /* type.TextColumn */
-    comments VARCHAR(512) /* type.TextColumn */
-);
-CREATE  INDEX PK_Patient_Referral on Patient_Referral (referral_id);
-CREATE  INDEX PR_PatRef_patient_id on Patient_Referral (patient_id);
-CREATE  INDEX PR_PatRef_referrer_id on Patient_Referral (referrer_id);
-CREATE  INDEX PR_PatRef_referee_id on Patient_Referral (referee_id);
-CREATE  INDEX PR_PatRef_user_id on Patient_Referral (user_id);
-
-CREATE TABLE Message
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    message_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    subject VARCHAR(512), /* type.TextColumn */
-    sender_id VARCHAR(36), /* type.GuidTextColumn */
-    content VARCHAR(2048) /* type.TextColumn */
-);
-CREATE  INDEX PK_Message on Message (message_id);
-CREATE  INDEX PR_Mesg_parent_id on Message (parent_id);
-
-CREATE TABLE Message_Recipient
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    message_id VARCHAR(36), /* type.GuidTextColumn */
-    recipient_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    reception_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    recipient_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX PK_Message_Recipient on Message_Recipient (system_id);
-CREATE  INDEX PR_MesgRecp_message_id on Message_Recipient (message_id);
-
-CREATE TABLE Message_Attach
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    message_id VARCHAR(36), /* type.GuidTextColumn */
-    attachment_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    document_id VARCHAR(36), /* type.GuidTextColumn */
-    forwarded_id VARCHAR(36) /* type.GuidTextColumn */
-);
-CREATE  INDEX PK_Message_Attach on Message_Attach (system_id);
-CREATE  INDEX PR_MesgAtch_message_id on Message_Attach (message_id);
-
-CREATE TABLE Org
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    org_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_code VARCHAR(64), /* type.TextColumn */
-    org_name VARCHAR(128), /* type.TextColumn */
-    org_abbrev VARCHAR(24), /* type.TextColumn */
-    ownership_id INTEGER, /* type.EnumerationIdRefColumn */
-    ticker_symbol VARCHAR(24), /* type.TextColumn */
-    sic_code VARCHAR(24), /* type.TextColumn */
-    employees INTEGER, /* type.IntegerColumn */
-    fiscal_year_month_id INTEGER, /* type.EnumerationIdRefColumn */
-    business_start_time DATE, /* type.TimeColumn */
-    business_end_time DATE, /* type.TimeColumn */
-    time_zone VARCHAR(10), /* type.TextColumn */
-    org_level_id INTEGER, /* type.EnumerationIdRefColumn */
-    hcfa_servplace_id INTEGER /* type.EnumerationIdRefColumn */
-);
-CREATE  INDEX PK_Org on Org (org_id);
-
-CREATE TABLE Org_Address
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    address_name VARCHAR(128), /* type.TextColumn */
-    mailing BOOLEAN, /* type.BooleanColumn */
-    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    line1 VARCHAR(256), /* type.TextColumn */
-    line2 VARCHAR(256), /* type.TextColumn */
-    city VARCHAR(128), /* type.TextColumn */
-    county VARCHAR(128), /* type.TextColumn */
-    state_id INTEGER, /* type.EnumerationIdRefColumn */
-    state VARCHAR(128), /* type.TextColumn */
-    zip VARCHAR(128), /* type.TextColumn */
-    country VARCHAR(128) /* type.TextColumn */
-);
-CREATE unique INDEX Org_Address_unq on Org_Address (parent_id, address_name);
-CREATE  INDEX OrgAdr_parent_id on Org_Address (parent_id);
-CREATE  INDEX OrgAdr_address_name on Org_Address (address_name);
-CREATE  INDEX PK_Org_Address on Org_Address (system_id);
-CREATE  INDEX PR_OrgAdr_parent_id on Org_Address (parent_id);
-
-CREATE TABLE Org_Note
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    note_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    note_type VARCHAR(32), /* type.TextColumn */
-    notes VARCHAR(1024) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Note on Org_Note (system_id);
-CREATE  INDEX PR_ONote_parent_id on Org_Note (parent_id);
-
-CREATE TABLE Org_Classification
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    org_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    org_type VARCHAR(64) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Classification on Org_Classification (system_id);
-CREATE  INDEX PR_OrgClass_org_id on Org_Classification (org_id);
-
-CREATE TABLE Org_Contact
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    method_type INTEGER, /* type.EnumerationIdRefColumn */
-    method_name VARCHAR(128), /* type.TextColumn */
-    method_value VARCHAR(255), /* type.TextColumn */
-    phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
-);
-CREATE unique INDEX Org_Contact_unq on Org_Contact (parent_id, method_value);
-CREATE  INDEX OrgCnt_parent_id on Org_Contact (parent_id);
-CREATE  INDEX OrgCnt_method_type on Org_Contact (method_type);
-CREATE  INDEX OrgCnt_method_name on Org_Contact (method_name);
-CREATE  INDEX OrgCnt_method_value on Org_Contact (method_value);
-CREATE  INDEX OrgCnt_phone_cc on Org_Contact (phone_cc);
-CREATE  INDEX OrgCnt_phone_ac on Org_Contact (phone_ac);
-CREATE  INDEX OrgCnt_phone_prefix on Org_Contact (phone_prefix);
-CREATE  INDEX OrgCnt_phone_suffix on Org_Contact (phone_suffix);
-CREATE  INDEX PK_Org_Contact on Org_Contact (system_id);
-CREATE  INDEX PR_OrgCnt_parent_id on Org_Contact (parent_id);
-
-CREATE TABLE Org_Inv_Claim_Rel
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    invoice_id VARCHAR(36), /* type.GuidTextColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    claim_id VARCHAR(36), /* type.GuidTextColumn */
-    inv_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    inv_type VARCHAR(64) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Inv_Claim_Rel on Org_Inv_Claim_Rel (system_id);
-CREATE  INDEX PR_OrgInvClmRel_org_id on Org_Inv_Claim_Rel (org_id);
-
-CREATE TABLE Org_Identifier
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    identifier_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    identifier_type VARCHAR(64), /* type.TextColumn */
-    identifier VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Identifier on Org_Identifier (system_id);
-CREATE  INDEX PR_OrgID_org_id on Org_Identifier (org_id);
-
-CREATE TABLE Org_Industry
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    industry_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    industry_type VARCHAR(64) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Industry on Org_Industry (system_id);
-CREATE  INDEX PR_OInd_org_id on Org_Industry (org_id);
-
-CREATE TABLE Org_PersonId_Src_Type
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    item_id INTEGER, /* type.IntegerColumn */
-    caption VARCHAR(96), /* type.TextColumn */
-    abbrev VARCHAR(32) /* type.TextColumn */
-);
-CREATE unique INDEX Org_PersonId_Src_Type_unq on Org_PersonId_Src_Type (org_id, item_id);
-CREATE  INDEX PK_Org_PersonId_Src_Type on Org_PersonId_Src_Type (system_id);
-CREATE  INDEX PR_OPerSrcIdTy_org_id on Org_PersonId_Src_Type (org_id);
-
-CREATE TABLE Org_Product
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    product_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    product_name VARCHAR(256), /* type.TextColumn */
-    measurement_unit_id INTEGER, /* type.EnumerationIdRefColumn */
-    measurement_unit VARCHAR(16), /* type.TextColumn */
-    unit_measure INTEGER /* type.IntegerColumn */
-);
-CREATE  INDEX PK_Org_Product on Org_Product (product_id);
-CREATE  INDEX PR_OPrd_org_id on Org_Product (org_id);
-
-CREATE TABLE Org_Relationship_Type
-(
-    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
-    abbrev VARCHAR(32) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Relationship_Type on Org_Relationship_Type (id);
-
-CREATE TABLE Org_Relationship_Status
-(
-    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
-    abbrev VARCHAR(32) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Relationship_Status on Org_Relationship_Status (id);
-
-CREATE TABLE Org_Relationship
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    parent_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_entity_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    rel_type VARCHAR(64), /* type.TextColumn */
-    rel_begin DATE, /* type.DateColumn */
-    rel_end DATE, /* type.DateColumn */
-    rel_descr VARCHAR(1024) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Relationship on Org_Relationship (system_id);
-CREATE  INDEX PR_OrgRel_parent_id on Org_Relationship (parent_id);
-
-CREATE TABLE Org_Relationship_Map
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    inv_rel_type_id INTEGER /* type.EnumerationIdRefColumn */
-);
-CREATE  INDEX PK_Org_Relationship_Map on Org_Relationship_Map (system_id);
-
-CREATE TABLE Org_Role_Declaration
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    role_name_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    role_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
-    role_name VARCHAR(255) /* type.TextColumn */
-);
-CREATE unique INDEX Org_Role_Declaration_unq on Org_Role_Declaration (role_type_id, role_name);
-CREATE  INDEX OrgRlDc_role_type_id on Org_Role_Declaration (role_type_id);
-CREATE  INDEX PK_Org_Role_Declaration on Org_Role_Declaration (role_name_id);
-CREATE  INDEX PR_OrgRlDc_org_id on Org_Role_Declaration (org_id);
-
-CREATE TABLE Org_Service
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    service_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    service_name VARCHAR(256) /* type.TextColumn */
-);
-CREATE  INDEX PK_Org_Service on Org_Service (service_id);
-CREATE  INDEX PR_OSvc_org_id on Org_Service (org_id);
 
 CREATE TABLE Person
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     person_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     name_prefix_id INTEGER, /* type.EnumerationIdRefColumn */
     name_prefix VARCHAR(16), /* type.TextColumn */
-    name_first VARCHAR(32), /* type.TextColumn */
+    name_first VARCHAR(32) NOT NULL, /* type.TextColumn */
     name_middle VARCHAR(32), /* type.TextColumn */
-    name_last VARCHAR(32), /* type.TextColumn */
+    name_last VARCHAR(32) NOT NULL, /* type.TextColumn */
     name_suffix VARCHAR(16), /* type.TextColumn */
     short_name VARCHAR(42) NOT NULL, /* type.TextColumn */
     simple_name VARCHAR(96) NOT NULL, /* type.TextColumn */
@@ -1844,7 +733,7 @@ CREATE TABLE Person_Address
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     address_name VARCHAR(128), /* type.TextColumn */
@@ -1852,7 +741,7 @@ CREATE TABLE Person_Address
     address_type_id INTEGER, /* type.EnumerationIdRefColumn */
     line1 VARCHAR(256), /* type.TextColumn */
     line2 VARCHAR(256), /* type.TextColumn */
-    city VARCHAR(128), /* type.TextColumn */
+    city VARCHAR(128) NOT NULL, /* type.TextColumn */
     county VARCHAR(128), /* type.TextColumn */
     state_id INTEGER, /* type.EnumerationIdRefColumn */
     state VARCHAR(128), /* type.TextColumn */
@@ -1869,7 +758,7 @@ CREATE TABLE Person_Note
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     note_type_id INTEGER, /* type.EnumerationIdRefColumn */
@@ -1883,7 +772,7 @@ CREATE TABLE Person_Classification
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
@@ -1897,7 +786,7 @@ CREATE TABLE Person_Contact
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     method_type INTEGER, /* type.EnumerationIdRefColumn */
@@ -1924,10 +813,10 @@ CREATE TABLE Person_Ethnicity
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
-    ethnicity_id INTEGER, /* type.EnumerationIdRefColumn */
+    ethnicity_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     ethnicity VARCHAR(64) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Ethnicity on Person_Ethnicity (system_id);
@@ -1936,7 +825,7 @@ CREATE  INDEX PR_PerEth_person_id on Person_Ethnicity (person_id);
 CREATE TABLE Person_Flag_Type
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Flag_Type on Person_Flag_Type (id);
@@ -1944,16 +833,17 @@ CREATE  INDEX PK_Person_Flag_Type on Person_Flag_Type (id);
 CREATE TABLE Person_Flag_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_PerFlSt_abbrev on Person_Flag_Status (abbrev);
 CREATE  INDEX PK_Person_Flag_Status on Person_Flag_Status (id);
 
 CREATE TABLE Person_Flag
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     flag_id INTEGER /* type.EnumerationIdRefColumn */
@@ -1965,7 +855,7 @@ CREATE TABLE Person_Identifier
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
@@ -1983,12 +873,12 @@ CREATE TABLE Person_Insurance
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
-    ins_rel_id VARCHAR(36), /* type.GuidTextColumn */
+    ins_rel_id INTEGER, /* type.LongIntegerColumn */
     guar_person_id VARCHAR(36), /* type.GuidTextColumn */
-    guar_rel_id VARCHAR(36), /* type.GuidTextColumn */
+    guar_rel_id INTEGER, /* type.LongIntegerColumn */
     member_number VARCHAR(64), /* type.TextColumn */
     policy_id VARCHAR(36) /* type.GuidTextColumn */
 );
@@ -1999,10 +889,10 @@ CREATE TABLE Person_Language
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
-    language_id INTEGER, /* type.EnumerationIdRefColumn */
+    language_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     language VARCHAR(64) /* type.TextColumn */
 );
 CREATE  INDEX PK_Person_Language on Person_Language (system_id);
@@ -2011,44 +901,47 @@ CREATE  INDEX PR_PerLang_person_id on Person_Language (person_id);
 CREATE TABLE Person_Login_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_PerLgSt_abbrev on Person_Login_Status (abbrev);
 CREATE  INDEX PK_Person_Login_Status on Person_Login_Status (id);
 
 CREATE TABLE Person_Login
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     user_id VARCHAR(32), /* type.TextColumn */
     password VARCHAR(16), /* type.TextColumn */
-    login_status INTEGER, /* type.EnumerationIdRefColumn */
+    login_status INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     quantity INTEGER /* type.IntegerColumn */
 );
 CREATE  INDEX PerLg_person_id on Person_Login (person_id);
+CREATE unique INDEX UNQ_PerLg_user_id on Person_Login (user_id);
 CREATE  INDEX PK_Person_Login on Person_Login (system_id);
 CREATE  INDEX PR_PerLg_person_id on Person_Login (person_id);
 
 CREATE TABLE Person_Relationship_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_PerRelSt_abbrev on Person_Relationship_Status (abbrev);
 CREATE  INDEX PK_Person_Relationship_Status on Person_Relationship_Status (id);
 
 CREATE TABLE Person_Relationship
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_entity_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     rel_type VARCHAR(64), /* type.TextColumn */
     rel_begin DATE, /* type.DateColumn */
     rel_end DATE, /* type.DateColumn */
@@ -2061,7 +954,7 @@ CREATE TABLE Person_Relationship_Map
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
     inv_rel_type_id INTEGER /* type.EnumerationIdRefColumn */
@@ -2071,19 +964,20 @@ CREATE  INDEX PK_Person_Relationship_Map on Person_Relationship_Map (system_id);
 CREATE TABLE Person_Role_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_PerRlSt_abbrev on Person_Role_Status (abbrev);
 CREATE  INDEX PK_Person_Role_Status on Person_Role_Status (id);
 
 CREATE TABLE Person_Role
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
-    role_name_id VARCHAR(36) /* type.GuidTextColumn */
+    role_name_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
 );
 CREATE  INDEX PerRl_person_id on Person_Role (person_id);
 CREATE  INDEX PerRl_role_name_id on Person_Role (role_name_id);
@@ -2093,20 +987,21 @@ CREATE  INDEX PR_PerRl_person_id on Person_Role (person_id);
 CREATE TABLE PersonOrg_Rel_Status
 (
     id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
-    caption VARCHAR(96), /* type.TextColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
     abbrev VARCHAR(32) /* type.TextColumn */
 );
+CREATE unique INDEX UNQ_PeORelSt_abbrev on PersonOrg_Rel_Status (abbrev);
 CREATE  INDEX PK_PersonOrg_Rel_Status on PersonOrg_Rel_Status (id);
 
 CREATE TABLE PersonOrg_Relationship
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_entity_id VARCHAR(36), /* type.GuidTextColumn */
-    rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     rel_type VARCHAR(64), /* type.TextColumn */
     rel_begin DATE, /* type.DateColumn */
     rel_end DATE, /* type.DateColumn */
@@ -2121,7 +1016,7 @@ CREATE TABLE PersonOrg_Relationship_Map
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
     inv_rel_type_id INTEGER /* type.EnumerationIdRefColumn */
@@ -2132,7 +1027,7 @@ CREATE TABLE Staff_Benefit
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
@@ -2148,7 +1043,7 @@ CREATE TABLE Staff_License
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
@@ -2164,44 +1059,15 @@ CREATE  INDEX StfLic_person_id on Staff_License (person_id);
 CREATE  INDEX PK_Staff_License on Staff_License (system_id);
 CREATE  INDEX PR_StfLic_person_id on Staff_License (person_id);
 
-CREATE TABLE Asset
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    asset_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    asset_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    asset_type VARCHAR(256), /* type.TextColumn */
-    name VARCHAR(256), /* type.TextColumn */
-    concurrency INTEGER, /* type.IntegerColumn */
-    location VARCHAR(256), /* type.TextColumn */
-    serial_num VARCHAR(512) /* type.TextColumn */
-);
-CREATE  INDEX PK_Asset on Asset (asset_id);
-
-CREATE TABLE Asset_Maint
-(
-    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
-    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    asset_id VARCHAR(36), /* type.GuidTextColumn */
-    scheduled BOOLEAN, /* type.BooleanColumn */
-    breakdown_date DATE, /* type.DateColumn */
-    maintenance_date DATE /* type.DateColumn */
-);
-CREATE  INDEX PK_Asset_Maint on Asset_Maint (system_id);
-CREATE  INDEX PR_AstMaint_asset_id on Asset_Maint (asset_id);
-
 CREATE TABLE Org_Appt_Type
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     appt_type_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    caption VARCHAR(128), /* type.TextColumn */
-    duration INTEGER, /* type.IntegerColumn */
+    org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    caption VARCHAR(128) NOT NULL, /* type.TextColumn */
+    duration INTEGER NOT NULL, /* type.IntegerColumn */
     lead_time INTEGER, /* type.IntegerColumn */
     lag_time INTEGER, /* type.IntegerColumn */
     back_to_back BOOLEAN, /* type.BooleanColumn */
@@ -2214,33 +1080,33 @@ CREATE TABLE Org_Appt_Type
     attribute VARCHAR(512), /* type.TextColumn */
     super_bill_ids VARCHAR(255) /* type.TextSetColumn */
 );
-CREATE  INDEX ApTy_org_id on Org_Appt_Type (org_id);
-CREATE  INDEX ApTy_caption on Org_Appt_Type (caption);
+CREATE  INDEX OrgApTy_org_id on Org_Appt_Type (org_id);
+CREATE  INDEX OrgApTy_caption on Org_Appt_Type (caption);
 CREATE  INDEX PK_Org_Appt_Type on Org_Appt_Type (appt_type_id);
-CREATE  INDEX PR_ApTy_org_id on Org_Appt_Type (org_id);
+CREATE  INDEX PR_OrgApTy_org_id on Org_Appt_Type (org_id);
 
-CREATE TABLE ApTy_super_bill_ids_Set
+CREATE TABLE OrgApTy_super_bill_ids_Set
 (
     system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     value_index INTEGER, /* type.IntegerColumn */
     value_text VARCHAR(32) /* type.TextColumn */
 );
-CREATE  INDEX PK_ApTy_super_bill_ids_Set on ApTy_super_bill_ids_Set (system_id);
-CREATE  INDEX PR_ApTysprbl_idSt_parent_id on ApTy_super_bill_ids_Set (parent_id);
+CREATE  INDEX PK_OrgApTy_super_bill_ids_Set on OrgApTy_super_bill_ids_Set (system_id);
+CREATE  INDEX PR_OrgApTysprbl_idSt_parent_id on OrgApTy_super_bill_ids_Set (parent_id);
 
 CREATE TABLE Appt_Type_Resource
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
     resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
     other_id VARCHAR(36), /* type.TextColumn */
-    appt_type_id VARCHAR(36) /* type.GuidTextColumn */
+    appt_type_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
 );
 CREATE  INDEX ApTyRsrc_appt_type_id on Appt_Type_Resource (appt_type_id);
 CREATE  INDEX PR_ApTyRsrc_appt_type_id on Appt_Type_Resource (appt_type_id);
@@ -2249,14 +1115,14 @@ CREATE TABLE Org_Sch_Template
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     template_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
-    active BOOLEAN, /* type.BooleanColumn */
-    caption VARCHAR(128), /* type.TextColumn */
-    start_time DATE, /* type.TimeColumn */
-    end_time DATE, /* type.TimeColumn */
-    available BOOLEAN, /* type.BooleanColumn */
+    org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    active BOOLEAN NOT NULL, /* type.BooleanColumn */
+    caption VARCHAR(128) NOT NULL, /* type.TextColumn */
+    start_time DATE NOT NULL, /* type.TimeColumn */
+    end_time DATE NOT NULL, /* type.TimeColumn */
+    available BOOLEAN NOT NULL, /* type.BooleanColumn */
     days_of_month VARCHAR(256), /* type.TextColumn */
     months VARCHAR(256), /* type.TextColumn */
     days_of_week VARCHAR(256), /* type.TextColumn */
@@ -2271,14 +1137,14 @@ CREATE TABLE Template_Resource
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
     resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
     other_id VARCHAR(36), /* type.TextColumn */
-    template_id VARCHAR(36) /* type.GuidTextColumn */
+    template_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
 );
 CREATE  INDEX TmplRsrc_template_id on Template_Resource (template_id);
 CREATE  INDEX PR_TmplRsrc_template_id on Template_Resource (template_id);
@@ -2287,12 +1153,12 @@ CREATE TABLE Appt_Chain_Entry
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     entry_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     chain_id VARCHAR(36), /* type.GuidTextColumn */
     appt_type_id VARCHAR(36), /* type.GuidTextColumn */
     sequence INTEGER, /* type.IntegerColumn */
-    org_id VARCHAR(36) /* type.GuidTextColumn */
+    org_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
 );
 CREATE  INDEX ApChainE_org_id on Appt_Chain_Entry (org_id);
 CREATE  INDEX PK_Appt_Chain_Entry on Appt_Chain_Entry (entry_id);
@@ -2301,14 +1167,14 @@ CREATE TABLE Event
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     event_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    org_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     event_type_id INTEGER, /* type.EnumerationIdRefColumn */
     event_status_id INTEGER, /* type.EnumerationIdRefColumn */
     status_chgrsn_id INTEGER, /* type.EnumerationIdRefColumn */
     remark VARCHAR(1024), /* type.TextColumn */
-    start_stamp DATE, /* type.DateTimeColumn */
+    start_stamp DATE NOT NULL, /* type.DateTimeColumn */
     duration INTEGER, /* type.IntegerColumn */
     scheduled_by_id VARCHAR(36), /* type.GuidTextColumn */
     scheduled_stamp DATE, /* type.DateTimeColumn */
@@ -2325,14 +1191,14 @@ CREATE TABLE Event_Resource
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
     resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
     other_id VARCHAR(36), /* type.TextColumn */
-    event_id VARCHAR(36) /* type.GuidTextColumn */
+    event_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
 );
 CREATE  INDEX EvRsrc_event_id on Event_Resource (event_id);
 CREATE  INDEX PR_EvRsrc_event_id on Event_Resource (event_id);
@@ -2341,9 +1207,9 @@ CREATE TABLE Event_Attendee
 (
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
-    rec_stat_id INTEGER, /* type.EnumerationIdRefColumn */
-    event_id VARCHAR(36), /* type.GuidTextColumn */
-    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    event_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    patient_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     reason VARCHAR(1024), /* type.TextColumn */
     checkin_by_id VARCHAR(36), /* type.GuidTextColumn */
     checkin_stamp DATE, /* type.DateTimeColumn */
@@ -2356,15 +1222,1159 @@ CREATE  INDEX EvAtndee_event_id on Event_Attendee (event_id);
 CREATE  INDEX EvAtndee_patient_id on Event_Attendee (patient_id);
 CREATE  INDEX PR_EvAtndee_event_id on Event_Attendee (event_id);
 
+CREATE TABLE Org
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    org_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_code VARCHAR(64) NOT NULL, /* type.TextColumn */
+    org_name VARCHAR(128) NOT NULL, /* type.TextColumn */
+    org_abbrev VARCHAR(24), /* type.TextColumn */
+    ownership_id INTEGER, /* type.EnumerationIdRefColumn */
+    ticker_symbol VARCHAR(24), /* type.TextColumn */
+    sic_code VARCHAR(24), /* type.TextColumn */
+    employees INTEGER, /* type.IntegerColumn */
+    fiscal_year_month_id INTEGER, /* type.EnumerationIdRefColumn */
+    business_start_time DATE, /* type.TimeColumn */
+    business_end_time DATE, /* type.TimeColumn */
+    time_zone VARCHAR(10), /* type.TextColumn */
+    org_level_id INTEGER, /* type.EnumerationIdRefColumn */
+    hcfa_servplace_id INTEGER /* type.EnumerationIdRefColumn */
+);
+CREATE  INDEX PK_Org on Org (org_id);
+
+CREATE TABLE Org_Address
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    address_name VARCHAR(128), /* type.TextColumn */
+    mailing BOOLEAN, /* type.BooleanColumn */
+    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    line1 VARCHAR(256), /* type.TextColumn */
+    line2 VARCHAR(256), /* type.TextColumn */
+    city VARCHAR(128) NOT NULL, /* type.TextColumn */
+    county VARCHAR(128), /* type.TextColumn */
+    state_id INTEGER, /* type.EnumerationIdRefColumn */
+    state VARCHAR(128), /* type.TextColumn */
+    zip VARCHAR(128), /* type.TextColumn */
+    country VARCHAR(128) /* type.TextColumn */
+);
+CREATE unique INDEX Org_Address_unq on Org_Address (parent_id, address_name);
+CREATE  INDEX OrgAdr_parent_id on Org_Address (parent_id);
+CREATE  INDEX OrgAdr_address_name on Org_Address (address_name);
+CREATE  INDEX PK_Org_Address on Org_Address (system_id);
+CREATE  INDEX PR_OrgAdr_parent_id on Org_Address (parent_id);
+
+CREATE TABLE Org_Note
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    note_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    note_type VARCHAR(32), /* type.TextColumn */
+    notes VARCHAR(1024) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Note on Org_Note (system_id);
+CREATE  INDEX PR_ONote_parent_id on Org_Note (parent_id);
+
+CREATE TABLE Org_Classification
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    org_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    org_type VARCHAR(64) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Classification on Org_Classification (system_id);
+CREATE  INDEX PR_OrgClass_org_id on Org_Classification (org_id);
+
+CREATE TABLE Org_Contact
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    method_type INTEGER, /* type.EnumerationIdRefColumn */
+    method_name VARCHAR(128), /* type.TextColumn */
+    method_value VARCHAR(255), /* type.TextColumn */
+    phone_cc VARCHAR(16), /* type.TextColumn */
+    phone_ac INTEGER, /* type.IntegerColumn */
+    phone_prefix INTEGER, /* type.IntegerColumn */
+    phone_suffix INTEGER /* type.IntegerColumn */
+);
+CREATE unique INDEX Org_Contact_unq on Org_Contact (parent_id, method_value);
+CREATE  INDEX OrgCnt_parent_id on Org_Contact (parent_id);
+CREATE  INDEX OrgCnt_method_type on Org_Contact (method_type);
+CREATE  INDEX OrgCnt_method_name on Org_Contact (method_name);
+CREATE  INDEX OrgCnt_method_value on Org_Contact (method_value);
+CREATE  INDEX OrgCnt_phone_cc on Org_Contact (phone_cc);
+CREATE  INDEX OrgCnt_phone_ac on Org_Contact (phone_ac);
+CREATE  INDEX OrgCnt_phone_prefix on Org_Contact (phone_prefix);
+CREATE  INDEX OrgCnt_phone_suffix on Org_Contact (phone_suffix);
+CREATE  INDEX PK_Org_Contact on Org_Contact (system_id);
+CREATE  INDEX PR_OrgCnt_parent_id on Org_Contact (parent_id);
+
+CREATE TABLE Org_Inv_Claim_Rel
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    invoice_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    claim_id VARCHAR(36), /* type.GuidTextColumn */
+    inv_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    inv_type VARCHAR(64) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Inv_Claim_Rel on Org_Inv_Claim_Rel (system_id);
+CREATE  INDEX PR_OrgInvClmRel_org_id on Org_Inv_Claim_Rel (org_id);
+
+CREATE TABLE Org_Identifier
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    identifier_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    identifier_type VARCHAR(64), /* type.TextColumn */
+    identifier VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Identifier on Org_Identifier (system_id);
+CREATE  INDEX PR_OrgID_org_id on Org_Identifier (org_id);
+
+CREATE TABLE Org_Industry
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    industry_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    industry_type VARCHAR(64) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Industry on Org_Industry (system_id);
+CREATE  INDEX PR_OInd_org_id on Org_Industry (org_id);
+
+CREATE TABLE Org_PersonId_Src_Type
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    item_id INTEGER NOT NULL, /* type.IntegerColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
+    abbrev VARCHAR(32) /* type.TextColumn */
+);
+CREATE unique INDEX Org_PersonId_Src_Type_unq on Org_PersonId_Src_Type (org_id, item_id);
+CREATE unique INDEX UNQ_OPerSrcIdTy_abbrev on Org_PersonId_Src_Type (abbrev);
+CREATE  INDEX PK_Org_PersonId_Src_Type on Org_PersonId_Src_Type (system_id);
+CREATE  INDEX PR_OPerSrcIdTy_org_id on Org_PersonId_Src_Type (org_id);
+
+CREATE TABLE Org_Product
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    product_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    product_name VARCHAR(256), /* type.TextColumn */
+    measurement_unit_id INTEGER, /* type.EnumerationIdRefColumn */
+    measurement_unit VARCHAR(16), /* type.TextColumn */
+    unit_measure INTEGER /* type.IntegerColumn */
+);
+CREATE  INDEX PK_Org_Product on Org_Product (product_id);
+CREATE  INDEX PR_OPrd_org_id on Org_Product (org_id);
+
+CREATE TABLE Org_Relationship_Type
+(
+    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
+    abbrev VARCHAR(32) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Relationship_Type on Org_Relationship_Type (id);
+
+CREATE TABLE Org_Relationship_Status
+(
+    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
+    abbrev VARCHAR(32) /* type.TextColumn */
+);
+CREATE unique INDEX UNQ_ORelSt_abbrev on Org_Relationship_Status (abbrev);
+CREATE  INDEX PK_Org_Relationship_Status on Org_Relationship_Status (id);
+
+CREATE TABLE Org_Relationship
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    rel_type VARCHAR(64), /* type.TextColumn */
+    rel_begin DATE, /* type.DateColumn */
+    rel_end DATE, /* type.DateColumn */
+    rel_descr VARCHAR(1024) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Relationship on Org_Relationship (system_id);
+CREATE  INDEX PR_OrgRel_parent_id on Org_Relationship (parent_id);
+
+CREATE TABLE Org_Relationship_Map
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    rel_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    inv_rel_type_id INTEGER /* type.EnumerationIdRefColumn */
+);
+CREATE  INDEX PK_Org_Relationship_Map on Org_Relationship_Map (system_id);
+
+CREATE TABLE Org_Role_Declaration
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    role_name_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    role_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    role_name VARCHAR(255) NOT NULL /* type.TextColumn */
+);
+CREATE unique INDEX Org_Role_Declaration_unq on Org_Role_Declaration (role_type_id, role_name);
+CREATE  INDEX OrgRlDc_role_type_id on Org_Role_Declaration (role_type_id);
+CREATE  INDEX PK_Org_Role_Declaration on Org_Role_Declaration (role_name_id);
+CREATE  INDEX PR_OrgRlDc_org_id on Org_Role_Declaration (org_id);
+
+CREATE TABLE Org_Service
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    service_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    service_name VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Org_Service on Org_Service (service_id);
+CREATE  INDEX PR_OSvc_org_id on Org_Service (org_id);
+
+CREATE TABLE Ins_Plan
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    plan_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    product_id VARCHAR(36), /* type.GuidTextColumn */
+    plan_name VARCHAR(64), /* type.TextColumn */
+    remit_payer_id VARCHAR(64), /* type.TextColumn */
+    remit_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    remit_type VARCHAR(32), /* type.TextColumn */
+    remit_payer_name VARCHAR(256), /* type.TextColumn */
+    medigap_id VARCHAR(64), /* type.TextColumn */
+    initiation_date DATE, /* type.DateColumn */
+    expiration_date DATE /* type.DateColumn */
+);
+CREATE  INDEX PK_Ins_Plan on Ins_Plan (plan_id);
+CREATE  INDEX PR_InsPln_product_id on Ins_Plan (product_id);
+
+CREATE TABLE Ins_Policy
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    policy_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    person_id VARCHAR(36), /* type.GuidTextColumn */
+    plan_id VARCHAR(36), /* type.GuidTextColumn */
+    policy_number VARCHAR(32), /* type.TextColumn */
+    group_number VARCHAR(32), /* type.TextColumn */
+    group_name VARCHAR(32), /* type.TextColumn */
+    bill_sequence_id INTEGER, /* type.EnumerationIdRefColumn */
+    coverage_begin_date DATE, /* type.DateColumn */
+    coverage_end_date DATE /* type.DateColumn */
+);
+CREATE  INDEX PK_Ins_Policy on Ins_Policy (policy_id);
+CREATE  INDEX PR_InsPlcy_plan_id on Ins_Policy (plan_id);
+
+CREATE TABLE Ins_Product
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    product_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    prd_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    prd_type VARCHAR(32), /* type.TextColumn */
+    product_name VARCHAR(64), /* type.TextColumn */
+    remit_payer_id VARCHAR(64), /* type.TextColumn */
+    remit_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    remit_type VARCHAR(32), /* type.TextColumn */
+    remit_payer_name VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Ins_Product on Ins_Product (product_id);
+CREATE  INDEX PR_InsPrd_org_id on Ins_Product (org_id);
+
+CREATE TABLE InsPlan_Address
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    address_name VARCHAR(128), /* type.TextColumn */
+    mailing BOOLEAN, /* type.BooleanColumn */
+    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    line1 VARCHAR(256), /* type.TextColumn */
+    line2 VARCHAR(256), /* type.TextColumn */
+    city VARCHAR(128) NOT NULL, /* type.TextColumn */
+    county VARCHAR(128), /* type.TextColumn */
+    state_id INTEGER, /* type.EnumerationIdRefColumn */
+    state VARCHAR(128), /* type.TextColumn */
+    zip VARCHAR(128), /* type.TextColumn */
+    country VARCHAR(128) /* type.TextColumn */
+);
+CREATE unique INDEX InsPlan_Address_unq on InsPlan_Address (parent_id, address_name);
+CREATE  INDEX InsPlnAddr_parent_id on InsPlan_Address (parent_id);
+CREATE  INDEX InsPlnAddr_address_name on InsPlan_Address (address_name);
+CREATE  INDEX PK_InsPlan_Address on InsPlan_Address (system_id);
+CREATE  INDEX PR_InsPlnAddr_parent_id on InsPlan_Address (parent_id);
+
+CREATE TABLE InsPlan_Contact
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    method_type INTEGER, /* type.EnumerationIdRefColumn */
+    method_name VARCHAR(128), /* type.TextColumn */
+    method_value VARCHAR(255), /* type.TextColumn */
+    phone_cc VARCHAR(16), /* type.TextColumn */
+    phone_ac INTEGER, /* type.IntegerColumn */
+    phone_prefix INTEGER, /* type.IntegerColumn */
+    phone_suffix INTEGER /* type.IntegerColumn */
+);
+CREATE unique INDEX InsPlan_Contact_unq on InsPlan_Contact (parent_id, method_value);
+CREATE  INDEX InsPlnCont_parent_id on InsPlan_Contact (parent_id);
+CREATE  INDEX InsPlnCont_method_type on InsPlan_Contact (method_type);
+CREATE  INDEX InsPlnCont_method_name on InsPlan_Contact (method_name);
+CREATE  INDEX InsPlnCont_method_value on InsPlan_Contact (method_value);
+CREATE  INDEX InsPlnCont_phone_cc on InsPlan_Contact (phone_cc);
+CREATE  INDEX InsPlnCont_phone_ac on InsPlan_Contact (phone_ac);
+CREATE  INDEX InsPlnCont_phone_prefix on InsPlan_Contact (phone_prefix);
+CREATE  INDEX InsPlnCont_phone_suffix on InsPlan_Contact (phone_suffix);
+CREATE  INDEX PK_InsPlan_Contact on InsPlan_Contact (system_id);
+CREATE  INDEX PR_InsPlnCont_parent_id on InsPlan_Contact (parent_id);
+
+CREATE TABLE InsPlan_Coverage
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    cvg_type VARCHAR(32), /* type.TextColumn */
+    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
+    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
+    percent_pmt FLOAT, /* type.FloatColumn */
+    threshold_amt FLOAT, /* type.CurrencyColumn */
+    copay_amt FLOAT /* type.CurrencyColumn */
+);
+CREATE  INDEX InsPlnCov_parent_id on InsPlan_Coverage (parent_id);
+CREATE  INDEX PK_InsPlan_Coverage on InsPlan_Coverage (system_id);
+CREATE  INDEX PR_InsPlnCov_parent_id on InsPlan_Coverage (parent_id);
+
+CREATE TABLE InsPolicy_Coverage
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    cvg_type VARCHAR(32), /* type.TextColumn */
+    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
+    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
+    percent_pmt FLOAT, /* type.FloatColumn */
+    threshold_amt FLOAT, /* type.CurrencyColumn */
+    copay_amt FLOAT /* type.CurrencyColumn */
+);
+CREATE  INDEX InsPolCov_parent_id on InsPolicy_Coverage (parent_id);
+CREATE  INDEX PK_InsPolicy_Coverage on InsPolicy_Coverage (system_id);
+CREATE  INDEX PR_InsPolCov_parent_id on InsPolicy_Coverage (parent_id);
+
+CREATE TABLE InsProduct_Address
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    address_name VARCHAR(128), /* type.TextColumn */
+    mailing BOOLEAN, /* type.BooleanColumn */
+    address_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    line1 VARCHAR(256), /* type.TextColumn */
+    line2 VARCHAR(256), /* type.TextColumn */
+    city VARCHAR(128) NOT NULL, /* type.TextColumn */
+    county VARCHAR(128), /* type.TextColumn */
+    state_id INTEGER, /* type.EnumerationIdRefColumn */
+    state VARCHAR(128), /* type.TextColumn */
+    zip VARCHAR(128), /* type.TextColumn */
+    country VARCHAR(128) /* type.TextColumn */
+);
+CREATE unique INDEX InsProduct_Address_unq on InsProduct_Address (parent_id, address_name);
+CREATE  INDEX InsPrdAddr_parent_id on InsProduct_Address (parent_id);
+CREATE  INDEX InsPrdAddr_address_name on InsProduct_Address (address_name);
+CREATE  INDEX PK_InsProduct_Address on InsProduct_Address (system_id);
+CREATE  INDEX PR_InsPrdAddr_parent_id on InsProduct_Address (parent_id);
+
+CREATE TABLE InsProduct_Contact
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    method_type INTEGER, /* type.EnumerationIdRefColumn */
+    method_name VARCHAR(128), /* type.TextColumn */
+    method_value VARCHAR(255), /* type.TextColumn */
+    phone_cc VARCHAR(16), /* type.TextColumn */
+    phone_ac INTEGER, /* type.IntegerColumn */
+    phone_prefix INTEGER, /* type.IntegerColumn */
+    phone_suffix INTEGER /* type.IntegerColumn */
+);
+CREATE unique INDEX InsProduct_Contact_unq on InsProduct_Contact (parent_id, method_value);
+CREATE  INDEX InsPrdCont_parent_id on InsProduct_Contact (parent_id);
+CREATE  INDEX InsPrdCont_method_type on InsProduct_Contact (method_type);
+CREATE  INDEX InsPrdCont_method_name on InsProduct_Contact (method_name);
+CREATE  INDEX InsPrdCont_method_value on InsProduct_Contact (method_value);
+CREATE  INDEX InsPrdCont_phone_cc on InsProduct_Contact (phone_cc);
+CREATE  INDEX InsPrdCont_phone_ac on InsProduct_Contact (phone_ac);
+CREATE  INDEX InsPrdCont_phone_prefix on InsProduct_Contact (phone_prefix);
+CREATE  INDEX InsPrdCont_phone_suffix on InsProduct_Contact (phone_suffix);
+CREATE  INDEX PK_InsProduct_Contact on InsProduct_Contact (system_id);
+CREATE  INDEX PR_InsPrdCont_parent_id on InsProduct_Contact (parent_id);
+
+CREATE TABLE InsProduct_Coverage
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    cvg_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    cvg_type VARCHAR(32), /* type.TextColumn */
+    ind_deduct_amt FLOAT, /* type.CurrencyColumn */
+    fam_deduct_amt FLOAT, /* type.CurrencyColumn */
+    percent_pmt FLOAT, /* type.FloatColumn */
+    threshold_amt FLOAT, /* type.CurrencyColumn */
+    copay_amt FLOAT /* type.CurrencyColumn */
+);
+CREATE  INDEX InsPrdCov_parent_id on InsProduct_Coverage (parent_id);
+CREATE  INDEX PK_InsProduct_Coverage on InsProduct_Coverage (system_id);
+CREATE  INDEX PR_InsPrdCov_parent_id on InsProduct_Coverage (parent_id);
+
+CREATE TABLE Asset
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    asset_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    asset_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    asset_type VARCHAR(256), /* type.TextColumn */
+    name VARCHAR(256) NOT NULL, /* type.TextColumn */
+    concurrency INTEGER NOT NULL, /* type.IntegerColumn */
+    location VARCHAR(256), /* type.TextColumn */
+    serial_num VARCHAR(512) /* type.TextColumn */
+);
+CREATE  INDEX PK_Asset on Asset (asset_id);
+
+CREATE TABLE Asset_Maint
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    asset_id VARCHAR(36), /* type.GuidTextColumn */
+    scheduled BOOLEAN, /* type.BooleanColumn */
+    breakdown_date DATE, /* type.DateColumn */
+    maintenance_date DATE /* type.DateColumn */
+);
+CREATE  INDEX PK_Asset_Maint on Asset_Maint (system_id);
+CREATE  INDEX PR_AstMaint_asset_id on Asset_Maint (asset_id);
+
+CREATE TABLE Org_Inv_Visit
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    invoice_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    submitter_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    target_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    invoice_num VARCHAR(64), /* type.TextColumn */
+    invoice_stat_id INTEGER, /* type.EnumerationIdRefColumn */
+    invoice_date DATE NOT NULL, /* type.DateColumn */
+    submit_date DATE /* type.DateColumn */
+);
+CREATE  INDEX OrgInvVis_invoice_stat_id on Org_Inv_Visit (invoice_stat_id);
+CREATE  INDEX PK_Org_Inv_Visit on Org_Inv_Visit (invoice_id);
+CREATE  INDEX PR_OrgInvVis_org_id on Org_Inv_Visit (org_id);
+
+CREATE TABLE Visit_Line_Item
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    invoice_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX PK_Visit_Line_Item on Visit_Line_Item (system_id);
+CREATE  INDEX PR_VisLnItm_invoice_id on Visit_Line_Item (invoice_id);
+
+CREATE TABLE Org_Medication
+(
+    med_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    med_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    med_type VARCHAR(64), /* type.TextColumn */
+    med_name VARCHAR(64), /* type.TextColumn */
+    generic_name VARCHAR(64) /* type.TextColumn */
+);
+CREATE unique INDEX Org_Medication_unq on Org_Medication (org_id, med_id);
+CREATE  INDEX PK_Org_Medication on Org_Medication (med_id);
+CREATE  INDEX PR_Med_org_id on Org_Medication (org_id);
+
+CREATE TABLE Patient_Indication
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    person_id VARCHAR(36), /* type.GuidTextColumn */
+    indication_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    indication_type VARCHAR(64), /* type.TextColumn */
+    indication VARCHAR(1024) /* type.TextColumn */
+);
+CREATE  INDEX PK_Patient_Indication on Patient_Indication (system_id);
+CREATE  INDEX PR_PatIndic_person_id on Patient_Indication (person_id);
+
+CREATE TABLE Patient_Medication
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    patient_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    record_type INTEGER, /* type.EnumerationIdRefColumn */
+    med_id VARCHAR(36), /* type.GuidTextColumn */
+    prescriber_id VARCHAR(36), /* type.GuidTextColumn */
+    pharmacy_id VARCHAR(36), /* type.GuidTextColumn */
+    pharmacy_name VARCHAR(256), /* type.TextColumn */
+    first_dose VARCHAR(64), /* type.TextColumn */
+    dose FLOAT, /* type.FloatColumn */
+    dose_units VARCHAR(32), /* type.TextColumn */
+    sale_units VARCHAR(32), /* type.TextColumn */
+    route VARCHAR(32), /* type.TextColumn */
+    frequency VARCHAR(32), /* type.TextColumn */
+    prn VARCHAR(32), /* type.TextColumn */
+    start_date DATE, /* type.DateColumn */
+    end_date DATE, /* type.DateColumn */
+    ongoing BOOLEAN, /* type.BooleanColumn */
+    duration INTEGER, /* type.IntegerColumn */
+    duration_units VARCHAR(32), /* type.TextColumn */
+    quantity FLOAT, /* type.FloatColumn */
+    num_refills INTEGER, /* type.IntegerColumn */
+    allow_generic BOOLEAN, /* type.BooleanColumn */
+    allow_substitutions BOOLEAN, /* type.BooleanColumn */
+    notes VARCHAR(1024), /* type.TextColumn */
+    sig VARCHAR(1024), /* type.TextColumn */
+    status INTEGER, /* type.IntegerColumn */
+    label BOOLEAN, /* type.BooleanColumn */
+    label_language INTEGER, /* type.EnumerationIdRefColumn */
+    signed BOOLEAN /* type.BooleanColumn */
+);
+CREATE  INDEX PK_Patient_Medication on Patient_Medication (system_id);
+CREATE  INDEX PR_PatMed_patient_id on Patient_Medication (patient_id);
+
+CREATE TABLE Patient_Referral
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    referral_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    referrer_id VARCHAR(36), /* type.GuidTextColumn */
+    referee_id VARCHAR(36), /* type.GuidTextColumn */
+    user_id VARCHAR(36), /* type.GuidTextColumn */
+    request_date DATE, /* type.DateColumn */
+    referral_urgency INTEGER, /* type.EnumerationIdRefColumn */
+    code VARCHAR(60), /* type.TextColumn */
+    speciality VARCHAR(512), /* type.TextColumn */
+    referral_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    allowed_visits INTEGER, /* type.IntegerColumn */
+    auth_number VARCHAR(64), /* type.TextColumn */
+    referral_begin_date DATE, /* type.DateColumn */
+    referral_end_date DATE, /* type.DateColumn */
+    comm_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    completion_date DATE, /* type.DateTimeColumn */
+    referral_status_id INTEGER, /* type.EnumerationIdRefColumn */
+    referral_status_date DATE, /* type.DateColumn */
+    referral_reason VARCHAR(512), /* type.TextColumn */
+    comments VARCHAR(512) /* type.TextColumn */
+);
+CREATE  INDEX PK_Patient_Referral on Patient_Referral (referral_id);
+CREATE  INDEX PR_PatRef_patient_id on Patient_Referral (patient_id);
+CREATE  INDEX PR_PatRef_referrer_id on Patient_Referral (referrer_id);
+CREATE  INDEX PR_PatRef_referee_id on Patient_Referral (referee_id);
+CREATE  INDEX PR_PatRef_user_id on Patient_Referral (user_id);
+
+CREATE TABLE Claim
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    claim_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    batch_id INTEGER, /* type.IntegerColumn */
+    batch_date DATE, /* type.DateColumn */
+    visit_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    claim_status_id INTEGER, /* type.EnumerationIdRefColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    referral_id VARCHAR(36), /* type.GuidTextColumn */
+    service_provider_id VARCHAR(36), /* type.GuidTextColumn */
+    billing_provider_id VARCHAR(36), /* type.GuidTextColumn */
+    service_facility_id VARCHAR(36), /* type.GuidTextColumn */
+    billing_facility_id VARCHAR(36), /* type.GuidTextColumn */
+    accident BOOLEAN, /* type.BooleanColumn */
+    accident_state_id INTEGER, /* type.EnumerationIdRefColumn */
+    accident_state VARCHAR(32), /* type.TextColumn */
+    authorization_number VARCHAR(64) /* type.TextColumn */
+);
+CREATE  INDEX PK_Claim on Claim (claim_id);
+
+CREATE TABLE Claim_Diagnosis
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    claim_id VARCHAR(36), /* type.GuidTextColumn */
+    diag_code_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    diag_code VARCHAR(32), /* type.TextColumn */
+    modifier VARCHAR(32) /* type.TextColumn */
+);
+CREATE  INDEX PK_Claim_Diagnosis on Claim_Diagnosis (system_id);
+CREATE  INDEX PR_ClmDiag_claim_id on Claim_Diagnosis (claim_id);
+
+CREATE TABLE Claim_DiagProc_Rel
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    diagnosis_id VARCHAR(36), /* type.GuidTextColumn */
+    procedure_id VARCHAR(36), /* type.GuidTextColumn */
+    comments VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Claim_DiagProc_Rel on Claim_DiagProc_Rel (system_id);
+CREATE  INDEX PR_ClmDPRel_diagnosis_id on Claim_DiagProc_Rel (diagnosis_id);
+CREATE  INDEX PR_ClmDPRel_procedure_id on Claim_DiagProc_Rel (procedure_id);
+
+CREATE TABLE Claim_Data_History
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    claim_id VARCHAR(36), /* type.GuidTextColumn */
+    change_time DATE, /* type.DateTimeColumn */
+    change_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    changed_field_id INTEGER, /* type.EnumerationIdRefColumn */
+    field_old_value VARCHAR(256), /* type.TextColumn */
+    field_new_value VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Claim_Data_History on Claim_Data_History (system_id);
+CREATE  INDEX PR_ClmHist_claim_id on Claim_Data_History (claim_id);
+
+CREATE TABLE Claim_Procedure
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    claim_id VARCHAR(36), /* type.GuidTextColumn */
+    proc_code_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    proc_code VARCHAR(32), /* type.TextColumn */
+    modifier VARCHAR(32), /* type.TextColumn */
+    date_begin_date DATE, /* type.DateColumn */
+    date_end_date DATE /* type.DateColumn */
+);
+CREATE  INDEX PK_Claim_Procedure on Claim_Procedure (system_id);
+CREATE  INDEX PR_ClmProc_claim_id on Claim_Procedure (claim_id);
+
+CREATE TABLE Claim_Data_Archive
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    claim_id VARCHAR(36), /* type.GuidTextColumn */
+    x12_xml_data VARCHAR(2048) /* type.TextColumn */
+);
+CREATE  INDEX PK_Claim_Data_Archive on Claim_Data_Archive (system_id);
+CREATE  INDEX PR_ClmDataArc_claim_id on Claim_Data_Archive (claim_id);
+
+CREATE TABLE Action
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL /* type.RecordStatusIdColumn */
+);
+
+CREATE TABLE Action_Patient_Comm
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    act_status_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_status VARCHAR(64), /* type.TextColumn */
+    subject VARCHAR(256), /* type.TextColumn */
+    initiator_id VARCHAR(36), /* type.GuidTextColumn */
+    initiator VARCHAR(128), /* type.TextColumn */
+    receptor_id VARCHAR(36), /* type.GuidTextColumn */
+    receptor VARCHAR(128), /* type.TextColumn */
+    rcpt_cont VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Patient_Comm on Action_Patient_Comm (act_id);
+
+CREATE TABLE Action_Diagnosis
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    patient VARCHAR(128), /* type.TextColumn */
+    physician_id VARCHAR(36), /* type.GuidTextColumn */
+    physician VARCHAR(128), /* type.TextColumn */
+    diag_codetype_id INTEGER, /* type.EnumerationIdRefColumn */
+    diag_code VARCHAR(32), /* type.TextColumn */
+    diagnosis VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Diagnosis on Action_Diagnosis (act_id);
+
+CREATE TABLE Action_Directive
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    patient VARCHAR(128), /* type.TextColumn */
+    physician_id VARCHAR(36), /* type.GuidTextColumn */
+    physician VARCHAR(128), /* type.TextColumn */
+    issuer VARCHAR(64), /* type.TextColumn */
+    reason VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Directive on Action_Directive (act_id);
+
+CREATE TABLE Action_Ins_Verify
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    event_id VARCHAR(36), /* type.GuidTextColumn */
+    person_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    effective_begin_date DATE, /* type.DateColumn */
+    deductible FLOAT, /* type.CurrencyColumn */
+    deductible_met FLOAT, /* type.CurrencyColumn */
+    ovcopay FLOAT, /* type.CurrencyColumn */
+    labcopay FLOAT, /* type.CurrencyColumn */
+    xraycopay FLOAT, /* type.CurrencyColumn */
+    referral_required BOOLEAN, /* type.BooleanColumn */
+    sep_copay_xray BOOLEAN, /* type.BooleanColumn */
+    lab VARCHAR(128), /* type.TextColumn */
+    provider_id VARCHAR(36), /* type.GuidTextColumn */
+    coverage_req VARCHAR(128), /* type.TextColumn */
+    coverage_on VARCHAR(128), /* type.TextColumn */
+    referral_or_precert BOOLEAN, /* type.BooleanColumn */
+    precert_phone VARCHAR(20), /* type.TextColumn */
+    annual_pe_ww VARCHAR(128), /* type.TextColumn */
+    gyn_exam VARCHAR(128), /* type.TextColumn */
+    thin_prep_pap VARCHAR(128), /* type.TextColumn */
+    depo_inj VARCHAR(128), /* type.TextColumn */
+    iud VARCHAR(128), /* type.TextColumn */
+    tubal_lig VARCHAR(128), /* type.TextColumn */
+    surgery VARCHAR(128), /* type.TextColumn */
+    flex_sig VARCHAR(128), /* type.TextColumn */
+    output_xray VARCHAR(128), /* type.TextColumn */
+    mammogram VARCHAR(128), /* type.TextColumn */
+    amniocenteses VARCHAR(128), /* type.TextColumn */
+    pelvic_ultrasound VARCHAR(128), /* type.TextColumn */
+    fertility_test VARCHAR(128), /* type.TextColumn */
+    circumcision VARCHAR(128), /* type.TextColumn */
+    ins_rep_name VARCHAR(128), /* type.TextColumn */
+    ins_verified_by VARCHAR(36), /* type.GuidTextColumn */
+    ins_verify_date DATE, /* type.DateColumn */
+    app_verified_by VARCHAR(36), /* type.GuidTextColumn */
+    app_verify_date DATE, /* type.DateColumn */
+    med_verified_by VARCHAR(36), /* type.GuidTextColumn */
+    med_verify_date DATE, /* type.DateColumn */
+    per_verified_by VARCHAR(36), /* type.GuidTextColumn */
+    per_verify_date DATE, /* type.DateColumn */
+    verify_action VARCHAR(64), /* type.TextColumn */
+    owner_org_id VARCHAR(36) NOT NULL /* type.GuidTextColumn */
+);
+CREATE  INDEX ActInsVfy_person_id on Action_Ins_Verify (person_id);
+CREATE  INDEX ActInsVfy_owner_org_id on Action_Ins_Verify (owner_org_id);
+CREATE  INDEX PK_Action_Ins_Verify on Action_Ins_Verify (act_id);
+
+CREATE TABLE Action_Provider_Comm
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    act_status_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_status VARCHAR(64), /* type.TextColumn */
+    subject VARCHAR(256), /* type.TextColumn */
+    initiator_id VARCHAR(36), /* type.GuidTextColumn */
+    initiator VARCHAR(128), /* type.TextColumn */
+    receptor_id VARCHAR(36), /* type.GuidTextColumn */
+    receptor VARCHAR(128), /* type.TextColumn */
+    rcpt_cont VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Provider_Comm on Action_Provider_Comm (act_id);
+
+CREATE TABLE Action_Procedure
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    patient VARCHAR(128), /* type.TextColumn */
+    physician_id VARCHAR(36), /* type.GuidTextColumn */
+    physician VARCHAR(128), /* type.TextColumn */
+    proc_codetype_id INTEGER, /* type.EnumerationIdRefColumn */
+    proc_code VARCHAR(32), /* type.TextColumn */
+    procedure VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Procedure on Action_Procedure (act_id);
+
+CREATE TABLE Action_Visit
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    act_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    act_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    act_type VARCHAR(64), /* type.TextColumn */
+    start_stamp DATE, /* type.DateTimeColumn */
+    end_stamp DATE, /* type.DateTimeColumn */
+    comments VARCHAR(1024), /* type.TextColumn */
+    patient_id VARCHAR(36), /* type.GuidTextColumn */
+    patient VARCHAR(128), /* type.TextColumn */
+    physician_id VARCHAR(36), /* type.GuidTextColumn */
+    physician VARCHAR(128), /* type.TextColumn */
+    reason VARCHAR(256) /* type.TextColumn */
+);
+CREATE  INDEX PK_Action_Visit on Action_Visit (act_id);
+
+CREATE TABLE Artifact_Association_Status
+(
+    id INTEGER PRIMARY KEY, /* type.EnumerationIdColumn */
+    caption VARCHAR(96) NOT NULL, /* type.TextColumn */
+    abbrev VARCHAR(32) /* type.TextColumn */
+);
+CREATE unique INDEX UNQ_ArfAsnSt_abbrev on Artifact_Association_Status (abbrev);
+CREATE  INDEX PK_Artifact_Association_Status on Artifact_Association_Status (id);
+
+CREATE TABLE Artifact
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    artifact_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    artifact_id_alias VARCHAR(64), /* type.TextColumn */
+    message_digest VARCHAR(32), /* type.TextColumn */
+    mime_type VARCHAR(128), /* type.TextColumn */
+    header VARCHAR(4000), /* type.TextColumn */
+    spec_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    spec_subtype VARCHAR(128), /* type.TextColumn */
+    source_id VARCHAR(255), /* type.TextColumn */
+    source_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    source_subtype VARCHAR(255), /* type.TextColumn */
+    source_system VARCHAR(255), /* type.TextColumn */
+    name VARCHAR(1024) NOT NULL, /* type.TextColumn */
+    description VARCHAR(4000), /* type.TextColumn */
+    orig_stamp DATE, /* type.DateTimeColumn */
+    recv_stamp DATE, /* type.DateTimeColumn */
+    content_uri VARCHAR(512), /* type.TextColumn */
+    content_small VARCHAR(4000), /* type.TextColumn */
+    content_large No definition found in column 'type.DataBlockColumn [20] content_large' for policy 'mysql' or ANSI. Available: [postgres, oracle, mssql, hsqldb] /* type.DataBlockColumn */
+);
+CREATE  INDEX Artf_spec_type_id on Artifact (spec_type_id);
+CREATE  INDEX Artf_spec_subtype on Artifact (spec_subtype);
+CREATE  INDEX Artf_source_id on Artifact (source_id);
+CREATE  INDEX Artf_source_type_id on Artifact (source_type_id);
+CREATE  INDEX Artf_source_subtype on Artifact (source_subtype);
+CREATE  INDEX Artf_source_system on Artifact (source_system);
+CREATE  INDEX PK_Artifact on Artifact (artifact_id);
+
+CREATE TABLE Artifact_State
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    upd_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    upd_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_state_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    artifact_id VARCHAR(36), /* type.GuidTextColumn */
+    artifact_id_alias VARCHAR(64), /* type.TextColumn */
+    message_digest VARCHAR(32), /* type.TextColumn */
+    mime_type VARCHAR(128), /* type.TextColumn */
+    header VARCHAR(4000), /* type.TextColumn */
+    spec_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    spec_subtype VARCHAR(128), /* type.TextColumn */
+    source_id VARCHAR(255), /* type.TextColumn */
+    source_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    source_subtype VARCHAR(255), /* type.TextColumn */
+    source_system VARCHAR(255), /* type.TextColumn */
+    name VARCHAR(1024) NOT NULL, /* type.TextColumn */
+    description VARCHAR(4000), /* type.TextColumn */
+    orig_stamp DATE, /* type.DateTimeColumn */
+    recv_stamp DATE, /* type.DateTimeColumn */
+    content_uri VARCHAR(512), /* type.TextColumn */
+    content_small VARCHAR(4000), /* type.TextColumn */
+    content_large No definition found in column 'type.DataBlockColumn [24] content_large' for policy 'mysql' or ANSI. Available: [postgres, oracle, mssql, hsqldb] /* type.DataBlockColumn */
+);
+CREATE  INDEX ArtfSt_spec_type_id on Artifact_State (spec_type_id);
+CREATE  INDEX ArtfSt_spec_subtype on Artifact_State (spec_subtype);
+CREATE  INDEX ArtfSt_source_id on Artifact_State (source_id);
+CREATE  INDEX ArtfSt_source_type_id on Artifact_State (source_type_id);
+CREATE  INDEX ArtfSt_source_subtype on Artifact_State (source_subtype);
+CREATE  INDEX ArtfSt_source_system on Artifact_State (source_system);
+CREATE  INDEX PK_Artifact_State on Artifact_State (system_id);
+CREATE  INDEX PR_ArtfSt_artifact_id on Artifact_State (artifact_id);
+
+CREATE TABLE Artifact_Association
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    assn_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    assn_status_id INTEGER, /* type.RecordStatusIdColumn */
+    assn_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    assn_sequence INTEGER, /* type.IntegerColumn */
+    artifact_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    assoc_artifact_id VARCHAR(36), /* type.GuidTextColumn */
+    person_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    assn_data_a VARCHAR(1024), /* type.TextColumn */
+    assn_data_b VARCHAR(1024), /* type.TextColumn */
+    assn_data_c VARCHAR(1024) /* type.TextColumn */
+);
+CREATE  INDEX ArfAssn_assn_status_id on Artifact_Association (assn_status_id);
+CREATE  INDEX ArfAssn_assn_type_id on Artifact_Association (assn_type_id);
+CREATE  INDEX ArfAssn_assn_sequence on Artifact_Association (assn_sequence);
+CREATE  INDEX ArfAssn_artifact_id on Artifact_Association (artifact_id);
+CREATE  INDEX ArfAssn_assoc_artifact_id on Artifact_Association (assoc_artifact_id);
+CREATE  INDEX ArfAssn_person_id on Artifact_Association (person_id);
+CREATE  INDEX ArfAssn_org_id on Artifact_Association (org_id);
+CREATE  INDEX PK_Artifact_Association on Artifact_Association (assn_id);
+CREATE  INDEX PR_ArfAssn_artifact_id on Artifact_Association (artifact_id);
+
+CREATE TABLE Artifact_Keyword
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    keyword_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    artifact_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    keyword VARCHAR(512), /* type.TextColumn */
+    person_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX ArfKeyw_keyword on Artifact_Keyword (keyword);
+CREATE  INDEX ArfKeyw_person_id on Artifact_Keyword (person_id);
+CREATE  INDEX ArfKeyw_org_id on Artifact_Keyword (org_id);
+CREATE  INDEX PK_Artifact_Keyword on Artifact_Keyword (keyword_id);
+CREATE  INDEX PR_ArfKeyw_artifact_id on Artifact_Keyword (artifact_id);
+
+CREATE TABLE Artifact_Event
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    event_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    event_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    event_status VARCHAR(1024), /* type.TextColumn */
+    artifact_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
+    rel_artifact_id VARCHAR(36), /* type.GuidTextColumn */
+    person_id VARCHAR(36), /* type.GuidTextColumn */
+    org_id VARCHAR(36), /* type.GuidTextColumn */
+    event_info VARCHAR(1024), /* type.TextColumn */
+    event_info_extra VARCHAR(1024) /* type.TextColumn */
+);
+CREATE  INDEX ArfEvent_event_type_id on Artifact_Event (event_type_id);
+CREATE  INDEX ArfEvent_person_id on Artifact_Event (person_id);
+CREATE  INDEX ArfEvent_org_id on Artifact_Event (org_id);
+CREATE  INDEX PK_Artifact_Event on Artifact_Event (event_id);
+CREATE  INDEX PR_ArfEvent_artifact_id on Artifact_Event (artifact_id);
+
+CREATE TABLE Catalog
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL /* type.RecordStatusIdColumn */
+);
+
+CREATE TABLE Service_Catalog
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    catalog_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    catalog_name VARCHAR(128), /* type.TextColumn */
+    ins_plan_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX PK_Service_Catalog on Service_Catalog (catalog_id);
+
+CREATE TABLE Service_Catalog_Item
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    catalog_id VARCHAR(36), /* type.GuidTextColumn */
+    item_id VARCHAR(36), /* type.GuidTextColumn */
+    item VARCHAR(256), /* type.TextColumn */
+    cost FLOAT /* type.CurrencyColumn */
+);
+CREATE  INDEX PK_Service_Catalog_Item on Service_Catalog_Item (system_id);
+CREATE  INDEX PR_SvcCatItm_catalog_id on Service_Catalog_Item (catalog_id);
+
+CREATE TABLE Product_Catalog
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    catalog_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    catalog_name VARCHAR(128), /* type.TextColumn */
+    ins_plan_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX PK_Product_Catalog on Product_Catalog (catalog_id);
+
+CREATE TABLE Product_Catalog_Item
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    catalog_id VARCHAR(36), /* type.GuidTextColumn */
+    item_id VARCHAR(36), /* type.GuidTextColumn */
+    item VARCHAR(256), /* type.TextColumn */
+    cost FLOAT /* type.CurrencyColumn */
+);
+CREATE  INDEX PK_Product_Catalog_Item on Product_Catalog_Item (system_id);
+CREATE  INDEX PR_PrdCatItm_catalog_id on Product_Catalog_Item (catalog_id);
+
+CREATE TABLE Message
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    message_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    parent_id VARCHAR(36), /* type.GuidTextColumn */
+    subject VARCHAR(512), /* type.TextColumn */
+    sender_id VARCHAR(36), /* type.GuidTextColumn */
+    content VARCHAR(2048) /* type.TextColumn */
+);
+CREATE  INDEX PK_Message on Message (message_id);
+CREATE  INDEX PR_Mesg_parent_id on Message (parent_id);
+
+CREATE TABLE Message_Recipient
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    message_id VARCHAR(36), /* type.GuidTextColumn */
+    recipient_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    reception_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    recipient_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX PK_Message_Recipient on Message_Recipient (system_id);
+CREATE  INDEX PR_MesgRecp_message_id on Message_Recipient (message_id);
+
+CREATE TABLE Message_Attach
+(
+    cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
+    rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
+    message_id VARCHAR(36), /* type.GuidTextColumn */
+    attachment_type_id INTEGER, /* type.EnumerationIdRefColumn */
+    document_id VARCHAR(36), /* type.GuidTextColumn */
+    forwarded_id VARCHAR(36) /* type.GuidTextColumn */
+);
+CREATE  INDEX PK_Message_Attach on Message_Attach (system_id);
+CREATE  INDEX PR_MesgAtch_message_id on Message_Attach (message_id);
+
 CREATE TABLE Person_Session
 (
     session_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
-    person_id VARCHAR(36), /* type.GuidTextColumn */
+    person_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     remote_host VARCHAR(128), /* type.TextColumn */
-    remote_addr VARCHAR(32), /* type.TextColumn */
-    first_access DATE, /* type.DateTimeColumn */
-    last_access DATE /* type.DateTimeColumn */
+    remote_addr VARCHAR(32) NOT NULL, /* type.TextColumn */
+    first_access DATE NOT NULL, /* type.DateTimeColumn */
+    last_access DATE NOT NULL /* type.DateTimeColumn */
 );
 CREATE  INDEX PerSess_person_id on Person_Session (person_id);
 CREATE  INDEX PK_Person_Session on Person_Session (session_id);
@@ -2373,9 +2383,9 @@ CREATE  INDEX PR_PerSess_person_id on Person_Session (person_id);
 CREATE TABLE PersonSession_Activity
 (
     session_id VARCHAR(36), /* type.GuidTextColumn */
-    activity_type INTEGER, /* type.EnumerationIdRefColumn */
-    activity_stamp DATE, /* type.DateTimeColumn */
-    action_type INTEGER, /* type.EnumerationIdRefColumn */
+    activity_type INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
+    activity_stamp DATE NOT NULL, /* type.DateTimeColumn */
+    action_type INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
     action_scope VARCHAR(48), /* type.TextColumn */
     action_key VARCHAR(48), /* type.TextColumn */
     detail_level INTEGER, /* type.IntegerColumn */
@@ -2389,8 +2399,8 @@ CREATE  INDEX PR_PerSessAct_session_id on PersonSession_Activity (session_id);
 CREATE TABLE PersonSession_View_Count
 (
     session_id VARCHAR(36), /* type.GuidTextColumn */
-    view_init DATE, /* type.DateTimeColumn */
-    view_latest DATE, /* type.DateTimeColumn */
+    view_init DATE NOT NULL, /* type.DateTimeColumn */
+    view_latest DATE NOT NULL, /* type.DateTimeColumn */
     view_scope VARCHAR(48), /* type.TextColumn */
     view_key VARCHAR(48), /* type.TextColumn */
     view_count INTEGER, /* type.IntegerColumn */
@@ -2927,18 +2937,20 @@ insert into Org_Ownership_Type (id, caption, abbrev) values (1, 'Private', NULL)
 insert into Org_Ownership_Type (id, caption, abbrev) values (2, 'Subsidiary', NULL);
 insert into Org_Ownership_Type (id, caption, abbrev) values (3, 'Other', NULL);
 
-insert into Org_Type (id, caption, abbrev) values (0, 'Practice', NULL);
-insert into Org_Type (id, caption, abbrev) values (1, 'Clinic', NULL);
-insert into Org_Type (id, caption, abbrev) values (2, 'Facility/Site', NULL);
-insert into Org_Type (id, caption, abbrev) values (3, 'Diagnostic Services', NULL);
-insert into Org_Type (id, caption, abbrev) values (4, 'Hospital', NULL);
-insert into Org_Type (id, caption, abbrev) values (5, 'Therapeutic Services', NULL);
-insert into Org_Type (id, caption, abbrev) values (6, 'Insurance', NULL);
-insert into Org_Type (id, caption, abbrev) values (7, 'Employer', NULL);
-insert into Org_Type (id, caption, abbrev) values (8, 'IPA', NULL);
-insert into Org_Type (id, caption, abbrev) values (9, 'Ancilliary Service', NULL);
-insert into Org_Type (id, caption, abbrev) values (10, 'Pharmacy', NULL);
-insert into Org_Type (id, caption, abbrev) values (11, 'Other', NULL);
+insert into Org_Type (id, caption, abbrev) values (0, 'Trial Sponsor', NULL);
+insert into Org_Type (id, caption, abbrev) values (1, 'Trial Site', NULL);
+insert into Org_Type (id, caption, abbrev) values (2, 'Practice', NULL);
+insert into Org_Type (id, caption, abbrev) values (3, 'Clinic', NULL);
+insert into Org_Type (id, caption, abbrev) values (4, 'Facility/Site', NULL);
+insert into Org_Type (id, caption, abbrev) values (5, 'Diagnostic Services', NULL);
+insert into Org_Type (id, caption, abbrev) values (6, 'Hospital', NULL);
+insert into Org_Type (id, caption, abbrev) values (7, 'Therapeutic Services', NULL);
+insert into Org_Type (id, caption, abbrev) values (8, 'Insurance', NULL);
+insert into Org_Type (id, caption, abbrev) values (9, 'Employer', NULL);
+insert into Org_Type (id, caption, abbrev) values (10, 'IPA', NULL);
+insert into Org_Type (id, caption, abbrev) values (11, 'Ancilliary Service', NULL);
+insert into Org_Type (id, caption, abbrev) values (12, 'Pharmacy', NULL);
+insert into Org_Type (id, caption, abbrev) values (13, 'Other', NULL);
 
 insert into Person_Note_Type (id, caption, abbrev) values (0, 'Unknown', NULL);
 insert into Person_Note_Type (id, caption, abbrev) values (1, 'Medical', NULL);
@@ -2990,16 +3002,21 @@ insert into Name_Prefix_Type (id, caption, abbrev) values (0, 'Mr.', NULL);
 insert into Name_Prefix_Type (id, caption, abbrev) values (1, 'Ms.', NULL);
 insert into Name_Prefix_Type (id, caption, abbrev) values (2, 'Mrs.', NULL);
 
-insert into Person_Type (id, caption, abbrev) values (0, 'Patient', NULL);
-insert into Person_Type (id, caption, abbrev) values (1, 'Physician', NULL);
-insert into Person_Type (id, caption, abbrev) values (2, 'Physician Extender (direct billing)', NULL);
-insert into Person_Type (id, caption, abbrev) values (3, 'Other Clinical Service Provider (direct billing)', NULL);
-insert into Person_Type (id, caption, abbrev) values (4, 'Other Clinical Service Provider (alternate billing)', NULL);
-insert into Person_Type (id, caption, abbrev) values (5, 'LVN/LPN', NULL);
-insert into Person_Type (id, caption, abbrev) values (6, 'RN', NULL);
-insert into Person_Type (id, caption, abbrev) values (7, 'Other Nurse', NULL);
-insert into Person_Type (id, caption, abbrev) values (8, 'Staff', NULL);
-insert into Person_Type (id, caption, abbrev) values (9, 'Other', NULL);
+insert into Person_Type (id, caption, abbrev) values (0, 'Principal Investigator', 'PI');
+insert into Person_Type (id, caption, abbrev) values (1, 'Clinical Program Manager', 'CPM');
+insert into Person_Type (id, caption, abbrev) values (2, 'Certified Clinician Research Associate', 'CCRA');
+insert into Person_Type (id, caption, abbrev) values (3, 'Certified Clinical Research Coordinator', 'CCRC');
+insert into Person_Type (id, caption, abbrev) values (4, 'Certified Clinical Research Professional', 'CCRP');
+insert into Person_Type (id, caption, abbrev) values (5, 'Patient', NULL);
+insert into Person_Type (id, caption, abbrev) values (6, 'Physician', NULL);
+insert into Person_Type (id, caption, abbrev) values (7, 'Physician Extender (direct billing)', NULL);
+insert into Person_Type (id, caption, abbrev) values (8, 'Other Clinical Service Provider (direct billing)', NULL);
+insert into Person_Type (id, caption, abbrev) values (9, 'Other Clinical Service Provider (alternate billing)', NULL);
+insert into Person_Type (id, caption, abbrev) values (10, 'LVN/LPN', NULL);
+insert into Person_Type (id, caption, abbrev) values (11, 'RN', NULL);
+insert into Person_Type (id, caption, abbrev) values (12, 'Other Nurse', NULL);
+insert into Person_Type (id, caption, abbrev) values (13, 'Staff', NULL);
+insert into Person_Type (id, caption, abbrev) values (14, 'Other', NULL);
 
 insert into Person_Indication_Type (id, caption, abbrev) values (0, 'Preventive Care Protocol', NULL);
 insert into Person_Indication_Type (id, caption, abbrev) values (1, 'Medication Allergy', NULL);
@@ -3245,24 +3262,6 @@ insert into Directive_Trns_Type (id, caption, abbrev) values (0, 'Patient Direct
 insert into Directive_Trns_Type (id, caption, abbrev) values (1, 'Physician Directive', NULL);
 insert into Directive_Trns_Type (id, caption, abbrev) values (2, 'Other', NULL);
 
-insert into Artifact_Association_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
-insert into Artifact_Association_Status (id, caption, abbrev) values (1, 'Active', 'A');
-insert into Artifact_Association_Status (id, caption, abbrev) values (99, 'Unknown', 'U');
-
-insert into Org_Relationship_Type (id, caption, abbrev) values (0, 'Our Firm', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1, 'Client', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (2, 'Vendor', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (3, 'Partner', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1000, 'Ancestor of Org', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1010, 'Parent of Org', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1020, 'Sibling of Org', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1030, 'Child of Org', NULL);
-insert into Org_Relationship_Type (id, caption, abbrev) values (1040, 'Descendent of Org', NULL);
-
-insert into Org_Relationship_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
-insert into Org_Relationship_Status (id, caption, abbrev) values (1, 'Active', 'A');
-insert into Org_Relationship_Status (id, caption, abbrev) values (99, 'Unknown', 'U');
-
 insert into Person_Flag_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
 insert into Person_Flag_Status (id, caption, abbrev) values (1, 'Active', 'A');
 insert into Person_Flag_Status (id, caption, abbrev) values (99, 'Unknown', 'U');
@@ -3282,3 +3281,21 @@ insert into Person_Role_Status (id, caption, abbrev) values (99, 'Unknown', 'U')
 insert into PersonOrg_Rel_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
 insert into PersonOrg_Rel_Status (id, caption, abbrev) values (1, 'Active', 'A');
 insert into PersonOrg_Rel_Status (id, caption, abbrev) values (99, 'Unknown', 'U');
+
+insert into Org_Relationship_Type (id, caption, abbrev) values (0, 'Our Firm', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1, 'Client', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (2, 'Vendor', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (3, 'Partner', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1000, 'Ancestor of Org', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1010, 'Parent of Org', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1020, 'Sibling of Org', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1030, 'Child of Org', NULL);
+insert into Org_Relationship_Type (id, caption, abbrev) values (1040, 'Descendent of Org', NULL);
+
+insert into Org_Relationship_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
+insert into Org_Relationship_Status (id, caption, abbrev) values (1, 'Active', 'A');
+insert into Org_Relationship_Status (id, caption, abbrev) values (99, 'Unknown', 'U');
+
+insert into Artifact_Association_Status (id, caption, abbrev) values (0, 'Inactive', 'I');
+insert into Artifact_Association_Status (id, caption, abbrev) values (1, 'Active', 'A');
+insert into Artifact_Association_Status (id, caption, abbrev) values (99, 'Unknown', 'U');

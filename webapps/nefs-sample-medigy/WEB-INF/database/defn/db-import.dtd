@@ -1,8 +1,1099 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % enum_table_without_enums "CDATA">
 <!ENTITY % elements "dal">
 
-<!ELEMENT dal (action | artifact | catalog | claim | org | org-relationship-map | person | person-relationship-map | personorg-relationship-map | asset | appt-chain-entry | event)*>
+<!ELEMENT dal (person | person-relationship-map | personorg-relationship-map | appt-chain-entry | event | org | org-relationship-map | asset | claim | action | artifact | catalog)*>
+
+<!ELEMENT person (cr-stamp | cr-sess-id | rec-stat-id | person-id | name-prefix-id | name-prefix | name-first | name-middle | name-last | name-suffix | short-name | simple-name | complete-name | short-sortable-name | complete-sortable-name | ssn | gender-id | ethnicity-id | language-id | marital-status-id | blood-type-id | birth-date | death-date | age | per-ethnicity-id-set | per-language-id-set | person-address | person-note | person-classification | person-contact | person-ethnicity | person-flag | person-identifier | person-insurance | person-language | person-login | person-relationship | person-role | personorg-relationship | staff-benefit | staff-license | patient-indication | patient-medication | patient-referral | person-session | dal:include)*>
+<!ATTLIST person
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          person-id CDATA #IMPLIED
+          name-prefix-id (0 | Mr. | 1 | Ms. | 2 | Mrs.) #IMPLIED
+          name-prefix CDATA #IMPLIED
+          name-first CDATA #IMPLIED
+          name-middle CDATA #IMPLIED
+          name-last CDATA #IMPLIED
+          name-suffix CDATA #IMPLIED
+          short-name CDATA #IMPLIED
+          simple-name CDATA #IMPLIED
+          complete-name CDATA #IMPLIED
+          short-sortable-name CDATA #IMPLIED
+          complete-sortable-name CDATA #IMPLIED
+          ssn CDATA #IMPLIED
+          gender-id CDATA #IMPLIED
+          ethnicity-id CDATA #IMPLIED
+          language-id CDATA #IMPLIED
+          marital-status-id CDATA #IMPLIED
+          blood-type-id CDATA #IMPLIED
+          birth-date CDATA #IMPLIED
+          death-date CDATA #IMPLIED
+          age CDATA #IMPLIED>
+
+<!ELEMENT per-ethnicity-id-set (system-id | parent-id | enum-index | enum-value | dal:include)*>
+<!ATTLIST per-ethnicity-id-set
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          enum-index CDATA #IMPLIED
+          enum-value CDATA #IMPLIED>
+
+<!ELEMENT per-language-id-set (system-id | parent-id | enum-index | enum-value | dal:include)*>
+<!ATTLIST per-language-id-set
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          enum-index CDATA #IMPLIED
+          enum-value (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED>
+
+<!ELEMENT person-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
+<!ATTLIST person-address
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          address-name CDATA #IMPLIED
+          mailing CDATA #IMPLIED
+          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
+          line1 CDATA #IMPLIED
+          line2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          county CDATA #IMPLIED
+          state-id CDATA #IMPLIED
+          state CDATA #IMPLIED
+          zip CDATA #IMPLIED
+          country CDATA #IMPLIED>
+
+<!ELEMENT person-note (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | note-type-id | note-type | notes | dal:include)*>
+<!ATTLIST person-note
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          note-type-id (0 | Unknown | 1 | Medical | 2 | Non-Medical) #IMPLIED
+          note-type CDATA #IMPLIED
+          notes CDATA #IMPLIED>
+
+<!ELEMENT person-classification (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | person-type-id | person-type | dal:include)*>
+<!ATTLIST person-classification
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          person-type-id CDATA #IMPLIED
+          person-type CDATA #IMPLIED>
+
+<!ELEMENT person-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
+<!ATTLIST person-contact
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          method-type CDATA #IMPLIED
+          method-name CDATA #IMPLIED
+          method-value CDATA #IMPLIED
+          phone-cc CDATA #IMPLIED
+          phone-ac CDATA #IMPLIED
+          phone-prefix CDATA #IMPLIED
+          phone-suffix CDATA #IMPLIED>
+
+<!ELEMENT person-ethnicity (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | ethnicity-id | ethnicity | dal:include)*>
+<!ATTLIST person-ethnicity
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          ethnicity-id CDATA #IMPLIED
+          ethnicity CDATA #IMPLIED>
+
+<!ELEMENT person-flag (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | flag-id | dal:include)*>
+<!ATTLIST person-flag
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          flag-id CDATA #IMPLIED>
+
+<!ELEMENT person-identifier (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | id-type-id | id-type | identifier | source-type-id | source-type | notes | dal:include)*>
+<!ATTLIST person-identifier
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          id-type-id CDATA #IMPLIED
+          id-type CDATA #IMPLIED
+          identifier CDATA #IMPLIED
+          source-type-id CDATA #IMPLIED
+          source-type CDATA #IMPLIED
+          notes CDATA #IMPLIED>
+
+<!ELEMENT person-insurance (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | ins-rel-id | guar-person-id | guar-rel-id | member-number | policy-id | dal:include)*>
+<!ATTLIST person-insurance
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          ins-rel-id CDATA #IMPLIED
+          guar-person-id CDATA #IMPLIED
+          guar-rel-id CDATA #IMPLIED
+          member-number CDATA #IMPLIED
+          policy-id CDATA #IMPLIED>
+
+<!ELEMENT person-language (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | language-id | language | dal:include)*>
+<!ATTLIST person-language
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          language-id (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED
+          language CDATA #IMPLIED>
+
+<!ELEMENT person-login (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | user-id | password | login-status | quantity | dal:include)*>
+<!ATTLIST person-login
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          user-id CDATA #IMPLIED
+          password CDATA #IMPLIED
+          login-status (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          quantity CDATA #IMPLIED>
+
+<!ELEMENT person-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | dal:include)*>
+<!ATTLIST person-relationship
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          rel-entity-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          rel-type CDATA #IMPLIED
+          rel-begin CDATA #IMPLIED
+          rel-end CDATA #IMPLIED
+          rel-descr CDATA #IMPLIED>
+
+<!ELEMENT person-role (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | role-name-id | dal:include)*>
+<!ATTLIST person-role
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          role-name-id CDATA #IMPLIED>
+
+<!ELEMENT personorg-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | relationship-name | relationship-code | dal:include)*>
+<!ATTLIST personorg-relationship
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          rel-entity-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          rel-type CDATA #IMPLIED
+          rel-begin CDATA #IMPLIED
+          rel-end CDATA #IMPLIED
+          rel-descr CDATA #IMPLIED
+          relationship-name CDATA #IMPLIED
+          relationship-code CDATA #IMPLIED>
+
+<!ELEMENT staff-benefit (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | benefit-type-id | benefit-type | benefit-detail | dal:include)*>
+<!ATTLIST staff-benefit
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          benefit-type-id (0 | Attendance | 1 | Insurance | 2 | Retirement | 3 | Other) #IMPLIED
+          benefit-type CDATA #IMPLIED
+          benefit-detail CDATA #IMPLIED>
+
+<!ELEMENT staff-license (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | license-type-id | license-type | license-num | expiration-date | license-state-id | license-state | speciality-type-id | dal:include)*>
+<!ATTLIST staff-license
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          license-type-id CDATA #IMPLIED
+          license-type CDATA #IMPLIED
+          license-num CDATA #IMPLIED
+          expiration-date CDATA #IMPLIED
+          license-state-id CDATA #IMPLIED
+          license-state CDATA #IMPLIED
+          speciality-type-id CDATA #IMPLIED>
+
+<!ELEMENT patient-indication (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | indication-type-id | indication-type | indication | dal:include)*>
+<!ATTLIST patient-indication
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          indication-type-id CDATA #IMPLIED
+          indication-type CDATA #IMPLIED
+          indication CDATA #IMPLIED>
+
+<!ELEMENT patient-medication (cr-stamp | cr-sess-id | rec-stat-id | system-id | patient-id | record-type | med-id | prescriber-id | pharmacy-id | pharmacy-name | first-dose | dose | dose-units | sale-units | route | frequency | prn | start-date | end-date | ongoing | duration | duration-units | quantity | num-refills | allow-generic | allow-substitutions | notes | sig | status | label | label-language | signed | dal:include)*>
+<!ATTLIST patient-medication
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          patient-id CDATA #IMPLIED
+          record-type (0 | Existing | 1 | Prescribe | 2 | Refill) #IMPLIED
+          med-id CDATA #IMPLIED
+          prescriber-id CDATA #IMPLIED
+          pharmacy-id CDATA #IMPLIED
+          pharmacy-name CDATA #IMPLIED
+          first-dose CDATA #IMPLIED
+          dose CDATA #IMPLIED
+          dose-units CDATA #IMPLIED
+          sale-units CDATA #IMPLIED
+          route CDATA #IMPLIED
+          frequency CDATA #IMPLIED
+          prn CDATA #IMPLIED
+          start-date CDATA #IMPLIED
+          end-date CDATA #IMPLIED
+          ongoing CDATA #IMPLIED
+          duration CDATA #IMPLIED
+          duration-units CDATA #IMPLIED
+          quantity CDATA #IMPLIED
+          num-refills CDATA #IMPLIED
+          allow-generic CDATA #IMPLIED
+          allow-substitutions CDATA #IMPLIED
+          notes CDATA #IMPLIED
+          sig CDATA #IMPLIED
+          status CDATA #IMPLIED
+          label CDATA #IMPLIED
+          label-language (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED
+          signed CDATA #IMPLIED>
+
+<!ELEMENT patient-referral (cr-stamp | cr-sess-id | rec-stat-id | referral-id | patient-id | referrer-id | referee-id | user-id | request-date | referral-urgency | code | speciality | referral-type-id | allowed-visits | auth-number | referral-begin-date | referral-end-date | comm-type-id | completion-date | referral-status-id | referral-status-date | referral-reason | comments | dal:include)*>
+<!ATTLIST patient-referral
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          referral-id CDATA #IMPLIED
+          patient-id CDATA #IMPLIED
+          referrer-id CDATA #IMPLIED
+          referee-id CDATA #IMPLIED
+          user-id CDATA #IMPLIED
+          request-date CDATA #IMPLIED
+          referral-urgency CDATA #IMPLIED
+          code CDATA #IMPLIED
+          speciality CDATA #IMPLIED
+          referral-type-id (0 | Test | 1 | Consultation | 2 | Evaluation | 3 | Treatment | 4 | Surgery | 5 | Procedure) #IMPLIED
+          allowed-visits CDATA #IMPLIED
+          auth-number CDATA #IMPLIED
+          referral-begin-date CDATA #IMPLIED
+          referral-end-date CDATA #IMPLIED
+          comm-type-id CDATA #IMPLIED
+          completion-date CDATA #IMPLIED
+          referral-status-id (0 | Active | 1 | Inactive) #IMPLIED
+          referral-status-date CDATA #IMPLIED
+          referral-reason CDATA #IMPLIED
+          comments CDATA #IMPLIED>
+
+<!ELEMENT person-session (session-id | person-id | org-id | remote-host | remote-addr | first-access | last-access | personsession-activity | personsession-view-count | dal:include)*>
+<!ATTLIST person-session
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          session-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          remote-host CDATA #IMPLIED
+          remote-addr CDATA #IMPLIED
+          first-access CDATA #IMPLIED
+          last-access CDATA #IMPLIED>
+
+<!ELEMENT personsession-activity (session-id | activity-type | activity-stamp | action-type | action-scope | action-key | detail-level | activity-data | dal:include)*>
+<!ATTLIST personsession-activity
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          session-id CDATA #IMPLIED
+          activity-type CDATA #IMPLIED
+          activity-stamp CDATA #IMPLIED
+          action-type CDATA #IMPLIED
+          action-scope CDATA #IMPLIED
+          action-key CDATA #IMPLIED
+          detail-level CDATA #IMPLIED
+          activity-data CDATA #IMPLIED>
+
+<!ELEMENT personsession-view-count (session-id | view-init | view-latest | view-scope | view-key | view-count | view-caption | view-arl | dal:include)*>
+<!ATTLIST personsession-view-count
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          session-id CDATA #IMPLIED
+          view-init CDATA #IMPLIED
+          view-latest CDATA #IMPLIED
+          view-scope CDATA #IMPLIED
+          view-key CDATA #IMPLIED
+          view-count CDATA #IMPLIED
+          view-caption CDATA #IMPLIED
+          view-arl CDATA #IMPLIED>
+
+<!ELEMENT person-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
+<!ATTLIST person-relationship-map
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          inv-rel-type-id CDATA #IMPLIED>
+
+<!ELEMENT personorg-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
+<!ATTLIST personorg-relationship-map
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          inv-rel-type-id CDATA #IMPLIED>
+
+<!ELEMENT org-appt-type (cr-stamp | cr-sess-id | rec-stat-id | appt-type-id | org-id | caption | duration | lead-time | lag-time | back-to-back | multiple | num-sim | am-limit | pm-limit | day-limit | appt-width | attribute | super-bill-ids | orgapty-super-bill-ids-set | appt-type-resource | dal:include)*>
+<!ATTLIST org-appt-type
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          appt-type-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          caption CDATA #IMPLIED
+          duration CDATA #IMPLIED
+          lead-time CDATA #IMPLIED
+          lag-time CDATA #IMPLIED
+          back-to-back CDATA #IMPLIED
+          multiple CDATA #IMPLIED
+          num-sim CDATA #IMPLIED
+          am-limit CDATA #IMPLIED
+          pm-limit CDATA #IMPLIED
+          day-limit CDATA #IMPLIED
+          appt-width CDATA #IMPLIED
+          attribute CDATA #IMPLIED
+          super-bill-ids CDATA #IMPLIED>
+
+<!ELEMENT orgapty-super-bill-ids-set (system-id | parent-id | value-index | value-text | dal:include)*>
+<!ATTLIST orgapty-super-bill-ids-set
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          value-index CDATA #IMPLIED
+          value-text CDATA #IMPLIED>
+
+<!ELEMENT appt-type-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | appt-type-id | dal:include)*>
+<!ATTLIST appt-type-resource
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
+          resource-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          asset-id CDATA #IMPLIED
+          other-id CDATA #IMPLIED
+          appt-type-id CDATA #IMPLIED>
+
+<!ELEMENT org-sch-template (cr-stamp | cr-sess-id | rec-stat-id | template-id | org-id | active | caption | start-time | end-time | available | days-of-month | months | days-of-week | slot-width | template-resource | dal:include)*>
+<!ATTLIST org-sch-template
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          template-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          active CDATA #IMPLIED
+          caption CDATA #IMPLIED
+          start-time CDATA #IMPLIED
+          end-time CDATA #IMPLIED
+          available CDATA #IMPLIED
+          days-of-month CDATA #IMPLIED
+          months CDATA #IMPLIED
+          days-of-week CDATA #IMPLIED
+          slot-width CDATA #IMPLIED>
+
+<!ELEMENT template-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | template-id | dal:include)*>
+<!ATTLIST template-resource
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
+          resource-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          asset-id CDATA #IMPLIED
+          other-id CDATA #IMPLIED
+          template-id CDATA #IMPLIED>
+
+<!ELEMENT appt-chain-entry (cr-stamp | cr-sess-id | rec-stat-id | entry-id | chain-id | appt-type-id | sequence | org-id | dal:include)*>
+<!ATTLIST appt-chain-entry
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          entry-id CDATA #IMPLIED
+          chain-id CDATA #IMPLIED
+          appt-type-id CDATA #IMPLIED
+          sequence CDATA #IMPLIED
+          org-id CDATA #IMPLIED>
+
+<!ELEMENT event (cr-stamp | cr-sess-id | rec-stat-id | event-id | org-id | event-type-id | event-status-id | status-chgrsn-id | remark | start-stamp | duration | scheduled-by-id | scheduled-stamp | appt-type-id | parent-id | waiting-list | start-time | event-resource | event-attendee | dal:include)*>
+<!ATTLIST event
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          event-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          event-type-id CDATA #IMPLIED
+          event-status-id CDATA #IMPLIED
+          status-chgrsn-id CDATA #IMPLIED
+          remark CDATA #IMPLIED
+          start-stamp CDATA #IMPLIED
+          duration CDATA #IMPLIED
+          scheduled-by-id CDATA #IMPLIED
+          scheduled-stamp CDATA #IMPLIED
+          appt-type-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          waiting-list CDATA #IMPLIED
+          start-time CDATA #IMPLIED>
+
+<!ELEMENT event-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | event-id | dal:include)*>
+<!ATTLIST event-resource
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
+          resource-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          asset-id CDATA #IMPLIED
+          other-id CDATA #IMPLIED
+          event-id CDATA #IMPLIED>
+
+<!ELEMENT event-attendee (cr-stamp | cr-sess-id | rec-stat-id | event-id | patient-id | reason | checkin-by-id | checkin-stamp | checkout-by-id | checkout-stamp | discard-by-id | discard-stamp | dal:include)*>
+<!ATTLIST event-attendee
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          event-id CDATA #IMPLIED
+          patient-id CDATA #IMPLIED
+          reason CDATA #IMPLIED
+          checkin-by-id CDATA #IMPLIED
+          checkin-stamp CDATA #IMPLIED
+          checkout-by-id CDATA #IMPLIED
+          checkout-stamp CDATA #IMPLIED
+          discard-by-id CDATA #IMPLIED
+          discard-stamp CDATA #IMPLIED>
+
+<!ELEMENT org (cr-stamp | cr-sess-id | rec-stat-id | org-id | org-code | org-name | org-abbrev | ownership-id | ticker-symbol | sic-code | employees | fiscal-year-month-id | business-start-time | business-end-time | time-zone | org-level-id | hcfa-servplace-id | org-appt-type | org-sch-template | org-address | org-note | org-classification | org-contact | org-inv-claim-rel | org-identifier | org-industry | org-personid-src-type | org-product | org-relationship | org-role-declaration | org-service | ins-product | org-inv-visit | org-medication | dal:include)*>
+<!ATTLIST org
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          org-id CDATA #IMPLIED
+          org-code CDATA #IMPLIED
+          org-name CDATA #IMPLIED
+          org-abbrev CDATA #IMPLIED
+          ownership-id (0 | Public | 1 | Private | 2 | Subsidiary | 3 | Other) #IMPLIED
+          ticker-symbol CDATA #IMPLIED
+          sic-code CDATA #IMPLIED
+          employees CDATA #IMPLIED
+          fiscal-year-month-id (0 | January | 1 | February | 2 | March | 3 | April | 4 | May | 5 | June | 6 | July | 7 | August | 8 | September | 9 | October | 10 | November | 11 | December) #IMPLIED
+          business-start-time CDATA #IMPLIED
+          business-end-time CDATA #IMPLIED
+          time-zone CDATA #IMPLIED
+          org-level-id (0 | Company | 1 | Branch | 2 | Department) #IMPLIED
+          hcfa-servplace-id CDATA #IMPLIED>
+
+<!ELEMENT org-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
+<!ATTLIST org-address
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          address-name CDATA #IMPLIED
+          mailing CDATA #IMPLIED
+          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
+          line1 CDATA #IMPLIED
+          line2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          county CDATA #IMPLIED
+          state-id CDATA #IMPLIED
+          state CDATA #IMPLIED
+          zip CDATA #IMPLIED
+          country CDATA #IMPLIED>
+
+<!ELEMENT org-note (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | note-type-id | note-type | notes | dal:include)*>
+<!ATTLIST org-note
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          note-type-id CDATA #IMPLIED
+          note-type CDATA #IMPLIED
+          notes CDATA #IMPLIED>
+
+<!ELEMENT org-classification (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | org-type-id | org-type | dal:include)*>
+<!ATTLIST org-classification
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          org-type-id CDATA #IMPLIED
+          org-type CDATA #IMPLIED>
+
+<!ELEMENT org-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
+<!ATTLIST org-contact
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          method-type CDATA #IMPLIED
+          method-name CDATA #IMPLIED
+          method-value CDATA #IMPLIED
+          phone-cc CDATA #IMPLIED
+          phone-ac CDATA #IMPLIED
+          phone-prefix CDATA #IMPLIED
+          phone-suffix CDATA #IMPLIED>
+
+<!ELEMENT org-inv-claim-rel (cr-stamp | cr-sess-id | rec-stat-id | system-id | invoice-id | org-id | claim-id | inv-type-id | inv-type | dal:include)*>
+<!ATTLIST org-inv-claim-rel
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          invoice-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          claim-id CDATA #IMPLIED
+          inv-type-id (0 | Visit | 1 | Product | 2 | Service | 3 | Other) #IMPLIED
+          inv-type CDATA #IMPLIED>
+
+<!ELEMENT org-identifier (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | identifier-type-id | identifier-type | identifier | dal:include)*>
+<!ATTLIST org-identifier
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          identifier-type-id CDATA #IMPLIED
+          identifier-type CDATA #IMPLIED
+          identifier CDATA #IMPLIED>
+
+<!ELEMENT org-industry (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | industry-type-id | industry-type | dal:include)*>
+<!ATTLIST org-industry
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          industry-type-id CDATA #IMPLIED
+          industry-type CDATA #IMPLIED>
+
+<!ELEMENT org-personid-src-type (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | item-id | caption | abbrev | dal:include)*>
+<!ATTLIST org-personid-src-type
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          item-id CDATA #IMPLIED
+          caption CDATA #IMPLIED
+          abbrev CDATA #IMPLIED>
+
+<!ELEMENT org-product (cr-stamp | cr-sess-id | rec-stat-id | product-id | org-id | product-name | measurement-unit-id | measurement-unit | unit-measure | dal:include)*>
+<!ATTLIST org-product
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          product-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          product-name CDATA #IMPLIED
+          measurement-unit-id (0 | Unspecified | 1 | milligrams | 2 | milliliters | 3 | units) #IMPLIED
+          measurement-unit CDATA #IMPLIED
+          unit-measure CDATA #IMPLIED>
+
+<!ELEMENT org-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | dal:include)*>
+<!ATTLIST org-relationship
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          rel-entity-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          rel-type CDATA #IMPLIED
+          rel-begin CDATA #IMPLIED
+          rel-end CDATA #IMPLIED
+          rel-descr CDATA #IMPLIED>
+
+<!ELEMENT org-role-declaration (cr-stamp | cr-sess-id | rec-stat-id | role-name-id | org-id | role-type-id | role-name | dal:include)*>
+<!ATTLIST org-role-declaration
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          role-name-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          role-type-id CDATA #IMPLIED
+          role-name CDATA #IMPLIED>
+
+<!ELEMENT org-service (cr-stamp | cr-sess-id | rec-stat-id | service-id | org-id | service-name | dal:include)*>
+<!ATTLIST org-service
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          service-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          service-name CDATA #IMPLIED>
+
+<!ELEMENT ins-product (cr-stamp | cr-sess-id | rec-stat-id | product-id | org-id | prd-type-id | prd-type | product-name | remit-payer-id | remit-type-id | remit-type | remit-payer-name | ins-plan | insproduct-address | insproduct-contact | insproduct-coverage | dal:include)*>
+<!ATTLIST ins-product
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          product-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          prd-type-id CDATA #IMPLIED
+          prd-type CDATA #IMPLIED
+          product-name CDATA #IMPLIED
+          remit-payer-id CDATA #IMPLIED
+          remit-type-id (0 | Paper | 1 | Electronic) #IMPLIED
+          remit-type CDATA #IMPLIED
+          remit-payer-name CDATA #IMPLIED>
+
+<!ELEMENT ins-plan (cr-stamp | cr-sess-id | rec-stat-id | plan-id | product-id | plan-name | remit-payer-id | remit-type-id | remit-type | remit-payer-name | medigap-id | initiation-date | expiration-date | ins-policy | insplan-address | insplan-contact | insplan-coverage | dal:include)*>
+<!ATTLIST ins-plan
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          plan-id CDATA #IMPLIED
+          product-id CDATA #IMPLIED
+          plan-name CDATA #IMPLIED
+          remit-payer-id CDATA #IMPLIED
+          remit-type-id (0 | Paper | 1 | Electronic) #IMPLIED
+          remit-type CDATA #IMPLIED
+          remit-payer-name CDATA #IMPLIED
+          medigap-id CDATA #IMPLIED
+          initiation-date CDATA #IMPLIED
+          expiration-date CDATA #IMPLIED>
+
+<!ELEMENT ins-policy (cr-stamp | cr-sess-id | rec-stat-id | policy-id | person-id | plan-id | policy-number | group-number | group-name | bill-sequence-id | coverage-begin-date | coverage-end-date | inspolicy-coverage | dal:include)*>
+<!ATTLIST ins-policy
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          policy-id CDATA #IMPLIED
+          person-id CDATA #IMPLIED
+          plan-id CDATA #IMPLIED
+          policy-number CDATA #IMPLIED
+          group-number CDATA #IMPLIED
+          group-name CDATA #IMPLIED
+          bill-sequence-id CDATA #IMPLIED
+          coverage-begin-date CDATA #IMPLIED
+          coverage-end-date CDATA #IMPLIED>
+
+<!ELEMENT inspolicy-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
+<!ATTLIST inspolicy-coverage
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          cvg-type-id CDATA #IMPLIED
+          cvg-type CDATA #IMPLIED
+          ind-deduct-amt CDATA #IMPLIED
+          fam-deduct-amt CDATA #IMPLIED
+          percent-pmt CDATA #IMPLIED
+          threshold-amt CDATA #IMPLIED
+          copay-amt CDATA #IMPLIED>
+
+<!ELEMENT insplan-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
+<!ATTLIST insplan-address
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          address-name CDATA #IMPLIED
+          mailing CDATA #IMPLIED
+          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
+          line1 CDATA #IMPLIED
+          line2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          county CDATA #IMPLIED
+          state-id CDATA #IMPLIED
+          state CDATA #IMPLIED
+          zip CDATA #IMPLIED
+          country CDATA #IMPLIED>
+
+<!ELEMENT insplan-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
+<!ATTLIST insplan-contact
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          method-type CDATA #IMPLIED
+          method-name CDATA #IMPLIED
+          method-value CDATA #IMPLIED
+          phone-cc CDATA #IMPLIED
+          phone-ac CDATA #IMPLIED
+          phone-prefix CDATA #IMPLIED
+          phone-suffix CDATA #IMPLIED>
+
+<!ELEMENT insplan-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
+<!ATTLIST insplan-coverage
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          cvg-type-id CDATA #IMPLIED
+          cvg-type CDATA #IMPLIED
+          ind-deduct-amt CDATA #IMPLIED
+          fam-deduct-amt CDATA #IMPLIED
+          percent-pmt CDATA #IMPLIED
+          threshold-amt CDATA #IMPLIED
+          copay-amt CDATA #IMPLIED>
+
+<!ELEMENT insproduct-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
+<!ATTLIST insproduct-address
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          address-name CDATA #IMPLIED
+          mailing CDATA #IMPLIED
+          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
+          line1 CDATA #IMPLIED
+          line2 CDATA #IMPLIED
+          city CDATA #IMPLIED
+          county CDATA #IMPLIED
+          state-id CDATA #IMPLIED
+          state CDATA #IMPLIED
+          zip CDATA #IMPLIED
+          country CDATA #IMPLIED>
+
+<!ELEMENT insproduct-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
+<!ATTLIST insproduct-contact
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          method-type CDATA #IMPLIED
+          method-name CDATA #IMPLIED
+          method-value CDATA #IMPLIED
+          phone-cc CDATA #IMPLIED
+          phone-ac CDATA #IMPLIED
+          phone-prefix CDATA #IMPLIED
+          phone-suffix CDATA #IMPLIED>
+
+<!ELEMENT insproduct-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
+<!ATTLIST insproduct-coverage
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          parent-id CDATA #IMPLIED
+          cvg-type-id CDATA #IMPLIED
+          cvg-type CDATA #IMPLIED
+          ind-deduct-amt CDATA #IMPLIED
+          fam-deduct-amt CDATA #IMPLIED
+          percent-pmt CDATA #IMPLIED
+          threshold-amt CDATA #IMPLIED
+          copay-amt CDATA #IMPLIED>
+
+<!ELEMENT org-inv-visit (cr-stamp | cr-sess-id | rec-stat-id | invoice-id | act-id | org-id | submitter-id | target-id | invoice-num | invoice-stat-id | invoice-date | submit-date | visit-line-item | dal:include)*>
+<!ATTLIST org-inv-visit
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          invoice-id CDATA #IMPLIED
+          act-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          submitter-id CDATA #IMPLIED
+          target-id CDATA #IMPLIED
+          invoice-num CDATA #IMPLIED
+          invoice-stat-id CDATA #IMPLIED
+          invoice-date CDATA #IMPLIED
+          submit-date CDATA #IMPLIED>
+
+<!ELEMENT visit-line-item (cr-stamp | cr-sess-id | rec-stat-id | system-id | invoice-id | dal:include)*>
+<!ATTLIST visit-line-item
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          invoice-id CDATA #IMPLIED>
+
+<!ELEMENT org-medication (med-id | org-id | med-type-id | med-type | med-name | generic-name | dal:include)*>
+<!ATTLIST org-medication
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          med-id CDATA #IMPLIED
+          org-id CDATA #IMPLIED
+          med-type-id CDATA #IMPLIED
+          med-type CDATA #IMPLIED
+          med-name CDATA #IMPLIED
+          generic-name CDATA #IMPLIED>
+
+<!ELEMENT org-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
+<!ATTLIST org-relationship-map
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          rel-type-id CDATA #IMPLIED
+          inv-rel-type-id CDATA #IMPLIED>
+
+<!ELEMENT asset (cr-stamp | cr-sess-id | rec-stat-id | asset-id | asset-type-id | asset-type | name | concurrency | location | serial-num | asset-maint | dal:include)*>
+<!ATTLIST asset
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          asset-id CDATA #IMPLIED
+          asset-type-id CDATA #IMPLIED
+          asset-type CDATA #IMPLIED
+          name CDATA #IMPLIED
+          concurrency CDATA #IMPLIED
+          location CDATA #IMPLIED
+          serial-num CDATA #IMPLIED>
+
+<!ELEMENT asset-maint (cr-stamp | cr-sess-id | rec-stat-id | system-id | asset-id | scheduled | breakdown-date | maintenance-date | dal:include)*>
+<!ATTLIST asset-maint
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          asset-id CDATA #IMPLIED
+          scheduled CDATA #IMPLIED
+          breakdown-date CDATA #IMPLIED
+          maintenance-date CDATA #IMPLIED>
+
+<!ELEMENT claim (cr-stamp | cr-sess-id | rec-stat-id | claim-id | batch-id | batch-date | visit-type-id | claim-status-id | patient-id | referral-id | service-provider-id | billing-provider-id | service-facility-id | billing-facility-id | accident | accident-state-id | accident-state | authorization-number | claim-diagnosis | claim-data-history | claim-procedure | claim-data-archive | dal:include)*>
+<!ATTLIST claim
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          claim-id CDATA #IMPLIED
+          batch-id CDATA #IMPLIED
+          batch-date CDATA #IMPLIED
+          visit-type-id CDATA #IMPLIED
+          claim-status-id CDATA #IMPLIED
+          patient-id CDATA #IMPLIED
+          referral-id CDATA #IMPLIED
+          service-provider-id CDATA #IMPLIED
+          billing-provider-id CDATA #IMPLIED
+          service-facility-id CDATA #IMPLIED
+          billing-facility-id CDATA #IMPLIED
+          accident CDATA #IMPLIED
+          accident-state-id CDATA #IMPLIED
+          accident-state CDATA #IMPLIED
+          authorization-number CDATA #IMPLIED>
+
+<!ELEMENT claim-diagnosis (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | diag-code-type-id | diag-code | modifier | claim-diagproc-rel | dal:include)*>
+<!ATTLIST claim-diagnosis
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          claim-id CDATA #IMPLIED
+          diag-code-type-id (0 | ICD-9 | 1 | ICD-10) #IMPLIED
+          diag-code CDATA #IMPLIED
+          modifier CDATA #IMPLIED>
+
+<!ELEMENT claim-diagproc-rel (cr-stamp | cr-sess-id | rec-stat-id | system-id | diagnosis-id | procedure-id | comments | dal:include)*>
+<!ATTLIST claim-diagproc-rel
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          diagnosis-id CDATA #IMPLIED
+          procedure-id CDATA #IMPLIED
+          comments CDATA #IMPLIED>
+
+<!ELEMENT claim-data-history (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | change-time | change-type-id | changed-field-id | field-old-value | field-new-value | dal:include)*>
+<!ATTLIST claim-data-history
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          claim-id CDATA #IMPLIED
+          change-time CDATA #IMPLIED
+          change-type-id (0 | Creation | 1 | Addition | 2 | Modification | 3 | Deletion) #IMPLIED
+          changed-field-id CDATA #IMPLIED
+          field-old-value CDATA #IMPLIED
+          field-new-value CDATA #IMPLIED>
+
+<!ELEMENT claim-procedure (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | proc-code-type-id | proc-code | modifier | date-begin-date | date-end-date | claim-diagproc-rel | dal:include)*>
+<!ATTLIST claim-procedure
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          claim-id CDATA #IMPLIED
+          proc-code-type-id (0 | HCPCS | 1 | CPT-4 | 2 | CPT-5) #IMPLIED
+          proc-code CDATA #IMPLIED
+          modifier CDATA #IMPLIED
+          date-begin-date CDATA #IMPLIED
+          date-end-date CDATA #IMPLIED>
+
+<!ELEMENT claim-data-archive (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | x12-xml-data | dal:include)*>
+<!ATTLIST claim-data-archive
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          cr-stamp CDATA #IMPLIED
+          cr-sess-id CDATA #IMPLIED
+          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
+          system-id CDATA #IMPLIED
+          claim-id CDATA #IMPLIED
+          x12-xml-data CDATA #IMPLIED>
 
 <!ELEMENT action (cr-stamp | cr-sess-id | rec-stat-id | action-patient-comm | action-diagnosis | action-directive | action-ins-verify | action-provider-comm | action-procedure | action-visit | dal:include)*>
 <!ATTLIST action
@@ -392,1096 +1483,6 @@
           item CDATA #IMPLIED
           cost CDATA #IMPLIED>
 
-<!ELEMENT claim (cr-stamp | cr-sess-id | rec-stat-id | claim-id | batch-id | batch-date | visit-type-id | claim-status-id | patient-id | referral-id | service-provider-id | billing-provider-id | service-facility-id | billing-facility-id | accident | accident-state-id | accident-state | authorization-number | claim-diagnosis | claim-data-history | claim-procedure | claim-data-archive | dal:include)*>
-<!ATTLIST claim
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          claim-id CDATA #IMPLIED
-          batch-id CDATA #IMPLIED
-          batch-date CDATA #IMPLIED
-          visit-type-id CDATA #IMPLIED
-          claim-status-id CDATA #IMPLIED
-          patient-id CDATA #IMPLIED
-          referral-id CDATA #IMPLIED
-          service-provider-id CDATA #IMPLIED
-          billing-provider-id CDATA #IMPLIED
-          service-facility-id CDATA #IMPLIED
-          billing-facility-id CDATA #IMPLIED
-          accident CDATA #IMPLIED
-          accident-state-id CDATA #IMPLIED
-          accident-state CDATA #IMPLIED
-          authorization-number CDATA #IMPLIED>
-
-<!ELEMENT claim-diagnosis (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | diag-code-type-id | diag-code | modifier | claim-diagproc-rel | dal:include)*>
-<!ATTLIST claim-diagnosis
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          claim-id CDATA #IMPLIED
-          diag-code-type-id (0 | ICD-9 | 1 | ICD-10) #IMPLIED
-          diag-code CDATA #IMPLIED
-          modifier CDATA #IMPLIED>
-
-<!ELEMENT claim-diagproc-rel (cr-stamp | cr-sess-id | rec-stat-id | system-id | diagnosis-id | procedure-id | comments | dal:include)*>
-<!ATTLIST claim-diagproc-rel
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          diagnosis-id CDATA #IMPLIED
-          procedure-id CDATA #IMPLIED
-          comments CDATA #IMPLIED>
-
-<!ELEMENT claim-data-history (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | change-time | change-type-id | changed-field-id | field-old-value | field-new-value | dal:include)*>
-<!ATTLIST claim-data-history
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          claim-id CDATA #IMPLIED
-          change-time CDATA #IMPLIED
-          change-type-id (0 | Creation | 1 | Addition | 2 | Modification | 3 | Deletion) #IMPLIED
-          changed-field-id CDATA #IMPLIED
-          field-old-value CDATA #IMPLIED
-          field-new-value CDATA #IMPLIED>
-
-<!ELEMENT claim-procedure (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | proc-code-type-id | proc-code | modifier | date-begin-date | date-end-date | claim-diagproc-rel | dal:include)*>
-<!ATTLIST claim-procedure
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          claim-id CDATA #IMPLIED
-          proc-code-type-id (0 | HCPCS | 1 | CPT-4 | 2 | CPT-5) #IMPLIED
-          proc-code CDATA #IMPLIED
-          modifier CDATA #IMPLIED
-          date-begin-date CDATA #IMPLIED
-          date-end-date CDATA #IMPLIED>
-
-<!ELEMENT claim-data-archive (cr-stamp | cr-sess-id | rec-stat-id | system-id | claim-id | x12-xml-data | dal:include)*>
-<!ATTLIST claim-data-archive
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          claim-id CDATA #IMPLIED
-          x12-xml-data CDATA #IMPLIED>
-
-<!ELEMENT ins-plan (cr-stamp | cr-sess-id | rec-stat-id | plan-id | product-id | plan-name | remit-payer-id | remit-type-id | remit-type | remit-payer-name | medigap-id | initiation-date | expiration-date | ins-policy | insplan-address | insplan-contact | insplan-coverage | dal:include)*>
-<!ATTLIST ins-plan
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          plan-id CDATA #IMPLIED
-          product-id CDATA #IMPLIED
-          plan-name CDATA #IMPLIED
-          remit-payer-id CDATA #IMPLIED
-          remit-type-id (0 | Paper | 1 | Electronic) #IMPLIED
-          remit-type CDATA #IMPLIED
-          remit-payer-name CDATA #IMPLIED
-          medigap-id CDATA #IMPLIED
-          initiation-date CDATA #IMPLIED
-          expiration-date CDATA #IMPLIED>
-
-<!ELEMENT ins-policy (cr-stamp | cr-sess-id | rec-stat-id | policy-id | person-id | plan-id | policy-number | group-number | group-name | bill-sequence-id | coverage-begin-date | coverage-end-date | inspolicy-coverage | dal:include)*>
-<!ATTLIST ins-policy
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          policy-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          plan-id CDATA #IMPLIED
-          policy-number CDATA #IMPLIED
-          group-number CDATA #IMPLIED
-          group-name CDATA #IMPLIED
-          bill-sequence-id CDATA #IMPLIED
-          coverage-begin-date CDATA #IMPLIED
-          coverage-end-date CDATA #IMPLIED>
-
-<!ELEMENT inspolicy-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
-<!ATTLIST inspolicy-coverage
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          cvg-type-id CDATA #IMPLIED
-          cvg-type CDATA #IMPLIED
-          ind-deduct-amt CDATA #IMPLIED
-          fam-deduct-amt CDATA #IMPLIED
-          percent-pmt CDATA #IMPLIED
-          threshold-amt CDATA #IMPLIED
-          copay-amt CDATA #IMPLIED>
-
-<!ELEMENT insplan-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
-<!ATTLIST insplan-address
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          address-name CDATA #IMPLIED
-          mailing CDATA #IMPLIED
-          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
-          line1 CDATA #IMPLIED
-          line2 CDATA #IMPLIED
-          city CDATA #IMPLIED
-          county CDATA #IMPLIED
-          state-id CDATA #IMPLIED
-          state CDATA #IMPLIED
-          zip CDATA #IMPLIED
-          country CDATA #IMPLIED>
-
-<!ELEMENT insplan-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
-<!ATTLIST insplan-contact
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          method-type CDATA #IMPLIED
-          method-name CDATA #IMPLIED
-          method-value CDATA #IMPLIED
-          phone-cc CDATA #IMPLIED
-          phone-ac CDATA #IMPLIED
-          phone-prefix CDATA #IMPLIED
-          phone-suffix CDATA #IMPLIED>
-
-<!ELEMENT insplan-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
-<!ATTLIST insplan-coverage
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          cvg-type-id CDATA #IMPLIED
-          cvg-type CDATA #IMPLIED
-          ind-deduct-amt CDATA #IMPLIED
-          fam-deduct-amt CDATA #IMPLIED
-          percent-pmt CDATA #IMPLIED
-          threshold-amt CDATA #IMPLIED
-          copay-amt CDATA #IMPLIED>
-
-<!ELEMENT ins-product (cr-stamp | cr-sess-id | rec-stat-id | product-id | org-id | prd-type-id | prd-type | product-name | remit-payer-id | remit-type-id | remit-type | remit-payer-name | ins-plan | insproduct-address | insproduct-contact | insproduct-coverage | dal:include)*>
-<!ATTLIST ins-product
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          product-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          prd-type-id CDATA #IMPLIED
-          prd-type CDATA #IMPLIED
-          product-name CDATA #IMPLIED
-          remit-payer-id CDATA #IMPLIED
-          remit-type-id (0 | Paper | 1 | Electronic) #IMPLIED
-          remit-type CDATA #IMPLIED
-          remit-payer-name CDATA #IMPLIED>
-
-<!ELEMENT insproduct-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
-<!ATTLIST insproduct-address
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          address-name CDATA #IMPLIED
-          mailing CDATA #IMPLIED
-          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
-          line1 CDATA #IMPLIED
-          line2 CDATA #IMPLIED
-          city CDATA #IMPLIED
-          county CDATA #IMPLIED
-          state-id CDATA #IMPLIED
-          state CDATA #IMPLIED
-          zip CDATA #IMPLIED
-          country CDATA #IMPLIED>
-
-<!ELEMENT insproduct-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
-<!ATTLIST insproduct-contact
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          method-type CDATA #IMPLIED
-          method-name CDATA #IMPLIED
-          method-value CDATA #IMPLIED
-          phone-cc CDATA #IMPLIED
-          phone-ac CDATA #IMPLIED
-          phone-prefix CDATA #IMPLIED
-          phone-suffix CDATA #IMPLIED>
-
-<!ELEMENT insproduct-coverage (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | cvg-type-id | cvg-type | ind-deduct-amt | fam-deduct-amt | percent-pmt | threshold-amt | copay-amt | dal:include)*>
-<!ATTLIST insproduct-coverage
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          cvg-type-id CDATA #IMPLIED
-          cvg-type CDATA #IMPLIED
-          ind-deduct-amt CDATA #IMPLIED
-          fam-deduct-amt CDATA #IMPLIED
-          percent-pmt CDATA #IMPLIED
-          threshold-amt CDATA #IMPLIED
-          copay-amt CDATA #IMPLIED>
-
-<!ELEMENT org-inv-visit (cr-stamp | cr-sess-id | rec-stat-id | invoice-id | act-id | org-id | submitter-id | target-id | invoice-num | invoice-stat-id | invoice-date | submit-date | visit-line-item | dal:include)*>
-<!ATTLIST org-inv-visit
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          invoice-id CDATA #IMPLIED
-          act-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          submitter-id CDATA #IMPLIED
-          target-id CDATA #IMPLIED
-          invoice-num CDATA #IMPLIED
-          invoice-stat-id CDATA #IMPLIED
-          invoice-date CDATA #IMPLIED
-          submit-date CDATA #IMPLIED>
-
-<!ELEMENT visit-line-item (cr-stamp | cr-sess-id | rec-stat-id | system-id | invoice-id | dal:include)*>
-<!ATTLIST visit-line-item
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          invoice-id CDATA #IMPLIED>
-
-<!ELEMENT org-medication (med-id | org-id | med-type-id | med-type | med-name | generic-name | dal:include)*>
-<!ATTLIST org-medication
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          med-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          med-type-id CDATA #IMPLIED
-          med-type CDATA #IMPLIED
-          med-name CDATA #IMPLIED
-          generic-name CDATA #IMPLIED>
-
-<!ELEMENT patient-indication (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | indication-type-id | indication-type | indication | dal:include)*>
-<!ATTLIST patient-indication
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          indication-type-id CDATA #IMPLIED
-          indication-type CDATA #IMPLIED
-          indication CDATA #IMPLIED>
-
-<!ELEMENT patient-medication (cr-stamp | cr-sess-id | rec-stat-id | system-id | patient-id | record-type | med-id | prescriber-id | pharmacy-id | pharmacy-name | first-dose | dose | dose-units | sale-units | route | frequency | prn | start-date | end-date | ongoing | duration | duration-units | quantity | num-refills | allow-generic | allow-substitutions | notes | sig | status | label | label-language | signed | dal:include)*>
-<!ATTLIST patient-medication
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          patient-id CDATA #IMPLIED
-          record-type (0 | Existing | 1 | Prescribe | 2 | Refill) #IMPLIED
-          med-id CDATA #IMPLIED
-          prescriber-id CDATA #IMPLIED
-          pharmacy-id CDATA #IMPLIED
-          pharmacy-name CDATA #IMPLIED
-          first-dose CDATA #IMPLIED
-          dose CDATA #IMPLIED
-          dose-units CDATA #IMPLIED
-          sale-units CDATA #IMPLIED
-          route CDATA #IMPLIED
-          frequency CDATA #IMPLIED
-          prn CDATA #IMPLIED
-          start-date CDATA #IMPLIED
-          end-date CDATA #IMPLIED
-          ongoing CDATA #IMPLIED
-          duration CDATA #IMPLIED
-          duration-units CDATA #IMPLIED
-          quantity CDATA #IMPLIED
-          num-refills CDATA #IMPLIED
-          allow-generic CDATA #IMPLIED
-          allow-substitutions CDATA #IMPLIED
-          notes CDATA #IMPLIED
-          sig CDATA #IMPLIED
-          status CDATA #IMPLIED
-          label CDATA #IMPLIED
-          label-language (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED
-          signed CDATA #IMPLIED>
-
-<!ELEMENT patient-referral (cr-stamp | cr-sess-id | rec-stat-id | referral-id | patient-id | referrer-id | referee-id | user-id | request-date | referral-urgency | code | speciality | referral-type-id | allowed-visits | auth-number | referral-begin-date | referral-end-date | comm-type-id | completion-date | referral-status-id | referral-status-date | referral-reason | comments | dal:include)*>
-<!ATTLIST patient-referral
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          referral-id CDATA #IMPLIED
-          patient-id CDATA #IMPLIED
-          referrer-id CDATA #IMPLIED
-          referee-id CDATA #IMPLIED
-          user-id CDATA #IMPLIED
-          request-date CDATA #IMPLIED
-          referral-urgency CDATA #IMPLIED
-          code CDATA #IMPLIED
-          speciality CDATA #IMPLIED
-          referral-type-id (0 | Test | 1 | Consultation | 2 | Evaluation | 3 | Treatment | 4 | Surgery | 5 | Procedure) #IMPLIED
-          allowed-visits CDATA #IMPLIED
-          auth-number CDATA #IMPLIED
-          referral-begin-date CDATA #IMPLIED
-          referral-end-date CDATA #IMPLIED
-          comm-type-id CDATA #IMPLIED
-          completion-date CDATA #IMPLIED
-          referral-status-id (0 | Active | 1 | Inactive) #IMPLIED
-          referral-status-date CDATA #IMPLIED
-          referral-reason CDATA #IMPLIED
-          comments CDATA #IMPLIED>
-
-<!ELEMENT org (cr-stamp | cr-sess-id | rec-stat-id | org-id | org-code | org-name | org-abbrev | ownership-id | ticker-symbol | sic-code | employees | fiscal-year-month-id | business-start-time | business-end-time | time-zone | org-level-id | hcfa-servplace-id | ins-product | org-inv-visit | org-medication | org-address | org-note | org-classification | org-contact | org-inv-claim-rel | org-identifier | org-industry | org-personid-src-type | org-product | org-relationship | org-role-declaration | org-service | org-appt-type | org-sch-template | dal:include)*>
-<!ATTLIST org
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          org-id CDATA #IMPLIED
-          org-code CDATA #IMPLIED
-          org-name CDATA #IMPLIED
-          org-abbrev CDATA #IMPLIED
-          ownership-id (0 | Public | 1 | Private | 2 | Subsidiary | 3 | Other) #IMPLIED
-          ticker-symbol CDATA #IMPLIED
-          sic-code CDATA #IMPLIED
-          employees CDATA #IMPLIED
-          fiscal-year-month-id (0 | January | 1 | February | 2 | March | 3 | April | 4 | May | 5 | June | 6 | July | 7 | August | 8 | September | 9 | October | 10 | November | 11 | December) #IMPLIED
-          business-start-time CDATA #IMPLIED
-          business-end-time CDATA #IMPLIED
-          time-zone CDATA #IMPLIED
-          org-level-id (0 | Company | 1 | Branch | 2 | Department) #IMPLIED
-          hcfa-servplace-id CDATA #IMPLIED>
-
-<!ELEMENT org-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
-<!ATTLIST org-address
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          address-name CDATA #IMPLIED
-          mailing CDATA #IMPLIED
-          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
-          line1 CDATA #IMPLIED
-          line2 CDATA #IMPLIED
-          city CDATA #IMPLIED
-          county CDATA #IMPLIED
-          state-id CDATA #IMPLIED
-          state CDATA #IMPLIED
-          zip CDATA #IMPLIED
-          country CDATA #IMPLIED>
-
-<!ELEMENT org-note (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | note-type-id | note-type | notes | dal:include)*>
-<!ATTLIST org-note
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          note-type-id CDATA <!-- Enum table 'Org_Note_Type' (referenced by Org_Note.note_type_id) has no enumerations. -->#IMPLIED
-          note-type CDATA #IMPLIED
-          notes CDATA #IMPLIED>
-
-<!ELEMENT org-classification (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | org-type-id | org-type | dal:include)*>
-<!ATTLIST org-classification
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          org-type-id CDATA #IMPLIED
-          org-type CDATA #IMPLIED>
-
-<!ELEMENT org-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
-<!ATTLIST org-contact
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          method-type CDATA #IMPLIED
-          method-name CDATA #IMPLIED
-          method-value CDATA #IMPLIED
-          phone-cc CDATA #IMPLIED
-          phone-ac CDATA #IMPLIED
-          phone-prefix CDATA #IMPLIED
-          phone-suffix CDATA #IMPLIED>
-
-<!ELEMENT org-inv-claim-rel (cr-stamp | cr-sess-id | rec-stat-id | system-id | invoice-id | org-id | claim-id | inv-type-id | inv-type | dal:include)*>
-<!ATTLIST org-inv-claim-rel
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          invoice-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          claim-id CDATA #IMPLIED
-          inv-type-id (0 | Visit | 1 | Product | 2 | Service | 3 | Other) #IMPLIED
-          inv-type CDATA #IMPLIED>
-
-<!ELEMENT org-identifier (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | identifier-type-id | identifier-type | identifier | dal:include)*>
-<!ATTLIST org-identifier
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          identifier-type-id CDATA #IMPLIED
-          identifier-type CDATA #IMPLIED
-          identifier CDATA #IMPLIED>
-
-<!ELEMENT org-industry (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | industry-type-id | industry-type | dal:include)*>
-<!ATTLIST org-industry
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          industry-type-id CDATA #IMPLIED
-          industry-type CDATA #IMPLIED>
-
-<!ELEMENT org-personid-src-type (cr-stamp | cr-sess-id | rec-stat-id | system-id | org-id | item-id | caption | abbrev | dal:include)*>
-<!ATTLIST org-personid-src-type
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          item-id CDATA #IMPLIED
-          caption CDATA #IMPLIED
-          abbrev CDATA #IMPLIED>
-
-<!ELEMENT org-product (cr-stamp | cr-sess-id | rec-stat-id | product-id | org-id | product-name | measurement-unit-id | measurement-unit | unit-measure | dal:include)*>
-<!ATTLIST org-product
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          product-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          product-name CDATA #IMPLIED
-          measurement-unit-id (0 | Unspecified | 1 | milligrams | 2 | milliliters | 3 | units) #IMPLIED
-          measurement-unit CDATA #IMPLIED
-          unit-measure CDATA #IMPLIED>
-
-<!ELEMENT org-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | dal:include)*>
-<!ATTLIST org-relationship
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          rel-entity-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          rel-type CDATA #IMPLIED
-          rel-begin CDATA #IMPLIED
-          rel-end CDATA #IMPLIED
-          rel-descr CDATA #IMPLIED>
-
-<!ELEMENT org-role-declaration (cr-stamp | cr-sess-id | rec-stat-id | role-name-id | org-id | role-type-id | role-name | dal:include)*>
-<!ATTLIST org-role-declaration
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          role-name-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          role-type-id CDATA #IMPLIED
-          role-name CDATA #IMPLIED>
-
-<!ELEMENT org-service (cr-stamp | cr-sess-id | rec-stat-id | service-id | org-id | service-name | dal:include)*>
-<!ATTLIST org-service
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          service-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          service-name CDATA #IMPLIED>
-
-<!ELEMENT org-appt-type (cr-stamp | cr-sess-id | rec-stat-id | appt-type-id | org-id | caption | duration | lead-time | lag-time | back-to-back | multiple | num-sim | am-limit | pm-limit | day-limit | appt-width | attribute | super-bill-ids | apty-super-bill-ids-set | appt-type-resource | dal:include)*>
-<!ATTLIST org-appt-type
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          appt-type-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          caption CDATA #IMPLIED
-          duration CDATA #IMPLIED
-          lead-time CDATA #IMPLIED
-          lag-time CDATA #IMPLIED
-          back-to-back CDATA #IMPLIED
-          multiple CDATA #IMPLIED
-          num-sim CDATA #IMPLIED
-          am-limit CDATA #IMPLIED
-          pm-limit CDATA #IMPLIED
-          day-limit CDATA #IMPLIED
-          appt-width CDATA #IMPLIED
-          attribute CDATA #IMPLIED
-          super-bill-ids CDATA #IMPLIED>
-
-<!ELEMENT apty-super-bill-ids-set (system-id | parent-id | value-index | value-text | dal:include)*>
-<!ATTLIST apty-super-bill-ids-set
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          value-index CDATA #IMPLIED
-          value-text CDATA #IMPLIED>
-
-<!ELEMENT appt-type-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | appt-type-id | dal:include)*>
-<!ATTLIST appt-type-resource
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
-          resource-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          asset-id CDATA #IMPLIED
-          other-id CDATA #IMPLIED
-          appt-type-id CDATA #IMPLIED>
-
-<!ELEMENT org-sch-template (cr-stamp | cr-sess-id | rec-stat-id | template-id | org-id | active | caption | start-time | end-time | available | days-of-month | months | days-of-week | slot-width | template-resource | dal:include)*>
-<!ATTLIST org-sch-template
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          template-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          active CDATA #IMPLIED
-          caption CDATA #IMPLIED
-          start-time CDATA #IMPLIED
-          end-time CDATA #IMPLIED
-          available CDATA #IMPLIED
-          days-of-month CDATA #IMPLIED
-          months CDATA #IMPLIED
-          days-of-week CDATA #IMPLIED
-          slot-width CDATA #IMPLIED>
-
-<!ELEMENT template-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | template-id | dal:include)*>
-<!ATTLIST template-resource
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
-          resource-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          asset-id CDATA #IMPLIED
-          other-id CDATA #IMPLIED
-          template-id CDATA #IMPLIED>
-
-<!ELEMENT org-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
-<!ATTLIST org-relationship-map
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          inv-rel-type-id CDATA #IMPLIED>
-
-<!ELEMENT person (cr-stamp | cr-sess-id | rec-stat-id | person-id | name-prefix-id | name-prefix | name-first | name-middle | name-last | name-suffix | short-name | simple-name | complete-name | short-sortable-name | complete-sortable-name | ssn | gender-id | ethnicity-id | language-id | marital-status-id | blood-type-id | birth-date | death-date | age | patient-indication | patient-medication | patient-referral | per-ethnicity-id-set | per-language-id-set | person-address | person-note | person-classification | person-contact | person-ethnicity | person-flag | person-identifier | person-insurance | person-language | person-login | person-relationship | person-role | personorg-relationship | staff-benefit | staff-license | person-session | dal:include)*>
-<!ATTLIST person
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          person-id CDATA #IMPLIED
-          name-prefix-id (0 | Mr. | 1 | Ms. | 2 | Mrs.) #IMPLIED
-          name-prefix CDATA #IMPLIED
-          name-first CDATA #IMPLIED
-          name-middle CDATA #IMPLIED
-          name-last CDATA #IMPLIED
-          name-suffix CDATA #IMPLIED
-          short-name CDATA #IMPLIED
-          simple-name CDATA #IMPLIED
-          complete-name CDATA #IMPLIED
-          short-sortable-name CDATA #IMPLIED
-          complete-sortable-name CDATA #IMPLIED
-          ssn CDATA #IMPLIED
-          gender-id CDATA #IMPLIED
-          ethnicity-id CDATA #IMPLIED
-          language-id CDATA #IMPLIED
-          marital-status-id CDATA #IMPLIED
-          blood-type-id CDATA #IMPLIED
-          birth-date CDATA #IMPLIED
-          death-date CDATA #IMPLIED
-          age CDATA #IMPLIED>
-
-<!ELEMENT per-ethnicity-id-set (system-id | parent-id | enum-index | enum-value | dal:include)*>
-<!ATTLIST per-ethnicity-id-set
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          enum-index CDATA #IMPLIED
-          enum-value CDATA #IMPLIED>
-
-<!ELEMENT per-language-id-set (system-id | parent-id | enum-index | enum-value | dal:include)*>
-<!ATTLIST per-language-id-set
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          enum-index CDATA #IMPLIED
-          enum-value (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED>
-
-<!ELEMENT person-address (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | address-name | mailing | address-type-id | line1 | line2 | city | county | state-id | state | zip | country | dal:include)*>
-<!ATTLIST person-address
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          address-name CDATA #IMPLIED
-          mailing CDATA #IMPLIED
-          address-type-id (0 | Primary | 1 | Secondary | 2 | Alternate | 3 | Billing | 4 | Other) #IMPLIED
-          line1 CDATA #IMPLIED
-          line2 CDATA #IMPLIED
-          city CDATA #IMPLIED
-          county CDATA #IMPLIED
-          state-id CDATA #IMPLIED
-          state CDATA #IMPLIED
-          zip CDATA #IMPLIED
-          country CDATA #IMPLIED>
-
-<!ELEMENT person-note (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | note-type-id | note-type | notes | dal:include)*>
-<!ATTLIST person-note
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          note-type-id (0 | Unknown | 1 | Medical | 2 | Non-Medical) #IMPLIED
-          note-type CDATA #IMPLIED
-          notes CDATA #IMPLIED>
-
-<!ELEMENT person-classification (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | person-type-id | person-type | dal:include)*>
-<!ATTLIST person-classification
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          person-type-id CDATA #IMPLIED
-          person-type CDATA #IMPLIED>
-
-<!ELEMENT person-contact (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | method-type | method-name | method-value | phone-cc | phone-ac | phone-prefix | phone-suffix | dal:include)*>
-<!ATTLIST person-contact
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          method-type CDATA #IMPLIED
-          method-name CDATA #IMPLIED
-          method-value CDATA #IMPLIED
-          phone-cc CDATA #IMPLIED
-          phone-ac CDATA #IMPLIED
-          phone-prefix CDATA #IMPLIED
-          phone-suffix CDATA #IMPLIED>
-
-<!ELEMENT person-ethnicity (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | ethnicity-id | ethnicity | dal:include)*>
-<!ATTLIST person-ethnicity
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          ethnicity-id CDATA #IMPLIED
-          ethnicity CDATA #IMPLIED>
-
-<!ELEMENT person-flag (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | flag-id | dal:include)*>
-<!ATTLIST person-flag
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          flag-id CDATA <!-- Enum table 'Person_Flag_Type' (referenced by Person_Flag.flag_id) has no enumerations. -->#IMPLIED>
-
-<!ELEMENT person-identifier (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | id-type-id | id-type | identifier | source-type-id | source-type | notes | dal:include)*>
-<!ATTLIST person-identifier
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          id-type-id CDATA #IMPLIED
-          id-type CDATA #IMPLIED
-          identifier CDATA #IMPLIED
-          source-type-id CDATA #IMPLIED
-          source-type CDATA #IMPLIED
-          notes CDATA #IMPLIED>
-
-<!ELEMENT person-insurance (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | ins-rel-id | guar-person-id | guar-rel-id | member-number | policy-id | dal:include)*>
-<!ATTLIST person-insurance
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          ins-rel-id CDATA #IMPLIED
-          guar-person-id CDATA #IMPLIED
-          guar-rel-id CDATA #IMPLIED
-          member-number CDATA #IMPLIED
-          policy-id CDATA #IMPLIED>
-
-<!ELEMENT person-language (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | language-id | language | dal:include)*>
-<!ATTLIST person-language
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          language-id (0 | English | 1 | Spanish | 2 | French | 3 | German | 4 | Italian | 5 | Chinese | 6 | Japanese | 7 | Korean | 8 | Vietnamese | 9 | Other) #IMPLIED
-          language CDATA #IMPLIED>
-
-<!ELEMENT person-login (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | user-id | password | login-status | quantity | dal:include)*>
-<!ATTLIST person-login
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          user-id CDATA #IMPLIED
-          password CDATA #IMPLIED
-          login-status (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          quantity CDATA #IMPLIED>
-
-<!ELEMENT person-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | dal:include)*>
-<!ATTLIST person-relationship
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          rel-entity-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          rel-type CDATA #IMPLIED
-          rel-begin CDATA #IMPLIED
-          rel-end CDATA #IMPLIED
-          rel-descr CDATA #IMPLIED>
-
-<!ELEMENT person-role (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | role-name-id | dal:include)*>
-<!ATTLIST person-role
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          role-name-id CDATA #IMPLIED>
-
-<!ELEMENT personorg-relationship (cr-stamp | cr-sess-id | rec-stat-id | system-id | parent-id | rel-entity-id | rel-type-id | rel-type | rel-begin | rel-end | rel-descr | relationship-name | relationship-code | dal:include)*>
-<!ATTLIST personorg-relationship
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          rel-entity-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          rel-type CDATA #IMPLIED
-          rel-begin CDATA #IMPLIED
-          rel-end CDATA #IMPLIED
-          rel-descr CDATA #IMPLIED
-          relationship-name CDATA #IMPLIED
-          relationship-code CDATA #IMPLIED>
-
-<!ELEMENT staff-benefit (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | benefit-type-id | benefit-type | benefit-detail | dal:include)*>
-<!ATTLIST staff-benefit
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          benefit-type-id (0 | Attendance | 1 | Insurance | 2 | Retirement | 3 | Other) #IMPLIED
-          benefit-type CDATA #IMPLIED
-          benefit-detail CDATA #IMPLIED>
-
-<!ELEMENT staff-license (cr-stamp | cr-sess-id | rec-stat-id | system-id | person-id | org-id | license-type-id | license-type | license-num | expiration-date | license-state-id | license-state | speciality-type-id | dal:include)*>
-<!ATTLIST staff-license
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          license-type-id CDATA #IMPLIED
-          license-type CDATA #IMPLIED
-          license-num CDATA #IMPLIED
-          expiration-date CDATA #IMPLIED
-          license-state-id CDATA #IMPLIED
-          license-state CDATA #IMPLIED
-          speciality-type-id CDATA #IMPLIED>
-
-<!ELEMENT person-session (session-id | person-id | org-id | remote-host | remote-addr | first-access | last-access | personsession-activity | personsession-view-count | dal:include)*>
-<!ATTLIST person-session
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          session-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          remote-host CDATA #IMPLIED
-          remote-addr CDATA #IMPLIED
-          first-access CDATA #IMPLIED
-          last-access CDATA #IMPLIED>
-
-<!ELEMENT personsession-activity (session-id | activity-type | activity-stamp | action-type | action-scope | action-key | detail-level | activity-data | dal:include)*>
-<!ATTLIST personsession-activity
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          session-id CDATA #IMPLIED
-          activity-type CDATA <!-- Enum table 'Session_Activity_Type' (referenced by PersonSession_Activity.activity_type) has no enumerations. -->#IMPLIED
-          activity-stamp CDATA #IMPLIED
-          action-type CDATA <!-- Enum table 'Session_Action_Type' (referenced by PersonSession_Activity.action_type) has no enumerations. -->#IMPLIED
-          action-scope CDATA #IMPLIED
-          action-key CDATA #IMPLIED
-          detail-level CDATA #IMPLIED
-          activity-data CDATA #IMPLIED>
-
-<!ELEMENT personsession-view-count (session-id | view-init | view-latest | view-scope | view-key | view-count | view-caption | view-arl | dal:include)*>
-<!ATTLIST personsession-view-count
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          session-id CDATA #IMPLIED
-          view-init CDATA #IMPLIED
-          view-latest CDATA #IMPLIED
-          view-scope CDATA #IMPLIED
-          view-key CDATA #IMPLIED
-          view-count CDATA #IMPLIED
-          view-caption CDATA #IMPLIED
-          view-arl CDATA #IMPLIED>
-
-<!ELEMENT person-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
-<!ATTLIST person-relationship-map
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          inv-rel-type-id CDATA #IMPLIED>
-
-<!ELEMENT personorg-relationship-map (cr-stamp | cr-sess-id | rec-stat-id | system-id | rel-type-id | inv-rel-type-id | dal:include)*>
-<!ATTLIST personorg-relationship-map
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          rel-type-id CDATA #IMPLIED
-          inv-rel-type-id CDATA #IMPLIED>
-
-<!ELEMENT asset (cr-stamp | cr-sess-id | rec-stat-id | asset-id | asset-type-id | asset-type | name | concurrency | location | serial-num | asset-maint | dal:include)*>
-<!ATTLIST asset
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          asset-id CDATA #IMPLIED
-          asset-type-id CDATA #IMPLIED
-          asset-type CDATA #IMPLIED
-          name CDATA #IMPLIED
-          concurrency CDATA #IMPLIED
-          location CDATA #IMPLIED
-          serial-num CDATA #IMPLIED>
-
-<!ELEMENT asset-maint (cr-stamp | cr-sess-id | rec-stat-id | system-id | asset-id | scheduled | breakdown-date | maintenance-date | dal:include)*>
-<!ATTLIST asset-maint
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          system-id CDATA #IMPLIED
-          asset-id CDATA #IMPLIED
-          scheduled CDATA #IMPLIED
-          breakdown-date CDATA #IMPLIED
-          maintenance-date CDATA #IMPLIED>
-
-<!ELEMENT appt-chain-entry (cr-stamp | cr-sess-id | rec-stat-id | entry-id | chain-id | appt-type-id | sequence | org-id | dal:include)*>
-<!ATTLIST appt-chain-entry
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          entry-id CDATA #IMPLIED
-          chain-id CDATA #IMPLIED
-          appt-type-id CDATA #IMPLIED
-          sequence CDATA #IMPLIED
-          org-id CDATA #IMPLIED>
-
-<!ELEMENT event (cr-stamp | cr-sess-id | rec-stat-id | event-id | org-id | event-type-id | event-status-id | status-chgrsn-id | remark | start-stamp | duration | scheduled-by-id | scheduled-stamp | appt-type-id | parent-id | waiting-list | start-time | event-resource | event-attendee | dal:include)*>
-<!ATTLIST event
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          event-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          event-type-id CDATA #IMPLIED
-          event-status-id CDATA #IMPLIED
-          status-chgrsn-id CDATA #IMPLIED
-          remark CDATA #IMPLIED
-          start-stamp CDATA #IMPLIED
-          duration CDATA #IMPLIED
-          scheduled-by-id CDATA #IMPLIED
-          scheduled-stamp CDATA #IMPLIED
-          appt-type-id CDATA #IMPLIED
-          parent-id CDATA #IMPLIED
-          waiting-list CDATA #IMPLIED
-          start-time CDATA #IMPLIED>
-
-<!ELEMENT event-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | event-id | dal:include)*>
-<!ATTLIST event-resource
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
-          resource-id CDATA #IMPLIED
-          org-id CDATA #IMPLIED
-          person-id CDATA #IMPLIED
-          asset-id CDATA #IMPLIED
-          other-id CDATA #IMPLIED
-          event-id CDATA #IMPLIED>
-
-<!ELEMENT event-attendee (cr-stamp | cr-sess-id | rec-stat-id | event-id | patient-id | reason | checkin-by-id | checkin-stamp | checkout-by-id | checkout-stamp | discard-by-id | discard-stamp | dal:include)*>
-<!ATTLIST event-attendee
-          ID CDATA #IMPLIED
-          IDREF CDATA #IMPLIED
-          cr-stamp CDATA #IMPLIED
-          cr-sess-id CDATA #IMPLIED
-          rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          event-id CDATA #IMPLIED
-          patient-id CDATA #IMPLIED
-          reason CDATA #IMPLIED
-          checkin-by-id CDATA #IMPLIED
-          checkin-stamp CDATA #IMPLIED
-          checkout-by-id CDATA #IMPLIED
-          checkout-stamp CDATA #IMPLIED
-          discard-by-id CDATA #IMPLIED
-          discard-stamp CDATA #IMPLIED>
-
 <!ELEMENT abbrev (#PCDATA)>
 <!ATTLIST abbrev IDREF CDATA #IMPLIED>
 
@@ -1592,9 +1593,6 @@
 
 <!ELEMENT appt-width (#PCDATA)>
 <!ATTLIST appt-width IDREF CDATA #IMPLIED>
-
-<!ELEMENT apty-super-bill-ids-set (#PCDATA)>
-<!ATTLIST apty-super-bill-ids-set IDREF CDATA #IMPLIED>
 
 <!ELEMENT artifact-association (#PCDATA)>
 <!ATTLIST artifact-association IDREF CDATA #IMPLIED>
@@ -2390,6 +2388,9 @@
 
 <!ELEMENT org-type-id (#PCDATA)>
 <!ATTLIST org-type-id IDREF CDATA #IMPLIED>
+
+<!ELEMENT orgapty-super-bill-ids-set (#PCDATA)>
+<!ATTLIST orgapty-super-bill-ids-set IDREF CDATA #IMPLIED>
 
 <!ELEMENT orig-stamp (#PCDATA)>
 <!ATTLIST orig-stamp IDREF CDATA #IMPLIED>
