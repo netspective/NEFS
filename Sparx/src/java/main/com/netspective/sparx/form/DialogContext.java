@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.18 2003-08-06 18:06:12 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.19 2003-08-07 03:20:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -830,6 +830,15 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     public DialogFieldStates getFieldStates()
     {
         return this.fieldStates;
+    }
+
+    /**
+     * Gets the initial dialog field states
+     * @return
+     */
+    public DialogFieldStates getInitialFieldStates()
+    {
+        return this.initialFieldStates;
     }
 
     public String getTransactionId()
