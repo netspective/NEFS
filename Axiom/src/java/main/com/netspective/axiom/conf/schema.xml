@@ -67,7 +67,7 @@
             <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
         </sql-ddl>
-        <jdbc-type>LONG</jdbc-type>
+        <jdbc-type>BIGINT</jdbc-type>
         <presentation>
             <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
