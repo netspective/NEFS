@@ -39,45 +39,34 @@
  */
 
 /**
- * $Id: HtmlTabularReportPanel.java,v 1.4 2004-04-30 01:36:18 shahid.shah Exp $
+ * $Id: CustomRendererDataType.java,v 1.1 2004-04-30 01:36:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.util.Map;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.template.TemplateProcessor;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-
-public interface HtmlTabularReportPanel extends HtmlOutputPanel
+public class CustomRendererDataType extends XdmEnumeratedAttribute
 {
-    public HtmlTabularReport getReport(NavigationContext nc);
-    public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin);
-    public TabularReportDataSource createDataSource(NavigationContext nc);
-    public boolean isScrollable();
-    public void setScrollable(boolean scrollable);
+    public static final int QUERY_RESULT_SET = 0;
+    public static final int SQL_RESULT_SET = 1;
+    public static final int TABULAR_DATA_SOURCE = 2;
+    public static final int FORMATTED_MATRIX = 3;
+    public static final int RAW_MATRIX = 4;
 
-    int getScrollRowsPerPage();
-    void setScrollRowsPerPage(int scrollRowsPerPage);
+    public static final String[] ENUM = new String[] { "query-result-set", "sql-result-set", "tabular-data-source", "formatted-matrix", "raw-matrix" };
 
-    public boolean isSelectable();
-    public void setSelectable(boolean selectable);
-
-    /**
-     * Retrieve a custom rendering template for this report.
-     * @return Non-null if the skin should use the renderer specific to this report or null if no custom renderer
-     */
-    public CustomRenderer getRenderer();
-
-    public interface CustomRenderer
+    public CustomRendererDataType()
     {
-        public TemplateProcessor getTemplateProcessor();
-        public boolean isRenderFrame();
-        public boolean isRenderContainerTableTag();
-        public Map getTemplateVars(HtmlTabularReportValueContext rc, TabularReportDataSource ds);
+    }
+
+    public CustomRendererDataType(int valueIndex)
+    {
+        super(valueIndex);
+    }
+
+    public String[] getValues()
+    {
+        return ENUM;
     }
 }

@@ -39,10 +39,19 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.25 2004-03-07 02:52:20 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.26 2004-04-30 01:36:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
@@ -62,17 +71,15 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.theme.Theme;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
+    private static final Log log = LogFactory.getLog(AbstractHtmlTabularReportPanel.class);
+
     private boolean scrollable;         // indicates if the report is pageable
     private boolean selectable;         // indicates if the report is selectable
     private int scrollRowsPerPage = 25; // the rows per page count when the report is pageable
     private String reportSkin;          // the skin to use to display the report
+    private CustomRenderer customRenderer; // if a custom renderer should be used specify it here
 
     public AbstractHtmlTabularReportPanel()
     {
@@ -233,6 +240,21 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
             ds.close();
         }
 
+    }
+
+    public CustomRenderer createRenderer()
+    {
+        return new DefaultCustomRenderer();
+    }
+
+    public void addRenderer(CustomRenderer renderer)
+    {
+        this.customRenderer = renderer;
+    }
+
+    public CustomRenderer getRenderer()
+    {
+        return customRenderer;
     }
 
     public class SimpleMessageDataSource extends AbstractHtmlTabularReportDataSource

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.30 2004-02-04 23:20:03 min-gu.lee Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.31 2004-04-30 01:36:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -60,30 +60,29 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.StringTokenizer;
 
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.commons.report.tabular.TabularReportColumns;
+import javax.servlet.http.HttpServletRequest;
+
+import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
+import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
-import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlReportActions;
-import com.netspective.sparx.report.tabular.HtmlReportAction;
-import com.netspective.sparx.form.sql.QueryDialog;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
-import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-
-import javax.servlet.http.HttpServletRequest;
+import com.netspective.sparx.form.sql.QueryDialog;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlReportAction;
+import com.netspective.sparx.report.tabular.HtmlReportActions;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.theme.Theme;
 
 public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implements HtmlTabularReportSkin
 {
@@ -186,30 +185,60 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
     public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        renderPanelRegistration(writer, (HtmlPanelValueContext) rc);
+        final HtmlTabularReportValueContext rvc = (HtmlTabularReportValueContext) rc;
+        renderPanelRegistration(writer, rvc);
 
-        int panelRenderFlags = ((HtmlTabularReportValueContext) rc).getPanelRenderFlags();
-        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+        final HtmlTabularReportPanel htmlTabularReportPanel = (HtmlTabularReportPanel) rvc.getPanel();
+        final HtmlTabularReportPanel.CustomRenderer customRenderer = htmlTabularReportPanel.getRenderer();
+        int panelRenderFlags = rvc.getPanelRenderFlags();
+
+        if(customRenderer != null)
         {
-            renderFrameBegin(writer, (HtmlPanelValueContext) rc);
-            writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            boolean handleContainerTableTag = customRenderer.isRenderContainerTableTag();
+            if(! customRenderer.isRenderFrame())
+                panelRenderFlags |= HtmlPanel.RENDERFLAG_NOFRAME;
+
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            {
+                renderFrameBegin(writer, rvc);
+                if(handleContainerTableTag)
+                    writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            }
+            else if(handleContainerTableTag)
+                writer.write("    <table id=\""+ rvc.getPanel().getPanelIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+
+            customRenderer.getTemplateProcessor().process(writer, rc, customRenderer.getTemplateVars(rvc, ds));
+
+            if(handleContainerTableTag)
+                writer.write("    </table>\n");
+
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+                renderFrameEnd(writer, rvc);
         }
         else
-            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getPanelIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+        {
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            {
+                renderFrameBegin(writer, rvc);
+                writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            }
+            else
+                writer.write("    <table id=\""+ rvc.getPanel().getPanelIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
-        if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
-            produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
-        produceDataRows(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
+            if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
+                produceHeadingRow(writer, rvc, (HtmlTabularReportDataSource) ds);
+            produceDataRows(writer, rvc, (HtmlTabularReportDataSource) ds);
 
-        if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
-            produceFootRow(writer, (HtmlTabularReportValueContext) rc);
+            if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
+                produceFootRow(writer, rvc);
 
-        // TODO: Need to check the flag to find out where the command item for the selectable report should be
-        produceSelectableCommandRow(writer, (HtmlTabularReportValueContext)rc);
-        writer.write("    </table>\n");
+            // TODO: Need to check the flag to find out where the command item for the selectable report should be
+            produceSelectableCommandRow(writer, rvc);
+            writer.write("    </table>\n");
 
-        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
-            renderFrameEnd(writer, (HtmlPanelValueContext) rc);
+            if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+                renderFrameEnd(writer, rvc);
+        }
     }
 
     private int getTableColumnsCount(HtmlTabularReportValueContext rc)
