@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.16 2003-11-16 15:18:03 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.17 2004-02-24 21:28:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -65,6 +65,7 @@ import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.DialogState;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
@@ -199,6 +200,17 @@ public class QueryBuilderDialog extends Dialog
     {
         return new QueryBuilderDialogFlags();
     }
+
+    /**
+     * Construct a state class for the dialog to keep track of request specific values
+     *
+     * @return  QueryBuilderDialogState object
+     */
+    public DialogState constructDialogState()
+    {
+        return new QueryBuilderDialogState();
+    }
+
 
     /**
      *  Creates the selected item field. By default, the field is hidden.
