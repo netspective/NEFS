@@ -20,7 +20,7 @@
         <join name="PersonEthnicity" table="Per_ethnicity_id_Set" condition="PersonEthnicity.parent_id = Person.person_id"/>
         <join name="PersonLanguage" table="Per_language_id_Set" condition="PersonLanguage.parent_id = Person.person_id"/>
         <join name="PersonType" table="Person_Type" condition="PersonType.id = PersonClass.person_type_id" imply-join="PersonClass"/>
-        <join name="Gender" table="Gender_Type" condition="Gender.id = Person.gender_id"/>
+        <join name="Gender" table="Gender_Type" condition="Gender.id = Person.gender_id" />
         <join name="Ethnicity" table="Ethnicity_Type" condition="Ethnicity.id = PersonEthnicity.enum_value" imply-join="PersonEthnicity"/>
         <join name="Language" table="Language_Type" condition="Language.id = PersonLanguage.enum_value" imply-join="PersonLanguage"/>
         <join name="Marital_Status" table="Marital_Status_Type" condition="Marital_Status.id = Person.marital_status_id"/>
@@ -47,8 +47,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID" hidden="yes"/>
-                                <column heading="First Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}, ${1}', '${0}')"/>
-                                <column heading="Last Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}, ${1}', '${0}')"/>
+                                <column heading="First Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}', '${1}', '${0}')"/>
+                                <column heading="Last Name" redirect="javascript\:opener.activeDialogPopup.populateControls('${2}', '${1}', '${0}')"/>
                                 <column heading="Birth Date"/>
                             </report>
                         </panel>
@@ -74,19 +74,19 @@
                     <display field="person_id"/>
                     <display field="name_first"/>
                     <display field="name_last"/>
-                    <display field="birth_date"/>
+                    <!--display field="birth_date"/>
                     <display field="gender"/>
-                    <display field="marital_status"/>
+                    <display field="marital_status"/-->
                     <display field="cr_stamp"/>
                     <condition field="person_id" allow-null="no" comparison="equals" value="field:person_id" connector="and"/>
                     <condition field="name_first" allow-null="no" comparison="contains-ignore-case" value="field:name_first" connector="and"/>
                     <condition field="name_last" allow-null="no" comparison="contains-ignore-case" value="field:name_last" connector="and"/>
-                    <condition field="birth_date" allow-null="no" comparison="equals" value="field:birth_date" connector="and"/>
+                    <!--condition field="birth_date" allow-null="no" comparison="equals" value="field:birth_date" connector="and"/>
                     <condition field="class" allow-null="no" comparison="equals" value="field:class" connector="and"/>
                     <condition field="gender" allow-null="no" comparison="equals" value="field:gender" connector="and"/>
                     <condition field="ethnicity" allow-null="no" comparison="equals" value="field:ethnicity" connector="and"/>
                     <condition field="language" allow-null="no" comparison="equals" value="field:language" connector="and"/>
-                    <condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/>
+                    <condition field="marital_status" allow-null="no" comparison="equals" value="field:marital_status" connector="and"/-->
                     <order-by field="field:order_by"/>
                     <presentation>
                         <panel>
@@ -95,9 +95,9 @@
                                 <column heading="Person ID" hidden="yes"/>
                                 <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
-                                <column heading="Birth Date"/>
+                                <!--column heading="Birth Date"/>
                                 <column heading="Gender"/>
-                                <column heading="Marital Status"/>
+                                <column heading="Marital Status"/-->
                                 <column heading="Created"/>
                             </report>
                         </panel>
