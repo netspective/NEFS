@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.8 2003-11-07 17:37:49 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.9 2003-11-08 18:34:40 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -113,6 +113,7 @@ public class ParseContext
     private ParseContext parentPC;
     private String sourceText;
     private File sourceFile;
+    private FileInputStream activeFileInputStream;
     private Resource sourceResource;
     private ZipFile sourceJarFile;
     private ZipEntry sourceJarEntry;
@@ -208,7 +209,8 @@ public class ParseContext
             uri = uri.substring(0, index) + "%23" + uri.substring(index + 1);
         }
 
-        BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(srcFile));
+        activeFileInputStream = new FileInputStream(srcFile);
+        BufferedInputStream inputStream = new BufferedInputStream(activeFileInputStream);
         InputSource inputSource = new InputSource(inputStream);
         inputSource.setSystemId(uri);
 
@@ -382,6 +384,12 @@ public class ParseContext
             {
                 // ignore this
             }
+        }
+
+        if(activeFileInputStream != null)
+        {
+            activeFileInputStream.close();
+            activeFileInputStream = null;
         }
 
         if(sourceJarFile != null)
