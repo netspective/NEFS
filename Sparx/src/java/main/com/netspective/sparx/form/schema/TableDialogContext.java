@@ -39,38 +39,41 @@
  */
 
 /**
- * $Id: TableDialogContext.java,v 1.4 2003-09-29 03:07:34 shahid.shah Exp $
+ * $Id: TableDialogContext.java,v 1.5 2003-10-14 14:48:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.axiom.schema.Row;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class TableDialogContext extends DialogContext
 {
-    private static final String SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY = "table-dialog-active-pk-";
-
     private static final Log log = LogFactory.getLog(TableDialogContext.class);
+
+    private Row primaryTableRow;
+    private Object primaryKeyValue;
 
     public Object getPrimaryKeyValue()
     {
-        return getHttpRequest().getSession(true).getAttribute(SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY + getTransactionId());
+        return primaryKeyValue;
     }
 
     public void setPrimaryKeyValue(Object primaryKeyValue)
     {
-        if ((primaryKeyValue != null) && !(primaryKeyValue instanceof java.io.Serializable))
-        {
-            log.error("A non-Serializable object of type: '" + primaryKeyValue.getClass() + "' is being used as a primary key.\n" +
-                      "This object will be stored in the session. Therfore, needs to implement the Serializable interface.");
-        }
-        getHttpRequest().getSession(true).setAttribute(SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY + getTransactionId(), primaryKeyValue);
+        this.primaryKeyValue = primaryKeyValue;
     }
 
-    public void removePrimaryKeyValue()
+    public Row getPrimaryTableRow()
     {
-        getHttpRequest().getSession(true).removeAttribute(SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY + getTransactionId());
+        return primaryTableRow;
+    }
+
+    public void setPrimaryTableRow(Row primaryTableRow)
+    {
+        this.primaryTableRow = primaryTableRow;
     }
 }
