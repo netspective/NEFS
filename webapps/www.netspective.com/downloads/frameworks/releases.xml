@@ -2,6 +2,32 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.21"/>
+        <change-log>
+            <summary>Minor bug fixed and minor enhancement</summary>
+            <change-log-entry>
+                <![CDATA[
+                Renamed and changed the method hideHeading() to isHideHeading(HtmlValueContext vc) in HtmlPanelFrame.
+                The name change was to follow bean naming scheme and the method signature change was to check for
+                panel flags set in the panel context. This is <b>an API change</b> and skins that use this method to draw
+                panel frames <b>MUST</b> be modified.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Modified the way the panel frame checks to see if the heading should be displayed or not. Instead of relying
+                only on the frame flag, HIDE_HEADING, it will also check the context specific panel flag, RENDERFLAG_HIDE_FRAME_HEADING.              
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Modified the BasicHtmlPanelSkin to display the top border when the heading of the panel
+                is not displayed.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
         <product name="Sparx" version="7.0.20"/>
         <change-log>
             <summary>Minor bug fixed and enhancements</summary>
