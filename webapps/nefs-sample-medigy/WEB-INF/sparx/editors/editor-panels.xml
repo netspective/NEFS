@@ -8,7 +8,34 @@
     <panel-editors package="personAttribute">
         <panel-editor  name="contact" require-request-param="person_id">
             <frame heading="Contact Methods/Addresses"/>
-            <element type="report" name="contacts" caption="Contact Method" dialog-ref="personAttribute.contact" pk-column-index="0">
+            <element type="report" name="contacts" caption="Contact Method" pk-column-index="0">
+                <dialog retain-params="*" type="schema-record-editor">
+                    <frame heading="create-dialog-perspective-heading:Contact"/>
+                    <field type="integer" name="system_id" caption="" hidden="yes"/>
+                    <field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="yes"/>
+
+                    <composite name="contactType" caption="Contact Type">
+                        <field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"
+                            required="yes" prepend-blank="yes"/>
+                        <field type="text" name="method_name" caption="Other Contact Type">
+                            <conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+                        </field>
+                    </composite>
+                    <field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+
+                    <on-add-data>
+                        <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-add-data>
+                    <on-edit-data>
+                        <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-edit-data>
+                    <on-delete-data>
+                        <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                            rec-stat-id="static:Active"/>
+                    </on-delete-data>
+                </dialog>
                 <query>
                     select
                     system_id,
@@ -35,7 +62,7 @@
                     </presentation>
                 </query>                
             </element>
-            <element type="report" name="address" caption="Address" dialog-ref="personAttribute.address" pk-column-index="0">
+            <element type="report" name="address" caption="Address" dialog-ref="schema.db.Person_Address" pk-column-index="0">
                 <query>
                     select
                     system_id,
