@@ -146,7 +146,11 @@ public class SendMail
     public void setProperties(Properties props)
     {
         final ValueSources valueSources = ValueSources.getInstance();
-        String property = props.getProperty(propertyNamesPrefix + "from");
+        String property = props.getProperty(propertyNamesPrefix + "host");
+        if(property != null)
+            setHost(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "from");
         if(property != null)
             setFrom(valueSources.getValueSourceOrStatic(property));
 
