@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.5 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.6 2003-06-01 21:47:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -83,6 +83,7 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
     static
     {
         fmConfig.setTemplateLoader(multiTemplateLoader);
+        fmConfig.setTemplateUpdateDelay(2);
     }
 
     private ValueSource source;
