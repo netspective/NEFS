@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.7 2003-06-06 22:58:46 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.8 2003-06-06 23:10:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -104,12 +104,7 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
     {
         super.finalizeConstruction();
         if(source == null)
-        {
-            StringTemplateLoader stl = fmConfigAdapter == null ?
-                    FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader() :
-                    fmConfigAdapter.getStringTemplateLoader();
-            stl.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
-        }
+            FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader().addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
     public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException

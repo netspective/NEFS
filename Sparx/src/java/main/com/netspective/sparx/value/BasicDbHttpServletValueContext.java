@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.14 2003-06-06 22:58:46 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.15 2003-06-06 23:10:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -56,11 +56,14 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import freemarker.template.Configuration;
 import freemarker.cache.WebappTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.SqlManager;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
+import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogsManager;
@@ -363,7 +366,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         if(result == null)
         {
             result = new Configuration();
-            result.setTemplateLoader(new WebappTemplateLoader(context));
+            result.setTemplateLoader(new MultiTemplateLoader(new TemplateLoader[] {
+                    FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader(),
+                    new WebappTemplateLoader(context)
+                }));
             context.setAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG, result);
         }
         return result;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.1 2003-06-06 22:58:46 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.2 2003-06-06 23:10:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -59,17 +59,14 @@ import freemarker.cache.TemplateLoader;
 
 public class FreeMarkerConfigurationAdapter
 {
-    private Configuration configuration = new Configuration();
-    private StringTemplateLoader stringTemplateLoader;
+    private Configuration configuration;
     private boolean defaultAdapter;
     private String name;
     private File baseDir;
     private Class baseClass;
 
-    public FreeMarkerConfigurationAdapter(StringTemplateLoader stringTemplateLoader)
+    public FreeMarkerConfigurationAdapter()
     {
-        this.stringTemplateLoader = stringTemplateLoader;
-        configuration.setTemplateLoader(stringTemplateLoader);
     }
 
     public boolean isDefault()
@@ -86,19 +83,18 @@ public class FreeMarkerConfigurationAdapter
 
     public Configuration getConfiguration()
     {
+        if(configuration == null)
+        {
+            configuration = new Configuration();
+            configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
+        }
         return configuration;
-    }
-
-    public StringTemplateLoader getStringTemplateLoader()
-    {
-        return stringTemplateLoader;
     }
 
     protected void updateConfiguration()
     {
         List tmplLoaders = new ArrayList();
-        if(stringTemplateLoader != null)
-            tmplLoaders.add(stringTemplateLoader);
+        tmplLoaders.add(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
 
         if(baseClass != null)
             tmplLoaders.add(new ClassTemplateLoader(baseClass));
@@ -113,7 +109,7 @@ public class FreeMarkerConfigurationAdapter
             throw new NestableRuntimeException(e);
         }
 
-        configuration.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
+        getConfiguration().setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) tmplLoaders.toArray(new TemplateLoader[tmplLoaders.size()])));
     }
 
     public String getName()
