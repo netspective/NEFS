@@ -35,7 +35,7 @@
             </panels>
         </page>
 
-        <page name="asset" caption="Assets">
+        <page name="asset" caption="Assets" dialog-next-action-url="page-id:/asset/view">
             <page name="view" caption="View Assets" command="query,library.get-all-assets,-,-,-,record-manager-compressed"/>
             <page name="add" caption="Add Asset" command="dialog,schema.db.Asset,add"/>
             <page name="edit" caption="Edit Asset" require-request-param="asset_id" retain-params="asset_id">
@@ -54,7 +54,7 @@
             </page>
         </page>
 
-        <page name="borrower" caption="Borrowers">
+        <page name="borrower" caption="Borrowers" dialog-next-action-url="page-id:/borrower/view">
             <page name="view" caption="View Borrowers" command="query,library.get-all-borrowers,-,-,-,record-manager-compressed"/>
             <page name="add" caption="Add Borrower" command="dialog,schema.db.borrower,add"/>
             <page name="edit" caption="Edit Borrower" command="dialog,schema.db.borrower,edit" require-request-param="borrower_id" retain-params="borrower_id">
@@ -73,7 +73,7 @@
             </page>
         </page>
 
-        <page name="loan" caption="Loans">
+        <page name="loan" caption="Loans" dialog-next-action-url="page-id:/loan/view">
             <page name="view" caption="View Loans" command="query,library.get-all-asset-loans,-,-,-,record-manager-compressed"/>
             <page name="add" caption="Add Loan" command="dialog,schema.db.Asset_Loan,add"/>
             <page name="edit" caption="Edit Loan" command="dialog,schema.db.Asset_Loan,edit" require-request-param="asset_loan_id" retain-params="asset_loan_id">
