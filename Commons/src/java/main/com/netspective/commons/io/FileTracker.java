@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileTracker.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: FileTracker.java,v 1.2 2003-03-25 08:00:37 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.io;
@@ -112,21 +112,65 @@ public class FileTracker implements InputSourceTracker
 
     public void setFile(File file)
     {
+	    if (null == file) return;
+
         this.file = file;
         lastModified = file.lastModified();
     }
 
     public void addPreProcessor(FileTracker value)
     {
+	    if (null == value) return;
+
         if(preProcessors == null) preProcessors = new ArrayList();
         preProcessors.add(value);
     }
 
+	public void addPreProcessor(File file)
+	{
+		if (null == file) return;
+
+		FileTracker tracker = new FileTracker();
+		tracker.setFile(file);
+		addPreProcessor(tracker);
+	}
+
+	public void addPreProcessor(String filename)
+	{
+		if (null == filename) return;
+
+		FileTracker tracker = new FileTracker();
+		File file = new File(filename);
+		tracker.setFile(file);
+		addPreProcessor(tracker);
+	}
+
     public void addInclude(FileTracker value)
     {
+	    if (null == value) return;
+
         if(includes == null) includes = new ArrayList();
         includes.add(value);
     }
+
+	public void addInclude(File file)
+	{
+		if (null == file) return;
+
+		FileTracker tracker = new FileTracker();
+		tracker.setFile(file);
+		addInclude(tracker);
+	}
+
+	public void addInclude(String filename)
+	{
+		if (null == filename) return;
+
+		FileTracker tracker = new FileTracker();
+		File file = new File(filename);
+		tracker.setFile(file);
+		addInclude(tracker);
+	}
 
     public boolean sourceChanged()
     {
@@ -153,5 +197,11 @@ public class FileTracker implements InputSourceTracker
 
         return false;
     }
+
+	public void reset()
+	{
+		if (file.lastModified() >= this.lastModified)
+			this.lastModified = file.lastModified();
+	}
 }
 
