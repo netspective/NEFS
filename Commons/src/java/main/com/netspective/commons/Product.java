@@ -32,6 +32,8 @@
  */
 package com.netspective.commons;
 
+import java.util.Date;
+
 public interface Product
 {
     public String getProductName();
@@ -45,6 +47,10 @@ public interface Product
     public int getVersionMinor();
 
     public int getBuildNumber();
+
+    public Date getBuildDate();
+
+    public String getBuildDateText();
 
     public String getBuildFilePrefix(boolean includeBuildNumber);
 

@@ -146,6 +146,12 @@ public class XdmProduct implements Product
         return buildDate;
     }
 
+    public String getBuildDateText()
+    {
+        DateFormat format = DateFormat.getDateTimeInstance();
+        return format.format(getBuildDate());
+    }
+
     public void setBuildDate(Date buildDate)
     {
         this.buildDate = buildDate;

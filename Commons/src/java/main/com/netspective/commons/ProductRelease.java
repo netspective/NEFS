@@ -32,6 +32,27 @@
  */
 package com.netspective.commons;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 public class ProductRelease implements Product
 {
     public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
@@ -103,5 +124,160 @@ public class ProductRelease implements Product
     public final String getVersionAndBuildShort()
     {
         return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+    }
+
+    public Date getBuildDate()
+    {
+        DateFormat format = DateFormat.getDateTimeInstance();
+        try
+        {
+            return format.parse(BuildLog.BUILD_DATE);
+        }
+        catch(ParseException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return new Date();
+        }
+    }
+
+    public String getBuildDateText()
+    {
+        return BuildLog.BUILD_DATE;
+    }
+
+    public static void fillLibraryVersions(Product product, Properties props, String dirName, String productInfoResourceName) throws ParserConfigurationException, IOException, SAXException
+    {
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilder parser = factory.newDocumentBuilder();
+        final InputStream inStream = product.getClass().getResource(productInfoResourceName).openStream();
+        Document doc = doc = parser.parse(inStream);
+        inStream.close();
+        Element rootElem = doc.getDocumentElement();
+        NodeList products = rootElem.getElementsByTagName("product");
+        if(products == null || products.getLength() == 0)
+            return;
+
+        File dir = new File(dirName);
+        File[] files = dir.listFiles();
+        for(int i = 0; i < files.length; i++)
+        {
+            File file = files[i];
+            String libFileName = file.getName();
+
+            for(int n = 0; n < products.getLength(); n++)
+            {
+                Element productElement = (Element) products.item(n);
+                NodeList dependencies = productElement.getElementsByTagName("dependencies");
+                if(dependencies == null || dependencies.getLength() != 1)
+                    continue;
+
+                Element dependElem = (Element) dependencies.item(0);
+                NodeList libraries = dependElem.getElementsByTagName("library");
+                if(libraries == null || libraries.getLength() == 0)
+                    continue;
+
+                for(int l = 0; l < libraries.getLength(); l++)
+                {
+                    Element libraryElem = (Element) libraries.item(l);
+                    NodeList children = libraryElem.getChildNodes();
+
+                    String libName = null;
+                    String libVersion = null;
+                    String libClassPath = null;
+
+                    for(int c = 0; c < children.getLength(); c++)
+                    {
+                        Node node = children.item(c);
+                        if(node.getNodeType() != Node.ELEMENT_NODE)
+                            continue;
+
+                        if(node.getNodeName().equals("name"))
+                            libName = node.getFirstChild().getNodeValue();
+                        else if(node.getNodeName().equals("version"))
+                            libVersion = node.getFirstChild().getNodeValue();
+                        else if(node.getNodeName().equals("class-path"))
+                            libClassPath = node.getFirstChild().getNodeValue();
+                    }
+
+                    if(libClassPath != null)
+                    {
+                        StringTokenizer st = new StringTokenizer(libClassPath, ":");
+                        while(st.hasMoreTokens())
+                        {
+                            final String checkLibName = st.nextToken();
+                            if(checkLibName.equals(libFileName))
+                                props.setProperty(libFileName, libName + " Version " + libVersion);
+                        }
+                    }
+                }
+            }
+        }
+
+        return;
+    }
+
+    public static void handleCommandLineOutput(Product product, String[] args) throws IOException, ParserConfigurationException, SAXException
+    {
+        if(args.length > 0)
+        {
+            final String firstArg = args[0];
+            if(firstArg.equals("-v"))
+                System.out.print(product.getVersionAndBuildShort());
+            else if(firstArg.equals("-V"))
+                System.out.print(product.getProductBuild());
+            else if(firstArg.equals("-n"))
+                System.out.print(product.getProductName());
+            else if(firstArg.equals("-r"))
+                System.out.print(product.getReleaseNumber());
+            else if(firstArg.equals("-m"))
+                System.out.print(product.getVersionMajor());
+            else if(firstArg.equals("-i"))
+                System.out.print(product.getVersionMinor());
+            else if(firstArg.equals("-d"))
+                System.out.print(product.getBuildDateText());
+            else if(firstArg.equals("-l"))
+            {
+                final String dirName = args[1];
+                final String propFileName = args[2];
+                final String thisJarName = args[3];
+
+                final Properties props = new Properties();
+                if(new File(propFileName).exists())
+                {
+                    final FileInputStream inStream = new FileInputStream(propFileName);
+                    props.load(inStream);
+                    inStream.close();
+                }
+
+                fillLibraryVersions(product, props, dirName, "conf/product-info.xml");
+                props.setProperty(thisJarName, product.getProductBuild() + " (built on " + product.getBuildDateText() + ")");
+
+                final FileOutputStream out = new FileOutputStream(propFileName);
+                props.store(out, null);
+                out.flush();
+                out.close();
+
+                System.out.print(product.getProductBuild() + " (built on " + product.getBuildDateText() + ")");
+            }
+            else if(firstArg.equals("-?"))
+            {
+                System.out.print(product.getClass().getName() + " <options>");
+                System.out.print(" -v returns getVersionAndBuildShort()");
+                System.out.print(" -V returns getProductBuild()");
+                System.out.print(" -n returns getProductName()");
+                System.out.print(" -r returns getReleaseNumber()");
+                System.out.print(" -m returns getVersionMajor()");
+                System.out.print(" -i returns getVersionMinor()");
+                System.out.print(" -d returns getBuildDateText()");
+                System.out.print(" -l <dir> <propfile> will output version of this library plus versions of required libraries matched in <dir> to <propfile>");
+            }
+        }
+        else
+            System.out.print(product.getProductBuild() + " (built on " + product.getBuildDateText() + ")");
+    }
+
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException
+    {
+        handleCommandLineOutput(PRODUCT_RELEASE, args);
     }
 }
