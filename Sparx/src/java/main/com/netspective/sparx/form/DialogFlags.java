@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.9 2003-11-05 05:20:47 aye.thu Exp $
+ * $Id: DialogFlags.java,v 1.10 2003-11-11 19:43:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -79,10 +79,9 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     // hides the field hints until the focus is on the field
     public static final int HIDE_HINTS_UNTIL_FOCUS = DISABLE_CLIENT_KEYPRESS_FILTERS * 2;
     // save the initial state of the dialog
-    static public final int RETAIN_INITIAL_STATE = HIDE_HINTS_UNTIL_FOCUS * 2;
+    public static final int RETAIN_INITIAL_STATE = HIDE_HINTS_UNTIL_FOCUS * 2;
     // automatically bind fields to database columns
-    static public final int AUTO_BIND_FIELDS_TO_COLUMNS = RETAIN_INITIAL_STATE * 2;
-    public static final int CUSTOM_START = AUTO_BIND_FIELDS_TO_COLUMNS * 2;
+    public static final int CUSTOM_START = RETAIN_INITIAL_STATE * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -97,8 +96,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE", SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_KEYPRESS_FILTERS", DISABLE_CLIENT_KEYPRESS_FILTERS),
         new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_HINTS_UNTIL_FOCUS", HIDE_HINTS_UNTIL_FOCUS),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "AUTO_BIND_FIELDS_TO_COLUMNS", AUTO_BIND_FIELDS_TO_COLUMNS)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE)
     };
 
     public DialogFlags()
