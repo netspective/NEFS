@@ -2,10 +2,10 @@ package com.netspective.sparx;
 
 public class BuildLog
 {
-  public static final int    BUILD_NUMBER = 12;
+  public static final int    BUILD_NUMBER = 13;
   public static final String BUILD_HOST_NAME = "moscow";
   public static final String BUILD_HOST_IP = "192.168.0.101";
-  public static final String BUILD_DATE = "Fri Jun 27 10:57:20 EDT 2003";
+  public static final String BUILD_DATE = "Sat Aug 09 21:24:29 EDT 2003";
 
   public static final String BUILD_OS_NAME = "Windows 2000";
   public static final String BUILD_OS_VERSION = "5.1";
@@ -18,10 +18,10 @@ public class BuildLog
   public static final String BUILD_VM_VENDOR = "Sun Microsystems Inc.";
 
   public static final String[] BUILD_CLASS_PATH = new String[] {
-      "C:/Projects/Frameworks/Sparx/conf/../../Commons/lib/redist/ant.jar", 
-      "C:/Projects/Frameworks/Sparx/conf/../../Commons/lib/redist/ant-optional.jar", 
-      "C:/Projects/Frameworks/Sparx/conf/../../Commons/lib/redist/junit.jar", 
-      "C:/Projects/Frameworks/Sparx/conf/../../Commons/lib/redist/clover.jar", 
-      "C:/Projects/Frameworks/Sparx/conf/../../Commons/lib/redist/xerces.jar", 
+      "C:/Projects/Frameworks/tools/../Commons/lib/redist/ant.jar", 
+      "C:/Projects/Frameworks/tools/../Commons/lib/redist/ant-optional.jar", 
+      "C:/Projects/Frameworks/tools/../Commons/lib/redist/junit.jar", 
+      "C:/Projects/Frameworks/tools/../Commons/lib/redist/clover.jar", 
+      "C:/Projects/Frameworks/tools/../Commons/lib/redist/xerces.jar", 
       "C:/utils/java/jdk1.3.1/lib/tools.jar"      };
 }

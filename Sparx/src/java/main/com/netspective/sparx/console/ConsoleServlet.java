@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.17 2003-08-08 18:50:02 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.18 2003-08-10 16:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -48,13 +48,9 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
+import javax.servlet.ServletConfig;
 
-import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.Project;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
 
 public class ConsoleServlet extends NavigationControllerServlet
 {
@@ -62,32 +58,18 @@ public class ConsoleServlet extends NavigationControllerServlet
     public static final String REQATTRNAME_INCONSOLE = "in-console";
     public static final Boolean REQATTRVALUE_INCONSOLE = new Boolean(true);
 
-    protected Theme getTheme()
+    public void init(ServletConfig servletConfig) throws ServletException
     {
-        return Themes.getInstance().getTheme(CONSOLE_ID);
-    }
-
-    protected NavigationTree getNavigationTree(Project project)
-    {
-        return project.getConsoleNavigationTree();
+        super.init(servletConfig);
+        if(getThemeName() == null)
+            setThemeName(CONSOLE_ID);
+        if(getNavigationTreeName() == null)
+            setNavigationTreeName(CONSOLE_ID);
     }
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
-        long startTime = System.currentTimeMillis();
         httpServletRequest.setAttribute(REQATTRNAME_INCONSOLE, REQATTRVALUE_INCONSOLE);
-
-        NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
-        checkForLogout(nc);
-        if(nc.isRedirectToAlternateChildRequired())
-        {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
-            return;
-        }
-
-        renderPage(nc);
-
-        long renderTime = System.currentTimeMillis() - startTime;
-        httpServletResponse.getWriter().write("Render time: " + renderTime + " milliseconds");
+        super.doGet(httpServletRequest, httpServletResponse);
     }
 }

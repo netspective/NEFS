@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.10 2003-08-08 18:50:02 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.11 2003-08-10 16:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -74,15 +74,33 @@ import com.netspective.commons.text.TextUtils;
 public class NavigationControllerServlet extends HttpServlet
 {
     private static final Log log = LogFactory.getLog(NavigationControllerServlet.class);
+    public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
+    public static final String INITPARAMNAME_NAVIGATION_TREE_NAME = "com.netspective.sparx.navigate.NAVIGATION_TREE_NAME";
+    public static final String INITPARAMNAME_THEME_NAME = "com.netspective.sparx.theme.THEME_NAME";
+    public static final String INITPARAMNAME_LOGIN_MANAGER_NAME = "com.netspective.sparx.security.LOGIN_MANAGER_NAME";
+    public static final String INITPARAMNAME_LOGOUT_ACTION_REQ_PARAM_NAME = "com.netspective.sparx.security.LOGOUT_ACTION_REQ_PARAM_NAME";
+    public static final String DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME = "_logout";
 
-    private String loginManagerId;
+    private String loginManagerName;
+    private String themeName;
+    private String navigationTreeName;
+    private String logoutActionReqParamName = DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME;
+
     private HttpLoginManager loginManager;
+    private Theme theme;
+    private NavigationTree navigationTree;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
 
-        loginManagerId = servletConfig.getInitParameter("login-manager-id");
+        loginManagerName = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_MANAGER_NAME);
+        logoutActionReqParamName = servletConfig.getInitParameter(INITPARAMNAME_LOGOUT_ACTION_REQ_PARAM_NAME);
+        if(logoutActionReqParamName == null)
+            logoutActionReqParamName = DEFAULT_LOGOUT_ACTION_REQ_PARAM_NAME;
+
+        themeName = servletConfig.getInitParameter(INITPARAMNAME_THEME_NAME);
+        navigationTreeName = servletConfig.getInitParameter(INITPARAMNAME_NAVIGATION_TREE_NAME);
 
         File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
         if(! xdmSourceFile.exists())
@@ -92,55 +110,92 @@ public class NavigationControllerServlet extends HttpServlet
 
     public boolean isSecure()
     {
-        return loginManagerId != null;
+        return loginManagerName != null;
     }
 
-    public String getLoginManagerId()
+    public String getLoginManagerName()
     {
-        return loginManagerId;
+        return loginManagerName;
     }
 
-    public void setLoginManagerId(String loginManagerId)
+    public void setLoginManagerName(String loginManagerName)
     {
-        this.loginManagerId = loginManagerId;
+        this.loginManagerName = loginManagerName;
     }
 
-    protected String getLogoutActionReqParamName()
+    public String getNavigationTreeName()
     {
-        return "_logout";
+        return navigationTreeName;
     }
 
-    protected Theme getTheme()
+    public void setNavigationTreeName(String navigationTreeName)
     {
-        return Themes.getInstance().getDefaultTheme();
+        this.navigationTreeName = navigationTreeName;
     }
 
-    protected NavigationTree getNavigationTree(Project project)
+    public String getThemeName()
     {
-        return project.getDefaultNavigationTree();
+        return themeName;
     }
 
-    protected HttpLoginManager getLoginManager(Project project)
+    public void setThemeName(String themeName)
     {
-        if(loginManagerId != null && loginManager == null)
-            loginManager = project.getLoginManagers().getLoginManager(loginManagerId);
+        this.themeName = themeName;
+    }
+
+    public String getLogoutActionReqParamName()
+    {
+        return logoutActionReqParamName;
+    }
+
+    public void setLogoutActionReqParamName(String logoutActionReqParamName)
+    {
+        this.logoutActionReqParamName = logoutActionReqParamName;
+    }
+
+    public Theme getTheme()
+    {
+        if(theme == null)
+        {
+            String themeName = getThemeName();
+            theme = themeName != null ? Themes.getInstance().getTheme(themeName) : Themes.getInstance().getDefaultTheme();
+        }
+
+        return theme;
+    }
+
+    public NavigationTree getNavigationTree() throws ServletException
+    {
+        if(navigationTree == null)
+        {
+            String navTreeName = getNavigationTreeName();
+            Project project = getProject();
+            navigationTree = navTreeName != null ? project.getNavigationTree(navTreeName) : project.getDefaultNavigationTree();
+        }
+
+        return navigationTree;
+    }
+
+    public HttpLoginManager getLoginManager() throws ServletException
+    {
+        if(loginManagerName != null && loginManager == null)
+            loginManager = getProject().getLoginManagers().getLoginManager(loginManagerName);
         return loginManager;
     }
 
-    protected Project getProject() throws ServletException
+    public Project getProject() throws ServletException
     {
         return BasicDbHttpServletValueContext.getProjectComponent(getServletContext()).getProject();
     }
 
-    protected NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
+    public NavigationContext createNavigationContext(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
         Project project = getProject();
 
         Theme theme = getTheme();
         httpServletRequest.setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_THEME, theme);
 
-        NavigationTree tree = getNavigationTree(project);
-
+        NavigationTree tree = getNavigationTree();
         if(tree == null)
             throw new ServletException("Navigation tree not found. Available: " + project.getNavigationTrees());
 
@@ -156,8 +211,7 @@ public class NavigationControllerServlet extends HttpServlet
 
     protected boolean loginDialogPresented(NavigationContext nc) throws ServletException, IOException
     {
-        Project project = getProject();
-        HttpLoginManager loginManager = getLoginManager(project);
+        HttpLoginManager loginManager = getLoginManager();
         if(loginManager != null)
         {
             nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
@@ -195,6 +249,16 @@ public class NavigationControllerServlet extends HttpServlet
         return false;
     }
 
+    protected void checkForLogout(NavigationContext nc) throws ServletException, IOException
+    {
+        if(isSecure())
+        {
+            String logoutActionReqParamValue = nc.getHttpRequest().getParameter(getLogoutActionReqParamName());
+            if(logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
+                getLoginManager().logout(nc);
+        }
+    }
+
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
         if(isSecure() && loginDialogPresented(nc))
@@ -223,18 +287,11 @@ public class NavigationControllerServlet extends HttpServlet
         }
     }
 
-    protected void checkForLogout(NavigationContext nc) throws ServletException, IOException
-    {
-        if(isSecure())
-        {
-            String logoutActionReqParamValue = nc.getHttpRequest().getParameter(getLogoutActionReqParamName());
-            if(logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
-                getLoginManager(getProject()).logout(nc);
-        }
-    }
-
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
+        // record the starting time because it may be used by skins to show complete render times.
+        httpServletRequest.setAttribute(REQATTRNAME_RENDER_START_TIME, new Long(System.currentTimeMillis()));
+
         NavigationContext nc = createNavigationContext(httpServletRequest, httpServletResponse);
         checkForLogout(nc);
         if(nc.isRedirectToAlternateChildRequired())

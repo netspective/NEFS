@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.2 2003-08-08 18:34:03 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.3 2003-08-10 16:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -64,9 +64,9 @@ import javax.servlet.ServletConfig;
  */
 public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
 {
-    public static final String INITPARAMNAME_LOGIN_USER_ID = "login-user-id";
-    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED = "login-password";
-    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED = "login-password-encrypted";
+    public static final String INITPARAMNAME_LOGIN_USER_ID = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_USER_ID";
+    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_PLAIN_TEXT";
+    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_ENCRYPTED";
 
     public boolean isUserValid(LoginDialog loginDialog, LoginDialogContext loginDialogContext)
     {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.28 2003-08-06 01:05:38 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.29 2003-08-10 16:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -91,7 +91,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 10];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 11];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -110,6 +110,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
         FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 9] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 10] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SHOW_RENDER_TIME", Flags.SHOW_RENDER_TIME);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -137,7 +138,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int IS_POPUP_MODE = INHERIT_ASSIGN_STATE_PARAMS * 2;
         public static final int IS_PRINT_MODE = IS_POPUP_MODE * 2;
         public static final int IS_SERVICE_MODE = IS_PRINT_MODE * 2;
-        public static final int START_CUSTOM = IS_SERVICE_MODE * 2;
+        public static final int SHOW_RENDER_TIME = IS_SERVICE_MODE * 2;
+        public static final int START_CUSTOM = SHOW_RENDER_TIME * 2;
 
         public Flags()
         {
