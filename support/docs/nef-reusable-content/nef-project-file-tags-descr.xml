@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section>
+  <title>The NEF Project File (project.xml)</title>
+
+  <section>
+    <title>Dissecting the project.xml</title>
+
+    <para><example>
+        <title>Project File of Starter Application</title>
+
+        <programlisting>&lt;?xml version="1.0"?&gt; 
+
+&lt;<emphasis>project xmlns:xdm</emphasis>="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt; <co
+            id="declare-prj-file-tags-eg-1" />
+
+    &lt;xdm:include resource="com/netspective/commons/conf/commons.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-2" />
+    &lt;xdm:include resource="com/netspective/axiom/conf/axiom.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-3" />
+    &lt;xdm:include resource="com/netspective/sparx/conf/sparx.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-4" />
+    &lt;xdm:include resource="com/netspective/sparx/conf/console.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-5" />
+
+    &lt;!-- Your application tags go here. --&gt; <co
+            id="declare-prj-file-tags-eg-6" />
+
+    &lt;xdm:include file="your/own/file.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-7" />
+
+    &lt;!-- Your other application tags go here. --&gt;
+&lt;/project&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-prj-file-tags-eg-1">
+            <para>The root tag is called <sgmltag>project</sgmltag> and should
+            use the provided xdm namespace.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-2">
+            <para>Include the Netspective Commons default component
+            declarations. It uses the resource attribute so it will be located
+            by searching the classpath and will usually find the file in the
+            JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-3">
+            <para>Include the Netspective Axiom default component declarations
+            and factory registrations. It uses the resource attribute so it
+            will be located by searching the classpath and will usually find
+            the file in the JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-4">
+            <para>Include the Netspective Sparx default component declarations
+            and factory registrations. It uses the resource attribute so it
+            will be located by searching the classpath and will usually find
+            the file in the JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-5">
+            <para>Include the Netspective Enterprise Console servlet
+            declarations and application components. If you are turning off
+            the Console in your applications you may leave this line
+            out.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-6">
+            <para>This is the location where your component declarations will
+            be done. Unless otherwise specified, all the components are
+            declared right under the <sgmltag>project</sgmltag> tag.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-7">
+            <para>This line demonstrates how you can include your own XML
+            files using the file attribute. In this example, because the file
+            is not absolute it will be treated as relative to the calling
+            file. The <sgmltag>xdm:include</sgmltag> tag may be included
+            anywhere in the file and simply takes items from the included file
+            and places them into the calling file while parsing.</para>
+          </callout>
+        </calloutlist>
+      </example></para>
+  </section>
+</section>
