@@ -44,7 +44,7 @@
                projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
                idConstantsClass="auto.id"
-               cleanFirst="yes"/>
+               cleanFirst="preserve-cvs"/>
     </target>
 
     <target name="generate-dialog-context-beans" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
@@ -52,7 +52,7 @@
                projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
                dcbPackage="auto.dcb"
-               cleanFirst="yes"/>
+               cleanFirst="preserve-cvs"/>
     </target>
 
     <target name="generate-sql-ddl" depends=".init" if="app.database.default-schema-name" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
@@ -67,7 +67,7 @@
                projectFile="${app.sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
                dalPackage="auto.dal"
-               cleanFirst="yes"/>
+               cleanFirst="preserve-cvs"/>
     </target>
 
     <target name="generate-import-data-dtd" depends=".init" if="app.database.default-schema-name" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
