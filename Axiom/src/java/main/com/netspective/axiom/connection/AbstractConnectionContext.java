@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.2 2003-03-15 21:39:38 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -151,6 +151,11 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public boolean inMaintenanceMode()
     {
         return dbvc.inMaintenanceMode();
+    }
+
+    public boolean withinACE()
+    {
+        return false;
     }
 
     public boolean isAntBuildEnvironment()

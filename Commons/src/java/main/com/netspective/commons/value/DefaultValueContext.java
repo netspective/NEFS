@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.2 2003-03-15 21:39:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -52,6 +52,11 @@ public class DefaultValueContext implements ValueContext
     }
 
     public boolean inMaintenanceMode()
+    {
+        return false;
+    }
+
+    public boolean withinACE()
     {
         return false;
     }
