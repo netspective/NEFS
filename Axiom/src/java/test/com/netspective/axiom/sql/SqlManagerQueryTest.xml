@@ -39,19 +39,19 @@
             </params>
         </query>
 
+        <query name="statement-2">
+            select * from test
+            where column_a = ?
+              and column_b = ?
+              and column_c = 'this'
+
+            <params>
+                <param name="column_a" value="text:abc"/>
+                <param name="column_b" value="text:def" index="7" sql-type="integer" java-type="java.lang.Integer"/>
+            </params>
+        </query>
+
     </queries>
-
-    <query name="statement-2">
-        select * from test
-        where column_a = ?
-          and column_b = ?
-          and column_c = 'this'
-
-        <params>
-            <param name="column_a" value="text:abc"/>
-            <param name="column_b" value="text:def" index="7" sql-type="integer" java-type="java.lang.Integer"/>
-        </params>
-    </query>
 
     <query-defn name="query-defn-1">
         <field name='field_01' join="join_01" column="column_01"/>

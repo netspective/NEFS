@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.14 2003-09-21 02:33:00 roque.hernandez Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.15 2003-11-08 18:29:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -76,7 +76,7 @@ public class SqlManagerQueryTest extends TestCase
 	 protected SqlManagerComponent component = null;
 	 protected SqlManager manager = null;
     protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
-    protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "statement-2"};
+    protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "test.statement-2"};
 
 	protected void setUp () throws Exception
     {
@@ -740,7 +740,7 @@ public class SqlManagerQueryTest extends TestCase
 
     public void testStmt2Validity() throws DataModelException, NamingException, SQLException
     {
-        Query statement2 = manager.getQuery("statement-2");
+        Query statement2 = manager.getQuery("test.statement-2");
         assertNotNull(statement2);
         assertNotNull(statement2.getParams());
         assertEquals(2, statement2.getParams().size());
