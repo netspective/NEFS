@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.14 2003-11-07 17:32:04 shahid.shah Exp $
+ * $Id: SchemaColumnsTest.java,v 1.15 2004-02-06 03:05:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -134,15 +134,7 @@ public class SchemaColumnsTest extends TestCase
         floatColValue.setTextValue("0.5");
         assertEquals(floatColValue.getValue(), floatValue);
 
-        try
-        {
-            floatColValue.setValue(new Integer(0));
-            fail();
-        }
-        catch (ClassCastException e)
-        {
-            //This is good
-        }
+        floatColValue.setValue(new Integer(0));
 
         try
         {
