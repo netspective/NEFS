@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.52 2004-01-06 19:59:37 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.53 2004-01-09 15:37:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -68,6 +68,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.collections.LRUMap;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.tools.ant.Main;
 
 import com.netspective.sparx.navigate.NavigationContext;
@@ -1062,7 +1063,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         catch (DialogExecuteException e)
         {
             log.error("Dialog execute error", e);
-            writer.write(e.toString());
+            throw new NestableRuntimeException(e);
         }
     }
 
