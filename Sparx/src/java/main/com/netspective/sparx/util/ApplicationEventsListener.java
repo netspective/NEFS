@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationEventsListener.java,v 1.2 2003-08-31 23:05:16 shahid.shah Exp $
+ * $Id: ApplicationEventsListener.java,v 1.3 2003-09-14 05:36:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -55,6 +55,7 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.connection.AbstractConnectionContext;
 import com.netspective.sparx.connection.HttpSessionBindableConnectionContext;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceMapScrollStates;
 
 public class ApplicationEventsListener implements ServletContextListener
 {
@@ -87,6 +88,8 @@ public class ApplicationEventsListener implements ServletContextListener
             else
                 cc.rollbackAndCloseAndLogAsConnectionLeak(log, null);
         }
+
+        HtmlTabularReportDataSourceMapScrollStates.timeoutAllScrollStates(log);
     }
 }
 
