@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.32 2004-06-01 04:14:12 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.33 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -72,6 +72,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.validate.ValidationContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogDirector;
@@ -90,6 +91,7 @@ import com.netspective.sparx.theme.Theme;
 
 public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(StandardDialogSkin.class);
     static public final String FIELDROW_PREFIX = "_dfr.";
     static public final String GRIDHEADROW_PREFIX = "_dghr.";
@@ -143,12 +145,17 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      */
     public StandardDialogSkin()
     {
-
+        init();
     }
 
     public StandardDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        init();
+    }
+
+    public void init()
+    {
         summarizeErrors = true;
         outerTableAttrs = "border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap";
         innerTableAttrs = "width='100%' cellspacing='0' cellpadding='4' bgcolor='#EEEEEE' ";
@@ -193,7 +200,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         includePreScriptsMap = new HashMap();
 
         controlAreaClass = " class=\"dialog-entry\" ";
-        captionClass = " class=\"dialog-fields\"";
+        captionClass = " class=\"dialog-fields\"";        
     }
 
     public final String getDefaultControlAttrs()

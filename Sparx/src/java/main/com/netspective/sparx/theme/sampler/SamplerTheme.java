@@ -39,27 +39,30 @@
  */
 
 /**
- * $Id: SamplerTheme.java,v 1.1 2004-05-11 12:22:47 shahid.shah Exp $
+ * $Id: SamplerTheme.java,v 1.2 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.sampler;
 
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.theme.console.ConsoleTheme;
+import com.netspective.sparx.theme.basic.StandardLoginDialogSkin;
+import com.netspective.sparx.security.LoginDialogSkin;
 
 public class SamplerTheme extends ConsoleTheme
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, ConsoleServlet.CONSOLE_ID, "panel-input-login", "panel/input", false);
+    public SamplerTheme()
+    {
+    }
 
     public NavigationSkin createNavigationSkin()
     {
         return new SamplerNavigationSkin(this, ConsoleServlet.CONSOLE_ID);
     }
 
-    public LoginDialogSkin getLoginDialogSkin()
+    protected LoginDialogSkin constructLoginDialogSkin()
     {
-        return defaulLoginDialogSkin;
+        return new StandardLoginDialogSkin(this, ConsoleServlet.CONSOLE_ID, "panel-input-login", "panel/input", false);
     }
 }

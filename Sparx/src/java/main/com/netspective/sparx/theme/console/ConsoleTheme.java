@@ -39,27 +39,25 @@
  */
 
 /**
- * $Id: ConsoleTheme.java,v 1.6 2003-09-13 23:06:08 shahid.shah Exp $
+ * $Id: ConsoleTheme.java,v 1.7 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
 import com.netspective.sparx.theme.basic.BasicTheme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.console.ConsoleServlet;
+import com.netspective.sparx.security.LoginDialogSkin;
 
 public class ConsoleTheme extends BasicTheme
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new ConsoleLoginDialogSkin(this, ConsoleServlet.CONSOLE_ID, "panel-input-login", "panel/input", false);
-
     public NavigationSkin createNavigationSkin()
     {
         return new ConsoleNavigationSkin(this, ConsoleServlet.CONSOLE_ID);
     }
 
-    public LoginDialogSkin getLoginDialogSkin()
+    protected LoginDialogSkin constructLoginDialogSkin()
     {
-        return defaulLoginDialogSkin;
+        return new ConsoleLoginDialogSkin(this, ConsoleServlet.CONSOLE_ID, "panel-input-login", "panel/input", false);
     }
 }

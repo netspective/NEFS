@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.8 2003-08-31 03:12:22 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.9 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -49,10 +49,10 @@ import java.io.IOException;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.theme.basic.StandardLoginDialogSkin;
 import com.netspective.sparx.panel.HtmlPanel;
 
-public class ConsoleLoginDialogSkin extends LoginDialogSkin
+public class ConsoleLoginDialogSkin extends StandardLoginDialogSkin
 {
     public ConsoleLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {

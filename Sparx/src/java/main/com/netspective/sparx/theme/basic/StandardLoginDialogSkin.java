@@ -39,29 +39,32 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.8 2004-04-23 04:19:11 aye.thu Exp $
+ * $Id: StandardLoginDialogSkin.java,v 1.1 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.security.LoginDialogSkin;
 
 import java.io.IOException;
 import java.io.Writer;
 
-public class LoginDialogSkin extends StandardDialogSkin
+public class StandardLoginDialogSkin extends StandardDialogSkin implements LoginDialogSkin
 {
-    private String loginImage = "netspective-keys.gif";
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private String loginImage = "/images/login/netspective-keys.gif";
 
-    public LoginDialogSkin()
+    public StandardLoginDialogSkin()
     {
         super();
     }
 
-    public LoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public StandardLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
@@ -97,7 +100,7 @@ public class LoginDialogSkin extends StandardDialogSkin
         writer.write("                                <table border=\"0\" cellspacing=\"0\" cellpadding=\"15\">");
         writer.write("                                    <tr>");
         writer.write("                                        <td align=\"center\" valign=\"middle\">" +
-                "<img src=\"" + theme.getResourceUrl("/images/login/"+ getLoginImage()) + "\" " +
+                "<img src=\"" + theme.getResourceUrl(getLoginImage()) + "\" " +
                 "alt=\"\" border=\"0\"></td>");
         writer.write("                                        <td align=\"left\" valign=\"middle\">");
 

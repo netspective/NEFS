@@ -39,83 +39,13 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.32 2004-07-11 02:15:43 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.1 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.security;
 
-import com.netspective.commons.Product;
+import com.netspective.sparx.form.DialogSkin;
 
-public class ProductRelease implements Product
+public interface LoginDialogSkin extends DialogSkin
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
-
-    public static final String PRODUCT_NAME = "Netspective Sparx";
-    public static final String PRODUCT_ID = "netspective-sparx";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 1;
-    public static final int PRODUCT_VERSION_MINOR = 5;
-
-    public ProductRelease()
-    {
-    }
-
-    public String getProductId()
-    {
-        return PRODUCT_ID;
-    }
-
-    public String getProductName()
-    {
-        return PRODUCT_NAME;
-    }
-
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
-
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
-    }
 }

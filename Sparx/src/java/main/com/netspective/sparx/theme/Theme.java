@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Theme.java,v 1.16 2003-12-03 22:40:01 aye.thu Exp $
+ * $Id: Theme.java,v 1.17 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -50,8 +50,8 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.theme.basic.HtmlListPanelSkin;
+import com.netspective.sparx.security.LoginDialogSkin;
 import com.netspective.commons.io.UriAddressableFileLocator;
 
 public interface Theme

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.24 2004-02-16 04:38:39 aye.thu Exp $
+ * $Id: AbstractTheme.java,v 1.25 2004-07-11 02:15:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -54,6 +54,8 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.security.LoginDialogSkin;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -252,7 +254,7 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
 
     protected LoginDialogSkin constructLoginDialogSkin()
     {
-        return new LoginDialogSkin(this, "login", "panel-input", "panel/input", false);
+        return new StandardLoginDialogSkin(this, "login", "panel-input", "panel/input", false);
     }
 
     protected HtmlListPanelSkin constructListPanelSkin()
@@ -366,6 +368,17 @@ public class AbstractTheme implements Theme, XmlDataModelSchema.InputSourceLocat
     public HtmlTabularReportSkin getReportSkin(String name)
     {
         return (HtmlTabularReportSkin) tabularReportSkins.get(name);
+    }
+
+    public LoginDialogSkin createLoginDialogSkin()
+    {
+        return constructLoginDialogSkin();
+    }
+
+    public void addLoginDialogSkin(LoginDialogSkin loginDialogSkin)
+    {
+        loginDialogSkin.setTheme(this);
+        this.defaulLoginDialogSkin = loginDialogSkin;
     }
 
     /**
