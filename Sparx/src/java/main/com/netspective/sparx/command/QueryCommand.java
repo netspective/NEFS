@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryCommand.java,v 1.7 2003-07-11 17:39:19 aye.thu Exp $
+ * $Id: QueryCommand.java,v 1.8 2003-07-12 02:11:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -70,7 +70,7 @@ import com.netspective.commons.command.CommandDocumentation;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.sql.Query;
+import com.netspective.sparx.sql.Query;
 
 import java.util.StringTokenizer;
 import java.util.List;
@@ -262,7 +262,7 @@ public class QueryCommand extends AbstractHttpServletCommand
 
     public com.netspective.sparx.form.sql.QueryDialog createQueryDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
-        Query query = sqlManager.getQuery(queryName);
+        Query query = (com.netspective.sparx.sql.Query)sqlManager.getQuery(queryName);
         if(query == null)
         {
             writer.write("Query " + queryName + " not found.");
@@ -277,15 +277,22 @@ public class QueryCommand extends AbstractHttpServletCommand
 
     public QueryReportPanel createQueryReportPanel(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
-        Query query = sqlManager.getQuery(queryName);
+        Query query = (com.netspective.sparx.sql.Query)sqlManager.getQuery(queryName);
         if(query == null)
         {
             writer.write("Query " + queryName + " not found.");
             return null;
         }
+        QueryReportPanel result = null;
+        if (reportId != null)
+        {
+            result = query.getPresentation().getPanel(reportId);
+        }
 
-        QueryReportPanel result = new QueryReportPanel();
-        result.setQuery(query);
+        if (result == null)
+        {
+            result = query.getPresentation().getDefaultPanel();
+        }
         result.setReportSkin(reportSkinName);
 
         return result;
