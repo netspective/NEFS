@@ -90,7 +90,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.78 2004-09-07 03:08:20 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.79 2004-09-13 03:54:41 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -188,7 +188,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public void clearFlag(long flag)
         {
             super.clearFlag(flag);
-            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
+            if(!isStateFlags() && (flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 clearFlagRecursively(flag);
         }
 
@@ -198,7 +198,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         public void setFlag(long flag)
         {
             super.setFlag(flag);
-            if((flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
+            if(!isStateFlags() && (flag & (REJECT_FOCUS | HIDDEN | HIDDEN_UNLESS_ACTIVE)) != 0)
                 setFlagRecursively(flag);
         }
 

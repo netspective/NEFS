@@ -61,6 +61,7 @@ public class NavigationPath
         public State()
         {
             this.flags = (NavigationPathFlags) NavigationPath.this.getFlags().cloneFlags();
+            this.flags.setStateFlags(true);
         }
 
         public NavigationPathFlags getFlags()

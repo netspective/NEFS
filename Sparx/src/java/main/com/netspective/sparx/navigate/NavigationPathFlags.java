@@ -38,7 +38,7 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 /**
  * Flag class for navigation path items
  *
- * @version $Id: NavigationPathFlags.java,v 1.3 2004-08-15 01:47:09 shahid.shah Exp $
+ * @version $Id: NavigationPathFlags.java,v 1.4 2004-09-13 03:54:41 shahid.shah Exp $
  */
 public class NavigationPathFlags extends XdmBitmaskedFlagsAttribute
 {
@@ -50,9 +50,21 @@ public class NavigationPathFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", HAS_CONDITIONAL_ACTIONS)
     };
 
+    private boolean stateFlags;
+
     public NavigationPathFlags()
     {
 
+    }
+
+    public boolean isStateFlags()
+    {
+        return stateFlags;
+    }
+
+    public void setStateFlags(boolean stateFlags)
+    {
+        this.stateFlags = stateFlags;
     }
 
     /**
