@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.11 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: TextField.java,v 1.12 2003-05-16 14:43:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -83,7 +83,7 @@ public class TextField extends DialogField
     {
         for(int i = 0; i < DialogField.FLAG_DEFNS.length; i++)
             TEXT_FIELD_FLAG_DEFNS[i] = DialogField.FLAG_DEFNS[i];
-        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "MASK_ENTRY", Flags.MASKENTRY);
+        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "MASK_ENTRY", Flags.MASK_ENTRY);
         TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "UPPERCASE", Flags.UPPERCASE);
         TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "LOWERCASE", Flags.LOWERCASE);
         TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "TRIM", Flags.TRIM);
@@ -91,8 +91,8 @@ public class TextField extends DialogField
 
     public class Flags extends DialogField.Flags
     {
-        public static final int MASKENTRY = DialogField.Flags.START_CUSTOM;
-        public static final int UPPERCASE = MASKENTRY * 2;
+        public static final int MASK_ENTRY = DialogField.Flags.START_CUSTOM;
+        public static final int UPPERCASE = MASK_ENTRY * 2;
         public static final int LOWERCASE = UPPERCASE * 2;
         public static final int TRIM = LOWERCASE * 2;
         public static final int START_CUSTOM = TRIM * 2;
@@ -346,7 +346,7 @@ public class TextField extends DialogField
                     textValue + "\" maxlength=\"" + textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle +
                     " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
-        else if(!stateFlags.flagIsSet(Flags.MASKENTRY))
+        else if(!stateFlags.flagIsSet(Flags.MASK_ENTRY))
         {
             writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
                     textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +

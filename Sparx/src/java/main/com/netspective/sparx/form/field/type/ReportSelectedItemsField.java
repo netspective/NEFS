@@ -39,91 +39,79 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.4 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: ReportSelectedItemsField.java,v 1.1 2003-05-16 14:43:41 shahid.shah Exp $
  */
 
-package com.netspective.sparx.template.freemarker;
+package com.netspective.sparx.form.field.type;
+
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.type.SelectField;
+import com.netspective.commons.value.PresentationValue;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
-
-import com.netspective.sparx.template.AbstractTemplateProcessor;
-import com.netspective.sparx.template.TemplateProcessorException;
-import com.netspective.sparx.ApplicationManager;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-
-public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
+public class ReportSelectedItemsField extends SelectField
 {
-    private static final Log log = LogFactory.getLog(FreeMarkerTemplateProcessor.class);
-    private static final StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
-    private static final MultiTemplateLoader multiTemplateLoader =
-            new MultiTemplateLoader(
-                    new TemplateLoader[]
-                    {
-                        stringTemplateLoader,
-                        new ClassTemplateLoader(ApplicationManager.class),
-                    });
-
-    private static final Configuration fmConfig = Configuration.getDefaultConfiguration();
-
-    static
+    public ReportSelectedItemsField()
     {
-        fmConfig.setTemplateLoader(multiTemplateLoader);
+        setStyle(new Style(Style.MULTILIST));
     }
 
-    private ValueSource source;
-
-    public FreeMarkerTemplateProcessor()
+    public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-    }
+         // the 'choices' for this special SELECT field comes from the request param only (not in XDM)
 
-    public ValueSource getSource()
-    {
-        return source;
-    }
+        SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
+        SelectFieldState.SelectFieldValue sfValue = (SelectFieldState.SelectFieldValue) state.getValue();
+        String[] values = sfValue.getTextValues();
 
-    public void setSource(ValueSource source)
-    {
-        this.source = source;
-    }
-
-    public void finalizeConstruction() throws DataModelException
-    {
-        super.finalizeConstruction();
-        if(source == null)
-            stringTemplateLoader.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
-    }
-
-    public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException
-    {
-        Map vars = new HashMap();
-        try
+        PresentationValue pValue = new PresentationValue();
+        PresentationValue.Items choices = pValue.createItems();
+        if(values != null)
         {
-            Template template = source != null ?
-                    fmConfig.getTemplate(source.getTextValue(vc)) :
-                    fmConfig.getTemplate(Integer.toString(this.hashCode()));
-
-            vars.put("vc", BeansWrapper.getDefaultInstance().wrap(vc));
-            template.process(vars, writer);
+            for (int i=0; i < values.length; i++)
+            {
+                choices.addItem(values[i]);
+            }
         }
-        catch (Exception e)
+        sfValue.calcSelections(choices);
+
+        boolean readOnly = isReadOnly(dc);
+        String id = getHtmlFormControlId();
+        String defaultControlAttrs = dc.getSkin().getDefaultControlAttrs();
+
+        StringBuffer options = new StringBuffer();
+
+        if (readOnly)
         {
-            log.error(e);
-            writer.write(e.getMessage());
+            for(int i = 0; i < choices.size(); i++)
+            {
+                PresentationValue.Items.Item choice = choices.getItem(i);
+                if((choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0);
+                {
+                    if (options.length() > 0)
+                        options.append(", ");
+                    options.append("<input type='hidden' name='" + id + "' value=\"" + choice.getValue() + "\">");
+                    options.append(choice.getCaption());
+                }
+            }
+            writer.write(options.toString());
+            return;
+        }
+        else
+        {
+            for(int i = 0; i < choices.size(); i++)
+            {
+                PresentationValue.Items.Item choice = choices.getItem(i);
+                boolean selected = (choice.getFlags() & PRESENTATIONITEMFLAG_IS_SELECTED) != 0;
+                options.append("    <option value=\"" + choice.getValue() + "\" " + (selected ? "selected" : "") + ">" + choice.getCaption() + "</option>\n");
+            }
+            writer.write("<select name='" + id + "' size='" + getSize() + "' multiple='yes' " + defaultControlAttrs +
+                    (isInputHidden(dc) ? " style=\"display:none;\"" : "") +
+                    ">\n" + options + "</select>\n");
+
         }
     }
+
 }

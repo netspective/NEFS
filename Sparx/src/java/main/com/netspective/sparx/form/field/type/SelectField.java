@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.3 2003-05-15 20:50:32 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.4 2003-05-16 14:43:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -79,7 +79,7 @@ import com.netspective.commons.value.source.StaticValueSource;
 public class SelectField extends TextField
 {
     private static final Log log = LogFactory.getLog(SelectField.class);
-    private static final int PRESENTATIONITEMFLAG_IS_SELECTED = 1;
+    protected static final int PRESENTATIONITEMFLAG_IS_SELECTED = 1;
 
     public static final Flags.FlagDefn[] SELECT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 4];
     static

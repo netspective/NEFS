@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.15 2003-05-16 02:53:57 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.16 2003-05-16 14:43:41 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -38,6 +38,9 @@
     <dialog-field-type name="date" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-only"/>
     <dialog-field-type name="time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="time-only"/>
     <dialog-field-type name="date-time" class="com.netspective.sparx.form.field.type.DateTimeField" data-type="date-and-time"/>
+    <dialog-field-type name="duration" class="com.netspective.sparx.form.field.type.DurationField"/>
+    <dialog-field-type name="html" class="com.netspective.sparx.form.field.type.HtmlField"/>
+    <dialog-field-type name="file" class="com.netspective.sparx.form.field.type.FileField"/>
 
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
