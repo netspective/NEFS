@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.1 2003-04-03 14:08:13 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.2 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -71,8 +71,8 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
-            new FlagDefn("FULL_WIDTH", FULL_WIDTH),
-            new FlagDefn("SHOW_BANNER", SHOW_BANNER),
+            new FlagDefn(ACCESS_XDM, "FULL_WIDTH", FULL_WIDTH),
+            new FlagDefn(ACCESS_XDM, "SHOW_BANNER", SHOW_BANNER),
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()

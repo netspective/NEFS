@@ -21,7 +21,7 @@ public class AbstractTheme implements Theme
     private InheritableFileResources resources;
     private boolean defaultTheme;
     private NavigationSkin navigationSkin = new BasicTabbedNavigationSkin(this);
-    private BasicHtmlTabularReportSkin defaultReportSkin = new BasicHtmlTabularReportSkin(this, "panel/output", false);
+    private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel/output", false);
 
     public AbstractTheme()
     {

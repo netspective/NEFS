@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.5 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -71,18 +71,13 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public class NavigationPathState
     {
         public NavigationPath path;
-        public long flags;
+        public NavigationPath.Flags flags;
 
         public NavigationPathState(NavigationPath path)
         {
             navigationStates.put(path.getQualifiedName(), path);
             this.path = path;
-            this.flags = path.getFlags();
-        }
-
-        public final boolean flagIsSet(long flag)
-        {
-            return (flags & flag) != 0;
+            this.flags = (NavigationPath.Flags) path.createFlags().cloneFlags();
         }
     }
 
@@ -121,7 +116,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
     {
-        if(parent == null || (parent != null && parent.flagIsSet(NavigationPage.NAVGPAGEFLAG_HAS_BODY)))
+        if(parent == null || (parent != null && parent.getFlags().flagIsSet(NavigationPage.Flags.HAS_BODY)))
             return parent;
 
         NavigationPage defNavigationPage = (NavigationPage) parent.getDefaultChild();
@@ -212,7 +207,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
         if (state == null)
             state = new NavigationPathState(path);
-        state.flags |= flag;
+        state.flags.setFlag(flag);
     }
 
     public void clearFlag(NavigationPath path, long flag)
@@ -220,12 +215,12 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
         if (state == null)
             state = new NavigationPathState(path);
-        state.flags &= ~flag;
+        state.flags.clearFlag(flag);
     }
 
     public boolean flagIsSet(NavigationPath path, long flag)
     {
         NavigationPathState state = (NavigationPathState) navigationStates.get(path.getQualifiedName());
-        return state != null ? state.flagIsSet(flag) : path.flagIsSet(flag);
+        return state != null ? state.flags.flagIsSet(flag) : path.getFlags().flagIsSet(flag);
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.3 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -62,13 +62,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
 
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+
 public class NavigationPath
 {
     static public final String PATH_SEPARATOR = "/";
 
+    public static final Flags.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
+    {
+    };
+
+    public class Flags extends XdmBitmaskedFlagsAttribute
+    {
+        public static final int START_CUSTOM = 1;
+
+        public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
+        {
+            return FLAG_DEFNS;
+        }
+    }
+
     private NavigationTree owner;
     private NavigationPath parent;
-    private long flags;
+    private Flags flags;
     private String qualifiedName;
     private String name;
     private List childrenList = new ArrayList();
@@ -83,6 +99,7 @@ public class NavigationPath
 
     public NavigationPath()
     {
+        flags = createFlags();
     }
 
     public String getQualifiedName()
@@ -177,45 +194,40 @@ public class NavigationPath
         owner.setMaxLevel(level);
     }
 
-    public final long getFlags()
+    public Flags createFlags()
+    {
+        return new Flags();
+    }
+
+    public Flags getFlags()
     {
         return flags;
     }
 
-    public boolean flagIsSet(long flag)
+    public void setFlags(Flags flags)
     {
-        return (flags & flag) == 0 ? false : true;
-    }
-
-    public void setFlag(long flag)
-    {
-        flags |= flag;
-    }
-
-    public void clearFlag(long flag)
-    {
-        flags &= ~flag;
+        this.flags.copy(flags);
     }
 
     public void setFlagRecursively(long flag)
     {
-        flags |= flag;
+        flags.setFlag(flag);
         if (childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
             while (i.hasNext())
-                ((NavigationPath) i.next()).setFlag(flag);
+                ((NavigationPath) i.next()).getFlags().setFlag(flag);
         }
     }
 
     public void clearFlagRecursively(long flag)
     {
-        flags &= ~flag;
+        flags.clearFlag(flag);
         if (childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
             while (i.hasNext())
-                ((NavigationPath) i.next()).clearFlag(flag);
+                ((NavigationPath) i.next()).getFlags().clearFlag(flag);
         }
     }
 

@@ -51,13 +51,14 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.5 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.6 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 
@@ -71,11 +72,45 @@ import javax.servlet.http.HttpServletRequest;
 
 public class NavigationPage extends NavigationPath
 {
-    static public final long NAVGPAGEFLAG_REJECT_FOCUS = 1;
-    static public final long NAVGPAGEFLAG_HAS_BODY = NAVGPAGEFLAG_REJECT_FOCUS * 2;
-    static public final long NAVGPAGEFLAG_HIDDEN = NAVGPAGEFLAG_HAS_BODY * 2;
-    static public final long NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS = NAVGPAGEFLAG_HIDDEN * 2;
-    static public final long NAVGPAGEFLAG_STARTCUSTOM = NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS * 2;
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 4];
+
+    static
+    {
+        for(int i = 0; i < NavigationPath.FLAG_DEFNS.length; i++)
+            FLAG_DEFNS[i] = NavigationPath.FLAG_DEFNS[i];
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_BODY", Flags.HAS_BODY);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
+    }
+
+    public class Flags extends NavigationPath.Flags
+    {
+        public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
+        public static final int HAS_BODY = REJECT_FOCUS * 2;
+        public static final int HIDDEN = HAS_BODY * 2;
+        public static final int HAS_CONDITIONAL_ACTIONS = HIDDEN * 2;
+        public static final int START_CUSTOM = HAS_CONDITIONAL_ACTIONS * 2;
+
+        public FlagDefn[] getFlagsDefns()
+        {
+            return FLAG_DEFNS;
+        }
+
+        public void clearFlag(long flag)
+        {
+            super.clearFlag(flag);
+            if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+                clearFlagRecursively(flag);
+        }
+
+        public void setFlag(long flag)
+        {
+            super.setFlag(flag);
+            if((flag & (REJECT_FOCUS | HIDDEN)) != 0)
+                setFlagRecursively(flag);
+        }
+    }
 
     //TODO: still need to implement this old Sparx feature
     static private final String THIS_NAV_ID_REPLACE_EXPR = "{NAV_ID}";
@@ -85,8 +120,9 @@ public class NavigationPage extends NavigationPath
     private ValueSource title;
     private ValueSource heading;
     private ValueSource subHeading;
-    private ValueSource url;
     private ValueSource retainParams;
+    private ValueSource redirect;
+    private ValueSource forward;
     private HtmlLayoutPanel panel;
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
@@ -99,6 +135,11 @@ public class NavigationPage extends NavigationPath
     public void addPage(NavigationPage page)
     {
         appendChild(page);
+    }
+
+    public NavigationPath.Flags createFlags()
+    {
+        return new Flags();
     }
 
     /* -------------------------------------------------------------------------------------------------------------*/
@@ -170,7 +211,7 @@ public class NavigationPage extends NavigationPath
             for(int i = 0; i < childrenList.size(); i++)
             {
                 NavigationPage child = (NavigationPage) childrenList.get(i);
-                if(! child.flagIsSet(NAVGPAGEFLAG_REJECT_FOCUS | NAVGPAGEFLAG_HIDDEN))
+                if(! child.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN))
                     return child;
                 else
                     return child.getNextPath();
@@ -198,7 +239,7 @@ public class NavigationPage extends NavigationPath
             for(int i = thisIndex + 1; i < siblings.size(); i++)
             {
                 NavigationPage sibling = (NavigationPage) siblings.get(i);
-                if(! sibling.flagIsSet(NAVGPAGEFLAG_REJECT_FOCUS | NAVGPAGEFLAG_HIDDEN))
+                if(! sibling.getFlags().flagIsSet(Flags.REJECT_FOCUS | Flags.HIDDEN))
                     return sibling;
                 else
                     return sibling.getNextPath();
@@ -276,14 +317,14 @@ public class NavigationPage extends NavigationPath
         this.title = title;
     }
 
-    public ValueSource getUrl()
+    public ValueSource getRedirect()
     {
-        return url;
+        return redirect;
     }
 
-    public void setUrl(ValueSource url)
+    public void setRedirect(ValueSource redirect)
     {
-        this.url = url;
+        this.redirect = redirect;
     }
 
     public String getCaption(ValueContext vc)
@@ -324,7 +365,7 @@ public class NavigationPage extends NavigationPath
 
     public String getUrl(HttpServletValueContext vc)
     {
-        ValueSource vs = getUrl();
+        ValueSource vs = getRedirect();
         if(vs == null)
         {
             HttpServletRequest request = vc.getHttpRequest();
@@ -346,38 +387,10 @@ public class NavigationPage extends NavigationPath
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
-    public boolean isHidden()
-    {
-        return flagIsSet(NAVGPAGEFLAG_HIDDEN);
-    }
-
-    public void setHidden(boolean hidden)
-    {
-        if(hidden)
-            setFlagRecursively(NAVGPAGEFLAG_HIDDEN);
-        else
-            clearFlagRecursively(NAVGPAGEFLAG_HIDDEN);
-    }
-
-    public boolean allowFocus()
-    {
-        return ! flagIsSet(NAVGPAGEFLAG_REJECT_FOCUS);
-    }
-
-    public void setAllowFocus(boolean allowFocus)
-    {
-        if(! allowFocus)
-            setFlag(NAVGPAGEFLAG_REJECT_FOCUS);
-        else
-            clearFlag(NAVGPAGEFLAG_REJECT_FOCUS);
-    }
-
-    /* -------------------------------------------------------------------------------------------------------------*/
-
     public HtmlLayoutPanel createPanels()
     {
         panel = new HtmlLayoutPanel();
-        setFlag(NAVGPAGEFLAG_HAS_BODY);
+        getFlags().setFlag(Flags.HAS_BODY);
         return panel;
     }
 

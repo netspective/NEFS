@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanelFrame.java,v 1.2 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -74,12 +74,12 @@ public class HtmlPanelFrame
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
-            new XdmBitmaskedFlagsAttribute.FlagDefn("HAS_HEADING", HAS_HEADING),
-            new XdmBitmaskedFlagsAttribute.FlagDefn("HAS_HEADING_EXTRA", HAS_HEADING_EXTRA),
-            new XdmBitmaskedFlagsAttribute.FlagDefn("HAS_FOOTING", HAS_FOOTING),
-            new XdmBitmaskedFlagsAttribute.FlagDefn("IS_SELECTABLE", IS_SELECTABLE),
-            new XdmBitmaskedFlagsAttribute.FlagDefn("ALLOW_COLLAPSE", ALLOW_COLLAPSE),
-            new XdmBitmaskedFlagsAttribute.FlagDefn("IS_COLLAPSED", IS_COLLAPSED),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING", HAS_HEADING),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_HEADING_EXTRA", HAS_HEADING_EXTRA),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_PRIVATE, "HAS_FOOTING", HAS_FOOTING),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_SELECTABLE", IS_SELECTABLE),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_COLLAPSE", ALLOW_COLLAPSE),
+            new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "IS_COLLAPSED", IS_COLLAPSED),
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.5 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.6 2003-04-04 17:19:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -58,11 +58,14 @@ import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedElementException;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
@@ -111,6 +114,11 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         xdmClass.setHeading(new StaticValueSource("Type"));
         xdmClass.setWordWrap(false);
         detailReport.addColumn(xdmClass);
+
+        GeneralColumn xdmChoices = new GeneralColumn();
+        xdmChoices.setHeading(new StaticValueSource("Choices"));
+        xdmChoices.setWordWrap(false);
+        detailReport.addColumn(xdmChoices);
     }
 
     protected class StructureRow
@@ -118,17 +126,19 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         private int level;
         private List ancestors;
         private XmlDataModelSchema schema;
+        private Object instance;
         private TemplateProducer templateProducer;
         private String elementName;
         private boolean recursive;
 
-        protected StructureRow(int level, String elementName, List ancestors, XmlDataModelSchema schema, boolean recursive)
+        protected StructureRow(int level, String elementName, List ancestors, XmlDataModelSchema schema, Object instance, boolean recursive)
         {
             this.elementName = elementName;
             this.level = level;
             this.ancestors = ancestors;
             this.recursive = recursive;
             this.schema = schema;
+            this.instance = instance;
         }
 
         protected StructureRow(int level, String elementName, List ancestors, TemplateProducer templateProducer, boolean recursive)
@@ -181,7 +191,9 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
             recursive = ancestors.contains(schema);
 
-            rows.add(new StructureRow(level, propNames.getPrimaryName(), ancestors, schema, recursive));
+            // flags have "createXXX" methods but they are not really nestable elements
+            if(! XdmBitmaskedFlagsAttribute.class.isAssignableFrom(childInstance.getClass()))
+                rows.add(new StructureRow(level, propNames.getPrimaryName(), ancestors, schema, childInstance, recursive));
         }
         else
         {
@@ -435,6 +447,8 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         {
             private StructureRow childElement;
             private String attrName;
+            private XdmBitmaskedFlagsAttribute bfa;
+            private XdmBitmaskedFlagsAttribute.FlagDefn flagDefn;
             private Class attrType;
 
             public DetailRow(StructureRow childElement)
@@ -446,6 +460,13 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
             {
                 this.attrName = attrName;
                 attrType = structureRow.schema.getAttributeType(attrName);
+            }
+
+            public DetailRow(String attrName, XdmBitmaskedFlagsAttribute bfa, XdmBitmaskedFlagsAttribute.FlagDefn flagDefn)
+            {
+                this.attrName = attrName;
+                this.bfa = bfa;
+                this.flagDefn = flagDefn;
             }
         }
 
@@ -476,10 +497,52 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                 }
 
                 childPropertyNames = structureRow.schema.getPropertyNames();
-                Iterator iterator = new TreeSet(structureRow.schema.getAttributes()).iterator();
+
+                Map flagSetters = new HashMap();
+                if(structureRow.instance != null)
+                {
+                    for(Iterator i = structureRow.schema.getFlagsAttributeAccessors().entrySet().iterator(); i.hasNext(); )
+                    {
+                        Map.Entry entry = (Map.Entry) i.next();
+                        XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) entry.getValue();
+                        Object returnVal = null;
+                        try
+                        {
+                            returnVal = accessor.get(null, structureRow.instance);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new DataModelException(null, e);
+                        }
+
+                        if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                        {
+                            XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
+                            Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
+                            for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                            {
+                                String xmlNodeName = (String) xmliter.next();
+                                if(! childPropertyNames.containsKey(xmlNodeName))
+                                    flagSetters.put(xmlNodeName, new Object[] { bfa, xmlNodeNames.get(xmlNodeName) });
+                            }
+                        }
+                    }
+                }
+
+                Set sortedChildPropertyNames = new TreeSet(structureRow.schema.getAttributes());
+                sortedChildPropertyNames.addAll(flagSetters.keySet());
+                Iterator iterator = sortedChildPropertyNames.iterator();
                 while (iterator.hasNext())
                 {
                     String attrName = (String) iterator.next();
+
+                    if(flagSetters.containsKey(attrName))
+                    {
+                        Object[] flagSetterInfo = (Object[]) flagSetters.get(attrName);
+                        detailRows.add(new DetailRow(attrName, (XdmBitmaskedFlagsAttribute) flagSetterInfo[0], (XdmBitmaskedFlagsAttribute.FlagDefn) flagSetterInfo[1]));
+                        continue;
+                    }
+
                     if(structureRow.schema.getOptions().ignoreAttribute(attrName))
                         continue;
 
@@ -526,8 +589,57 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                 case 1:
                     if(activeRow.childElement != null)
                         return vc.getSkin().constructClassRef(activeRow.childElement.schema.getBean());
+                    else if(activeRow.bfa != null)
+                        return "boolean (alias for "+ vc.getSkin().constructClassRef(activeRow.bfa.getClass()) +"."+ activeRow.flagDefn.getName() +")";
                     else
                         return vc.getSkin().constructClassRef(activeRow.attrType);
+
+                case 2:
+                    if(activeRow.attrType != null)
+                    {
+                        if(XdmBitmaskedFlagsAttribute.class.isAssignableFrom(activeRow.attrType))
+                        {
+                            XdmBitmaskedFlagsAttribute bfa = null;
+                            try
+                            {
+                                XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) structureRow.schema.getNestedCreators().get(activeRow.attrName);
+                                if(creator != null)
+                                    bfa = (XdmBitmaskedFlagsAttribute) creator.create(structureRow.instance);
+                                else
+                                    bfa = (XdmBitmaskedFlagsAttribute) activeRow.attrType.newInstance();
+                            }
+                            catch (Exception e)
+                            {
+                                log.error(e);
+                                return e.toString();
+                            }
+
+                            return TextUtils.join(bfa.getFlagNamesWithXdmAccess(), " | ");
+                        }
+                        else if(XdmEnumeratedAttribute.class.isAssignableFrom(activeRow.attrType))
+                        {
+                            XdmEnumeratedAttribute ea = null;
+                            try
+                            {
+                                ea = (XdmEnumeratedAttribute) activeRow.attrType.newInstance();
+                            }
+                            catch (Exception e)
+                            {
+                                log.error(e);
+                                return e.toString();
+                            }
+
+                            return TextUtils.join(ea.getValues(), ", ");
+                        }
+                        else if(Boolean.class.isAssignableFrom(activeRow.attrType))
+                            return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                        else
+                            return vc.getSkin().getBlankValue();
+                    }
+                    else if(activeRow.bfa != null)
+                        return TextUtils.join(TextUtils.getBooleanChoices(), ", ");
+                    else
+                        return vc.getSkin().getBlankValue();
 
                 default:
                     return "Unknown column " + columnIndex;
