@@ -39,37 +39,46 @@
  */
 
 /**
- * $Id: ScheduleManagerTest.java,v 1.1 2004-03-26 03:57:43 shahid.shah Exp $
+ * $Id: ScheduleManagerTest.java,v 1.2 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
 
 import java.util.Date;
 
+import com.netspective.commons.schedule.model.ScheduleEvents;
 import com.netspective.commons.schedule.model.ScheduleFactory;
 import com.netspective.commons.schedule.model.ScheduleManager;
 
 public class ScheduleManagerTest extends ScheduleTestCase
 {
-    public void testGetDaysSet()
+    public void testScheduleEvents()
     {
         ScheduleManager sm = ScheduleFactory.getInstance().createScheduleManager();
         assertNotNull(sm);
 
         Date beginDate = createDate(0, 1, 2004);
-        Date endDate = createDate(0, 15, 2004);
+        Date endDate = createDate(0, 1, 2004);
+
+        int beginDay = calendarUtils.getJulianDay(calendar, beginDate);
+        int endDay = calendarUtils.getJulianDay(calendar, endDate);
+
+        ScheduleEvents scheduleEvents = eventProvider.getScheduledEvents(sm, beginDate, endDate);
+        System.out.println(scheduleEvents);
 /*
-        int beginJulianDay = sm.getJulianDay(calendar, beginDate);
-        int endJulianDay = sm.getJulianDay(calendar, endDate);
+        assertEquals()
 
-        System.out.println(beginDate + "-" + endDate);
-        System.out.println(beginJulianDay + "-" + endJulianDay);
-        System.out.println(sm.getDateFromJulianDay(beginJulianDay, calendar) + "-" + sm.getDateFromJulianDay(endJulianDay, calendar));
+        for(int day = beginDay; day <= endDay; day++)
+        {
+            // now try to reverse the procedure
+            Date julianDate = calendarUtils.getDateFromJulianDay(day, calendar);
+
+            for(int i = 0; i < MockScheduleEventProvider.MOCK_EVENT_HOURS.length; i++)
+            {
+                int[] hm = MOCK_EVENT_HOURS[i];
+                eventsList.add(createMockEvent(scheduleManager, julianDate,  hm[0],  hm[1],  hm[2], hm[3]));
+            }
+        }
 */
-
-        //System.out.println(sm.getDayNumberFromDate(beginDate) + "-" + sm.getDayNumberFromDate(endDate));
-        //System.out.println(sm.getDateFromDayNumber(sm.getDayNumberFromDate(beginDate)) + "-" + sm.getDateFromDayNumber(sm.getDayNumberFromDate(endDate)));
-        //IntSpan daysSet = sm.getDaysSet(calendar, beginDate, endDate, null, null, null);
-        //System.out.println(daysSet.runList());
     }
 }

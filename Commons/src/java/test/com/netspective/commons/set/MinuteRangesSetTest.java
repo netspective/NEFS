@@ -39,28 +39,50 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: MinuteRangesSetTest.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.set;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.set.MinuteRangesSet;
+import com.netspective.commons.schedule.CalendarUtils;
 
-public interface ScheduleSlot
+import junit.framework.TestCase;
+
+public class MinuteRangesSetTest extends TestCase
 {
-    public Object getIdentifier();
+    protected Calendar calendar = Calendar.getInstance();
+    protected CalendarUtils calendarUtils = CalendarUtils.getInstance();
 
-    public boolean isMultipleDays();
+    public Date createDate(int month, int day, int year, int hour, int minute)
+    {
+        calendar.set(year, month, day, hour, minute);
+        return calendar.getTime();
+    }
 
-    public Date getDate();
-    public int getJulianDay();
+    public void testMinuteRangesSetSingleDay()
+    {
+        Date beginDate = createDate(0, 1, 2004, 9, 30);
+        Date endDate = createDate(0, 1, 2004, 10, 00);
 
-    public Date getBeginDate();
-    public Date getEndDate();
-    public int getBeginJulianDay();
-    public int getEndJulianDay();
+        MinuteRangesSet minutesSet = new MinuteRangesSet();
+        minutesSet.applyDateRange(calendar,  calendarUtils, beginDate, endDate);
 
-    public MinuteRangesSet getMinutesSet();
+        assertFalse(minutesSet.isMultipleDays());
+        assertEquals("09:30-10:00", minutesSet.toString());
+    }
+
+    public void testMinuteRangesSetMultiDay()
+    {
+        Date beginDate = createDate(0, 1, 2004, 11, 00);
+        Date endDate = createDate(0, 3, 2004, 8, 30);
+
+        MinuteRangesSet minutesSet = new MinuteRangesSet();
+        minutesSet.applyDateRange(calendar,  calendarUtils, beginDate, endDate);
+
+        assertTrue(minutesSet.isMultipleDays());
+        assertEquals("0d 11:00-2d 08:30", minutesSet.toString());
+    }
 }

@@ -39,28 +39,11 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleParticipantType.java,v 1.1 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import java.util.Date;
-
-import com.netspective.commons.set.MinuteRangesSet;
-
-public interface ScheduleSlot
+public interface ScheduleParticipantType
 {
-    public Object getIdentifier();
-
-    public boolean isMultipleDays();
-
-    public Date getDate();
-    public int getJulianDay();
-
-    public Date getBeginDate();
-    public Date getEndDate();
-    public int getBeginJulianDay();
-    public int getEndJulianDay();
-
-    public MinuteRangesSet getMinutesSet();
 }

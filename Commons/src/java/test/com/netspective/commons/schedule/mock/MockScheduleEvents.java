@@ -39,28 +39,42 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: MockScheduleEvents.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.schedule.mock;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.commons.set.MinuteRangesSet;
+import com.netspective.commons.schedule.model.ScheduleEvent;
+import com.netspective.commons.schedule.model.ScheduleEvents;
 
-public interface ScheduleSlot
+public class MockScheduleEvents implements ScheduleEvents
 {
-    public Object getIdentifier();
+    private List eventsList = new ArrayList();
 
-    public boolean isMultipleDays();
+    public MockScheduleEvents()
+    {
+    }
 
-    public Date getDate();
-    public int getJulianDay();
+    public MockScheduleEvents(List events)
+    {
+        this.eventsList = events;
+    }
 
-    public Date getBeginDate();
-    public Date getEndDate();
-    public int getBeginJulianDay();
-    public int getEndJulianDay();
+    public List getEventsList()
+    {
+        return eventsList;
+    }
 
-    public MinuteRangesSet getMinutesSet();
+    public ScheduleEvent[] getScheduleEvents()
+    {
+        return (ScheduleEvent[]) eventsList.toArray(new ScheduleEvent[eventsList.size()]);
+    }
+
+    public String toString()
+    {
+        return eventsList.toString();
+    }
 }

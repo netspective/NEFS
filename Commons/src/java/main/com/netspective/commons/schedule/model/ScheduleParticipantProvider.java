@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleParticipantProvider.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleParticipantProvider.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -51,12 +51,12 @@ public interface ScheduleParticipantProvider
     public ScheduleParticipants getScheduleParticipants(List identifiers);
     public ScheduleParticipants getScheduleParticipants(Object[] identifiers);
 
-    public ScheduleParticipants getScheduleParticipants(List identifiers, ScheduleParticipantTypeSet participantTypes);
-    public ScheduleParticipants getScheduleParticipants(Object[] identifiers, ScheduleParticipantTypeSet participantTypes);
+    public ScheduleParticipants getScheduleParticipants(List identifiers, ScheduleParticipantTypes participantTypes);
+    public ScheduleParticipants getScheduleParticipants(Object[] identifiers, ScheduleParticipantTypes participantTypes);
 
     /**
      * Get a list of all of the schedule participants types allowed
      * @return A set that represents all event types that may be scheduled by the scheduler
      */
-    public ScheduleParticipantTypeSet getScheduleParticipantTypes();
+    public ScheduleParticipantTypes getScheduleParticipantTypes();
 }

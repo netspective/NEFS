@@ -39,12 +39,72 @@
  */
 
 /**
- * $Id: ScheduleEventSlots.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: MockScheduleEventProvider.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.schedule.mock;
 
-public interface ScheduleEventSlots extends ScheduleSlots
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleEvent;
+import com.netspective.commons.schedule.model.ScheduleEventProvider;
+import com.netspective.commons.schedule.model.ScheduleEvents;
+import com.netspective.commons.schedule.model.ScheduleManager;
+
+public class MockScheduleEventProvider implements ScheduleEventProvider
 {
-    public ScheduleEventSlot[] getEventSlots();
+    public static final int[][] MOCK_EVENT_HOURS = new int[][]
+    {
+        {  9,  0,  9, 30 }, // 09:00 to 09:30 AM
+        { 10, 15, 11, 00 }, // 10:15 to 11:00 AM
+        { 13, 30, 14, 30 }, // 01:30 to 02:30 PM
+        { 14, 30, 14, 45 }, // 02:30 to 02:45 PM
+        { 15, 15, 16, 00 }  // 03:15 to 04:00 PM
+    };
+    
+    public ScheduleEvent createMockEvent(ScheduleManager scheduleManager, Date date, int beginHour, int beginMinute, int endHour, int endMinute)
+    {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, beginHour);
+        calendar.set(Calendar.MINUTE, beginMinute);
+        calendar.set(Calendar.SECOND, 0);
+        Date eventBegin = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, endHour);
+        calendar.set(Calendar.MINUTE, endMinute);
+        calendar.set(Calendar.SECOND, 0);
+        Date eventEnd = calendar.getTime();
+
+        return new MockScheduleEvent(scheduleManager, eventBegin, eventEnd);
+    }
+
+    public ScheduleEvents getScheduledEvents(ScheduleManager scheduleManager, Date beginDate, Date endDate)
+    {
+        MockScheduleEvents result = new MockScheduleEvents();
+        List eventsList = result.getEventsList();
+
+        Calendar calendar = Calendar.getInstance();
+        CalendarUtils calendarUtils = CalendarUtils.getInstance();
+
+        int beginDay = calendarUtils.getJulianDay(calendar, beginDate);
+        int endDay = calendarUtils.getJulianDay(calendar, endDate);
+
+        for(int day = beginDay; day <= endDay; day++)
+        {
+            Date julianDate = calendarUtils.getDateFromJulianDay(day, calendar);
+
+            for(int i = 0; i < MOCK_EVENT_HOURS.length; i++)
+            {
+                int[] hm = MOCK_EVENT_HOURS[i];
+                eventsList.add(createMockEvent(scheduleManager, julianDate,  hm[0],  hm[1],  hm[2], hm[3]));
+            }
+        }
+
+        return result;
+    }
 }

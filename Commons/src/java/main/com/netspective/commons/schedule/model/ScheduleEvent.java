@@ -39,11 +39,11 @@
  */
 
 /**
- * $Id: ScheduleEvent.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleEvent.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-public interface ScheduleEvent
+public interface ScheduleEvent extends ScheduleSlot
 {
 }

@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: Suite.java,v 1.1 2003-03-13 18:33:15 shahid.shah Exp $
+ * $Id: Suite.java,v 1.2 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import junit.framework.TestSuite;
 import junit.framework.Test;
+import junit.framework.TestSuite;
 
 public class Suite
 {
@@ -61,6 +61,8 @@ public class Suite
         suite.addTest(new TestSuite(GrepTest.class));
         suite.addTest(new TestSuite(MapTest.class));
         suite.addTest(new TestSuite(IteratorTest.class));
+        suite.addTest(new TestSuite(DateRangesSetTest.class));
+        suite.addTest(new TestSuite(MinuteRangesSetTest.class));
         return suite;
     }
 }

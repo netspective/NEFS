@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractScheduleSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: AbstractScheduleSlot.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
@@ -48,54 +48,58 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleManager;
 import com.netspective.commons.schedule.model.ScheduleSlot;
-import com.netspective.commons.set.IntSpan;
+import com.netspective.commons.set.MinuteRangesSet;
 
 public class AbstractScheduleSlot implements ScheduleSlot
 {
+    private ScheduleManager scheduleManager;
+    private Object identifier = new Integer(hashCode());
     private Date beginDate;
     private int beginJulianDay;
     private Date endDate;
     private int endJulianDay;
-    private boolean multipleDays;
-    private IntSpan minutes = new IntSpan();
+    private MinuteRangesSet minutesSet = new MinuteRangesSet();
 
-    public AbstractScheduleSlot(Date beginDate, Date endDate)
+    public AbstractScheduleSlot(ScheduleManager scheduleManager, Date beginDate, Date endDate)
     {
-        this(CalendarUtils.getInstance(), Calendar.getInstance(), beginDate, endDate);
+        this(scheduleManager, CalendarUtils.getInstance(), Calendar.getInstance(), beginDate, endDate);
     }
 
-    public AbstractScheduleSlot(Calendar calendar, Date beginDate, Date endDate)
+    public AbstractScheduleSlot(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate)
     {
-        this(CalendarUtils.getInstance(), calendar, beginDate, endDate);
+        this(scheduleManager, CalendarUtils.getInstance(), calendar, beginDate, endDate);
     }
 
-    public AbstractScheduleSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate)
+    public AbstractScheduleSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate)
     {
-        this(calendarUtils, Calendar.getInstance(), beginDate, endDate);
+        this(scheduleManager, calendarUtils, Calendar.getInstance(), beginDate, endDate);
     }
 
-    public AbstractScheduleSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
+    public AbstractScheduleSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
     {
-        if(beginDate.getTime() <= endDate.getTime())
-        {
-            this.beginDate = beginDate;
-            this.endDate = endDate;
-        }
-        else
-        {
-            this.beginDate = endDate;
-            this.endDate = beginDate;
-        }
-
+        this.scheduleManager = scheduleManager;
+        this.beginDate = beginDate;
+        this.endDate = endDate;
         this.beginJulianDay = calendarUtils.getJulianDay(calendar, this.beginDate);
         this.endJulianDay = calendarUtils.getJulianDay(calendar, this.endDate);
-        this.multipleDays = endJulianDay > beginJulianDay;
+        this.minutesSet.applyDateRange(calendar, calendarUtils, beginDate, endDate);
+    }
+
+    public Object getIdentifier()
+    {
+        return identifier;
+    }
+
+    public ScheduleManager getScheduleManager()
+    {
+        return scheduleManager;
     }
 
     public boolean isMultipleDays()
     {
-        return multipleDays;
+        return minutesSet.isMultipleDays();
     }
 
     public Date getDate()
@@ -126,5 +130,16 @@ public class AbstractScheduleSlot implements ScheduleSlot
     public int getEndJulianDay()
     {
         return endJulianDay;
+    }
+
+    public MinuteRangesSet getMinutesSet()
+    {
+        return minutesSet;
+    }
+
+    public String toString()
+    {
+        return getClass().getName() + ": id = " + identifier + ", begin = " + beginDate + ", end = " + endDate + ", minutes = " + minutesSet;
+
     }
 }

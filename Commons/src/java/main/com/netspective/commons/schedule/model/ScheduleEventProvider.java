@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleEventProvider.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleEventProvider.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -48,13 +48,11 @@ import java.util.Date;
 
 public interface ScheduleEventProvider
 {
-    public ScheduleEventSlots getScheduledEvents(Date beginDate, Date endDate, ScheduleParticipants participants);
+    public ScheduleEvents getScheduledEvents(ScheduleManager scheduleManager, Date beginDate, Date endDate);
 
-    public ScheduleEventSlots getScheduledEvents(Date beginDate, Date endDate, ScheduleEventTypeSet eventTypes, ScheduleParticipants participants);
+/*
+    public ScheduleEvents getScheduledEvents(Date beginDate, Date endDate, ScheduleParticipants participants);
 
-    /**
-     * Get a list of all of the schedule event types allowed
-     * @return A set that represents all event types that may be scheduled by the scheduler
-     */
-    public ScheduleEventTypeSet getScheduleEventTypes();
+    public ScheduleEvents getScheduledEvents(Date beginDate, Date endDate, ScheduleEventTypes eventTypes, ScheduleParticipants participants);
+*/
 }

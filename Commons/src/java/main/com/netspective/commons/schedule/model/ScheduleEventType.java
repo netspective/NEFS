@@ -39,28 +39,83 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleEventType.java,v 1.1 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import java.util.Date;
-
-import com.netspective.commons.set.MinuteRangesSet;
-
-public interface ScheduleSlot
+public interface ScheduleEventType
 {
+    /**
+     * Retrieve the unique identifier for this event type
+     * @return An object that can uniquely identify this event type
+     */
     public Object getIdentifier();
 
-    public boolean isMultipleDays();
+    /**
+     * Retrieve the schedule manager that is managing this template
+     * @return
+     */
+    public ScheduleManager getScheduleManager();
 
-    public Date getDate();
-    public int getJulianDay();
+    /**
+     * Get the participants of this event type
+     * @return the required and optional participants of the event
+     */
+    public ScheduleParticipants getParticipants();
 
-    public Date getBeginDate();
-    public Date getEndDate();
-    public int getBeginJulianDay();
-    public int getEndJulianDay();
+    /**
+     * Retrieve the number of minutes this event should consume in the schedule
+     * @return a non-zero cardinal value representing how many minutes an event of this type should block in the schedule
+     */
+    public int getEventDurationMinutes();
 
-    public MinuteRangesSet getMinutesSet();
+    /**
+     * Retrieve the lead time in minutes required before an event of this type is scheduled
+     * @return 0 if no lead time is required, non-zero cardinal value if a lead time is necessary
+     */
+    public int getEventLeadTimeMinutes();
+
+    /**
+     * Retrieve the lag time in minutes required after an event of this type before the next event should occur
+     * @return 0 if no lag time is required, non-zero cardinal value if a lag time is necessary
+     */
+    public int getEventLagTimeMinutes();
+
+    /**
+     * Ascertain whether back-to-back events of this particular type are allowed.
+     * @return true if events of this type may be adjacent to each other, false if no adjacent events allowed
+     */
+    public boolean isAllowBacktoBackEvents();
+
+    /**
+     * Retrieve the multiple simultaneous events of this type allowed
+     * @return 0 if no simultaneous events allow or non-zero cardinal value if simultaneous events of this type are allowed
+     */
+    public int getSimultaneousEventsLimit();
+
+    /**
+     * Retrieve the limit of the number of events of this type in AM hours
+     * @return 0 if there is no limit or non-zero cardinal value if there is a limit
+     */
+    public int getMorningEventsLimit();
+
+    /**
+     * Retrieve the limit of the number of events of this type in PM hours
+     * @return 0 if there is no limit or non-zero cardinal value if there is a limit
+     */
+    public int getAfternoonEventsLimit();
+
+    /**
+     * Retrieve the limit of number of events of this type for the day
+     * @return 0 if there is no limit or non-zero cardinal value if there is a limit
+     * @return
+     */
+    public int getDayEventsLimit();
+
+    /**
+     * Retrieve the event width for parallel events
+     * @return The number of minutes
+     */
+    public int getEventWidth();    
 }

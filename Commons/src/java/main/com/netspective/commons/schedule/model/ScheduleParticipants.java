@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleParticipants.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleParticipants.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -50,5 +50,5 @@ public interface ScheduleParticipants
 {
     public ScheduleParticipant[] getScheduleParticipants();
     public BitSet getRequiredScheduleParticipants();
-    public ScheduleParticipantTypeSet getScheduleParticipantTypes();
+    public ScheduleParticipantTypes getScheduleParticipantTypes();
 }

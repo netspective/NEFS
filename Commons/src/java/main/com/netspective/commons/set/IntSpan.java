@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntSpan.java,v 1.3 2004-03-26 16:18:45 shahid.shah Exp $
+ * $Id: IntSpan.java,v 1.4 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -250,7 +250,7 @@ public class IntSpan implements Cloneable, Set
         addClosed(lower, upper);
     }
 
-    private void addClosed(int lower, int upper)
+    public void addClosed(int lower, int upper)
     {
         boolean lGap = edges.size() == 0 || lower - 1 - edges.getI(-1) > 0;
         if (lGap)

@@ -39,28 +39,38 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.3 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: MockScheduleEvent.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.schedule.mock;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.set.MinuteRangesSet;
+import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.impl.AbstractScheduleSlot;
+import com.netspective.commons.schedule.model.ScheduleEvent;
+import com.netspective.commons.schedule.model.ScheduleManager;
 
-public interface ScheduleSlot
+public class MockScheduleEvent extends AbstractScheduleSlot implements ScheduleEvent
 {
-    public Object getIdentifier();
+    public MockScheduleEvent(ScheduleManager scheduleManager, Date beginDate, Date endDate)
+    {
+        super(scheduleManager, beginDate, endDate);
+    }
 
-    public boolean isMultipleDays();
+    public MockScheduleEvent(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate)
+    {
+        super(scheduleManager, calendar, beginDate, endDate);
+    }
 
-    public Date getDate();
-    public int getJulianDay();
+    public MockScheduleEvent(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate)
+    {
+        super(scheduleManager, calendarUtils, beginDate, endDate);
+    }
 
-    public Date getBeginDate();
-    public Date getEndDate();
-    public int getBeginJulianDay();
-    public int getEndJulianDay();
-
-    public MinuteRangesSet getMinutesSet();
+    public MockScheduleEvent(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
+    {
+        super(scheduleManager, calendarUtils, calendar, beginDate, endDate);
+    }
 }

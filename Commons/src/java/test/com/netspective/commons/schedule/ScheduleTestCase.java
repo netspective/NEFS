@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleTestCase.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
+ * $Id: ScheduleTestCase.java,v 1.3 2004-03-26 22:03:48 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -47,17 +47,22 @@ package com.netspective.commons.schedule;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.netspective.commons.schedule.mock.MockScheduleEventProvider;
+import com.netspective.commons.schedule.model.ScheduleEventProvider;
+
 import junit.framework.TestCase;
 
 public class ScheduleTestCase extends TestCase
 {
     protected Calendar calendar;
     protected CalendarUtils calendarUtils;
+    protected ScheduleEventProvider eventProvider;
 
     protected void setUp() throws Exception
     {
         calendar = Calendar.getInstance();
         calendarUtils = CalendarUtils.getInstance();
+        eventProvider = new MockScheduleEventProvider();
     }
 
     public Date createDate(int month, int day, int year)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultTemplateSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: DefaultTemplateSlot.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
@@ -48,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleManager;
 import com.netspective.commons.schedule.model.ScheduleTemplate;
 import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
 
@@ -56,30 +57,30 @@ public class DefaultTemplateSlot extends AbstractScheduleSlot implements Schedul
     private ScheduleTemplate scheduleTemplate;
     private boolean available;
 
-    public DefaultTemplateSlot(Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public DefaultTemplateSlot(ScheduleManager scheduleManager, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
     {
-        super(beginDate, endDate);
+        super(scheduleManager, beginDate, endDate);
         this.scheduleTemplate = scheduleTemplate;
         this.available = available;
     }
 
-    public DefaultTemplateSlot(Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public DefaultTemplateSlot(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
     {
-        super(calendar, beginDate, endDate);
+        super(scheduleManager, calendar, beginDate, endDate);
         this.scheduleTemplate = scheduleTemplate;
         this.available = available;
     }
 
-    public DefaultTemplateSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public DefaultTemplateSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
     {
-        super(calendarUtils, beginDate, endDate);
+        super(scheduleManager, calendarUtils, beginDate, endDate);
         this.scheduleTemplate = scheduleTemplate;
         this.available = available;
     }
 
-    public DefaultTemplateSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public DefaultTemplateSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
     {
-        super(calendarUtils, calendar, beginDate, endDate);
+        super(scheduleManager, calendarUtils, calendar, beginDate, endDate);
         this.scheduleTemplate = scheduleTemplate;
         this.available = available;
     }

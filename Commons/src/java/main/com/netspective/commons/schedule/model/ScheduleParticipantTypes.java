@@ -39,48 +39,11 @@
  */
 
 /**
- * $Id: DefaultEventSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleParticipantTypes.java,v 1.1 2004-03-26 22:03:47 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.impl;
+package com.netspective.commons.schedule.model;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import com.netspective.commons.schedule.CalendarUtils;
-import com.netspective.commons.schedule.model.ScheduleEvent;
-import com.netspective.commons.schedule.model.ScheduleEventSlot;
-
-public class DefaultEventSlot extends AbstractScheduleSlot implements ScheduleEventSlot
+public interface ScheduleParticipantTypes
 {
-    private ScheduleEvent scheduleEvent;
-
-    public DefaultEventSlot(Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
-    {
-        super(beginDate, endDate);
-        this.scheduleEvent = scheduleEvent;
-    }
-
-    public DefaultEventSlot(Calendar calendar, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
-    {
-        super(calendar, beginDate, endDate);
-        this.scheduleEvent = scheduleEvent;
-    }
-
-    public DefaultEventSlot(CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
-    {
-        super(calendarUtils, beginDate, endDate);
-        this.scheduleEvent = scheduleEvent;
-    }
-
-    public DefaultEventSlot(CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleEvent scheduleEvent)
-    {
-        super(calendarUtils, calendar, beginDate, endDate);
-        this.scheduleEvent = scheduleEvent;
-    }
-
-    public ScheduleEvent getScheduleEvent()
-    {
-        return scheduleEvent;
-    }
 }
