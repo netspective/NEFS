@@ -42,7 +42,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.activity.ActivityObserver;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -189,8 +188,6 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     public void register(NavigationPath path)
     {
         pagesByQualifiedName.put(path.getQualifiedName(), path);
-        if(path instanceof ActivityObserver)
-            getProject().addActivityObserver((ActivityObserver) path);
     }
 
     public void unregister(NavigationPath path)

@@ -34,6 +34,8 @@ package com.netspective.sparx.security;
 
 import com.netspective.commons.activity.Activity;
 import com.netspective.commons.activity.ActivityManager;
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 public class HttpLogoutActivity implements Activity
 {
@@ -46,8 +48,19 @@ public class HttpLogoutActivity implements Activity
         this.parentActivity = parentActivity;
     }
 
+    public AuthenticatedUser getActivityAuthenticatedUser()
+    {
+        return ((HttpServletValueContext) parentActivity).getAuthenticatedUser();
+    }
+
+    public boolean isAuthenticatedUserActivity()
+    {
+        return true;
+    }
+
     public void broadcastChildActivity(Activity activity)
     {
+        activityManager.broadcastActivity(activity);
     }
 
     public ActivityManager getActivityManager()

@@ -32,11 +32,38 @@
  */
 package com.netspective.commons.activity;
 
+import com.netspective.commons.security.AuthenticatedUser;
+
 public interface Activity
 {
+    /**
+     * Obtain the activity manager that is managing this activity
+     */
     public ActivityManager getActivityManager();
 
+    /**
+     * If this is a nested activity, obtain the parent activity
+     *
+     * @return null if not a child/nested activity
+     */
     public Activity getParentActivity();
 
+    /**
+     * Ascertain whether or not this activity belongs to a specific user
+     *
+     * @return False if it's a system activity, true if it's a user activity
+     */
+    public boolean isAuthenticatedUserActivity();
+
+    /**
+     * If this activity belongs to a specific user, provide the user
+     *
+     * @return null if not a a user activity (meaning it's a system-wide activity)
+     */
+    public AuthenticatedUser getActivityAuthenticatedUser();
+
+    /**
+     * Broadcast the child activity to all observers
+     */
     public void broadcastChildActivity(Activity activity);
 }

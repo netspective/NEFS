@@ -152,6 +152,16 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return null;  // no parent activity (we are a top-level activity)
     }
 
+    public boolean isAuthenticatedUserActivity()
+    {
+        return true;
+    }
+
+    public AuthenticatedUser getActivityAuthenticatedUser()
+    {
+        return getAuthenticatedUser();
+    }
+
     /**
      * Override the parent get connection to provide connection contexts that may be stored in HTTP sessions. If they
      * are stored in HTTP sessions, they will be automatically closed when the session unbinding event occurs. This

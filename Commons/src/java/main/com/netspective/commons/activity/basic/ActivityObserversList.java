@@ -40,11 +40,13 @@ import com.netspective.commons.activity.Activity;
 import com.netspective.commons.activity.ActivityManager;
 import com.netspective.commons.activity.ActivityObserver;
 import com.netspective.commons.activity.ActivityObservers;
+import com.netspective.commons.security.AuthenticatedUser;
 
 public class ActivityObserversList implements ActivityObservers
 {
     private ActivityManager activityManager;
     private List observers = new ArrayList();
+    private boolean haveObservers = false;
 
     public ActivityObserversList(ActivityManager activityManager)
     {
@@ -60,14 +62,42 @@ public class ActivityObserversList implements ActivityObservers
     {
         if(!observers.contains(activityObserver))
             observers.add(activityObserver);
+        haveObservers = observers.size() > 0;
     }
 
     public void observeActivity(Activity activity)
     {
-        for(int i = 0; i < observers.size(); i++)
+        ActivityObserver userObserver = null;
+        if(activity.isAuthenticatedUserActivity())
         {
-            ActivityObserver observer = (ActivityObserver) observers.get(i);
-            observer.observeActivity(activity);
+            AuthenticatedUser user = activity.getActivityAuthenticatedUser();
+            if(user instanceof ActivityObserver)
+            {
+                userObserver = ((ActivityObserver) user);
+                userObserver.observeActivity(activity);
+            }
+        }
+
+        if(!haveObservers)
+            return;
+
+        if(userObserver != null)
+        {
+            for(int i = 0; i < observers.size(); i++)
+            {
+                ActivityObserver observer = (ActivityObserver) observers.get(i);
+                // make sure we don't call the user observer twice in case we've already called it
+                if(observer != userObserver)
+                    observer.observeActivity(activity);
+            }
+        }
+        else
+        {
+            for(int i = 0; i < observers.size(); i++)
+            {
+                ActivityObserver observer = (ActivityObserver) observers.get(i);
+                observer.observeActivity(activity);
+            }
         }
     }
 
@@ -89,10 +119,12 @@ public class ActivityObserversList implements ActivityObservers
     public void removeActivityObserver(ActivityObserver activityObserver)
     {
         observers.remove(activityObserver);
+        haveObservers = observers.size() > 0;
     }
 
     public void removeActivityObserver(int i)
     {
         observers.remove(i);
+        haveObservers = observers.size() > 0;
     }
 }
