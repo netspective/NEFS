@@ -39,43 +39,42 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.22 2004-01-07 16:58:58 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.23 2004-07-15 23:25:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
-import java.util.BitSet;
-import java.io.Writer;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.BitSet;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.ServletException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.sparx.form.listener.DialogValidateListener;
-import com.netspective.sparx.form.DialogValidationContext;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.Project;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
+import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.io.InputSourceLocator;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.Table;
+import com.netspective.sparx.Project;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorListener
 {
@@ -456,14 +455,18 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             else
                 log.debug("User '" + userId + " has no roles.");
         }
+
+        hsvc.getProject().broadcastActivity(new HttpLoginActivity(hsvc.getProject(), hsvc));
     }
 
     protected void registerLogout(HttpServletValueContext hsvc, AuthenticatedUser user)
     {
+        hsvc.getProject().broadcastActivity(new HttpLogoutActivity(hsvc.getProject(), hsvc));
+
         user.registerLogout(AuthenticatedUserLogoutType.USER_REQUEST);
         activeUsers.remove(user);
 
-        if(user != null && log.isInfoEnabled())
+        if(log.isInfoEnabled())
         {
             HttpServletRequest req = hsvc.getHttpRequest();
             String userId = user.getUserId();
