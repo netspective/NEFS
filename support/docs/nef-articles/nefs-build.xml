@@ -271,7 +271,7 @@
         </listitem>
 
         <listitem>
-          <para><command>cd NEFS_HOME/tools</command></para>
+          <para><command>cd NEFS_HOME/support/build</command></para>
         </listitem>
 
         <listitem>
