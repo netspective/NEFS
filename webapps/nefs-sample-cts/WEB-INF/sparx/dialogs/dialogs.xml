@@ -4,7 +4,7 @@
     <xdm:include file="org.xml"/>
     <dialogs package="cts">
 
-        <dialog name="person-contact-info" class="app.cts.form.PersonContactDialog" retain-params="*">
+        <dialog name="person-contact-info" retain-params="*">
 			<frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="text" name="id" caption="ID" read-only="yes" default="request:id">
 				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
@@ -33,28 +33,36 @@
     </dialogs>
 
     <dialogs package="study">
-        <dialog name="profile">
+        <dialog name="profile" class="app.cts.form.StudyDialog">
+            <frame heading="Study Profile"/>
             <field type="separator" heading="Overview"/>
             <field type="text" name="study_name" caption="Name"  uppercase="yes"   max-length="255" required="yes">
-                <conditional action="apply-flags" flag="browser-read-only" data-cmd="edit,delete"/>
+                <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
             </field>
             <field type="text" name="study_code" caption="Code" max-length="64" required="yes"/>
             <field type="memo" name="study_descr" caption="Description" required="yes"/>
             <field type="select" name="study_status" caption="Status" required="yes" choices="schema-enum:Study_Status" prepend-blank="yes">
-                <conditional action="apply-flags" flag="browser-read-only" perspective="edit,delete"/>
+                <conditional action="apply-flags" flags="browser_readonly" perspective="edit,delete"/>
             </field>
             <field type="select" name="study_phase" caption="Stage" choices="schema-enum:Study_Stage_Type" prepend-blank="yes"/>
             <field type="select" name="sponsor_org_name" caption="Sponsor" size="50"
                 default="request:org_id">
-                <conditional action="apply-flags" flag="invisible" perspective="delete,edit"/>
+                <conditional action="apply-flags" flags="unavailable" perspective="delete,edit"/>
             </field >
             <field type="phone" name="primary_phone" caption="Contact Phone" size="16" hint="Study Hotline number"/>
             <field type="e-mail" name="primary_email" caption="Contact Email" hint="Study email address"/>
 
             <field type="separator" heading="Planned Trial Period"/>
-            <field type="date" name="start_date" caption="Start Date" required="yes" default="today" popup-calendar="yes"/>
-            <field type="date" name="actual_end_date" caption="End Date" required="yes" popup-calendar="yes">
+            <field type="date" name="start_date" caption="Start Date" required="yes" default="today" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+            <field type="date" name="target_end_date" caption="Target End Date" required="yes" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+            <field type="date" name="actual_end_date" caption="Actual End Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy">
             </field>
+
+            <field type="separator" heading="Institutional Review Board (IRB) Information" />
+            <field type="text" name="irb_name" caption="IRB Name" max-length="255" required="yes"/>
+            <field type="text" name="irb_number" caption="IRB Number" max-length="15" required="yes"/>
+            <field type="date" name="irb_approval_date" caption="Approval Date"    format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
+            <field type="date" name="irb_expiration_date" caption="Expiration Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
         </dialog>
     </dialogs>
 
@@ -63,7 +71,7 @@
             <field type="integer" name="person_id" hidden="yes"/>
 			<field type="separator" heading="Personal Profile"/>
 
-			<field type="composite"  name="fullName" show-child-caption="yes">
+			<field type="composite"  name="fullName" >   <!-- show-child-caption="yes" -->
                 <field type="select" name="name_prefix" caption="Prefix" choices="schema-enum:Name_Prefix_Type" prepend-blank="yes"/>
 				<field type="text" name="name_last" size="16" caption="Last Name" required="yes"/>
                 <field type="text" name="name_first" size="16" caption="First Name" required="yes" />
@@ -93,7 +101,7 @@
             <field type="text" name="country" caption="Country" size="16" default="USA"/>
 
             <field type="separator" heading="Contact Methods"/>
-            <field type="composite" name="primary_contact" show-child-caption="yes">
+            <field type="composite" name="primary_contact" >     <!-- show-child-caption="yes" -->
                 <field type="select" name="type" caption="Primary Contact Method" choices="schema-enum:Contact_Method_Type"
                     prepend-blank="yes" required="yes"/>
                 <field type="phone" name="phone_value"  size="30">
@@ -109,7 +117,7 @@
                         expression="control.options[control.selectedIndex].text.substring(0, 5) == 'Email'"/>
                 </field>
             </field>
-            <field type="composite" name="secondary_contact" show-child-caption="yes">
+            <field type="composite" name="secondary_contact" >
                 <field type="select" name="type" caption="Secondary Contact Method" choices="schema-enum:Contact_Method_Type"
                     prepend-blank="yes" required="no"/>
                 <field type="phone" name="phone_value"  size="30">

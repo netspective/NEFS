@@ -36,7 +36,6 @@ public class PersonContactDialog extends com.netspective.sparx.form.Dialog
         if(dc.getAuthenticatedUser() == null)
             return;
 
-        dc.getPerspectives();
         HttpServletRequest request = dc.getHttpRequest();
         String idParam = request.getParameter("id");
         if(dc.isInitialEntry() && (dc.editingData() || dc.deletingData()))
@@ -117,6 +116,7 @@ public class PersonContactDialog extends com.netspective.sparx.form.Dialog
             catch (SQLException se)
             {
                 // failed to add/edit/delete record
+                se.printStackTrace();
                 getLog().error("Error in data perspective " + dc.getPerspectives(), se);
                 handlePostExecuteException(writer, dc, "Error in data perspective, rolling back.", se);
                 try

@@ -62,11 +62,11 @@
                     <panel type="command" command="query,cts.user-info,-,-,-,detail-compressed" />
                     <panel type="command" command="query,cts.contact-info,-,-,-,record-viewer" />
                 </panels>
-                <page name="add" caption="Add Contact Info" command="dialog,cts.person-contact-info,add" 
+                <page name="add" caption="Add Contact Info" command="dialog,cts.person-contact-info,add" hidden="yes"
                 require-request-param="person_id"  />
-                <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit" 
+                <page name="edit" caption="Edit Contact Info" command="dialog,cts.person-contact-info,edit"   hidden="yes"
                 require-request-param="id" retain-params="id" />
-                <page name="edit-person" caption="Edit Personal Info" command="dialog,cts.person-contact-info,edit" 
+                <page name="edit-person" caption="Edit Personal Info" command="dialog,cts.person-contact-info,edit" hidden="yes"
                 require-request-param="id" retain-params="id" />
             </page>
             <page caption="Journal" name="journal" heading="Add Journal Entry" title="Add Journal Entry">
@@ -88,8 +88,8 @@
                 </panel>
                 <panel type="command" command="query,cts.get-study-info-by-id,-,-,-,detail-compressed" />
             </panels>
-        	<page name="search" caption="Search" heading="Search for studies" title="CTS - Search Studies" default="yes"/>
-            <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Search Studies" default="yes" command="dialog,study.profile,add"/>
+        	<page name="search" caption="Search" heading="Search for studies" title="CTS - Search Studies" default="yes" command="query-defn,study,-,searchDialog"/>
+            <page name="add" caption="Add Study" heading="Add a new study" title="CTS - Add Study" command="dialog,study.profile,add"/>
         </page>
         <page caption="Organization" name="org" heading="Organizations" title="CTS - Clinical Trial Management System">
         	<panels>
@@ -102,11 +102,15 @@
 					</div>
 					]]>
 				</body>
-				</panel>                   
+				</panel>
+                <panel type="command" command="query,cts.get-org-info-by-id,-,-,-,record-editor" />
+                <panel type="command" command="query,cts.get-org-addresses-by-id,-,-,-,report" />
             </panels>
             <page name="search" caption="Search" heading="Search for organizations" title="CTS - Search Organizations"
-            	/>
-            	
+            	command="query-defn,org,-,searchDialog"/>
+            <page name="add" caption="Add" heading="Add a new organization" title="CTS - Add Organization" command="dialog,org.profile,add"/>
+            <page name="edit" caption="Edit" heading="Edit organization" title="CTS - Edit Organization" command="dialog,org.profile,edit"/>
+
         </page>
     </navigation-tree>
     <!--
@@ -146,7 +150,7 @@
     <xdm:include file="data-management/query/statements.xml"/>
 
 
-    <query-defn name="study">
+    <!--query-defn name="study">
         <field name="study_id" caption="Study ID" join="Study" column="study_id"/>
         <field name="study_name" caption="Study Name" join="Study" column="study_name"/>
 
@@ -166,5 +170,5 @@
                 </select>
             </select-dialog>
         </presentation>
-    </query-defn>
+    </query-defn-->
 </project>

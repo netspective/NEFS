@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!--
+        Organization related dialogs
+     -->
+    <dialogs package="org">
+        <dialog name="address" class="app.cts.form.OrgAddressDialog">
+            <frame heading="create-dialog-perspective-heading: Address"/>
+            <field type="separator" heading="Contact Information"/>
+            <field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
+            <field type="text" name="line2" caption="Line 2" size="64"/>
+            <field type="composite" name="cityStateZip" caption="*">
+                <field type="text" name="city" caption="City" required="yes" size="16"/>
+                <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type" required="yes"/>
+                <field type="zip-code" name="zip" caption="Zip Code"/>
+            </field>
+            <field type="text" name="country" caption="Country" size="16"/>
+            <field type="composite"  name="primary" caption="*">
+                <field type="phone"  name="phone" caption="Telephone"/>
+                <field type="phone" name="fax" caption="Fax"/>
+            </field>
+            <field type="composite" name="billing" caption="*">
+                <field type="text" name="contact" caption="Billing Contact"/>
+                <field type="phone" name="phone" caption="Phone"/>
+            </field>
+            <field type="e-mail" name="email" caption="E-Mail"/>
+            <field type="text" name="website" caption="Web Site"/>
+        </dialog>
+
+        <dialog name="profile" retain-params="*" class="app.cts.form.OrgDialog" >
+            <frame heading="create-dialog-perspective-heading: Organization"/>
+            <field type="integer" name="org_id" hidden="yes"/>
+            <field type="separator" heading="Organization Profile"/>
+            <field type="text" name="org_name" caption="Organization Name" required="yes" size="32"/>
+            <field type="text" name="org_code" required="yes" caption="Code" size="16"/>
+            <field type="text" name="org_abbrev" caption="Abbreviated Name" size="16"/>
+            <field type="text" name="time_zone" caption="Time Zone of Organization Location" hint="The following fields should be filled with times in this timezone" size="16"/>
+
+            <field type="separator" heading="Classification"/>
+            <field type="select" name="org_type_id" caption="Organization Type" choices="schema-enum:Org_Type"
+                required="yes"/>
+
+            <field type="separator" heading="Contact Information"/>
+            <field type="text" name="line1" caption="Mailing Address" required="yes" size="64"/>
+            <field type="text" name="line2" caption="Line 2" size="64"/>
+            <field type="composite" name="cityStateZip" caption="*">
+                <field type="text" name="city" caption="City" required="yes" size="16"/>
+                <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type" required="yes"/>
+                <field type="zip-code" name="zip" caption="Zip Code"/>
+            </field>
+            <field type="text" name="country" caption="Country" size="16"/>
+            <field type="composite"  name="primary" caption="*">
+                <field type="phone"  name="phone" caption="Telephone"/>
+                <field type="phone" name="fax" caption="Fax"/>
+            </field>
+            <field type="composite" name="billing" caption="*">
+                <field type="text" name="contact" caption="Billing Contact"/>
+                <field type="phone" name="phone" caption="Phone"/>
+            </field>
+            <field type="e-mail" name="email" caption="E-Mail"/>
+            <field type="text" name="website" caption="Web Site"/>
+
+            <field type="separator" heading="Demographic Information"/>
+            <!--field.select name="ownership_id" caption="Ownership Type" choices="schema-enum:Org_Ownership_Type"/>
+            <field.select name="org_level_id" caption="Organization Type" choices="schema-enum:Org_Level_Type"/-->
+            <field type="integer" name="employees" caption="Approx. Employees"/>
+            <!--director>
+                <next-actions>
+                    <choices>
+                        <choice value="config-expr:${create-app-url:/organization/home.jsp}/organization/home/summary?org_id=${request-attr:org_id}&amp;org_type=${request-attr:org_type}">Go to new organization home</choice>
+                        <choice value="config-expr:${create-app-url:/organization/create.jsp}">Add another organization</choice>
+                        <choice value="config-expr:${create-app-url:/}">Go back</choice>
+                    </choices>
+                </next-actions>
+            </director-->
+		</dialog>
+
+        <!--dialog name="clinic" heading="create-data-cmd-heading:Main Clinic" >
+			<include-template id="org.org-profile"/>
+			<include-template id="org.classification-information"/>
+			<include-template id="org.contact-information"/>
+			<include-template id="org.demographic-information"/>
+		</dialog>
+        <dialog name="department" heading="create-data-cmd-heading:Department Organization" >
+			<include-template id="org.org-profile"/>
+			<include-template id="org.contact-information"/>
+			<include-template id="org.service-information"/>
+		</dialog-->
+
+        <dialog name="person_registration" retain-params="*" >
+            <frame heading="Import Organization Member(s)"/>
+            <field type="integer" name="cr_person_id" hidden="yes" default="session:person_id"/>
+            <field type="integer" name="cr_org_id" hidden="yes" default="session:organization"/>
+            <field type="integer" name="org_id" hidden="yes" default="request:org_id"/>
+
+            <!-- allow import from parent org only -->
+            <field type="text" name="org_name" caption="Organization" read-only="no" default="query:org.parent-org"/>
+            <field type="select" name="rel_person_id" style="multidual" caption="Contacts" required="yes"
+                choices="query:org.selected-org-person-list" default="query:org.member-persons">
+            </field>
+            <!--director>
+                <next-actions>
+                    <choices>
+                        <choice value="config-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}">Choose next action</choice>
+                        <choice value="config-expr:${create-app-url:/account/home.jsp}?project_id=${request:project_id}&amp;project_name=${request:project_name}">Return to project home</choice>
+                    </choices>
+                </next-actions>
+            </director-->
+        </dialog>
+    </dialogs>
+</xdm:container>
