@@ -34,6 +34,7 @@
         <property name="app.database.home" value="${app.WEB-INF.path}/database"/>
         <property name="app.database.defn.path" value="${app.database.home}/defn"/>
 
+        <mkdir dir="${app.WEB-INF.lib.path}"/>
         <path id="project.class.path">
             <pathelement path="classes"/>
             <fileset dir="${app.WEB-INF.lib.path}">
@@ -132,6 +133,11 @@
         <jar jarfile="${dest}" basedir="${app.WEB-INF.classes.path}/auto">
             <include name="**/*.class"/>
         </jar>
+    </target>
+
+    <target name="generate-auto-classes-and-jar-remove-src-and-classes" depends="generate-auto-classes-and-jar" description="Generates only the classes in the auto package, compiles all the classes, and put the auto classes into a JAR file called WEB-INF/lib/[appName]-auto.jar but removes the generated source and .class files">
+        <delete dir="${app.WEB-INF.src.path}/auto"/>
+        <delete dir="${app.WEB-INF.classes.path}/auto"/>
     </target>
 
     <target name="generate-all" depends="generate-auto-classes,generate-sql-ddl,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>

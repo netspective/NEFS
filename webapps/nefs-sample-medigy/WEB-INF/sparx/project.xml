@@ -24,9 +24,6 @@
     <xdm:include file="forms/dialogs.xml"/>
     <xdm:include file="editors/editor-panels.xml"/>
 
-    <!-- setup the data access layer Singleton to point to our schema -->
-    <listener class="app.Util"/>
-
     <template-processor-type name="container" extends="freemarker" xdm:replace-template-expressions="no">
         <![CDATA[
         <#include "*/macros.ftl"/>
