@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.2 2003-08-08 00:59:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -87,5 +87,12 @@ public class HtmlTabularReportDataSourceScrollStates
     {
         state.close();
         vc.getHttpRequest().getSession().removeAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE);
+    }
+
+    public void removeActiveState(HttpServletValueContext vc)
+    {
+        TabularReportDataSourceScrollState state = getActiveScrollState(vc);
+        if(state != null)
+            removeActiveState(vc, state);
     }
 }
