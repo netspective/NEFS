@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.9 2003-06-26 05:57:48 roque.hernandez Exp $
+ * $Id: AbstractConnectionContext.java,v 1.10 2003-08-14 17:53:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -167,19 +167,9 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         return dbvc.getConfigurationsManager();
     }
 
-    public AuthenticatedUser createAuthenticatedUser() throws InstantiationException, IllegalAccessException
-    {
-        return dbvc.createAuthenticatedUser();
-    }
-
     public AuthenticatedUser getAuthenticatedUser()
     {
         return dbvc.getAuthenticatedUser();
-    }
-
-    public void setAuthenticatedUser(AuthenticatedUser user)
-    {
-        dbvc.setAuthenticatedUser(user);
     }
 
     public SqlManager getSqlManager()
