@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.11 2004-06-07 00:11:48 shahid.shah Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.12 2004-06-12 19:46:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -73,6 +73,7 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     protected int totalRows = TOTAL_ROWS_UNKNOWN;
     protected int selectedRowColumnSpecifier = -1;
     protected Object selectedRowColumnValue;
+    protected boolean selectedRowCompareValueAsText;
 
     public QueryResultSetDataSource(ValueSource noDataMessage)
     {
@@ -90,14 +91,23 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         this.cacheColumnData = cacheColumnData;
     }
 
+    public void setSelectedRowRule(int selectedRowColumnSpecifier, String selectedRowColumnValue)
+    {
+        this.selectedRowColumnValue = selectedRowColumnValue;
+        this.selectedRowColumnSpecifier = selectedRowColumnSpecifier;
+        this.selectedRowCompareValueAsText = true;
+    }
+
+    public void setSelectedRowRule(int selectedRowColumnSpecifier, Object selectedRowColumnValue)
+    {
+        this.selectedRowColumnValue = selectedRowColumnValue;
+        this.selectedRowColumnSpecifier = selectedRowColumnSpecifier;
+        this.selectedRowCompareValueAsText = false;
+    }
+
     public Object getSelectedRowColumnValue()
     {
         return selectedRowColumnValue;
-    }
-
-    public void setSelectedRowColumnValue(Object selectedRowColumnValue)
-    {
-        this.selectedRowColumnValue = selectedRowColumnValue;
     }
 
     public int getSelectedRowColumnSpecifier()
@@ -105,15 +115,17 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
         return selectedRowColumnSpecifier;
     }
 
-    public void setSelectedRowColumnSpecifier(int selectedRowColumnSpecifier)
+    public boolean isSelectedRowCompareValueAsText()
     {
-        this.selectedRowColumnSpecifier = selectedRowColumnSpecifier;
+        return selectedRowCompareValueAsText;
     }
 
     public boolean isActiveRowSelected()
     {
         if (selectedRowColumnValue == null || selectedRowColumnSpecifier == -1)
             return false;
+        else if (selectedRowCompareValueAsText)
+            return selectedRowColumnValue.equals(getActiveRowColumnData(selectedRowColumnSpecifier, 0).toString());
         else
             return (selectedRowColumnValue.equals(getActiveRowColumnData(selectedRowColumnSpecifier, 0)));
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.28 2004-06-07 00:11:48 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.29 2004-06-12 19:46:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -82,6 +82,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     private CustomRenderer customRenderer; // if a custom renderer should be used specify it here
     private int selectedRowColumnSpecifier; // if greater than or equal to zero, specifies the index of the column that decides if the row is selected
     private ValueSource selectedRowColumnValue = ValueSource.NULL_VALUE_SOURCE;  // if non-null, specifies the value of the selectedRowColumn index'th column that decides if the row is selected
+    private boolean selectedRowCompareValueAsText; // true if selected row comparison should be as a text or object
 
     public AbstractHtmlTabularReportPanel()
     {
@@ -145,6 +146,16 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
     public void setSelectedRowColumnValue(ValueSource selectedRowColumnValue)
     {
         this.selectedRowColumnValue = selectedRowColumnValue;
+    }
+
+    public boolean isSelectedRowCompareValueAsText()
+    {
+        return selectedRowCompareValueAsText;
+    }
+
+    public void setSelectedRowCompareValueAsText(boolean selectedRowCompareValueAsText)
+    {
+        this.selectedRowCompareValueAsText = selectedRowCompareValueAsText;
     }
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportPanelEditorContentElement.java,v 1.8 2004-06-07 00:11:48 shahid.shah Exp $
+ * $Id: ReportPanelEditorContentElement.java,v 1.9 2004-06-12 19:46:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel.editor;
@@ -475,10 +475,8 @@ public class ReportPanelEditorContentElement extends PanelEditorContentElement
         if (activeElement != null && activeElement.equals(getName()))
         {
             if (getPkColumnIndex() != -1)
-            {
-                dataRoot.setSelectedRowColumnValue(ReportPanelEditorContentElement.getPkValueFromState(state));
-                dataRoot.setSelectedRowColumnSpecifier(getPkColumnIndex());
-            }
+                dataRoot.setSelectedRowRule(getPkColumnIndex(), ReportPanelEditorContentElement.getPkValueFromState(state));
+
             context.setPanelRenderFlags(HtmlPanel.RENDERFLAG_NOFRAME | PanelEditorContentElement.HIGHLIGHT_ACTIVE_ITEM);
         }
         else

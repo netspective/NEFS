@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.14 2004-06-07 00:11:48 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.15 2004-06-12 19:46:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -180,8 +180,10 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(noDataMsg != null ? noDataMsg : NO_DATA_MSG);
             if (getSelectedRowColumnSpecifier() != -1)
             {
-                qrsds.setSelectedRowColumnSpecifier(getSelectedRowColumnSpecifier());
-                qrsds.setSelectedRowColumnValue(getSelectedRowColumnValue().getValue(nc).getValue());
+                if (isSelectedRowCompareValueAsText())
+                    qrsds.setSelectedRowRule(getSelectedRowColumnSpecifier(), getSelectedRowColumnValue().getValue(nc).getTextValue());
+                else
+                    qrsds.setSelectedRowRule(getSelectedRowColumnSpecifier(), getSelectedRowColumnValue().getValue(nc).getValue());
             }
             qrsds.setQueryResultSet(resultSet);
             return qrsds;
