@@ -51,41 +51,43 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.26 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.27 2004-01-27 05:06:46 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
+import com.netspective.commons.validate.ValidationContext;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogDirector;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogIncludeJavascriptFile;
+import com.netspective.sparx.form.DialogPerspectives;
+import com.netspective.sparx.form.DialogSkin;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
+import com.netspective.sparx.form.field.DialogFieldPopup;
+import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.type.GridField;
+import com.netspective.sparx.form.field.type.SeparatorField;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.theme.Theme;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URLEncoder;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
-import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialog;
-import com.netspective.sparx.form.DialogFlags;
-import com.netspective.sparx.form.DialogDirector;
-import com.netspective.sparx.form.DialogPerspectives;
-import com.netspective.sparx.form.DialogIncludeJavascriptFile;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFieldPopup;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.type.GridField;
-import com.netspective.sparx.form.field.type.SeparatorField;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.commons.validate.ValidationContext;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -136,6 +138,15 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 	protected Map    includePreScriptsMap;
     private String controlAreaClass;
     private String captionClass;
+
+    /**
+     * Default constructor so that child classes can be instantiated through XDM.
+     *
+     */
+    public StandardDialogSkin()
+    {
+
+    }
 
     public StandardDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
@@ -692,48 +703,48 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 				int accessKeyPos = caption.toLowerCase().indexOf(accessKey.toLowerCase());
 				if (accessKeyPos > 0 && accessKeyPos < caption.length() - 1)
 				{
-					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+					fieldsHtml.append("<tr " + rowAttr + "><td " + getCaptionClass() + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
 						caption.substring(accessKeyPos, accessKeyPos + 1) + "</span>" + caption.substring(accessKeyPos + 1) + "</label></td>" +
-						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
+						"<td " + getControlAreaClass() + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else if (accessKeyPos == caption.length() - 1)
 				{
-					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+					fieldsHtml.append("<tr " + rowAttr + "><td " + getCaptionClass() + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
 						caption.substring(accessKeyPos) + "</span></label></td>" +
-						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
+						"<td " + getControlAreaClass() + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else if (accessKeyPos == 0)
 				{
-					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+					fieldsHtml.append("<tr " + rowAttr + "><td " + getCaptionClass() + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + "<span class=\"accesskey\">" +
 						caption.substring(0, 1) + "</span>" + caption.substring(1) + "</label></td>" +
-						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
+						"<td " + getControlAreaClass() + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else
 				{
 					fieldsHtml.append(
-						"<tr " + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
-						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
+						"<tr " + rowAttr + "><td " + getCaptionClass() + ">" + caption + "</td>" +
+						"<td " + getControlAreaClass() + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 			}
 			else if(caption.length() > 0)
 			{
 				fieldsHtml.append(
-                    "<tr" + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
-                    "<td "+ controlAreaClass + ">" + controlHtml + hintHtml +
+                    "<tr" + rowAttr + "><td " + getCaptionClass() + ">" + caption + "</td>" +
+                    "<td "+ getControlAreaClass() + ">" + controlHtml + hintHtml +
                     "</td></tr>\n");
 			}
             else
             {
                 fieldsHtml.append(
                     "<tr" + rowAttr + "><td>&nbsp;</td>" +
-                    "<td "+ controlAreaClass + ">" + controlHtml + hintHtml +
+                    "<td "+ getControlAreaClass() + ">" + controlHtml + hintHtml +
                     "</td></tr>\n");
             }
 
