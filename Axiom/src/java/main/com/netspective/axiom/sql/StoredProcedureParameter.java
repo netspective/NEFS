@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.10 2004-01-15 20:00:46 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.11 2004-01-29 23:45:52 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -257,6 +257,17 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
                         stmt.setNull(paramNum, Types.VARCHAR);
                     else if (text != null)
                         stmt.setObject(paramNum, text);
+                    else
+                        log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
+                    break;
+
+                case Types.CHAR:
+                    if (vac.hasOverrideValues() && vac.hasActiveParamOverrideValue())
+                        text = (String) vac.getActiveParamOverrideValue();
+                    if (allowNull && text == null)
+                        stmt.setNull(paramNum, Types.CHAR);
+                    else if (text != null)
+                        stmt.setObject(paramNum, text.substring(0,1));
                     else
                         log.warn("Parameter '" + getName() + "' was not bound. Value = " + text);
                     break;

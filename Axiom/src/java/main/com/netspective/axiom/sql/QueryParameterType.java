@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameterType.java,v 1.5 2003-11-10 23:02:02 aye.thu Exp $
+ * $Id: QueryParameterType.java,v 1.6 2004-01-29 23:44:07 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -71,6 +71,7 @@ public class QueryParameterType
     public static final String SMALLINT_IDENTIFIER  = "smallint";
     public static final String BIGINT_IDENTIFIER    = "bigint";
     public static final String RESULTSET_IDENTIFIER = "resultset";
+    public static final String CHAR_IDENTIFIER = "char";
 
     public static final QueryParameterType TEXT = new QueryParameterType("text", Types.VARCHAR, String.class);
     private static final Map typesMapByIdentifier = new HashMap();
@@ -95,7 +96,7 @@ public class QueryParameterType
         // added to support stored procedures
         add(REAL_IDENTIFIER, Types.REAL, Float.class);
         add(FLOAT_IDENTIFIER, Types.FLOAT, Float.class);
-        //add("char", Types.CHAR, char.class);
+        add(CHAR_IDENTIFIER, Types.CHAR, char.class);
         add(CLOB_IDENTIFIER, Types.CLOB, Clob.class);
         add(DECIMAL_IDENTIFIER, Types.DECIMAL, Double.class);
         add(DATE_IDENTIFIER, Types.DATE, Date.class);
