@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.8 2003-05-16 21:20:15 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.9 2003-06-26 05:57:48 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -127,8 +127,15 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     {
         if(connection != null)
         {
-            connection.commit();
-            close();
+            try
+            {
+                connection.commit();
+            }
+            finally
+            {
+                close();
+            }
+
         }
     }
 

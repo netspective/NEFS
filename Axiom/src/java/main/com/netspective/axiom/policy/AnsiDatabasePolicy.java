@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.2 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.3 2003-06-26 05:57:29 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -386,21 +386,35 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         writer.write("     product-version: " + dbmd.getDatabaseProductVersion() + "\n");
 
         writer.write("     available catalogs:");
-        ResultSet rs = dbmd.getCatalogs();
-        while(rs.next())
+        ResultSet rs = null;
+        try
         {
-            writer.write(" "+rs.getObject(1).toString());
+            rs = dbmd.getCatalogs();
+            while(rs.next())
+            {
+                writer.write(" "+rs.getObject(1).toString());
+            }
         }
-        rs.close();
+        finally
+        {
+            if (rs != null) rs.close();
+        }
+
         writer.write("\n");
 
         writer.write("     available schemas:");
-        rs = dbmd.getSchemas();
-        while(rs.next())
+        try
         {
-            writer.write(" "+rs.getObject(1).toString());
+            rs = dbmd.getSchemas();
+            while(rs.next())
+            {
+                writer.write(" "+rs.getObject(1).toString());
+            }
         }
-        rs.close();
+        finally
+        {
+            if (rs != null) rs.close();
+        }
         writer.write("\n");
         writer.write("-->\n\n");
 
@@ -410,107 +424,138 @@ public class AnsiDatabasePolicy implements DatabasePolicy
 
         Map dbmdTypeInfoByName = new HashMap();
         Map dbmdTypeInfoByJdbcType = new HashMap();
-        ResultSet typesRS = dbmd.getTypeInfo();
-        while (typesRS.next())
+        ResultSet typesRS = null;
+        try
         {
-            int colCount = typesRS.getMetaData().getColumnCount();
-            Object[] typeInfo = new Object[colCount];
-            for (int i = 1; i <= colCount; i++)
-                typeInfo[i - 1] = typesRS.getObject(i);
-            dbmdTypeInfoByName.put(typesRS.getString(1), typeInfo);
-            dbmdTypeInfoByJdbcType.put(new Integer(typesRS.getInt(2)), typeInfo);
+            typesRS = dbmd.getTypeInfo();
+            while (typesRS.next())
+            {
+                int colCount = typesRS.getMetaData().getColumnCount();
+                Object[] typeInfo = new Object[colCount];
+                for (int i = 1; i <= colCount; i++)
+                    typeInfo[i - 1] = typesRS.getObject(i);
+                dbmdTypeInfoByName.put(typesRS.getString(1), typeInfo);
+                dbmdTypeInfoByJdbcType.put(new Integer(typesRS.getInt(2)), typeInfo);
+            }
         }
-        typesRS.close();
-
-        ResultSet tables = dbmd.getTables(catalog, schemaPattern, null, new String[]{"TABLE"});
-        while (tables.next())
+        finally
         {
-            String tableNameOrig = tables.getString(3);
-            String tableName = TextUtils.fixupTableNameCase(tableNameOrig);
+            if (typesRS != null) typesRS.close();
+        }
 
-            writer.write("        <table name=\""+ tableName + "\">\n");
-
-            Map primaryKeys = new HashMap();
-            try
+        ResultSet tables = null;
+        try
+        {
+            tables = dbmd.getTables(catalog, schemaPattern, null, new String[]{"TABLE"});
+            while (tables.next())
             {
-                ResultSet pkRS = dbmd.getPrimaryKeys(null, null, tableNameOrig);
-                while (pkRS.next())
-                {
-                    primaryKeys.put(pkRS.getString(4), pkRS.getString(5));
-                }
-                pkRS.close();
-            }
-            catch (Exception e)
-            {
-                // driver may not support this function
-            }
+                String tableNameOrig = tables.getString(3);
+                String tableName = TextUtils.fixupTableNameCase(tableNameOrig);
 
-            Map fKeys = new HashMap();
-            try
-            {
-                ResultSet fkRS = dbmd.getImportedKeys(null, null, tableNameOrig);
-                while (fkRS.next())
-                {
-                    fKeys.put(fkRS.getString(8), TextUtils.fixupTableNameCase(fkRS.getString(3)) + "." + fkRS.getString(4).toLowerCase());
-                }
-                fkRS.close();
-            }
-            catch (Exception e)
-            {
-                // driver may not support this function
-            }
+                writer.write("        <table name=\""+ tableName + "\">\n");
 
-            // we keep track of processed columns so we don't duplicate them in the XML
-            Set processedColsMap = new HashSet();
-            ResultSet columns = dbmd.getColumns(null, null, tableNameOrig, null);
-            while (columns.next())
-            {
-                String columnNameOrig = columns.getString(4);
-                if (processedColsMap.contains(columnNameOrig))
-                    continue;
-                processedColsMap.add(columnNameOrig);
-
-                String columnName = columnNameOrig.toLowerCase();
-
-                writer.write("            <column name=\""+ columnName + "\"");
+                Map primaryKeys = new HashMap();
+                ResultSet pkRS = null;
                 try
                 {
-                    if (fKeys.containsKey(columnNameOrig))
-                        writer.write(" lookup-ref=\""+ fKeys.get(columnNameOrig) +"\"");
-                    else
+                    pkRS = dbmd.getPrimaryKeys(null, null, tableNameOrig);
+                    while (pkRS.next())
                     {
-                        short jdbcType = columns.getShort(5);
-                        String dataType = (String) dataTypesMap.get(new Integer(jdbcType));
-                        if (dataType == null) dataType = Short.toString(jdbcType);
-                        writer.write(" type=\""+ dataType +"\"");
+                        primaryKeys.put(pkRS.getString(4), pkRS.getString(5));
                     }
-
-                    if (primaryKeys.containsKey(columnNameOrig))
-                        writer.write(" primary-key=\"yes\"");
-
-                    if (columns.getString(18).equals("NO"))
-                        writer.write(" required=\"yes\"");
-
-                    String defaultValue = columns.getString(13);
-                    if(defaultValue != null)
-                        writer.write(" default=\""+ defaultValue +"\"");
-
-                    String remarks = columns.getString(12);
-                    if(remarks != null)
-                        writer.write(" descr=\""+ remarks +"\"");
 
                 }
                 catch (Exception e)
                 {
+                    // driver may not support this function
+                }
+                finally
+                {
+                    if (pkRS != null) pkRS.close();
                 }
 
-                writer.write("/>\n");
-            }
-            columns.close();
+                Map fKeys = new HashMap();
+                ResultSet fkRS = null;
+                try
+                {
+                    fkRS = dbmd.getImportedKeys(null, null, tableNameOrig);
+                    while (fkRS.next())
+                    {
+                        fKeys.put(fkRS.getString(8), TextUtils.fixupTableNameCase(fkRS.getString(3)) + "." + fkRS.getString(4).toLowerCase());
+                    }
+                }
+                catch (Exception e)
+                {
+                    // driver may not support this function
+                }
+                finally
+                {
+                    if (fkRS != null) fkRS.close();
+                }
 
-            writer.write("        </table>\n");
+                // we keep track of processed columns so we don't duplicate them in the XML
+                Set processedColsMap = new HashSet();
+                ResultSet columns = null;
+                try
+                {
+                    columns = dbmd.getColumns(null, null, tableNameOrig, null);
+                    while (columns.next())
+                    {
+                        String columnNameOrig = columns.getString(4);
+                        if (processedColsMap.contains(columnNameOrig))
+                            continue;
+                        processedColsMap.add(columnNameOrig);
+
+                        String columnName = columnNameOrig.toLowerCase();
+
+                        writer.write("            <column name=\""+ columnName + "\"");
+                        try
+                        {
+                            if (fKeys.containsKey(columnNameOrig))
+                                writer.write(" lookup-ref=\""+ fKeys.get(columnNameOrig) +"\"");
+                            else
+                            {
+                                short jdbcType = columns.getShort(5);
+                                String dataType = (String) dataTypesMap.get(new Integer(jdbcType));
+                                if (dataType == null) dataType = Short.toString(jdbcType);
+                                writer.write(" type=\""+ dataType +"\"");
+                            }
+
+                            if (primaryKeys.containsKey(columnNameOrig))
+                                writer.write(" primary-key=\"yes\"");
+
+                            if (columns.getString(18).equals("NO"))
+                                writer.write(" required=\"yes\"");
+
+                            String defaultValue = columns.getString(13);
+                            if(defaultValue != null)
+                                writer.write(" default=\""+ defaultValue +"\"");
+
+                            String remarks = columns.getString(12);
+                            if(remarks != null)
+                                writer.write(" descr=\""+ remarks +"\"");
+
+                        }
+                        catch (Exception e)
+                        {
+                        }
+
+                        writer.write("/>\n");
+                    }
+                }
+                finally
+                {
+                    if (columns != null) columns.close();
+                }
+
+
+                writer.write("        </table>\n");
+            }
         }
-        tables.close();
+        finally
+        {
+            tables.close();
+        }
 
         writer.write("    </schema>\n");
         writer.write("</component>");
