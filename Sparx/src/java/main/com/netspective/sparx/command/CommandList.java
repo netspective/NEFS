@@ -51,18 +51,15 @@
  */
 
 /**
- * @version $Id: CommandList.java,v 1.2 2003-12-08 14:01:07 shahid.shah Exp $
+ * @version $Id: CommandList.java,v 1.3 2004-04-20 13:16:29 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
 
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommandList
 {
@@ -98,6 +95,11 @@ public class CommandList
     public List getItems()
     {
         return list;
+    }
+
+    public int size()
+    {
+        return list.size();
     }
 
     /**
