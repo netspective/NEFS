@@ -70,6 +70,9 @@
             <param name="param.test-app-id" value="nefs-sample-hello-forms"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-books"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-library"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
@@ -85,7 +88,7 @@
             <param name="param.test-app-id" value="nefs-sample-survey"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-test-miscellaneous"/>
+            <param name="param.test-app-id" value="nefs-test-bed"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cfs"/>
@@ -120,6 +123,9 @@
             <param name="param.test-app-id" value="nefs-sample-hello-forms"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="nefs-sample-books"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-library"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
@@ -135,7 +141,7 @@
             <param name="param.test-app-id" value="nefs-sample-survey"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-test-miscellaneous"/>
+            <param name="param.test-app-id" value="nefs-test-bed"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cfs"/>
@@ -145,6 +151,10 @@
     <!-- ********************************************************************************************************** -->
 
     <target name="nefs.copy-standard-nefs-items-from-starter-to-other-apps" depends="nefs.init" description="Copy files that are standard to NEFS from the 'starter' empty app to all the other apps.">
+
+        <!-- NOTE: the books, library, and survey apps have a call to init-first-time-using-ant=/WEB-INF/sparx/conf/ant-build-project.xml:create-database-hsqldb
+                   in the navigation controller servlet so if this task is run be sure to add that back in after running it -->
+
         <property name="force" value="yes"/>
         <fileset id="standard-items" dir="${nefs.starter.empty-app.home}">
             <include name="WEB-INF/classes/commons-logging.properties"/>
@@ -163,6 +173,9 @@
         <copy todir="${nefs.webapps.home}/nefs-sample-hello-forms" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
+        <copy todir="${nefs.webapps.home}/nefs-sample-books" overwrite="${force}">
+            <fileset refid="standard-items"/>
+        </copy>
         <copy todir="${nefs.webapps.home}/nefs-sample-library" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
@@ -175,7 +188,7 @@
         <copy todir="${nefs.webapps.home}/nefs-sample-survey" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/nefs-test-miscellaneous" overwrite="${force}">
+        <copy todir="${nefs.webapps.home}/nefs-test-bed" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
         <copy todir="${nefs.webapps.home}/nefs-sample-cfs" overwrite="${force}">
@@ -190,12 +203,13 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
     </target>
 
@@ -204,12 +218,13 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
     </target>
 
@@ -218,13 +233,29 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+    </target>
+
+    <target name="sparx.setup-all-apps-for-websphere" depends="nefs.init" description="Performs tasks necessary to setup applications for use under IBM WebSphere app server">
+        <property name="force" value="yes"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-other" depends="nefs.init" description="Performs tasks necessary to setup applications for use under any other app server mentioned before">
@@ -232,12 +263,13 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-case-manager/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-world/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-hello-forms/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-miscellaneous/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cfs/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
     </target>
 </project>
