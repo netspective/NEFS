@@ -4,6 +4,9 @@
         <page name="overview" caption="Sparx Overview">
             <body config="console" source="console-page-content:documentation.ftl"/>
         </page>
+        <page name="getting-started" caption="Getting Started">
+            <body config="console" source="console-page-content:index.ftl"/>
+        </page>
         <page name="project" caption="Project">
             <panels>
                 <panel type="console-page-summary"/>
