@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.35 2003-10-11 14:34:00 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.36 2003-10-13 03:07:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -765,8 +765,17 @@ public class XmlDataModelSchema
             XmlDataModelSchema.NestedCreator creator = (XmlDataModelSchema.NestedCreator) getNestedCreators().get(attrName);
             if(creator != null)
             {
-                Object flagsGetterInstance = createInstance();
-                bfa = (XdmBitmaskedFlagsAttribute) creator.create(flagsGetterInstance);
+                Object flagsGetterInstance = null;
+                try
+                {
+                    flagsGetterInstance = createInstance();
+                    bfa = (XdmBitmaskedFlagsAttribute) creator.create(flagsGetterInstance);
+                }
+                catch (Exception e)
+                {
+                    log.error(e);
+                    bfa = null;
+                }
             }
             else
                 bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
