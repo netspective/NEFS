@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextAttributesPanel.java,v 1.7 2003-07-29 21:11:05 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.8 2003-07-29 21:11:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -55,7 +55,6 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialogs;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
