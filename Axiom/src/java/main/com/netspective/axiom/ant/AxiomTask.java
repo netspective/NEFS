@@ -40,6 +40,7 @@ import java.util.List;
 import javax.naming.NamingException;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.taskdefs.ExecTask;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
@@ -83,6 +84,8 @@ public class AxiomTask extends XdmComponentTask
     private String graphVizErdFocusedFileNameFormat;
     private String graphVizErdIgnoreColumnNames;
     private String graphVizErdIgnoreTableNames;
+    private String graphVizErdDotCmdStr = "dot";
+    private String graphVizErdDotOutputType = "png";
     private File dtdFile;
     private DriverManagerConnectionProvider.DataSourceInfo dsInfo;
     private String dalRootPackage;
@@ -105,6 +108,8 @@ public class AxiomTask extends XdmComponentTask
         graphVizErdFocusedFileNameFormat = null;
         graphVizErdIgnoreColumnNames = null;
         graphVizErdIgnoreTableNames = null;
+        graphVizErdDotCmdStr = "dot";
+        graphVizErdDotOutputType = "png";
         dsInfo = null;
         dalRootPackage = null;
         dalClassNameWithoutPackage = DEFAULTCLASSNAME_DAL;
@@ -431,6 +436,8 @@ public class AxiomTask extends XdmComponentTask
             diagramGenerator.generateDOTSource(graphVizErdFile);
             log("Created GraphViz digraph " + graphVizErdFile + " for schema '" + schema.getName() + "'.");
 
+            executeDot(graphVizErdFile.getAbsolutePath());
+
             if(graphVizErdFocusedFileNameFormat != null)
             {
                 final TableTree tableTree = schema.getStructure();
@@ -439,6 +446,9 @@ public class AxiomTask extends XdmComponentTask
                 {
                     final Schema.TableTreeNode tableNode = (Schema.TableTreeNode) children.get(i);
                     final Table table = tableNode.getTable();
+                    if(!table.isParentTable())
+                        continue;
+
                     final String tableName = table.getName();
                     final File focusedFile = new File(TextUtils.getInstance().replaceTextValues(graphVizErdFocusedFileNameFormat, "{tableName}", tableName));
 
@@ -451,6 +461,8 @@ public class AxiomTask extends XdmComponentTask
                     schemaDiagramGenerator.generate();
                     diagramGenerator.generateDOTSource(focusedFile);
                     log("Created GraphViz digraph " + focusedFile + " for schema '" + schema.getName() + "' table '" + tableName + "'.");
+
+                    executeDot(focusedFile.getAbsolutePath());
                 }
             }
 
@@ -467,6 +479,30 @@ public class AxiomTask extends XdmComponentTask
         {
             throw new BuildException(e);
         }
+    }
+
+    private String executeDot(final String dotSrcFile) throws BuildException
+    {
+        if(graphVizErdDotOutputType == null && graphVizErdDotCmdStr == null)
+            return null;
+
+        String outFileName = dotSrcFile.substring(0, dotSrcFile.lastIndexOf('.')) + "." + graphVizErdDotOutputType;
+        final String cmd = "/c " + graphVizErdDotCmdStr + " -T" + graphVizErdDotOutputType + " -o" + outFileName + " " + dotSrcFile;
+        try
+        {
+            ExecTask execTask = new ExecTask();
+            execTask.setProject(getProject());
+            execTask.setExecutable("cmd.exe");
+            execTask.createArg().setValue(cmd);
+            execTask.setOutputproperty(outFileName + "-log");
+            execTask.execute();
+            log("Created GraphViz diagram " + outFileName + " from " + dotSrcFile);
+        }
+        catch(BuildException e)
+        {
+            log("Unable to create GraphViz diagram using cmd.exe " + cmd + ": " + e.getMessage());
+        }
+        return outFileName;
     }
 
     /* ----- reverse-engineer specific attributes and methods -------------------------------------------------------*/
