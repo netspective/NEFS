@@ -231,8 +231,8 @@
                     <body source="support/docs/nefs-build.ftl"/>
                 </page>
             </page>
-            <page name="community" caption="Community (Forums)" redirect="http\://www.netspective.com:81/support/community"/>
-            <page name="knowledge-base" caption="Knowledge Base" redirect="http\://www.netspective.com:81/support/community/kb.php"/>
+            <page name="community" caption="Community (Forums)" redirect="http\://www.netspective.com/support/community"/>
+            <page name="knowledge-base" caption="Knowledge Base" redirect="http\://www.netspective.com/support/community/kb.php"/>
             <page name="request-help" caption="Request Help" command="dialog,support.request-help">
                 <summary>
                     All questions and answers, unless marked private, will be posted on the AnswerDesk for
