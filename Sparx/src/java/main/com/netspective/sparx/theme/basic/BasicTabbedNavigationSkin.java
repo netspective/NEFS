@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.19 2003-08-10 16:59:08 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.20 2003-08-11 07:15:10 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -62,6 +62,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.security.AuthenticatedUser;
@@ -560,7 +561,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException
     {
-        NavigationPath.Flags flags = nc.getActiveState().getFlags();
+        NavigationPathFlags flags = nc.getActiveState().getFlags();
         if (flags.flagIsSet(NavigationPage.Flags.SHOW_RENDER_TIME))
         {
             Long startTime = (Long) nc.getRequest().getAttribute(NavigationControllerServlet.REQATTRNAME_RENDER_START_TIME);

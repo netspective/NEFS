@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.15 2003-08-09 16:37:04 shahid.shah Exp $
+ * $Id: Project.java,v 1.16 2003-08-11 07:14:16 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -57,9 +57,11 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.navigate.NavigationTrees;
+import com.netspective.sparx.navigate.NavigationConditionalAction;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.sparx.theme.basic.AbstractTheme;
@@ -102,17 +104,20 @@ import com.netspective.commons.lang.ClassPath;
 
 public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener
 {
-    private static final Log log = LogFactory.getLog(Project.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
     public static final String TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER = "dialog-execute-handler";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
+    public static final String TEMPLATEELEMNAME_NAVIGATION_PAGE_CONDITIONAL_ACTION_TYPE = "navigation-page-conditional-action";
+
+    private static final Log log = LogFactory.getLog(Project.class);
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
     private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
     private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
     private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
+    private static final NavigationConditionalActionTemplate NAVIGATION_PAGE_CONDITIONAL_ACTIONS = new NavigationConditionalActionTemplate();
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -154,6 +159,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         }
     }
 
+    protected static class NavigationConditionalActionTemplate extends TemplateProducer
+    {
+        public NavigationConditionalActionTemplate()
+        {
+            super(NavigationConditionalAction.class.getName(), TEMPLATEELEMNAME_NAVIGATION_PAGE_CONDITIONAL_ACTION_TYPE, "name", "extends", true, false);
+        }
+    }
+
     static
     {
         templateProducers.add(PANEL_TYPES);
@@ -161,6 +174,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(CONDITIONAL_ACTIONS);
+        templateProducers.add(NAVIGATION_PAGE_CONDITIONAL_ACTIONS);
     }
 
     private NavigationTrees navigationTrees = new NavigationTrees();
@@ -214,6 +228,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public PanelTypeTemplate getPanelTypes()
     {
         return PANEL_TYPES;
+    }
+
+    public NavigationConditionalActionTemplate getNavigationPageConditionalActions()
+    {
+        return NAVIGATION_PAGE_CONDITIONAL_ACTIONS;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
@@ -376,6 +395,10 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return new com.netspective.sparx.sql.QueryDefinition();
     }
 
+    public QueryDefinition getQueryDefinition(String name)
+    {
+        return super.getQueryDefinition(name);
+    }
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public FreeMarkerConfigurationAdapter getFreemarkerConfiguration(String name)
