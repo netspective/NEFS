@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ActivePageUrlValueSource.java,v 1.1 2004-03-07 02:49:35 aye.thu Exp $
+ * $Id: ActivePageUrlValueSource.java,v 1.2 2004-03-07 02:49:58 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
