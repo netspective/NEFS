@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.6 2003-11-20 02:10:50 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.7 2003-11-24 20:11:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -84,6 +84,7 @@ public class NavigationControllerServletOptions
     public static final String DEFAULT_SPARX_RESOURCES_LOCATOR = "/resources/sparx,/sparx";
     public static final String DEFAULT_INIT_SUCCESS = "END_INIT";
     public static final String DEFAULT_DATA_SOURCE_ID = "jdbc/default";
+    public static final int DEFAULT_PAGE_CACHE_MAX_SIZE = 32;
 
     private CommandLineParser parser = new PosixParser();
     private Options servletOptions = new Options();
@@ -215,6 +216,11 @@ public class NavigationControllerServletOptions
                                               .hasArg().withArgName("id")
                                               .withDescription("The identifier of the default data source.")
                                               .create('d'));
+
+        servletOptions.addOption(OptionBuilder.withLongOpt("page-cache-max-size")
+                                              .hasArg().withArgName("size")
+                                              .withDescription("The maximum number of pages to cache (for pages that allow caching)")
+                                              .create('X'));
     }
 
     public boolean isHelpRequested()
@@ -285,6 +291,11 @@ public class NavigationControllerServletOptions
     public String getServletExecutionPropertiesFileName()
     {
         return commandLine.getOptionValue("x", DEFAULT_EXEC_PROPS_FILE_NAME);
+    }
+
+    public int getPageCacheMaxSize()
+    {
+        return Integer.parseInt(commandLine.getOptionValue("X", Integer.toString(DEFAULT_PAGE_CACHE_MAX_SIZE)));
     }
 
     public String getInitSuccessType()
