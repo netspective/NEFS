@@ -444,15 +444,15 @@
           value-index CDATA #IMPLIED
           value-text CDATA #IMPLIED>
 
-<!ELEMENT appt-type-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | appt-type-id | dal:include)*>
+<!ELEMENT appt-type-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-id | resource-type-id | org-id | person-id | asset-id | other-id | appt-type-id | dal:include)*>
 <!ATTLIST appt-type-resource
           ID CDATA #IMPLIED
           IDREF CDATA #IMPLIED
           cr-stamp CDATA #IMPLIED
           cr-sess-id CDATA #IMPLIED
           rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           resource-id CDATA #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           org-id CDATA #IMPLIED
           person-id CDATA #IMPLIED
           asset-id CDATA #IMPLIED
@@ -478,15 +478,15 @@
           days-of-week CDATA #IMPLIED
           slot-width CDATA #IMPLIED>
 
-<!ELEMENT template-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | template-id | dal:include)*>
+<!ELEMENT template-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-id | resource-type-id | org-id | person-id | asset-id | other-id | template-id | dal:include)*>
 <!ATTLIST template-resource
           ID CDATA #IMPLIED
           IDREF CDATA #IMPLIED
           cr-stamp CDATA #IMPLIED
           cr-sess-id CDATA #IMPLIED
           rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           resource-id CDATA #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           org-id CDATA #IMPLIED
           person-id CDATA #IMPLIED
           asset-id CDATA #IMPLIED
@@ -528,15 +528,15 @@
           waiting-list CDATA #IMPLIED
           start-time CDATA #IMPLIED>
 
-<!ELEMENT event-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-type-id | resource-id | org-id | person-id | asset-id | other-id | event-id | dal:include)*>
+<!ELEMENT event-resource (cr-stamp | cr-sess-id | rec-stat-id | resource-id | resource-type-id | org-id | person-id | asset-id | other-id | event-id | dal:include)*>
 <!ATTLIST event-resource
           ID CDATA #IMPLIED
           IDREF CDATA #IMPLIED
           cr-stamp CDATA #IMPLIED
           cr-sess-id CDATA #IMPLIED
           rec-stat-id (0 | Inactive | 1 | Active | 99 | Unknown) #IMPLIED
-          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           resource-id CDATA #IMPLIED
+          resource-type-id (0 | Organiztion | 1 | People | 2 | Asset | 3 | Other) #IMPLIED
           org-id CDATA #IMPLIED
           person-id CDATA #IMPLIED
           asset-id CDATA #IMPLIED

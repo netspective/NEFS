@@ -793,9 +793,9 @@ CREATE TABLE Person_Contact
     method_name VARCHAR(128), /* type.TextColumn */
     method_value VARCHAR(255), /* type.TextColumn */
     phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
+    phone_ac VARCHAR(32), /* type.TextColumn */
+    phone_prefix VARCHAR(32), /* type.TextColumn */
+    phone_suffix VARCHAR(32) /* type.TextColumn */
 );
 CREATE unique INDEX Person_Contact_unq on Person_Contact (parent_id, method_value);
 CREATE  INDEX PerCont_parent_id on Person_Contact (parent_id);
@@ -876,10 +876,10 @@ CREATE TABLE Person_Insurance
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
     system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
-    ins_rel_id INTEGER, /* type.LongIntegerColumn */
+    ins_rel_id VARCHAR(36), /* type.GuidTextColumn */
     guar_person_id VARCHAR(36), /* type.GuidTextColumn */
-    guar_rel_id INTEGER, /* type.LongIntegerColumn */
-    member_number VARCHAR(64), /* type.TextColumn */
+    guar_rel_id VARCHAR(36), /* type.GuidTextColumn */
+    member_number VARCHAR(64), /* type.GuidColumn */
     policy_id VARCHAR(36) /* type.GuidTextColumn */
 );
 CREATE  INDEX PK_Person_Insurance on Person_Insurance (system_id);
@@ -938,7 +938,7 @@ CREATE TABLE Person_Relationship
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
-    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
@@ -998,7 +998,7 @@ CREATE TABLE PersonOrg_Relationship
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
-    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
@@ -1049,7 +1049,7 @@ CREATE TABLE Staff_License
     org_id VARCHAR(36), /* type.GuidTextColumn */
     license_type_id INTEGER, /* type.EnumerationIdRefColumn */
     license_type VARCHAR(64), /* type.TextColumn */
-    license_num VARCHAR(64), /* type.TextColumn */
+    license_num VARCHAR(64), /* type.GuidColumn */
     expiration_date DATE, /* type.DateColumn */
     license_state_id INTEGER, /* type.EnumerationIdRefColumn */
     license_state VARCHAR(64), /* type.TextColumn */
@@ -1100,8 +1100,8 @@ CREATE TABLE Appt_Type_Resource
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    resource_id VARCHAR(36), /* type.GuidColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
@@ -1138,8 +1138,8 @@ CREATE TABLE Template_Resource
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    resource_id VARCHAR(36), /* type.GuidColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
@@ -1192,8 +1192,8 @@ CREATE TABLE Event_Resource
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
+    resource_id VARCHAR(36), /* type.GuidColumn */
     resource_type_id INTEGER, /* type.EnumerationIdRefColumn */
-    resource_id VARCHAR(36), /* type.TextColumn */
     org_id VARCHAR(36), /* type.GuidTextColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     asset_id VARCHAR(36), /* type.GuidTextColumn */
@@ -1307,9 +1307,9 @@ CREATE TABLE Org_Contact
     method_name VARCHAR(128), /* type.TextColumn */
     method_value VARCHAR(255), /* type.TextColumn */
     phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
+    phone_ac VARCHAR(32), /* type.TextColumn */
+    phone_prefix VARCHAR(32), /* type.TextColumn */
+    phone_suffix VARCHAR(32) /* type.TextColumn */
 );
 CREATE unique INDEX Org_Contact_unq on Org_Contact (parent_id, method_value);
 CREATE  INDEX OrgCnt_parent_id on Org_Contact (parent_id);
@@ -1418,7 +1418,7 @@ CREATE TABLE Org_Relationship
     cr_stamp DATE NOT NULL, /* type.DateTimeColumn */
     cr_sess_id VARCHAR(36), /* type.GuidTextColumn */
     rec_stat_id INTEGER NOT NULL, /* type.RecordStatusIdColumn */
-    system_id INTEGER PRIMARY KEY, /* type.AutoIncColumn */
+    system_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     parent_id VARCHAR(36), /* type.GuidTextColumn */
     rel_entity_id VARCHAR(36) NOT NULL, /* type.GuidTextColumn */
     rel_type_id INTEGER NOT NULL, /* type.EnumerationIdRefColumn */
@@ -1495,8 +1495,8 @@ CREATE TABLE Ins_Policy
     policy_id VARCHAR(36) PRIMARY KEY, /* type.GuidColumn */
     person_id VARCHAR(36), /* type.GuidTextColumn */
     plan_id VARCHAR(36), /* type.GuidTextColumn */
-    policy_number VARCHAR(32), /* type.TextColumn */
-    group_number VARCHAR(32), /* type.TextColumn */
+    policy_number VARCHAR(32), /* type.GuidColumn */
+    group_number VARCHAR(32), /* type.GuidColumn */
     group_name VARCHAR(32), /* type.TextColumn */
     bill_sequence_id INTEGER, /* type.EnumerationIdRefColumn */
     coverage_begin_date DATE, /* type.DateColumn */
@@ -1559,9 +1559,9 @@ CREATE TABLE InsPlan_Contact
     method_name VARCHAR(128), /* type.TextColumn */
     method_value VARCHAR(255), /* type.TextColumn */
     phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
+    phone_ac VARCHAR(32), /* type.TextColumn */
+    phone_prefix VARCHAR(32), /* type.TextColumn */
+    phone_suffix VARCHAR(32) /* type.TextColumn */
 );
 CREATE unique INDEX InsPlan_Contact_unq on InsPlan_Contact (parent_id, method_value);
 CREATE  INDEX InsPlnCont_parent_id on InsPlan_Contact (parent_id);
@@ -1649,9 +1649,9 @@ CREATE TABLE InsProduct_Contact
     method_name VARCHAR(128), /* type.TextColumn */
     method_value VARCHAR(255), /* type.TextColumn */
     phone_cc VARCHAR(16), /* type.TextColumn */
-    phone_ac INTEGER, /* type.IntegerColumn */
-    phone_prefix INTEGER, /* type.IntegerColumn */
-    phone_suffix INTEGER /* type.IntegerColumn */
+    phone_ac VARCHAR(32), /* type.TextColumn */
+    phone_prefix VARCHAR(32), /* type.TextColumn */
+    phone_suffix VARCHAR(32) /* type.TextColumn */
 );
 CREATE unique INDEX InsProduct_Contact_unq on InsProduct_Contact (parent_id, method_value);
 CREATE  INDEX InsPrdCont_parent_id on InsProduct_Contact (parent_id);
@@ -1695,7 +1695,7 @@ CREATE TABLE Asset
     name VARCHAR(256) NOT NULL, /* type.TextColumn */
     concurrency INTEGER NOT NULL, /* type.IntegerColumn */
     location VARCHAR(256), /* type.TextColumn */
-    serial_num VARCHAR(512) /* type.TextColumn */
+    serial_num VARCHAR(512) /* type.GuidColumn */
 );
 CREATE  INDEX PK_Asset on Asset (asset_id);
 
@@ -1794,7 +1794,7 @@ CREATE TABLE Patient_Medication
     ongoing BOOLEAN, /* type.BooleanColumn */
     duration INTEGER, /* type.IntegerColumn */
     duration_units VARCHAR(32), /* type.TextColumn */
-    quantity FLOAT, /* type.FloatColumn */
+    quantity INTEGER, /* type.IntegerColumn */
     num_refills INTEGER, /* type.IntegerColumn */
     allow_generic BOOLEAN, /* type.BooleanColumn */
     allow_substitutions BOOLEAN, /* type.BooleanColumn */
