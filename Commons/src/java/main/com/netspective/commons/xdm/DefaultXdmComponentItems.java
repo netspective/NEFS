@@ -32,6 +32,7 @@
  */
 package com.netspective.commons.xdm;
 
+import java.util.Properties;
 import java.util.Set;
 
 import com.netspective.commons.Product;
@@ -118,6 +119,7 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
         return templateProducers;
     }
 
+    private Properties properties = new Properties();
     private Product product = new XdmProduct();
     private AccessControlLists aclsManager = new AccessControlLists();
     private Configurations configsManager = new Configurations();
@@ -174,6 +176,18 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
     {
         // the system property is "registered" automatically in the construction finalization listener
         return new SystemProperty();
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public Properties getProperties()
+    {
+        return properties;
+    }
+
+    public void setProperties(Properties properties)
+    {
+        this.properties = properties;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
