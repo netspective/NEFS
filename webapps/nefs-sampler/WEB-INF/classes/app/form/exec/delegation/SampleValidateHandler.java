@@ -4,7 +4,7 @@
  */
 
 /**
- * $Id: SampleValidateHandler.java,v 1.1 2003-12-11 17:37:49 shahid.shah Exp $
+ * $Id: SampleValidateHandler.java,v 1.2 2004-03-08 13:16:21 zahara.khan Exp $
  */
 
 package app.form.exec.delegation;
@@ -90,7 +90,7 @@ public class SampleValidateHandler implements DialogValidateListener, DialogPopu
                      "the general fields such as text, date, and integer but add your own custom validator some other logic by " +
                      "creating listeners for various events such as population, validation, and execution.<p>");
 
-        String relativePath = "/WEB-INF/classes/app/delegation/SampleValidateHandler.java";
+        String relativePath = "/WEB-INF/classes/app/form/exec/delegation/SampleValidateHandler.java";
         writer.write("You may review the code at " + dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), relativePath));
         writer.write("<p>");
         writer.write("<a href=\""+ dc.getNavigationContext().getActivePage().getName() +"\">Clear the dialog</a>");

@@ -4,7 +4,7 @@
  */
 
 /**
- * $Id: SampleValidateDialog.java,v 1.1 2003-12-11 17:37:49 shahid.shah Exp $
+ * $Id: SampleValidateDialog.java,v 1.2 2004-03-08 13:16:53 zahara.khan Exp $
  */
 
 package app.form.exec.inheritance;
@@ -133,7 +133,7 @@ public class SampleValidateDialog extends Dialog
                      "the general fields such as text, date, and integer but add your own custom validator some other logic by " +
                      "overriding the isValid() method of the com.netspective.sparx.form.Dialog class.<p>");
 
-        String relativePath = "/WEB-INF/classes/app/inheritance/SampleValidateDialog.java";
+        String relativePath = "/WEB-INF/classes/app/form/exec/inheritance/SampleValidateDialog.java";
         writer.write("You may review the code at " + dc.getConsoleFileBrowserLinkShowAlt(dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath), relativePath));
         writer.write("<p>");
         writer.write("<a href=\""+ dc.getNavigationContext().getActivePage().getName() +"\">Clear the dialog</a>");
