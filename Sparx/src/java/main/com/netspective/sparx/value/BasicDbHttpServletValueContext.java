@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.52 2004-03-07 20:08:18 aye.thu Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.53 2004-03-09 04:13:50 aye.thu Exp $
  */
 
 package com.netspective.sparx.value;
@@ -539,5 +539,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public PanelEditorState getPanelEditorState()
     {
         return (PanelEditorState) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+    }
+
+    public void setPanelEditorState(PanelEditorState state)
+    {
+        request.setAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, state);
     }
 }
