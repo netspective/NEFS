@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.18 2003-07-24 04:31:47 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.19 2003-07-24 05:03:08 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -202,7 +202,14 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
 
         writer.write("<tr>");
-
+        int prependColCount = getRowDecoratorPrependColsCount(rc);
+        if (prependColCount > 0)
+        {
+            for (int k=0; k < prependColCount; k++)
+            {
+                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
+            }
+        }
         for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumnState rcs = rc.getState(i);
@@ -222,7 +229,14 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
         }
-
+        int appendColCount = getRowDecoratorAppendColsCount(rc);
+        if (appendColCount > 0)
+        {
+            for (int k=0; k < appendColCount; k++)
+            {
+                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
+            }
+        }
         writer.write("</tr>");
     }
 
