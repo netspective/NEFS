@@ -54,14 +54,6 @@
                         <body source="products/frameworks/suite/features.ftl"/>
                     </page>
 
-                    <page name="screen-shots" caption="Screenshots" heading="Your J2EE Applications will Look Great">
-                        <summary>
-                            Stop being ashamed of your user interfaces, delight your customers with applications that look
-                            as great as they work.
-                        </summary>
-                        <body source="products/frameworks/suite/features.ftl"/>
-                    </page>
-
                     <page name="process" caption="Process" heading="NEFS Supports Your Development Process">
                         <summary>
                             Since there is no room for mistakes at today's rapid development pace, whether you use
@@ -99,6 +91,14 @@
                             <body source="products/frameworks/suite/competitors/open-source.ftl"/>
                         </page>
                     </page>
+                </page>
+
+                <page name="screen-shots" caption="Screen shots" heading="Your J2EE Applications will Look Great">
+                    <summary>
+                        Stop being ashamed of your user interfaces and delight your customers with applications that look
+                        as great as they work.
+                    </summary>
+                    <body source="products/frameworks/suite/screen-shots.ftl"/>
                 </page>
 
                 <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
