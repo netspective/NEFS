@@ -22,9 +22,9 @@
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </theme>
 
-    <login-manager name="app" default="yes" authenticated-user-class="app.AuthenticatedRespondent">
-
+    <login-manager name="app" default="yes">
         <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
+            <authenticated-user-class>app.AuthenticatedRespondent</authenticated-user-class>
             <password-query>
                 <!-- in our case the user id (pin) and password are the same so the SQL is a bit funny -->
                 select pin from Respondent where pin = ?

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.9 2003-08-28 13:03:09 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.10 2003-08-30 13:07:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -67,10 +67,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
-import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.acl.RoleNotFoundException;
 
 public class HttpLoginManager
 {
@@ -113,7 +111,6 @@ public class HttpLoginManager
     private String rememberUserIdCookieName = DEFAULT_REMEMBER_USER_ID_COOKIE_NAME;
     private String rememberPasswordCookieName = DEFAULT_REMEMBER_PASSWORD_COOKIE_NAME;
     private ValueSource rememberPasswordCookiePath = null;
-    private Class authenticatedUserClass = BasicAuthenticatedUser.class;
     private AuthenticatedUsers activeUsers = new AuthenticatedUsers();
     private int rememberUserIdCookieMaxAge = 60 * 60 * 24 * 365; // 1 year
     private LoginDialog loginDialog;
@@ -123,16 +120,6 @@ public class HttpLoginManager
 
     public HttpLoginManager()
     {
-    }
-
-    public Class getAuthenticatedUserClass()
-    {
-        return authenticatedUserClass;
-    }
-
-    public void setAuthenticatedUserClass(Class authenticatedUserClass)
-    {
-        this.authenticatedUserClass = authenticatedUserClass;
     }
 
     public AuthenticatedUsers getActiveUsers()
@@ -259,11 +246,10 @@ public class HttpLoginManager
     {
         try
         {
-            AuthenticatedUser authUser = (AuthenticatedUser) getAuthenticatedUserClass().newInstance();
+            AuthenticatedUser authUser = loginAuthenticator.constructAuthenticatedUser(this, ldc);
             authUser.setUserId(userId);
             authUser.setEncryptedPassword(encryptedPassword);
             authUser.setRemembered(isRemembered);
-            applyAccessControls(ldc, authUser);
             return authUser;
         }
         catch (Exception e)
@@ -271,18 +257,6 @@ public class HttpLoginManager
             log.error("Error creating authenticated user", e);
             throw new RuntimeException("Error creating authenticated user: " + e.getMessage());
         }
-    }
-
-    /**
-     * Assign the authenticated user's access control roles and permissions.
-     * @param ldc If a 'remembered' (by cookie) id is being used, this will be null otherwise it will be the
-     *            LoginDialogContext that was constructed by the LoginDialog.
-     * @param user The authenticated user.
-     */
-    public void applyAccessControls(LoginDialogContext ldc, AuthenticatedUser user) throws RoleNotFoundException
-    {
-        if(ldc.getUserRoleNames() != null)
-            user.setRoles(ldc.getAccessControlListsManager(), ldc.getUserRoleNames());
     }
 
     public AuthenticatedUser getAuthenticatedUser(HttpSession session)

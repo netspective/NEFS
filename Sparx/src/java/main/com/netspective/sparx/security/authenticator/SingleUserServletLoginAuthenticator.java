@@ -39,15 +39,12 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.4 2003-08-28 13:03:09 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.5 2003-08-30 13:07:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
-import com.netspective.commons.security.Crypt;
-import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.sparx.security.LoginAuthenticator;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.security.HttpLoginManager;
@@ -77,7 +74,7 @@ import org.apache.commons.logging.Log;
  * -?,--help                                  Print options to stdout.
  * </pre>
  */
-public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
+public class SingleUserServletLoginAuthenticator  extends AbstractLoginAuthenticator
 {
     private static final Log log = LogFactory.getLog(SingleUserServletLoginAuthenticator.class);
     public static final String INITPARAMNAME_OPTIONS = SingleUserServletLoginAuthenticator.class.getName() + ".OPTIONS";

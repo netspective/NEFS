@@ -39,38 +39,49 @@
  */
 
 /**
- * $Id: LoginAuthenticator.java,v 1.3 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: AbstractLoginAuthenticator.java,v 1.1 2003-08-30 13:07:15 shahid.shah Exp $
  */
 
-package com.netspective.sparx.security;
+package com.netspective.sparx.security.authenticator;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
+import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.sparx.security.LoginAuthenticator;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialogContext;
 
-public interface LoginAuthenticator
+public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
 {
-    /**
-     * Called once a user has entered data into a login dialog and that data is ready to be validated to
-     * see if the user is a valid user in the system. The method has access to the loginDialogContext so
-     * adding validation errors to the login dialog (for messages, etc) is allowed.
-     * @param loginManager The login manager for which the authentication is being performed
-     * @param loginDialogContext The value object that contains the user's inputs
-     * @return True if the user is valid or false if the user is not a valid user
-     */
-    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    private static final Log log = LogFactory.getLog(AbstractLoginAuthenticator.class);
+    private Class authenticatedUserClass = BasicAuthenticatedUser.class;
 
-    /**
-     * Once a user is considered valid, create the user instance that will hold the user's information,
-     * credentials, etc.
-     * @param loginManager
-     * @param loginDialogContext
-     * @return
-     */
-    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    public Class getAuthenticatedUserClass()
+    {
+        return authenticatedUserClass;
+    }
 
-    /**
-     * Assign the authenticated user's access control roles, permissions, and do other user initialization.
-     * @param ldc The LoginDialogContext that was constructed by the LoginDialog.
-     * @param user The authenticated user that was constructed using constructAuthenticatedUser()
-     */
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user);
+    public void setAuthenticatedUserClass(Class authenticatedUserClass)
+    {
+        this.authenticatedUserClass = authenticatedUserClass;
+    }
+
+    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
+    {
+        try
+        {
+            return (AuthenticatedUser) getAuthenticatedUserClass().newInstance();
+        }
+        catch (Exception e)
+        {
+            log.error("Unable to create authenticated user " + getAuthenticatedUserClass(), e);
+            return new BasicAuthenticatedUser();
+        }
+    }
+
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user)
+    {
+    }
 }

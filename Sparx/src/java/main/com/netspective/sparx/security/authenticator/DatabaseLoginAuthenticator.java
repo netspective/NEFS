@@ -39,22 +39,22 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.2 2003-08-30 00:24:32 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.3 2003-08-30 13:07:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
-import com.netspective.sparx.security.LoginAuthenticator;
 import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
+import com.netspective.commons.security.AuthenticatedUser;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
-public class DatabaseLoginAuthenticator implements LoginAuthenticator
+public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 {
     private static final Log log = LogFactory.getLog(DatabaseLoginAuthenticator.class);
 
@@ -85,18 +85,6 @@ public class DatabaseLoginAuthenticator implements LoginAuthenticator
             // now we check if this is a valid user
             if(! loginPasswordInDB.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
                 return false;
-
-            if(roleQuery != null)
-            {
-                qrs = roleQuery.execute(loginDialogContext, new Object[] { loginDialogContext.getUserIdInput() }, false);
-                if(qrs != null)
-                {
-                    String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
-                    if(roleNames != null && roleNames.length > 0)
-                        loginDialogContext.setUserRoleNames(roleNames);
-                    qrs.close(true);
-                }
-            }
         }
         catch(Exception e)
         {
@@ -105,6 +93,30 @@ public class DatabaseLoginAuthenticator implements LoginAuthenticator
         }
 
         return true;
+    }
+
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user)
+    {
+        super.initAuthenticatedUser(loginManager, ldc, user);
+
+        if(roleQuery != null)
+        {
+            try
+            {
+                QueryResultSet qrs = roleQuery.execute(ldc, new Object[] { ldc.getUserIdInput() }, false);
+                if(qrs != null)
+                {
+                    String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
+                    if(roleNames != null && roleNames.length > 0)
+                        user.setRoles(ldc.getAccessControlListsManager(), roleNames);
+                    qrs.close(true);
+                }
+            }
+            catch(Exception e)
+            {
+                log.error("Error assigning roles to user", e);
+            }
+        }
     }
 
     public boolean isPasswordEncrypted()
