@@ -9,18 +9,18 @@ Java to do anything useful.
 Because Struts is designed only for the navigation, controller, and dispatcher portions of your applications, it has the
 following shortcomings:
 <ul class="check-list-body">
-    <li>It doesn't help you with your user interface's design (navigation styles, links, look and feel, etc.). You'll
+    <li>Struts doesn't help you with your user interface's design (navigation styles, links, look and feel, etc.). You'll
         need a good HTML designer or be content with UI's that will not impress your users.
-    <li>It doesn't support built-in login, multiple attempts lockout, logout, and timeout. You'll have to write authentication code yourself.
-    <li>It doesn't support automated sitemap generation.
-    <li>It doesn't support complex server-side field and form validations without extra Java code or additional libraries.
-    <li>It doesn't support sophisticated client-side validation, conditionals, keypress filters, and data formatting. You'll have to write your own JavaScript.
-    <li>It doesn't support any database operations. You'll need to find and integrate a persistence framework.
-    <li>It doesn't support role-based personalized applications (security) without writing your own authorization code.
-    <li>It has relatively new and limited support for subsites and sub-applications.
-    <li>It doesn't support creating libraries of inheritable and reusable pages, forms, fields, validations, business rules/values, and commands. You have limited reuse options.
+    <li>Struts doesn't support built-in login, multiple attempts lockout, logout, and timeout. You'll have to write authentication code yourself.
+    <li>Struts doesn't support automated sitemap generation.
+    <li>Struts doesn't support complex server-side field and form validations without extra Java code or additional libraries.
+    <li>Struts doesn't support sophisticated client-side validation, conditionals, keypress filters, and data formatting. You'll have to write your own JavaScript.
+    <li>Struts doesn't support any database operations. You'll need to find and integrate a persistence framework.
+    <li>Struts doesn't support role-based personalized applications (security) without writing your own authorization code.
+    <li>Struts has relatively new and limited support for subsites and sub-applications.
+    <li>Struts doesn't support creating libraries of inheritable and reusable pages, forms, fields, validations, business rules/values, and commands. You have limited reuse options.
 </ul>
 
 <ul class="check-list">
-    <li>Sparx eliminates up to 90% of HTML, Java, and JavaScript code that you would manually if you use Struts.
+    <li>Sparx eliminates up to 90% of HTML, Java, and JavaScript code required by Struts.
 </ul>
