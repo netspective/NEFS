@@ -212,6 +212,7 @@
                     <condition field="book_id" allow-null="no" comparison="equals" value="field:book_id" connector="and"/>
                     <condition field="name" allow-null="no" comparison="starts-with" value="field:name" connector="and"/>
                     <condition field="author" allow-null="no" comparison="equals" value="field:author" connector="and"/>
+                    <condition field="genre_id" allow-null="no" comparison="equals" value="field:genre" connector="and"/>
                 </select>
             </select-dialog>
         </presentation>
