@@ -85,7 +85,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.4 2004-03-04 05:17:59 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.5 2004-03-06 16:51:37 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -1521,13 +1521,21 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if(getCaptionSuffix() != null && caption != null && caption.length() > 0) caption += getCaptionSuffix();
 
             if(caption != null && field.isRequired(dc))
-                caption = "<span class=\"" + getCaptionRequiredStyleClass() + "\">" +caption + ":</span>";
+                caption = "<span class=\"" + getCaptionRequiredStyleClass() + "\">" +caption +
+                        (endsWithPunctuation(caption) ? "" : ":") + "</span>";
             else
                 caption = "<span class=\"" + getCaptionStyleClass() + "\">" +
-                        (caption != null ? caption : "") + ":</span>";
+                        (caption != null ? caption : "") + "</span>";
         }
 
         return caption;
+    }
+
+    public static boolean endsWithPunctuation(String caption)
+    {
+        if (caption.endsWith("?") || caption.endsWith("!")  || caption.endsWith(":") || caption.endsWith("."))
+            return true;
+        return false;
     }
 
     /**
