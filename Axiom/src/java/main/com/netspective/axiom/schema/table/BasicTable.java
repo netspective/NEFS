@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.12 2003-07-01 01:00:55 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.13 2003-07-02 13:57:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -48,10 +48,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import javax.naming.NamingException;
 
@@ -94,12 +91,7 @@ import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoun
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicy;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.*;
 import com.netspective.commons.text.TextUtils;
 
 public class BasicTable implements Table, TemplateProducerParent, TemplateConsumer
@@ -845,6 +837,65 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             }
         }
         return qds;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    protected void copyTableDialogTemplate(Template dialogsPackageTemplate, TemplateElement elem, Map jexlVars)
+    {
+        TemplateElement dialogTemplate = dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, false);
+        List copyChildren = elem.getChildren();
+        for(int i = 0; i < copyChildren.size(); i++)
+        {
+            TemplateNode dialogChildNode = (TemplateNode) copyChildren.get(i);
+            if(dialogChildNode instanceof TemplateElement)
+            {
+                TemplateElement dialogChildElem = (TemplateElement) dialogChildNode;
+                if(dialogChildElem.getElementName().equals("data-type-presentation"))
+                {
+                    Columns columns = getColumns();
+                    for(int c = 0; c < columns.size(); c++)
+                    {
+                        Column column = columns.get(c);
+                        column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                    }
+                }
+                else
+                    dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) dialogChildNode, jexlVars, true);
+            }
+            else if(dialogChildNode instanceof TemplateText)
+                dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) dialogChildNode).getText()));
+            else
+                throw new RuntimeException("This should never happen.");
+        }
+    }
+
+    public void addTableDialogTemplates(Template dialogsPackageTemplate)
+    {
+        TemplateProducer tablePresentation = getPresentation();
+        List instances = tablePresentation.getInstances();
+
+        if(instances.size() < 1)
+            return;
+
+        Map jexlVars = new HashMap();
+        jexlVars.put("table", this);
+
+        // only get the last instance since the final one is the one we're going to use (it will override earlier templates)
+        Template tmpl = (Template) instances.get(instances.size() - 1);
+        List presentationTmplChildren = tmpl.getChildren();
+        for(int j = 0; j < presentationTmplChildren.size(); j++)
+        {
+            TemplateNode presentationTmplChildNode = (TemplateNode) presentationTmplChildren.get(j);
+            if(presentationTmplChildNode instanceof TemplateElement)
+            {
+                TemplateElement elem = (TemplateElement) presentationTmplChildNode;
+                if(elem.getElementName().equals("dialog"))
+                    copyTableDialogTemplate(dialogsPackageTemplate, elem, jexlVars);
+                else
+                    dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, true);
+            }
+        }
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

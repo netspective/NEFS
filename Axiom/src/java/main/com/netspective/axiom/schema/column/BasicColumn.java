@@ -39,15 +39,12 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.12 2003-07-01 01:00:35 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.13 2003-07-02 13:57:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
@@ -83,13 +80,7 @@ import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.TemplateContentHandler;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateProducers;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.*;
 import com.netspective.commons.xml.NodeIdentifiers;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
@@ -784,4 +775,47 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         return sb.toString();
     }
 
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    protected void addEnumerationTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
+    {
+        ForeignKey fKey = getForeignKey();
+        EnumerationTable enumTable = (EnumerationTable) fKey.getReferencedColumns().getFirst().getTable();
+        dialogTemplate.addChild("field", new String[][]{
+            { "name", getName() },
+            { "type", "select" },
+            { "caption", getCaption() },
+            { "style", "combo" },
+            { "choices", "schema-enum:" + enumTable.getSchema().getName() + "." + enumTable.getName() },
+        });
+    }
+
+    public void addTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
+    {
+        jexlVars.put("column", this);
+
+        ForeignKey fKey = getForeignKey();
+        if(fKey != null && fKey.getReferencedColumns().getFirst().getTable() instanceof EnumerationTable)
+        {
+            addEnumerationTableDialogTemplates(dialogTemplate, jexlVars);
+            return;
+        }
+
+        TemplateProducer columnPresentationTemplates = getPresentation();
+        if(columnPresentationTemplates.getInstances().size() > 0)
+        {
+            Template columnPresentationTemplate = (Template) columnPresentationTemplates.getInstances().get(columnPresentationTemplates.getInstances().size() - 1);
+            List copyColumnPresTmplChildren = columnPresentationTemplate.getChildren();
+            for(int cc = 0; cc < copyColumnPresTmplChildren.size(); cc++)
+            {
+                TemplateNode colTmplChildNode = (TemplateNode) copyColumnPresTmplChildren.get(cc);
+                if(colTmplChildNode instanceof TemplateElement)
+                    dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) colTmplChildNode, jexlVars, true);
+                else if(colTmplChildNode instanceof TemplateText)
+                    dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) colTmplChildNode).getText()));
+                else
+                    throw new RuntimeException("This should never happen.");
+            }
+        }
+    }
 }

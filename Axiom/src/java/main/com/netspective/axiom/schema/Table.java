@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.5 2003-07-01 01:01:13 shahid.shah Exp $
+ * $Id: Table.java,v 1.6 2003-07-02 13:57:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -58,6 +58,7 @@ import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.Template;
 
 public interface Table
 {
@@ -134,6 +135,18 @@ public interface Table
      * Sets the abbreviated form of the table name.
      */
     public void setAbbrev(String abbrev);
+
+    /**
+     * Returns a column name suitable for displaying to the user. If no caption was set, this
+     * method uses some basic rules to translate the column name to the friendly form of the column name.
+     */
+    public String getCaption();
+
+    /**
+     * Sets the friendly form of the column name suitable for displaying to the user.
+     * @param caption The caption to show the end user in place of the column name.
+     */
+    public void setCaption(String caption);
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
@@ -364,4 +377,6 @@ public interface Table
     public List getTableTypes();
 
     public TemplateProducer getPresentation();
+
+    public void addTableDialogTemplates(Template dialogsPackageTemplate);
 }

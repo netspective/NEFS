@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: Column.java,v 1.3 2003-06-30 02:33:07 shahid.shah Exp $
+ * $Id: Column.java,v 1.4 2003-07-02 13:57:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import java.util.Set;
 import java.util.List;
+import java.util.Map;
 
 import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
@@ -54,6 +55,7 @@ import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateElement;
 
 public interface Column
 {
@@ -120,6 +122,18 @@ public interface Column
      * Sets the abbreviated form of the column name.
      */
     public void setAbbrev(String abbrev);
+
+    /**
+     * Returns a column name suitable for displaying to the user. If no caption was set, this
+     * method uses some basic rules to translate the column name to the friendly form of the column name.
+     */
+    public String getCaption();
+
+    /**
+     * Sets the friendly form of the column name suitable for displaying to the user.
+     * @param caption The caption to show the end user in place of the column name.
+     */
+    public void setCaption(String caption);
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
@@ -316,4 +330,12 @@ public interface Column
      * Return the embedded presentation template
      */
     public TemplateProducer getPresentation();
+
+    /**
+     * Find all the presentation templates defined in this column and place copies of them into the given table dialog
+     * template.
+     * @param dialogTemplate The table dialog template
+     * @param jexlVars Replacement variables for interpolating template variable replacements
+     */
+    public void addTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.8 2003-06-30 15:28:54 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.9 2003-07-02 13:57:14 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -58,6 +58,8 @@ import java.text.Collator;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.xml.sax.helpers.AttributesImpl;
+import org.xml.sax.SAXException;
 
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Schema;
@@ -71,9 +73,7 @@ import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xml.template.TemplateProducerParent;
-import com.netspective.commons.xml.template.TemplateProducer;
-import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.*;
 
 public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModelSchema.ConstructionFinalizeListener
 {
@@ -151,6 +151,33 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         getTables().finishConstruction();
+
+        try
+        {
+            TemplateContentHandler handler = (TemplateContentHandler) pc.getParser().getContentHandler();
+            AttributesImpl dialogsPackageAttrs = new AttributesImpl();
+            dialogsPackageAttrs.addAttribute(null, null, "package", "CDATA", "schema." + getName());
+            Template dialogsPackage = new Template(
+                    "schema." + getName() + "-tables",
+                    handler,
+                    handler.getTemplatCatalog(),
+                    handler.getDynamicTemplatesProducer(),
+                    null, "dialogs", "dialogs", dialogsPackageAttrs);
+
+            // now go through and generate dialog templates for each of the tables
+            Tables tables = getTables();
+            for(int i = 0; i < tables.size(); i++)
+            {
+                Table table = tables.get(i);
+                table.addTableDialogTemplates(dialogsPackage);
+            }
+
+            handler.addDynamicTemplate(dialogsPackage);
+        }
+        catch (SAXException e)
+        {
+            throw new DataModelException(pc, e);
+        }
     }
 
     public static String translateNameForMapKey(String name)
