@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractPanel.java,v 1.5 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: AbstractPanel.java,v 1.6 2004-01-24 20:36:46 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -58,6 +58,11 @@ import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.TextUtils;
 
+/**
+ * AbstractPanel class is the base class of all panel classes that need to implement the HtmlPanel interface. This class
+ * contains all the basic settings that all panels should have such as banners, frames, width and height. Also the
+ * unique identifier for each panel is generated in this class. 
+ */
 public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
 {
     public static final String PANELTYPE_TEMPLATE_NAMESPACE = HtmlPanel.class.getName();
@@ -77,21 +82,35 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
             super(PANELTYPE_TEMPLATE_NAMESPACE, PANELTYPE_ATTRNAME_TYPE, PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING);
         }
     }
-
+    /* a sequence number assigned to the panel with respect to other panels in a page */
     private static int panelNumber = 0;
+    /* the height of the panel */
     private int height = -1;
+    /* the width of the panel */
     private int width = -1;
+    /* frame object of the panel */
     protected HtmlPanelFrame frame;
+    /* banner object of the panel */
     protected HtmlPanelBanner banner;
+    /* the identifier for the panel used as the html id */
     private String identifier = "AbstractPanel_" + getNextPanelNumber();
     private InputSourceLocator inputSourceLocator;
+    /* flag for indicating whether  or not the XML declaration of the panel should be shown on the page */
     private boolean allowViewSource;
 
+    /**
+     * Gets the panel number to generate the unique identifier for the panel
+     *
+     * @return  a unique panel number
+     */
     synchronized static private final int getNextPanelNumber()
     {
         return ++panelNumber;
     }
 
+    /**
+     * Sole constructor.
+     */
     public AbstractPanel()
     {
         banner = createBanner();
@@ -117,56 +136,112 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
     {
     }
 
+    /**
+     * Gets the panel identifier name
+     *
+     * @return Unique panel identifier name used as the html ID
+     */
     public String getPanelIdentifier()
     {
         return identifier;
     }
 
+    /**
+     * Sets the panel identifier name
+     *
+     * @param identifier   Unique panel identifier name
+     */
     public void setPanelIdentifier(String identifier)
     {
         this.identifier = identifier;
     }
 
+    /**
+     * Gets the height of the panel
+     *
+     * @return panel height in pixels
+     */
     public int getHeight()
     {
         return height;
     }
 
+    /**
+     * Sets the height of the panel
+     *
+     * @param height  height in pixels
+     */
     public void setHeight(int height)
     {
         this.height = height;
     }
 
+    /**
+     * Gets the width of the panel
+     *
+     * @return  width in pixels
+     */
     public int getWidth()
     {
         return width;
     }
 
+    /**
+     * Sets the width of the panel
+     *
+     * @param width     width in pixels
+     */
     public void setWidth(int width)
     {
         this.width = width;
     }
 
+    /**
+     * Gets the frame asociated with the panel
+     *
+     * @return  frame
+     */
     public HtmlPanelFrame getFrame()
     {
         return frame;
     }
 
+    /**
+     * Sets the frame for the panel
+     *
+     * @param rf    frame
+     */
     public void setFrame(HtmlPanelFrame rf)
     {
         frame = rf;
     }
 
+    /**
+     * Gets the banner associated with the panel
+     *
+     * @return      banner
+     */
     public HtmlPanelBanner getBanner()
     {
         return banner;
     }
 
+    /**
+     * Sets the banner associated with the panel
+     *
+     * @param value banner
+     */
     public void setBanner(HtmlPanelBanner value)
     {
         banner = value;
     }
 
+    /**
+     * Creates a new frame object if it doesn't exist already. If frame already exists, the method returns the
+     * existing frame.
+     *
+     * @return  frame associated with the panel
+     */
     public HtmlPanelFrame createFrame()
     {
         if(frame == null)
@@ -174,6 +249,11 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
         return frame;
     }
 
+    /**
+     * Creates a new banner if it doesn't exist already. If banner already exists, the method returns the existing banner
+     *
+     * @return  banner
+     */
     public HtmlPanelBanner createBanner()
     {
         if(banner == null)
@@ -181,26 +261,59 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
         return banner;
     }
 
+    /**
+     * Gets the children panels
+     *
+     * @return  panel children
+     */
     public HtmlPanels getChildren()
     {
         return null;
     }
 
+    /**
+     * Checks to see if the panel effects the navigation context
+     *
+     * @param nc    Navigation context
+     * @return      False
+     */
     public boolean affectsNavigationContext(NavigationContext nc)
     {
         return false;
     }
 
+    /**
+     * Checks to see if the source XML for this panel should be shown
+     *
+     * @param vc    servlet value context
+     * @return      true if the source is allowed to be viewed
+     */
     public boolean isAllowViewSource(HttpServletValueContext vc)
     {
         return allowViewSource;
     }
 
+    /**
+     * Sets the flag for indicating if the source of this panel should be allowed to view
+     *
+     * @param allowViewSource   view flag
+     */
     public void setAllowViewSource(boolean allowViewSource)
     {
         this.allowViewSource = allowViewSource;
     }
 
+    /**
+     * Writes the HTML for displaying the source XML of this panel
+     *
+     * @param writer            the writer object to write the HTML to
+     * @param nc                the current navigation context
+     * @param objectName
+     * @param cls
+     * @param objectId
+     * @param isl
+     * @throws IOException
+     */
     public static void renderXdmObjectViewSource(Writer writer, NavigationContext nc, String objectName, Class cls, String objectId, InputSourceLocator isl) throws IOException
     {
         Theme theme = nc.getActiveTheme();
@@ -218,12 +331,28 @@ public abstract class AbstractPanel implements HtmlPanel, TemplateConsumer
         writer.write("</table>\n");
     }
 
+    /**
+     * Writes the XML source of the panel when the allow view source flag is set to true
+     *
+     * @param writer            the write object to write the HTML to
+     * @param nc                the navigation context
+     * @param panel             the panel
+     * @throws IOException
+     */
     public static void renderPanelViewSource(Writer writer, NavigationContext nc, HtmlPanel panel) throws IOException
     {
         if(panel.isAllowViewSource(nc))
             renderXdmObjectViewSource(writer, nc, "Panel XDM Code", panel.getClass(), panel.getPanelIdentifier(), panel.getInputSourceLocator());
     }
 
+    /**
+     * Calls the static method {@link AbstractPanel#renderPanelViewSource(Writer, NavigationContext, HtmlPanel)}
+     *
+     * @param writer            the write object to write the HTML to
+     * @param nc                the navigation context
+     * @throws IOException
+     * @see AbstractPanel#renderPanelViewSource(Writer, NavigationContext, HtmlPanel);
+     */
     public void renderViewSource(Writer writer, NavigationContext nc) throws IOException
     {
         renderPanelViewSource(writer, nc, this);
