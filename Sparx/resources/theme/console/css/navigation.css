@@ -15,9 +15,9 @@
 .menu-level-2-table-active { background: url(../images/level2/level2-active.gif) no-repeat right top; height: 16px }
 .menu-level-2-table-active-end { background: url(../images/level2/level2-active-cap.gif) no-repeat left top; height: 16px }
 .menu-level-2             { color: #ffffff; font-weight: bold; font-size: 11px; font-family: Verdana; text-decoration: none; padding-top: 1px; height: 16px }
-.menu-level-2:link         { color: #696969; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-2:visited      { color: #696969; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-2:hover        { color: black; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-2:link          { color: white; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-2:visited       { color: white; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-2:hover         { color: #000; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-2-active { color: #0000cd; font-weight: normal; font-size: 11px; font-family: Verdana; text-decoration: none; padding-top: 1px; height: 16px }
 .menu-level-2-active:link       { color: black; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-2-active:visited    { color: black; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
@@ -28,15 +28,15 @@
 .menu-level-1-table-active-end   { background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom; padding-bottom: 4px }
 .menu-level-1-table-end     { background: url(../images/level1/level1tab-cap.gif) no-repeat right bottom; padding-bottom: 4px }
 .menu-level-1-table-start  { background: url(../images/level1/level1tab-cap.gif) no-repeat left bottom }
-.menu-level-1-end    { border-bottom: 1px solid #1183f6 }
-.menu-level-1-start    { background-color: #f1eeee; border-bottom: 1px solid #1183f6 }
-.menu-level-1-fill   { border-bottom: 1px solid #1183f6 }
+.menu-level-1-end     { border-bottom: 1px solid #933 }
+.menu-level-1-start     { background-color: #f1eeee; border-bottom: 1px solid #933 }
+.menu-level-1-fill    { border-bottom: 1px solid #933 }
 .menu-level-1-active-end     { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom }
 .menu-level-1-active-start  { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-open.gif) no-repeat right bottom }
-.menu-level-1-active    { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-1-active:link  { color: black; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-1-active:hover { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-1-active:visited  { color: black; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1-active     { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1-active:link   { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1-active:hover  { color: #f5f5f5; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-1-active:visited   { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-1-active-end      { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom }
 .menu-level-1-active-start   { color: white; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background: url(../images/level1/level1tab-active-cap.gif) no-repeat right bottom }
 .menu-level-1:link     { color: #808080; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
@@ -46,9 +46,9 @@
 .menu-level-3-table-active { background: url(../images/level3/level3-menu-active.gif) no-repeat right top; padding-bottom: 9px; width: 104px; height: 30px }
 .menu-level-3-table-active-end { background: url(../images/level3/level3-menu-active-cap.gif) no-repeat left top; width: 16px; height: 30px }
 .menu-level-3-active { color: #000; font-weight: 800; font-size: 12px; font-family: Verdana; text-decoration: none }
-.menu-level-3-active:link { color: #000; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-3-active:visited { color: #000; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
-.menu-level-3-active:hover { color: #333; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-3-active:link  { color: #fff; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-3-active:visited  { color: #fff; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
+.menu-level-3-active:hover  { color: #000; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-3              { color: #000; font-weight: normal; font-size: 9px; font-family: Verdana; text-decoration: none; padding-left: 15px; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=1, OffY=1, color='red', Positive='true') }
 .menu-level-3:visited      { color: #696969; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
 .menu-level-3:link         { color: #696969; font-weight: normal; font-size: 10px; font-family: Verdana; text-decoration: none }
@@ -59,7 +59,7 @@
 .masthead      { background: url(../images/masthead/masthead.gif) left top }
 .masthead-top-right  { background: url(../images/masthead/masthead-right.gif) no-repeat right top; width: 25px; height: 65px }
 .masthead-bottom { background-color: #f1eeee }
-.masthead-right          { background-color: #f1eeee; border-bottom: 1px solid #1183f6 }
+.masthead-right           { background-color: #f1eeee; border-bottom: 1px solid #933 }
 .masthead-left      { background: url(../images/masthead/masthead-left.gif) no-repeat left top }
 .page-heading          { color: #000; font-weight: bold; font-size: 18px; font-family: Trebuchet MS, Helvetica, Verdana; text-decoration: none; padding-top: 3px; padding-left: 3px }
 .page-heading-table    { background-image: url(../images/active-user/active-user-backdrop.gif); border-bottom: 1px solid #333; height: 40px }
