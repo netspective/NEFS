@@ -204,7 +204,10 @@ public class ModelInitializer
 
     protected void initCustomReferenceEntityCache(final Class aClass, final CachedCustomReferenceEntity[] cache)
     {
-        final List list = session.createCriteria(aClass).list();
+        final Criteria criteria = session.createCriteria(aClass);
+        criteria.add(Expression.eq("party", Party.Cache.SYS_GLOBAL_PARTY.getEntity()));
+
+        final List list = criteria.list();
         for(final Object i : list)
         {
             final CustomReferenceEntity entity = (CustomReferenceEntity) i;
