@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabularReport.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: BasicTabularReport.java,v 1.3 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -294,7 +294,7 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
                 String expression = row.substring(pos + 2, endName);
 
                 if(expression.equals("#"))
-                    sb.append(ds.getRow());
+                    sb.append(ds.getActiveRowNumber());
                 else
                 {
                     try

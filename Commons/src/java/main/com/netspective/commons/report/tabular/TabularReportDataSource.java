@@ -39,13 +39,34 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
 public interface TabularReportDataSource
 {
+    /**
+     * The type of data returned by getActiveRowColumnData() when structural information is available.
+     */
+    public interface Hierarchy
+    {
+        /**
+         * Return the column number of the column that should demonstrate the hiearchy
+         */
+        public int getColumn();
+
+        /**
+         * Return the current row's level
+         */
+        public int getLevel();
+
+        /**
+         * Return the current row's parent row
+         */
+        public int getParentRow();
+    }
+
     /**
      * Cycle to next row in the data source -- this will be called even for the first row (the first call should
      * "initialize" the data source).
@@ -55,7 +76,7 @@ public interface TabularReportDataSource
     /**
      * Retrieve the active row number (1-based).
      */
-    public int getRow();
+    public int getActiveRowNumber();
 
     /**
      * Retrieve data for one of the current row's columns based on a column index.
@@ -63,7 +84,7 @@ public interface TabularReportDataSource
      * @param columnIndex The column we're interested in (0-based)
      * @return The raw data the report can use to put into the report
      */
-    public Object getData(TabularReportValueContext vc, int columnIndex);
+    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex);
 
     /**
      * Retrieve data for one of the current row's columns based on a column name (may throw an exception if not
@@ -72,5 +93,16 @@ public interface TabularReportDataSource
      * @param columnName The name of the column we're interested in
      * @return The raw data the report can use to put into the report
      */
-    public Object getData(TabularReportValueContext vc, String columnName);
+    public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName);
+
+    /**
+     * Return true if this data source has some structure
+     * @return
+     */
+    public boolean isHierarchical();
+
+    /**
+     * Return the active hiearchy
+     */
+    public Hierarchy getActiveHiearchy();
 }

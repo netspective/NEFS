@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.3 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -313,7 +313,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
     public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, boolean doCalc)
     {
-        Object oData = ds.getData(rc, getColIndex());
+        Object oData = ds.getActiveRowColumnData(rc, getColIndex());
         String data = oData == null ? "" : oData.toString();
         if(doCalc)
         {
@@ -516,9 +516,9 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             return urlAnchorAttrs;
         }
 
-        public String getCssStyleAttr()
+        public String getCssStyleAttrValue()
         {
-            StringBuffer style = new StringBuffer(" style=\"");
+            StringBuffer style = new StringBuffer();
             switch(getAlign())
             {
                 case TabularReportColumn.ALIGN_CENTER:
@@ -533,7 +533,6 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             if(flagIsSet(COLFLAG_NOWORDBREAKS))
                 style.append(" white-space: nowrap;");
 
-            style.append("\"");
             return style.toString();
         }
 

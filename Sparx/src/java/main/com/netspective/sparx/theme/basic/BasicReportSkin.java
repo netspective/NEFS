@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 
-import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportFrame;
 import com.netspective.commons.report.tabular.TabularReportBanner;
 import com.netspective.commons.report.tabular.BasicTabularReport;
@@ -439,7 +438,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
             if(! states[i].isVisible())
                 continue;
 
-            Object heading = ds.getData(rc, rcd.getColIndex());
+            Object heading = ds.getActiveRowColumnData(rc, rcd.getColIndex());
             if(heading != null)
             {
                 String colHeading = heading.toString();
@@ -460,12 +459,6 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
         produceHeadingRowDecoratorAppend(writer, rc);
     }
 
-    /*
-      This method and the next one (produceDataRows with Object[][] data) are almost
-      identical except for their data sources (ResultSet vs. Object[][]). Be sure to
-      modify that method when this method changes, too
-    */
-
     public void produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
         TabularReport defn = rc.getReport();
@@ -475,6 +468,8 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
         int rowsWritten = 0;
         int dataColsCount = columns.size();
         int tableColsCount = getTableColumnsCount(rc);
+
+        boolean hiearchical = ds.isHierarchical();
 
         //TODO: Sparx 2.x conversion required
         //ResultSetScrollState scrollState = rc.getScrollState();
@@ -487,6 +482,16 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
             writer.write("<tr>");
             produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
+
+            int hiearchyCol = 0;
+            int activeLevel = 0;
+
+            if(hiearchical)
+            {
+                TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHiearchy();
+                hiearchyCol = activeHierarchy.getColumn();
+                activeLevel = activeHierarchy.getLevel();
+            }
 
             for(int i = 0; i < dataColsCount; i++)
             {
@@ -502,7 +507,11 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, true);
 
-                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + state.getCssStyleAttr() +  ">" +
+                String style = state.getCssStyleAttrValue();
+                if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
+                    style += "padding-left:" + (activeLevel * 15);
+
+                String singleRow = "<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " style=\"" + style +  "\">" +
                         (state.flagIsSet(TabularReportColumn.COLFLAG_WRAPURL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
                         data + "</a>" : data) +
                         "&nbsp;</td>";
@@ -555,7 +564,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
             if(summary == null)
                 summary = "&nbsp;";
 
-            writer.write("<td class=\"report-summary\""+ states[i].getCssStyleAttr() +">" + summary + "</td>");
+            writer.write("<td class=\"report-summary\""+ states[i].getCssStyleAttrValue() +">" + summary + "</td>");
         }
         writer.write("</tr>");
     }

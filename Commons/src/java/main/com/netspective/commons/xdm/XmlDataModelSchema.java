@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.4 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.5 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -63,7 +63,6 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.text.ValueSourceExpressionText;
 import com.netspective.commons.text.TextUtils;
 
 /**

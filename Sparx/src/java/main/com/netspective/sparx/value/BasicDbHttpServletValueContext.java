@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.3 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.4 2003-03-28 04:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -207,7 +207,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return getApplicationManager();
     }
 
-    public ApplicationManager getApplicationManager()
+    public ApplicationManagerComponent getApplicationManagerComponent()
     {
         try
         {
@@ -222,12 +222,17 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
             for(int i = 0; i < pmComponent.getErrors().size(); i++)
                 System.out.println(pmComponent.getErrors().get(i));
 
-            return pmComponent.getManager();
+            return pmComponent;
         }
         catch(Exception e)
         {
             throw new NestableRuntimeException(e);
         }
+    }
+
+    public ApplicationManager getApplicationManager()
+    {
+        return getApplicationManagerComponent().getManager();
     }
 
     public String getApplicationName()

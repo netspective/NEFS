@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.6 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.7 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -59,12 +59,12 @@ import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.report.ReportsManager;
 import com.netspective.commons.report.Reports;
 import com.netspective.commons.report.Report;
-import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.BasicTabularReport;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.axiom.schema.BasicSchema;
 
 public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
 {

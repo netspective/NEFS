@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DecimalColumn.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: DecimalColumn.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -73,7 +73,7 @@ public class DecimalColumn extends NumericColumn
     public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, boolean doCalc)
     {
         int colIndex = getColIndex();
-        Object oData = ds.getData(rc, colIndex);
+        Object oData = ds.getActiveRowColumnData(rc, colIndex);
         String data = "";
         double value = 0;
         if(oData != null)

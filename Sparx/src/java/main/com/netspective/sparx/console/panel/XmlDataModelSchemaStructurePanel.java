@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchemaStructurePanel.java,v 1.2 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: XmlDataModelSchemaStructurePanel.java,v 1.3 2003-03-28 04:12:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -226,20 +226,6 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
                 children.add(nestedName);
             }
 
-            Set templateProducerElemNames = new HashSet();
-            if(TemplateProducerParent.class.isAssignableFrom(parentSchema.getBean()))
-            {
-                templateProducerElemNames = schema.getOptions().getTemplateProducerElemNames();
-                if(templateProducerElemNames.size() > 0)
-                {
-                    while (iterator.hasNext())
-                    {
-                        String nestedName = (String) iterator.next();
-                        children.add(nestedName);
-                    }
-                }
-            }
-
             if(children.size() > 0)
             {
                 String[] nested = (String[]) children.toArray(new String[children.size()]);
@@ -250,10 +236,7 @@ public class XmlDataModelSchemaStructurePanel extends AbstractHtmlTabularReportP
                     String nestedName = nested[i];
                     try
                     {
-                        if(templateProducerElemNames.contains(nestedName))
-                            rows.add(new Row(level, nestedName, parentSchema, nestedName, false));
-                        else
-                            addRow(level+1, schema, schema.getElementType(nestedName), nestedName);
+                        addRow(level+1, schema, schema.getElementType(nestedName), nestedName);
                     }
                     catch(DataModelException e)
                     {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportColumnState.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportColumnState.java,v 1.2 2003-03-28 04:13:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -62,7 +62,7 @@ public interface TabularReportColumnState
     public String getOutputFormat();
     public String getUrl();
     public String getUrlAnchorAttrs();
-    public String getCssStyleAttr();
+    public String getCssStyleAttrValue();
 
     public void setHeading(String value);
     public void setOutputFormat(String value);
