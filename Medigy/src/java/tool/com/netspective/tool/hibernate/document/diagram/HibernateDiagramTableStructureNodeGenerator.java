@@ -186,8 +186,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
 
     public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
+        // the subclass will point to the superclass and be formatted as a "back" reference to properly set the weight
         if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
-            return foreignKey.getTable().getName();
+            return foreignKey.getReferencedTable().getName();
 
         for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
         {
@@ -209,8 +210,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
 
     public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final HibernateDiagramGeneratorFilter filter, final ForeignKey foreignKey)
     {
+        // the subclass will point to the superclass and be formatted as a "back" reference to properly set the weight
         if (filter.isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
-            return foreignKey.getReferencedTable().getName();
+            return foreignKey.getTable().getName();
 
         for (Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext();)
         {

@@ -56,8 +56,10 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
         if (isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
         {
-            edge.setArrowHead("onormal");
+            // the subclass will point to the superclass and be formatted as a "back" reference to properly set the weight
             edge.setArrowSize("2");
+            edge.getAttributes().put("dir", "back");
+            edge.getAttributes().put("arrowtail", "onormal");
             return;
         }
 
