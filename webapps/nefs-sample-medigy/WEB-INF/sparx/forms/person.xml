@@ -31,15 +31,48 @@
             </on-delete-data>
 		</dialog>
 
-		<dialog type="schema-record-editor" name="patient">
+		<dialog type="schema-record-editor" name="patient" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Patient/Person"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="patient.demographic-information"/>
-			<xdm:include template="person.identification-information"/>
 			<xdm:include template="person.contact-information"/>
 			<xdm:include template="person.employment-information"/>
-			<xdm:include template="person.insurance-information"/>
-            <!--listener class="app.form.person.PatientDialog" /-->
+			<xdm:include template="patient.insurance-information"/>
+            <xdm:include template="patient.responsible-party"/>
+            <xdm:include template="person.identification-information"/>
+
+            <!--listener class="app.form.person.attribute.PatientDialog" /-->
+            <on-add-data>
+                <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
+                    name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn" marital_status_id="field:demographics.marital_status_id"
+                    blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:ethnicity_id"
+                    language_id="field:language_id" rec_stat_id="static:Active">
+                    <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
+                        method-value="contact.work_phone"
+                        _condition="vc.getFieldStates().getState('contact.work_phone').getValue().hasValue()"/>
+                    <person-contact rec-stat-id="static:Active" method-type="static:Email: Business"
+                        method-value="contact.email"
+                         _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
+                    <person-login user_id="field:user_name" password="field:user_name" rec-stat-id="static:Active"
+                        login-status="static:Active" quantity="static:100"/>
+                    <!--
+                        Person relationship insertion is complicated. If RESPONSIBLE party does not exist yet, the REPONSIBLE
+                        PARTY needs to be created as a PERSON also. If the party already exists, then a lookup field
+                        needs to be provided. The lookup field should then provide a search dialog to look for the
+                        RESPONSIBLE PARTY.
+                    -->
+                    <!--person-relationship rel_entity_id="field:responsible.party_id" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
+                        rel-descr="field:responsible.rel_descr"
+                        _condition="vc.getFieldStates().getState('responsible.party_id').getValue() != null"   /-->
+                    <person-insurance guar-person-id="field:responsible.party_id" rec-stat-id="static:Active" />
+                    <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
+                    <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:ethnicity_id" rec-stat-id="static:Active"/>
+                    <person-language _loop-column="language-id" language-id="field:language_id" rec-stat-id="static:Active"/>
+                </person>
+            </on-add-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" _auto-map="*" />
+            </on-delete-data>
 		</dialog>
 
 		<!--dialog type="schema-record-editor" name="person">
@@ -48,7 +81,7 @@
 			<xdm:include template="person.demographic-information"/>
 		</dialog-->
 
-		<dialog type="schema-record-editor" name="physician">
+		<dialog name="physician"  generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Physician/Provider"/>
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="non-patient.demographic-information"/>
@@ -62,6 +95,7 @@
 			<xdm:include template="physician.license-and-provider-information"/>
 			<xdm:include template="physician.billing-information"/>
             <!--listener class="app.form.person.PhysicianDialog" /-->
+
 		</dialog>
 		
 		<dialog type="schema-record-editor" name="referringDoctor">
