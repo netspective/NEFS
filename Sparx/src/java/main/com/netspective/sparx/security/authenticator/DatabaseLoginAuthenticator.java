@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.3 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.4 2003-08-31 03:11:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -50,6 +50,7 @@ import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
@@ -75,15 +76,19 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
             QueryResultSet qrs = passwordQuery.execute(loginDialogContext, new Object[] { loginDialogContext.getUserIdInput() }, false);
             if(qrs == null)
                 return false;
-            String loginPasswordInDB = ResultSetUtils.getInstance().getResultSetSingleColumn(qrs.getResultSet()).toString();
+            Object loginPasswordObj = ResultSetUtils.getInstance().getResultSetSingleColumn(qrs.getResultSet());
             qrs.close(true);
 
+            if(loginPasswordObj == null)
+                return false;
+
+            String loginPasswordText = loginPasswordObj.toString();
             // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
             if(! passwordEncrypted)
-                loginPasswordInDB = loginDialogContext.encryptPlainTextPassword(loginPasswordInDB);
+                loginPasswordText = loginDialogContext.encryptPlainTextPassword(loginPasswordText);
 
             // now we check if this is a valid user
-            if(! loginPasswordInDB.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
+            if(! loginPasswordText.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
                 return false;
         }
         catch(Exception e)
@@ -95,7 +100,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         return true;
     }
 
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user)
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         super.initAuthenticatedUser(loginManager, ldc, user);
 

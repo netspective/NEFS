@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.11 2003-08-31 02:01:16 aye.thu Exp $
+ * $Id: HttpLoginManager.java,v 1.12 2003-08-31 03:11:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -250,6 +250,7 @@ public class HttpLoginManager
             authUser.setUserId(userId);
             authUser.setEncryptedPassword(encryptedPassword);
             authUser.setRemembered(isRemembered);
+            loginAuthenticator.initAuthenticatedUser(this, ldc, authUser);
             return authUser;
         }
         catch (Exception e)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.7 2003-08-17 00:05:17 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.8 2003-08-31 03:09:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -50,10 +50,13 @@ import java.util.BitSet;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.value.ValueContext;
 
 public interface AuthenticatedUser extends Principal
 {
     String PASSWORD_ENCRYPTION_SALT = "NC";
+
+    public void init(ValueContext vc) throws AuthenticatedUserInitializationException;
 
     public String getUserName();
     public void setUserName(String userName);

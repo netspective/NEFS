@@ -39,39 +39,37 @@
  */
 
 /**
- * $Id: LoginAuthenticator.java,v 1.4 2003-08-31 03:11:50 shahid.shah Exp $
+ * $Id: AuthenticatedUserInitializationException.java,v 1.1 2003-08-31 03:09:49 shahid.shah Exp $
  */
 
-package com.netspective.sparx.security;
+package com.netspective.commons.security;
 
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import org.apache.commons.lang.exception.NestableException;
 
-public interface LoginAuthenticator
+public class AuthenticatedUserInitializationException extends NestableException
 {
-    /**
-     * Called once a user has entered data into a login dialog and that data is ready to be validated to
-     * see if the user is a valid user in the system. The method has access to the loginDialogContext so
-     * adding validation errors to the login dialog (for messages, etc) is allowed.
-     * @param loginManager The login manager for which the authentication is being performed
-     * @param loginDialogContext The value object that contains the user's inputs
-     * @return True if the user is valid or false if the user is not a valid user
-     */
-    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    private AuthenticatedUser user;
 
-    /**
-     * Once a user is considered valid, create the user instance that will hold the user's information,
-     * credentials, etc.
-     * @param loginManager
-     * @param loginDialogContext
-     * @return
-     */
-    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    public AuthenticatedUserInitializationException(AuthenticatedUser user)
+    {
+        this.user = user;
+    }
 
-    /**
-     * Assign the authenticated user's access control roles, permissions, and do other user initialization.
-     * @param ldc The LoginDialogContext that was constructed by the LoginDialog.
-     * @param user The authenticated user that was constructed using constructAuthenticatedUser()
-     */
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException;
+    public AuthenticatedUserInitializationException(String s, AuthenticatedUser user)
+    {
+        super(s);
+        this.user = user;
+    }
+
+    public AuthenticatedUserInitializationException(String s, Throwable throwable, AuthenticatedUser user)
+    {
+        super(s, throwable);
+        this.user = user;
+    }
+
+    public AuthenticatedUserInitializationException(Throwable throwable, AuthenticatedUser user)
+    {
+        super(throwable);
+        this.user = user;
+    }
 }

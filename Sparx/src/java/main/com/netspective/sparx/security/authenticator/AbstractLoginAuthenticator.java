@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractLoginAuthenticator.java,v 1.1 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: AbstractLoginAuthenticator.java,v 1.2 2003-08-31 03:11:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -49,6 +49,7 @@ import org.apache.commons.logging.Log;
 
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserInitializationException;
 import com.netspective.sparx.security.LoginAuthenticator;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialogContext;
@@ -81,7 +82,8 @@ public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
         }
     }
 
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user)
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
+        user.init(ldc);
     }
 }

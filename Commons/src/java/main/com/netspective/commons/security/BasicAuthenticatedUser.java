@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.9 2003-08-17 00:05:17 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.10 2003-08-31 03:09:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -53,6 +53,7 @@ import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
+import com.netspective.commons.value.ValueContext;
 
 public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedOrgUser
 {
@@ -68,6 +69,10 @@ public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedO
     private Map attributes = new HashMap();
 
     public BasicAuthenticatedUser()
+    {
+    }
+
+    public void init(ValueContext vc) throws AuthenticatedUserInitializationException
     {
     }
 
