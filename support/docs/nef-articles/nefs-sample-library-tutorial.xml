@@ -7,7 +7,7 @@
 <!ENTITY __nef-project-file-tags-descr__drcg7alc SYSTEM "../nef-reusable-content/nef-project-file-tags-descr.xml">
 ]>
 <article>
-  <title>Books Application Tutorial</title>
+  <title>Library Application Tutorial</title>
 
   <section>
     <title>Objectives</title>
@@ -73,11 +73,12 @@
       library (e.g. software, periodical). Each asset can be loaned either for
       a <emphasis>short term</emphasis> or <emphasis>long term. </emphasis>
       This is represented by the Loan Type. <figure>
-          <title>Basic E-R Diagram for Library Application Database</title>
+          <title>Basic E-R Diagram for Library Application Database [to be
+          replaced with the correct image]</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="" />
+              <imagedata fileref="./resources/images/screen-books-app-schema.gif" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -128,10 +129,8 @@
               id="declare-conn-provider-tags-eg-2" />
   &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
               id="declare-conn-provider-tags-eg-3" />
-  &lt;<emphasis>url</emphasis>&gt;
-  vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db} <co
+  &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt;<co
               id="declare-conn-provider-tags-eg-4" />
-  &lt;/url&gt; 
   &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
               id="declare-conn-provider-tags-eg-5" />
   &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
@@ -405,9 +404,7 @@
             id="declare-schema-tags-eg2-10" />
   &lt;column name="loan" type="duration" required="yes" descr="The duration of the loan"/&gt;
   &lt;column name="returned" type="boolean" descr="Whether the asset has been returned or not"/&gt;
- &lt;/table&gt;
-
-&lt;/schema&gt;</programlisting>
+ &lt;/table&gt;</programlisting>
 
         <calloutlist>
           <callout arearefs="declare-schema-tags-eg2-1">
@@ -750,9 +747,6 @@
 
     <section>
       <title>Creating the Data Management Layer</title>
-
-      <para>The Library Application uses the following queries for data
-      management:</para>
 
       <section id="section-declare-static-qry">
         <title id="section-declare-qry">Declaring Queries</title>
@@ -1792,80 +1786,177 @@
         <graphic fileref="./resources/images/nefs-lib-home-page.gif" />
       </screenshot>
 
-      <para>The Home page lists all the assets available in your Library
-      Application database along with the available borrowers. </para>
+      <section>
+        <title>Assets Page</title>
 
-      <para>Explore the Assets tab which contains View Assets, Add Asset, Edit
-      Asset and Delete Asset pages. Use the View Assets page to view a list of
-      all the available assets.</para>
+        <para>The Home page lists all the assets available in your Library
+        Application database along with the available borrowers. Explore the
+        Assets tab which contains View Assets, Add Asset, Edit Asset and
+        Delete Asset pages. Use the View Assets page to view a list of all the
+        available assets.</para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/nefs-lib-view-assets-page.gif" />
-      </screenshot>
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-view-assets-page.gif" />
+        </screenshot>
 
-      <para>Use the Add Asset page to add an asset.</para>
+        <para>Use the Add Asset page to add an asset.</para>
 
-      <para><screenshot>
-          <graphic fileref="./resources/images/nefs-lib-add-asset.page.gif" />
-        </screenshot></para>
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-lib-add-asset-page.gif" />
+          </screenshot></para>
 
-      <para>Enter the book information and click the <command>OK</command>
-      button. You can see the newly added book in the list available on the
-      Home page.</para>
+        <para>Enter the asset information and click the
+        <command>Save</command> button. You can see the newly added asset in
+        the list available on the Home or View Assets pages. You may also edit
+        an existing asset's information by selecting it from the list of
+        Assets using the Edit icon. This opens the Edit Assets page:</para>
 
-      <para></para>
+        <para></para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-new-list.gif" />
-      </screenshot>
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-edit-asset-page.gif" />
+        </screenshot>
 
-      <para>Try editing the record of the book. Select the book from the list
-      by clicking on its name. The Edit Book page is displayed containing the
-      selected book's information.</para>
+        <para>Try editing the details of the asset. Select the asset from the
+        Asset List by clicking on its ID. The Edit Asset page is displayed
+        containing the selected asset's information. The associated loan
+        records are also shown in a separate panel on the same page.</para>
 
-      <para></para>
+        <para>Go to Home page and select the asset to delete. The Delete Asset
+        page is displayed containing the selected asset's information. Click
+        on the Delete button to delete the selected asset's record.</para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-edit.gif" />
-      </screenshot>
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-lib-del-asset-page.gif" />
+          </screenshot></para>
+      </section>
 
-      <para>Go to Home page and select the asset to delete. The Delete Book
-      page is displayed containing the selected book's information. Click on
-      the Delete button to delete the selected book's record.</para>
+      <section>
+        <title>Borrowers Page</title>
 
-      <para></para>
+        <para>Explore the Borrowers tab which contains View Borrowers, Add
+        Borrower, Edit Borrower and Delete Borrower pages. Use the View
+        Borrowers page to view a list of all the available borrowers.</para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-delete.gif" />
-      </screenshot>
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-view-borrowers-page.gif" />
+        </screenshot>
 
-      <para>You may access the Library Application Console through the Console
-      page. Use '<literal>console</literal>' and '<literal>console</literal>'
-      (without quotes) for Console's <varname>User Id</varname> and
-      <varname>Password</varname>.</para>
+        <para>Use the Add Borrower page to add a borrower.</para>
 
-      <para></para>
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-lib-add-borrower-page.gif" />
+          </screenshot></para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-app-console.gif" />
-      </screenshot>
+        <para>Enter the borrower information and click the
+        <command>Save</command> button. You can see the newly added borrower
+        in the list available on the Home or View Borrowers pages. You may
+        also edit an existing borrower's information by selecting it from the
+        list of Borrowers using the Edit icon. This opens the Edit Borrowers
+        page:</para>
 
-      <para>Try the Sample Apps Home page to see the NEFS Sample Apps Home
-      Page loaded from the netspective web site.</para>
+        <para></para>
 
-      <screenshot>
-        <graphic fileref="./resources/images/screen-books-samples-page.gif" />
-      </screenshot>
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-edit-borrower-page.gif" />
+        </screenshot>
+
+        <para>Try editing the details of the borrower. Select the borrower
+        from the Borrowers List by clicking on the borrower's ID. The Edit
+        Borrower page is displayed containing the selected borrower's
+        information. The associated loan records are also shown in a separate
+        panel on the same page.</para>
+
+        <para>Go to Home page and select the borrower to delete. The Delete
+        Borrower page is displayed containing the selected borrower's
+        information. Click on the Delete button to delete the selected
+        borrower's record.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-lib-del-borrower-page.gif" />
+          </screenshot></para>
+      </section>
+
+      <section>
+        <title>Loans Page</title>
+
+        <para>Explore the Loans tab which contains View Loans, Add Loan, Edit
+        Loan and Delete Loan pages. Use the View Loans page to view a list of
+        all the loans.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-view-loans-page.gif" />
+        </screenshot>
+
+        <para>Use the Add Loan page to add a loan.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/nefs-lib-add-loan-page.gif" />
+          </screenshot></para>
+
+        <para>Enter the loan information and click the <command>Save</command>
+        button. You can see the newly added loan in the list available on the
+        View Loans pages. You may also edit an existing loan's information by
+        selecting it from the list of Loans using the Edit icon. This opens
+        the Edit Loan page:</para>
+
+        <para></para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-edit-loan-page.gif" />
+        </screenshot>
+
+        <para>Try editing the details of the loan. Select the loan from the
+        Loans List by clicking on the loan's ID. The Edit Loan page is
+        displayed containing the selected loan's information.</para>
+
+        <para>Go to View Loans page and select the loan to delete. The Delete
+        Loan page is displayed containing the selected loan's information.
+        Click on the Delete button to delete the selected loan's
+        record.</para>
+
+        <para></para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/nefs-lib-del-loan-page.gif" />
+        </screenshot>
+      </section>
+
+      <section>
+        <title>Console Page</title>
+
+        <para>You may access the Library Application Console through the
+        Console page. Use '<literal>console</literal>' and
+        '<literal>console</literal>' (without quotes) for Console's
+        <varname>User Id</varname> and <varname>Password</varname>.</para>
+
+        <para></para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-books-app-console.gif" />
+        </screenshot>
+      </section>
+
+      <section>
+        <title>Sample Apps Home Page</title>
+
+        <para>Try the Sample Apps Home page to see the NEFS Sample Apps Home
+        Page loaded from the netspective web site.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-books-samples-page.gif" />
+          </screenshot></para>
+      </section>
     </section>
+  </section>
 
-    <section>
-      <title>Conclusion</title>
+  <section>
+    <title>Conclusion</title>
 
-      <para>Congratulations! Your Library application is now complete. This
-      application is relatively more complex in its use of nested pages and
-      multiple panels per page. You can now move on to more complex sample
-      applictions provided by Netspective Enterprise Suite to help you learn
-      more features provided by NEFS.</para>
-    </section>
+    <para>Congratulations! Your Library application is now complete. This
+    application is relatively more complex in its use of nested pages and
+    multiple panels per page. You can now move on to more complex sample
+    applications provided by Netspective Enterprise Suite to help you learn
+    more features provided by NEFS.</para>
   </section>
 </article>
