@@ -69,6 +69,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.navigate.handler.NavigationPageBodyHandlerTemplateConsumer;
 
 public class NavigationTree implements TemplateProducerParent, XmlDataModelSchema.InputSourceLocatorListener, XmlDataModelSchema.ConstructionFinalizeListener
@@ -89,6 +90,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     private NavigationPage root;
     private NavigationPage homePage;
     private NavigationPage popupPage;
+    private DialogNextActionProvider dialogNextActionProvider;
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
     private TemplateProducer pageTypes;
@@ -252,6 +254,25 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
     {
         return new FindResults(path);
     };
+
+    /**
+     * Gets the next action provider for all dialogs in this navigation tree. The next action represents the action
+     * to be performed after dialog execution.
+     * @return
+     */
+    public DialogNextActionProvider getDialogNextActionProvider()
+    {
+        return dialogNextActionProvider;
+    }
+
+    /**
+     * Sets the next action provider for all dialogs executed by this navigation tree
+     * @param nextActionProvider
+     */
+    public void addDialogNextActionProvider(DialogNextActionProvider nextActionProvider)
+    {
+        dialogNextActionProvider = nextActionProvider;
+    }
 
     /**
      * A Class that describes the Results of matching the Http Request with the available Paths in NavigationPath.
