@@ -70,3 +70,16 @@ collects all relevant project metrics, documentation, and details. Managers can 
     <li>Metrics (Function Points, SLOC)
     <li>Implementation documentation
 </ul>
+
+<h1>Console Tour</h1>
+Check the Console Tour to explore these features in more detail.<p>
+
+    <#list tour as app>
+    <#if app.tourUrl?exists>
+            ${app.tourName} (<a href="${app.tourUrl}" title="Online (HTML) Version of Console Tour">HTML</a>)
+            <#if app.tourPDF?exists>
+            (<a href="${app.tourPDF}" title="PDF Version of Console Tour">PDF</a>)
+            </#if>
+    </#if>
+    </#list>
+    
