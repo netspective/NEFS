@@ -39,105 +39,24 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.common.AbstractCustomReferenceEntity;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
 import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.OneToOne;
-import javax.ejb.Table;
-import javax.ejb.OneToMany;
-import java.util.Set;
-import java.util.HashSet;
+import javax.ejb.GeneratorType;
 
 @Entity
-@Table(name = "Party_Role")
-public class PartyRole extends AbstractDateDurationEntity implements Comparable
+public class PartyRoleType extends AbstractCustomReferenceEntity
 {
-    public static final String PK_COLUMN_NAME = "party_role_id";
 
-    private Long partyRoleId;
-
-    private Party party;
-    private PartyRoleType type;
-
-    private Set<PartyRelationship> partyRelationships = new HashSet<PartyRelationship>();
-
-    public PartyRole()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getPartyRoleTypeId()
     {
-
+        return super.getSystemId();
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    @Column(name = PartyRole.PK_COLUMN_NAME)
-    public Long getPartyRoleId()
+    protected void setPartyRoleTypeId(final Long id)
     {
-        return partyRoleId;
-    }
-
-    protected void setPartyRoleId(final Long partyRoleId)
-    {
-        this.partyRoleId = partyRoleId;
-    }
-
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_role_id")
-    public Set<PartyRelationship> getPartyRelationships()
-    {
-        return partyRelationships;
-    }
-
-    protected void setPartyRelationships(final Set<PartyRelationship> partyRelationships)
-    {
-        this.partyRelationships = partyRelationships;
-    }
-
-
-    @ManyToOne(cascade = {CascadeType.ALL})
-    @JoinColumn(name = "party_id")
-    public Party getParty()
-    {
-        return party;
-    }
-
-    public void setParty(final Party party)
-    {
-        this.party = party;
-    }
-
-    @OneToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_role_type_id")
-    public PartyRoleType getType()
-    {
-        return type;
-    }
-
-    public void setType(final PartyRoleType type)
-    {
-        this.type = type;
-    }
-
-    public int compareTo(Object o)
-    {
-        if(o == this)
-            return 0;
-
-        final PartyRole otherRole = (PartyRole) o;
-        return ((PartyRoleType) getType()).compareTo(otherRole.getType());
-    }
-
-    @Override
-    public String toString()
-    {
-        return "PartyRole{" +
-                "party_role_id=" + partyRoleId +
-                ", party_id=" + (party != null ? party.getPartyId() : null) +
-                ", type=" + type +
-                "}";
+        super.setSystemId(id);
     }
 }
