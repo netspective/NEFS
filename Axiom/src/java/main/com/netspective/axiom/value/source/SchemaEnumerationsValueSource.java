@@ -39,39 +39,31 @@
  */
 
 /**
- * $Id: SchemaEnumerationsValueSource.java,v 1.3 2003-10-17 15:57:27 shahid.shah Exp $
+ * $Id: SchemaEnumerationsValueSource.java,v 1.4 2004-05-14 21:37:13 aye.thu Exp $
  */
 
 package com.netspective.axiom.value.source;
 
-import java.util.StringTokenizer;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.sql.SQLException;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
-import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.axiom.connection.AbstractConnectionContext;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.commons.value.source.AbstractValueSource;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.StringTokenizer;
 
 public class SchemaEnumerationsValueSource extends AbstractValueSource
 {
@@ -79,15 +71,17 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
     public static final String[] IDENTIFIERS = new String[] { "schema-enum" };
     public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
-            "Obtains the values of a schema's enumeration table.",
+            "Obtains the values or a value from a schema's enumeration table.",
             new ValueSourceDocumentation.Parameter[]
             {
                 new ValueSourceDocumentation.Parameter("enum-table", true, "The format is 'schema-name.table-name'. Where the only required value is the table-name (if schema-name is not provided, the first available schema is used)."),
+                new ValueSourceDocumentation.Parameter("enum-name", false, "The name/caption of the enumeration entry in the table"),
             }
     );
 
     private String schemaName;
     private String tableName;
+    private String enumCaption;
 
     public static String[] getIdentifiers()
     {
@@ -123,11 +117,22 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
         this.tableName = tableName;
     }
 
+    public String getEnumCaption()
+    {
+        return enumCaption;
+    }
+
+    public void setEnumCaption(String enumCaption)
+    {
+        this.enumCaption = enumCaption;
+    }
+
     public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
     {
         super.initialize(spec);
+        StringTokenizer st = new StringTokenizer(spec.getParams(), ",");
 
-        String schemaAndTableName = spec.getParams();
+        String schemaAndTableName = st.nextToken();
         int schemaDelimPos = schemaAndTableName.indexOf('.');
         if(schemaDelimPos != -1)
         {
@@ -136,11 +141,20 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
         }
         else
             setTableName(schemaAndTableName);
+
+        if (st.hasMoreTokens())
+        {
+            setEnumCaption(st.nextToken());
+        }
     }
 
     public EnumerationTable getEnumerationTable(ValueContext vc)
     {
-        DatabaseConnValueContext dcvc = (DatabaseConnValueContext) vc;
+        DatabaseConnValueContext dcvc = null;
+        if (vc instanceof AbstractConnectionContext)
+            dcvc = ((AbstractConnectionContext) vc).getDatabaseValueContext();
+        else
+            dcvc = (DatabaseConnValueContext) vc;
         Schemas schemas = dcvc.getSqlManager().getSchemas();
         Table table = null;
         try
@@ -170,12 +184,23 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        return getEnumerationTable(vc).getEnums().getEnumerationsValue();
+        if (getEnumCaption() == null)
+            return getEnumerationTable(vc).getEnums().getEnumerationsValue();
+        else
+        {
+            EnumerationTableRow enumRow = getEnumerationTable(vc).getEnums().getByIdOrCaptionOrAbbrev(getEnumCaption());
+            return new GenericValue(enumRow.getIdAsInteger());
+        }
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return getEnumerationTable(vc).getEnums().getEnumerationsPresentationValue();
+        if (getEnumCaption() == null)
+            return getEnumerationTable(vc).getEnums().getEnumerationsPresentationValue();
+        else
+        {
+            return new PresentationValue(getValue(vc));
+        }
     }
 
     public boolean hasValue(ValueContext vc)
