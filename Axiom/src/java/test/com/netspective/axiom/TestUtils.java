@@ -39,25 +39,27 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.7 2003-09-06 16:45:20 shahid.shah Exp $
+ * $Id: TestUtils.java,v 1.8 2003-09-21 02:07:57 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
 
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
+import com.netspective.axiom.connection.AbstractConnectionContext;
 import com.netspective.axiom.ant.AxiomTask;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.io.FileFind;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
 import org.apache.tools.ant.taskdefs.SQLExec;
 import org.apache.tools.ant.taskdefs.Delete;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 public class TestUtils {
    private static final String DB = "medspective";
@@ -87,7 +89,7 @@ public class TestUtils {
    }
 
    static public DriverManagerConnectionProvider getConnProvider(String connProviderId){
-      return getConnProvider(connProviderId, false);  //TODO: Really need to think about if the default should false
+      return getConnProvider(connProviderId, true);  //TODO: Really need to think about if the default should false
    }
 
    static public DriverManagerConnectionProvider getConnProvider(Class connProviderId, boolean reCreateDb){
@@ -99,7 +101,6 @@ public class TestUtils {
    }
 
    static public DriverManagerConnectionProvider getConnProvider(String connProviderId, boolean reCreateDb){
-
 
       ConnectionProviderEntry entry = connProvider.getDataSourceEntry(null, connProviderId);
 
@@ -121,8 +122,19 @@ public class TestUtils {
    }
 
 
+    static public void setupDb(String connProviderId, boolean createDb, boolean loadData)
+    {
+        Log log = LogFactory.getLog(TestUtils.class);
 
-   static public void setupDb(String connProviderId, boolean createDb, boolean loadData) {
+        Set connContextsWithOpenConnections = new HashSet(AbstractConnectionContext.getConnectionContextsWithOpenConnections());
+
+        for (Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext();)
+        {
+            ConnectionContext cc = (ConnectionContext) i.next();
+
+            cc.rollbackAndCloseAndLogAsConnectionLeak(log, null);
+        }
+
 
       String classDir = connProviderId.replace('.', '/');
 
