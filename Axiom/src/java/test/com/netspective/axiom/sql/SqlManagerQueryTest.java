@@ -336,7 +336,7 @@ public class SqlManagerQueryTest extends TestCase
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
         assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
-        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndIgnoreStatistics(qrsOne.getConnectionContext(), null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
         assertTrue(qrsOne.getExecutStmtResult());
         assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
