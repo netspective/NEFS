@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.12 2003-06-27 18:39:53 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.13 2003-06-28 05:23:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -312,14 +312,20 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             writer.write("</tr>");
             rowsWritten++;
             //TODO: Sparx 2.x conversion required
-            if(paging && rc.endOfPage())
+            // check to see if this row should be the last
+            if (paging && rowsWritten == scrollState.getRowsPerPage())
                 break;
+
+            //if(paging && rc.endOfPage())
+            //    break;
         }
 
-        if(rowsWritten == 0)
+        if (rowsWritten == 0)
         {
+            // no rows were written out that means that there was no data in the result set
             ValueSource noDataFoundMsgSrc = ds.getNoDataFoundMessage();
             String noDataFoundMsg = noDataFoundMsgSrc != null ? noDataFoundMsgSrc.getTextValue(rc) : null;
+            // add the 'no data found' message
             if(noDataFoundMsg != null)
                 writer.write("<tr><td class=\"report-column-summary\" colspan='" + tableColsCount + "'>"+ noDataFoundMsg +"</td></tr>");
             //TODO: Sparx 2.x conversion required
@@ -327,9 +333,12 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 scrollState.setNoMoreRows();
         }
         //TODO: Sparx 2.x conversion required
-        else if(paging)
+        else if (paging)
         {
+            // record the number of rows written to the total number ofrows already displayed
             scrollState.accumulateRowsProcessed(rowsWritten);
+            // if the total number of rows written is less than the scroll state's number of rows per page setting,
+            // this must be the last page
             if(rowsWritten < scrollState.getRowsPerPage())
                 scrollState.setNoMoreRows();
         }
