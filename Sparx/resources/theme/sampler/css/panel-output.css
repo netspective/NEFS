@@ -104,6 +104,7 @@ td.panel-editor-banner a:visited { color: #696969; font-size: 9px; font-family: 
 .panel-editor-tree-leaf  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }
 
 
-table.panel-editor-table { width: 100%; padding: 3px }
-table.panel-editor-table td.panel-editor-dialog    { text-align: left; padding: 0px 5px 0px 10px}
+table.panel-editor { width: 100%; padding: 3px }
+table.panel-editor td.active-content { backgound: #cc0000; text-align: left; padding: 0px 5px 0px 10px}
+table.panel-editor td.display-content { backgound: #cc0000; text-align: left; padding: 0px 5px 0px 10px}
 .panel-editor-report    { text-align: left;padding: 0px 5px 0px 10px}
