@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateProcessor.java,v 1.1 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: TemplateProcessor.java,v 1.2 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template;
@@ -47,9 +47,9 @@ package com.netspective.sparx.template;
 import java.io.Writer;
 import java.io.IOException;
 
-import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.commons.value.ValueContext;
 
 public interface TemplateProcessor
 {
-    public void process(Writer writer, NavigationContext nc) throws IOException, TemplateProcessorException;
+    public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException;
 }

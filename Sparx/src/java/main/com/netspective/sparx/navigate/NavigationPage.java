@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.17 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.18 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -68,6 +68,7 @@ import com.netspective.commons.command.Command;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
 import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.template.TemplateProcessor;
 import com.netspective.sparx.command.AbstractHttpServletCommand;

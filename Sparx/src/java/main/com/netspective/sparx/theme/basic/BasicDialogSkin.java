@@ -284,7 +284,7 @@ public class BasicDialogSkin extends StandardDialogSkin
         if(popupHtml != null)
             controlHtml.write(popupHtml);
 
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(field);
+        DialogField.State state = dc.getFieldStates().getState(field);
         DialogField.Flags stateFlags = state.getStateFlags();
 
         if(stateFlags.flagIsSet(DialogField.Flags.CREATE_ADJACENT_AREA))

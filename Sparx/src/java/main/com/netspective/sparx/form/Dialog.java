@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.4 2003-05-07 03:39:17 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.5 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -574,7 +574,7 @@ public class Dialog
     {
         if(! dc.executeStageHandled())
         {
-            writer.write("Need to add Dialog actions or override Dialog.execute(DialogContext)." + dc.getDebugHtml());
+            dc.renderDebugPanels(writer);
             dc.setExecuteStageHandled(true);
         }
     }
@@ -641,7 +641,6 @@ public class Dialog
             dc.persistValues();
             this.populateValues(dc, DialogField.SUBMIT_FORMAT);
         }
-
     }
 
     /**
@@ -651,21 +650,31 @@ public class Dialog
      * @param dc                        dialog context
      * @param contextPreparedAlready    flag to indicate whether or not the context has been prepared
      */
-    public void renderHtml(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
+    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
         if(!contextPreparedAlready)
             prepareContext(dc);
 
         if(dc.inExecuteMode())
         {
+            boolean debug = dc.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA);
+            if(debug)
+                dc.setRedirectDisabled(true);
+
             switch(loop.getValueIndex())
             {
                 case DialogLoopStyle.NONE:
-                    execute(writer, dc);
+                    if(debug)
+                        dc.renderDebugPanels(writer);
+                    else
+                        execute(writer, dc);
                     break;
 
                 case DialogLoopStyle.APPEND:
-                    execute(writer, dc);
+                    if(debug)
+                        dc.renderDebugPanels(writer);
+                    else
+                        execute(writer, dc);
                     writer.write(loop.getLoopSeparator());
                     dc.getSkin().renderHtml(writer, dc);
                     break;
@@ -673,7 +682,10 @@ public class Dialog
                 case DialogLoopStyle.PREPEND:
                     dc.getSkin().renderHtml(writer, dc);
                     writer.write(loop.getLoopSeparator());
-                    execute(writer, dc);
+                    if(debug)
+                        dc.renderDebugPanels(writer);
+                    else
+                        execute(writer, dc);
                     break;
             }
         }
@@ -684,15 +696,15 @@ public class Dialog
     }
 
     /**
-     * Create and write the HTML for the dialog. This method calls <code>renderHtml(Writer writer, DialogContext dc, boolean contextPreparedAlready)</code>
+     * Create and write the HTML for the dialog. This method calls <code>render(Writer writer, DialogContext dc, boolean contextPreparedAlready)</code>
      * with the context flag set to <code>false</code>.
      *
      * @param skin dialog skin
      */
-    public void renderHtml(NavigationContext nc, DialogSkin skin) throws IOException, DialogExecuteException
+    public void render(NavigationContext nc, DialogSkin skin) throws IOException, DialogExecuteException
     {
         DialogContext dc = createContext(nc, skin);
-        renderHtml(nc.getResponse().getWriter(), dc, false);
+        render(nc.getResponse().getWriter(), dc, false);
     }
 
     public String getSubclassedDialogContextCode(String pkgPrefix)

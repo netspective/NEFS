@@ -39,25 +39,27 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.6 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.7 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.util.List;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.panel.HtmlPanels;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelBanner;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.TabularReportColumn;
 
 public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel implements HtmlTabularReportPanel
 {
@@ -75,6 +77,14 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         HtmlTabularReportValueContext vc = createContext(nc, theme.getReportSkin());
         vc.setPanelRenderFlags(flags);
         vc.produceReport(writer, createDataSource(nc, vc));
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        HtmlTabularReportValueContext vc = createContext(dc.getNavigationContext(), theme.getReportSkin());
+        vc.setDialogContext(dc);
+        vc.setPanelRenderFlags(flags);
+        vc.produceReport(writer, createDataSource(dc.getNavigationContext(), vc));
     }
 
     public class SimpleMessageDataSource extends AbstractHtmlTabularReportDataSource
@@ -98,4 +108,79 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
             return message;
         }
     }
+
+    public static final HtmlTabularReport constructReportFromList(List list)
+    {
+        if(list == null || list.size() == 0)
+            throw new RuntimeException("List has no contents.");
+
+        List firstRow = (List) list.get(0);
+
+        HtmlTabularReport result = new BasicHtmlTabularReport();
+        for(int i = 0; i < firstRow.size(); i++)
+        {
+            TabularReportColumn column = new GeneralColumn();
+            Object value = firstRow.get(0);
+            if(value instanceof ValueSource)
+                column.setHeading((ValueSource) value);
+            else if(value != null)
+                column.setHeading(new StaticValueSource(value.toString()));
+        }
+
+        return result;
+    }
+
+    public class ListDataSource extends SimpleMessageDataSource
+    {
+        protected int activeRowIndex = -1;
+        protected int lastRowIndex;
+        private List list;
+
+        public ListDataSource(HtmlTabularReportValueContext vc, List list, String noDataMessage)
+        {
+            super(vc, noDataMessage);
+            setList(list);
+        }
+
+        public ListDataSource(HtmlTabularReportValueContext vc, List list, ValueSource noDataMessage)
+        {
+            super(vc, noDataMessage);
+            setList(list);
+        }
+
+        public List getList()
+        {
+            return list;
+        }
+
+        public void setList(List list)
+        {
+            this.list = list;
+            activeRowIndex = -1;
+            lastRowIndex = list.size() - 1;
+        }
+
+        public Object getActiveRowColumnData(int columnIndex, int flags)
+        {
+            List activeRow = (List) list.get(activeRowIndex);
+            return activeRow.get(columnIndex);
+        }
+
+        public boolean next()
+        {
+            if(activeRowIndex < lastRowIndex)
+            {
+                activeRowIndex++;
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return activeRowIndex + 1;
+        }
+    }
+
 }

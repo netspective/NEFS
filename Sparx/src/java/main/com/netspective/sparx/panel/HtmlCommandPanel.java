@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlCommandPanel.java,v 1.1 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: HtmlCommandPanel.java,v 1.2 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -53,6 +53,7 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.command.HttpServletCommand;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
 
@@ -86,6 +87,26 @@ public class HtmlCommandPanel extends AbstractPanel
         try
         {
             ((HttpServletCommand) command).handleCommand(writer, nc, false);
+        }
+        catch (CommandException e)
+        {
+            log.error(e);
+            writer.write(e.toString());
+        }
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+
+        if(command == null)
+        {
+            writer.write("No command provided.");
+            return;
+        }
+
+        try
+        {
+            ((HttpServletCommand) command).handleCommand(writer, dc, false);
         }
         catch (CommandException e)
         {

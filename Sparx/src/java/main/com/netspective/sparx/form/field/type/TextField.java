@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.3 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: TextField.java,v 1.4 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -261,7 +261,7 @@ public class TextField extends DialogField
             return;
         }
 
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
         Flags stateFlags = (Flags) state.getStateFlags();
         String textValue = state.getValue().getTextValue();
 

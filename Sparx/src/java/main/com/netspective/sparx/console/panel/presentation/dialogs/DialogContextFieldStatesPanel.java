@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogContextFieldStatesPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -49,62 +49,108 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+public class DialogContextFieldStatesPanel extends DialogDetailPanel
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    public static final HtmlTabularReport stateValuesReport = new BasicHtmlTabularReport();
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Field"));
+        stateValuesReport.addColumn(column);
 
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
+        stateValuesReport.addColumn(column);
 
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
+        stateValuesReport.addColumn(column);
 
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
+        stateValuesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Value"));
+        stateValuesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Adjacent Value"));
+        stateValuesReport.addColumn(column);
     }
 
-    public DialogFieldsPanel()
+    protected class DialogContextSelectedDialog extends SelectedDialog
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
+        public DialogContextSelectedDialog(HtmlTabularReportValueContext rc)
+        {
+            super(rc, null);
+            setDialog(rc.getDialogContext().getDialog());
+            setDialogName(rc.getDialogContext().getDialog().getName());
+            setDataSource(new DialogContextFieldStatesPanelDataSource(rc, this));
+        }
+    }
+
+    public DialogContextFieldStatesPanel()
+    {
+        getFrame().setHeading(new StaticValueSource("Field State Values"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(vc, selectedDialog);
+        DialogDetailPanel.SelectedDialog selectedDialog = new DialogContextSelectedDialog(vc);
+        return selectedDialog.getDataSource();
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return dialogFieldsReport;
+        return stateValuesReport;
+    }
+
+    protected class DialogContextFieldStatesPanelDataSource extends DialogFieldsDataSource
+    {
+        private DialogContext dialogContext;
+
+        public DialogContextFieldStatesPanelDataSource(HtmlTabularReportValueContext vc, DialogContextSelectedDialog selectedDialog)
+        {
+            super(vc, selectedDialog);
+            this.dialogContext = vc.getDialogContext();
+        }
+
+        public Object getActiveRowColumnData(int columnIndex, int flags)
+        {
+            DialogField activeField = activeRow.getField();
+            DialogField.State activeFieldState = dialogContext.getFieldStates().getState(activeField);
+
+            switch(columnIndex)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    return super.getActiveRowColumnData(columnIndex, flags);
+
+                case 3:
+                    if(activeFieldState != null)
+                        return activeFieldState.getStateFlags().getFlagsText();
+
+                case 4:
+                    if(activeFieldState != null)
+                        return activeFieldState.getValue().getTextValue();
+
+                case 5:
+                    if(activeFieldState != null)
+                        return activeFieldState.getAdjacentAreaValue();
+
+                default:
+                    return null;
+            }
+        }
     }
 }

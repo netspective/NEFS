@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.2 2003-04-29 19:57:24 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.3 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -61,10 +61,10 @@ import freemarker.cache.ClassTemplateLoader;
 
 import com.netspective.sparx.template.AbstractTemplateProcessor;
 import com.netspective.sparx.template.TemplateProcessorException;
-import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.ApplicationManager;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
 
 public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 {
@@ -108,16 +108,16 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
             stringTemplateLoader.addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
 
-    public void process(Writer writer, NavigationContext nc) throws IOException, TemplateProcessorException
+    public void process(Writer writer, ValueContext vc) throws IOException, TemplateProcessorException
     {
         Map vars = new HashMap();
         try
         {
             Template template = source != null ?
-                    fmConfig.getTemplate(source.getTextValue(nc)) :
+                    fmConfig.getTemplate(source.getTextValue(vc)) :
                     fmConfig.getTemplate(Integer.toString(this.hashCode()));
 
-            vars.put("nc", BeansWrapper.getDefaultInstance().wrap(nc));
+            vars.put("nc", BeansWrapper.getDefaultInstance().wrap(vc));
             template.process(vars, writer);
         }
         catch (Exception e)

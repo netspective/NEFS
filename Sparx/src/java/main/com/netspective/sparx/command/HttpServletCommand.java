@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpServletCommand.java,v 1.1 2003-05-09 01:22:19 shahid.shah Exp $
+ * $Id: HttpServletCommand.java,v 1.2 2003-05-10 16:49:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -49,8 +49,10 @@ import java.io.IOException;
 
 import com.netspective.commons.command.CommandException;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.form.DialogContext;
 
 public interface HttpServletCommand extends ServletCommand
 {
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException;
+    public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException;
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.9 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.10 2003-05-10 16:50:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -60,8 +60,8 @@ import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogsManager;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.config.ConfigurationsManager;
@@ -77,6 +77,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
     private NavigationContext navigationContext;
+    private DialogContext dialogContext;
     private ServletContext context;
     private Servlet servlet;
     private ServletRequest request;
@@ -118,6 +119,16 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public void setNavigationContext(NavigationContext navigationContext)
     {
         this.navigationContext = navigationContext;
+    }
+
+    public DialogContext getDialogContext()
+    {
+        return dialogContext;
+    }
+
+    public void setDialogContext(DialogContext dialogContext)
+    {
+        this.dialogContext = dialogContext;
     }
 
     public Object getContextLocation()

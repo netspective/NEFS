@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.2 2003-05-07 03:39:17 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -89,14 +89,53 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
             return dataSource;
         }
 
+        public void setDataSource(TabularReportDataSource dataSource)
+        {
+            this.dataSource = dataSource;
+        }
+
         public Dialog getDialog()
         {
             return dialog;
         }
 
+        public void setDialog(Dialog dialog)
+        {
+            this.dialog = dialog;
+        }
+
         public String getDialogName()
         {
             return dialogName;
+        }
+
+        public void setDialogName(String dialogName)
+        {
+            this.dialogName = dialogName;
+        }
+
+        private List createAttribute(String name, Object value)
+        {
+            List result = new ArrayList();
+            result.add(name);
+            result.add(value);
+            return result;
+        }
+
+        public List getDialogAttributes(HtmlTabularReportValueContext rc)
+        {
+            List result = new ArrayList();
+            result.add(createAttribute("Name", dialog.getQualifiedName()));
+            result.add(createAttribute("Dialog Class", rc.getSkin().constructClassRef(dialog.getClass())));
+            result.add(createAttribute("Dialog Context Class", rc.getSkin().constructClassRef(dialog.getDcClass())));
+            result.add(createAttribute("Dialog Director Class", rc.getSkin().constructClassRef(dialog.getDirector().getClass())));
+            result.add(createAttribute("Heading", dialog.getHtmlFormName()));
+            result.add(createAttribute("Number of Fields", new Integer(dialog.getFields().totalSize())));
+            result.add(createAttribute("Loop Display", dialog.getLoop().getValue()));
+            result.add(createAttribute("Retain Request Params", dialog.getRetainParams()));
+            result.add(createAttribute("Dialog Flags", dialog.getDialogFlags().getFlagsText()));
+            result.add(createAttribute("Debug Flags", dialog.getDebugFlags().getFlagsText()));
+            return result;
         }
     }
 
@@ -268,6 +307,12 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
                     if(activeField != null)
                         return activeField.getDefault() != null && activeField.getDefault() != ValueSource.NULL_VALUE_SOURCE ?
                                 activeField.getDefault().getSpecification() :
+                                null;
+
+                case 6:
+                    if(activeField != null)
+                        return activeField.getHint() != null && activeField.getHint() != ValueSource.NULL_VALUE_SOURCE ?
+                                activeField.getHint().getSpecification() :
                                 null;
 
                 default:

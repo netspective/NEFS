@@ -39,14 +39,24 @@
  */
 
 /**
- * $Id: AbstractHttpServletCommand.java,v 1.1 2003-05-09 01:22:19 shahid.shah Exp $
+ * $Id: AbstractHttpServletCommand.java,v 1.2 2003-05-10 16:49:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
 
+import java.io.Writer;
+import java.io.IOException;
+
 import com.netspective.commons.command.AbstractCommand;
+import com.netspective.commons.command.CommandException;
+import com.netspective.sparx.form.DialogContext;
 
 public abstract class AbstractHttpServletCommand extends AbstractCommand implements HttpServletCommand
 {
     static public final String PAGE_COMMAND_REQUEST_PARAM_NAME = "cmd";
+
+    public void handleCommand(Writer writer, DialogContext dc, boolean unitTest) throws CommandException, IOException
+    {
+        handleCommand(writer, dc.getNavigationContext(), unitTest);
+    }
 }

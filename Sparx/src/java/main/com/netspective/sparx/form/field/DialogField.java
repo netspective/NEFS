@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.4 2003-05-09 01:22:20 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.5 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -219,7 +219,7 @@ public class DialogField implements TemplateConsumer
         }
     }
 
-    public class DialogFieldState
+    public class State
     {
         public DialogFieldValue value = constructValueInstance();
         public String adjacentAreaValue;
@@ -227,7 +227,7 @@ public class DialogField implements TemplateConsumer
         public ArrayList errorMessages;
         public DialogContext dc;
 
-        public DialogFieldState(DialogContext dc)
+        public State(DialogContext dc)
         {
             this.dc = dc;
             stateFlags.copy(getFlags());
@@ -338,9 +338,9 @@ public class DialogField implements TemplateConsumer
 	private String name;
 	private String qualifiedName;
 	private ValueSource caption = ValueSource.NULL_VALUE_SOURCE;
+    private ValueSource defaultValue = ValueSource.NULL_VALUE_SOURCE;
+    private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
 	private String cookieName;
-	private String errorMessage;
-	private ValueSource defaultValue = ValueSource.NULL_VALUE_SOURCE;
 	private List errors;
 	private DialogFields children;
 	private List conditionalActions;
@@ -352,7 +352,6 @@ public class DialogField implements TemplateConsumer
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
     private ValidationRules validationRules;
-	private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
 
 	/**
 	 * Creates a dialog field
@@ -392,7 +391,6 @@ public class DialogField implements TemplateConsumer
     public void intialize()
     {
         defaultValue = null;
-        errorMessage = null;
         flags = createFlags();
     }
 
@@ -401,9 +399,9 @@ public class DialogField implements TemplateConsumer
         return new BasicFieldValue();
     }
 
-    public DialogFieldState constructStateInstance(DialogContext dc)
+    public State constructStateInstance(DialogContext dc)
     {
-        return new DialogFieldState(dc);
+        return new State(dc);
     }
 
     public void initValidationRules(ValidationRules rules)
@@ -638,7 +636,7 @@ public class DialogField implements TemplateConsumer
 	 */
 	public String getCookieName()
 	{
-		return cookieName == null ? (Dialog.PARAMNAME_CONTROLPREFIX + getQualifiedName()) : cookieName;
+		return cookieName == null ? (Dialog.PARAMNAME_CONTROLPREFIX + getOwner().getQualifiedName() + "." + getQualifiedName()) : cookieName;
 	}
 
 	/**
@@ -689,26 +687,6 @@ public class DialogField implements TemplateConsumer
 	public void setHint(ValueSource value)
 	{
 		hint = value;
-	}
-
-	/**
-	 * Gets the display error message when a validation fails
-	 *
-	 * @return String
-	 */
-	public String getErrorMessage()
-	{
-		return errorMessage;
-	}
-
-	/**
-	 * Sets the error message for display when a validation fails
-	 *
-	 * @param newMessage error message string
-	 */
-	public void setErrorMessage(String newMessage)
-	{
-		errorMessage = newMessage;
 	}
 
 	/**
@@ -933,7 +911,7 @@ public class DialogField implements TemplateConsumer
 			}
 		}
 
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
         DialogField.Flags stateFlags = state.getStateFlags();
 
         if (stateFlags.flagIsSet(Flags.UNAVAILABLE))
@@ -952,19 +930,19 @@ public class DialogField implements TemplateConsumer
 
 	public boolean isReadOnly(DialogContext dc)
 	{
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
         return state.getStateFlags().flagIsSet(Flags.READ_ONLY);
 	}
 
 	public boolean isBrowserReadOnly(DialogContext dc)
 	{
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
         return state.getStateFlags().flagIsSet(Flags.BROWSER_READONLY);
 	}
 
 	public boolean isInputHiddenFlagSet(DialogContext dc)
 	{
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
         return state.getStateFlags().flagIsSet(Flags.INPUT_HIDDEN);
 	}
 
@@ -973,7 +951,7 @@ public class DialogField implements TemplateConsumer
 		String qName = getQualifiedName();
 		if (qName != null)
 		{
-            DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+            DialogField.State state = dc.getFieldStates().getState(this);
             DialogField.Flags stateFlags = state.getStateFlags();
 
 			if (stateFlags.flagIsSet(Flags.INPUT_HIDDEN))
@@ -1005,7 +983,7 @@ public class DialogField implements TemplateConsumer
 
 	public String getHiddenControlHtml(DialogContext dc)
 	{
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
 		String value = state.getValue().getTextValue();
 		return "<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
 	}
@@ -1125,7 +1103,7 @@ public class DialogField implements TemplateConsumer
 	{
 		if (htmlFormControlId == null) return;
 
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
+        DialogField.State state = dc.getFieldStates().getState(this);
 		DialogFieldValue dfValue = state.getValue();
         String textValue = dfValue.getTextValue();
 

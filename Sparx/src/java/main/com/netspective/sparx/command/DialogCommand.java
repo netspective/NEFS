@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.2 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.3 2003-05-10 16:49:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -231,55 +231,28 @@ public class DialogCommand extends AbstractHttpServletCommand
             dc.getDebugFlags().setFlag(debugFlags.getFlags());
 
         dc.addRetainRequestParams(DIALOG_COMMAND_RETAIN_PARAMS);
-        dialog.prepareContext(dc);
 
         /*
         TODO:
         if (dialog instanceof StatementDialog)
         {
             dialog.retainAllRequestParams();
-            dialog.renderHtml(writer, dc, true);
+            dialog.render(writer, dc, true);
         }
         else
         */
+
+        dialog.prepareContext(dc);
+        if(unitTest)
+            dc.setRedirectDisabled(true);
+        try
         {
-            if(unitTest)
-                dc.setRedirectDisabled(true);
-
-            if(dc.inExecuteMode())
-            {
-                if(dc.getDebugFlags().flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA))
-                {
-                    writer.write(dc.getDebugHtml());
-                    writer.write(dialog.getLoopSeparator());
-                    dc.getSkin().renderHtml(writer, dc);
-                }
-                else
-                {
-                    try
-                    {
-                        dialog.execute(writer, dc);
-                    }
-                    catch (DialogExecuteException e)
-                    {
-                        log.error(e);
-                        throw new CommandException(e, this);
-                    }
-
-                    //TODO:
-                    //if(unitTest && dialog instanceof TableDialog)
-                    //    writer.write("<pre>Last row processed: "+ dc.getLastRowManipulated() +"</pre>");
-
-                    if(! dc.executeStageHandled())
-                    {
-                        writer.write("Dialog '" + dialogName + "' did not handle the execute mode.<p>");
-                        writer.write(dc.getDebugHtml());
-                    }
-
-                }
-            }
-            else
-                dc.getSkin().renderHtml(writer, dc);
+            dialog.render(writer, dc, true);
+        }
+        catch (DialogExecuteException e)
+        {
+            log.error(e);
+            throw new CommandException(e, this);
         }
     }
 

@@ -39,74 +39,67 @@
  */
 
 /**
- * $Id: HttpServletValueContext.java,v 1.4 2003-05-10 16:50:02 shahid.shah Exp $
+ * $Id: DialogAttributesPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
-package com.netspective.sparx.value;
+package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.form.DialogsManager;
-import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.text.TextUtils;
 
-public interface HttpServletValueContext extends ServletValueContext
+public class DialogAttributesPanel extends DialogDetailPanel
 {
-    public DialogsManager getDialogsManager();
+    public static final HtmlTabularReport attributesReport = new BasicHtmlTabularReport();
 
-    /**
-     * Retrieve the active servlet (page scope).
-     */
-    public HttpServlet getHttpServlet();
+    static
+    {
+        TabularReportColumn column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Attribute"));
+        attributesReport.addColumn(column);
 
-    /**
-     * Retrive the active servlet request (request scope).
-     */
-    public HttpServletRequest getHttpRequest();
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Value"));
+        attributesReport.addColumn(column);
+    }
 
-    /**
-     * Retrive the active servlet response.
-     */
-    public HttpServletResponse getHttpResponse();
+    public DialogAttributesPanel()
+    {
+        getFrame().setHeading(new StaticValueSource("Dialog Attributes"));
+    }
 
-    public Theme getActiveTheme();
+    public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
+    {
+        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
+        if(selectedDialog.getDataSource() != null)
+            return selectedDialog.getDataSource();
+        else
+            return new DialogAttributesPanelDataSource(vc, selectedDialog);
+    }
 
-    public String getThemeResourcesRootUrl(Theme theme);
+    public HtmlTabularReport getReport(NavigationContext nc)
+    {
+        return attributesReport;
+    }
 
-    public String getThemeImagesRootUrl(Theme theme);
-
-    /**
-     * Return true if the servlet is being used in a popup window
-     */
-    public boolean isPopup();
-
-    public void setIsPopup(boolean popup);
-
-    /**
-     * Return true if the servlet is being used for printing content
-     */
-    public boolean isPrint();
-
-    public void setIsPrint(boolean print);
-
-    public String getRootUrl();
-
-    public String getServletRootUrl();
-
-    /**
-     * Return the active navigation context if available
-     */
-    public NavigationContext getNavigationContext();
-
-    public void setNavigationContext(NavigationContext navigationContext);
-
-    /**
-     * Return the active dialog context if available
-     */
-    public DialogContext getDialogContext();
-
-    public void setDialogContext(DialogContext dialogContext);
+    protected class DialogAttributesPanelDataSource extends ListDataSource
+    {
+        public DialogAttributesPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
+        {
+            super(vc, selectedDialog.getDialogAttributes(vc), "No attributes");
+        }
+    }
 }

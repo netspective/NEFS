@@ -51,14 +51,12 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.2 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -84,7 +82,14 @@ import com.netspective.sparx.value.source.DialogFieldValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
+import com.netspective.sparx.panel.HtmlPanelsStyleEnumeratedAttribute;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.axiom.schema.Row;
 
@@ -177,16 +182,19 @@ public class DialogContext extends BasicDbHttpServletValueContext
         {
         }
 
-        public DialogField.DialogFieldState getState(DialogField field)
+        public DialogField.State getState(DialogField field)
         {
-            DialogField.DialogFieldState state = (DialogField.DialogFieldState) statesByQualifiedName.get(field.getQualifiedName());
+            DialogField.State state = (DialogField.State) statesByQualifiedName.get(field.getQualifiedName());
             if(state == null)
+            {
                 state = field.constructStateInstance(DialogContext.this);
+                statesByQualifiedName.put(field.getQualifiedName(), state);
+            }
 
             return state;
         }
 
-        public DialogField.DialogFieldState getState(String qualifiedName)
+        public DialogField.State getState(String qualifiedName)
         {
             DialogField field = dialog.getFields().getByQualifiedName(qualifiedName);
             if(field == null)
@@ -200,7 +208,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
             Iterator i = statesByQualifiedName.values().iterator();
             while(i.hasNext())
             {
-                DialogField.DialogFieldState state = (DialogField.DialogFieldState) i.next();
+                DialogField.State state = (DialogField.State) i.next();
                 state.persistValue();
             }
         }
@@ -219,14 +227,14 @@ public class DialogContext extends BasicDbHttpServletValueContext
             {
                 String fieldName = (String) ((Map.Entry) i.next()).getKey();
                 DialogField field = dialogFields.getByQualifiedName(fieldName);
-                DialogField.DialogFieldState state = getState(field);
+                DialogField.State state = getState(field);
                 state.getValue().setValue(((Map.Entry) i.next()).getValue());
             }
         }
 
         public void setStateFlag(DialogField field, long flag)
         {
-            DialogField.DialogFieldState state = getState(field);
+            DialogField.State state = getState(field);
             state.getStateFlags().setFlag(flag);
             DialogFields children = field.getChildren();
             if(children != null)
@@ -238,7 +246,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
 
         public void clearStateFlag(DialogField field, long flag)
         {
-            DialogField.DialogFieldState state = getState(field);
+            DialogField.State state = getState(field);
             state.getStateFlags().clearFlag(flag);
             DialogFields children = field.getChildren();
             if(children != null)
@@ -250,7 +258,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
 
         public void addErrorMessage(DialogField field, String message)
         {
-            DialogField.DialogFieldState state = getState(field);
+            DialogField.State state = getState(field);
             state.addErrorMessage(message);
         }
 
@@ -1165,60 +1173,25 @@ public class DialogContext extends BasicDbHttpServletValueContext
 */
     }
 
-    public String getDebugHtml()
+    public void renderDebugPanels(Writer writer) throws IOException
     {
-        StringBuffer values = new StringBuffer();
-
-        for(Iterator i = fieldStates.statesByQualifiedName.values().iterator(); i.hasNext();)
-        {
-            DialogField.DialogFieldState state = (DialogField.DialogFieldState) i.next();
-            values.append("<tr valign=top><td>" + state.getField().getQualifiedName() + "</td><td>" + TextUtils.escapeHTML(state.getValue().getTextValue()) + "</td></tr>");
-        }
-
-        String XML = null;
-        try
-        {
-            //XML = getAsXml();
-            if(XML != null)
-                XML = TextUtils.escapeHTML(XML);
-        }
-        catch(Exception e)
-        {
-            StringWriter stack = new StringWriter();
-            e.printStackTrace(new PrintWriter(stack));
-            XML = e.toString() + stack.toString();
-        }
-
-        return "<table border=1 cellspacing=0 cellpadding=4>" +
-                "<tr><td><b>Dialog</b></td><td>" + dialog.getHtmlFormName() + "</td></tr>" +
-                "<tr><td><b>Run Sequence</b></td><td>" + runSequence + "</td></tr>" +
-                "<tr><td><b>Active/Next Mode</b></td><td>" + activeMode + " -> " + nextMode + "</td></tr>" +
-                "<tr><td><b>Validation Stage</b></td><td>" + validationStage + "</td></tr>" +
-                "<tr><td><b>Is Pending</b></td><td>" + isPending() + "</td></tr>" +
-                "<tr><td><b>Data Command</b></td><td>" + dataCommands + "</td></tr>" +
-                values.toString() +
-                "<tr><td><b>XML Representation</b></td><td><pre>" + XML + "</pre></td></tr>" +
-                "</table>";
+        debugPanels.render(writer, this, this.getActiveTheme(), HtmlPanel.RENDEFFLAGS_DEFAULT);
     }
 
-    /**
-     * Prints out all the field names and their respective values contained within the Dialog context
-     *
-     * @return String dialog context values string
-     */
-    public String toString()
+    protected static final HtmlLayoutPanel debugPanels = new HtmlLayoutPanel();
+    static
     {
-        StringBuffer sb = new StringBuffer(super.toString() + "\n[\n");
-        Set keySet = fieldStates.statesByQualifiedName.keySet();
-        Iterator keySetIterator = keySet.iterator();
-        while (keySetIterator.hasNext())
-        {
-            Object key = keySetIterator.next();
-            DialogField.DialogFieldState dfs = (DialogField.DialogFieldState) fieldStates.statesByQualifiedName.get(key);
-            sb.append(key + "(" + dfs.value.getClass() + ") = " + dfs.value + "\n");
-        }
-        sb.append("]");
-        return sb.toString();
-    }
+        debugPanels.getFrame().setHeading(new StaticValueSource("Dialog Context Debug"));
+        debugPanels.setStyle(new HtmlPanelsStyleEnumeratedAttribute(HtmlPanelsStyleEnumeratedAttribute.TABBED));
+        debugPanels.getFrame().setFooting(new StaticValueSource("NOTE: You need to add override Dialog.execute(Writer, DialogContext)."));
 
+        DialogContextAttributesPanel attrsPanel = new DialogContextAttributesPanel();
+        debugPanels.addPanel(attrsPanel);
+
+        DialogContextFieldStatesPanel valuesPanel = new DialogContextFieldStatesPanel();
+        debugPanels.addPanel(valuesPanel);
+
+        DialogContextFieldStatesClassesPanel classesPanel = new DialogContextFieldStatesClassesPanel();
+        debugPanels.addPanel(classesPanel);
+    }
 }

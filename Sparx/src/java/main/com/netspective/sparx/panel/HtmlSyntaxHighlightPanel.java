@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.5 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.6 2003-05-10 16:50:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -59,6 +59,7 @@ import com.Ostermiller.Syntax.Lexer.Token;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.form.DialogContext;
 
 public class HtmlSyntaxHighlightPanel extends AbstractPanel
 {
@@ -121,6 +122,11 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
         {
             emitHtml(file, writer);
         }
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        render(writer, dc.getNavigationContext(), theme, flags);
     }
 
     private static Map lexers = new HashMap();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogFieldsHtmlPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -49,12 +49,13 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
+import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+public class DialogFieldsHtmlPanel extends DialogDetailPanel
 {
     public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
 
@@ -73,25 +74,17 @@ public class DialogFieldsPanel extends DialogDetailPanel
         dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
+        column.setHeading(new StaticValueSource("MultiPart"));
         dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
+        column.setHeading(new StaticValueSource("Cookie Name"));
         dialogFieldsReport.addColumn(column);
     }
 
-    public DialogFieldsPanel()
+    public DialogFieldsHtmlPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
+        getFrame().setHeading(new StaticValueSource("Fields HTML"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
@@ -100,11 +93,43 @@ public class DialogFieldsPanel extends DialogDetailPanel
         if(selectedDialog.getDataSource() != null)
             return selectedDialog.getDataSource();
         else
-            return new DialogFieldsDataSource(vc, selectedDialog);
+            return new DialogFieldsHtmlPanelDataSource(vc, selectedDialog);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         return dialogFieldsReport;
+    }
+
+    protected class DialogFieldsHtmlPanelDataSource extends DialogFieldsDataSource
+    {
+        public DialogFieldsHtmlPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
+        {
+            super(vc, selectedDialog);
+        }
+
+        public Object getActiveRowColumnData(int columnIndex, int flags)
+        {
+            DialogField activeField = activeRow.getField();
+
+            switch(columnIndex)
+            {
+                case 0:
+                case 1:
+                case 2:
+                    return super.getActiveRowColumnData(columnIndex, flags);
+
+                case 3:
+                    if(activeField != null)
+                        return activeField.requiresMultiPartEncoding() ? "Yes" : null;
+
+                case 4:
+                    if(activeField != null)
+                        return activeField.getCookieName();
+
+                default:
+                    return null;
+            }
+        }
     }
 }

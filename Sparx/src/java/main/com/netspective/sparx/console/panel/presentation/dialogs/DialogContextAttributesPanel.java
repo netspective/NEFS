@@ -39,72 +39,114 @@
  */
 
 /**
- * $Id: DialogFieldsPanel.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogContextAttributesPanel.java,v 1.1 2003-05-10 16:50:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.text.TextUtils;
 
-public class DialogFieldsPanel extends DialogDetailPanel
+public class DialogContextAttributesPanel extends DialogDetailPanel
 {
-    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    public static final HtmlTabularReport attributesReport = new BasicHtmlTabularReport();
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        dialogFieldsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Attribute"));
+        attributesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Type"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Control Id"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Flags"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Default"));
-        dialogFieldsReport.addColumn(column);
-
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Hint"));
-        dialogFieldsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Value"));
+        attributesReport.addColumn(column);
     }
 
-    public DialogFieldsPanel()
+    protected class DialogContextSelectedDialog extends SelectedDialog
     {
-        getFrame().setHeading(new StaticValueSource("Fields Overview"));
+        public DialogContextSelectedDialog(HtmlTabularReportValueContext rc)
+        {
+            super(rc, null);
+            setDialog(rc.getDialogContext().getDialog());
+            setDialogName(rc.getDialogContext().getDialog().getName());
+            setDataSource(new DialogContextFieldStatesPanelDataSource(rc, this));
+        }
+
+        private List createAttribute(String name, Object value)
+        {
+            List result = new ArrayList();
+            result.add(name);
+            result.add(value);
+            return result;
+        }
+
+        public List getAttributes(HtmlTabularReportValueContext rc, DialogContext dc)
+        {
+            List result = new ArrayList();
+            result.add(createAttribute("Dialog", dc.getDialog().getQualifiedName()));
+            result.add(createAttribute("Dialog Class", rc.getSkin().constructClassRef(dc.getDialog().getClass())));
+            result.add(createAttribute("Dialog Context Class", rc.getSkin().constructClassRef(dc.getClass())));
+            result.add(createAttribute("Form Name", dc.getDialog().getHtmlFormName()));
+            result.add(createAttribute("Run Sequence", new Integer(dc.getRunSequence())));
+            result.add(createAttribute("Active Mode", new Character(dc.getActiveMode())));
+            result.add(createAttribute("Next Mode", new Character(dc.getNextMode())));
+            result.add(createAttribute("Validation Stage", new Integer(dc.getValidationStage())));
+            result.add(createAttribute("Is Pending", new Boolean(dc.isPending())));
+            result.add(createAttribute("Data Command", dc.getDataCommands().getFlagsText()));
+            String XML = null;
+            try
+            {
+                // TODO: XML = getAsXml();
+                if(XML != null)
+                    XML = TextUtils.escapeHTML(XML);
+            }
+            catch(Exception e)
+            {
+                StringWriter stack = new StringWriter();
+                e.printStackTrace(new PrintWriter(stack));
+                XML = e.toString() + stack.toString();
+            }
+            result.add(createAttribute("XML", XML));
+
+            return result;
+        }
+    }
+
+    public DialogContextAttributesPanel()
+    {
+        getFrame().setHeading(new StaticValueSource("Dialog Context Attributes"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
-        if(selectedDialog.getDataSource() != null)
-            return selectedDialog.getDataSource();
-        else
-            return new DialogFieldsDataSource(vc, selectedDialog);
+        DialogDetailPanel.SelectedDialog selectedDialog = new DialogContextSelectedDialog(vc);
+        return selectedDialog.getDataSource();
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return dialogFieldsReport;
+        return attributesReport;
+    }
+
+    protected class DialogContextFieldStatesPanelDataSource extends ListDataSource
+    {
+        public DialogContextFieldStatesPanelDataSource(HtmlTabularReportValueContext vc, DialogContextSelectedDialog selectedDialog)
+        {
+            super(vc, selectedDialog.getAttributes(vc, vc.getDialogContext()), "No attributes");
+        }
     }
 }

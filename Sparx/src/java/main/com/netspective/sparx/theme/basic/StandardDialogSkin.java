@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.2 2003-05-07 03:39:18 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.3 2003-05-10 16:50:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -601,7 +601,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         if(popupHtml != null)
             controlHtml.write(popupHtml);
 
-        DialogField.DialogFieldState state = dc.getFieldStates().getState(field);
+        DialogField.State state = dc.getFieldStates().getState(field);
         DialogField.Flags stateFlags = state.getStateFlags();
 
         if(stateFlags.flagIsSet(DialogField.Flags.CREATE_ADJACENT_AREA))
