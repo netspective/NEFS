@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameter.java,v 1.3 2003-06-26 06:03:36 roque.hernandez Exp $
+ * $Id: QueryParameter.java,v 1.4 2003-06-26 06:59:55 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -239,6 +239,12 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         }
     }
 
+    /**
+     * Appends a list of bind parameters and their respective information used for debugging to the buffer
+     * @param text
+     * @param vc
+     * @param terminator
+     */
     public void appendBindText(StringBuffer text, ValueContext vc, String terminator)
     {
         text.append("["+ index +"]");
@@ -247,7 +253,7 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
             Object ov = value.getValue(vc);
             text.append(value.getSpecification().getSpecificationText());
             text.append(" = ");
-            text.append(ov);
+            text.append(((Value)ov).getValueForSqlBindParam());
             text.append(" (java: ");
             text.append(ov != null ? ov.getClass().getName() : "<NULL>");
             text.append(", sql: ");
