@@ -17,6 +17,9 @@ Setup instructions:
 
 	<echo message="Building Netspective Sparx..."/>
         <ant dir="../Sparx/conf"/>
+
+	<echo message="Building Netspective Enterprise Frameworks Documentation..."/>
+        <ant dir="../support/docs"/>
     </target>
 
 </project>
