@@ -2,6 +2,18 @@
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
+    <dialogs package="form.exec">
+        <dialog name="director-next-action" retain-params="*" redirect-after-execute="true">
+            <frame heading="Test Dialog Director's Next Action"/>
+            <field type="text" name="text_field" caption="Text Field (formOrRequestAttr)"
+                default="request:value"/>
+            <director>
+                <next-actions caption="Next Action\:" choices="text-list:Netspective=a;Google=y"
+                    display-single-action="yes"/>
+            </director>
+        </dialog>
+    </dialogs>
+
     <dialogs package="form.exec.template">
         <dialog name="body-xml" redirect-after-execute="false">
             <frame heading="Hello World Form"/>
