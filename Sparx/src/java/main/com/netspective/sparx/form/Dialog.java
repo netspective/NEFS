@@ -51,64 +51,64 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.53 2004-01-09 15:37:53 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.54 2004-03-03 08:14:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
 
-import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.collections.LRUMap;
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.tools.ant.Main;
-
-import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.sparx.Project;
 import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.type.GridField;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.CompositeField;
+import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
-import com.netspective.sparx.form.handler.DialogExecuteHandler;
-import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
-import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandlerTemplateConsumer;
-import com.netspective.sparx.form.listener.DialogPopulateForSubmitListener;
-import com.netspective.sparx.form.listener.DialogStateListener;
-import com.netspective.sparx.form.listener.DialogInitialPopulateForSubmitListener;
+import com.netspective.sparx.form.handler.DialogExecuteHandlers;
+import com.netspective.sparx.form.handler.DialogNextActionProvider;
 import com.netspective.sparx.form.listener.DialogInitialPopulateForDisplayListener;
+import com.netspective.sparx.form.listener.DialogInitialPopulateForSubmitListener;
 import com.netspective.sparx.form.listener.DialogInitialPopulateListener;
-import com.netspective.sparx.form.listener.DialogPopulateListener;
-import com.netspective.sparx.form.listener.DialogPopulateForDisplayListener;
-import com.netspective.sparx.form.listener.DialogStateBeforeValidationListener;
-import com.netspective.sparx.form.listener.DialogStateAfterValidationListener;
-import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.listener.DialogListener;
 import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
+import com.netspective.sparx.form.listener.DialogPopulateForDisplayListener;
+import com.netspective.sparx.form.listener.DialogPopulateForSubmitListener;
+import com.netspective.sparx.form.listener.DialogPopulateListener;
+import com.netspective.sparx.form.listener.DialogStateAfterValidationListener;
+import com.netspective.sparx.form.listener.DialogStateBeforeValidationListener;
+import com.netspective.sparx.form.listener.DialogStateListener;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.panel.HtmlInputPanel;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.Project;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xml.template.TemplateConsumer;
-import com.netspective.commons.xml.template.TemplateConsumerDefn;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
+import org.apache.commons.collections.LRUMap;
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.Main;
+
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -174,7 +174,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     private DialogDebugFlags debugFlags;
     private DialogLoopStyle loop = new DialogLoopStyle(DialogLoopStyle.APPEND);
     private DialogDirector director = createDirector();
-    private DialogsPackage nameSpace;
+    private DialogsNameSpace nameSpace;
     private String name = "dialog_" + (++dialogNumber);
     private String htmlFormName;
     private int layoutColumnsCount = 1;
@@ -567,7 +567,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Gets the package namespace to which this dialog belongs to
      * @return
      */
-    public DialogsPackage getNameSpace()
+    public DialogsNameSpace getNameSpace()
     {
         return nameSpace;
     }
@@ -576,7 +576,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
      * Sets the package namespace for this dialog
      * @param nameSpace
      */
-    public void setNameSpace(DialogsPackage nameSpace)
+    public void setNameSpace(DialogsNameSpace nameSpace)
     {
         this.nameSpace = nameSpace;
     }
