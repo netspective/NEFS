@@ -125,14 +125,15 @@ public abstract class TestCase extends junit.framework.TestCase
     }
 
     protected void generateDiagram(final Configuration configuration,
-                                   final String dotFileName, final String diagramFileName,
+                                   final String fileName,
                                    final HibernateDiagramGeneratorFilter filter) throws IOException
     {
+        final File dotFileName = new File(fileName + ".dot");
         final GraphvizDiagramGenerator gdg = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
         final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(configuration, gdg, filter);
         hdg.generate();
-        gdg.generateDOTSource(new File(dotFileName));
-        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + diagramFileName + " " + dotFileName);
+        gdg.generateDOTSource(dotFileName);
+        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
     }
 
     protected void setUp() throws Exception
@@ -154,14 +155,12 @@ public abstract class TestCase extends junit.framework.TestCase
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the first version is good for software engineers
         generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se.dot",
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se.png",
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se",
                 new HibernateDiagramFilter(true, true));
 
         // the second version is good for database administrators (simple ERD)
         generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd.dot",
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd.png",
+                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd",
                 new HibernateDiagramFilter(false, false));
     }
 
