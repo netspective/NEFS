@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.34 2003-08-20 22:38:52 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.35 2003-08-20 22:52:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -95,7 +95,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 10];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] PAGE_FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPathFlags.FLAG_DEFNS.length + 13];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -115,6 +115,9 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
         PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 9] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SHOW_RENDER_TIME", Flags.SHOW_RENDER_TIME);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 10] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_META_DATA", Flags.HANDLE_META_DATA);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 11] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_HEADER", Flags.HANDLE_HEADER);
+        PAGE_FLAG_DEFNS[NavigationPathFlags.FLAG_DEFNS.length + 12] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HANDLE_FOOTER", Flags.HANDLE_FOOTER);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -142,11 +145,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         public static final int IS_PRINT_MODE = IS_POPUP_MODE * 2;
         public static final int IS_SERVICE_MODE = IS_PRINT_MODE * 2;
         public static final int SHOW_RENDER_TIME = IS_SERVICE_MODE * 2;
-        public static final int START_CUSTOM = SHOW_RENDER_TIME * 2;
+        public static final int HANDLE_META_DATA = SHOW_RENDER_TIME * 2;
+        public static final int HANDLE_HEADER = HANDLE_META_DATA * 2;
+        public static final int HANDLE_FOOTER = HANDLE_HEADER * 2;
+        public static final int START_CUSTOM = HANDLE_FOOTER * 2;
 
         public Flags()
         {
-            setFlag(REQUIRE_LOGIN | ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+            setFlag(REQUIRE_LOGIN | HANDLE_META_DATA | HANDLE_HEADER | HANDLE_FOOTER | ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -824,6 +830,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        Flags flags = (Flags) nc.getActiveState().getFlags();
+
         enterPage(nc);
         if(getBodyType().getValueIndex() == NavigationPageBodyType.FORWARD)
         {
@@ -842,29 +850,39 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             StringWriter body = new StringWriter();
             handlePageBody(body, nc);
 
-            handlePageMetaData(writer, nc);
-            handlePageHeader(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_META_DATA))
+                handlePageMetaData(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_HEADER))
+                handlePageHeader(writer, nc);
             writer.write(body.getBuffer().toString());
-            handlePageFooter(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_FOOTER))
+                handlePageFooter(writer, nc);
 
             // try and do an early GC if possible
             body = null;
         }
         else
         {
-            handlePageMetaData(writer, nc);
-            handlePageHeader(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_META_DATA))
+                handlePageMetaData(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_HEADER))
+                handlePageHeader(writer, nc);
             handlePageBody(writer, nc);
-            handlePageFooter(writer, nc);
+            if(flags.flagIsSet(Flags.HANDLE_FOOTER))
+                handlePageFooter(writer, nc);
         }
         exitPage(nc);
     }
 
     public void handleInvalidPage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        Flags flags = (Flags) nc.getActiveState().getFlags();
+
         enterPage(nc);
-        handlePageMetaData(writer, nc);
-        handlePageHeader(writer, nc);
+        if(flags.flagIsSet(Flags.HANDLE_META_DATA))
+            handlePageMetaData(writer, nc);
+        if(flags.flagIsSet(Flags.HANDLE_HEADER))
+            handlePageHeader(writer, nc);
 
         TemplateProcessor templateProcessor = getMissingParamsBody();
         if(templateProcessor != null)
@@ -872,7 +890,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         else
             writer.write("This page is missing some required parameters.");
 
-        handlePageFooter(writer, nc);
+        if(flags.flagIsSet(Flags.HANDLE_FOOTER))
+            handlePageFooter(writer, nc);
         exitPage(nc);
     }
 }
