@@ -41,13 +41,14 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
-import com.netspective.medigy.reference.custom.party.FacilityType;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
+import com.netspective.medigy.reference.custom.party.FacilityType;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 import javax.ejb.CascadeType;
+import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
@@ -56,16 +57,16 @@ import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
 import javax.ejb.Table;
-import javax.ejb.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity()
 @Inheritance(strategy=InheritanceType.JOINED)
 @Table(name = "Party")
-public abstract class Party extends AbstractTopLevelEntity
+public class Party extends AbstractTopLevelEntity
 {
     private Long partyId;
+    private String partyName;
 
     private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
@@ -83,7 +84,12 @@ public abstract class Party extends AbstractTopLevelEntity
     {
     }
 
-    @Id(generate=GeneratorType.AUTO)    
+    public Party(final String partyName)
+    {
+        this.partyName = partyName;
+    }
+
+    @Id(generate=GeneratorType.AUTO)
     public Long getPartyId()
     {
         return partyId;
@@ -94,8 +100,16 @@ public abstract class Party extends AbstractTopLevelEntity
         this.partyId = partyId;
     }
 
-    @Transient
-    public abstract String getPartyName();
+    @Column(length = 100)
+    public String getPartyName()
+    {
+        return this.partyName;
+    }
+
+    public void setPartyName(final String partyName)
+    {
+        this.partyName = partyName;
+    }
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_id")
@@ -196,7 +210,7 @@ public abstract class Party extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade =  CascadeType.ALL)
-    @JoinColumn(name = "party_id")  
+    @JoinColumn(name = "party_id")
     public Set<CommunicationEventPurposeType> getCommunicationEventPurposeTypes()
     {
         return communicationEventPurposeTypes;
