@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.7 2003-08-20 22:38:52 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.8 2003-08-28 00:45:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -217,7 +217,7 @@ public class HttpLoginManager
     public String getRememberPasswordCookiePath(HttpServletValueContext vc)
     {
         if(rememberPasswordCookiePath == null)
-            return vc.getHttpServlet().getServletContext().getServletContextName();
+            return vc.getHttpRequest().getContextPath();
         else
             return rememberPasswordCookiePath.getTextValue(vc);
     }

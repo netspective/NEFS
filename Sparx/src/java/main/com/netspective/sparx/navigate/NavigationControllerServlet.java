@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.20 2003-08-27 22:33:13 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.21 2003-08-28 00:46:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -113,7 +113,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private Theme theme;
     private NavigationTree navigationTree;
     private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
-    private UriAddressableFileLocator resourceLocator;
     private boolean cacheComponents;
     private String executionPropertiesFileName;
     private Properties executionProperties;
@@ -308,12 +307,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                     "correct the servlet-param called '"+ NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS +"' in your WEB-INF/web.xml file.");
 
         initRuntimeEnvironmentFlags(servletConfig);
-        initResourceLocators(servletConfig);
         if(isCacheComponents())
         {
             // go ahead and grab all the components now -- so that we don't have to synchronize calls later
             getProject();
-            getTheme();
             getLoginManager();
             getNavigationTree();
         }
@@ -324,12 +321,11 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
      *   - APP_ROOT/resources/sparx (will only exist if user is overriding any defaults)
      *   - APP_ROOT/sparx (will exist in ITE mode when sparx directory is inside application)
      *   - [CLASS_PATH]/Sparx/resources (only useful during development in SDE, not production since it won't be found)
-     * @param servletConfig
      * @throws ServletException
      */
-    protected void initResourceLocators(ServletConfig servletConfig) throws ServletException
+    protected UriAddressableFileLocator getResourceLocator(HttpServletRequest request) throws ServletException
     {
-        ServletContext servletContext = servletConfig.getServletContext();
+        ServletContext servletContext = getServletContext();
         try
         {
             String sparxUrl = "/sparx";
@@ -341,12 +337,12 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                 String webAppRelativePath = webAppLocations[i];
                 File webAppPhysicalDir = new File(servletContext.getRealPath(webAppRelativePath));
                 if(webAppPhysicalDir.exists() && webAppPhysicalDir.isDirectory())
-                    locators.add(new UriAddressableInheritableFileResource(servletContext.getServletContextName() + sparxUrl, webAppPhysicalDir, isCacheComponents()));
+                    locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + sparxUrl, webAppPhysicalDir, isCacheComponents()));
             }
 
             FileFind.FileFindResults ffResults = FileFind.findInClasspath("Sparx/resources", FileFind.FINDINPATHFLAG_DEFAULT);
             if(ffResults.isFileFound() && ffResults.getFoundFile().isDirectory())
-                locators.add(new UriAddressableInheritableFileResource(servletContext.getServletContextName() + sparxUrl, ffResults.getFoundFile(), isCacheComponents()));
+                locators.add(new UriAddressableInheritableFileResource(request.getContextPath() + sparxUrl, ffResults.getFoundFile(), isCacheComponents()));
 
             if(log.isDebugEnabled())
             {
@@ -357,7 +353,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             if(locators.size() == 0)
                 System.err.println("Unable to register any web resource locators (/resources/sparx and /sparx were not found).");
 
-            resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
+            return new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
         }
         catch (IOException e)
         {
@@ -373,11 +369,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         if(path.startsWith("WEB-INF"))
             return getServletContext().getRealPath("/" + path);
         return path;
-    }
-
-    public UriAddressableFileLocator getResourceLocator()
-    {
-        return resourceLocator;
     }
 
     public NavigationControllerServletOptions getServletOptions()
@@ -460,14 +451,17 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         this.logoutActionReqParamName = logoutActionReqParamName;
     }
 
-    public Theme getTheme() throws ServletException
+    // TODO: this method is _not_ thread-safe because two requests could call the method at the same time
+    //       fix it to make it thread-safe
+    //
+    public Theme getTheme(HttpServletRequest request) throws ServletException
     {
         if(theme == null || ! isCacheComponents())
         {
             String themeName = getThemeName();
             Themes themes = getProject().getThemes();
             theme = themeName != null ? themes.getTheme(themeName) : themes.getDefaultTheme();
-            theme.setWebResourceLocator(resourceLocator);
+            theme.setWebResourceLocator(getResourceLocator(request));
         }
 
         return theme;
@@ -564,7 +558,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         Project project = getProject();
 
-        Theme theme = getTheme();
+        Theme theme = getTheme(httpServletRequest);
         httpServletRequest.setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_THEME, theme);
 
         NavigationTree tree = getNavigationTree();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.4 2003-06-26 16:05:58 shahid.shah Exp $
+ * $Id: ServletValueContext.java,v 1.5 2003-08-28 00:46:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -85,6 +85,4 @@ public interface ServletValueContext extends ValueContext
      * Retreive the default application manager (components).
      */
     public Project getProject();
-
-    String getApplicationName();
 }
