@@ -52,7 +52,7 @@ public class DateValueValidationRule extends BasicValidationRule
 
     private String invalidNamedDateMessage = "{0} contains an invalid {1} date: {2} (pattern is {3}).";
     private String futureOnlyDateMessage = "{0} may only contain future dates (after {1}).";
-    private String pastOnlyDateMessage = "{0} may only contain past dates (before {1}.";
+    private String pastOnlyDateMessage = "{0} may only contain past dates (before {1}).";
     private String preMinDateDateMessage = "{0} may only contain dates after {1}.";
     private String postMaxDateMessage = "{0} may only contain dates before {1}.";
     private SimpleDateFormat format;

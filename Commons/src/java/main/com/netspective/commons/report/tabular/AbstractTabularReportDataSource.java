@@ -293,7 +293,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
 
     public Object getActiveRowColumnData(String columnName, int flags)
     {
-        throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
+        throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not supported.");
     }
 
     public boolean isHierarchical()
