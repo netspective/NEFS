@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project name="manage-test-apps" default="copy-sparx-standard-items">
+<project name="manage-test-apps" default="sparx.copy-standard-items">
 
     <description>
         This project helps manage the Framework test applications. Provides targets that help to globally
@@ -19,7 +19,7 @@
         <echo message="sparx.primary-test-app.home = ${sparx.primary-test-app.home}"/>
     </target>
 
-    <target name="copy-sparx-standard-items" depends="sparx.init" description="Copy files that are standard to Sparx from the 'primary' test app to all the other test apps.">
+    <target name="sparx.copy-standard-items" depends="sparx.init" description="Copy files that are standard to Sparx from the 'primary' test app to all the other test apps.">
         <fileset id="standard-items" dir="${sparx.primary-test-app.home}">
             <include name="WEB-INF/web.xml"/>
             <include name="WEB-INF/sparx/ant-build-project.xml"/>
