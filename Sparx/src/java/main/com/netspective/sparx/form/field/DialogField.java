@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.23 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: DialogField.java,v 1.24 2003-07-02 14:05:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -321,8 +321,8 @@ public class DialogField implements TemplateConsumer
         public State(DialogContext dc)
         {
             this.dialogContext = dc;
-            // why do this here also?
             stateFlags.copy(getFlags());
+
             if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(Flags.PERSIST))
             {
                 Cookie[] cookies = dc.getHttpRequest().getCookies();
@@ -352,8 +352,6 @@ public class DialogField implements TemplateConsumer
                     stateFlags.setFlag(Flags.READ_ONLY);
                     break;
             }
-            // copy the dialog fields's flags into the state flags
-            stateFlags.copy(flags);
         }
 
         public DialogFieldValue constructValueInstance()
