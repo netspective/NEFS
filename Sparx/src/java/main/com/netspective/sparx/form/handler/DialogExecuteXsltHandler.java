@@ -39,153 +39,87 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.2 2003-10-11 14:39:27 shahid.shah Exp $
+ * $Id: DialogExecuteXsltHandler.java,v 1.3 2003-10-24 03:24:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.Transform;
+import com.netspective.commons.text.TextUtils;
 
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
 {
-    protected static class StyleSheetParameter
-    {
-        private String name;
-        private ValueSource value;
-
-        public StyleSheetParameter()
-        {
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public ValueSource getValue()
-        {
-            return value;
-        }
-
-        public void setValue(ValueSource value)
-        {
-            this.value = value;
-        }
-    }
-
-    protected static class StyleSheetParameters
-    {
-        private List params = new ArrayList();
-
-        public StyleSheetParameters()
-        {
-        }
-
-        public List getParams()
-        {
-            return params;
-        }
-
-        public StyleSheetParameter createParam()
-        {
-            return new StyleSheetParameter();
-        }
-
-        public void addParam(StyleSheetParameter param)
-        {
-            params.add(param);
-        }
-    }
-
-    private static final Log log = LogFactory.getLog(DialogExecuteXsltHandler.class);
-    private ValueSource styleSheet;
-    private StyleSheetParameters parameters = new StyleSheetParameters();
+    private Transform transform = new Transform();
 
     public DialogExecuteXsltHandler()
     {
     }
 
-    public ValueSource getStyleSheet()
+    public Transform getTransform()
     {
-        return styleSheet;
+        return transform;
+    }
+
+    public void addParam(Transform.StyleSheetParameter param)
+    {
+        transform.addParam(param);
+    }
+
+    public void addSystemProperty(Transform.SystemProperty param)
+    {
+        transform.addSystemProperty(param);
+    }
+
+    public Transform.StyleSheetParameter createParam()
+    {
+        return transform.createParam();
+    }
+
+    public Transform.SystemProperty createSystemProperty()
+    {
+        return transform.createSystemProperty();
+    }
+
+    public void setRelativeToClass(Class relativeToClass)
+    {
+        transform.setRelativeToClass(relativeToClass);
     }
 
     public void setStyleSheet(ValueSource styleSheet)
     {
-        this.styleSheet = styleSheet;
+        transform.setStyleSheet(styleSheet);
     }
 
-    public StyleSheetParameters createParameters()
+    public void setStyleSheetFile(ValueSource styleSheet)
     {
-        return parameters;
+        transform.setStyleSheetFile(styleSheet);
     }
 
-    public void addParameters(StyleSheetParameters parameters)
+    public void setStyleSheetIsFile(boolean styleSheetIsFile)
     {
-        // do nothing, we already created the params
+        transform.setStyleSheetIsFile(styleSheetIsFile);
     }
 
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if(styleSheet == null)
-        {
-            writer.write("No style-sheet provided.");
-            return;
-        }
-
+        boolean writeErrors = dc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting();
         try
         {
-            TransformerFactory tFactory = TransformerFactory.newInstance();
-            Transformer transformer = tFactory.newTransformer(new StreamSource(styleSheet.getTextValue(dc)));
-
-            List params = parameters.getParams();
-            for(int i = 0; i < params.size(); i++)
-            {
-                StyleSheetParameter param = (StyleSheetParameter) params.get(i);
-                transformer.setParameter(param.getName(), param.getValue().getTextValue(dc));
-            }
-
-            //TODO: convert the dialog form field values into stylesheet parameters
-
-            transformer.transform
-                    (new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()),
-                            new javax.xml.transform.stream.StreamResult(writer));
-        }
-        catch(TransformerConfigurationException e)
-        {
-            log.error("XSLT error in " + this.getClass().getName(), e);
-            throw new DialogExecuteException(e);
-        }
-        catch(TransformerException e)
-        {
-            log.error("XSLT error in " + this.getClass().getName(), e);
-            throw new DialogExecuteException(e);
+            transform.render(writer, dc, new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), writeErrors);
         }
         catch (ParserConfigurationException e)
         {
-            log.error("XSLT error in " + this.getClass().getName(), e);
+            dc.getDialog().getLog().error("XSLT error in " + dc.getDialog().getQualifiedName(), e);
+            if(writeErrors)
+                writer.write("<pre>"+ TextUtils.getStackTrace(e) +"</pre>");
             throw new DialogExecuteException(e);
         }
     }
