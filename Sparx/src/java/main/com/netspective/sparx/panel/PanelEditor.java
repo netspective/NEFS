@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.5 2004-03-05 01:03:23 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.6 2004-03-05 18:49:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -74,6 +74,7 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.sql.QueryDefinition;
@@ -498,50 +499,19 @@ public class PanelEditor extends AbstractPanel
         return url;
     }
 
-    /**
-     * Generates a URL to use to go to invoke the page with the passed in panel editor and its mode.
-     *
-     * @param nc
-     * @param panelMode
-     * @return          a static URL string 
-     */
-    public static String generatePanelEditorActionUrl(NavigationContext nc, String panelName, String panelMode, String prevMode,
-                                                      String panelRecordKey)
+    public static String calculateNextMode(DialogContext dc, String panelName, String panelMode, String prevMode,
+                                         String panelRecordKey)
     {
-        String url = "?";
-        String currentUrl = nc.getActivePage().getUrl(nc);
-        int mode = validatePanelEditorMode(panelMode, panelRecordKey);
-        if (mode == EDIT_RECORD_DISPLAY_MODE)
-        {
-            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName +
-                    ",edit," + panelRecordKey;
-            if (prevMode != null)
-                url= url + "," + prevMode;
-        }
-        else if (mode == DELETE_RECORD_DISPLAY_MODE)
-        {
-            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName +
-                    ",delete," + panelRecordKey;
-            if (prevMode != null)
-                url= url + "," + prevMode;
-        }
-        else if (mode == ADD_RECORD_DISPLAY_MODE)
-        {
-            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",add";
-            if (prevMode != null)
-                url= url + "," + prevMode;
-        }
-        else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
+        String url ="?";
+        String currentUrl = dc.getNavigationContext().getActivePage().getUrl(dc);
+        int previousMode = validatePanelEditorMode(prevMode, panelRecordKey);
+        if (previousMode != DEFAULT_DISPLAY_MODE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",manage";
-        else if (mode == DEFAULT_DISPLAY_MODE)
+        else
             url = currentUrl;
 
-        ValueSource retainParamsVS = nc.getActivePage().getRetainParams();
-        if(retainParamsVS != null)
-            url = HttpUtils.appendParams(nc.getHttpRequest(), url, retainParamsVS.getTextValue(nc));
         return url;
     }
-
 
     /**
      * Creates all the panel actions for the  panel editor. This method SHOULD only be called once to populate the
@@ -720,9 +690,6 @@ public class PanelEditor extends AbstractPanel
         // if the database supports it.
         qrp.setScrollable(true);
 
-        HtmlTabularReportValueContext context = qrp.createContext(nc, theme);
-        context.setPanelRenderFlags(flags);
-
         // get the requested mode, key, and previous modes from the request
         int mode = validatePanelEditorMode(requestedMode, requestedKey);
         if (mode == UNKNOWN_MODE)
@@ -730,6 +697,15 @@ public class PanelEditor extends AbstractPanel
             log.error("Unexpected mode encountered for the record editor panel '" + getName() + "'.");
             throw new RuntimeException("Unexpected mode encountered for the record editor panel '" + getName() + "'.");
         }
+
+        HtmlTabularReportSkin skin = null;
+        if (mode == PanelEditor.MANAGE_RECORDS_DISPLAY_MODE)
+            skin = theme.getReportSkin("panel-editor-compressed");
+        else
+            skin = theme.getReportSkin("panel-editor");
+
+        HtmlTabularReportValueContext context = qrp.createContext(nc, skin);
+        context.setPanelRenderFlags(flags);
 
         TabularReportDataSource dataRoot = qrp.createDataSource(nc);
         int totalRows = dataRoot.getTotalRows();
@@ -746,7 +722,6 @@ public class PanelEditor extends AbstractPanel
             nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, requestedMode);
             // record action was defined so we need to display the requested display mode
             DialogContext dc = dialog.createContext(nc, theme.getDefaultDialogSkin());
-            //dc.setAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE, requestedKey);
             dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
 
             dialog.prepareContext(dc);
