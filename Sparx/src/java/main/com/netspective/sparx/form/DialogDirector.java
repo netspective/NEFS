@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.15 2003-11-13 20:42:56 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.16 2003-11-13 22:49:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -69,11 +69,22 @@ import com.netspective.sparx.form.handler.DialogNextActionProvider;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Director class is a special dialog field that is used to generate dialog buttons
+ * associated with the execution and navigation of the dialog. By default, it produces
+ * the <code>Submit</code> and <code>Cancel</code> buttons.
+ */
 public class DialogDirector extends DialogField implements DialogNextActionProvider
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final String[] STYLE_ENUM_VALUES = new String[] { "data", "confirm", "acknowledge" };
 
+    /**
+     * Class for handling different display styles of the directory. These are preset styles that will change
+     * the display, captions and URLs of the default Submit and Cancel buttons. If none of the preset styles
+     * are suitable, the individual buttons can be managed using the button specific XML settings such as
+     * 'submit-caption', 'submit-url', 'cancel-caption', and 'cancel-url'.
+     */
     public static class DialogDirectorStyle extends XdmEnumeratedAttribute
     {
         public static final int DATA = 0;
@@ -89,6 +100,10 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
             super(valueIndex);
         }
 
+        /**
+         * Gets the list of styles
+         * @return
+         */
         public String[] getValues()
         {
             return STYLE_ENUM_VALUES;
@@ -333,58 +348,58 @@ public class DialogDirector extends DialogField implements DialogNextActionProvi
         }
         if (cancelCaption != null)
         {
-            writer.write("<input type='button' class=\"dialog-button\" value='");
-            writer.write(cancelCaption);
-            writer.write("' ");
-            if(cancelActionUrl == null)
+            if (dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON))
             {
-                String referer = dc.getDialogState().getReferer();
-                if(referer != null)
-                {
-                    writer.write("onclick=\"document.location = '");
-                    writer.write(referer);
-                    writer.write("'\" ");
-                }
-                else
-                {
-                    writer.write("onclick=\"history.back()\" ");
-                }
+                // treat the cancel button as a submit button
+                writer.write("<input type='submit' name='"+ dialog.getCancelDataParamName() +"' class=\"dialog-button\" value='");
+                writer.write(cancelCaption);
+                writer.write("' ");
+                writer.write(attrs);
+                writer.write(">&nbsp;&nbsp;");
             }
             else
             {
-                String cancelStr = cancelActionUrl != null ? cancelActionUrl.getTextValue(dc) : null;
-                if("back".equals(cancelStr))
+                writer.write("<input type='button' name='" + dialog.getCancelDataParamName() + "' class=\"dialog-button\" value='");
+                writer.write(cancelCaption);
+                writer.write("' ");
+                if(cancelActionUrl == null)
                 {
-                    writer.write("onclick=\"history.back()\" ");
-                }
-                else if (("submit").equals(cancelStr))
-                {
-                    // if the cancel url is 'submit', make it submit the form but with an additional flag
-                    String actionURL = null;
-                    actionURL = this.getSubmitActionUrl() != null ? this.getSubmitActionUrl().getValue(dc).getTextValue() : null;
-
-                    if(actionURL == null)
-                        actionURL = ((HttpServletRequest) dc.getRequest()).getRequestURI();
-                    if (actionURL.indexOf('?') > 0)
-                        writer.write("onclick=\"javascript:this.form.action=this.form.action+'&cancelButton=yes';this.form.submit()\"");
+                    String referer = dc.getDialogState().getReferer();
+                    if(referer != null)
+                    {
+                        writer.write("onclick=\"document.location = '");
+                        writer.write(referer);
+                        writer.write("'\" ");
+                    }
                     else
-                        writer.write("onclick=\"javascript:this.form.action=this.form.action+'?cancelButton=yes';this.form.submit()\"");
-                }
-                else if(cancelStr != null && cancelStr.startsWith("javascript:"))
-                {
-                    writer.write("onclick=\"");
-                    writer.write(cancelStr);
-                    writer.write("\" ");
+                    {
+                        writer.write("onclick=\"history.back()\" ");
+                    }
                 }
                 else
                 {
-                    writer.write("onclick=\"document.location = '");
-                    writer.write(cancelStr);
-                    writer.write("'\" ");
+                    String cancelStr = cancelActionUrl != null ? cancelActionUrl.getTextValue(dc) : null;
+                    if("back".equals(cancelStr))
+                    {
+                        writer.write("onclick=\"history.back()\" ");
+                    }
+                    else if(cancelStr != null && cancelStr.startsWith("javascript:"))
+                    {
+                        writer.write("onclick=\"");
+                        writer.write(cancelStr);
+                        writer.write("\" ");
+                    }
+                    else
+                    {
+                        writer.write("onclick=\"document.location = '");
+                        writer.write(cancelStr);
+                        writer.write("'\" ");
+                    }
                 }
+                writer.write(attrs);
+                writer.write(">");
             }
-            writer.write(attrs);
-            writer.write(">");
+
         }
         writer.write("</center>");
     }
