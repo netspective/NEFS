@@ -119,6 +119,12 @@ Setup instructions:
         <javac srcdir="${project.src.main.home}" destdir="${project.build.main.classes.dir}"
             debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
         </javac>
+        <copy todir="${project.build.main.classes.dir}">
+            <fileset dir="${project.src.main.home}">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="compile-test" depends="compile-main">
@@ -128,6 +134,12 @@ Setup instructions:
             	<pathelement location="${project.build.main.classes.dir}"/>
             </classpath>
         </javac>
+        <copy todir="${project.build.test.classes.dir}">
+            <fileset dir="${project.src.test.home}">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
     </target>
 
     <!-- ==================== Test targets  ======================= -->
@@ -135,7 +147,7 @@ Setup instructions:
     <target name="test" depends="compile-test">
         <junit filtertrace="yes">
             <classpath>
-                <pathelement path="${project.class.path}"/>
+                <path refid="project.class.path"/>
                 <pathelement location="${project.build.main.classes.dir}"/>
                 <pathelement location="${project.build.test.classes.dir}"/>
             </classpath>
