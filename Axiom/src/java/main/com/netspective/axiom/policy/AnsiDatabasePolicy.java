@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.11 2003-12-03 01:40:28 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.12 2003-12-18 20:06:26 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -856,7 +856,10 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         {
             ColumnValue value = columnValues.getByColumnIndex(i);
             Column column = value.getColumn();
-            Object bindValue = value.getValueForSqlBindParam();
+
+            // primary keys should not be in the update SQL
+            if(execute && column.isPrimaryKey())
+                continue;
 
             if(execute && (column instanceof GeneratedValueColumn))
             {
@@ -870,6 +873,8 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 colListeners[i] = (ColumnUpdateListener) column;
                 haveColListeners = true;
             }
+
+            Object bindValue = value.getValueForSqlBindParam();
 
             if (! isFirstColumn)
                 setsSql.append(", ");
