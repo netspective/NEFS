@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportValueContext.java,v 1.2 2003-03-26 00:36:59 shahid.shah Exp $
+ * $Id: TabularReportValueContext.java,v 1.3 2003-04-02 23:58:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -67,8 +67,6 @@ public interface TabularReportValueContext extends ValueContext
     public TabularReportSkin getSkin();
 
     public boolean isMinimized();
-
-    public String getLogId();
 
     public TabularReportColumnState[] getStates();
 

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: BasicTabularReportValueContext.java,v 1.2 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: BasicTabularReportValueContext.java,v 1.3 2003-04-02 23:58:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -108,18 +108,6 @@ public class BasicTabularReportValueContext extends DefaultValueContext implemen
     public boolean isMinimized()
     {
         return false;
-    }
-
-    /**
-     * Returns a string useful for displaying a unique Id for this DialogContext
-     * in a log or monitor file.
-     */
-    public String getLogId()
-    {
-        String result = reportDefn.toString();
-        if(result == null)
-            return Integer.toString(reportDefn.getColumns().size());
-        return result;
     }
 
     public List getListeners()
