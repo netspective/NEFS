@@ -53,6 +53,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
     private ValueSource productVersionHref;
     private ValueSource activeUserHref = new StaticValueSource("#");
     private ValueSource activeUserOrgHref = new StaticValueSource("#");
+    private ValueSource logoutHref = new StaticValueSource("?_logout=1");
 
     public SamplerNavigationSkin(Theme theme, String name)
     {
@@ -99,6 +100,16 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
     public void setActiveUserOrgHref(ValueSource activeUserOrgHref)
     {
         this.activeUserOrgHref = activeUserOrgHref;
+    }
+
+    public ValueSource getLogoutHref()
+    {
+        return logoutHref;
+    }
+
+    public void setLogoutHref(ValueSource logoutHref)
+    {
+        this.logoutHref = logoutHref;
     }
 
     /**
@@ -192,7 +203,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" +
                      theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Action&nbsp;</span></td>\n");
-        writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "?_logout=yes\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
+        writer.write("				<td nowrap><a class=\"active-user\" href=\"" + logoutHref.getTextValue(nc ) + "\">&nbsp;&nbsp;Logout&nbsp;</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");
