@@ -1263,7 +1263,7 @@
 
         &lt;condition field="book_id" allow-null="no" comparison="equals" </emphasis><co
               id="declare-qry-defn-pres-tags-eg-7" />
-                                   <emphasis>value</emphasis>="field" <emphasis>connector</emphasis>="and"/&gt; 
+                                   <emphasis>value</emphasis>="field:book_id" <emphasis>connector</emphasis>="and"/&gt; 
         &lt;condition field="name" allow-null="no" comparison="starts-with" 
                                    value="field:name" connector="and"/&gt;
         &lt;condition field="author" allow-null="no" comparison="equals" 
