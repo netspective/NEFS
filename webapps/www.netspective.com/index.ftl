@@ -36,7 +36,14 @@
                                 <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
                         </tbody></table></td>
-                    <td><img src="${resourcesPath}/images/home/anima-pane.gif" width="190" height="90" alt=""></td>
+                    <td>
+                    <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" height="90" width="190">
+											<param name="movie" value="digital-path.swf">
+											<param name="quality" value="best">
+											<param name="play" value="true">
+											<embed height="90" pluginspage="http://www.macromedia.com/go/getflashplayer" src="${resourcesPath}/home-flash-features.swf" type="application/x-shockwave-flash" width="190" quality="best" play="true">
+										</object>
+                    </td>
                 </tr>
             </tbody></table></td>
 
