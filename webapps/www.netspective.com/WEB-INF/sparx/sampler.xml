@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!--
+    ******************************************************************************************************************
+    ** NAVIGATION TREES
+    ******************************************************************************************************************
+    -->
+
+    <navigation-tree name="sampler">
+        <page name="home" caption="Home" redirect="netspective-url:www"/>
+
+        <page name="introduction" default="yes" caption="Sampler">
+            <body source="sampler/introduction.ftl"/>
+        </page>
+
+        <page name="sample-apps" caption="Sample Applications">
+            <body source="sampler/sample-apps.ftl"/>
+        </page>
+
+        <page name="documentation" caption="Documentation">
+            <page name="getting-started" caption="Getting Started" heading="-" title="Getting Started with NEFS"
+                  handle-meta-data="yes" handle-header="no" handle-footer="no">
+                <body>
+                    <![CDATA[
+                        <frameset rows="110,*">
+                         <frame src="${vc.servletRootUrl}/documentation/getting-started/header" name="header" FRAMEBORDER="NO" SCROLLING="NO">
+                         <frame src="${vc.getAppResourceUrl('support/docs')}/nef-articles/getting-started.html" name="body" FRAMEBORDER="NO" SCROLLING="YES">
+                        </frameset>
+                    ]]>
+                </body>
+
+                <!-- make sure the targets for all hyperlinks go to the frame's parent (usually _top) -->
+                <page name="header" base-attributes="target='_parent'">
+                    <body>This shouldn't appear, the frame stops right above it.</body>
+                </page>
+            </page>
+
+            <page name="manual" caption="User's Manual" heading="-" title="NEFS User's Manual"
+                  handle-meta-data="yes" handle-header="no" handle-footer="no">
+                <body>
+                    <![CDATA[
+                        <!-- if anything comes after the manual/ path, it's considered the actual href to the DocBook file -->
+                        <#assign manualBodyPath = vc.navigationContext.activePathFindResults.getUnmatchedPath(0)?default('')/>
+                        <#if manualBodyPath != "">
+                           <#assign manualBodyPath = "/" + manualBodyPath/>
+                        <#else>
+                            <#assign manualBodyPath = "/index.html"/>
+                        </#if>
+
+                        <frameset rows="110,*">
+                         <frame src="${vc.servletRootUrl}/documentation/manual/header" name="header" FRAMEBORDER="NO" SCROLLING="NO">
+                         <frame src="${vc.getAppResourceUrl('support/docs')}/nef-manual${manualBodyPath}" name="body" FRAMEBORDER="NO" SCROLLING="YES">
+                        </frameset>
+                    ]]>
+                </body>
+
+                <!-- make sure the targets for all hyperlinks go to the frame's parent (usually _top) -->
+                <page name="header" base-attributes="target='_parent'">
+                    <body>This shouldn't appear, the frame stops right above it.</body>
+                </page>
+            </page>
+
+            <page name="nefs-build" caption="NEFS CVS Retrieval and Build Instructions" hidden="yes">
+                <body source="sampler/nefs-build.html"/>
+            </page>
+        </page>
+
+        <page name="files" caption="Downloads">
+            <page name="catalog" caption="Files">
+                <body source="sampler/nefs-files.ftl"/>
+            </page>
+
+            <page name="upgrading" caption="How to Upgrade">
+                <body source="sampler/upgrading.ftl"/>
+            </page>
+        </page>
+    </navigation-tree>
+
+</xdm:container>

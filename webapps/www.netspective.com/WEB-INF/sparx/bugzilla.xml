@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+        <data-source name="netspective-bugzilla">
+            <driver-class>com.mysql.jdbc.Driver</driver-class>
+            <url>jdbc\:mysql://bugs.netspective.com:3306/bugs</url>
+            <user>bugs</user>
+            <password>bugz</password>
+        </data-source>
+    </connection-provider>
+
+    <xdm:template name="enhancements-panel">
+        <presentation>
+            <panel>
+                <frame heading="Enhancement Requests"/>
+                <report>
+                    <column hidden="yes"/>
+                    <column heading="Pri"/>
+                    <column xdm:replace-template-expressions="no" heading="Description" redirect="http\://bugs.netspective.com/show_bug.cgi?id=${0}"/>
+                </report>
+            </panel>
+        </presentation>
+    </xdm:template>
+
+    <xdm:template name="defects-panel">
+        <presentation>
+            <panel>
+                <frame heading="Defect Reports"/>
+                <report>
+                    <column hidden="yes"/>
+                    <column heading="Pri"/>
+                    <column heading="Severity"/>
+                    <column xdm:replace-template-expressions="no" heading="Description" redirect="http\://bugs.netspective.com/show_bug.cgi?id=${0}"/>
+                </report>
+            </panel>
+        </presentation>
+    </xdm:template>
+
+    <queries package="bugzilla" default-data-src="netspective-bugzilla">
+        <query name="defects-summary">
+            select products.id, products.name, count(bugs.bug_id)
+            from products, bugs
+            where products.id in (2, 3, 4, 5, 9) and
+                  bugs.product_id = products.id and
+                  bug_status in ('NEW', 'ASSIGNED', 'REOPENED') and
+                  bug_severity != 'enhancement'
+            group by bugs.product_id
+            order by products.id
+
+            <presentation>
+                <panel>
+                    <frame heading="NEFS Defect Reports"/>
+                    <report>
+                        <column hidden="yes"/>
+                        <column heading="Product"/>
+                        <column heading="Reports" align="right" redirect="product?nb_pid=${0}"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="product-defects-by-priority-severity">
+            select bug_id, priority, bug_severity, short_desc
+            from bugs
+            where product_id = ? and product_id in (2, 3, 4, 5, 9) and /* add check so if nb_pid is changed by hacker it shouldn't be used */
+                  bug_status in ('NEW', 'ASSIGNED', 'REOPENED') and
+                  bug_severity != 'enhancement'
+            order by priority, bug_severity, creation_ts
+
+            <params>
+                <param value="request:nb_pid"/> <!-- nb_pid is the Netspective Bugzilla Product ID -->
+            </params>
+
+            <xdm:include template="defects-panel"/>
+        </query>
+
+        <query name="enhancements-summary">
+            select products.id, products.name, count(bugs.bug_id)
+            from products, bugs
+            where products.id in (2, 3, 4, 5, 9) and
+                  bugs.product_id = products.id and
+                  bug_status in ('NEW', 'ASSIGNED', 'REOPENED') and
+                  bug_severity = 'enhancement'
+            group by bugs.product_id
+            order by products.id
+
+            <presentation>
+                <panel>
+                    <frame heading="NEFS Enhancements Requests"/>
+                    <report>
+                        <column hidden="yes"/>
+                        <column heading="Product"/>
+                        <column heading="Requests" align="right" redirect="product?nb_pid=${0}"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
+        <query name="product-name">
+            select name
+            from products
+            where id = ?
+
+            <params>
+                <param value="request:nb_pid"/> <!-- nb_pid is the Netspective Bugzilla Product ID -->
+            </params>
+        </query>
+
+        <query name="product-enhancements-by-priority">
+            select bug_id, priority, short_desc
+            from bugs
+            where product_id = ? and product_id in (2, 3, 4, 5, 9) and /* add check so if nb_pid is changed by hacker it shouldn't be used */
+                  bug_status in ('NEW', 'ASSIGNED', 'REOPENED') and
+                  bug_severity = 'enhancement'
+            order by priority, creation_ts
+
+            <params>
+                <param value="request:nb_pid"/> <!-- nb_pid is the Netspective Bugzilla Product ID -->
+            </params>
+
+            <xdm:include template="enhancements-panel"/>
+        </query>
+    </queries>
+
+</xdm:container>

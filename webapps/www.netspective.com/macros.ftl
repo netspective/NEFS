@@ -1,22 +1,24 @@
 <#macro childMenus parentPage>
     <#list parentPage.childrenList as childPage>
-    <tr>
-        <td>
-            <a class="menu" href="${childPage.getUrl(vc)}">
-            <span class="L${childPage.level}">
-                <#if childPage = activePage>
-                    <span class="active-page">${childPage.caption.getTextValue(vc)}</a>
-                <#elseif childPage.isInActivePath(vc)>
-                    <span class="active-path">${childPage.caption.getTextValue(vc)}</a>
-                <#else>
-                    ${childPage.caption.getTextValue(vc)}
-                </#if>
-            </span>
-            </a>
-        </td>
-    </tr>
-    <#if childPage.childrenList?size gt 0 && childPage.isInActivePath(vc)>
-        <@childMenus parentPage=childPage/>
+        <#if ! childPage.flags.hidden>
+        <tr>
+            <td>
+                <a class="menu" href="${childPage.getUrl(vc)}">
+                <span class="L${childPage.level}">
+                    <#if childPage = activePage>
+                        <span class="active-page">${childPage.caption.getTextValue(vc)}</a>
+                    <#elseif childPage.isInActivePath(vc)>
+                        <span class="active-path">${childPage.caption.getTextValue(vc)}</a>
+                    <#else>
+                        ${childPage.caption.getTextValue(vc)}
+                    </#if>
+                </span>
+                </a>
+            </td>
+        </tr>
+        <#if childPage.childrenList?size gt 0 && childPage.isInActivePath(vc)>
+            <@childMenus parentPage=childPage/>
+        </#if>
     </#if>
     </#list>
 </#macro>
