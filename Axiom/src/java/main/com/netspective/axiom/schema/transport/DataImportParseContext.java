@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportParseContext.java,v 1.1 2003-03-13 18:25:42 shahid.shah Exp $
+ * $Id: DataImportParseContext.java,v 1.2 2003-04-05 18:02:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -69,21 +69,20 @@ import com.netspective.commons.io.Resource;
 public class DataImportParseContext extends ParseContext
 {
     private Map statistics = new HashMap(); // key is table name, value is a TableImportStatistic object
-    private List messages = new ArrayList();
 
-    public DataImportParseContext(String text) throws ParserConfigurationException, SAXException
+    public DataImportParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
-        super(text);
+        super(parentPC, text);
     }
 
-    public DataImportParseContext(File file) throws ParserConfigurationException, SAXException, FileNotFoundException
+    public DataImportParseContext(ParseContext parentPC, File file) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
-        super(file);
+        super(parentPC, file);
     }
 
-    public DataImportParseContext(Resource resource) throws ParserConfigurationException, SAXException, IOException
+    public DataImportParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
-        super(resource);
+        super(parentPC, resource);
     }
 
     public Map getStatistics()
@@ -175,7 +174,7 @@ public class DataImportParseContext extends ParseContext
         DataImportParseContext pc = null;
         try
         {
-            pc = new DataImportParseContext(srcFile);
+            pc = new DataImportParseContext(null, srcFile);
             pc.parse(cc, schema);
             return pc;
         }
@@ -207,7 +206,7 @@ public class DataImportParseContext extends ParseContext
         DataImportParseContext pc = null;
         try
         {
-            pc = new DataImportParseContext(text);
+            pc = new DataImportParseContext(null, text);
             pc.parse(cc, schema);
             return pc;
         }
@@ -239,7 +238,7 @@ public class DataImportParseContext extends ParseContext
         DataImportParseContext pc = null;
         try
         {
-            pc = new DataImportParseContext(resource);
+            pc = new DataImportParseContext(null, resource);
             pc.parse(cc, schema);
             return pc;
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmParseContext.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
+ * $Id: XdmParseContext.java,v 1.3 2003-04-05 18:02:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -64,24 +64,24 @@ import com.netspective.commons.xml.TransformProcessingInstructionEncounteredExce
 
 public class XdmParseContext extends ParseContext
 {
-    public XdmParseContext(String text) throws ParserConfigurationException, SAXException
+    public XdmParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
-        super(text);
+        super(parentPC, text);
     }
 
-    public XdmParseContext(File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
+    public XdmParseContext(ParseContext parentPC, File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
-        super(srcFile);
+        super(parentPC, srcFile);
     }
 
-    public XdmParseContext(Resource resource) throws ParserConfigurationException, SAXException, IOException
+    public XdmParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
-        super(resource);
+        super(parentPC, resource);
     }
 
-    public XdmParseContext(File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, IOException
+    public XdmParseContext(ParseContext parentPC, File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, IOException
     {
-        super(jarFile, jarFileEntry);
+        super(parentPC, jarFile, jarFileEntry);
     }
 
     public void parse(Object parent) throws DataModelException, TransformProcessingInstructionEncounteredException
@@ -137,7 +137,7 @@ public class XdmParseContext extends ParseContext
         XdmParseContext pc = null;
         try
         {
-            pc = new XdmParseContext(srcFile);
+            pc = new XdmParseContext(null, srcFile);
             pc.parse(dm);
             return pc;
         }
@@ -169,7 +169,7 @@ public class XdmParseContext extends ParseContext
         XdmParseContext pc = null;
         try
         {
-            pc = new XdmParseContext(text);
+            pc = new XdmParseContext(null, text);
             pc.parse(dm);
             return pc;
         }
@@ -201,7 +201,7 @@ public class XdmParseContext extends ParseContext
         XdmParseContext pc = null;
         try
         {
-            pc = new XdmParseContext(resource);
+            pc = new XdmParseContext(null, resource);
             pc.parse(dm);
             return pc;
         }
@@ -233,7 +233,7 @@ public class XdmParseContext extends ParseContext
         XdmParseContext pc = null;
         try
         {
-            pc = new XdmParseContext(jarFile, jarFileEntry);
+            pc = new XdmParseContext(null, jarFile, jarFileEntry);
             pc.parse(dm);
             return pc;
         }

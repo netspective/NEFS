@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.3 2003-03-26 00:36:41 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.4 2003-04-05 18:02:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -48,6 +48,7 @@ import java.util.Stack;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.IOException;
+import java.io.File;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -190,6 +191,8 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             if(relativeToExpr != null)
                 relativeTo = evaluateHandlerExpression(relativeToExpr);
 
+            log.trace("Including resource '"+ resourceName +"' relative to '"+ relativeTo +"'.");
+
             if(relativeTo instanceof Class)
                 resource = new Resource((Class) relativeTo, resourceName);
             else if(relativeTo instanceof ClassLoader)
@@ -210,18 +213,16 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
             else
                 resource = new Resource(activeEntry.getClass(), resourceName);
 
-            if(parseContext.getInputFileTracker() != null && resource.getFile() != null)
-            {
-                FileTracker includeFile = new FileTracker();
-                includeFile.setFile(resource.getFile());
-                includeFile.setParent(parseContext.getInputFileTracker());
-            }
+            ParseContext includePC = resource.getFile() != null ?
+                    activeEntry.parseInclude(parseContext, resource.getFile()) :
+                    activeEntry.parseInclude(parseContext, resource);
 
-            ParseContext includePC = activeEntry.parseInclude(parseContext, resource);
             parseContext.getErrors().addAll(includePC.getErrors());
         }
         else if(templateName != null && templateName.length() > 0)
         {
+            log.trace("Including template '"+ templateName + "'.");
+
             Template template = templateCatalog.getTemplate(nodeIdentifiers.getGenericTemplateProducer(), templateName);
             if(template == null)
                 throw new SAXParseException("Generic template '"+ templateName +"' was not found in the active document.", parseContext.getLocator());
@@ -229,15 +230,12 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         }
         else
         {
-            if (parseContext.getInputFileTracker() == null)
-                throw new RuntimeException("Include files not allowed unless a source file exists.");
-
             String fileName = attrs.getValue(NodeIdentifiers.ATTRNAME_INCLUDE_FILE);
-            FileTracker includeFile = new FileTracker();
-            includeFile.setFile(parseContext.resolveFile(fileName));
-            includeFile.setParent(parseContext.getInputFileTracker());
+            File includeFile = parseContext.resolveFile(fileName);
 
-            ParseContext includePC = activeEntry.parseInclude(parseContext, includeFile.getFile());
+            log.trace("Including file '"+ includeFile.getAbsolutePath() + "'.");
+
+            ParseContext includePC = activeEntry.parseInclude(parseContext, includeFile);
             parseContext.getErrors().addAll(includePC.getErrors());
         }
     }

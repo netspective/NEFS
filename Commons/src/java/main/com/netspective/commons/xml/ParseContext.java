@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.2 2003-03-17 23:23:37 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.3 2003-04-05 18:02:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -112,6 +112,7 @@ public class ParseContext
     private ZipFile sourceJarFile;
     private ZipEntry sourceJarEntry;
 
+    private FileTracker parentFileTracker;
     private FileTracker inputFileTracker;
     private InputSource inputSource;
     private XMLReader parser;
@@ -120,24 +121,42 @@ public class ParseContext
     private List errors;
     private Source[] transformSources;
 
-    public ParseContext(String text) throws ParserConfigurationException, SAXException
+    public ParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
+        if(parentPC != null)
+            setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(text));
     }
 
-    public ParseContext(File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
+    public ParseContext(ParseContext parentPC, File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
+        if(parentPC != null)
+            setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(srcFile));
     }
 
-    public ParseContext(Resource resource) throws ParserConfigurationException, SAXException, IOException
+    public ParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
+        if(parentPC != null)
+            setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(resource));
     }
 
-    public ParseContext(File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
+    public ParseContext(ParseContext parentPC, File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
     {
+        if(parentPC != null)
+            setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(jarFile, jarFileEntry));
+    }
+
+    public FileTracker getParentFileTracker()
+    {
+        return parentFileTracker;
+    }
+
+    public void setParentFileTracker(FileTracker parentFileTracker)
+    {
+        this.parentFileTracker = parentFileTracker;
     }
 
     public String getTransformInstruction()
@@ -167,6 +186,8 @@ public class ParseContext
 
         this.inputFileTracker = new FileTracker();
         this.inputFileTracker.setFile(srcFile);
+        if(parentFileTracker != null)
+            this.inputFileTracker.setParent(parentFileTracker);
         this.sourceFile = srcFile;
 
         return inputSource;
@@ -201,6 +222,8 @@ public class ParseContext
 
             this.inputFileTracker = new FileTracker();
             this.inputFileTracker.setFile(jarFile);
+            if(parentFileTracker != null)
+                this.inputFileTracker.setParent(parentFileTracker);
 
             return inputSource;
         }

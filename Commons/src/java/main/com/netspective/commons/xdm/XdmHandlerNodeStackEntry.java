@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandlerNodeStackEntry.java,v 1.1 2003-03-13 18:33:13 shahid.shah Exp $
+ * $Id: XdmHandlerNodeStackEntry.java,v 1.2 2003-04-05 18:02:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -47,7 +47,6 @@ package com.netspective.commons.xdm;
 import java.io.File;
 import java.util.Stack;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -87,7 +86,7 @@ public class XdmHandlerNodeStackEntry implements ContentHandlerNodeStackEntry
     {
         try
         {
-            XdmParseContext includePC = new XdmParseContext(srcFile);
+            XdmParseContext includePC = new XdmParseContext(parentPC, srcFile);
             includePC.parse(getInstance());
             return includePC;
         }
@@ -104,7 +103,7 @@ public class XdmHandlerNodeStackEntry implements ContentHandlerNodeStackEntry
     {
         try
         {
-            XdmParseContext includePC = new XdmParseContext(resource);
+            XdmParseContext includePC = new XdmParseContext(parentPC, resource);
             includePC.parse(getInstance());
             return includePC;
         }

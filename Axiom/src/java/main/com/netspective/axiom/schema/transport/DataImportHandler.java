@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.2 2003-03-18 22:32:43 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.3 2003-04-05 18:02:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -257,7 +257,7 @@ public class DataImportHandler extends AbstractContentHandler
         {
             try
             {
-                DataImportParseContext includePC = new DataImportParseContext(resource);
+                DataImportParseContext includePC = new DataImportParseContext(parentPC, resource);
                 includePC.parse(cc, schema);
                 return includePC;
             }
@@ -274,7 +274,7 @@ public class DataImportHandler extends AbstractContentHandler
         {
             try
             {
-                DataImportParseContext includePC = new DataImportParseContext(srcFile);
+                DataImportParseContext includePC = new DataImportParseContext(parentPC, srcFile);
                 includePC.parse(cc, schema);
                 return includePC;
             }

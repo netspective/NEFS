@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.11 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.12 2003-04-05 18:02:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -111,6 +111,8 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         {
             StringBuffer src = new StringBuffer();
             src.append(ft.getFile().getAbsolutePath());
+            if(ft.getDependenciesCount() > 0)
+                src.append(" (Dependencies: " + ft.getDependenciesCount() + ")");
             List preProcs = ft.getPreProcessors();
             if(preProcs != null && preProcs.size() > 0)
             {
