@@ -6,10 +6,8 @@
 		<dialog name="address"  retain-params="*" generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
-			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id">
-				<conditional flags="hidden" perspective="add" action="apply-flags"/>
-			</field>
-			
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id" hidden="no"/>
+
 			<field type="separator" heading="Address Classification"/>
 			<field type="text" name="address_name" caption="Address Label" size="32"/>
 			<field type="boolean" name="mailing" caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
@@ -31,66 +29,87 @@
                 </next-actions>
             </director>
             <on-add-data>
-                <person-address _auto-map="*" rec-stat-id="static:Active"/>
+                <person-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
             </on-add-data>
             <on-edit-data>
-                <person-address line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type-id="address_type_id"
+                <person-address line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
                     state_id="state" rec-stat-id="static:Active"/>
             </on-edit-data>
             <on-delete-data>
-                <person-address _auto-map="*" rec-stat-id="static:Active"/>
+                <person-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
             </on-delete-data>
 		</dialog>
 
-		
 
-		<dialog name="classification"  retain-params="person_id">
-<frame heading="create-dialog-perspective-heading:Classification"/>
+		<dialog name="classification"  retain-params="*" type="schema-record-editor">
+        <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
-			<field type="integer" name="parent_id" caption="Person ID" required="yes">
+			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id">
 				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
-			<field type="integer" name="org_id" caption="Org ID" required="yes"/>
-			<composite name="personType" caption="Person Type">
-				<field type="select" name="person_type_id" caption="" choices="schema-enum:Person_Type"/>
-				<field type="text" name="person_type" caption="" size="16">
-					<conditional action="display" partner-field-name="personType.person_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+			<field type="select" name="org_id" caption="Organization" required="yes" choices="query:person.get-person-related-organizations"/>
+			<composite name="personType" caption="Person Type" >
+				<field type="select" name="person_type_id" caption="" choices="schema-enum:Person_Type" prepend-blank="yes"/>
+				<field type="text" name="person_type" caption="" size="16" >
+					<conditional action="display" partner-field-name="personType.person_type_id"
+                        expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
             <director>
                 <next-actions caption="Next Action ">
                     <items>
-<item value="page-id:/person/summary" caption="Summary"/>
-</items>
+                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
-            <!--listener  class="app.form.person.attribute.ClassificationDialog"/-->
+            <on-add-data>
+                <person-classification person_type_id="personType.person_type_id"
+                    person_id="parent_id" org_id="org_id"  rec-stat-id="static:Active"/>
+            </on-add-data>
+            <on-edit-data>
+                <person-classification person_type_id="personType.person_type_id"
+                    person_id="parent_id" org_id="org_id"/>
+            </on-edit-data>
+            <on-delete-data>
+                <person-classification person_type_id="personType.person_type_id"
+                    person_id="parent_id" org_id="org_id"/>
+            </on-delete-data>
 		</dialog>
-		
-		
 
-		<dialog name="contact" retain-params="person_id">
-<frame heading="create-dialog-perspective-heading:Contact"/>
+		<dialog name="contact" retain-params="*" type="schema-record-editor">
+            <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
-			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flags"/>
-			</field>
+			<field type="text" name="parent_id" caption="Person ID" required="yes" hidden="no" default="request:person_id"/>
 
 			<composite name="contactType" caption="Contact Type">
-				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"/>
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type"
+                    required="yes" prepend-blank="yes"/>
 				<field type="text" name="method_name" caption="Other Contact Type">
 					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
-			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
             <director>
                 <next-actions caption="Next Action ">
                     <items>
-<item value="page-id:/person/summary" caption="Summary"/>
-</items>
+                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
+                    </items>
                 </next-actions>
             </director>
-            <!--listener  class="app.form.person.attribute.ContactDialog"/-->
+            <on-add-data>
+                <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                    rec-stat-id="static:Active"/>
+            </on-add-data>
+            <on-edit-data>
+                <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                    rec-stat-id="static:Active"/>
+            </on-edit-data>
+            <on-delete-data>
+                <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
+                    rec-stat-id="static:Active"/>
+            </on-delete-data>
 		</dialog>
 
 		
