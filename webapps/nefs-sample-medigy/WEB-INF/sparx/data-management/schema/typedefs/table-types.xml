@@ -15,28 +15,13 @@
 
     <table-type name="Default">
         <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
-        <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created">
-            <sql-ddl>
-                <default dbms="oracle">sysdate</default>
-            </sql-ddl>
-            <value-defn>
-                <default dbms="hsqldb">curdate()</default>
-            </value-defn>
-            <presentation>
-                <field type="text" hidden="yes" visible="no" size="36"/>
-            </presentation>
-        </column>
+        <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created"/>
         <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
             <presentation>
                 <field type="text" hidden="yes" size="36"/>
             </presentation>
         </column>
         <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
-            <!--
-            AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
-            Column triggers, validation, and DAL information must now be placed in Java classes.
-            <java-default/>
-            -->
             <presentation>
                 <field type="select" hidden="yes"/>
             </presentation>

@@ -2,6 +2,21 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <schema name="db">
         <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+    <!-- **************************************************************************************
+         * Override the Presentation table type so that it creates our own SchemaRecordEditor *
+         * so that if we want to make global changes it will be much easier.                  *
+         ************************************************************************************** -->
+
+        <table-type name="Presentation">
+            <presentation>
+                <dialog type="schema-record-editor" name="${table.name}">
+                    <frame heading="create-dialog-perspective-heading:${table.getCaption()}"/>
+                    <data-type-presentation columns="*"/>
+                </dialog>
+            </presentation>
+        </table-type>
+
         <xdm:include file="typedefs/app-data-types.xml"/>
         <xdm:include file="typedefs/action-table-types.xml"/>
         <xdm:include file="typedefs/catalog-table-types.xml"/>

@@ -3,7 +3,7 @@
 <xdm:include file="templates/claim.xml"/>
 
 	<dialogs package="claim">
-		<dialog name="claim" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog" generate-dcb="yes">
+		<dialog type="schema-record-editor" name="claim" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Claim"/>
 			<composite name="batch" caption="Batch ID and Date">
 				<field type="integer" name="id" caption="" size="16"/>

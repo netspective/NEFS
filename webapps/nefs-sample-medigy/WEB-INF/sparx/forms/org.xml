@@ -3,7 +3,7 @@
 	<xdm:include file="templates/org.xml"/>
 
 	<dialogs package="org">
-		<dialog name="main"  class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="main">
             <frame heading="create-dialog-perspective-heading:Main Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.classification-information"/>
@@ -29,7 +29,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="department" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="department" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Department Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -52,7 +52,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="associatedProvider" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="associatedProvider" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Associated Provider Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -76,7 +76,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="pharmacy" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="pharmacy" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Pharmacy"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -100,7 +100,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="employer" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="employer" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Employer Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -122,7 +122,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="insurance" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="insurance" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Insurance Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -144,7 +144,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="ipa" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="ipa" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:IPA Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
@@ -166,7 +166,7 @@
             </on-add-data>
 		</dialog>
 
-		<dialog name="ancilliaryService" generate-dcb="yes" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+		<dialog type="schema-record-editor" name="ancilliaryService" generate-dcb="yes">
             <frame heading="create-dialog-perspective-heading:Ancilliary Service Organization"/>
 			<xdm:include template="org.org-profile"/>
 			<xdm:include template="org.contact-information"/>
