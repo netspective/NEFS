@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PhoneField.java,v 1.5 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: PhoneField.java,v 1.6 2003-10-19 04:07:29 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -93,7 +93,7 @@ public class PhoneField extends TextField
         }
     }
 
-    public class State extends TextField.State
+    public class State extends TextFieldState
     {
         public State(DialogContext dc, DialogField field)
         {
