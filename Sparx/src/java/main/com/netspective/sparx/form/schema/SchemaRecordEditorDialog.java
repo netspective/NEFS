@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.17 2004-01-14 16:51:45 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.18 2004-01-15 13:50:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -901,20 +901,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     return false;
 
                 Table table = stte.getTable();
-
-                ValueSource primaryKeyValueSource = null;
-                Object primaryKeyValue = null;
-
-                if (sredc.editingData())
-                {
-                    primaryKeyValueSource = stte.getPrimaryKeyValueSource();
-
-                    if (primaryKeyValueSource == null)
-                        sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[]{table.getName()});
-                    else
-                        primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
-                }
-
                 Attributes templateAttributes = childTableElement.getAttributes();
 
                 Indexes indexes = table.getIndexes();
@@ -960,13 +946,22 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                     {
                         if (sredc.editingData())
                         {
-                            ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
-                            ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
+                            ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
 
-                            dialogVals.getByColumnIndex(0).setValue(primaryKeyValue);
-                            dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
-                            if (dbVals.equals(dialogVals))
-                                continue; // This means that the row found was the same as the one we were trying to update so it should be ok
+                            if (primaryKeyValueSource != null)
+                            {
+                                Value primaryKeyValue = primaryKeyValueSource.getValue(sredc);
+                                if(primaryKeyValue != null)
+                                {
+                                    ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
+                                    ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
+
+                                    dialogVals.getByColumnIndex(0).setValue(primaryKeyValue.getValue());
+                                    dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
+                                    if (dbVals.equals(dialogVals))
+                                        continue; // This means that the row found was the same as the one we were trying to update so it should be ok
+                                }
+                            }
                         }
 
                         getLog().debug("A Unique constraint violation found for Table: '" + table.getName() + "' Index: '" + index.getName() + "'");
