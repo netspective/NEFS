@@ -18,6 +18,7 @@
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
+* Add 'style-sheet' DialogExecuteHandler class that will take the XML representation of a DialogContext and apply a user-specified XML style-sheet in the dialog execution (output).
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
 * Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
