@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.34 2003-11-19 15:30:27 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.35 2003-11-27 19:32:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -95,15 +95,6 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     public void setSidebarWidth(int sidebarWidth)
     {
         this.sidebarWidth = sidebarWidth;
-    }
-
-    public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
-    {
-        return new NavigationContext(tree,
-                (Servlet) jspPageContext.getPage(),
-                jspPageContext.getRequest(),
-                jspPageContext.getResponse(),
-                this, navTreeId);
     }
 
     public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
