@@ -157,7 +157,8 @@
 
         <!-- start from 1 because of the leading / -->
         <#list 1..tagsList?size-1 as index>
-            ${separator}<code>&lt;<a href="${vc.consoleUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
+            <#local url = "${vc.consoleUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}"/>
+            ${separator}<code>&lt;<a href="${vc.constructAppUrl(url)}">${tagsList[index]}</a>&gt;</code>
             <#assign activeTags = "${activeTags}/${tagsList[index]}"/>
             <#assign activeClasses = "${activeClasses}/${classesList[index]}"/>
         </#list>
@@ -220,7 +221,8 @@
             <b>Templates that may be applied to this tag</b>
             <ol>
                 <#list templates.entrySet() as templateEntry>
-                    <li>${consumerData.templateRefAttrName}="<a href="${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}"><b>${templateEntry.key}</b></a>"</li>
+                    <#local url = "${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}"/>
+                    <li>${consumerData.templateRefAttrName}="<a href="${vc.constructAppUrl(url)}"><b>${templateEntry.key}</b></a>"</li>
                 </#list>
             </ol>
             </#if>
@@ -308,11 +310,12 @@
             <td class="report-column-${classSuffix}">
                 <nobr>
                 <#if childDetail.isTemplateProducer()>
-                    <a href="${vc.consoleUrl}/reference/templates?ns=${childDetail.getTemplateProducer().nameSpaceId}">
+                    <#local url = "${vc.consoleUrl}/reference/templates?ns=${childDetail.getTemplateProducer().nameSpaceId}"/>
                 <#else>
-                    <#assign href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
-                    <a href="${vc.consoleUrl}/reference/tags?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}">
+                    <#local href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
+                    <#local url="${vc.consoleUrl}/reference/tags?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"/>
                 </#if>
+                <a href="${vc.constructAppUrl(url)}">
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
