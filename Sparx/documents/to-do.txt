@@ -4,6 +4,7 @@
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
+* Add XML skins to SQL reports so that statements can emit XML and be associated with a stylesheet for reports (all within XDM) -- is this similar to NBCS?
 
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
@@ -18,7 +19,6 @@
 
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
-* Add 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add feature to dialogs that allow forwarding, including freemarker or other templates, executing style-sheets in execute method (same features as <page>)
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
