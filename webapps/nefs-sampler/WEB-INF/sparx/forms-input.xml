@@ -3,7 +3,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <!-- setup attributes for all input demos -->
-    <dialog-type name="input-sample">
+    <dialog-type name="input-sample" class="com.netspective.sparx.form.Dialog">
         <allow-view-source>yes</allow-view-source>
         <redirect-after-execute>no</redirect-after-execute>
     </dialog-type>

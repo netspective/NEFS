@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JndiConnectionProvider.java,v 1.5 2003-09-05 16:10:42 roque.hernandez Exp $
+ * $Id: JndiConnectionProvider.java,v 1.6 2004-01-20 14:15:51 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -158,10 +158,13 @@ public class JndiConnectionProvider implements ConnectionProvider
         try
         {
             Context env = getJndiJdbcContext();
-            for(NamingEnumeration e = env.list(""); e.hasMore();)
+            if(env != null)
             {
-                NameClassPair entry = (NameClassPair) e.nextElement();
-                result.add(JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName());
+                for(NamingEnumeration e = env.list(""); e.hasMore();)
+                {
+                    NameClassPair entry = (NameClassPair) e.nextElement();
+                    result.add(JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName());
+                }
             }
         }
         catch (NamingException e)

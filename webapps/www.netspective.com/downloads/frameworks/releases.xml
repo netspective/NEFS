@@ -2,6 +2,19 @@
 
 <netspective>
     <release>
+        <product name="Axiom" version="7.0.10"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                Fixed problem in JndiConnectionProvider.getAvailableDatasources() that was causing an NPE when no
+                datasources were defined. This caused a problem in the Console Metrics page for those projects that did
+                not have datasources (like nefs-sampler).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.0.9"/>
         <product name="Sparx" version="7.0.14"/>
         <change-log>
             <summary>Minor bug fixed</summary>
