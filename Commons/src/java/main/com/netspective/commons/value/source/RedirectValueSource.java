@@ -39,16 +39,12 @@
  */
 
 /**
- * $Id: RedirectValueSource.java,v 1.1 2003-09-07 20:37:24 shahid.shah Exp $
+ * $Id: RedirectValueSource.java,v 1.2 2003-09-10 04:07:29 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.Value;
+import com.netspective.commons.value.*;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 
 /**
@@ -58,10 +54,41 @@ import com.netspective.commons.value.exception.ValueSourceInitializeException;
  */
 public class RedirectValueSource implements ValueSource
 {
+    public static final String[] IDENTIFIERS = new String[] { "redirect" };
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+            "A special value source wrapper that handles redirects.",
+            new ValueSourceDocumentation.Parameter[]
+            {
+                new ValueSourceDocumentation.Parameter("redirect value", true, "")
+            }
+    );
+
     private ValueSource valueSource;
+    private ValueSourceSpecification spec;
+
+    public static String[] getIdentifiers()
+    {
+        return IDENTIFIERS;
+    }
+
+    public static ValueSourceDocumentation getDocumentation()
+    {
+        return DOCUMENTATION;
+    }
 
     public RedirectValueSource()
     {
+    }
+
+    public RedirectValueSource(String url)
+    {
+        setValueSource(new StaticValueSource(url));
+    }
+
+    public void initialize(ValueSourceSpecification srcTokens) throws ValueSourceInitializeException
+    {
+        spec = srcTokens;
+        valueSource = ValueSources.getInstance().getValueSourceOrStatic(srcTokens.getParams());
     }
 
     public ValueSource getValueSource()
@@ -78,6 +105,8 @@ public class RedirectValueSource implements ValueSource
     {
         return getTextValue(vc);
     }
+
+
 
     /* --- DELEGATE THE REST OF THE CALLS FOR NOW --- */
 
@@ -121,8 +150,5 @@ public class RedirectValueSource implements ValueSource
         return valueSource.hasValue(vc);
     }
 
-    public void initialize(ValueSourceSpecification srcTokens) throws ValueSourceInitializeException
-    {
-        valueSource.initialize(srcTokens);
-    }
+
 }
