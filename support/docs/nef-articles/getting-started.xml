@@ -5,27 +5,38 @@
   <title>Getting Started with the Netspective Enterprise Frameworks Suite
   (NEFS)</title>
 
-  <para>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to view
-  all the documentation online and follow along with the online versions of
-  the sample applications. Since all you need is a web browser, you can start
-  learning about NEFS immediately. Because the applications are online, you
-  will also be introduced to NEF's built-in remote development and team
-  programming capabilities by seeing for yourself how you can review code and
-  applications remotely. The sole disadvantage of the online evaluation is
-  that you will not have the ability to dabble in or change the application
-  code yourself.</para>
+  <section>
+    <title>NEFS Learning Map</title>
 
-  <para>The <emphasis>recommended</emphasis> method of evaluating the NEF is
-  to download sample applications and install them in your own application
-  server. Each of the downloadable sample applications are provided as
-  app-server-independent <filename>.war</filename> files. Each sample app's
-  <filename>.war</filename> file contains everything you need, including all
-  of the NEFS binaries, third-party libraries, and resources, to start using
-  NEFS immediately. Once you have downloaded any <filename>.war</filename>
-  file from our website, you have everything you need to start modifying and
-  adding to the app. There is even a special sample application called the
-  <emphasis>NEFS Starter</emphasis> that allows you to start writing your own
-  applications using an empty template app.</para>
+    <para>To facilitate your learning process, Netspective proposes the
+    following <emphasis>learning map</emphasis>:</para>
+
+    <para><screenshot>
+        <graphic fileref="./resources/images/nefs-learning-map.gif" />
+      </screenshot></para>
+
+    <para>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to
+    view all the documentation online and follow along with the online
+    versions of the sample applications. Since all you need is a web browser,
+    you can start learning about NEFS immediately. Because the applications
+    are online, you will also be introduced to NEF's built-in remote
+    development and team programming capabilities by seeing for yourself how
+    you can review code and applications remotely. The sole disadvantage of
+    the online evaluation is that you will not have the ability to dabble in
+    or change the application code yourself.</para>
+
+    <para>The <emphasis>recommended</emphasis> method of evaluating the NEF is
+    to download sample applications and install them in your own application
+    server. Each of the downloadable sample applications are provided as
+    app-server-independent <filename>.war</filename> files. Each sample app's
+    <filename>.war</filename> file contains everything you need, including all
+    of the NEFS binaries, third-party libraries, and resources, to start using
+    NEFS immediately. Once you have downloaded any <filename>.war</filename>
+    file from our website, you have everything you need to start modifying and
+    adding to the app. There is even a special sample application called the
+    <emphasis>NEFS Starter</emphasis> that allows you to start writing your
+    own applications using an empty template app.</para>
+  </section>
 
   <section>
     <title>Sampling the NEFS Online</title>
@@ -118,6 +129,62 @@
       <screenshot>
         <graphic fileref="./resources/images/screen-console-project-file-source.gif" />
       </screenshot>
+    </section>
+
+    <section>
+      <title>Accessing XDM Tag Documentation</title>
+
+      <para>NEFS <emphasis>Enterprise Console</emphasis> contains complete
+      documentation for the XDM tags that are used to create NEFS
+      applications. To access this documentation, login to the Enterprise
+      Console and click the <guimenuitem>XDM Tags Reference</guimenuitem> tab.
+      It displays the documentation for the <sgmltag>Project</sgmltag> tag
+      along with a list of its attributes and all the children
+      elements.</para>
+
+      <para><screenshot>
+          <graphic fileref="./resources/images/screen-console-xdm-tags-ref.gif" />
+        </screenshot></para>
+
+      <para>Click on a child element to view the corresponding tag
+      documentation.</para>
+    </section>
+
+    <section>
+      <title>Accessing Command and Value Source Documentation</title>
+
+      <para>The NEF ships with many built-in <sgmltag>Commands</sgmltag> and
+      <sgmltag>Value Sources</sgmltag>. You can view a complete list of the
+      available commands and value sources through the Enterprise
+      Console.</para>
+
+      <section>
+        <title>Accessing Commands</title>
+
+        <para>Login to the Enterprise Console. Click on the
+        <guimenuitem>Project</guimenuitem> tab and then click the
+        <guisubmenu>Commands</guisubmenu> submenu to view the list of all the
+        available Commands.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-commands.gif" />
+          </screenshot></para>
+      </section>
+
+      <section>
+        <title>Accessing Value Sources</title>
+
+        <para>To view a list of all the value sources available to your
+        project (including all built-in value sources and your own custom
+        value sources) click on the <guimenuitem>Project</guimenuitem> tab in
+        the Enterprise Console. Then click the <guisubmenu>Value
+        Sources</guisubmenu> submenu and view the list of all the available
+        Value Sources.</para>
+
+        <para><screenshot>
+            <graphic fileref="./resources/images/screen-console-valuesources.gif" />
+          </screenshot></para>
+      </section>
     </section>
   </section>
 
