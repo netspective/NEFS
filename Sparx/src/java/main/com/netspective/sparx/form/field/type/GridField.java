@@ -50,28 +50,33 @@
  * @author Shahid N. Shah
  */
  
-/**
- * $Id: GridField.java,v 1.7 2003-12-22 08:32:52 aye.thu Exp $
- */
-
 package com.netspective.sparx.form.field.type;
+
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogContextBeanMemberInfo;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.form.field.DialogFields;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogContextBeanMemberInfo;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.xdm.XmlDataModelSchema;
-
+/**
+ * Logical dialog field class to allow creation of grids.
+ *
+ * @version $Id: GridField.java,v 1.8 2004-02-12 05:33:38 aye.thu Exp $
+ */
 public class GridField extends DialogField
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private ValueSource captions;
 
+    /**
+     * Grid field's state class
+     */
     public class GridFieldState extends State
     {
         public GridFieldState(DialogContext dc, DialogField field)
@@ -80,7 +85,19 @@ public class GridField extends DialogField
         }
 
         /**
+         * Gets the value of the grid field. This method always return null since a grid field is more of a logical
+         * container of rows and columns.
+         *
+         * @return Null
+         */
+        public DialogFieldValue getValue()
+        {
+            return null;
+        }
+
+        /**
          * Gets the value of the grid entry child
+         *
          * @param row       row index
          * @param column    column index
          * @return
@@ -101,11 +118,22 @@ public class GridField extends DialogField
     {
     }
 
+    /**
+     * Creates a new instance of the grid field's state
+     *
+     * @param dc
+     * @return
+     */
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new GridFieldState(dc, this);
     }
 
+    /**
+     * Gets the class to use for the state of the grid field
+     *
+     * @return
+     */
     public Class getStateClass()
     {
         return GridFieldState.class;
@@ -126,11 +154,22 @@ public class GridField extends DialogField
         return new GridFieldRow();
     }
 
+    /**
+     * Adds a row to the grid field
+     *
+     * @param row   grid row field
+     */
     public void addRow(GridFieldRow row)
     {
         addField(row);
     }
 
+    /**
+     * Returns an array of caption names for the grid columns
+     *
+     * @param dc    current dialog context
+     * @return
+     */
     public String[] getCaptions(DialogContext dc)
     {
         String[] result = null;
@@ -166,10 +205,21 @@ public class GridField extends DialogField
         dc.getSkin().renderGridControlsHtml(writer, dc, this);
     }
 
-
+    /**
+     * Gets the grid field's entry for the generated dialog context bean
+     *
+     * @return  DialogContextBeanMemberInfo    The bean member info contains the grid field's utility methods to access the values of the grid's children
+     */
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
     {
         DialogContextBeanMemberInfo mi = createDialogContextMemberInfo();
+        String memberName = mi.getMemberName();
+        String fieldName = mi.getFieldName();
+
+        if(memberName == null || fieldName == null)
+            return mi;
+
+        String stateClassName = getStateClass().getName().replace('$', '.');
         mi.addJavaCode("\tpublic com.netspective.sparx.form.field.DialogFieldValue get" + mi.getMemberName() + "GridMemberFieldValue(int row, int column)\n" +
                 "\t{\n "+
                 "\t\tDialogFields rows = get"+ mi.getMemberName() + "State().getField().getChildren();\n" +
@@ -179,7 +229,22 @@ public class GridField extends DialogField
                 "\t\tDialogField field = rowChildren.get(column);\n" +
                 "\t\treturn this.dialogContext.getFieldStates().getState(field).getValue();\n" +
                 "\t}\n");
-
+        DialogFields rows = getChildren();
+        if (rows.size() > 0)
+        {
+            // get the first row and use it as if it represents every row (assume that every row has the same number of columns)
+            GridFieldRow row = (GridFieldRow) rows.get(0);
+            DialogFields columns = row.getChildren();
+            for (int i=0; i < columns.size(); i++)
+            {
+                DialogField columnField = columns.get(i);
+                mi.addJavaCode("\tpublic DialogFieldValue get" + mi.getMemberName() + TextUtils.xmlTextToJavaIdentifier(columnField.getName(), true) + "ValueByRow(int rowNumber)\n" +
+                "\t{\n" +
+                "\t\t" + stateClassName + " state = get" + mi.getMemberName() + "State();\n" +
+                "\t\treturn state.getValue(rowNumber, " +  i + ");\n" +
+                "\t}\n");
+            }
+        }
         return getChildren().getDialogContextBeanMemberInfo(mi);
     }
 }
