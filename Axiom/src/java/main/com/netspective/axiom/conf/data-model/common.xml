@@ -6,6 +6,11 @@
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
+    <!--
+    ================================
+    Common Datatypes
+    ================================
+    -->
     <data-type name="system-id" type="auto-inc">
         <name>system_id</name>
         <primary-key>yes</primary-key>
@@ -16,6 +21,190 @@
         <name>application_id</name>
         <size>64</size>
     </data-type>
+
+    <data-type name="name" type="text">
+        <copytype>text</copytype>
+        <validation>
+            <rule name="letters-and-spaces-only" type="regex">^[a-zA-Z ]*$</rule>
+        </validation>
+    </data-type>
+
+    <data-type name="event-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="org-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="tax-id" type="text"/>
+
+    <data-type name="person-id" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="ssn" type="text"/>
+
+    <data-type name="gender" type="integer"/>
+
+    <data-type name="marital-status" type="integer"/>
+
+    <data-type name="blood-type" type="integer"/>
+
+    <data-type name="password" type="text"/>
+
+    <data-type name="reference" type="guid32">
+        <generate-id>guid32</generate-id>
+    </data-type>
+
+    <data-type name="address_state" type="text"/>
+
+    <data-type name="address_zip" type="text"/>
+
+    <data-type name="age" type="integer"/>
+
+    <data-type name="md5-hash" type="text"/>
+
+    <data-type name="filename" type="text"/>
+
+    <data-type name="future-date" type="date"/>
+
+    <data-type name="past-date" type="date"/>
+
+    <data-type name="future-time" type="time"/>
+
+    <data-type name="past-time" type="time"/>
+
+    <data-type name="creation-stamp" type="stamp"/>
+
+    <!--
+    ============================
+    Common Table types
+    ============================
+    -->
+    <table-type name="Physical_Address" type="Default">
+        <description>An address of a member of a certain entity, such as a person or org.</description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the address">
+            <presentation>
+                <field.guid32 required="yes">
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="address_name" indexed="yes" type="text" size="128" descr="The address name">
+            <presentation>
+                <field type="text" caption="Address Label" size="32"/>
+            </presentation>
+        </column>
+        <column name="mailing" type="boolean" descr="True if this is the mailing address">
+            <presentation>
+                <field.boolean caption="Mailing Address?" hint="Check this box if this is a valid mailing address"/>
+            </presentation>
+        </column>
+        <column name="address_type_id" lookupref="Contact_Address_Type" descr="The type of address this is - allows storage of multiple addresses for the same party">
+            <presentation>
+                <field type="select" caption="Address Type"/>
+            </presentation>
+        </column>
+        <column name="line1" type="text" size="256" descr="The first address line">
+            <presentation>
+                <field type="text" caption="Line 1" required="yes" size="64"/>
+            </presentation>
+        </column>
+        <column name="line2" type="text" size="256" descr="The second address line">
+            <presentation>
+                <field type="text" caption="Line 2" size="64"/>
+            </presentation>
+        </column>
+        <column name="city" type="text" required="yes" size="128" descr="The city of the state">
+            <presentation>
+                <field type="text" caption="City" size="16"/>
+            </presentation>
+        </column>
+        <column name="county" type="text" size="128" descr="The county of the state">
+            <presentation>
+                <field type="text" caption="County" size="16"/>
+            </presentation>
+        </column>
+        <column name="state_id" lookupref="US_State_Type" descr="The state of the union">
+            <presentation>
+                <field type="select" caption="State"/>
+            </presentation>
+        </column>
+        <column name="state" type="text" size="128" descr="The state, if not in the union">
+            <presentation>
+                <field type="text" caption="Other State" size="16">
+                    <conditional action="display" partner="state_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
+            </presentation>
+        </column>
+        <column name="zip" type="text" size="128" descr="The postal code (+4 format)">
+            <presentation>
+                <field.zip caption="Zip Code"/>
+            </presentation>
+        </column>
+        <column name="country" type="text" size="128" descr="The country of the address">
+            <presentation>
+                <field type="text" caption="Country" size="16"/>
+            </presentation>
+        </column>
+        <index name="${owner.abbrev}_unq" columns="parent_id,address_name" unique="yes"/>
+    </table-type>
+
+    <table-type name="Contact_Method" type="Default">
+        <description>
+            A contact method of a member of a certain entity, such as a person or org. Phone numbers may be stored
+            as simple text (in method_value) or as simple text and parsed values (in phone_*). If parsed values are
+            stored, the complete phone number should still be stored in method_value for performance reasons.
+        </description>
+        <column name="system_id" type="guid32" primarykey="yes" descr="Unique identifier for foreign-key and update purposes"/>
+        <column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The owner of the contact method">
+            <presentation>
+                <field.guid32 hidden="yes" required="yes">
+                    <conditional action="apply-flag" flag="hidden" perspective="add"/>
+                </field.guid32>
+            </presentation>
+        </column>
+        <column name="method_type" indexed="yes" lookupref="Contact_Method_Type" descr="The contact method type">
+            <presentation>
+                <field type="select" caption="Contact Type"/>
+            </presentation>
+        </column>
+        <column name="method_name" indexed="yes" type="text" size="128" descr="The contact method name if other is chosen as method type">
+            <presentation>
+                <field type="text" caption="Other Contact Type">
+                    <conditional action="display" partner="method_type" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                </field>
+            </presentation>
+        </column>
+        <column name="method_value" indexed="yes" type="text" size="255" descr="The contact method value (full telephone, e-mail address, URL, etc.)">
+            <presentation>
+                <field type="text" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
+            </presentation>
+        </column>
+        <column name="phone_cc" indexed="yes" type="text" size="16" descr="The country code if this is a separated phone number">
+            <presentation>
+                <field type="text" caption="Country Code"/>
+            </presentation>
+        </column>
+        <column name="phone_ac" indexed="yes" type="integer" descr="The area code if this is a separated phone number">
+            <presentation>
+                <field type="text" caption="Area Code"/>
+            </presentation>
+        </column>
+        <column name="phone_prefix" indexed="yes" type="integer" descr="The prefix code if this is a separated phone number">
+            <presentation>
+                <field type="text" caption="Prefix"/>
+            </presentation>
+        </column>
+        <column name="phone_suffix" indexed="yes" type="integer" descr="The suffix code if this is a separated phone number">
+            <presentation>
+                <field type="text" caption="Suffix"/>
+            </presentation>
+        </column>
+        <index name="${owner.abbrev}_unq" columns="parent_id,method_value" unique="yes"/>
+    </table-type>
 
     <table-type name="Identifiable">
         <column type="system-id"/>
