@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.51 2004-08-09 22:14:28 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.52 2004-08-14 19:56:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1611,7 +1611,7 @@ public class XmlDataModelSchema
         return false;
     }
 
-    public void assignMapValue(final Object element, final Map map, String key, final String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
+    public boolean assignMapValue(final Object element, final Map map, String key, final String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
         Object value = map.get(key);
 
@@ -1630,7 +1630,7 @@ public class XmlDataModelSchema
             value = defaultValue;
         }
 
-        assignInstanceValue(element, key, value, required);
+        return assignInstanceValue(element, key, value, required);
     }
 
     /**
