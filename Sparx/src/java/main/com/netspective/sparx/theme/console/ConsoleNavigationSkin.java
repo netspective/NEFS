@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.34 2003-10-19 16:55:36 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.35 2003-10-22 15:33:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -112,7 +112,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree,
-                jspPageContext.getServletContext(),
                 (Servlet) jspPageContext.getPage(),
                 jspPageContext.getRequest(),
                 jspPageContext.getResponse(),
@@ -121,7 +120,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
-        return new NavigationContext(tree, context, servlet, request, response, this, navTreeId);
+        return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }
 
     public void renderPageMetaData(Writer writer, NavigationContext nc) throws IOException

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.30 2003-10-19 16:55:14 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.31 2003-10-22 15:33:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -102,7 +102,6 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree,
-                jspPageContext.getServletContext(),
                 (Servlet) jspPageContext.getPage(),
                 jspPageContext.getRequest(),
                 jspPageContext.getResponse(),
@@ -111,7 +110,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
     public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
-        return new NavigationContext(tree, context, servlet, request, response, this, navTreeId);
+        return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }
 
     public void renderPageMetaData(Writer writer, NavigationContext nc) throws IOException

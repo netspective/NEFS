@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.20 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.21 2003-10-22 15:33:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -82,7 +82,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private Map navigationStates = new HashMap();
     private int maxLevel = 0;
 
-    public NavigationContext(NavigationTree ownerTree, ServletContext aContext, Servlet aServlet, ServletRequest aRequest, ServletResponse aResponse, NavigationSkin skin, String activePathId)
+    public NavigationContext(NavigationTree ownerTree, Servlet aServlet, ServletRequest aRequest, ServletResponse aResponse, NavigationSkin skin, String activePathId)
     {
         super(aServlet, aRequest, aResponse);
 
