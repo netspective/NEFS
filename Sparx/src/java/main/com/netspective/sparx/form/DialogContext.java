@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.41 2004-08-09 22:15:14 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.42 2004-08-14 19:57:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -158,6 +158,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private boolean redirectDisabled;
     private boolean cancelButtonPressed;
     private boolean redirectAfterExecute;
+    private boolean autoExecuted;
 
     public DialogContext()
     {
@@ -644,10 +645,18 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
 
             if (dialog.isValid(this))
+            {
                 state.setExecuteMode();
+                autoExecuted = autoExec;
+            }
         }
 
         dialog.makeStateChanges(this, STATECALCSTAGE_AFTER_VALIDATION);
+    }
+
+    public boolean isAutoExecuted()
+    {
+        return autoExecuted;
     }
 
     public DialogFieldStates getFieldStates()
