@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.3 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.4 2003-04-20 19:32:39 faisal.qureshi Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -146,13 +146,12 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if (itemIcon != null)
                 {
                     // icon for this item is defined so use the passed in image INSTEAD of using the CSS based background image
-                    itemBuffer.append("            <td class=\"panel-frame-action-item-output\"><img src=\"" + itemIcon.getValue(vc) + "\" height=\"14\" width=\"17\" border=\"0\"></td>");
+                    itemBuffer.append("            <td class=\"panel-frame-action-item-output\" width=\"18\"></td>");
                     colCount++;
                 }
                 else
                 {
-                    itemBuffer.append("            <td class=\"panel-frame-action-item-output\" width=\"17\"><img src=\"" + imgPath +
-                        "/panel/output/spacer.gif\" alt=\"\" height=\"14\" width=\"17\" border=\"0\"></td>");
+                    itemBuffer.append("            <td class=\"panel-frame-action-item-output\" width=\"18\"><img src=\"" + imgPath + "/login/spacer.gif\" width=\"18\" height=\"19\"></td>");
                     colCount++;
                 }
                 itemBuffer.append("            <td class=\"panel-frame-action-box-output\">" +
@@ -160,21 +159,21 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 colCount++;
             }
 
-            writer.write("<td nowrap>\n");
-            writer.write("    <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-            writer.write("        <tr>\n");
-            writer.write("            <td bgcolor=\"white\" width=\"100%\" colspan=\"" + colCount + "\">" +
-                    "<img src=\"" + imgPath + "/login/spacer.gif\" height=\"5\"></td>\n");
-            writer.write("        </tr>\n");
+//            writer.write("<td valign=\"bottom\" class=\"panel-frame-table-action-output\" bgcolor=\"white\">\n");
+//            writer.write("    <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+//            writer.write("        <tr>\n");
+//            writer.write("            <td bgcolor=\"white\" width=\"18\" colspan=\"" + colCount + "\">" +
+//                    "<img src=\"" + imgPath + "/login/spacer.gif\" height=\"5\" width=\"100%\" border=\"0\"></td>\n");
+//            writer.write("        </tr>\n");
             if (itemBuffer.length() > 0)
             {
-                writer.write("        <tr>\n");
+//                writer.write("        <tr>\n");
                 writer.write(itemBuffer.toString());
-                writer.write("        </tr>\n");
+//                writer.write("        </tr>\n");
             }
-            writer.write("        </tr>\n  ");
-            writer.write("    </table>\n");
-            writer.write("</td>\n");
+//            writer.write("        </tr>\n  ");
+//            writer.write("    </table>\n");
+//            writer.write("</td>\n");
         }
     }
 

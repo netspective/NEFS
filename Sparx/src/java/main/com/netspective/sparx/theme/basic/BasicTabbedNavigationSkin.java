@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.8 2003-04-07 17:13:55 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.9 2003-04-20 19:32:39 faisal.qureshi Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -239,7 +239,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("	<tr>\n");
         writer.write("	    <td class=\"masthead-left\" valign=\"bottom\">\n");
         writer.write("	        <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-        writer.write("              <tr height=\"30\">\n");
+        writer.write("              <tr width=\"100%\" height=\"30\">\n");
         writer.write("	                <td align=\"left\" valign=\"middle\" height=\"30\">\n");
         writer.write("                      <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("                          <tr>\n");
@@ -248,7 +248,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 "</td>\n");
         //writer.write("                              <td class=\"masthead-logo\" align=\"left\" valign=\"middle\">" + (nc.getApplicationName(nc) == null ? "Application Name" : nc.getApplicationName(nc)) + "</td>\n");
         writer.write("                              <td class=\"masthead-logo\" align=\"left\" valign=\"middle\">" +
-                "<img src=\"" + themeImagesPath + "/spacer.gif\" width=\"200\" height=\"18\"></td>\n");
+                "<img src=\"" + themeImagesPath + "/masthead/logo.gif\" ></td>\n");
         writer.write("                          </tr>\n");
         writer.write("                      </table>\n");
         writer.write("                  </td>\n");
@@ -428,10 +428,10 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 writer.write("      </td>\n");
                 break;
             default:
-                writer.write("  <tr>\n");
-                writer.write("      <td colspan=\"3\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
-                        "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
-                writer.write("  </tr>\n");
+             //   writer.write("  <tr>\n");
+             //   writer.write("      <td colspan=\"3\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
+             //           "alt=\"\" width=\"100%\" height=\"12\" border=\"0\"></td>\n");
+             //   writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
                 break;
 
@@ -480,7 +480,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
         String actionIcon = page != null ? getInheritableImageUrl(nc, page.getQualifiedName(), HEADING_ACTION_IMAGE) : null;
 
-        writer.write("<!-- Page Header Begins -->\n<p>");
+        writer.write("<!-- Page Header Begins -->\n");
         writer.write("<table class=\"page-heading-table\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
         writer.write("    <tr>\n");
         writer.write("        <td align=\"left\" valign=\"middle\">\n");
@@ -722,7 +722,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 if (sideBarElement.isInActivePath(nc))
                 {
                     writer.append("      <tr>\n");
-                    writer.append("          <td class=\"menu-level-3-active\" align=\"left\" valign=\"middle\">" +
+                    writer.append("          <td class=\"menu-level-3-table-active\" align=\"left\" valign=\"middle\">" +
                             "<a class=\"menu-level-3-active\" href=\"" + sideBarElement.getUrl(nc) + "\">" +
                             "<nobr>" + sideBarElement.getCaption(nc) + "</nobr></a></td>\n");
                     writer.append("      </tr>\n");
