@@ -134,8 +134,8 @@ to write even a single complex form.
     <tr>
         <td>OEM/VAR License</td>
         <td>
-            If you would like to OEM or VAR our products (for example, to create your own branded versions of our products
-            then you'll need this license).
+            If you would like to OEM or VAR our products (for example, to create your own branded versions of our products)
+            then you'll need this license.
         </td>
     </tr>
 
