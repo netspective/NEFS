@@ -46,6 +46,12 @@ public class QueryDefinitionException extends NestableException
         this.queryDefn = queryDefn;
     }
 
+    public QueryDefinitionException(QueryDefinition queryDefn, Throwable throwable)
+    {
+        super(throwable);
+        this.queryDefn = queryDefn;
+    }
+
     public QueryDefinition getQueryDefn()
     {
         return queryDefn;
