@@ -15,9 +15,11 @@ adding to the app. In essence, you're getting the sample app and the NEFS evalua
 <p>
 <table class="data-table">
     <#list sampleApps as app>
+    <#if app.allowDownload>
     <tr valign=top>
         <td><a href="${vc.rootUrl}/resources/downloads/${app.id}.war">${app.name}</a></td>
         <td>${app.descr}</td>
     </tr>
+    </#if>
     </#list>
 </table>

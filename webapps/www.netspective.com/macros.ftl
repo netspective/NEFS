@@ -68,25 +68,26 @@
 
 <#assign sampleApps =
     [
-        { 'id': "nefs-starter-empty", 'name': "Starter App",
+        { 'id': "nefs-starter-empty", 'name': "Starter App", 'allowTryOnline': false, 'allowDownload': true,
           'descr' : "The starter application is just an empty application that contains the minimal set of files required
                      for NEF web applications. It doesn't do anything particularly useful but when you're ready to start
                      your own NEF project, you can use this sample as your template for the new project."
         },
 
-        { 'id': "nefs-sample-hello-world", 'name': "Hello World",
+        { 'id': "nefs-sampler", 'name': "Sampler", 'allowTryOnline': true, 'allowDownload': true,
+          'descr' : "The Sampler gives you an idea of how easy it is to build J2EE web applications using the powerful
+                     building blocks provided by our Java Frameworks. It includes various examples of creating forms and
+                     input fields, performing a variety of different data validations, and executing forms to provide
+                     end-user functionality."
+        },
+
+        { 'id': "nefs-sample-hello-world", 'name': "Hello World", 'allowTryOnline': false, 'allowDownload': true,
           'descr' : "The Hello World example is a classic in nearly all texts dealing with programming. It is the simplest
                      way to demonstrate the syntax of a language or tool, how to compile a program written in the language
                      and how to run the resulting binary."
         },
 
-        { 'id': "nefs-sample-hello-forms", 'name': "Hello Forms",
-          'descr' : "The Hello Forms example builds on the Hello World application by allowing you to enter data into forms
-                     and viewing dynamic output. This sample app includes over a dozen different forms and demonstrates many
-                     techniques for how to create form fields, validate the data, and execute one or more actions."
-        },
-
-        { 'id': "nefs-sample-books", 'name': "Books",
+        { 'id': "nefs-sample-books", 'name': "Books", 'allowTryOnline': true, 'allowDownload': true,
           'descr' : "The Books sample is a small application meant to be used a personal books database. It allows
                      you to track the books you have and add more books to your collection or edit information stored about
                      existing books. It also allows you to search your collection for a particular book based on your own
@@ -94,30 +95,24 @@
                      tables, generate DDL, construct dynamic SQL, and other NEFS functionality."
         },
 
-        { 'id': "nefs-sample-library", 'name': "Library",
+        { 'id': "nefs-sample-library", 'name': "Library", 'allowTryOnline': true, 'allowDownload': true,
           'descr' : "The Library sample builds upon the Books example by allowing books to be
                      defined and checked out/checked in. This sample demonstrates entity relationships and looks more like a
                      real-world application than the Books sample because it has more
                      elaborate functionality."
         },
 
-        { 'id': "nefs-sample-cts", 'name': "Clinical Trials Management System",
+        { 'id': "nefs-sample-cts", 'name': "Clinical Trials Management System", 'allowTryOnline': true, 'allowDownload': true,
           'descr' : "The Clinical Trials Management System (CTS) sample application demonstrates real-world usage of Commons, Axiom,
                      and Sparx. CTS provides the ability to manage patients, studies, sites, and coordinators for
                      pharmaceutical clinical trials. Samples are provided for a relational database management system, domain logic,
                      navigation, security, and access control."
         },
 
-        { 'id': "nefs-sample-survey", 'name': "Survey",
+        { 'id': "nefs-sample-survey", 'name': "Survey", 'allowTryOnline': true, 'allowDownload': false,
           'descr' : "The Survey application demonstrates how to create forms with hundreds of inputs and persist the
                      data in a wizard-like fashion. This sample application has a different look and feel than some of
                      the other applications."
-        },
-
-        { 'id': "nefs-test-bed", 'name': "Test Bed",
-          'descr' : "The NEF test-bed is an application that Netspective developers use to test various framework components.
-                     These applications demonstrate many NEF functions but present them in a way that's useful for unit
-                     and integration testing single components as opposed to entire applications."
         }
     ]>
 

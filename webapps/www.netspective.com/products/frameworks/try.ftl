@@ -23,11 +23,13 @@ also '<code>console</code>'.
 
 <table class="data-table">
     <#list sampleApps as app>
+    <#if app.allowTryOnline>
     <tr valign=top>
         <td><a href="${samplesServer}/${app.id}">${app.name}</a></td>
         <td><a href="${samplesServer}/${app.id}/console">Console</a></td>
         <td>${app.descr}</td>
     </tr>
+    </#if>
     </#list>
 </table>
 
