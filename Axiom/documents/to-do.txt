@@ -1,0 +1,24 @@
+* Add multiple columns referencing support to foreign keys (currently foreign keys only support single column references).
+* Add support for "Axiom Auto-inc" column where column key value is generated using the design pattern in Java Enterprise Best Practices.
+* Add column-level or row-level encryption and support for searching encrypted columns.
+* Allow self-ref foreign keys to generate DAL code that would load a complete hierarchy.
+* Add ACLs in queries, query-defs, schemas, and DAL.
+* Add DAL-type java class generation for static queries.
+* In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
+* Create cacheable ResultSets with configurable timeouts.
+* Add abbrev attribute for columns (just like tables).
+* Allow <query> tags to be added under <schema> that would simply allow the <schema> to act as a namespace.
+* Add SchemaDoc totals (tables, columns, etc) to the application Metrics.
+* Come up with a better name for SchemaDoc and stick to it.
+* For each getXXXByYYY() method add an existsXXXWithYYY() method to check for simple existence
+* Try and catch required, maxlength, and other DAL exceptions prior to the values getting to the JDBC driver (add additional validation rules).
+* Add more features to the bulk upload/download via XML (like updates/deletes, exporting to XML, etc).
+* Add Supertype/Subtype tables like http://jrf.sourceforge.net/advancedTopics.html#SubtypeTables.
+* Add result set iterator (paging) base classes from Sparx.
+* Add flag to Query class that would allow usage of normal Statements instead of prepared statements.
+* Allow inserts/updates/deletes to use Rows as well as Row so that multiple records can be built into rows and then inserted/updated at once.
+* Complete optimistic locking of an object/row using a Timestamp or Integer column. When conflicts occur, throw an ObjectHasChanged exception.
+* Add Linking of related objects at retrieval time through the use of a postFind() method. This will be a "find" trigger analogous to insert/update/delete triggers.
+* Add validation listeners that can augment validation system.
+* Review jRelationalFramework (http://jrf.sourceforge.net/) and Alzabo (http://alzabo.sourceforge.net/) for new DAL features.
+* Review http://java.sun.com/blueprints/patterns/DAO.html to consider other items needed by a DAO.
