@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.22 2003-08-19 16:10:52 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.23 2003-08-28 13:02:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -179,6 +179,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         public DialogFieldStates()
         {
+        }
+
+        public Map getStatesByQualifiedName()
+        {
+            return statesByQualifiedName;
         }
 
         public void addState(DialogField.State state)
