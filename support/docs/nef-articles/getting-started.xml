@@ -9,7 +9,7 @@
   all the documentation online and follow along with the online versions of
   the sample applications. Since all you need is a web browser, you can start
   learning about NEFS immediately. Because the applications are online, you
-  will also be introduced to NEF&#39;s built-in remote development and team
+  will also be introduced to NEF's built-in remote development and team
   programming capabilities by seeing for yourself how you can review code and
   applications remotely. The sole disadvantage of the online evaluation is
   that you will not have the ability to dabble in or change the application
@@ -18,25 +18,26 @@
   <para>The <emphasis>recommended</emphasis> method of evaluating the NEF is
   to download sample applications and install them in your own application
   server. Each of the downloadable sample applications are provided as
-  app-server-independent <filename>.war</filename> files. Each sample
-  app&#39;s <filename>.war</filename> file contains everything you need,
-  including all of the NEFS binaries, third-party libraries, and resources, to
-  start using NEFS immediately. Once you have downloaded any
-  <filename>.war</filename> file from our website, you have everything you
-  need to start modifying and adding to the app. There is even a special
-  sample application called the <emphasis>NEFS Starter</emphasis> that allows
-  you to start writing your own applications using an empty template app.</para>
+  app-server-independent <filename>.war</filename> files. Each sample app's
+  <filename>.war</filename> file contains everything you need, including all
+  of the NEFS binaries, third-party libraries, and resources, to start using
+  NEFS immediately. Once you have downloaded any <filename>.war</filename>
+  file from our website, you have everything you need to start modifying and
+  adding to the app. There is even a special sample application called the
+  <emphasis>NEFS Starter</emphasis> that allows you to start writing your own
+  applications using an empty template app.</para>
 
   <section>
     <title>Sampling the NEFS Online</title>
 
     <para>The <emphasis>Enterprise Sampler</emphasis> application, available
-    at <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
-    (by clicking the <emphasis>Try Online</emphasis> link), is the first NEFS
-    sample application that you should try because it&#39;s designed to help
+    at <ulink
+    url="http://www.netspective.com">http://www.netspective.com</ulink> (by
+    clicking the <emphasis>Try Online</emphasis> link), is the first NEFS
+    sample application that you should try because it's designed to help
     sample important components of the presentation and user interfaces
     features of our Frameworks. The application contains complete instructions
-    on what&#39;s available to sample and links to important features.</para>
+    on what's available to sample and links to important features.</para>
 
     <screenshot>
       <graphic fileref="./resources/images/screen-sampler-home.gif" />
@@ -49,7 +50,7 @@
       url="http://www.netspective.com">http://www.netspective.com</ulink> (by
       clicking the <emphasis>Try It Online</emphasis> link from the Home
       page). Each of the sample applications have two links: one is a link to
-      the application itself and the other is a link to it&#39;s
+      the application itself and the other is a link to it's
       <emphasis>Console</emphasis> Servlet.</para>
     </section>
 
@@ -64,7 +65,8 @@
     </section>
 
     <section>
-      <title>Viewing Other Source Code and Application Files in a Browser</title>
+      <title>Viewing Other Source Code and Application Files in a
+      Browser</title>
 
       <para>The Netspective administration console, called the
       <emphasis>Enterprise Console</emphasis>, provides a complete file
@@ -78,15 +80,16 @@
       and objects that NEFS produces. The Enterprise Console is automatically
       available to all NEF-based applications during development and each NEFS
       application has a private instance of the Console available at
-      <literal>http://[server]/[appName]</literal><emphasis role="bold"><literal>/console</literal></emphasis>.
-      When you log into the Console for Application X (.../appX/console)
-      versus Y (.../appY/console) you will only see components for the
-      appropriate application.</para>
+      <literal>http://[server]/[appName]</literal><emphasis
+      role="bold"><literal>/console</literal></emphasis>. When you log into
+      the Console for Application X (.../appX/console) versus Y
+      (.../appY/console) you will only see components for the appropriate
+      application.</para>
 
       <important>
         <para>Each sample app features its own Console Servlet and the default
-        login user name is &#39;<literal>console</literal>&#39; and the
-        default login password is &#39;<literal>console</literal>&#39;.</para>
+        login user name is '<literal>console</literal>' and the default login
+        password is '<literal>console</literal>'.</para>
       </important>
 
       <screenshot>
@@ -97,29 +100,30 @@
       application, all of the source files and folders are available for
       viewing. Simply click on the <guimenuitem>Project</guimenuitem> tab and
       then click <guimenuitem>Project Folders</guimenuitem> to view all of the
-      folders contained in the application and <guimenuitem>Project Files</guimenuitem>
-      to navigate all the directories and look at the project files. The first
-      time you enter the Project Files section, you should see a list of all
-      the directories that exist in the application’s root directory. You can
-      click on any directory to navigate to it and view the list of files and
-      sub-directories inside it.</para>
+      folders contained in the application and <guimenuitem>Project
+      Files</guimenuitem> to navigate all the directories and look at the
+      project files. The first time you enter the Project Files section, you
+      should see a list of all the directories that exist in the application’s
+      root directory. You can click on any directory to navigate to it and
+      view the list of files and sub-directories inside it.</para>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-console-project-files.gif" />
       </screenshot>
 
       <para>If you click on any XML, JSP or Java source file, you should also
-      be able to see the source for those files directly from the browser.</para>
+      be able to see the source for those files directly from the
+      browser.</para>
 
       <screenshot>
-        <graphic
-        fileref="./resources/images/screen-console-project-file-source.gif" />
+        <graphic fileref="./resources/images/screen-console-project-file-source.gif" />
       </screenshot>
     </section>
   </section>
 
   <section>
-    <title>Using your own App Server to Sample the NEFS on your Workstation</title>
+    <title>Using your own App Server to Sample the NEFS on your
+    Workstation</title>
 
     <para>In order to sample the true power of the NEF, you should try the
     samples on your own workstation or server. This section describes the
@@ -137,30 +141,32 @@
     </itemizedlist>
 
     <section>
-      <title>Make sure you have a Java Developer&#39;s Kit (JDK)</title>
+      <title>Make sure you have a Java Developer's Kit (JDK)</title>
 
-      <para>Since NEFS is comprised of Java libraries, a fundamental
-      requirement to develop applications with it is a Java SDK (the full SDK
-      is required, the JRE will not be enough). You can obtain Sun’s official
-      Java SDK from its Java web site at <ulink
+      <para>Since NEFS comprises Java libraries, a fundamental requirement to
+      develop applications with it is a Java SDK (the full SDK is required,
+      the JRE will not be enough). You can obtain Sun’s official Java SDK from
+      its Java web site at <ulink
       url="http://java.sun.com/j2se/1.4/download.html">http://java.sun.com/j2se/1.4/download.html</ulink>.
-      This is a link to the Java 1.4 SDK but Java 1.2 and 1.3 will also work.</para>
+      This is a link to the Java 1.4 SDK but Java 1.2 and 1.3 will also
+      work.</para>
     </section>
 
     <section>
-      <title>Make sure you have an Application Server (Servlet Container)</title>
+      <title>Make sure you have an Application Server (Servlet
+      Container)</title>
 
       <para>Since Sparx works with standard J2EE application servers, a
-      Servlet container is required if you&#39;re going to use Sparx. Both
-      Axiom and Commons work in web-based or non-web-based applications but
-      Sparx is a web application development library so an application server
-      with a Servlet 2.2 or better container is necessary. Sparx-based
-      applications have been tested on the following application servers:</para>
+      Servlet container is required if you're going to use Sparx. Both Axiom
+      and Commons work in web-based or non-web-based applications but Sparx is
+      a web application development library so an application server with a
+      Servlet 2.2 or better container is necessary. Sparx-based applications
+      have been tested on the following application servers:</para>
 
       <itemizedlist>
         <listitem>
-          <para><ulink url="http://jakarta.apache.org/tomcat">Apache Tomcat</ulink>
-          (free)</para>
+          <para><ulink url="http://jakarta.apache.org/tomcat">Apache
+          Tomcat</ulink> (free)</para>
         </listitem>
 
         <listitem>
@@ -170,13 +176,13 @@
 
         <listitem>
           <para><ulink
-          url="http://www.bea.com/framework.jsp?CNT=index.htm&#38;FP=/content/products/server">BEA
+          url="http://www.bea.com/framework.jsp?CNT=index.htm&amp;FP=/content/products/server">BEA
           WebLogic</ulink> (commercial)</para>
         </listitem>
 
         <listitem>
-          <para><ulink url="http://www.ibm.com/websphere">IBM WebSphere</ulink>
-          (commercial)</para>
+          <para><ulink url="http://www.ibm.com/websphere">IBM
+          WebSphere</ulink> (commercial)</para>
         </listitem>
 
         <listitem>
@@ -185,19 +191,20 @@
         </listitem>
 
         <listitem>
-          <para><ulink url="http://www.macromedia.com/software/jrun/">Macromedia
+          <para><ulink
+          url="http://www.macromedia.com/software/jrun/">Macromedia
           JRun</ulink> (commercial)</para>
         </listitem>
       </itemizedlist>
 
       <note>
-        <para>We recommend the <ulink url="http://www.caucho.com">Caucho Resin</ulink>
-        application server if you&#39;re not familiar with other Servlet
-        containers or if you&#39;re new to Java/J2EE application servers.
-        It&#39;s an easy to install, easy to use, and fast Servlet container
-        with advanced features that rival other more expensive application
-        servers such as WebLogic and WebSphere. Resin is free for development
-        use but requires a paid license before putting your application into
+        <para>We recommend the <ulink url="http://www.caucho.com">Caucho
+        Resin</ulink> application server if you're not familiar with other
+        Servlet containers or if you're new to Java/J2EE application servers.
+        It's an easy to install, easy to use, and fast Servlet container with
+        advanced features that rival other more expensive application servers
+        such as WebLogic and WebSphere. Resin is free for development use but
+        requires a paid license before putting your application into
         production use. Rest assured though that all Sparx-based applications
         you write, even on Resin, will remain app-server neutral.</para>
       </note>
@@ -211,77 +218,104 @@
       Frameworks do not require any particular Java IDE and if you prefer to
       use simple text editors like vi, emacs, or <ulink
       url="http://www.textpad.com">TextPad</ulink> those will work just as
-      well. We recommend the free <ulink url="http://www.eclipse.org">Eclipse</ulink>
-      IDE or very affordable and useful <ulink url="http://www.intellij.org">JetBrain’s
-      IDEA</ulink> for those who are not already familiar with other IDEs.</para>
+      well. We recommend the free <ulink
+      url="http://www.eclipse.org">Eclipse</ulink> IDE or very affordable and
+      useful <ulink url="http://www.intellij.org">JetBrain’s IDEA</ulink> for
+      those who are not already familiar with other IDEs.</para>
     </section>
 
     <section>
       <title>Evaluating NEFS Using the Sample Applications</title>
 
-      <para>To keep things simple, there&#39;s no special &#34;evaluation
-      kit&#34; for NEFS -- instead you just download a sample application from
-      <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
-      (click &#34;Downloads&#34; at the top of the page then pick &#34;Sample
-      Applications&#34; from the Downloads page). Once you download an
+      <para>To keep things simple, there's no special "evaluation kit" for
+      NEFS -- instead you just download a sample application from <ulink
+      url="http://www.netspective.com">http://www.netspective.com</ulink>
+      (click "Downloads" at the top of the page then pick "Sample
+      Applications" from the Downloads page). Once you download an
       application, just drop it into your favorite Servlet container
-      (application server) and you&#39;ll be ready for the evaluation. Each of
-      the sample applications are provided as app-server-independent <filename
-      class="extension">.war</filename> files and each sample app&#39;s
-      <filename class="extension">.war</filename> file includes all of the
-      NEFS binary files, resources, etc. you need to use NEF. Once you have
-      downloaded any <filename class="extension">.war</filename> file, you
-      have everything you need to start modifying and adding to the app. The
-      typical procedure is: <orderedlist><listitem><para>Download and install
-      an application server (Servlet container).</para></listitem><listitem><para>Go
-      to <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
-      (click &#34;Downloads&#34; at the top of the page then pick &#34;Sample
-      Applications&#34; from the Downloads page) and pick any application
-      you&#39;re interested in evaluating.</para></listitem><listitem><para>Download
-      the <filename class="extension">.war</filename> file and place it into
-      the app server&#39;s web applications directory.</para></listitem><listitem><para>Start
-      (or restart) the application server.</para></listitem><listitem><para>Use
-      your browser to point to http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>
-      to run the application or http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>/console
-      to run the application&#39;s Console servlet.</para></listitem></orderedlist></para>
+      (application server) and you'll be ready for the evaluation. Each of the
+      sample applications are provided as app-server-independent <filename
+      class="extension">.war</filename> files and each sample app's <filename
+      class="extension">.war</filename> file includes all of the NEFS binary
+      files, resources, etc. you need to use NEF. Once you have downloaded any
+      <filename class="extension">.war</filename> file, you have everything
+      you need to start modifying and adding to the app. The typical procedure
+      is: <orderedlist>
+          <listitem>
+            <para>Download and install an application server (Servlet
+            container).</para>
+          </listitem>
+
+          <listitem>
+            <para>Go to <ulink
+            url="http://www.netspective.com">http://www.netspective.com</ulink>
+            (click "Downloads" at the top of the page then pick "Sample
+            Applications" from the Downloads page) and pick any application
+            you're interested in evaluating.</para>
+          </listitem>
+
+          <listitem>
+            <para>Download the <filename class="extension">.war</filename>
+            file and place it into the app server's web applications
+            directory.</para>
+          </listitem>
+
+          <listitem>
+            <para>Start (or restart) the application server.</para>
+          </listitem>
+
+          <listitem>
+            <para>Use your browser to point to
+            http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>
+            to run the application or
+            http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>/console
+            to run the application's Console servlet.</para>
+          </listitem>
+        </orderedlist></para>
 
       <section>
         <title>Evaluating NEFS Sample Applications on Caucho Resin</title>
 
         <para>This section provides an overview of how to obtain, install, and
         start the <ulink url="http://www.caucho.com">Caucho Resin</ulink>
-        application server and the <emphasis>NEFS Enterprise Sampler</emphasis>
-        sample application. See the <ulink
+        application server and the <emphasis>NEFS Enterprise
+        Sampler</emphasis> sample application. See the <ulink
         url="http://www.caucho.com/resin-3.0/install/install.xtp#quickstart">Resin
-        QuickStart</ulink> document for the most up-to-date information.</para>
+        QuickStart</ulink> document for the most up-to-date
+        information.</para>
 
         <orderedlist>
           <listitem>
-            <para>Install JDK 1.3 or later if you&#39;re using Resin 2.1 or
-            above. JDK 1.4 or later if you&#39;re using Resin 3.0 or above. On
-            Unix, set the JAVA_HOME variable or link <filename
+            <para>Install JDK 1.3 or later if you're using Resin 2.1 or above.
+            JDK 1.4 or later if you're using Resin 3.0 or above. On Unix, set
+            the JAVA_HOME variable or link <filename
             class="directory">/usr/java</filename> to the Java home. On
             Windows, check to make sure the JDK installation set JAVA_HOME
             correctly.</para>
           </listitem>
 
           <listitem>
-            <para><ulink url="http://www.caucho.com/download/">Download</ulink>
-            the latest Resin release (something like <filename>resin-x.y.z.zip</filename>,
-            e.g. <filename>resin-3.0.4.zip</filename> or <filename>resin-3.0.4.tar.gz</filename>).</para>
+            <para><ulink
+            url="http://www.caucho.com/download/">Download</ulink> the latest
+            Resin release (something like
+            <filename>resin-x.y.z.zip</filename>, e.g.
+            <filename>resin-3.0.4.zip</filename> or
+            <filename>resin-3.0.4.tar.gz</filename>).</para>
           </listitem>
 
           <listitem>
             <para>Uncompress (unzip/untar) the package into <filename
             class="directory">resin-x.y.z</filename>, e.g. <filename
-            class="directory">C:\resin-3.0.4</filename>, or other directory.</para>
+            class="directory">C:\resin-3.0.4</filename>, or other
+            directory.</para>
           </listitem>
 
           <listitem>
             <para>Click <ulink
             url="http://www.netspective.com/resources/downloads/nefs-sampler.war">here</ulink>
             to download the <emphasis>Sampler</emphasis> sample application
-            and save it in <filename class="directory">resin-x.y.z\webapps</filename>.</para>
+            and save it in <filename
+            class="directory">resin-x.y.z\webapps</filename>.</para>
           </listitem>
 
           <listitem>
@@ -292,16 +326,18 @@
           </listitem>
 
           <listitem>
-            <para>Browse <ulink url="http://localhost:8080">http://localhost:8080</ulink>
-            to make sure Resin is working properly. If you do not see the
-            Resin welcome page, please see the <ulink
+            <para>Browse <ulink
+            url="http://localhost:8080">http://localhost:8080</ulink> to make
+            sure Resin is working properly. If you do not see the Resin
+            welcome page, please see the <ulink
             url="http://www.caucho.com/resin-3.0/install/index.xtp">Resin
             Installation</ulink> document for appropriate help. If Resin is
             not working properly, Sparx will not be able to run either.</para>
           </listitem>
 
           <listitem>
-            <para>Browse <ulink url="http://localhost:8080/nefs-sampler">http://localhost:8080/nefs-sampler</ulink>
+            <para>Browse <ulink
+            url="http://localhost:8080/nefs-sampler">http://localhost:8080/nefs-sampler</ulink>
             to run the application or <ulink
             url="http://localhost:8080/nefs-sampler/console">http://localhost:8080/nefs-sampler/console</ulink>
             to run the Hello Forms Console servlet.</para>
