@@ -7,11 +7,12 @@
   <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
 
   <bookinfo>
-    <title>Netspective Enterprise Frameworks 7.0 (NEF) User&#39;s Manual</title>
+    <title>Netspective Enterprise Frameworks 7.0 Release Candidate 1 (NEF)
+    User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-11-06 19:14:44 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-11-10 21:55:46 $)</releaseinfo>
 
-    <releaseinfo>This version is in DRAFT until November 15, 2003 when
+    <releaseinfo>This version is in DRAFT until November 30, 2003 when
     it&#39;s expected to be completed. Check back daily until then because
     material is being added regularly.</releaseinfo>
 
@@ -1674,7 +1675,7 @@
           <example>
             <title>Navigation Tags in the Presentation Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; <co
@@ -1843,7 +1844,7 @@ id="declare-nav-tags-eg-10" />
           <example>
             <title>Form Tags in Presentation Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">dialogs</emphasis> package=&#34;test&#34;&#62; <co
@@ -2008,7 +2009,7 @@ id="declare-form-tags-eg-8" />
           <example>
             <title>Query Tags in the Data Management Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">queries</emphasis> package=&#34;test&#34;&#62; <co
@@ -2114,7 +2115,7 @@ id="declare-data-query-static-eg-6" />
           <example>
             <title>Stored Procedure Tags in the Data Management Layer</title>
 
-            <programlisting>project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">stored-procedures</emphasis> package=&#34;pkg_test&#34;&#62; <co
@@ -2167,12 +2168,12 @@ id="declare-data-sp-eg-6" />
             </callout>
 
             <callout arearefs="declare-data-query-static-eg-4">
-              <para>The SQL, using standard JDBC syntax, for the stored
-              procedure call is placed in the XML. This way, all the JDBC call
-              statements are external from Java code. If some portion of the
-              stored procedure call is dynamic (such as the procedure name),
-              then portions of the JDBC call statement may be made replaceable
-              using Value Sources.</para>
+              <para role="xml">The SQL, using standard JDBC syntax, for the
+              stored procedure call is placed in the XML. This way, all the
+              JDBC call statements are external from Java code. If some
+              portion of the stored procedure call is dynamic (such as the
+              procedure name), then portions of the JDBC call statement may be
+              made replaceable using Value Sources.</para>
             </callout>
 
             <callout arearefs="declare-data-sp-eg-5">
@@ -2225,7 +2226,7 @@ id="declare-data-sp-eg-6" />
           <example>
             <title>Query Definition Tags in the Data Management Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">query-defn</emphasis> name=&#34;books&#34;&#62; <co
@@ -2290,7 +2291,7 @@ id="declare-data-query-defn-eg-3" />
           <example>
             <title>Schema Tags in the Data Management Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">schema</emphasis> name=&#34;db&#34;&#62; <co
@@ -2469,7 +2470,7 @@ id="declare-data-schema-eg-10" />
           <example>
             <title>Login an Authentication Tags in the Security Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">login-manager</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; <co
@@ -2572,7 +2573,7 @@ id="declare-security-login-mgr-eg-6" />
           <example>
             <title>Access Control and Authorization Tags in the Security Layer</title>
 
-            <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+            <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">access-control-list</emphasis> name=&#34;acl&#34;&#62; <co
@@ -2670,19 +2671,19 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Unit Testing and Demonstrating the Presentation Layer</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Unit Testing the Data Management Layer</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Unit Testing the Security Layer</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
     </section>
 
@@ -2791,7 +2792,7 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Generating Presentation Layer Code</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
@@ -2808,7 +2809,7 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Generating Security Layer code</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
     </section>
 
@@ -2834,19 +2835,19 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Customizing Presentation Layer Code</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Customizing Data Management Layer Code</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Customizing Security Layer Code</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
     </section>
 
@@ -2864,25 +2865,25 @@ id="declare-security-acl-eg-7" />
       <section>
         <title>Acceptance Testing</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Multi-user and Thread-safety Testing</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Regression Testing</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Load/Stress Testing</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
     </section>
 
@@ -2913,7 +2914,7 @@ id="declare-security-acl-eg-7" />
       <example>
         <title>Basic NEF Project File</title>
 
-        <programlisting>&#60;?xml version=&#34;1.0&#34;?&#62;
+        <programlisting role="xml">&#60;?xml version=&#34;1.0&#34;?&#62;
 
 &#60;<emphasis role="bold">project</emphasis> <emphasis role="bold">xmlns:xdm</emphasis>=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62; <co
 id="project-file-basic-eg-1" />
@@ -3032,7 +3033,7 @@ id="project-file-basic-eg-7" />
         <example>
           <title>Specifying a different location for the NEF Project File</title>
 
-          <programlisting>&#60;web-app&#62;
+          <programlisting role="xml">&#60;web-app&#62;
       ...
     &#60;servlet&#62;
         &#60;servlet-name&#62;SparxNavigationController&#60;/servlet-name&#62;
@@ -3239,6 +3240,70 @@ id="project-file-basic-eg-7" />
       </section>
 
       <section>
+        <title>XDM Tag Handlers and Extensibility</title>
+
+        <para>One of the principal goals of the XML Data Model is to allow
+        complete extensibility through normal Java inheritance and delegation.
+        Every XDM tag, with no exceptions, will be handled either by a
+        built-in or custom Java class or method. For example, the <sgmltag
+        class="starttag">project</sgmltag> tag is handled by the
+        <classname>com.netspective.sparx.Project</classname> class. If you
+        wanted to subclass the <classname>Project</classname> class and have
+        the <sgmltag class="starttag">project</sgmltag> tag instead use your
+        class as the tag handler all you would do is the following:</para>
+
+        <programlisting role="xml">&#60;project <emphasis role="bold">class=&#34;my.own.ProjectHandler&#34;</emphasis>&#62;
+  ...</programlisting>
+
+        <para>The example above shows how can, for any tag, simply subclass a
+        built-in class and replace an existing tag with a new handler. What
+        this allows you to do is to use the power of Java&#39;s OOP-based
+        inheritance and extend it to XML tags. Although you would rarely
+        replace the project tag with your own handler, it&#39;s very common to
+        replace things like navigation pages, dialogs, execution handlers,
+        validators, etc.</para>
+
+        <para>To replace a navigation page with your own (presumably to do
+        something that&#39;s no already built-in) you would simply create a
+        class that extends the <classname>com.netspective.sparx.navigate.NavigationPage</classname>
+        class and then add a <sgmltag class="attribute">class</sgmltag>
+        attribute to the <sgmltag class="starttag">page</sgmltag> tag. As long
+        as the class is located using the default Java class loading
+        mechanism, all the attributes, children, etc of the <sgmltag
+        class="starttag">page</sgmltag> tag will now be handled by your custom
+        class instead of the default class.</para>
+
+        <programlisting role="xml">&#60;project&#62;
+   &#60;navigation-tree name=&#34;myTree&#34; default=&#34;yes&#34;&#62;
+     &#60;page name=&#34;page1&#34; <emphasis role="bold">class=&#34;your.own.PageClass&#34;</emphasis> ...&#62;
+     ...</programlisting>
+
+        <para>To replace a dialog with your own you would simply create a
+        class that extends the <classname>com.netspective.sparx.form.Dialog</classname>
+        class and then add a <sgmltag class="attribute">class</sgmltag>
+        attribute to the <sgmltag class="starttag">dialog</sgmltag> tag. As
+        long as the class is located using the default Java class loading
+        mechanism, all the attributes, children, etc of the <sgmltag
+        class="starttag">dialog</sgmltag> tag will now be handled by your
+        custom class instead of the default class.</para>
+
+        <programlisting role="xml">&#60;project&#62;
+   &#60;dialogs package=&#34;myDialogs&#34;&#62;
+     &#60;dialog name=&#34;dialog1&#34; <emphasis role="bold">class=&#34;your.own.DialogClass&#34;</emphasis> ...&#62;
+     ...</programlisting>
+
+        <note>
+          <para>Every XDM tag is handled by a particular (usually unique) Java
+          class. Because every tag is handled by a Java class, every tag
+          allows the <sgmltag class="attribute">class</sgmltag> attribute to
+          override which class will handle that particular tag. So, if you see
+          any tag in any framework (Commons, Axiom, Sparx) that you want to
+          ehance, extend, or replace you may do so simply by supplying a
+          <sgmltag class="attribute">class</sgmltag> attribute to the tag.</para>
+        </note>
+      </section>
+
+      <section>
         <title>XDM Performance</title>
 
         <para>When engineers first learn about XML and the amount of
@@ -3273,13 +3338,13 @@ id="project-file-basic-eg-7" />
         <title>How XDM Tags Become Java Class Instances and Mutator Method
         Calls</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>XDM Tag Reference</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
@@ -3296,7 +3361,7 @@ id="project-file-basic-eg-7" />
           <title>How to use the <sgmltag class="starttag">xdm:include</sgmltag>
           tag</title>
 
-          <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+          <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 
     &#60;xdm:include file=&#34;/some/absolute/file.name&#34;/&#62; <co
 id="xdm-include-file-abs" />
@@ -3368,7 +3433,7 @@ id="xdm-include-template" /></programlisting>
         <example>
           <title>How to Pre-process an XDM file</title>
 
-          <programlisting>&#60;?xml version=&#34;1.0&#34;?&#62;
+          <programlisting role="xml">&#60;?xml version=&#34;1.0&#34;?&#62;
 &#60;?transform --xslt /an/absolute/file.xsl?&#62; <co
 id="xdm-pre-process-pi-file-abs" />
 &#60;?transform --xslt a/relative/file.xsl?&#62; <co
@@ -3417,7 +3482,7 @@ id="xdm-pre-process-pi-res-abs" />
         <example>
           <title>How to Use Global XDM Templates</title>
 
-          <programlisting>&#60;xdm:template name=&#34;test-template-1&#34;&#62; <co
+          <programlisting role="xml">&#60;xdm:template name=&#34;test-template-1&#34;&#62; <co
 id="xdm-template-define" /> <co id="xdm-template-name" />
     &#60;xdm:template-param name=&#34;param1&#34; default=&#34;4234&#34;/&#62; <co
 id="xdm-template-param-optional" />
@@ -3597,7 +3662,7 @@ id="xdm-template-consume-generic" /></programlisting>
         layer (like Navigation pages and Dialogs) so the following examples
         focus on that layer.</para>
 
-        <programlisting>&#60;dialog heading=&#34;<replaceable>session:myHeading</replaceable>&#34;&#62; <co
+        <programlisting role="xml">&#60;dialog heading=&#34;<replaceable>session:myHeading</replaceable>&#34;&#62; <co
 id="value-source-eg-1" />
     &#60;field type=&#34;text&#34; name=&#34;text-field&#34; caption=&#34;staticCaption&#34; default=&#34;<replaceable>request:varname</replaceable>&#34;/&#62; <co
 id="value-source-eg-2" />
@@ -3724,10 +3789,10 @@ id="value-source-eg-5" /></programlisting>
         class. For example, the following examples all produce the same
         results:</para>
 
-        <programlisting>&#60;field.text caption=&#34;ABC&#34;/&#62;
-&#60;field.text caption=&#34;static:ABC&#34;/&#62;
-&#60;field.text caption=&#34;string:ABC&#34;/&#62;
-&#60;field.text caption=”<classname>com.netspective.commons.value.source.StaticValueSource</classname>:ABC&#34;/&#62;</programlisting>
+        <programlisting role="xml">&#60;field type=&#34;text&#34; caption=&#34;ABC&#34;/&#62;
+&#60;field type=&#34;text&#34; caption=&#34;static:ABC&#34;/&#62;
+&#60;field type=&#34;text&#34; caption=&#34;string:ABC&#34;/&#62;
+&#60;field type=&#34;text&#34; caption=”<classname>com.netspective.commons.value.source.StaticValueSource</classname>:ABC&#34;/&#62;</programlisting>
       </section>
 
       <section>
@@ -3799,7 +3864,7 @@ id="value-source-eg-5" /></programlisting>
         you can use the following declartion in your <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
         file.</para>
 
-        <programlisting>&#60;project&#62;
+        <programlisting role="xml">&#60;project&#62;
     &#60;value-source class=&#34;<replaceable>my.value.source.MyValueSource</replaceable>&#34;/&#62;</programlisting>
       </section>
     </section>
@@ -3826,25 +3891,25 @@ id="value-source-eg-5" /></programlisting>
       <section>
         <title>Executing Ant Scripts through Console</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Executing Ant Scripts From the Command Line</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Executing Ant Scripts from within your IDE</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Automatically Executing Ant Scripts in Navigation Controller</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
     </section>
 
@@ -3953,7 +4018,7 @@ id="value-source-eg-5" /></programlisting>
               <title>Changing Application Runtime Environment Flags to
               Production</title>
 
-              <programlisting>&#60;web-app&#62;
+              <programlisting role="xml">&#60;web-app&#62;
       ...
     &#60;servlet&#62;
         &#60;servlet-name&#62;SparxNavigationController&#60;/servlet-name&#62;
@@ -3971,7 +4036,7 @@ id="value-source-eg-5" /></programlisting>
               <title>Changing Application Runtime Environment Flags to
               Production Maintenance</title>
 
-              <programlisting>&#60;web-app&#62;
+              <programlisting role="xml">&#60;web-app&#62;
       ...
     &#60;servlet&#62;
         &#60;servlet-name&#62;SparxNavigationController&#60;/servlet-name&#62;
@@ -4226,7 +4291,7 @@ id="value-source-eg-5" /></programlisting>
           </varlistentry>
         </variablelist>
 
-        <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
+        <programlisting role="xml">&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 ...
 
 &#60;<emphasis role="bold">navigation-tree</emphasis> name=&#34;app&#34; default=&#34;yes&#34;&#62; 
@@ -4264,8 +4329,7 @@ id="value-source-eg-5" /></programlisting>
 
           <para>If you have multiple navigation trees, which tree is actually
           used by the application may be specfied as a servlet parameter or
-          chosen dynamically at runtime based on some processing rules.
-          </para>
+          chosen dynamically at runtime based on some processing rules.</para>
 
           <section>
             <title>In the <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename>
@@ -4275,7 +4339,7 @@ id="value-source-eg-5" /></programlisting>
             <filename>APP_ROOT/WEB-INF/sparx/project.xml</filename> file just
             set the <sgmltag class="starttag">navigation-tree</sgmltag>
             <sgmltag class="attribute">default</sgmltag> attribute to <sgmltag
-            class="attvalue">yes</sgmltag>.<programlisting>&#60;navigation-tree name=&#34;myNavigationTree&#34; <emphasis
+            class="attvalue">yes</sgmltag>.<programlisting role="xml">&#60;navigation-tree name=&#34;myNavigationTree&#34; <emphasis
 role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           </section>
 
@@ -4287,7 +4351,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
             tree in the <filename>APP_ROOT/WEB-INF/web.xml</filename> file as
             part of the servlet configuration. This method allows you to
             define multiple servlets (sub applications) each with its own
-            navigation tree.<programlisting>&#60;servlet&#62;
+            navigation tree.<programlisting role="xml">&#60;servlet&#62;
     &#60;servlet-name&#62;<emphasis role="bold">SparxNavigationController</emphasis>&#60;/servlet-name&#62;
     &#60;servlet-class&#62;<emphasis role="bold">com.netspective.sparx.navigate.NavigationControllerServlet</emphasis>&#60;/servlet-class&#62;
     &#60;init-param&#62;
@@ -4320,7 +4384,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           it&#39;s unique name within it&#39;s parent and becomes part of the
           <emphasis>fully qualified path</emphasis> name of the page so it may
           be uniquely identified within the entire navigation tree. Assuming
-          you have the following definition:<programlisting>&#60;navigation-tree name=&#34;myTree&#34; default=&#34;yes&#34;&#62;
+          you have the following definition:<programlisting role="xml">&#60;navigation-tree name=&#34;myTree&#34; default=&#34;yes&#34;&#62;
     &#60;page name=&#34;A&#34; caption=&#34;Page A&#34;&#62;
         &#60;page name=&#34;X&#34; caption=&#34;Page 1 of Page A&#34;/&#62;
         &#60;page name=&#34;Y&#34; caption=&#34;Page 2 of Page A&#34;&#62;
@@ -4343,7 +4407,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           -- note that each of the <sgmltag class="attribute">name</sgmltag>
           attributes is simply appended to the parent&#39;s <sgmltag
           class="attribute">name</sgmltag> attribute to construct the
-          <emphasis>fully qualified path</emphasis>. </para>
+          <emphasis>fully qualified path</emphasis>.</para>
 
           <itemizedlist>
             <listitem>
@@ -4482,10 +4546,11 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
           <example>
             <title>Using the <sgmltag class="starttag">page</sgmltag> <sgmltag
-            class="attribute">caption</sgmltag>, <sgmltag class="attribute">heading</sgmltag>,
-            and <sgmltag class="attribute">title</sgmltag> attributes</title>
+            class="attribute">tag&#39;s caption</sgmltag>, <sgmltag
+            class="attribute">heading</sgmltag>, and <sgmltag
+            class="attribute">title</sgmltag> attributes</title>
 
-            <programlisting>&#60;page name=&#34;X&#34; caption=&#34;page X&#34;/&#62;
+            <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;page X&#34;/&#62;
 &#60;page name=&#34;Y&#34; caption=&#34;session:someVar&#34; heading=&#34;heading for page Y&#34; /&#62;
 &#60;page name=&#34;Z&#34; caption=&#34;PageZ&#34; heading=&#34;heading for page Z&#34; title=&#34;vs-expr:${authenticated-user:name}&#39;s page&#34;/&#62;</programlisting>
           </example>
@@ -4495,17 +4560,17 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
       <section>
         <title>The Navigation Context</title>
 
-        <para></para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Transferring Page Flow to non-Sparx Content</title>
 
-        <para>Many times its desirable to have certain pages in a navigation
-        tree be sent to existing content either within your own application or
-        external to the application. Sparx allows the page tag to define page
-        transfers to other application resources (like other Servlets, JSPs,
-        etc.) or external sites.</para>
+        <para>Many times it&#39;s desirable to have certain pages in a
+        navigation tree be sent to existing content either within your own
+        application or external to the application. Sparx allows the page tag
+        to define page transfers to other application resources (like other
+        Servlets, JSPs, etc.) or external sites.</para>
 
         <section>
           <title>Redirect to an URL</title>
@@ -4526,14 +4591,14 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           because the <sgmltag class="attribute">redirect</sgmltag> attribute
           is a value source.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Java Home&#34; redirect=&#34;http\://java.sun.com&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Java Home&#34; redirect=&#34;http\://java.sun.com&#34;/&#62;</programlisting>
 
           <para>To redirect to a dynamic URL, use the following example. In
           this sample we&#39;ll redirect to whatever is in the request
           parameter called &#39;url&#39;. Note that we&#39;ll open a second
           window for this redirect.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic Redirect&#34; redirect=&#34;request:url&#34; target=&#34;anotherWindow&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Dynamic Redirect&#34; redirect=&#34;request:url&#34; target=&#34;anotherWindow&#34;/&#62;</programlisting>
         </section>
 
         <section>
@@ -4553,14 +4618,14 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           example. The <sgmltag class="attribute">forward</sgmltag>
           attribute&#39;s value is relative to the application root.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; forward=&#34;some/other/file.jsp&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; forward=&#34;some/other/file.jsp&#34;/&#62;</programlisting>
 
           <para>To forward to a resource based on a dynamic vlaue, use a value
           source specification instead of a static string. In the next example
           we&#39;ll forward to whatever resource is specified in the request
           parameter called &#39;url&#39;.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic forward&#34; forward=&#34;request:url&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Dynamic forward&#34; forward=&#34;request:url&#34;/&#62;</programlisting>
         </section>
       </section>
 
@@ -4589,14 +4654,14 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           The <sgmltag class="attribute">include</sgmltag> attribute&#39;s
           value is relative to the application root.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; include=&#34;a/file.jsp&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Another JSP Page&#34; include=&#34;a/file.jsp&#34;/&#62;</programlisting>
 
           <para>To include a resource based on a dynamic vlaue, use a value
           source specification instead of a static string. In the next example
           we&#39;ll simply include whatever resource is specified in the
           request parameter called &#39;url&#39;.</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Dynamic include&#34; include=&#34;request:url&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Dynamic include&#34; include=&#34;request:url&#34;/&#62;</programlisting>
         </section>
 
         <section>
@@ -4613,18 +4678,18 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
           <para>To display a dialog, obtain input, and include its content
           use:</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Add Record&#34; command=&#34;dialog,person.contact-info,add&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Add Record&#34; command=&#34;dialog,person.contact-info,add&#34;/&#62;</programlisting>
 
           <para>To run a <sgmltag class="starttag">query</sgmltag> and display
           its contents in a report use:</para>
 
-          <programlisting>&#60;page name=&#34;X&#34; caption=&#34;Run Query&#34; command=&#34;query,person.self-contact-info&#34;/&#62;</programlisting>
+          <programlisting role="xml">&#60;page name=&#34;X&#34; caption=&#34;Run Query&#34; command=&#34;query,person.self-contact-info&#34;/&#62;</programlisting>
         </section>
 
         <section>
           <title>Show Portal-like Pages using Panels</title>
 
-          <para>TODO: coming soon...</para>
+          <para>TODO: documentation coming soon...</para>
         </section>
 
         <section>
@@ -4650,26 +4715,26 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         <section>
           <title>Body Handlers</title>
 
-          <para>TODO: coming soon...</para>
+          <para>TODO: documentation coming soon...</para>
         </section>
       </section>
 
       <section>
         <title>Conditionally Displaying or Hiding Pages</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Navigation Skins</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
         <title>Custom Pages, Bodies, and Body Handlers</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
@@ -4684,7 +4749,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
         the following descriptors in the <filename>APP_ROOT/WEB-INF/web.xml</filename>
         file:</para>
 
-        <programlisting>&#60;web-app&#62;
+        <programlisting role="xml">&#60;web-app&#62;
 
     &#60;servlet&#62;
         &#60;servlet-name&#62;<emphasis role="bold">SparxNavigationController</emphasis>&#60;/servlet-name&#62;
@@ -4717,7 +4782,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
         <orderedlist>
           <listitem>
-            <para>TODO: coming soon...</para>
+            <para>TODO: documentation coming soon...</para>
           </listitem>
         </orderedlist>
 
@@ -4734,7 +4799,7 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
 
         <orderedlist>
           <listitem>
-            <para>TODO: coming soon...</para>
+            <para>TODO: documentation coming soon...</para>
           </listitem>
         </orderedlist>
       </section>
@@ -4753,77 +4818,335 @@ role="bold">default=&#34;yes&#34;</emphasis>/&#62;</programlisting></para>
       <section id="dialogs">
         <title>Overview</title>
 
-        <para>Defining the dialog in the Project File s the first step towards
-        creating a dialog. Dialogs are defined with the <emphasis role="bold">&#60;dialog&#62;</emphasis>
-        tag and each dialog must belong to a package of dialogs represented by
-        the <emphasis role="bold">&#60;dialogs&#62;</emphasis> tag. The
-        following is a sample dialog entry from the <emphasis>web-cura</emphasis>
-        sample application: <programlisting>
+        <para>Defining the dialog in the Project File is the first step
+        towards creating a dialog. Dialogs are defined using the <sgmltag
+        class="starttag">dialog</sgmltag> tag and each dialog must belong to a
+        package of dialogs represented by the <sgmltag class="starttag">dialogs</sgmltag>
+        tag. For example: <programlisting role="xml">&#60;project&#62;
+    ....
     &#60;dialogs package=&#34;train&#34;&#62;
         &#60;dialog name=&#34;test&#34; heading=&#34;Add Account&#34;&#62;
-            &#60;field.text name=&#34;org_code&#34; caption=&#34;Account Code&#34; required=&#34;yes&#34; default=&#34;request:myval&#34;/&#62;
-            &#60;field.select name=&#34;org_type&#34; caption=&#34;Type&#34; style=&#34;multidual&#34; choices=&#34;query:org.enum-types-all&#34;/&#62;
-            &#60;field.integer name=&#34;employees&#34; caption=&#34;Employees&#34; min=&#34;10&#34; max=&#34;20&#34;/&#62;
+            &#60;field type=&#34;text&#34; name=&#34;org_code&#34; caption=&#34;Account Code&#34; required=&#34;yes&#34; default=&#34;request:myval&#34;/&#62;
+            &#60;field type=&#34;select&#34; name=&#34;org_type&#34; caption=&#34;Type&#34; style=&#34;multidual&#34; choices=&#34;query:org.enum-types-all&#34;/&#62;
+            &#60;field type=&#34;integer&#34; name=&#34;employees&#34; caption=&#34;Employees&#34; min=&#34;10&#34; max=&#34;20&#34;/&#62;
         &#60;/dialog&#62;
-    &#60;/dialogs&#62;
-        </programlisting></para>
+    &#60;/dialogs&#62;       </programlisting></para>
       </section>
 
       <section id="Dialogs-DataFields">
         <title>Dialog Fields</title>
 
-        <para>One can think of a dialog as a container/manager object
-        consisting of data fields which have their own behaviors and
-        properties. These data fields provide the flexibility to create
-        customized forms for data processing and it also provides the ability
-        to create new fields or modify existing ones. Currently the following
-        general fields are available: <itemizedlist><listitem><para>Text</para></listitem><listitem><para>Integer</para></listitem><listitem><para>Float</para></listitem><listitem><para>Date
+        <para>A dialog is as a container/manager object consisting of data
+        fields which have their own behaviors and properties. These data
+        fields provide the flexibility to create customized forms for data
+        processing and it also provides the ability to create new fields or
+        modify existing ones. Sparx fields are similar to HTML fields but are
+        far more powerful because they can format and validate themselves
+        according to rules that you declare. Currently the following general
+        fields are available: <itemizedlist><listitem><para>Text</para></listitem><listitem><para>Integer</para></listitem><listitem><para>Float</para></listitem><listitem><para>Date
         and Time</para></listitem><listitem><para>List</para></listitem><listitem><para>Checkbox</para></listitem><listitem><para>Radio
         Buttons</para></listitem></itemizedlist> Based on the fields listed
         above, there are fields which serve a more specific role also:
         <itemizedlist><listitem><para>Blood Pressure</para></listitem><listitem><para>Social
-        Security Number</para></listitem><listitem><para>Phone Number</para></listitem></itemizedlist>
-        All available fields can be seen in Console:</para>
+        Security Number</para></listitem><listitem><para>Phone Number</para></listitem></itemizedlist>Although
+        this section of the documention introduces you to many of the form
+        field types available in Sparx, there are still quite a few that it
+        does not cover in detail.</para>
 
-        <para>Every type of field available has its own both client-side and
-        server-side validation features. For example, an integer field allows
-        only numerical values into the field and a social security number
-        field only allows dashes and numeric digits. Aside from using the
-        built-in fields, <trademark>Sparx</trademark> provides a way to create
-        new fields using the <trademark>XAF</trademark>&#39;s Java class
-        called <classname>com.xaf.form.DialogField</classname>. The following
-        is a sample class definition for creating a dialog field:
-        <programlisting>
+        <section>
+          <title>Available Dialog Field Types</title>
 
-import com.xaf.form.*;
+          <para>To see a list of all of the field types available, please
+          visit the Enterprise Console <menuchoice><guimenu>Presentation</guimenu><guisubmenu>Dialogs</guisubmenu><guimenuitem>Form
+          Fields</guimenuitem></menuchoice> page.</para>
+        </section>
 
-public class NewField extends com.xaf.form.DialogField
-{
-    ...
-    ..
-}
+        <section>
+          <title>Attributes common to all Dialog Field Types</title>
 
-        </programlisting> The following XML entry must be added to the
-        dialog&#39;s package so that the dialog can access the field. The
-        following is an example of a dialog using the <classname>NewField</classname>:
-        <programlisting>
+          <para>The following list describes the set of attributes that are
+          allowed by default for all fields. Each field type (like a integer,
+          currency, or select) might define additional attributes for special
+          features but all fields share the attributes listed below.</para>
 
-    &#60;dialogs package=&#34;Test&#34;&#62;
-        &#60;register-field class=&#34;NewField&#34; tag-name=&#34;field.newfield&#34;/&#62;
-        &#60;dialog name=&#34;TestNewField&#34; heading=&#34;Test New Field&#34;&#62;
-            &#60;field.newfield name=&#34;new_field&#34; caption=&#34;My New Field&#34; ... /&#62;
-            ....
-            ...
-        &#60;/dialog&#62;
-    &#60;/dialogs&#62;
+          <variablelist>
+            <varlistentry>
+              <term><sgmltag class="attribute">name</sgmltag></term>
 
-        </programlisting> As shown above, the XML tag <sgmltag
-        class="starttag">register-field</sgmltag> is used to register the new
-        field. The attribute <sgmltag class="attribute">class</sgmltag> is
-        used to define the Java class for the new field and the <sgmltag
-        class="attribute">tag-name</sgmltag> attribute is used to define the
-        XML tag name. <note><para>Any new field being created must have an XML
-        element name that beings with <quote>field.</quote></para></note></para>
+              <listitem>
+                <para>The name of the field. If this field is a child of a
+                composite or grid field, the name provided is automatically
+                appended to the parent&#39;s name to create a unique name. The
+                actual name of the control when the HTML is generated is
+                usually <literal>_dc.fieldName</literal>.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">caption</sgmltag></term>
+
+              <listitem>
+                <para>The caption or label that describes the usage of the
+                field to the end user. If this field is a member of a
+                composite or grid field thn the caption will only show if the
+                parent field&#39;s show-child-caption is set to yes.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">default</sgmltag></term>
+
+              <listitem>
+                <para>The single value source (or list value source if
+                appropriate) that specifies the default value of the field.
+                The default value is the value that is pre-filled into a
+                dialog field when it is initially displayed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">hint</sgmltag></term>
+
+              <listitem>
+                <para>The text that will be shown to a user to provide a hint
+                as to the usage of the field. The exact behavior of this
+                attribute depends upon the skin being used, but typically the
+                contents of the hint attribute are shown right under the field
+                control.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">required</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the field is required or not. If the
+                field is specified as required, code is automatically
+                generated that will enforce this validation rule.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">read-only</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the field is read-only or not. If the
+                value is set to yes, then the field&#39;s value becomes a
+                static text string (will not generate a real HTML control). If
+                the value is set to browser then the appropriate HTML control
+                is still created but the control is marked read-only so the
+                browser will not allow the value to be changed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">hidden</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the field is hidden or not. As a
+                hidden field, the value of the field is still available to the
+                programmer, but there will no field caption/label or input
+                control available to the user.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">unavailable</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the field is available in the form or
+                not. As an unavailable field, there is no value available to
+                the programmer nor is there a caption/label, or control
+                available to the user. Setting a field to <sgmltag
+                class="attribute">unavailable</sgmltag>=<sgmltag
+                class="attvalue">yes</sgmltag> is almost like commenting out
+                the field because most dialog skins will not process invisible
+                fields. This flag is most useful within <sgmltag
+                class="starttag">conditional</sgmltag> tags that can make a
+                field disappear for security or other purposes.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">create-adjacent-area</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether to create a <sgmltag class="starttag">span</sgmltag>
+                element in the HTML adjacent to this field. If set to yes,
+                then a <sgmltag class="starttag">span</sgmltag> is created
+                with the complete name of this field plus the word
+                <literal>_adjacent</literal>. For example, if the field name
+                is <literal>customer_id</literal> then the adjacent area will
+                have the id <literal>customer_id_adjacent</literal>. This
+                attribute is very useful when defined in conjunction with
+                popup windows. For example, a popup window can allow a
+                selection and fill data in next to a field (in an adjacent
+                area).</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">col-break</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether a column break should be included
+                before or after this field. The actual behavior of this
+                attribute is determined by a skin, but typically if this field
+                is a primary (top-level) field, the column break will create a
+                dialog with multiple columns. If this field is a secondary
+                field (child of composite), then a simple line break will be
+                inserted between the composite siblings.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">identifier</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether or not to treat the contents of this
+                field as an identifier. An identifier is a field whose values
+                may only contain uppercase letters, numbers, and an
+                underscore.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">initial-focus</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether to set the initial focus of the dialog
+                to ths field. The last field to have this value set to yes (in
+                creation order) will have the focus when the dialog is first
+                displayed.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">persist</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether or not to automatically remember the
+                last contents of this field (as a browser cookie) for the next
+                time the user loads the dialog. This can be used in the place
+                of the default attribute when the user&#39;s last input value
+                should be used as the default for the field.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">size</sgmltag></term>
+
+              <listitem>
+                <para>The size (usually the number of characters) of text that
+                the control should display at any given time.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">max-length</sgmltag></term>
+
+              <listitem>
+                <para>The maximum length of data that the control should
+                allow.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">uppercase</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the input should be uppercased or not.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">lowercase</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the input should be lowercased or not.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">trim</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the input should be trimmed (all
+                leading and trailing white space removed).</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">mask-entry</sgmltag></term>
+
+              <listitem>
+                <para>Specifies whether the input should be masked when
+                entered. This means that data entry will be allowed but the
+                control will not show the input. This is useful when getting
+                passwords and other private data.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">validate-pattern</sgmltag></term>
+
+              <listitem>
+                <para>Specifies a Perl5 regular expression that should be
+                matched against the input data. This regular expression should
+                be of the form [m]/pattern/[i][m][s][x]. Please see the
+                Jakarta ORO API for more information about regular
+                expressions.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">validate-msg</sgmltag></term>
+
+              <listitem>
+                <para>Specifies the error message to display if a
+                validate-pattern is provided but the pattern does not match
+                the input.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="attribute">format-pattern</sgmltag></term>
+
+              <listitem>
+                <para>Specifies a Perl5 regular expression that should be used
+                to format the input for display on the screen. The pattern
+                should be of the form
+                s/pattern/replacement/[g][i][m][o][s][x]. Please see the
+                Jakarta ORO API for more information about regular
+                expressions.</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="starttag">client-js</sgmltag></term>
+
+              <listitem>
+                <para>Client-side JavaScript specification</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="starttag">conditional</sgmltag></term>
+
+              <listitem>
+                <para>Conditional processing declaration</para>
+              </listitem>
+            </varlistentry>
+
+            <varlistentry>
+              <term><sgmltag class="starttag">popup</sgmltag></term>
+
+              <listitem>
+                <para>Popup window and automatic fill-in of data specification</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </section>
 
         <section>
           <title>Examples</title>
@@ -4832,33 +5155,65 @@ public class NewField extends com.xaf.form.DialogField
           fields</title><para>The following is an example of a dialog
           containing general fields such as text, static, integer, float and
           specialized fields such as social security number and zip code.
-          <programlisting>
+          <programlisting role="xml">&#60;project&#62;
+    ....
+    &#60;dialogs package=&#34;test&#34;&#62;
+        &#60;dialog name=&#34;DialogTest_01_A&#34; retain-params=&#34;*&#34; hide-hints-until-focus=&#34;yes&#34;&#62;
+            &#60;frame heading=&#34;Test String Fields&#34;/&#62;
 
-&#60;dialog  name=&#34;Test1&#34; heading=&#34;Test Fields&#34; retain-params=&#34;*&#34;&#62;
-    &#60;field.separator heading=&#34;Text Fields&#34;/&#62;
-    &#60;field.text name=&#34;text_field_hidden&#34; hidden=&#34;yes&#34; default=&#39;request:id&#39;/&#62;
-    &#60;field.static name=&#34;static_field&#34; default=&#39;Static Field&#39;/&#62;
-    &#60;field.text name=&#34;text_field_required&#34; caption=&#34;Text Required&#34;
-        hint=&#34;Text field required&#34; required=&#34;yes&#34;/&#62;
-    &#60;field.text name=&#34;text_field&#34; caption=&#34;Text&#34; hint=&#34;Text field optional&#34;
-        max-length=&#34;5&#34; uppercase=&#34;yes&#34;/&#62;
-    &#60;field.text name=&#34;text_field_email&#34; caption=&#34;Text Email&#34;
-        hint=&#34;Text field with regular expression checking&#34;
-        validate-pattern=&#34;/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/&#34;
-        validate-msg=&#34;Invalid email format.&#34;/&#62;
-    &#60;field.email name=&#34;email_field&#34; caption=&#34;Email&#34;/&#62;
-    &#60;field.ssn name=&#34;ssn_field&#34; caption=&#34;SSN&#34;/&#62;
+            &#60;field type=&#34;separator&#34; heading=&#34;Text Fields&#34;/&#62;
 
-    &#60;field.separator heading=&#34;Numeric Fields&#34;/&#62;
-    &#60;field.integer name=&#34;integer_field&#34; caption=&#34;Integer Field&#34; hint=&#34;Integer field&#34;/&#62;
-    &#60;field.float name=&#34;float_field&#34; caption=&#34;Float Field&#34; hint=&#34;Float field&#34;/&#62;
-    &#60;field.zip name=&#34;zip_field&#34; caption=&#34;Zip Field&#34; hint=&#34;Zip code field&#34;/&#62;
-    &#60;director submit-caption=&#34;Submit&#34;/&#62;
-&#60;/dialog&#62;
+            &#60;field name=&#34;text_field_hidden&#34; type=&#34;text&#34; hidden=&#34;yes&#34; default=&#34;request:id&#34;/&#62;
+            &#60;field name=&#34;static_field1&#34; type=&#34;static&#34; caption=&#34;Static 1&#34; default=&#34;request:id&#34; 
+                   hint=&#34;Request attribute &#39;id&#39; value&#34;/&#62;
+            &#60;field name=&#34;static_field2&#34; type=&#34;static&#34; caption=&#34;Static 2 &#34; 
+                   default=&#34;Static Field&#39;s Value&#34;/&#62;
+            &#60;field name=&#34;text_field_required&#34; type=&#34;text&#34; caption=&#34;Text Required&#34;
+                hint=&#34;Text field is required when req param &#39;abc&#39; has value&#34;
+                default=&#34;conditional Required Text&#34; required=&#34;no&#34;&#62;
+                &#60;conditional action=&#34;apply-flags&#34; flags=&#34;required&#34; has-value=&#34;request:abc&#34;/&#62;
+            &#60;/field&#62;
 
-                </programlisting> The above example contains multiple fields
-          of various types and some of the attributes available for the
-          different types. The attribute <sgmltag class="attribute">retain-params</sgmltag>
+            &#60;field name=&#34;text_field&#34; type=&#34;text&#34; caption=&#34;Text&#34; 
+                                     hint=&#34;Text field optional (max-length=5, uppercase=yes)&#34; 
+                                     max-length=&#34;5&#34; uppercase=&#34;yes&#34;/&#62;
+
+            &#60;field name=&#34;email_field&#34; type=&#34;e-mail&#34; caption=&#34;Email&#34; hint=&#34;Email field&#34;/&#62;
+            &#60;field name=&#34;masked_field&#34; type=&#34;text&#34; caption=&#34;Masked Field&#34; mask-entry=&#34;yes&#34; hint=&#34;e.g password&#34;/&#62;
+
+            &#60;field name=&#34;properties&#34; type=&#34;html&#34; caption=&#34;HTML Template Field&#34;&#62;
+                &#60;body&#62;
+                    &#60;![CDATA[
+                    &#60;div class=&#39;textbox&#39;&#62;
+                    This is a FreeMarker template inside a dialog (1 + 1 = ${1 + 1}).
+                    &#60;/div&#62;]]&#62;
+                &#60;/body&#62;
+            &#60;/field&#62;
+
+            &#60;field type=&#34;separator&#34; heading=&#34;Numeric Fields&#34;/&#62;
+
+            &#60;field type=&#34;integer&#34; name=&#34;integer_field&#34; caption=&#34;Integer Field&#34; hint=&#34;Integer field&#34; persist=&#34;yes&#34;/&#62;
+            &#60;field type=&#34;float&#34; name=&#34;float_field&#34; caption=&#34;Float Field&#34; hint=&#34;Float field&#34;/&#62;
+
+            &#60;field type=&#34;currency&#34; name=&#34;currency_field1&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
+                negative-pos=&#34;after-symbol&#34; hint=&#34;Currency field (US) with negative sign after the symbol&#34;/&#62;
+            &#60;field type=&#34;currency&#34; name=&#34;currency_field2&#34; caption=&#34;Currency&#34; decimals-required=&#34;2&#34; default=&#34;123.45&#34;
+                negative-pos=&#34;before-symbol&#34; hint=&#34;Currency field (US) with negative sign before the symbol&#34;/&#62;
+
+            &#60;field type=&#34;phone&#34; name=&#34;phone_field1&#34; caption=&#34;Phone Field (dash format)&#34; strip-brackets=&#34;yes&#34; 
+                                style=&#34;dash&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
+            &#60;field type=&#34;phone&#34; name=&#34;phone_field2&#34; caption=&#34;Phone Field (bracket format)&#34; strip-brackets=&#34;yes&#34; 
+                                style=&#34;bracket&#34; hint=&#34;Phone field&#34; default=&#34;8001234567&#34;/&#62;
+
+            &#60;field type=&#34;zip-code&#34; name=&#34;zip_field&#34; caption=&#34;Zip Field&#34; hint=&#34;Zip code field&#34; default=&#34;12345&#34;/&#62;
+            &#60;field type=&#34;ssn&#34; name=&#34;ssn_field&#34; caption=&#34;SSN&#34; strip-dashes=&#34;yes&#34; default=&#34;999999999&#34; 
+                              hint=&#34;Social Security Number field&#34;/&#62;
+
+            &#60;director submit-caption=&#34;Submit&#34; style=&#34;acknowledge&#34;/&#62;
+        &#60;/dialog&#62;
+                </programlisting>The above example contains multiple fields of
+          various types and some of the attributes available for the different
+          types. The attribute <sgmltag class="attribute">retain-params</sgmltag>
           of the <sgmltag class="starttag">dialog</sgmltag> tag is useful for
           retaining field values (whether they were entered by the user or
           from value sources) as the dialog goes through its different stages
@@ -4878,52 +5233,54 @@ public class NewField extends com.xaf.form.DialogField
           <example><title>Memo, Date &#38; Time, Boolean fields</title><para>The
           following is a definition for a dialog which contains a memo field,
           several versions of the date and time field, and several versions of
-          the boolean field: <programlisting>
+          the boolean field: <programlisting role="xml">
 
 &#60;dialog name=&#34;Test2&#34; heading=&#34;Test Fields&#34; retain-params=&#34;*&#34;&#62;
-    &#60;field.separator name=&#34;Memo&#34; heading=&#34;Memo&#34;/&#62;
-    &#60;field.memo name=&#34;memo_field_01&#34; caption=&#34;Memo Field&#34;
+    &#60;separator name=&#34;Memo&#34; heading=&#34;Memo&#34;/&#62;
+    &#60;field type=&#34;memo&#34; name=&#34;memo_field_01&#34; caption=&#34;Memo Field&#34;
         max-length=&#34;5&#34;
         hint=&#34;Max length is 5 characters&#34;/&#62;
-    &#60;field.separator name=&#34;date_time_section&#34; heading=&#34;Date and Time Fields&#34;/&#62;
-    &#60;field.duration name=&#34;duration&#34; caption=&#34;Duration Field&#34;
+    &#60;separator name=&#34;date_time_section&#34; heading=&#34;Date and Time Fields&#34;/&#62;
+    &#60;field type=&#34;duration&#34; name=&#34;duration&#34; caption=&#34;Duration Field&#34;
         hint=&#34;Format is MM/dd/yyyy&#34;/&#62;
-    &#60;field.date name=&#34;date_field_strict&#34; caption=&#34;Date (Strict Year)&#34;
+    &#60;field type=&#34;date&#34; name=&#34;date_field_strict&#34; caption=&#34;Date (Strict Year)&#34;
         format=&#34;MM-dd-yyyy&#34;
         default=&#34;today&#34;
         hint=&#34;Format is MM-dd-yyyy&#34;/&#62;
-    &#60;field.date name=&#34;date_field_nonstrict&#34; caption=&#34;Date (Non-Strict Year)&#34;
+    &#60;field type=&#34;date&#34; name=&#34;date_field_nonstrict&#34; caption=&#34;Date (Non-Strict Year)&#34;
         format=&#34;MM/dd/yyyy&#34;
         strict-year=&#34;no&#34;
         default=&#34;today+1&#34;
         hint=&#34;Format is MM/dd/yyyy&#34;/&#62;
-    &#60;field.time name=&#34;time_field&#34; caption=&#34;Time&#34;
+    &#60;field type=&#34;time&#34; name=&#34;time_field&#34; caption=&#34;Time&#34;
         initial-focus=&#34;yes&#34;
         default=&#34;now&#34;
         hint=&#34;Format is HH:mm&#34;/&#62;
-    &#60;field.separator heading=&#34;Boolean Fields&#34;/&#62;
-    &#60;field.boolean name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34;/&#62;
-    &#60;field.boolean name=&#34;bool_field_alone&#34; caption=&#34;Boolean Field (Alone)&#34; style=&#34;checkalone&#34;/&#62;
-    &#60;field.boolean name=&#34;bool_field_combo&#34; caption=&#34;Boolean Field (Combo)&#34; style=&#34;combo&#34;/&#62;
+    &#60;separator heading=&#34;Boolean Fields&#34;/&#62;
+    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_radio&#34; caption=&#34;Boolean Field (Radio)&#34; style=&#34;radio&#34;/&#62;
+    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_alone&#34; caption=&#34;Boolean Field (Alone)&#34; style=&#34;checkalone&#34;/&#62;
+    &#60;field type=&#34;boolean&#34; name=&#34;bool_field_combo&#34; caption=&#34;Boolean Field (Combo)&#34; style=&#34;combo&#34;/&#62;
     &#60;director submit-caption=&#34;Submit&#34;/&#62;
 &#60;/dialog&#62;
 
                 </programlisting> <variablelist><varlistentry><term><sgmltag
-          class="element">field.memo</sgmltag></term><listitem><para>The
-          <sgmltag class="starttag">field.memo</sgmltag> is based on the HTML
-          TEXTAREA element and the attribute <sgmltag class="attribute">max-length</sgmltag>
-          is used to enforce the maximum number of characters allowed in the
-          memo field. Javascript client-side validations are done to enforce
-          the maximum number of characters allowed.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field.duration</sgmltag></term><listitem><para>The
-          duration field, <sgmltag class="starttag">field.duration</sgmltag>,
-          is used to allow entry of a begin date and an end date. It has
-          client-side validations to make sure that the date values are valid
-          and that beginning date field is before the end date field.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field.date</sgmltag></term><listitem><para>By
-          default date fields, <sgmltag class="starttag">field.date</sgmltag>
-          do not allow 2-digit years and this can be changed by setting the
-          attribute <sgmltag class="attribute">strict-year=&#34;no&#34;</sgmltag>.
+          class="element">field type=&#34;memo&#34;</sgmltag></term><listitem><para>The
+          <sgmltag class="starttag">field type=&#34;memo&#34;</sgmltag> is
+          based on the HTML TEXTAREA element and the attribute <sgmltag
+          class="attribute">max-length</sgmltag> is used to enforce the
+          maximum number of characters allowed in the memo field. Javascript
+          client-side validations are done to enforce the maximum number of
+          characters allowed.</para></listitem></varlistentry><varlistentry><term><sgmltag
+          class="element">field type=&#34;duration&#34;</sgmltag></term><listitem><para>The
+          duration field, <sgmltag class="starttag">field
+          type=&#34;duration&#34;</sgmltag>, is used to allow entry of a begin
+          date and an end date. It has client-side validations to make sure
+          that the date values are valid and that beginning date field is
+          before the end date field.</para></listitem></varlistentry><varlistentry><term><sgmltag
+          class="element">field type=&#34;date&#34;</sgmltag></term><listitem><para>By
+          default date fields, <sgmltag class="starttag">field
+          type=&#34;date&#34;</sgmltag> do not allow 2-digit years and this
+          can be changed by setting the attribute <sgmltag class="attribute">strict-year=&#34;no&#34;</sgmltag>.
           Also the format of a date field can be specified by setting the
           attribute <sgmltag class="attribute">format</sgmltag>. The value for
           <sgmltag class="attribute">format</sgmltag> is based on the
@@ -4936,52 +5293,54 @@ public class NewField extends com.xaf.form.DialogField
           present date. Any numerical operation defined after the special
           string is used to recalculate the default date (for example, &#34;<emphasis>today+1</emphasis>&#34;
           will display tomorrow&#39;s date)</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field.time</sgmltag></term><listitem><para>The time
-          field, <sgmltag class="starttag">field.time</sgmltag>, is used to
-          allow entry of a time value. It has client-side validations to make
-          sure that the time entered is valid. It also accepts the special
-          string &#34;<emphasis>now</emphasis>&#34; as a default value.</para></listitem></varlistentry><varlistentry><term><sgmltag
-          class="element">field.boolean</sgmltag></term><listitem><para>The
-          boolean field, <sgmltag class="starttag">field.boolean</sgmltag>,
-          represents different HTML elements: a single checkbox, a Yes/No
-          select list, and a Yes/No radio buttons. These different elements
-          are represented by the <sgmltag class="attribute">style</sgmltag>
-          attribute with the following values respectively:
-          <emphasis>radio</emphasis>, <emphasis>checkalone</emphasis>, and
-          <emphasis>combo</emphasis>. A &#34;No&#34; selection submits a value
-          of 0 and a &#34;Yes&#34; selection submits a value of 1.</para></listitem></varlistentry></variablelist>
+          class="element">field type=&#34;time&#34;</sgmltag></term><listitem><para>The
+          time field, <sgmltag class="starttag">field type=&#34;time&#34;</sgmltag>,
+          is used to allow entry of a time value. It has client-side
+          validations to make sure that the time entered is valid. It also
+          accepts the special string &#34;<emphasis>now</emphasis>&#34; as a
+          default value.</para></listitem></varlistentry><varlistentry><term><sgmltag
+          class="element">field type=&#34;boolean&#34;</sgmltag></term><listitem><para>The
+          boolean field, <sgmltag class="starttag">field
+          type=&#34;boolean&#34;</sgmltag>, represents different HTML
+          elements: a single checkbox, a Yes/No select list, and a Yes/No
+          radio buttons. These different elements are represented by the
+          <sgmltag class="attribute">style</sgmltag> attribute with the
+          following values respectively: <emphasis>radio</emphasis>,
+          <emphasis>checkalone</emphasis>, and <emphasis>combo</emphasis>. A
+          &#34;No&#34; selection submits a value of 0 and a &#34;Yes&#34;
+          selection submits a value of 1.</para></listitem></varlistentry></variablelist>
           The XML definition above is shown as:</para><para><mediaobject><imageobject><imagedata
           fileref="./resources/images/dialogs/test2.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
           <example><title>Select fields</title><para>The following is a XML
           definition example to show the different styles available for select
-          fields: <programlisting>
+          fields: <programlisting role="xml">
 
 &#60;dialog name=&#34;Test3&#34; heading=&#34;Test Fields&#34; retain-params=&#34;*&#34;&#62;
-    &#60;field.separator heading=&#34;Select Fields&#34; /&#62;
-    &#60;field.select name=&#34;sel_field_combo&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Combo)&#34;
+    &#60;separator heading=&#34;Select Fields&#34; /&#62;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_combo&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Combo)&#34;
         style=&#34;combo&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; prepend-blank=&#34;yes&#34; append-blank=&#34;yes&#34;
         /&#62;
-    &#60;field.select name=&#34;sel_field_radio&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Radio)&#34;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_radio&#34; read-only=&#34;no&#34; caption=&#34;Select Field (Radio)&#34;
         style=&#34;radio&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;A&#34;/&#62;
-    &#60;field.select name=&#34;sel_field_list&#34; read-only=&#34;no&#34; caption=&#34;Select Field (List)&#34;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; read-only=&#34;no&#34; caption=&#34;Select Field (List)&#34;
         style=&#34;list&#34; size=&#34;5&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;A&#34;/&#62;
-    &#60;field.select name=&#34;sel_field_multilist&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiList)&#34;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_multilist&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiList)&#34;
         style=&#34;multilist&#34; size=&#34;5&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34;
         default=&#34;A&#34;/&#62;
-    &#60;field.select name=&#34;sel_field_multicheck&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiCheck)&#34;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_multicheck&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiCheck)&#34;
         style=&#34;multicheck&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; default=&#34;B&#34;/&#62;
-    &#60;field.select name=&#34;sel_field_multidual&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiDual)&#34;
+    &#60;field type=&#34;select&#34; name=&#34;sel_field_multidual&#34; read-only=&#34;no&#34; caption=&#34;Select Field (MultiDual)&#34;
         style=&#34;multidual&#34; choices=&#34;Choice 1=A;Choice 2=B;Choice 3=C&#34; caption-left=&#34;Left Caption&#34;
         caption-right=&#34;Right Caption&#34; multi-width=&#34;100&#34;
         default=&#34;A&#34;/&#62;
      &#60;director submit-caption=&#34;Submit&#34;/&#62;
 &#60;/dialog&#62;
 
-                    </programlisting> The XML tag, <sgmltag class="starttag">field.select</sgmltag>,
-          is based upon the SELECT HTML element. It can be used as a list
-          capable of allowing the user to choose one selection or multiple
-          selections based on the configuration. There are six styles of
-          selection list available (<emphasis>combo</emphasis>,
+                    </programlisting> The XML tag, <sgmltag class="starttag">field
+          type=&#34;select&#34;</sgmltag>, is based upon the SELECT HTML
+          element. It can be used as a list capable of allowing the user to
+          choose one selection or multiple selections based on the
+          configuration. There are six styles of selection list available (<emphasis>combo</emphasis>,
           <emphasis>radio</emphasis>, <emphasis>list</emphasis>,
           <emphasis>multilist</emphasis>, <emphasis>multicheck</emphasis>, and
           <emphasis>multidual</emphasis>) and they can be defined using the
@@ -4999,7 +5358,7 @@ public class NewField extends com.xaf.form.DialogField
           result of a static query (the query must be defined elsewhere in the
           Project File). For example, the following SQL can be used as
           <emphasis>choices=&#34;query:test.user_list</emphasis> attribute
-          setting: <programlisting>
+          setting: <programlisting role="xml">
 
 &#60;sql-statements package=&#34;test&#34;&#62;
     &#60;statement name=&#34;user_list&#34;&#62;
@@ -5022,24 +5381,24 @@ public class NewField extends com.xaf.form.DialogField
           choice list and to append a blank to the choice list respectively.
           The following is a screenshot of the dialog defined above:</para><para><mediaobject><imageobject><imagedata
           fileref="./resources/images/dialogs/test3.jpg" format="JPEG" /></imageobject></mediaobject></para></example>
-          <example><title>Conditional fields</title><para><trademark>XAF</trademark>
-          provides a dynamic field displaying and hiding functionality which
-          is defined by the <sgmltag class="starttag">conditional </sgmltag>
-          XML element. The following is an example dialog definition:
-          <programlisting>
+          <example><title>Conditional fields</title><para>Sparx provides a
+          dynamic field displaying and hiding functionality which is defined
+          by the <sgmltag class="starttag">conditional </sgmltag> XML element.
+          The following is an example dialog definition: <programlisting
+          role="xml">
 
         &#60;dialog name=&#34;Test6&#34; heading=&#34;Test Conditionals&#34; loop=&#34;yes&#34;&#62;
-            &#60;field.select name=&#34;sel_field_list&#34; caption=&#34;Select Field (Combo)&#34; style=&#34;combo&#34;
+            &#60;field type=&#34;select&#34; name=&#34;sel_field_list&#34; caption=&#34;Select Field (Combo)&#34; style=&#34;combo&#34;
                 size=&#34;5&#34; choices=&#34;-;Choice 1=A;Choice 2=B;Choice 3=C&#34;/&#62;
-            &#60;field.text name=&#34;text_field&#34; caption=&#34;Hidden Text&#34; default=&#34;Here I am!&#34;&#62;
+            &#60;field type=&#34;text&#34; name=&#34;text_field&#34; caption=&#34;Hidden Text&#34; default=&#34;Here I am!&#34;&#62;
                 &#60;conditional action=&#34;display&#34; partner=&#34;sel_field_list&#34;
                  js-expr=&#34;control.selectedIndex != 0&#34;/&#62;
-            &#60;/field.text&#62;
-            &#60;field.boolean name=&#34;checkbox_field&#34; caption=&#34;Checkbox&#34; style=&#34;checkalone&#34; /&#62;
-            &#60;field.static name=&#34;static_field2&#34; default=&#34;Checkbox checked!&#34;&#62;
+            &#60;/field&#62;
+            &#60;field type=&#34;boolean&#34; name=&#34;checkbox_field&#34; caption=&#34;Checkbox&#34; style=&#34;checkalone&#34; /&#62;
+            &#60;field type=&#34;static&#34; name=&#34;static_field2&#34; default=&#34;Checkbox checked!&#34;&#62;
                 &#60;conditional action=&#34;display&#34; partner=&#34;checkbox_field&#34;
                  js-expr=&#34;control.checked == true&#34;/&#62;
-            &#60;/field.static&#62;
+            &#60;/field&#62;
         &#60;/dialog&#62;
 
                     </programlisting> In the above example, the text field
@@ -5078,21 +5437,20 @@ public class NewField extends com.xaf.form.DialogField
           flag should be cleared or set. The <sgmltag class="attribute">has-permission</sgmltag>
           and <sgmltag class="attribute"> lack-permission</sgmltag> attributes
           are used to modify the flag dependent upon the security access level
-          of the user. These two attributes can only be used when
-          <trademark>XAF</trademark>&#39;s security access control list is
-          being used.</para></example> <example><title>Popup field</title><para><trademark>Sparx</trademark>
-          provides a feature to display a popup dialog box when a popup icon
-          is clicked and values from a selection in the popup can be returned
-          to the main window. The following XML definition creates a field
-          that has a popup dialog associated with it:
-          <programlisting>
+          of the user. These two attributes can only be used when Sparx&#39;s
+          security access control list is being used.</para></example>
+          <example><title>Popup field</title><para>Sparx provides a feature to
+          display a popup dialog box when a popup icon is clicked and values
+          from a selection in the popup can be returned to the main window.
+          The following XML definition creates a field that has a popup dialog
+          associated with it: <programlisting role="xml">
 
     &#60;dialog name=&#34;Test7&#34; heading=&#34;Test Popup&#34; loop=&#34;yes&#34;&#62;
-        &#60;field.text name=&#34;text_field_1&#34; caption=&#34;Text Field 1&#34; /&#62;
-        &#60;field.text name=&#34;text_field_2&#34; caption=&#34;Text Field 2&#34; read-only=&#34;browser&#34;
+        &#60;field type=&#34;text&#34; name=&#34;text_field_1&#34; caption=&#34;Text Field 1&#34; /&#62;
+        &#60;field type=&#34;text&#34; name=&#34;text_field_2&#34; caption=&#34;Text Field 2&#34; read-only=&#34;browser&#34;
             hint=&#34;Click on the icon to select a value&#34;&#62;
             &#60;popup action=&#34;create-app-url:/textJS.html&#34; fill=&#34;text_field_1,text_field_2&#34;/&#62;
-        &#60;/field.text&#62;
+        &#60;/field&#62;
     &#60;/dialog&#62;
 
                     </programlisting> The above example displays a dialog with
@@ -5105,13 +5463,57 @@ public class NewField extends com.xaf.form.DialogField
           a popup window. The process through a value or multiple values being
           returned into the <emphasis>text_field_2</emphasis> is to invoke a
           Javascript method called <literal>populateValues()</literal>
-          provided by <trademark>Sparx</trademark>. The following is an
-          example of a HTML string to invoke the Javascript method:
-          <programlisting>
+          provided by Sparx. The following is an example of a HTML string to
+          invoke the Javascript method: <programlisting role="html">
 
     &#60;input type=&#34;button&#34; value=&#34;OK&#34; onClick=&#34;populateValues(&#39;This is the filled in text!&#39;);&#34;/&#62;
 
                     </programlisting></para></example></para>
+        </section>
+
+        <section>
+          <title>Custom Fields</title>
+
+          <para>Every type of field available has its own both client-side and
+          server-side validation features. For example, an integer field
+          allows only numerical values into the field and a social security
+          number field only allows dashes and numeric digits. Aside from using
+          the built-in fields, Sparx provides a way to create new fields using
+          the Java class called <classname>com.netspective.sparx.form.field.DialogField</classname>.
+          The following is a sample class definition for creating a dialog
+          field: <programlisting role="java">package my.form;
+
+import com.netspective.sparx.form.field.DialogField;
+
+public class NewField extends DialogField
+{
+    ...
+    ..
+}</programlisting> The following XML entry must be added to the dialog&#39;s
+          package so that the dialog can access the field. The following is an
+          example of a dialog using the <classname>NewField</classname>:
+          <programlisting role="xml">&#60;dialogs package=&#34;Test&#34;&#62;
+    &#60;dialog name=&#34;TestNewField&#34; heading=&#34;Test New Field&#34;&#62;
+        &#60;field <emphasis role="bold">class=&#34;my.form.NewField&#34;</emphasis> name=&#34;new_field&#34; caption=&#34;My New Field&#34; ... /&#62;
+        ....
+        ...
+    &#60;/dialog&#62;
+&#60;/dialogs&#62;     </programlisting>If you plan on using your new class
+          more than once, it may be more convenient to create a field type XDM
+          template. For example, you can use the <sgmltag class="attribute">field-type</sgmltag>
+          tag to register a field type and then use the <sgmltag
+          class="starttag">field</sgmltag> tag&#39;s <sgmltag
+          class="attribute">type</sgmltag> attribute to specify the form field
+          type.</para>
+
+          <programlisting role="xml">&#60;project&#62;
+    ...
+    <emphasis role="bold">&#60;field-type name=&#34;newField&#34; class=&#34;my.form.NewField&#34;/&#62;</emphasis>
+    ...
+    &#60;dialogs package=&#34;Test&#34;&#62;
+        &#60;dialog name=&#34;TestNewField&#34; heading=&#34;Test New Field&#34;&#62;
+            &#60;field <emphasis role="bold">type=&#34;newField&#34;</emphasis> name=&#34;new_field&#34; caption=&#34;My New Field&#34; ... /&#62;
+            ...</programlisting>
         </section>
       </section>
 
@@ -5236,7 +5638,7 @@ public class NewField extends com.xaf.form.DialogField
         <example>
           <title>Conditional fields dependent upon the Dialog&#39;s data mode</title>
 
-          <programlisting>&#60;dialog ...&#62;
+          <programlisting role="xml">&#60;dialog ...&#62;
     ...
     &#60;field type=&#34;text&#34; name=&#34;text_field_1&#34; caption=&#34;Text Field&#34; size=&#34;50&#34;
            hint=&#34;Read-only when ADD&#34; default=&#34;I guess the perspective is not &#39;add&#39;&#34;&#62;
@@ -5265,7 +5667,7 @@ public class NewField extends com.xaf.form.DialogField
         <example>
           <title>Setting a data command</title>
 
-          <programlisting>&#60;%
+          <programlisting role="xml">&#60;%
                     request.setAttribute(&#34;data_cmd&#34;, &#34;add&#34;); %&#62;
                     &#60;xaf:dialog name=&#34;registration&#34; /&#62;</programlisting>
         </example>
@@ -5303,23 +5705,21 @@ public class NewField extends com.xaf.form.DialogField
       <section id="Using-Dialog">
         <title>Using the dialog</title>
 
-        <para><trademark>Sparx</trademark> provides convenient yet flexible
-        ways to use and enhance the behavior of Dialog objects. The most
-        common usage of a dialog is to define the dialog in the
-        <filename>WEB-INF/ui/dialog.xml</filename> file and then to use the
-        JSP custom tag <emphasis role="bold">&#60;xaf:dialog&#62;</emphasis>
-        to invoke the dialog. <programlisting>
+        <para>Sparx provides convenient yet flexible ways to use and enhance
+        the behavior of Dialog objects. The most common usage of a dialog is
+        to define the dialog in the <filename>WEB-INF/ui/dialog.xml</filename>
+        file and then to use the JSP custom tag <emphasis role="bold">&#60;xaf:dialog&#62;</emphasis>
+        to invoke the dialog. <programlisting role="xml">
 
     &#60;xaf:dialog name=&#34;test.Test1&#34;/&#62;
 
             </programlisting> This utilizes the built-in functionality and
-        behavior of a <trademark>Sparx</trademark> dialog. The user does not
-        need to be concerned with various processes of a HTML form submittal
-        such as data validations, verifying the correct stage execution
-        (blocking redundant submittals), and processing the form&#39;s action.
-        The common way to define an action for a dialog is to insert the
-        action items within the dialog&#39;s start and end tags:
-        <programlisting>
+        behavior of a Sparx dialog. The user does not need to be concerned
+        with various processes of a HTML form submittal such as data
+        validations, verifying the correct stage execution (blocking redundant
+        submittals), and processing the form&#39;s action. The common way to
+        define an action for a dialog is to insert the action items within the
+        dialog&#39;s start and end tags: <programlisting role="xml">
 
          &#60;xaf:dialog name=&#34;test.Test1&#34;&#62;
             &#60;xaf:query name=&#34;MyQuery&#34; skin=&#34;report&#34;/&#62;
@@ -5327,8 +5727,7 @@ public class NewField extends com.xaf.form.DialogField
 
             </programlisting> The above snippet of JSP code describes a dialog
         which will execute a SQL query when it is submitted. Instead of a
-        query, one can also write pure Java code:
-        <programlisting>
+        query, one can also write pure Java code: <programlisting role="xml">
 
      &#60;xaf:dialog name=&#34;test.Test1&#34;&#62;
         &#60;%
@@ -5342,38 +5741,34 @@ public class NewField extends com.xaf.form.DialogField
         <para>Usually, the action of the dialog is defined outside of the
         definition of the dialog such as in the JSP but there is a way to
         define an action for a dialog within the <filename>WEB-INF/ui/dialog.xml</filename>.
-        The following is an example: <programlisting>
+        The following is an example: <programlisting role="xml">&#60;dialog name=&#34;Test4&#34; heading=&#34;Test Fields&#34; loop=&#34;yes&#34; retain-params=&#34;*&#34;&#62;
+    &#60;field type=&#34;report&#34; name=&#34;report_field&#34;&#62;
+        &#60;statement name=&#34;list&#34;&#62;
+            select 0 as &#34;checkbox&#34;, userid as &#34;ID&#34;, lname as &#34;Name&#34;
+            from users
 
-
-    &#60;dialog name=&#34;Test4&#34; heading=&#34;Test Fields&#34; loop=&#34;yes&#34; retain-params=&#34;*&#34;&#62;
-        &#60;field.report name=&#34;report_field&#34;&#62;
-            &#60;statement name=&#34;list&#34;&#62;
-                select 0 as &#34;checkbox&#34;, userid as &#34;ID&#34;, lname as &#34;Name&#34;
-                from users
-
-                &#60;report skin=&#34;eimo-report&#34;&#62;
-                    &#60;column type=&#34;checkbox&#34; align=&#34;center&#34; field-name=&#34;my_name&#34; field-value=&#34;my_name_row_${1}&#34;/&#62;
-                    &#60;column heading=&#34;ID&#34; output=&#34;abc% $ ${2}&#34; format=&#34;%&#34;/&#62;
-                    &#60;column heading=&#34;Last Name&#34; url=&#34;create-app-url:/${2}&#34; calc=&#34;count&#34;/&#62;
-                &#60;/report&#62;
-            &#60;/statement&#62;
-        &#60;/field.report&#62;
-    &#60;/dialog&#62;
-
-            </programlisting></para>
+            &#60;report skin=&#34;eimo-report&#34;&#62;
+                &#60;column type=&#34;checkbox&#34; align=&#34;center&#34; field-name=&#34;my_name&#34; field-value=&#34;my_name_row_${1}&#34;/&#62;
+                &#60;column heading=&#34;ID&#34; output=&#34;abc% $ ${2}&#34; format=&#34;%&#34;/&#62;
+                &#60;column heading=&#34;Last Name&#34; url=&#34;create-app-url:/${2}&#34; calc=&#34;count&#34;/&#62;
+            &#60;/report&#62;
+        &#60;/statement&#62;
+    &#60;/field&#62;
+&#60;/dialog&#62;
+         </programlisting></para>
 
         <section>
           <title>Using listeners</title>
 
-          <para><trademark>Sparx</trademark> provides a way to implement
-          business logic into the behavior of a dialog by providing a feature
-          called <emphasis>Listeners</emphasis>. A listener is a Java object
-          which is invoked when state changes occur in a dialog. It contains
-          various behavior methods such as execution, data validation, and
-          data population. All listeners must extend <trademark>XAF</trademark>&#39;s
-          listener class <classname>com.xaf.form.DefaultDialogContextListener</classname>.
+          <para>Sparx provides a way to implement business logic into the
+          behavior of a dialog by providing a feature called
+          <emphasis>Listeners</emphasis>. A listener is a Java object which is
+          invoked when state changes occur in a dialog. It contains various
+          behavior methods such as execution, data validation, and data
+          population. All listeners must extend Sparx&#39;s listener class
+          <classname>com.netspective.sparx.form.DefaultDialogContextListener</classname>.
           The following is an example of a listener used in a JSP:
-          <programlisting>
+          <programlisting role="jsp">
 
     request.setAttribute
     (&#34;test-listener&#34;, new DefaultDialogContextListener()
@@ -5399,15 +5794,14 @@ public class NewField extends com.xaf.form.DialogField
 
           <para>There could be times when the total built-in behavior of a
           dialog does not satisfy the requirements of a web application; thus
-          <trademark>Sparx</trademark> provides a way to create a dialog
-          object in Java. A dialog can be created using a Java class which
-          must extend the <trademark>XAF</trademark>&#39;s dialog class called
-          <classname>com.xaf.form.Dialog</classname>:
-          <programlisting>
+          Sparx provides a way to create a dialog object in Java. A dialog can
+          be created using a Java class which must extend the Sparx&#39;s
+          dialog class called <classname>com.netspective.sparx.form.Dialog</classname>:
+          <programlisting role="java">
 
 package Test;
 
-public class Test1  extends com.xaf.form.Dialog
+public class Test1  extends com.netspective.sparx.form.Dialog
 {
     ...
     ..
@@ -5417,7 +5811,7 @@ public class Test1  extends com.xaf.form.Dialog
           by overwriting the methods available or introducing new methods. The
           new dialog class can then be used by associating the class with a
           dialog definition in <filename>WEB-INF/ui/dialog.xml</filename>
-          file: <programlisting>
+          file: <programlisting role="xml">
 
         &#60;dialog name=&#34;TestDialog&#34; heading=&#34;Test Dialog&#34; class=&#34;Test.Test1&#34;&#62;
             ...
@@ -5478,7 +5872,7 @@ public class Test1  extends com.xaf.form.Dialog
             <para>The following example demonstrates a variety of ways that
             Sparx supports client-side validation through JavaScript. You can
             choose to either extend the existing JavaScript functionality or
-            override it.<programlisting>&#60;dialog name=&#34;DialogTest_12&#34; heading=&#34;Test Custom Javascript&#34;&#62;
+            override it.<programlisting role="xml">&#60;dialog name=&#34;DialogTest_12&#34; heading=&#34;Test Custom Javascript&#34;&#62;
     &#60;client-js href=&#34;create-app-url:/resources/images/scripts/eimo.js&#34;/&#62;
 
     &#60;field type=&#34;float&#34; name=&#34;float_field&#34; caption=&#34;Float&#34;&#62;
@@ -5538,49 +5932,49 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Themes and Skins</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Template Engines</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
   </chapter>
 
   <chapter>
     <title>Project Security Declarations</title>
 
-    <para>TODO: coming soon...</para>
+    <para>TODO: documentation coming soon...</para>
 
     <section>
       <title>Login Managers</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Authenticated Users and Personalization</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Access Control Lists</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Role-based Navigation Trees</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Role- and permission-based Forms and Fields</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
   </chapter>
 
@@ -5688,7 +6082,7 @@ public class Test1  extends com.xaf.form.Dialog
           and <emphasis role="bold">&#60;param&#62;</emphasis> are used to
           indicate the replacement values for the bind parameters. The
           following is an example of a SQL statement with two bind parameters
-          belonging to a sql package: <programlisting>
+          belonging to a sql package: <programlisting role="xml">
                 &#60;sql-statements package=&#34;user&#34;&#62;
                     &#60;statement name=&#34;info&#34;&#62;
                         select
@@ -5719,8 +6113,8 @@ public class Test1  extends com.xaf.form.Dialog
           <para>For the case where a SQL IN condition is necessary, a special
           parameter attribute is available. The attribute is called
           <emphasis>param-list</emphasis> and it follows the value source
-          format(param-list:paramIndex). For example:
-          <programlisting>
+          format(param-list:paramIndex). For example: <programlisting
+          role="xml">
         &#60;sql-statements package=&#34;user&#34;&#62;
             &#60;statement name=&#34;info&#34;&#62;
                 select
@@ -5782,8 +6176,8 @@ public class Test1  extends com.xaf.form.Dialog
           easily using the <emphasis>&#60;report&#62;</emphasis> XML tag .
           Column names can be assigned and the acutal result itself can be
           aligned or modified as a URL. An example is shown below for adding a
-          customized report for the query created above:
-          <programlisting>
+          customized report for the query created above: <programlisting
+          role="xml">
                 &#60;sql-statements package=&#34;user&#34;&#62;
                     &#60;statement name=&#34;info&#34;&#62;
                         select
@@ -5845,7 +6239,7 @@ public class Test1  extends com.xaf.form.Dialog
           <para>A custom tag called <emphasis role="bold">&#60;xaf:query&#62;</emphasis>
           is available to use a static query within a JSP file. The following
           is an example of using the query defined above inside a JSP:
-          <programlisting>
+          <programlisting role="xml">
     &#60;xaf:query name=&#34;user.info&#34; skin=&#34;report&#34; debug=&#34;no&#34;/&#62;
                     </programlisting></para>
         </section>
@@ -5869,7 +6263,7 @@ public class Test1  extends com.xaf.form.Dialog
             <para>By default a static query report can be created by including
             the query within a JSP and describing the report type.</para>
 
-            <programlisting>
+            <programlisting role="xml">
 
     &#60;xaf:query name=&#34;user.info&#34; skin=&#34;report&#34; debug=&#34;no&#34;/&#62;
 
@@ -5877,18 +6271,18 @@ public class Test1  extends com.xaf.form.Dialog
 
             <para>The <sgmltag class="attribute">skin</sgmltag> attribute
             determines how the report is displayed on the screen. For example,
-            the <programlisting> skin=&#34;report&#34; </programlisting> will
-            display the retrieved data in a report format (multiple rows with
-            column names as the first row) while
-            <programlisting> skin=&#34;text-csv&#34; </programlisting>
-            displays the retrieved data as comma seperated variables. A static
-            query report can also be created a result of a submit action of a
-            dialog. For example, by listing the static query customt tag
-            inside the custom dialog tag node, <sgmltag class="starttag">xaf:dialog</sgmltag>
-            , one can ensure that the query will only be executed when the
+            the <programlisting role="xml"> skin=&#34;report&#34; </programlisting>
+            will display the retrieved data in a report format (multiple rows
+            with column names as the first row) while <programlisting
+            role="xml"> skin=&#34;text-csv&#34; </programlisting> displays the
+            retrieved data as comma seperated variables. A static query report
+            can also be created a result of a submit action of a dialog. For
+            example, by listing the static query customt tag inside the custom
+            dialog tag node, <sgmltag class="starttag">xaf:dialog</sgmltag> ,
+            one can ensure that the query will only be executed when the
             dialog is submitted:</para>
 
-            <programlisting>
+            <programlisting role="xml">
 
     &#60;xaf:dialog name=&#34;test.test1&#34;&#62;
         &#60;xaf:query name=&#34;user.info&#34; skin=&#34;report&#34; debug=&#34;no&#34;/&#62;
@@ -5904,7 +6298,7 @@ public class Test1  extends com.xaf.form.Dialog
             data from the static query can be saved into a proceeding dialog.
             The following JSP sample is an example of this:</para>
 
-            <programlisting>
+            <programlisting role="xml">
     &#60;xaf:query name=&#34;user.info&#34; report=&#34;none&#34; store=&#34;form:*&#34; debug=&#34;no&#34;/&#62;
     &#60;xaf:dialog name=&#34;test.test1&#34;/&#62;
                     </programlisting>
@@ -5924,7 +6318,7 @@ public class Test1  extends com.xaf.form.Dialog
             following is an example of saving the data inside a request
             attribute:</para>
 
-            <programlisting>
+            <programlisting role="xml">
     &#60;xaf:query name=&#34;user.info&#34;
                 report=&#34;none&#34;
                 store=&#34;request-attr:userInfo&#34;
@@ -5947,9 +6341,9 @@ public class Test1  extends com.xaf.form.Dialog
           <para>NEF provides an alternative way to execute queries within a
           JSP document rather then using a <sgmltag class="starttag">xaf:query</sgmltag>
           custom tag. There are convenience methods provided within
-          <classname>com.xaf.sql.StatementManager</classname> class to execute
-          SQL queries. These methods can execute queries in the following
-          ways:</para>
+          <classname>com.netspective.sparx.sql.StatementManager</classname>
+          class to execute SQL queries. These methods can execute queries in
+          the following ways:</para>
 
           <itemizedlist>
             <listitem>
@@ -5967,10 +6361,11 @@ public class Test1  extends com.xaf.form.Dialog
             <title>Defined Query</title>
 
             <para>The following is an example of using the
-            <classname>com.xaf.sql.StatementManager</classname> class within a
-            JSP to execute a query defined in <filename>statement.xml</filename>:</para>
+            <classname>com.netspective.sparx.sql.StatementManager</classname>
+            class within a JSP to execute a query defined in
+            <filename>statement.xml</filename>:</para>
 
-            <programlisting>
+            <programlisting role="java">
 
         &#60;%
         DatabaseContext dbContext = DatabaseContextFactory.getSystemContext();
@@ -5985,7 +6380,7 @@ public class Test1  extends com.xaf.form.Dialog
             expecting the bind parameter from a request attribute called
             <literal>org_id</literal>):</para>
 
-            <programlisting>
+            <programlisting role="xml">
 
         &#60;%
         request.setAttribute(&#34;org_id&#34;, &#34;123&#34;);
@@ -6003,11 +6398,11 @@ public class Test1  extends com.xaf.form.Dialog
             <title>Passed In Query</title>
 
             <para>The following is an example of using the
-            <classname>com.xaf.sql.StatementManager</classname> class within a
-            JSP to execute a query which is passed in (not defined in
-            <filename>statement.xml</filename>):</para>
+            <classname>com.netspective.sparx.sql.StatementManager</classname>
+            class within a JSP to execute a query which is passed in (not
+            defined in <filename>statement.xml</filename>):</para>
 
-            <programlisting>
+            <programlisting role="java">
 
         &#60;%
         DatabaseContext dbContext = DatabaseContextFactory.getSystemContext();
@@ -6030,7 +6425,7 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Stored Procedures and Callable Statements</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
@@ -6072,7 +6467,7 @@ public class Test1  extends com.xaf.form.Dialog
         XML tag. Within this XML element, other XML element representations of
         column data fields, join tables and conditions, query definition
         dialog, conditions, and order fields are defined. The following is a
-        sample dynamic query definition: <programlisting>
+        sample dynamic query definition: <programlisting role="xml">
 
             &#60;query-defn id=&#34;Organization&#34;&#62;
                 &#60;!-- Fields --&#62;
@@ -6091,7 +6486,7 @@ public class Test1  extends com.xaf.form.Dialog
 
                 &#60;select-dialog name=&#34;org_search&#34; allow-debug=&#34;yes&#34; show-output-dests=&#34;no&#34;
                     hide-readonly-hints=&#34;yes&#34; heading=&#34;Search Accounts&#34;&#62;
-                    &#60;field.text query-field=&#34;org_code&#34;/&#62;
+                    &#60;field type=&#34;text&#34; query-field=&#34;org_code&#34;/&#62;
                     ...
                     ...
                     &#60;select&#62;
@@ -6180,8 +6575,8 @@ public class Test1  extends com.xaf.form.Dialog
         attribute is available: <itemizedlist><listitem><para><sgmltag
         class="attribute">field</sgmltag>:&#x00A0; The value for this
         attribute must correspond to one of the fields defined by the <sgmltag
-        class="starttag">field</sgmltag>. For example,
-        <programlisting>
+        class="starttag">field</sgmltag>. For example, <programlisting
+        role="xml">
 
     &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
     ...
@@ -6200,7 +6595,7 @@ public class Test1  extends com.xaf.form.Dialog
         <itemizedlist><listitem><para><sgmltag class="attribute">field</sgmltag>:&#x00A0;
         The value for this attribute must correspond to one of the fields
         defined by the <sgmltag class="starttag">field</sgmltag>. For example,
-        <programlisting>
+        <programlisting role="xml">
 
     &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
     ...
@@ -6233,7 +6628,7 @@ public class Test1  extends com.xaf.form.Dialog
         <sgmltag class="attvalue">is-defined</sgmltag>, <sgmltag
         class="attvalue">starts-with</sgmltag>, <sgmltag class="attvalue">ends-with</sgmltag>,
         and <sgmltag class="attvalue">not-equals</sgmltag>.</para></listitem></itemizedlist><para>For
-        example,</para><programlisting>
+        example,</para><programlisting role="xml">
 
         &#60;field id=&#34;org_id&#34; caption=&#34;Account ID&#34; join=&#34;org&#34; column=&#34;org_id&#34;/&#62;
         ...
@@ -6257,7 +6652,7 @@ public class Test1  extends com.xaf.form.Dialog
         Cancel button should be called.</para></listitem><listitem><para><sgmltag
         class="attribute">submit-caption</sgmltag>:&#x00A0; Defines what
         Submit button should be called.</para></listitem></itemizedlist>
-        <programlisting>
+        <programlisting role="xml">
 
     &#60;director submit-caption=&#34;Submit&#34; cancel-caption=&#34;Cancel&#34; cancel-url=&#34;/go&#34;/&#62;
 
@@ -6300,7 +6695,7 @@ public class Test1  extends com.xaf.form.Dialog
           <para>The query definition dialog can be used in a JSP using the
           custom tag <emphasis role="bold">&#60;xaf:query-select-dialog&#62;</emphasis>.
           For example, the following entry displays a query definition dialog
-          inside a JSP: <programlisting>
+          inside a JSP: <programlisting role="xml">
 
     &#60;xaf:query-select-dialog source=&#34;Order&#34; name=&#34;region_order_search&#34;/&#62;
 
@@ -6313,7 +6708,7 @@ public class Test1  extends com.xaf.form.Dialog
 
         <para>A dynamic query statement is generated from the query definition
         dialog and the resulting report can be configured in different ways.
-        <programlisting>
+        <programlisting role="xml">
 
     &#60;xaf:query-select-dialog source=&#34;Order&#34; name=&#34;region_order_search&#34;/&#62;
 
@@ -6425,7 +6820,7 @@ public class Test1  extends com.xaf.form.Dialog
         The Axiom DTD is located in <filename>resources/images/dtd/schema-markup.dtd</filename>
         and it needs to be referenced to create datatypes. The following is a
         sample header for <filename>Database/schema-src/datatypes.xml</filename>:
-        <programlisting>
+        <programlisting role="xml">
 
     &#60;?xml version=&#34;1.0&#34;?&#62;
     &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
@@ -6433,7 +6828,7 @@ public class Test1  extends com.xaf.form.Dialog
             </programlisting> The data types can be defined within the
         <sgmltag class="element">schema</sgmltag> XML tag. The following is an
         example of several common data types defined for a relational
-        database: <programlisting>
+        database: <programlisting role="xml">
 
     &#60;schema name=&#34;generic-datatypes&#34;&#62;
         &#60;datatype name=&#34;text&#34; test=&#34;1&#34;&#62;
@@ -6487,7 +6882,7 @@ public class Test1  extends com.xaf.form.Dialog
         object-orientation in relational databases. They can be created using
         the <sgmltag class="element">tabletype</sgmltag> tag. The following is
         an example of defining tables in <filename>Database/schema-src/tabletypes.xml</filename>:
-        <programlisting>
+        <programlisting role="xml">
 
     &#60;?xml version=&#34;1.0&#34;?&#62;
     &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
@@ -6574,8 +6969,7 @@ public class Test1  extends com.xaf.form.Dialog
         you create a table based on a table type, that table will include all
         the columns of the table type as well as its own. Each <sgmltag
         class="element">table</sgmltag> can be based on one or more table
-        types as shown in the following example:
-        <programlisting>
+        types as shown in the following example: <programlisting role="xml">
 
     &#60;table name=&#34;Person&#34; abbrev=&#34;Per&#34; type=&#34;Default&#34;&#62;
         &#60;description&#62;Any person (client, staff member, etc.)&#60;/description&#62;
@@ -6613,7 +7007,7 @@ public class Test1  extends com.xaf.form.Dialog
       <section>
         <title>Creating Relationships</title>
 
-        <para>TODO: coming soon...</para>
+        <para>TODO: documentation coming soon...</para>
       </section>
 
       <section>
@@ -6660,8 +7054,8 @@ public class Test1  extends com.xaf.form.Dialog
         relationships but a experienced DBA should be involved for the
         alteration of live schemas. The main XML file, <filename>Database/schema-src/schema.xml</filename>,
         which is used to generate the SQL DDL contains all the different
-        component XML files as shown in the example below:
-        <programlisting>
+        component XML files as shown in the example below: <programlisting
+        role="xml">
 
     &#60;?xml version=&#34;1.0&#34;?&#62;
     &#60;!DOCTYPE schema SYSTEM &#34;D:/projects/Framework/web-shared/resources/images/dtd/schema-markup.dtd&#34;&#62;
@@ -6695,13 +7089,13 @@ public class Test1  extends com.xaf.form.Dialog
     <section>
       <title>Connection Providers</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
 
     <section>
       <title>Database Policies</title>
 
-      <para>TODO: coming soon...</para>
+      <para>TODO: documentation coming soon...</para>
     </section>
   </chapter>
 
@@ -6743,11 +7137,11 @@ public class Test1  extends com.xaf.form.Dialog
       class="directory">web-app/Site/WEB-INF/classes</filename> (if JAR files
       are used, they must exist under <filename class="directory">web-app/Site/WEB-INF/lib</filename>
       directory). Servlets are named and mapped in <filename>Site/WEB-INF/web.xml</filename>
-      as shown below: <programlisting>
+      as shown below: <programlisting role="xml">
 
     &#60;servlet&#62;
         &#60;servlet-name&#62;Navigator&#60;/servlet-name&#62;
-        &#60;servlet-class&#62;com.xaf.navigate.NavigateFileSystemServlet&#60;/servlet-class&#62;
+        &#60;servlet-class&#62;com.netspective.sparx.navigate.NavigateFileSystemServlet&#60;/servlet-class&#62;
     &#60;/servlet&#62;
     &#60;servlet-mapping&#62;
         &#60;servlet-name&#62;Navigator&#60;/servlet-name&#62;
@@ -6757,21 +7151,22 @@ public class Test1  extends com.xaf.form.Dialog
         </programlisting> The above example is a built-in navigation servlet
       provided by Sparx and can be used to display directory listings.</para>
 
-      <para>Sparx provides an interface called <classname>com.xaf.page.ServletPage</classname>
-      and an implementing class called <classname>com.xaf.page.AbstractServletPage</classname>
+      <para>Sparx provides an interface called <classname>com.netspective.sparx.page.ServletPage</classname>
+      and an implementing class called <classname>com.netspective.sparx.page.AbstractServletPage</classname>
       to create web pages purely in Java. The <classname>AbstractServletPage</classname>
       class should be extended since it does not define any behavior (the
       methods are empty). For example, Console uses a class called
-      <classname>com.xaf.ace.AceServletPage</classname> which overwrites the
-      methods defined in <classname>AbstractServletPage</classname> such as
-      <methodname>handlePageHeader</methodname> and <methodname>handlePageMetaData</methodname>.
-      It also defines other methods such as <methodname>transform</methodname>
-      which can be used by other subclasses. Developers should create classes
-      extending <classname>com.xaf.page.AbstractServletPage</classname> and
-      then overwrite the various methods to define the functionality of each
-      page. The following is an example of the dialogs listing page in
-      Console: <example><title><classname>com.xaf.ace.AppDialogsPage
-      </classname> class</title><para><programlisting>
+      <classname>com.netspective.sparx.ace.AceServletPage</classname> which
+      overwrites the methods defined in <classname>AbstractServletPage</classname>
+      such as <methodname>handlePageHeader</methodname> and
+      <methodname>handlePageMetaData</methodname>. It also defines other
+      methods such as <methodname>transform</methodname> which can be used by
+      other subclasses. Developers should create classes extending
+      <classname>com.netspective.sparx.page.AbstractServletPage</classname>
+      and then overwrite the various methods to define the functionality of
+      each page. The following is an example of the dialogs listing page in
+      Console: <example><title><classname>com.netspective.sparx.ace.AppDialogsPage
+      </classname> class</title><para><programlisting role="java">
 
     public class AppDialogsPage extends AceServletPage
     {
@@ -6797,27 +7192,27 @@ public class Test1  extends com.xaf.form.Dialog
 
             </programlisting> The example above describes how a web page can
       be created by overwriting the various methods available in
-      <classname>com.xaf.ace.AceServletPage</classname> which extends the
-      <classname>com.xaf.page.AbstractServletPage</classname>. The
-      <classname>com.xaf.ace.AceServletPage</classname> defines the
-      functionality common to all pages in Console and the
+      <classname>com.netspective.sparx.ace.AceServletPage</classname> which
+      extends the <classname>com.netspective.sparx.page.AbstractServletPage</classname>.
+      The <classname>com.netspective.sparx.ace.AceServletPage</classname>
+      defines the functionality common to all pages in Console and the
       <classname>AppDialogsPage</classname> base class extending this class
       can define content specific to the page itself.</para></example></para>
 
-      <para>All pages created using <classname>com.xaf.page.AbstractServletPage</classname>
+      <para>All pages created using <classname>com.netspective.sparx.page.AbstractServletPage</classname>
       as a super class must be registered so that they can be navigated to
       through a servlet. Sparx provides a servlet class called
-      <classname>com.xaf.page.PageControllerServlet</classname>. This servlet
-      class contains a method called <methodname>registerPages</methodname>
+      <classname>com.netspective.sparx.page.PageControllerServlet</classname>.
+      This servlet class contains a method called <methodname>registerPages</methodname>
       which is used to register the Java defined web pages. For example,
       Console registers its pages through a servlet called
-      <classname>com.xaf.ace.AppComponentsExplorerServlet</classname> and the
-      servlet is registered in <filename>web.xml</filename>:
-      <programlisting>
+      <classname>com.netspective.sparx.ace.AppComponentsExplorerServlet</classname>
+      and the servlet is registered in <filename>web.xml</filename>:
+      <programlisting role="xml">
 
     &#60;servlet&#62;
         &#60;servlet-name&#62;AppComponentsExplorer&#60;/servlet-name&#62;
-        &#60;servlet-class&#62;com.xaf.ace.AppComponentsExplorerServlet&#60;/servlet-class&#62;
+        &#60;servlet-class&#62;com.netspective.sparx.ace.AppComponentsExplorerServlet&#60;/servlet-class&#62;
     &#60;/servlet&#62;
     &#60;servlet-mapping&#62;
         &#60;servlet-name&#62;AppComponentsExplorer&#60;/servlet-name&#62;
