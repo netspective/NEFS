@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Transform.java,v 1.1 2003-10-24 03:17:14 shahid.shah Exp $
+ * $Id: Transform.java,v 1.2 2003-11-14 19:45:09 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -52,8 +52,6 @@ import java.util.Iterator;
 import java.io.Writer;
 import java.io.IOException;
 import java.io.File;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Transformer;
@@ -196,7 +194,7 @@ public class Transform
         return source;
     }
 
-    public void setSource(ValueSource source)
+    public void setSourceResource(ValueSource source)
     {
         this.source = source;
         setSourceIsFile(false);
@@ -204,7 +202,7 @@ public class Transform
 
     public void setSourceFile(ValueSource source)
     {
-        setSource(source);
+        setSourceResource(source);
         setSourceIsFile(true);
     }
 
@@ -213,7 +211,7 @@ public class Transform
         return styleSheet;
     }
 
-    public void setStyleSheet(ValueSource styleSheet)
+    public void setStyleSheetResource(ValueSource styleSheet)
     {
         this.styleSheet = styleSheet;
         setStyleSheetIsFile(false);
@@ -221,7 +219,7 @@ public class Transform
 
     public void setStyleSheetFile(ValueSource styleSheet)
     {
-        setStyleSheet(styleSheet);
+        setStyleSheetResource(styleSheet);
         setStyleSheetIsFile(true);
     }
 
@@ -250,14 +248,14 @@ public class Transform
         }
     }
 
-    public void render(Writer writer, ValueContext vc) throws IOException
+    public void render(Writer writer, ValueContext vc, Map additionalParams) throws IOException
     {
-        render(writer, vc, null, true);
+        render(writer, vc, null, additionalParams, true);
     }
 
-    public boolean render(Writer writer, ValueContext vc, Source transformSource, boolean writeErrors) throws IOException
+    public boolean render(Writer writer, ValueContext vc, Source transformSource, Map additionalParams, boolean writeErrors) throws IOException
     {
-        if(source == null)
+        if(source == null && transformSource == null)
         {
             if(writeErrors)
                 writer.write("No source attribute provided.");
@@ -299,6 +297,15 @@ public class Transform
             {
                 StyleSheetParameter param = (StyleSheetParameter) params.get(i);
                 transformer.setParameter(param.getName(), param.getValue().getTextValue(vc));
+            }
+
+            if(additionalParams != null)
+            {
+                for(Iterator i = additionalParams.entrySet().iterator(); i.hasNext(); )
+                {
+                    Map.Entry entry = (Map.Entry) i.next();
+                    transformer.setParameter(entry.getKey().toString(), entry.getValue());
+                }
             }
 
             transformer.transform(transformSource != null ? transformSource : getStreamSource(source, vc, sourceIsFile),
