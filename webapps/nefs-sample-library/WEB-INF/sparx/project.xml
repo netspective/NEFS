@@ -45,6 +45,7 @@
         </page>
         <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="console"/>
+        <page name="sampler" caption="Sampler" redirect="../nefs-sampler"/>
     </navigation-tree>
 
     <dialogs package="library">
