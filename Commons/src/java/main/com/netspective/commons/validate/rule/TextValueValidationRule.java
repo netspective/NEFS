@@ -39,26 +39,43 @@
  */
 
 /**
- * $Id: TextValueValidationRule.java,v 1.4 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: TextValueValidationRule.java,v 1.5 2004-03-18 14:54:10 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
+
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Perl5Matcher;
 
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.validate.ValidationUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
 
-public class TextValueValidationRule extends BasicValidationRule
+public class TextValueValidationRule extends BasicValidationRule implements XmlDataModelSchema.ConstructionFinalizeListener
 {
-    private String invalidLengthMessage = "{0} must have a length between {1} and {2}.";
-    private String invalidRegExMessage = "{0} must match the format '{1}'.";
+    private String invalidLengthMessage = "{0} ({1}) must have a length between {2} and {3}.";
+    private String invalidRegExMessage = "{0} ({1}) must match the format {2}.";
     private int minLength = 0;
     private int maxLength = Integer.MAX_VALUE;
     private String regExpr;
+    private Pattern regExprPattern;
+    private boolean regExprPatternValid;
+    private Perl5Matcher regExprMatcher;
 
     public TextValueValidationRule()
     {
+    }
+
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
+    {
+        if(regExpr != null && ! regExprPatternValid)
+            pc.addError("Reg-expr '"+ regExpr +"' is not valid at " + pc.getLocator().getSystemId() + " line "+ pc.getLocator().getLineNumber());
     }
 
     public TextValueValidationRule(ValueSource caption)
@@ -114,6 +131,28 @@ public class TextValueValidationRule extends BasicValidationRule
     public void setRegExpr(String regExpr)
     {
         this.regExpr = regExpr;
+
+        if(regExpr != null)
+        {
+            regExprMatcher = new Perl5Matcher();
+            Perl5Compiler p5c = new Perl5Compiler();
+            try
+            {
+                regExprPattern = p5c.compile(regExpr);
+                regExprPatternValid = true;
+            }
+            catch (MalformedPatternException e)
+            {
+                regExprPattern = null;
+                regExprPatternValid = false;
+            }
+        }
+        else
+        {
+            regExprMatcher = null;
+            regExprPatternValid = true;
+            regExprPattern = null;
+        }
     }
 
     public boolean isValid(ValidationContext vc, Value value)
@@ -125,13 +164,13 @@ public class TextValueValidationRule extends BasicValidationRule
         if(!ValidationUtils.isInRange(text.length(), minLength, maxLength))
         {
             vc.addValidationError(value, getInvalidLengthMessage(),
-                                new Object[] { getValueCaption(vc), new Integer(minLength), new Integer(maxLength) });
+                                new Object[] { getValueCaption(vc), text, new Integer(minLength), new Integer(maxLength) });
             return false;
         }
 
-        if(regExpr != null && !ValidationUtils.matchRegexp(text, regExpr))
+        if(regExprPatternValid && !regExprMatcher.matches(text, regExprPattern))
         {
-            vc.addValidationError(value, getInvalidRegExMessage(), new Object[] { getValueCaption(vc), regExpr });
+            vc.addValidationError(value, getInvalidRegExMessage(), new Object[] { getValueCaption(vc), text, regExpr });
             return false;
         }
 
