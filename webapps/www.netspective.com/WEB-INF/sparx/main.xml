@@ -226,6 +226,19 @@
                 <page name="upgrading" caption="NEFS Upgrade Guide">
                     <body source="support/docs/upgrading.ftl"/>
                 </page>
+
+                <page name="api-docs" caption="NEFS API Docs">
+                    <summary>All of our API documentation is available online.</summary>
+                    <body source="support/docs/api-docs.ftl"/>
+                </page>
+
+                <page name="tutorials" caption="Sample Apps Tutorials">
+                    <summary>
+                        The sample applications demonstrate proper usage of NEFS and these tutorials
+                        provide directions on how to write those apps.
+                    </summary>
+                    <body source="support/docs/sample-apps-tutorials.ftl"/>
+                </page>
             </page>
             <page name="community" caption="Community (Forums)" redirect="http\://www.netspective.com/community"/>
             <page name="knowledge-base" caption="Knowledge Base" redirect="http\://www.netspective.com/community/kb.php"/>

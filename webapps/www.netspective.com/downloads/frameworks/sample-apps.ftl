@@ -17,7 +17,12 @@ adding to the app. In essence, you're getting the sample app and the NEFS evalua
     <#list sampleApps as app>
     <#if app.allowDownload>
     <tr valign=top>
-        <td><a href="${vc.rootUrl}/resources/downloads/${app.id}.war">${app.name}</a></td>
+        <td>
+            <a href="${vc.rootUrl}/resources/downloads/${app.id}.war">${app.name}.war</a>
+            <#if app.tutorialUrl?exists>
+                <br><br><a href="${app.tutorialUrl}" title="${app.tutorialDescr}">Tutorial</a>
+            </#if>
+        </td>
         <td>${app.descr}</td>
     </tr>
     </#if>

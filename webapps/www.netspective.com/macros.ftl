@@ -92,7 +92,10 @@
                      you to track the books you have and add more books to your collection or edit information stored about
                      existing books. It also allows you to search your collection for a particular book based on your own
                      custom search criteria. This application demonstrates how to create basic forms, perform validations, create
-                     tables, generate DDL, construct dynamic SQL, and other NEFS functionality."
+                     tables, generate DDL, construct dynamic SQL, and other NEFS functionality.",
+          'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/books-app-tutorial.html',
+          'tutorialName' : 'Books Sample App Tutorial',
+          'tutorialDescr' : 'Provides step by step instructions for how to build the Books sample application using NEFS.'
         },
 
         { 'id': "nefs-sample-library", 'name': "Library", 'allowTryOnline': true, 'allowDownload': true,

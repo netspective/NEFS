@@ -26,7 +26,11 @@ also '<code>console</code>'.
     <#if app.allowTryOnline>
     <tr valign=top>
         <td><a href="${samplesServer}/${app.id}">${app.name}</a></td>
-        <td><a href="${samplesServer}/${app.id}/console">Console</a></td>
+        <td><a href="${samplesServer}/${app.id}/console">Console</a>
+            <#if app.tutorialUrl?exists>
+                <br><br><a href="${app.tutorialUrl}" title="${app.tutorialDescr}">Tutorial</a>
+            </#if>
+        </td>
         <td>${app.descr}</td>
     </tr>
     </#if>

@@ -20,20 +20,14 @@
         <td>Provides a history of the changes to NEFS since 7.0 was released.</td>
     </tr>
 
+    <#list sampleApps as app>
+    <#if app.tutorialUrl?exists>
     <tr>
-        <td><a href="${resourcesPath}/support/docs/nef-javadocs/commons">Netspective Commons API</a></td>
-        <td>Netspective Commons Core Library Javadocs</td>
+        <td><a href="${app.tutorialUrl}">${app.tutorialName}</a></td>
+        <td>${app.tutorialDescr}</td>
     </tr>
-
-    <tr>
-        <td><a href="${resourcesPath}/support/docs/nef-javadocs/axiom">Netspective Axiom API</a></td>
-        <td>Netspective Axiom Data Management Service Javadocs</td>
-    </tr>
-
-    <tr>
-        <td><a href="${resourcesPath}/support/docs/nef-javadocs/sparx">Netspective Sparx API</a></td>
-        <td>Netspective Sparx Application Framework Javadocs</td>
-    </tr>
+    </#if>
+    </#list>
 
     <tr>
         <td><a href="http://www.netspective.com/old-devel/">Old developer.netspective.com site</a></td>
