@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StartsWithComparison.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: StartsWithComparison.java,v 1.2 2003-06-25 07:00:32 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic.comparison;
@@ -49,6 +49,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.ConcatenateValueSource;
 
 public class StartsWithComparison extends BinaryOpComparison
@@ -60,7 +61,11 @@ public class StartsWithComparison extends BinaryOpComparison
 
     public String getWhereCondExpr(ValueContext vc, QueryDefnSelect select, QueryDefnSelectStmtGenerator statement, QueryDefnCondition cond) throws QueryDefinitionException
     {
-        statement.addParam(new ConcatenateValueSource(null, cond.getValue(), "%"));
+        // create a new value source which will append '%' to the value of the conditional's value source
+        ConcatenateValueSource value = new ConcatenateValueSource(null, cond.getValue(), "%");
+        // pass the original value source specification to the new one
+        value.initialize(cond.getValue().getSpecification());
+        statement.addParam(value);
         String retString = "";
         String bindExpression = cond.getBindExpr();
         if(bindExpression != null && bindExpression.length() > 0)
