@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFieldValueSource.java,v 1.4 2003-07-03 22:03:08 aye.thu Exp $
+ * $Id: DialogFieldValueSource.java,v 1.5 2004-07-26 15:27:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -98,6 +98,11 @@ public class DialogFieldValueSource extends AbstractValueSource
     public PresentationValue getPresentationValue(ValueContext vc)
     {
         return new PresentationValue(getValue(vc));
+    }
+
+    public String getFieldName()
+    {
+        return fieldName;
     }
 
     public Value getValue(final ValueContext vc)
