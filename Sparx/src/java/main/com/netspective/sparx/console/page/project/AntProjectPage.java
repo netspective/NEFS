@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProjectPage.java,v 1.3 2003-08-04 15:47:33 shahid.shah Exp $
+ * $Id: AntProjectPage.java,v 1.4 2003-08-14 14:23:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -61,7 +61,7 @@ public class AntProjectPage extends ConsoleServletPage
 
     public AntProjectPage()
     {
-        getBodyType().setValue(NavigationPageBodyType.CUSTOM);
+        getBodyType().setValue(NavigationPageBodyType.OVERRIDE);
     }
 
     public AntProject getAntProject()

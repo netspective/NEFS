@@ -39,40 +39,15 @@
  */
 
 /**
- * $Id: NavigationPageBodyType.java,v 1.2 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPageEnterListener.java,v 1.1 2003-08-14 14:23:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.navigate;
+package com.netspective.sparx.navigate.listener;
 
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
 
-public class NavigationPageBodyType extends XdmEnumeratedAttribute
+public interface NavigationPageEnterListener extends NavigationPageListener
 {
-    private static final String[] VALUES = new String[] { "none", "override class", "custom handler", "command", "panel", "template", "forward", "include" };
-
-    public static final int NONE           = 0;
-    public static final int OVERRIDE       = 1;
-    public static final int CUSTOM_HANDLER = 2;
-    public static final int COMMAND        = 3;
-    public static final int PANEL          = 4;
-    public static final int TEMPLATE       = 5;
-    public static final int FORWARD        = 6;
-    public static final int INCLUDE        = 7;
-
-    public NavigationPageBodyType()
-    {
-    }
-
-    public NavigationPageBodyType(int valueIndex)
-    {
-        super(valueIndex);
-    }
-
-    public String[] getValues()
-    {
-        return VALUES;
-    }
-
-
+    public void enterNavigationPage(NavigationPage page, NavigationContext nc);
 }
-

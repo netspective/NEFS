@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.6 2003-08-11 07:12:44 aye.thu Exp $
+ * $Id: NavigationPath.java,v 1.7 2003-08-14 14:23:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -64,8 +64,18 @@ import java.util.Iterator;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
+import com.netspective.sparx.navigate.listener.NavigationPathListener;
+import com.netspective.sparx.navigate.listener.NavigationPathListenerPlaceholder;
+import com.netspective.sparx.navigate.listener.NavigationPathFinalizeContentsListener;
+import com.netspective.sparx.navigate.listener.NavigationPathMakeStateChangesListener;
+
 public class NavigationPath
 {
+    private static final Log log = LogFactory.getLog(NavigationPath.class);
+
     static public final String PATH_SEPARATOR = "/";
 
     public class State
@@ -99,6 +109,8 @@ public class NavigationPath
     private NavigationConditionalActions conditionalActions = new NavigationConditionalActions();
     private Map ancestorMap = new HashMap();
     private List ancestorsList = new ArrayList();
+    private List finalizeContentsListeners = new ArrayList();
+    private List makeStateChangesListeners = new ArrayList();
     private NavigationPath defaultChild;
     private boolean defaultChildOfParent;
     private int maxChildLevel;
@@ -109,10 +121,26 @@ public class NavigationPath
         flags = createFlags();
     }
 
+    public NavigationPathListener createListener()
+    {
+        return new NavigationPathListenerPlaceholder();
+    }
+
+    public void addListener(NavigationPathListener listener)
+    {
+        if(listener instanceof NavigationPathFinalizeContentsListener)
+            finalizeContentsListeners.add(listener);
+        else if(listener instanceof NavigationPathMakeStateChangesListener)
+            makeStateChangesListeners.add(listener);
+    }
+
     public void finalizeContents(NavigationContext nc)
     {
         for(int i = 0; i < childrenList.size(); i++)
             ((NavigationPath) childrenList.get(i)).finalizeContents(nc);
+
+        for (int i = 0; i < finalizeContentsListeners.size(); i++)
+            ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this, nc);
     }
 
     public void makeStateChanges(NavigationContext nc)
@@ -151,6 +179,9 @@ public class NavigationPath
             if (child.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
                 applyConditionals(child.getConditionals().getActions(), nc);
         }
+
+        for (int i = 0; i < makeStateChangesListeners.size(); i++)
+            ((NavigationPathMakeStateChangesListener) makeStateChangesListeners.get(i)).makeNavigationPathStateChanges(this, nc);
     }
 
     public State constructState()

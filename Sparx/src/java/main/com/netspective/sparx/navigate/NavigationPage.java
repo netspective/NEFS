@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.30 2003-08-11 07:12:44 aye.thu Exp $
+ * $Id: NavigationPage.java,v 1.31 2003-08-14 14:23:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -73,6 +73,9 @@ import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.template.TemplateProcessor;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.sparx.command.HttpServletCommand;
+import com.netspective.sparx.navigate.listener.NavigationPathListener;
+import com.netspective.sparx.navigate.listener.NavigationPageEnterListener;
+import com.netspective.sparx.navigate.listener.NavigationPageExitListener;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -185,10 +188,22 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     private TemplateProcessor bodyTemplate;
     private Command bodyCommand;
     private List pageTypesConsumed = new ArrayList();
+    private List customHandlers = new ArrayList();
+    private List enterListeners = new ArrayList();
+    private List exitListeners = new ArrayList();
 
     public NavigationPage()
     {
         super();
+    }
+
+    public void addListener(NavigationPathListener listener)
+    {
+        super.addListener(listener);
+        if(listener instanceof NavigationPageEnterListener)
+            enterListeners.add(listener);
+        else if(listener instanceof NavigationPageExitListener)
+            exitListeners.add(listener);
     }
 
     /* --- Templates consumption ------------------------------------------------------------------------------------*/
@@ -303,11 +318,15 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
                 }
             }
         }
+
+        for (int i = 0; i < enterListeners.size(); i++)
+            ((NavigationPageEnterListener) enterListeners.get(i)).enterNavigationPage(this, nc);
     }
 
     public void exitPage(NavigationContext nc)
     {
-
+        for (int i = 0; i < exitListeners.size(); i++)
+            ((NavigationPageExitListener) exitListeners.get(i)).exitNavigationPage(this, nc);
     }
 
     public void makeStateChanges(NavigationContext nc)
@@ -603,6 +622,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         this.bodyType = bodyType;
     }
 
+    public NavigationPageBodyHandler createBodyHandler()
+    {
+        return new NavigationPageDefaultCustomBodyHandler();
+    }
+
+    public void addBodyHandler(NavigationPageBodyHandler handler)
+    {
+        customHandlers.add(handler);
+        getBodyType().setValue(NavigationPageBodyType.CUSTOM_HANDLER);
+    }
+
     public HtmlLayoutPanel createPanels()
     {
         bodyPanel = new HtmlLayoutPanel();
@@ -676,8 +706,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
                 writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
                 break;
 
-            case NavigationPageBodyType.CUSTOM:
-                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class and the body type is set to CUSTOM but the page class does not override NavigationPage.handlePageBody(Writer, NavigationContext).");
+            case NavigationPageBodyType.OVERRIDE:
+                writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class and is set as override class but does not override handlePageBody().");
+                break;
+
+            case NavigationPageBodyType.CUSTOM_HANDLER:
+                for(int i = 0; i < customHandlers.size(); i++)
+                    ((NavigationPageBodyHandler) customHandlers.get(i)).handleNavigationPageBody(this, writer, nc);
                 break;
 
             case NavigationPageBodyType.COMMAND:

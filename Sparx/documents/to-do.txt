@@ -1,6 +1,7 @@
 * [IMPORTANT] read http://www.qos.ch/logging/thinkAgain.html on why we may need to revert to using log4j instead of Commons Logging for NDC/MDC support.
 * [IMPORTANT] ensure that "remember login" works within servlet contexts (servlet paths). right now, when you remember a login it sets the root path as the cookie path (BAD)
-* [IMPORTANT] updated all permissions checking routines (conditionals, etc) so that they do not directly access authenticated-user from the session but instead use the active login manager to get the authenticated user
+* [IMPORTANT] update all permissions checking routines (conditionals, etc) so that they do not directly access authenticated-user from the session but instead use the active login manager to get the authenticated user
+* [IMPORTANT] because navigation conditional actions must run very quickly (faster than even DialogFieldConditionals), consider splitting all the functions of NavigationConditional into separate objects/types
 * Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
