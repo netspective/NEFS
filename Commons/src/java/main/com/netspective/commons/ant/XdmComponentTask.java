@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentTask.java,v 1.3 2003-07-17 13:49:54 shahid.shah Exp $
+ * $Id: XdmComponentTask.java,v 1.4 2003-08-24 18:34:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -244,7 +244,7 @@ public abstract class XdmComponentTask extends Task
             throw new BuildException("No project resource or file attributes supplied (projectFile).");
 
         XdmComponent component = null;
-        int flags = XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
+        int flags = XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD | XdmComponentFactory.XDMCOMPFLAG_INSIDE_ANT;
 
         try
         {
