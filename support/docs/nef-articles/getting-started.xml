@@ -2,70 +2,92 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 <article>
-  <title>Getting Started with the Netspective Enterprise Frameworks (NEF)</title>
+  <title>Getting Started with the Netspective Enterprise Frameworks Suite
+  (NEFS)</title>
 
-  <para>The quickest way to evaluate the NEF is to view all the documentation
-  online and follow along with the online versions of the applications created
-  in the tutorials. The main advantages of this method are simplicity and
-  speed. Since all you need is a web browser, you can start learning about NEF
-  immediately. You will also be introduced to NEF&#39;s built-in remote
-  development and team programming capabilities. The disadvantage is that you
-  will not have the ability to dabble in or change the application code
-  yourself.</para>
+  <para>The <emphasis>quickest</emphasis> way to evaluate the NEFS is to view
+  all the documentation online and follow along with the online versions of
+  the sample applications. Since all you need is a web browser, you can start
+  learning about NEFS immediately. Because the applications are online, you
+  will also be introduced to NEF&#39;s built-in remote development and team
+  programming capabilities by seeing for yourself how you can review code and
+  applications remotely. The sole disadvantage of the online evaluation is
+  that you will not have the ability to dabble in or change the application
+  code yourself.</para>
 
-  <para>The recommended method of evaluating NEF is to download sample
-  applications and install them in your own application server. The main
-  advantage of using this method is that you will get a good hands-on look at
-  NEF and, by the time you are through with the documentation and tutorials,
-  you will be well on your way to developing your own applications using NEF.
-  The only disadvantage is that you’ll need to download and install a Java
-  Developer’s Kit (JDK), an application server, and one or more NEF sample
-  applications on your own server.</para>
-
-  <note>
-    <para>Each of the downloadable sample applications are provided as
-    app-server-independent <filename>.war</filename> files. Each sample
-    app&#39;s <filename>.war</filename> file includes all of the NEF binary
-    files, resources, and everything you need to use NEF. Once you have
-    downloaded any <filename>.war</filename> file, you have everything you
-    need to start modifying and adding to the app.</para>
-  </note>
+  <para>The <emphasis>recommended</emphasis> method of evaluating the NEF is
+  to download sample applications and install them in your own application
+  server. Each of the downloadable sample applications are provided as
+  app-server-independent <filename>.war</filename> files. Each sample
+  app&#39;s <filename>.war</filename> file contains everything you need,
+  including all of the NEFS binaries, third-party libraries, and resources, to
+  start using NEFS immediately. Once you have downloaded any
+  <filename>.war</filename> file from our website, you have everything you
+  need to start modifying and adding to the app. There is even a special
+  sample application called the <emphasis>NEFS Starter</emphasis> that allows
+  you to start writing your own applications using an empty template app.</para>
 
   <section>
-    <title>Using the Netspective Enterprise Sampler to Sample the NEF Online</title>
+    <title>Sampling the NEFS Online</title>
 
-    <para>The <emphasis>Enterprise Sampler</emphasis> application (available
-    at <ulink url="http://www.netspective.com/sampler">http://www.netspective.com/sampler</ulink>) is an NEF
-    application that helps you navigate your way through all the NEF sample
-    applications, test beds, and starter projects. The Sampler may also be
-    used to obtain both the latest and archived releases of the Frameworks.</para>
+    <para>The <emphasis>Enterprise Sampler</emphasis> application, available
+    at <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
+    (by clicking the <emphasis>Try Online</emphasis> link), is the first NEFS
+    sample application that you should try because it&#39;s designed to help
+    sample important components of the presentation and user interfaces
+    features of our Frameworks. The application contains complete instructions
+    on what&#39;s available to sample and links to important features.</para>
 
     <screenshot>
       <graphic fileref="./resources/images/screen-sampler-home.gif" />
     </screenshot>
 
     <section>
-      <title>Viewing Source Code in a Browser</title>
+      <title>Running the Sample Applications Online</title>
+
+      <para>All of the NEFS sample application are available at <ulink
+      url="http://www.netspective.com">http://www.netspective.com</ulink> (by
+      clicking the <emphasis>Try It Online</emphasis> link from the Home
+      page). Each of the sample applications have two links: one is a link to
+      the application itself and the other is a link to it&#39;s
+      <emphasis>Console</emphasis> Servlet.</para>
+    </section>
+
+    <section>
+      <title>Viewing XML Source Code in the Sampler</title>
+
+      <para>The NEFS uses simple XML tags as its object construction and
+      declaration language. The <emphasis>Enterprise Sampler</emphasis>
+      application provides links on every page that allow you to learn how a
+      few simple lines of XML can produce sophisticated web based
+      applications.</para>
+    </section>
+
+    <section>
+      <title>Viewing Other Source Code and Application Files in a Browser</title>
 
       <para>The Netspective administration console, called the
       <emphasis>Enterprise Console</emphasis>, provides a complete file
       browser with color syntax highlighting for XML, JSP, Java, JavaScript,
       and SQL files – this file browser allows you to review source code for
-      sample applications at <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>
-      or locally if you downloaded the sample applications.</para>
+      online sample applications or locally if you downloaded the sample
+      applications.</para>
 
-      <para>The Enterprise Console is a Sparx Servlet that provides a
+      <para>The Enterprise Console is a special Sparx Servlet that provides a
       browser-based administrative interface to all of the dynamic components
-      and objects that NEF produces. The Enterprise Console is automatically
-      available to all NEF-based applications during development and each NEF
+      and objects that NEFS produces. The Enterprise Console is automatically
+      available to all NEF-based applications during development and each NEFS
       application has a private instance of the Console available at
       <literal>http://[server]/[appName]</literal><emphasis role="bold"><literal>/console</literal></emphasis>.
       When you log into the Console for Application X (.../appX/console)
       versus Y (.../appY/console) you will only see components for the
-      appropriate application. The Console&#39;s default user name is &#39;<literal>console</literal>&#39;
-      and the default password is &#39;<literal>console</literal>&#39;. Unless
-      otherwise specified, that is the user name and password combination you
-      should use if the Console prompts you to login.</para>
+      appropriate application.</para>
+
+      <important>
+        <para>Each sample app features its own Console Servlet and the default
+        login user name is &#39;<literal>console</literal>&#39; and the
+        default login password is &#39;<literal>console</literal>&#39;.</para>
+      </important>
 
       <screenshot>
         <graphic fileref="./resources/images/screen-console-login.gif" />
@@ -97,11 +119,11 @@
   </section>
 
   <section>
-    <title>Using your own App Server to Sample the NEF on your Workstation</title>
+    <title>Using your own App Server to Sample the NEFS on your Workstation</title>
 
     <para>In order to sample the true power of the NEF, you should try the
     samples on your own workstation or server. This section describes the
-    prerequisites you need to sample NEF locally:</para>
+    prerequisites you need to sample NEFS locally:</para>
 
     <itemizedlist>
       <listitem>
@@ -117,7 +139,7 @@
     <section>
       <title>Make sure you have a Java Developer&#39;s Kit (JDK)</title>
 
-      <para>Since NEF is comprised of Java libraries, a fundamental
+      <para>Since NEFS is comprised of Java libraries, a fundamental
       requirement to develop applications with it is a Java SDK (the full SDK
       is required, the JRE will not be enough). You can obtain Sun’s official
       Java SDK from its Java web site at <ulink
@@ -185,46 +207,51 @@
       <title>Use an Integrated Development Environment (IDE)</title>
 
       <para>You can also optionally install a Java integrated development
-      environment (IDE) for developing NEF applications. The Netspective
+      environment (IDE) for developing NEFS applications. The Netspective
       Frameworks do not require any particular Java IDE and if you prefer to
       use simple text editors like vi, emacs, or <ulink
-      url="http://www.textpad.com">TextPad</ulink> those will do just as well.
-      We recommend the free <ulink url="http://www.eclipse.org">Eclipse</ulink>
+      url="http://www.textpad.com">TextPad</ulink> those will work just as
+      well. We recommend the free <ulink url="http://www.eclipse.org">Eclipse</ulink>
       IDE or very affordable and useful <ulink url="http://www.intellij.org">JetBrain’s
       IDEA</ulink> for those who are not already familiar with other IDEs.</para>
     </section>
 
     <section>
-      <title>Evaluating NEF Using the Sample Applications</title>
+      <title>Evaluating NEFS Using the Sample Applications</title>
 
       <para>To keep things simple, there&#39;s no special &#34;evaluation
-      kit&#34; for NEF -- instead you just download a sample application from
-      <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>,
-      drop it into your favorite Servlet container (application server) and
-      you&#39;ll be ready for the evaluation. Each of the sample applications
-      are provided as app-server-independent <filename class="extension">.war</filename>
-      files and each sample app&#39;s <filename class="extension">.war</filename>
-      file includes all of the NEF binary files, resources, etc. you need to
-      use NEF. Once you have downloaded any <filename class="extension">.war</filename>
-      file, you have everything you need to start modifying and adding to the
-      app. The typical procedure is: <orderedlist><listitem><para>Download and
-      install an application server (Servlet container).</para></listitem><listitem><para>Go
-      to <ulink url="http://sampler.netspective.com">http://sampler.netspective.com</ulink>
-      and pick any application you&#39;re interested in evaluating.</para></listitem><listitem><para>Download
+      kit&#34; for NEFS -- instead you just download a sample application from
+      <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
+      (click &#34;Downloads&#34; at the top of the page then pick &#34;Sample
+      Applications&#34; from the Downloads page). Once you download an
+      application, just drop it into your favorite Servlet container
+      (application server) and you&#39;ll be ready for the evaluation. Each of
+      the sample applications are provided as app-server-independent <filename
+      class="extension">.war</filename> files and each sample app&#39;s
+      <filename class="extension">.war</filename> file includes all of the
+      NEFS binary files, resources, etc. you need to use NEF. Once you have
+      downloaded any <filename class="extension">.war</filename> file, you
+      have everything you need to start modifying and adding to the app. The
+      typical procedure is: <orderedlist><listitem><para>Download and install
+      an application server (Servlet container).</para></listitem><listitem><para>Go
+      to <ulink url="http://www.netspective.com">http://www.netspective.com</ulink>
+      (click &#34;Downloads&#34; at the top of the page then pick &#34;Sample
+      Applications&#34; from the Downloads page) and pick any application
+      you&#39;re interested in evaluating.</para></listitem><listitem><para>Download
       the <filename class="extension">.war</filename> file and place it into
-      the app server&#39;s web applications root.</para></listitem><listitem><para>Start
+      the app server&#39;s web applications directory.</para></listitem><listitem><para>Start
       (or restart) the application server.</para></listitem><listitem><para>Use
       your browser to point to http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>
       to run the application or http://localhost:<replaceable>port</replaceable>/<replaceable>appName</replaceable>/console
       to run the application&#39;s Console servlet.</para></listitem></orderedlist></para>
 
       <section>
-        <title>Evaluating NEF Sample Applications on Caucho Resin</title>
+        <title>Evaluating NEFS Sample Applications on Caucho Resin</title>
 
         <para>This section provides an overview of how to obtain, install, and
         start the <ulink url="http://www.caucho.com">Caucho Resin</ulink>
-        application server and the Hello Forms sample application. See the
-        <ulink
+        application server and the <emphasis>NEFS Enterprise Sampler</emphasis>
+        sample application. See the <ulink
         url="http://www.caucho.com/resin-3.0/install/install.xtp#quickstart">Resin
         QuickStart</ulink> document for the most up-to-date information.</para>
 
@@ -252,9 +279,9 @@
 
           <listitem>
             <para>Click <ulink
-            url="http://www.netspective.com/resources/downloads/nefs-sample-hello-forms.war">here</ulink>
-            to download the Hello Forms sample application and save it in
-            <filename class="directory">resin-x.y.z\webapps</filename>.</para>
+            url="http://www.netspective.com/resources/downloads/nefs-sampler.war">here</ulink>
+            to download the <emphasis>Sampler</emphasis> sample application
+            and save it in <filename class="directory">resin-x.y.z\webapps</filename>.</para>
           </listitem>
 
           <listitem>
@@ -274,10 +301,9 @@
           </listitem>
 
           <listitem>
-            <para>Browse <ulink
-            url="http://localhost:8080/nefs-sample-hello-forms">http://localhost:8080/nefs-sample-hello-forms</ulink>
+            <para>Browse <ulink url="http://localhost:8080/nefs-sampler">http://localhost:8080/nefs-sampler</ulink>
             to run the application or <ulink
-            url="http://localhost:8080/nefs-sample-hello-forms/console">http://localhost:8080/nefs-sample-hello-forms/console</ulink>
+            url="http://localhost:8080/nefs-sampler/console">http://localhost:8080/nefs-sampler/console</ulink>
             to run the Hello Forms Console servlet.</para>
           </listitem>
         </orderedlist>
