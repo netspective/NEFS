@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletRequestAttributeValueSource.java,v 1.2 2003-12-22 09:05:03 aye.thu Exp $
+ * $Id: ServletRequestAttributeValueSource.java,v 1.3 2004-01-15 04:35:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -100,7 +100,7 @@ public class ServletRequestAttributeValueSource extends AbstractValueSource
         {
             public String getTextValue()
             {
-                return svc.getRequest().getAttribute(attributeName).toString();
+                return svc.getRequest().getAttribute(attributeName) != null ? svc.getRequest().getAttribute(attributeName).toString() : null;
             }
 
             public void setValue(Object value) throws ValueException
