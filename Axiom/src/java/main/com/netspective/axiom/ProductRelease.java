@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.17 2004-03-16 22:05:49 shahid.shah Exp $
+ * $Id: ProductRelease.java,v 1.18 2004-03-21 02:39:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -55,8 +55,8 @@ public class ProductRelease implements Product
     public static final String PRODUCT_ID = "netspective-axiom";
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 0;
-    public static final int PRODUCT_VERSION_MINOR = 13;
+    public static final int PRODUCT_VERSION_MAJOR = 1;
+    public static final int PRODUCT_VERSION_MINOR = 0;
 
     public ProductRelease()
     {
