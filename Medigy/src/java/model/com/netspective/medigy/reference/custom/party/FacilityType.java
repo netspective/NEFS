@@ -83,6 +83,10 @@ public class FacilityType extends AbstractCustomReferenceEntity
         }
     }
 
+    public FacilityType()
+    {
+    }
+
     @Id(generate = GeneratorType.AUTO)
     public Long getFacilityTypeId()
     {

@@ -40,6 +40,8 @@
 package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.ejb.Id;
 import javax.ejb.GeneratorType;
@@ -51,6 +53,40 @@ import javax.ejb.Table;
 @Table(name = "Party_Rel_Type")
 public class PartyRelationshipType extends AbstractCustomReferenceEntity
 {
+    public enum Cache implements CachedCustomReferenceEntity
+    {
+        ORGANIZATION_ROLLUP("ORG_ROLLUP"),
+        PARTNERSHIP("PARTNER"),
+        CUSTOMER_RELATIONSHIP("CUST_REL"),
+        SUPPLIER_RELATIONSHIP("SUPP_REL");
+
+        private final String code;
+        private PartyRelationshipType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public PartyRelationshipType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (PartyRelationshipType) entity;
+        }
+    }
+
+    public PartyRelationshipType()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
     @Column(name = "party_rel_type_id")
