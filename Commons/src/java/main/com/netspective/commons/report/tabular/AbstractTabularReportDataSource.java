@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.9 2003-06-28 06:01:59 aye.thu Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.10 2003-08-17 00:03:26 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -115,6 +115,11 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         public void close()
         {
             AbstractTabularReportDataSource.this.close();
+        }
+
+        public void timeOut() // called implicity if user who is using it timeOuts (session destroyed -- should just close)
+        {
+            close();
         }
 
         /**
