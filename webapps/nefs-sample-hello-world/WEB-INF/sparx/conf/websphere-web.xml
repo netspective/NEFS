@@ -7,7 +7,7 @@
 *****************************************************
 ** IBM WEBSPHERE WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: websphere-web.xml,v 1.1 2003-09-06 21:21:06 roque.hernandez Exp $
+$Id: websphere-web.xml,v 1.2 2003-10-19 23:04:52 shahid.shah Exp $
 -->
 
 <web-app>
@@ -38,8 +38,8 @@ $Id: websphere-web.xml,v 1.1 2003-09-06 21:21:06 roque.hernandez Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>SparxNavigationController</servlet-name>
-	<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -57,8 +57,8 @@ $Id: websphere-web.xml,v 1.1 2003-09-06 21:21:06 roque.hernandez Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
             <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
             <param-value>--login-manager=console</param-value>
@@ -70,7 +70,7 @@ $Id: websphere-web.xml,v 1.1 2003-09-06 21:21:06 roque.hernandez Exp $
     </servlet>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF DEFAULT SERVLET									             **
     *******************************************************************************************************************
@@ -81,18 +81,18 @@ $Id: websphere-web.xml,v 1.1 2003-09-06 21:21:06 roque.hernandez Exp $
     </servlet-mapping>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF CONSOLE SERVLET									             **
     *******************************************************************************************************************
     -->
     <servlet-mapping>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<url-pattern>/console/*</url-pattern>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <url-pattern>/console/*</url-pattern>
     </servlet-mapping>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF EXCEPTION TO DEFAULT SERVLET									     **
     ** ============================================================================================================= **

@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: resin-web.xml,v 1.10 2003-09-08 01:22:49 shahid.shah Exp $
+$Id: resin-web.xml,v 1.11 2003-10-19 23:05:47 shahid.shah Exp $
 -->
 
 <web-app>
@@ -35,8 +35,8 @@ $Id: resin-web.xml,v 1.10 2003-09-08 01:22:49 shahid.shah Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>SparxNavigationController</servlet-name>
-	<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
     </servlet>
 
     <servlet>
@@ -54,8 +54,8 @@ $Id: resin-web.xml,v 1.10 2003-09-08 01:22:49 shahid.shah Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
         <init-param>
             <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
             <param-value>--login-manager=console</param-value>
@@ -67,7 +67,7 @@ $Id: resin-web.xml,v 1.10 2003-09-08 01:22:49 shahid.shah Exp $
     </servlet>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF DEFAULT SERVLET									             **
     *******************************************************************************************************************
@@ -78,18 +78,18 @@ $Id: resin-web.xml,v 1.10 2003-09-08 01:22:49 shahid.shah Exp $
     </servlet-mapping>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF CONSOLE SERVLET									             **
     *******************************************************************************************************************
     -->
     <servlet-mapping>
-	<servlet-name>NetspectiveConsole</servlet-name>
-	<url-pattern>/console/*</url-pattern>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <url-pattern>/console/*</url-pattern>
     </servlet-mapping>
 
 
-    <!-- 
+    <!--
     *******************************************************************************************************************
     ** MAPPING OF EXCEPTION TO DEFAULT SERVLET									     **
     ** ============================================================================================================= **
