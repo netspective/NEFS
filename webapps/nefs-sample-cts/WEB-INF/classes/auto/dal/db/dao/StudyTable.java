@@ -23,7 +23,6 @@ import com.netspective.axiom.schema.column.type.EnumerationIdRefColumn;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.LongIntegerColumn;
 import auto.dal.db.dao.study.StudyOrgRelationshipTable;
-import auto.dal.db.dao.study.StudyPersonRelationshipTable;
 
 public final class StudyTable
 {
@@ -71,7 +70,6 @@ public final class StudyTable
         studyStatusForeignKey = table.getColumns().get(COLINDEX_STUDY_STATUS).getForeignKey();
         studyStageForeignKey = table.getColumns().get(COLINDEX_STUDY_STAGE).getForeignKey();
         studyOrgRelationshipTable = new StudyOrgRelationshipTable(schema.getTables().getByName("StudyOrg_Relationship"));
-        studyPersonRelationshipTable = new StudyPersonRelationshipTable(schema.getTables().getByName("StudyPerson_Relationship"));
     }
     
     public final StudyTable.Record createRecord()
@@ -277,11 +275,6 @@ public final class StudyTable
         return studyOrgRelationshipTable;
     }
     
-    public final StudyPersonRelationshipTable getStudyPersonRelationshipTable()
-    {
-        return studyPersonRelationshipTable;
-    }
-    
     public final EnumerationIdRefColumn getStudyStageColumn()
     {
         return (EnumerationIdRefColumn)table.getColumns().get(COLINDEX_STUDY_STAGE);
@@ -321,7 +314,6 @@ public final class StudyTable
     private ForeignKey recStatIdForeignKey;
     private Schema schema;
     private StudyOrgRelationshipTable studyOrgRelationshipTable;
-    private StudyPersonRelationshipTable studyPersonRelationshipTable;
     private ForeignKey studyStageForeignKey;
     private ForeignKey studyStatusForeignKey;
     private com.netspective.axiom.schema.table.BasicTable table;
@@ -341,11 +333,6 @@ public final class StudyTable
             return studyOrgRelationshipTable.createChildLinkedByParentId(this);
         }
         
-        public final StudyPersonRelationshipTable.Record createStudyPersonRelationshipTableRecord()
-        {
-            return studyPersonRelationshipTable.createChildLinkedByParentId(this);
-        }
-        
         public final boolean dataChangedInStorage(ConnectionContext cc)
         throws NamingException, SQLException
         {
@@ -362,6 +349,12 @@ public final class StudyTable
         throws NamingException, SQLException
         {
             table.delete(cc, row);
+        }
+        
+        public final void deleteChildren(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            studyOrgRelationshipTableRecords.delete(cc);
         }
         
         public final DateColumn.DateColumnValue getActualEndDate()
@@ -447,19 +440,6 @@ public final class StudyTable
             return studyOrgRelationshipTableRecords;
         }
         
-        public final StudyPersonRelationshipTable.Records getStudyPersonRelationshipTableRecords(ConnectionContext cc)
-        throws NamingException, SQLException
-        {
-            if (studyPersonRelationshipTableRecords != null) return studyPersonRelationshipTableRecords;
-            studyPersonRelationshipTableRecords = studyPersonRelationshipTable.getParentRecordsByParentId(this, cc);
-            return studyPersonRelationshipTableRecords;
-        }
-        
-        public final StudyPersonRelationshipTable.Records getStudyPersonRelationshipTableRecords()
-        {
-            return studyPersonRelationshipTableRecords;
-        }
-        
         public final EnumerationIdRefColumn.EnumerationIdRefValue getStudyStage()
         {
             return (EnumerationIdRefColumn.EnumerationIdRefValue)values.getByColumnIndex(COLINDEX_STUDY_STAGE);
@@ -518,7 +498,6 @@ public final class StudyTable
         throws NamingException, SQLException
         {
             studyOrgRelationshipTableRecords = getStudyOrgRelationshipTableRecords(cc);
-            studyPersonRelationshipTableRecords = getStudyPersonRelationshipTableRecords(cc);
         }
         
         public final void setActualEndDate(com.netspective.commons.value.Value value)
@@ -639,7 +618,6 @@ public final class StudyTable
         }
         private Row row;
         private StudyOrgRelationshipTable.Records studyOrgRelationshipTableRecords;
-        private StudyPersonRelationshipTable.Records studyPersonRelationshipTableRecords;
         private ColumnValues values;
     }
     
@@ -650,6 +628,12 @@ public final class StudyTable
         {
             this.rows = rows;
             this.cache = new Record[rows.size()];
+        }
+        
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
         }
         
         public final StudyTable.Record get(int i)

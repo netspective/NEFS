@@ -25,6 +25,16 @@ implements auto.dal.db.vo.PersonSessionViewCount
         return viewCount;
     }
     
+    public int getViewCountInt()
+    {
+        return getViewCountInt(-1);
+    }
+    
+    public int getViewCountInt(int defaultValue)
+    {
+        return viewCount != null ? viewCount.intValue() : defaultValue;
+    }
+    
     public java.util.Date getViewInit()
     {
         return viewInit;
@@ -63,6 +73,11 @@ implements auto.dal.db.vo.PersonSessionViewCount
     public void setViewCount(java.lang.Integer viewCount)
     {
         this.viewCount = viewCount;
+    }
+    
+    public void setViewCountInt(int viewCount)
+    {
+        this.viewCount = new java.lang.Integer(viewCount);
     }
     
     public void setViewInit(java.util.Date viewInit)

@@ -20,9 +20,29 @@ implements auto.dal.db.vo.PersonRelationship
         return parentId;
     }
     
+    public long getParentIdLong()
+    {
+        return getParentIdLong(-1);
+    }
+    
+    public long getParentIdLong(long defaultValue)
+    {
+        return parentId != null ? parentId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.util.Date getRelBegin()
@@ -45,6 +65,16 @@ implements auto.dal.db.vo.PersonRelationship
         return relEntityId;
     }
     
+    public long getRelEntityIdLong()
+    {
+        return getRelEntityIdLong(-1);
+    }
+    
+    public long getRelEntityIdLong(long defaultValue)
+    {
+        return relEntityId != null ? relEntityId.longValue() : defaultValue;
+    }
+    
     public java.lang.String getRelType()
     {
         return relType;
@@ -55,9 +85,29 @@ implements auto.dal.db.vo.PersonRelationship
         return relTypeId;
     }
     
+    public int getRelTypeIdInt()
+    {
+        return getRelTypeIdInt(-1);
+    }
+    
+    public int getRelTypeIdInt(int defaultValue)
+    {
+        return relTypeId != null ? relTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.Long getSystemId()
     {
         return systemId;
+    }
+    
+    public long getSystemIdLong()
+    {
+        return getSystemIdLong(-1);
+    }
+    
+    public long getSystemIdLong(long defaultValue)
+    {
+        return systemId != null ? systemId.longValue() : defaultValue;
     }
     
     public void setCrSessId(java.lang.String crSessId)
@@ -75,9 +125,19 @@ implements auto.dal.db.vo.PersonRelationship
         this.parentId = parentId;
     }
     
+    public void setParentIdLong(long parentId)
+    {
+        this.parentId = new java.lang.Long(parentId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setRelBegin(java.util.Date relBegin)
@@ -100,6 +160,11 @@ implements auto.dal.db.vo.PersonRelationship
         this.relEntityId = relEntityId;
     }
     
+    public void setRelEntityIdLong(long relEntityId)
+    {
+        this.relEntityId = new java.lang.Long(relEntityId);
+    }
+    
     public void setRelType(java.lang.String relType)
     {
         this.relType = relType;
@@ -110,9 +175,19 @@ implements auto.dal.db.vo.PersonRelationship
         this.relTypeId = relTypeId;
     }
     
+    public void setRelTypeIdInt(int relTypeId)
+    {
+        this.relTypeId = new java.lang.Integer(relTypeId);
+    }
+    
     public void setSystemId(java.lang.Long systemId)
     {
         this.systemId = systemId;
+    }
+    
+    public void setSystemIdLong(long systemId)
+    {
+        this.systemId = new java.lang.Long(systemId);
     }
     private java.lang.String crSessId;
     private java.util.Date crStamp;

@@ -5,14 +5,19 @@ package auto.id.sql.schema.db.enum;
 
 public interface PersonType
 {
-    static public final int LVN_LPN = 5;
-    static public final int OTHER = 9;
-    static public final int OTHER_CLINICAL_SERVICE_PROVIDER__ALTERNATE_BILLING_ = 4;
-    static public final int OTHER_CLINICAL_SERVICE_PROVIDER__DIRECT_BILLING_ = 3;
-    static public final int OTHER_NURSE = 7;
-    static public final int PATIENT = 0;
-    static public final int PHYSICIAN = 1;
-    static public final int PHYSICIAN_EXTENDER__DIRECT_BILLING_ = 2;
-    static public final int RN = 6;
-    static public final int STAFF = 8;
+    static public final int CERTIFIED_CLINICAL_RESEARCH_COORDINATOR = 3;
+    static public final int CERTIFIED_CLINICAL_RESEARCH_PROFESSIONAL = 4;
+    static public final int CERTIFIED_CLINICIAN_RESEARCH_ASSOCIATE = 2;
+    static public final int CLINICAL_PROGRAM_MANAGER = 1;
+    static public final int LVN_LPN = 10;
+    static public final int OTHER = 14;
+    static public final int OTHER_CLINICAL_SERVICE_PROVIDER__ALTERNATE_BILLING_ = 9;
+    static public final int OTHER_CLINICAL_SERVICE_PROVIDER__DIRECT_BILLING_ = 8;
+    static public final int OTHER_NURSE = 12;
+    static public final int PATIENT = 5;
+    static public final int PHYSICIAN = 6;
+    static public final int PHYSICIAN_EXTENDER__DIRECT_BILLING_ = 7;
+    static public final int PRINCIPAL_INVESTIGATOR = 0;
+    static public final int RN = 11;
+    static public final int STAFF = 13;
 }

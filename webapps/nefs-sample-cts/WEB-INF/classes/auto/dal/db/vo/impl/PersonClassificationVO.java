@@ -20,9 +20,29 @@ implements auto.dal.db.vo.PersonClassification
         return orgId;
     }
     
+    public long getOrgIdLong()
+    {
+        return getOrgIdLong(-1);
+    }
+    
+    public long getOrgIdLong(long defaultValue)
+    {
+        return orgId != null ? orgId.longValue() : defaultValue;
+    }
+    
     public java.lang.Long getPersonId()
     {
         return personId;
+    }
+    
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
     }
     
     public java.lang.String getPersonType()
@@ -35,9 +55,29 @@ implements auto.dal.db.vo.PersonClassification
         return personTypeId;
     }
     
+    public int getPersonTypeIdInt()
+    {
+        return getPersonTypeIdInt(-1);
+    }
+    
+    public int getPersonTypeIdInt(int defaultValue)
+    {
+        return personTypeId != null ? personTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -60,9 +100,19 @@ implements auto.dal.db.vo.PersonClassification
         this.orgId = orgId;
     }
     
+    public void setOrgIdLong(long orgId)
+    {
+        this.orgId = new java.lang.Long(orgId);
+    }
+    
     public void setPersonId(java.lang.Long personId)
     {
         this.personId = personId;
+    }
+    
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
     }
     
     public void setPersonType(java.lang.String personType)
@@ -75,9 +125,19 @@ implements auto.dal.db.vo.PersonClassification
         this.personTypeId = personTypeId;
     }
     
+    public void setPersonTypeIdInt(int personTypeId)
+    {
+        this.personTypeId = new java.lang.Integer(personTypeId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)

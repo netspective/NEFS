@@ -6,5 +6,6 @@ package auto.id.sql;
 public interface QueryDefn
 {
     static public final String ORG = "org";
+    static public final String PERSON = "person";
     static public final String STUDY = "study";
 }

@@ -18,9 +18,21 @@ public interface PersonIdentifier
     
     public java.lang.Long getOrgId();
     
+    public long getOrgIdLong();
+    
+    public long getOrgIdLong(long defaultValue);
+    
     public java.lang.Long getPersonId();
     
+    public long getPersonIdLong();
+    
+    public long getPersonIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getSourceType();
     
@@ -42,9 +54,15 @@ public interface PersonIdentifier
     
     public void setOrgId(java.lang.Long orgId);
     
+    public void setOrgIdLong(long orgId);
+    
     public void setPersonId(java.lang.Long personId);
     
+    public void setPersonIdLong(long personId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setSourceType(java.lang.String sourceType);
     

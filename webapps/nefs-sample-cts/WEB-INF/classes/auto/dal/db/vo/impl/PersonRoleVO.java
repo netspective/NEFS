@@ -20,9 +20,29 @@ implements auto.dal.db.vo.PersonRole
         return personId;
     }
     
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getRoleNameId()
@@ -50,9 +70,19 @@ implements auto.dal.db.vo.PersonRole
         this.personId = personId;
     }
     
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setRoleNameId(java.lang.String roleNameId)

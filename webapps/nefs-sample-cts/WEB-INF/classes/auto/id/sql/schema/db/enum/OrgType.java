@@ -5,16 +5,18 @@ package auto.id.sql.schema.db.enum;
 
 public interface OrgType
 {
-    static public final int ANCILLIARY_SERVICE = 9;
-    static public final int CLINIC = 1;
-    static public final int DIAGNOSTIC_SERVICES = 3;
-    static public final int EMPLOYER = 7;
-    static public final int FACILITY_SITE = 2;
-    static public final int HOSPITAL = 4;
-    static public final int INSURANCE = 6;
-    static public final int IPA = 8;
-    static public final int OTHER = 11;
-    static public final int PHARMACY = 10;
-    static public final int PRACTICE = 0;
-    static public final int THERAPEUTIC_SERVICES = 5;
+    static public final int ANCILLIARY_SERVICE = 11;
+    static public final int CLINIC = 3;
+    static public final int DIAGNOSTIC_SERVICES = 5;
+    static public final int EMPLOYER = 9;
+    static public final int FACILITY_SITE = 4;
+    static public final int HOSPITAL = 6;
+    static public final int INSURANCE = 8;
+    static public final int IPA = 10;
+    static public final int OTHER = 13;
+    static public final int PHARMACY = 12;
+    static public final int PRACTICE = 2;
+    static public final int THERAPEUTIC_SERVICES = 7;
+    static public final int TRIAL_SITE = 1;
+    static public final int TRIAL_SPONSOR = 0;
 }

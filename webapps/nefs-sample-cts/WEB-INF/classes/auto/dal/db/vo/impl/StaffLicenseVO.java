@@ -35,6 +35,16 @@ implements auto.dal.db.vo.StaffLicense
         return licenseStateId;
     }
     
+    public int getLicenseStateIdInt()
+    {
+        return getLicenseStateIdInt(-1);
+    }
+    
+    public int getLicenseStateIdInt(int defaultValue)
+    {
+        return licenseStateId != null ? licenseStateId.intValue() : defaultValue;
+    }
+    
     public java.lang.String getLicenseType()
     {
         return licenseType;
@@ -45,9 +55,29 @@ implements auto.dal.db.vo.StaffLicense
         return licenseTypeId;
     }
     
+    public int getLicenseTypeIdInt()
+    {
+        return getLicenseTypeIdInt(-1);
+    }
+    
+    public int getLicenseTypeIdInt(int defaultValue)
+    {
+        return licenseTypeId != null ? licenseTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.Long getOrgId()
     {
         return orgId;
+    }
+    
+    public long getOrgIdLong()
+    {
+        return getOrgIdLong(-1);
+    }
+    
+    public long getOrgIdLong(long defaultValue)
+    {
+        return orgId != null ? orgId.longValue() : defaultValue;
     }
     
     public java.lang.Long getPersonId()
@@ -55,14 +85,44 @@ implements auto.dal.db.vo.StaffLicense
         return personId;
     }
     
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
     }
     
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getSpecialityTypeId()
     {
         return specialityTypeId;
+    }
+    
+    public int getSpecialityTypeIdInt()
+    {
+        return getSpecialityTypeIdInt(-1);
+    }
+    
+    public int getSpecialityTypeIdInt(int defaultValue)
+    {
+        return specialityTypeId != null ? specialityTypeId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -100,6 +160,11 @@ implements auto.dal.db.vo.StaffLicense
         this.licenseStateId = licenseStateId;
     }
     
+    public void setLicenseStateIdInt(int licenseStateId)
+    {
+        this.licenseStateId = new java.lang.Integer(licenseStateId);
+    }
+    
     public void setLicenseType(java.lang.String licenseType)
     {
         this.licenseType = licenseType;
@@ -110,9 +175,19 @@ implements auto.dal.db.vo.StaffLicense
         this.licenseTypeId = licenseTypeId;
     }
     
+    public void setLicenseTypeIdInt(int licenseTypeId)
+    {
+        this.licenseTypeId = new java.lang.Integer(licenseTypeId);
+    }
+    
     public void setOrgId(java.lang.Long orgId)
     {
         this.orgId = orgId;
+    }
+    
+    public void setOrgIdLong(long orgId)
+    {
+        this.orgId = new java.lang.Long(orgId);
     }
     
     public void setPersonId(java.lang.Long personId)
@@ -120,14 +195,29 @@ implements auto.dal.db.vo.StaffLicense
         this.personId = personId;
     }
     
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
     }
     
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
+    }
+    
     public void setSpecialityTypeId(java.lang.Integer specialityTypeId)
     {
         this.specialityTypeId = specialityTypeId;
+    }
+    
+    public void setSpecialityTypeIdInt(int specialityTypeId)
+    {
+        this.specialityTypeId = new java.lang.Integer(specialityTypeId);
     }
     
     public void setSystemId(java.lang.String systemId)

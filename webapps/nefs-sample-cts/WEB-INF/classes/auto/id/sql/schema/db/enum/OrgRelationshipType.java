@@ -11,7 +11,7 @@ public interface OrgRelationshipType
     static public final int DESCENDENT_OF_ORG = 1040;
     static public final int OUR_FIRM = 0;
     static public final int PARENT_OF_ORG = 1010;
-    static public final int PARTNER = 3;
+    static public final int PARTNER_FIELD_NAME = 3;
     static public final int SIBLING_OF_ORG = 1020;
     static public final int VENDOR = 2;
 }

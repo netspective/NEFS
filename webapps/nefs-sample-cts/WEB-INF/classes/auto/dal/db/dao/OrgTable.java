@@ -327,7 +327,7 @@ public final class OrgTable
         
         public final OrgClassificationTable.Record createOrgClassificationTableRecord()
         {
-            return orgClassificationTable.createChildLinkedByOrgId(this);
+            return orgClassificationTable.createChildLinkedByParentId(this);
         }
         
         public final OrgContactTable.Record createOrgContactTableRecord()
@@ -383,6 +383,20 @@ public final class OrgTable
             table.delete(cc, row);
         }
         
+        public final void deleteChildren(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            orgAddressTableRecords.delete(cc);
+            orgClassificationTableRecords.delete(cc);
+            orgContactTableRecords.delete(cc);
+            orgIdentifierTableRecords.delete(cc);
+            orgIndustryTableRecords.delete(cc);
+            orgNoteTableRecords.delete(cc);
+            orgPersonIdSrcTypeTableRecords.delete(cc);
+            orgRelationshipTableRecords.delete(cc);
+            orgRoleDeclarationTableRecords.delete(cc);
+        }
+        
         public final DateColumn.DateColumnValue getBusinessEndTime()
         {
             return (DateColumn.DateColumnValue)values.getByColumnIndex(COLINDEX_BUSINESS_END_TIME);
@@ -430,7 +444,7 @@ public final class OrgTable
         throws NamingException, SQLException
         {
             if (orgClassificationTableRecords != null) return orgClassificationTableRecords;
-            orgClassificationTableRecords = orgClassificationTable.getParentRecordsByOrgId(this, cc);
+            orgClassificationTableRecords = orgClassificationTable.getParentRecordsByParentId(this, cc);
             return orgClassificationTableRecords;
         }
         
@@ -714,6 +728,12 @@ public final class OrgTable
         {
             this.rows = rows;
             this.cache = new Record[rows.size()];
+        }
+        
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
         }
         
         public final OrgTable.Record get(int i)

@@ -14,9 +14,21 @@ public interface OrgPersonIdSrcType
     
     public java.lang.Integer getItemId();
     
+    public int getItemIdInt();
+    
+    public int getItemIdInt(int defaultValue);
+    
     public java.lang.Long getOrgId();
     
+    public long getOrgIdLong();
+    
+    public long getOrgIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getSystemId();
     
@@ -30,9 +42,15 @@ public interface OrgPersonIdSrcType
     
     public void setItemId(java.lang.Integer itemId);
     
+    public void setItemIdInt(int itemId);
+    
     public void setOrgId(java.lang.Long orgId);
     
+    public void setOrgIdLong(long orgId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setSystemId(java.lang.String systemId);
 }

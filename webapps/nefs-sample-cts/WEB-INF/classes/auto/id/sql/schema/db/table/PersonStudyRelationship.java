@@ -3,7 +3,7 @@
 
 package auto.id.sql.schema.db.table;
 
-public interface StudyPersonRelationship
+public interface PersonStudyRelationship
 {
     static public final int CR_SESS_ID = 1;
     static public final int CR_STAMP = 0;
@@ -15,5 +15,7 @@ public interface StudyPersonRelationship
     static public final int REL_ENTITY_ID = 5;
     static public final int REL_TYPE = 7;
     static public final int REL_TYPE_ID = 6;
+    static public final int RELATIONSHIP_CODE = 12;
+    static public final int RELATIONSHIP_NAME = 11;
     static public final int SYSTEM_ID = 3;
 }

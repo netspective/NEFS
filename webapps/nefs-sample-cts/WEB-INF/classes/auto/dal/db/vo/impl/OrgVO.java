@@ -30,6 +30,16 @@ implements auto.dal.db.vo.Org
         return employees;
     }
     
+    public int getEmployeesInt()
+    {
+        return getEmployeesInt(-1);
+    }
+    
+    public int getEmployeesInt(int defaultValue)
+    {
+        return employees != null ? employees.intValue() : defaultValue;
+    }
+    
     public java.lang.String getOrgAbbrev()
     {
         return orgAbbrev;
@@ -45,6 +55,16 @@ implements auto.dal.db.vo.Org
         return orgId;
     }
     
+    public long getOrgIdLong()
+    {
+        return getOrgIdLong(-1);
+    }
+    
+    public long getOrgIdLong(long defaultValue)
+    {
+        return orgId != null ? orgId.longValue() : defaultValue;
+    }
+    
     public java.lang.String getOrgName()
     {
         return orgName;
@@ -53,6 +73,16 @@ implements auto.dal.db.vo.Org
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getTimeZone()
@@ -85,6 +115,11 @@ implements auto.dal.db.vo.Org
         this.employees = employees;
     }
     
+    public void setEmployeesInt(int employees)
+    {
+        this.employees = new java.lang.Integer(employees);
+    }
+    
     public void setOrgAbbrev(java.lang.String orgAbbrev)
     {
         this.orgAbbrev = orgAbbrev;
@@ -100,6 +135,11 @@ implements auto.dal.db.vo.Org
         this.orgId = orgId;
     }
     
+    public void setOrgIdLong(long orgId)
+    {
+        this.orgId = new java.lang.Long(orgId);
+    }
+    
     public void setOrgName(java.lang.String orgName)
     {
         this.orgName = orgName;
@@ -108,6 +148,11 @@ implements auto.dal.db.vo.Org
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setTimeZone(java.lang.String timeZone)

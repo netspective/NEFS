@@ -432,6 +432,12 @@ public final class PersonClassificationTable
             this.parentRecord = parentRecord;
         }
         
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
+        }
+        
         public final PersonClassificationTable.Record get(int i)
         {
             if(cache[i] == null) cache[i] = new Record(rows.getRow(i));

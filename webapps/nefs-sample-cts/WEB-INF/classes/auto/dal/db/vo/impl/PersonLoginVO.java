@@ -20,6 +20,16 @@ implements auto.dal.db.vo.PersonLogin
         return loginStatus;
     }
     
+    public int getLoginStatusInt()
+    {
+        return getLoginStatusInt(-1);
+    }
+    
+    public int getLoginStatusInt(int defaultValue)
+    {
+        return loginStatus != null ? loginStatus.intValue() : defaultValue;
+    }
+    
     public java.lang.String getPassword()
     {
         return password;
@@ -30,14 +40,44 @@ implements auto.dal.db.vo.PersonLogin
         return personId;
     }
     
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getQuantity()
     {
         return quantity;
     }
     
+    public int getQuantityInt()
+    {
+        return getQuantityInt(-1);
+    }
+    
+    public int getQuantityInt(int defaultValue)
+    {
+        return quantity != null ? quantity.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -65,6 +105,11 @@ implements auto.dal.db.vo.PersonLogin
         this.loginStatus = loginStatus;
     }
     
+    public void setLoginStatusInt(int loginStatus)
+    {
+        this.loginStatus = new java.lang.Integer(loginStatus);
+    }
+    
     public void setPassword(java.lang.String password)
     {
         this.password = password;
@@ -75,14 +120,29 @@ implements auto.dal.db.vo.PersonLogin
         this.personId = personId;
     }
     
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
+    }
+    
     public void setQuantity(java.lang.Integer quantity)
     {
         this.quantity = quantity;
     }
     
+    public void setQuantityInt(int quantity)
+    {
+        this.quantity = new java.lang.Integer(quantity);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)

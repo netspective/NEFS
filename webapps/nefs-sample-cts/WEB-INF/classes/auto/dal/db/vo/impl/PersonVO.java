@@ -10,6 +10,16 @@ implements auto.dal.db.vo.Person
         return age;
     }
     
+    public int getAgeInt()
+    {
+        return getAgeInt(-1);
+    }
+    
+    public int getAgeInt(int defaultValue)
+    {
+        return age != null ? age.intValue() : defaultValue;
+    }
+    
     public java.util.Date getBirthDate()
     {
         return birthDate;
@@ -18,6 +28,16 @@ implements auto.dal.db.vo.Person
     public java.lang.Integer getBloodTypeId()
     {
         return bloodTypeId;
+    }
+    
+    public int getBloodTypeIdInt()
+    {
+        return getBloodTypeIdInt(-1);
+    }
+    
+    public int getBloodTypeIdInt(int defaultValue)
+    {
+        return bloodTypeId != null ? bloodTypeId.intValue() : defaultValue;
     }
     
     public java.lang.String getCompleteName()
@@ -50,6 +70,16 @@ implements auto.dal.db.vo.Person
         return genderId;
     }
     
+    public int getGenderIdInt()
+    {
+        return getGenderIdInt(-1);
+    }
+    
+    public int getGenderIdInt(int defaultValue)
+    {
+        return genderId != null ? genderId.intValue() : defaultValue;
+    }
+    
     public java.lang.String getLanguageId()
     {
         return languageId;
@@ -58,6 +88,16 @@ implements auto.dal.db.vo.Person
     public java.lang.Integer getMaritalStatusId()
     {
         return maritalStatusId;
+    }
+    
+    public int getMaritalStatusIdInt()
+    {
+        return getMaritalStatusIdInt(-1);
+    }
+    
+    public int getMaritalStatusIdInt(int defaultValue)
+    {
+        return maritalStatusId != null ? maritalStatusId.intValue() : defaultValue;
     }
     
     public java.lang.String getNameFirst()
@@ -85,6 +125,16 @@ implements auto.dal.db.vo.Person
         return namePrefixId;
     }
     
+    public int getNamePrefixIdInt()
+    {
+        return getNamePrefixIdInt(-1);
+    }
+    
+    public int getNamePrefixIdInt(int defaultValue)
+    {
+        return namePrefixId != null ? namePrefixId.intValue() : defaultValue;
+    }
+    
     public java.lang.String getNameSuffix()
     {
         return nameSuffix;
@@ -95,9 +145,29 @@ implements auto.dal.db.vo.Person
         return personId;
     }
     
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getShortName()
@@ -125,6 +195,11 @@ implements auto.dal.db.vo.Person
         this.age = age;
     }
     
+    public void setAgeInt(int age)
+    {
+        this.age = new java.lang.Integer(age);
+    }
+    
     public void setBirthDate(java.util.Date birthDate)
     {
         this.birthDate = birthDate;
@@ -133,6 +208,11 @@ implements auto.dal.db.vo.Person
     public void setBloodTypeId(java.lang.Integer bloodTypeId)
     {
         this.bloodTypeId = bloodTypeId;
+    }
+    
+    public void setBloodTypeIdInt(int bloodTypeId)
+    {
+        this.bloodTypeId = new java.lang.Integer(bloodTypeId);
     }
     
     public void setCompleteName(java.lang.String completeName)
@@ -165,6 +245,11 @@ implements auto.dal.db.vo.Person
         this.genderId = genderId;
     }
     
+    public void setGenderIdInt(int genderId)
+    {
+        this.genderId = new java.lang.Integer(genderId);
+    }
+    
     public void setLanguageId(java.lang.String languageId)
     {
         this.languageId = languageId;
@@ -173,6 +258,11 @@ implements auto.dal.db.vo.Person
     public void setMaritalStatusId(java.lang.Integer maritalStatusId)
     {
         this.maritalStatusId = maritalStatusId;
+    }
+    
+    public void setMaritalStatusIdInt(int maritalStatusId)
+    {
+        this.maritalStatusId = new java.lang.Integer(maritalStatusId);
     }
     
     public void setNameFirst(java.lang.String nameFirst)
@@ -200,6 +290,11 @@ implements auto.dal.db.vo.Person
         this.namePrefixId = namePrefixId;
     }
     
+    public void setNamePrefixIdInt(int namePrefixId)
+    {
+        this.namePrefixId = new java.lang.Integer(namePrefixId);
+    }
+    
     public void setNameSuffix(java.lang.String nameSuffix)
     {
         this.nameSuffix = nameSuffix;
@@ -210,9 +305,19 @@ implements auto.dal.db.vo.Person
         this.personId = personId;
     }
     
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setShortName(java.lang.String shortName)

@@ -7,9 +7,9 @@ public interface OrgClassification
 {
     static public final int CR_SESS_ID = 1;
     static public final int CR_STAMP = 0;
-    static public final int ORG_ID = 4;
     static public final int ORG_TYPE = 6;
     static public final int ORG_TYPE_ID = 5;
+    static public final int PARENT_ID = 4;
     static public final int REC_STAT_ID = 2;
     static public final int SYSTEM_ID = 3;
 }

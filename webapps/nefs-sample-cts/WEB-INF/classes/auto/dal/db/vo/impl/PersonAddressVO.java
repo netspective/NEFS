@@ -15,6 +15,16 @@ implements auto.dal.db.vo.PersonAddress
         return addressTypeId;
     }
     
+    public int getAddressTypeIdInt()
+    {
+        return getAddressTypeIdInt(-1);
+    }
+    
+    public int getAddressTypeIdInt(int defaultValue)
+    {
+        return addressTypeId != null ? addressTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.String getCity()
     {
         return city;
@@ -60,9 +70,29 @@ implements auto.dal.db.vo.PersonAddress
         return parentId;
     }
     
+    public long getParentIdLong()
+    {
+        return getParentIdLong(-1);
+    }
+    
+    public long getParentIdLong(long defaultValue)
+    {
+        return parentId != null ? parentId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getState()
@@ -73,6 +103,16 @@ implements auto.dal.db.vo.PersonAddress
     public java.lang.Integer getStateId()
     {
         return stateId;
+    }
+    
+    public int getStateIdInt()
+    {
+        return getStateIdInt(-1);
+    }
+    
+    public int getStateIdInt(int defaultValue)
+    {
+        return stateId != null ? stateId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -93,6 +133,11 @@ implements auto.dal.db.vo.PersonAddress
     public void setAddressTypeId(java.lang.Integer addressTypeId)
     {
         this.addressTypeId = addressTypeId;
+    }
+    
+    public void setAddressTypeIdInt(int addressTypeId)
+    {
+        this.addressTypeId = new java.lang.Integer(addressTypeId);
     }
     
     public void setCity(java.lang.String city)
@@ -140,9 +185,19 @@ implements auto.dal.db.vo.PersonAddress
         this.parentId = parentId;
     }
     
+    public void setParentIdLong(long parentId)
+    {
+        this.parentId = new java.lang.Long(parentId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setState(java.lang.String state)
@@ -153,6 +208,11 @@ implements auto.dal.db.vo.PersonAddress
     public void setStateId(java.lang.Integer stateId)
     {
         this.stateId = stateId;
+    }
+    
+    public void setStateIdInt(int stateId)
+    {
+        this.stateId = new java.lang.Integer(stateId);
     }
     
     public void setSystemId(java.lang.String systemId)

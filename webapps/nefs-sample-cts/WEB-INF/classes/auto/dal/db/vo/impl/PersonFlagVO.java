@@ -20,14 +20,44 @@ implements auto.dal.db.vo.PersonFlag
         return flagId;
     }
     
+    public int getFlagIdInt()
+    {
+        return getFlagIdInt(-1);
+    }
+    
+    public int getFlagIdInt(int defaultValue)
+    {
+        return flagId != null ? flagId.intValue() : defaultValue;
+    }
+    
     public java.lang.Long getParentId()
     {
         return parentId;
     }
     
+    public long getParentIdLong()
+    {
+        return getParentIdLong(-1);
+    }
+    
+    public long getParentIdLong(long defaultValue)
+    {
+        return parentId != null ? parentId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -50,14 +80,29 @@ implements auto.dal.db.vo.PersonFlag
         this.flagId = flagId;
     }
     
+    public void setFlagIdInt(int flagId)
+    {
+        this.flagId = new java.lang.Integer(flagId);
+    }
+    
     public void setParentId(java.lang.Long parentId)
     {
         this.parentId = parentId;
     }
     
+    public void setParentIdLong(long parentId)
+    {
+        this.parentId = new java.lang.Long(parentId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)

@@ -25,6 +25,16 @@ implements auto.dal.db.vo.OrgNote
         return noteTypeId;
     }
     
+    public int getNoteTypeIdInt()
+    {
+        return getNoteTypeIdInt(-1);
+    }
+    
+    public int getNoteTypeIdInt(int defaultValue)
+    {
+        return noteTypeId != null ? noteTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.String getNotes()
     {
         return notes;
@@ -35,9 +45,29 @@ implements auto.dal.db.vo.OrgNote
         return parentId;
     }
     
+    public long getParentIdLong()
+    {
+        return getParentIdLong(-1);
+    }
+    
+    public long getParentIdLong(long defaultValue)
+    {
+        return parentId != null ? parentId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -65,6 +95,11 @@ implements auto.dal.db.vo.OrgNote
         this.noteTypeId = noteTypeId;
     }
     
+    public void setNoteTypeIdInt(int noteTypeId)
+    {
+        this.noteTypeId = new java.lang.Integer(noteTypeId);
+    }
+    
     public void setNotes(java.lang.String notes)
     {
         this.notes = notes;
@@ -75,9 +110,19 @@ implements auto.dal.db.vo.OrgNote
         this.parentId = parentId;
     }
     
+    public void setParentIdLong(long parentId)
+    {
+        this.parentId = new java.lang.Long(parentId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)

@@ -263,6 +263,13 @@ public final class PersonSessionTable
             table.delete(cc, row);
         }
         
+        public final void deleteChildren(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            personSessionActivityTableRecords.delete(cc);
+            personSessionViewCountTableRecords.delete(cc);
+        }
+        
         public final DateColumn.DateColumnValue getFirstAccess()
         {
             return (DateColumn.DateColumnValue)values.getByColumnIndex(COLINDEX_FIRST_ACCESS);
@@ -446,6 +453,12 @@ public final class PersonSessionTable
         {
             this(rows);
             this.parentRecord = parentRecord;
+        }
+        
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
         }
         
         public final PersonSessionTable.Record get(int i)

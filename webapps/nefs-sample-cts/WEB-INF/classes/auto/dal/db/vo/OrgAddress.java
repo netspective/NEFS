@@ -8,6 +8,10 @@ public interface OrgAddress
     
     public java.lang.Integer getAddressTypeId();
     
+    public int getAddressTypeIdInt();
+    
+    public int getAddressTypeIdInt(int defaultValue);
+    
     public java.lang.String getCity();
     
     public java.lang.String getCountry();
@@ -26,11 +30,23 @@ public interface OrgAddress
     
     public java.lang.Long getParentId();
     
+    public long getParentIdLong();
+    
+    public long getParentIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getState();
     
     public java.lang.Integer getStateId();
+    
+    public int getStateIdInt();
+    
+    public int getStateIdInt(int defaultValue);
     
     public java.lang.String getSystemId();
     
@@ -39,6 +55,8 @@ public interface OrgAddress
     public void setAddressName(java.lang.String addressName);
     
     public void setAddressTypeId(java.lang.Integer addressTypeId);
+    
+    public void setAddressTypeIdInt(int addressTypeId);
     
     public void setCity(java.lang.String city);
     
@@ -58,11 +76,17 @@ public interface OrgAddress
     
     public void setParentId(java.lang.Long parentId);
     
+    public void setParentIdLong(long parentId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setState(java.lang.String state);
     
     public void setStateId(java.lang.Integer stateId);
+    
+    public void setStateIdInt(int stateId);
     
     public void setSystemId(java.lang.String systemId);
     

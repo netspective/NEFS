@@ -9,7 +9,7 @@ public interface MaritalStatusType
     static public final int LEGALLY_SEPARATED = 4;
     static public final int MARRIED = 2;
     static public final int NOT_APPLICABLE = 7;
-    static public final int PARTNER = 3;
+    static public final int PARTNER_FIELD_NAME = 3;
     static public final int SINGLE = 1;
     static public final int UNKNOWN = 0;
     static public final int WIDOWED = 6;

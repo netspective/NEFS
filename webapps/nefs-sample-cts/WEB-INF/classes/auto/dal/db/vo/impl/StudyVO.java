@@ -45,6 +45,16 @@ implements auto.dal.db.vo.Study
         return recStatId;
     }
     
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
+    }
+    
     public java.util.Date getStartDate()
     {
         return startDate;
@@ -65,6 +75,16 @@ implements auto.dal.db.vo.Study
         return studyId;
     }
     
+    public long getStudyIdLong()
+    {
+        return getStudyIdLong(-1);
+    }
+    
+    public long getStudyIdLong(long defaultValue)
+    {
+        return studyId != null ? studyId.longValue() : defaultValue;
+    }
+    
     public java.lang.String getStudyName()
     {
         return studyName;
@@ -75,9 +95,29 @@ implements auto.dal.db.vo.Study
         return studyStage;
     }
     
+    public int getStudyStageInt()
+    {
+        return getStudyStageInt(-1);
+    }
+    
+    public int getStudyStageInt(int defaultValue)
+    {
+        return studyStage != null ? studyStage.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getStudyStatus()
     {
         return studyStatus;
+    }
+    
+    public int getStudyStatusInt()
+    {
+        return getStudyStatusInt(-1);
+    }
+    
+    public int getStudyStatusInt(int defaultValue)
+    {
+        return studyStatus != null ? studyStatus.intValue() : defaultValue;
     }
     
     public java.util.Date getTargetEndDate()
@@ -125,6 +165,11 @@ implements auto.dal.db.vo.Study
         this.recStatId = recStatId;
     }
     
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
+    }
+    
     public void setStartDate(java.util.Date startDate)
     {
         this.startDate = startDate;
@@ -145,6 +190,11 @@ implements auto.dal.db.vo.Study
         this.studyId = studyId;
     }
     
+    public void setStudyIdLong(long studyId)
+    {
+        this.studyId = new java.lang.Long(studyId);
+    }
+    
     public void setStudyName(java.lang.String studyName)
     {
         this.studyName = studyName;
@@ -155,9 +205,19 @@ implements auto.dal.db.vo.Study
         this.studyStage = studyStage;
     }
     
+    public void setStudyStageInt(int studyStage)
+    {
+        this.studyStage = new java.lang.Integer(studyStage);
+    }
+    
     public void setStudyStatus(java.lang.Integer studyStatus)
     {
         this.studyStatus = studyStatus;
+    }
+    
+    public void setStudyStatusInt(int studyStatus)
+    {
+        this.studyStatus = new java.lang.Integer(studyStatus);
     }
     
     public void setTargetEndDate(java.util.Date targetEndDate)

@@ -10,7 +10,15 @@ public interface PersonSession
     
     public java.lang.Long getOrgId();
     
+    public long getOrgIdLong();
+    
+    public long getOrgIdLong(long defaultValue);
+    
     public java.lang.Long getPersonId();
+    
+    public long getPersonIdLong();
+    
+    public long getPersonIdLong(long defaultValue);
     
     public java.lang.String getRemoteAddr();
     
@@ -24,7 +32,11 @@ public interface PersonSession
     
     public void setOrgId(java.lang.Long orgId);
     
+    public void setOrgIdLong(long orgId);
+    
     public void setPersonId(java.lang.Long personId);
+    
+    public void setPersonIdLong(long personId);
     
     public void setRemoteAddr(java.lang.String remoteAddr);
     

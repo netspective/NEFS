@@ -347,6 +347,12 @@ public final class PersonOrgRelationshipMapTable
             this.cache = new Record[rows.size()];
         }
         
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
+        }
+        
         public final PersonOrgRelationshipMapTable.Record get(int i)
         {
             if(cache[i] == null) cache[i] = new Record(rows.getRow(i));

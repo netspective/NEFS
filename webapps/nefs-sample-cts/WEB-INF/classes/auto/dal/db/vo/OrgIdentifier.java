@@ -14,9 +14,21 @@ public interface OrgIdentifier
     
     public java.lang.Integer getIdentifierTypeId();
     
+    public int getIdentifierTypeIdInt();
+    
+    public int getIdentifierTypeIdInt(int defaultValue);
+    
     public java.lang.Long getOrgId();
     
+    public long getOrgIdLong();
+    
+    public long getOrgIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getSystemId();
     
@@ -30,9 +42,15 @@ public interface OrgIdentifier
     
     public void setIdentifierTypeId(java.lang.Integer identifierTypeId);
     
+    public void setIdentifierTypeIdInt(int identifierTypeId);
+    
     public void setOrgId(java.lang.Long orgId);
     
+    public void setOrgIdLong(long orgId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setSystemId(java.lang.String systemId);
 }

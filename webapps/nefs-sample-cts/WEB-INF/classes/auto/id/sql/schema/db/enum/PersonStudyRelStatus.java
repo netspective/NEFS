@@ -3,7 +3,7 @@
 
 package auto.id.sql.schema.db.enum;
 
-public interface StudyPersonRelStatus
+public interface PersonStudyRelStatus
 {
     static public final int ACTIVE = 1;
     static public final int INACTIVE = 0;

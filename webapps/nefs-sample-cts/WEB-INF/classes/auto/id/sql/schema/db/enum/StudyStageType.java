@@ -8,4 +8,5 @@ public interface StudyStageType
     static public final int PHASE_I = 0;
     static public final int PHASE_II = 1;
     static public final int PHASE_III = 2;
+    static public final int PHASE_IV = 3;
 }

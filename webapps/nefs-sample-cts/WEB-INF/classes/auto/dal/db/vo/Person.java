@@ -6,9 +6,17 @@ public interface Person
     
     public java.lang.Integer getAge();
     
+    public int getAgeInt();
+    
+    public int getAgeInt(int defaultValue);
+    
     public java.util.Date getBirthDate();
     
     public java.lang.Integer getBloodTypeId();
+    
+    public int getBloodTypeIdInt();
+    
+    public int getBloodTypeIdInt(int defaultValue);
     
     public java.lang.String getCompleteName();
     
@@ -22,9 +30,17 @@ public interface Person
     
     public java.lang.Integer getGenderId();
     
+    public int getGenderIdInt();
+    
+    public int getGenderIdInt(int defaultValue);
+    
     public java.lang.String getLanguageId();
     
     public java.lang.Integer getMaritalStatusId();
+    
+    public int getMaritalStatusIdInt();
+    
+    public int getMaritalStatusIdInt(int defaultValue);
     
     public java.lang.String getNameFirst();
     
@@ -36,11 +52,23 @@ public interface Person
     
     public java.lang.Integer getNamePrefixId();
     
+    public int getNamePrefixIdInt();
+    
+    public int getNamePrefixIdInt(int defaultValue);
+    
     public java.lang.String getNameSuffix();
     
     public java.lang.Long getPersonId();
     
+    public long getPersonIdLong();
+    
+    public long getPersonIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getShortName();
     
@@ -52,9 +80,13 @@ public interface Person
     
     public void setAge(java.lang.Integer age);
     
+    public void setAgeInt(int age);
+    
     public void setBirthDate(java.util.Date birthDate);
     
     public void setBloodTypeId(java.lang.Integer bloodTypeId);
+    
+    public void setBloodTypeIdInt(int bloodTypeId);
     
     public void setCompleteName(java.lang.String completeName);
     
@@ -68,9 +100,13 @@ public interface Person
     
     public void setGenderId(java.lang.Integer genderId);
     
+    public void setGenderIdInt(int genderId);
+    
     public void setLanguageId(java.lang.String languageId);
     
     public void setMaritalStatusId(java.lang.Integer maritalStatusId);
+    
+    public void setMaritalStatusIdInt(int maritalStatusId);
     
     public void setNameFirst(java.lang.String nameFirst);
     
@@ -82,11 +118,17 @@ public interface Person
     
     public void setNamePrefixId(java.lang.Integer namePrefixId);
     
+    public void setNamePrefixIdInt(int namePrefixId);
+    
     public void setNameSuffix(java.lang.String nameSuffix);
     
     public void setPersonId(java.lang.Long personId);
     
+    public void setPersonIdLong(long personId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setShortName(java.lang.String shortName);
     

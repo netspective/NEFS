@@ -20,14 +20,44 @@ implements auto.dal.db.vo.PersonOrgRelationshipMap
         return invRelTypeId;
     }
     
+    public int getInvRelTypeIdInt()
+    {
+        return getInvRelTypeIdInt(-1);
+    }
+    
+    public int getInvRelTypeIdInt(int defaultValue)
+    {
+        return invRelTypeId != null ? invRelTypeId.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
     }
     
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRelTypeId()
     {
         return relTypeId;
+    }
+    
+    public int getRelTypeIdInt()
+    {
+        return getRelTypeIdInt(-1);
+    }
+    
+    public int getRelTypeIdInt(int defaultValue)
+    {
+        return relTypeId != null ? relTypeId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -50,14 +80,29 @@ implements auto.dal.db.vo.PersonOrgRelationshipMap
         this.invRelTypeId = invRelTypeId;
     }
     
+    public void setInvRelTypeIdInt(int invRelTypeId)
+    {
+        this.invRelTypeId = new java.lang.Integer(invRelTypeId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
     }
     
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
+    }
+    
     public void setRelTypeId(java.lang.Integer relTypeId)
     {
         this.relTypeId = relTypeId;
+    }
+    
+    public void setRelTypeIdInt(int relTypeId)
+    {
+        this.relTypeId = new java.lang.Integer(relTypeId);
     }
     
     public void setSystemId(java.lang.String systemId)

@@ -5,5 +5,8 @@ package auto.id.pres.form;
 
 public interface Person
 {
-    static public final String SUBJECT_PROFILE = "person.subject-profile";
+    static public final String CONTACT_INFO = "person.contact-info";
+    static public final String CONTACT_METHOD = "person.contact_method";
+    static public final String NOTES = "person.notes";
+    static public final String SELF_LOGIN_INFO = "person.self-login-info";
 }

@@ -20,6 +20,16 @@ implements auto.dal.db.vo.PersonSessionActivity
         return actionType;
     }
     
+    public int getActionTypeInt()
+    {
+        return getActionTypeInt(-1);
+    }
+    
+    public int getActionTypeInt(int defaultValue)
+    {
+        return actionType != null ? actionType.intValue() : defaultValue;
+    }
+    
     public java.lang.String getActivityData()
     {
         return activityData;
@@ -35,9 +45,29 @@ implements auto.dal.db.vo.PersonSessionActivity
         return activityType;
     }
     
+    public int getActivityTypeInt()
+    {
+        return getActivityTypeInt(-1);
+    }
+    
+    public int getActivityTypeInt(int defaultValue)
+    {
+        return activityType != null ? activityType.intValue() : defaultValue;
+    }
+    
     public java.lang.Integer getDetailLevel()
     {
         return detailLevel;
+    }
+    
+    public int getDetailLevelInt()
+    {
+        return getDetailLevelInt(-1);
+    }
+    
+    public int getDetailLevelInt(int defaultValue)
+    {
+        return detailLevel != null ? detailLevel.intValue() : defaultValue;
     }
     
     public java.lang.String getSessionId()
@@ -60,6 +90,11 @@ implements auto.dal.db.vo.PersonSessionActivity
         this.actionType = actionType;
     }
     
+    public void setActionTypeInt(int actionType)
+    {
+        this.actionType = new java.lang.Integer(actionType);
+    }
+    
     public void setActivityData(java.lang.String activityData)
     {
         this.activityData = activityData;
@@ -75,9 +110,19 @@ implements auto.dal.db.vo.PersonSessionActivity
         this.activityType = activityType;
     }
     
+    public void setActivityTypeInt(int activityType)
+    {
+        this.activityType = new java.lang.Integer(activityType);
+    }
+    
     public void setDetailLevel(java.lang.Integer detailLevel)
     {
         this.detailLevel = detailLevel;
+    }
+    
+    public void setDetailLevelInt(int detailLevel)
+    {
+        this.detailLevel = new java.lang.Integer(detailLevel);
     }
     
     public void setSessionId(java.lang.String sessionId)

@@ -20,9 +20,29 @@ implements auto.dal.db.vo.PersonSession
         return orgId;
     }
     
+    public long getOrgIdLong()
+    {
+        return getOrgIdLong(-1);
+    }
+    
+    public long getOrgIdLong(long defaultValue)
+    {
+        return orgId != null ? orgId.longValue() : defaultValue;
+    }
+    
     public java.lang.Long getPersonId()
     {
         return personId;
+    }
+    
+    public long getPersonIdLong()
+    {
+        return getPersonIdLong(-1);
+    }
+    
+    public long getPersonIdLong(long defaultValue)
+    {
+        return personId != null ? personId.longValue() : defaultValue;
     }
     
     public java.lang.String getRemoteAddr()
@@ -55,9 +75,19 @@ implements auto.dal.db.vo.PersonSession
         this.orgId = orgId;
     }
     
+    public void setOrgIdLong(long orgId)
+    {
+        this.orgId = new java.lang.Long(orgId);
+    }
+    
     public void setPersonId(java.lang.Long personId)
     {
         this.personId = personId;
+    }
+    
+    public void setPersonIdLong(long personId)
+    {
+        this.personId = new java.lang.Long(personId);
     }
     
     public void setRemoteAddr(java.lang.String remoteAddr)

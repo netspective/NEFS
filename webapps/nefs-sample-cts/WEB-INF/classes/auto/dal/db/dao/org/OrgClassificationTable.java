@@ -32,14 +32,14 @@ public final class OrgClassificationTable
     public static final int ACCESSORID_BY_CR_SESS_ID_EQUALITY = 3;
     public static final int ACCESSORID_BY_REC_STAT_ID_EQUALITY = 4;
     public static final int ACCESSORID_BY_SYSTEM_ID_EQUALITY = 5;
-    public static final int ACCESSORID_BY_ORG_ID_EQUALITY = 6;
+    public static final int ACCESSORID_BY_PARENT_ID_EQUALITY = 6;
     public static final int ACCESSORID_BY_ORG_TYPE_ID_EQUALITY = 7;
     public static final int ACCESSORID_BY_ORG_TYPE_EQUALITY = 8;
     public static final int COLINDEX_CR_STAMP = 0;
     public static final int COLINDEX_CR_SESS_ID = 1;
     public static final int COLINDEX_REC_STAT_ID = 2;
     public static final int COLINDEX_SYSTEM_ID = 3;
-    public static final int COLINDEX_ORG_ID = 4;
+    public static final int COLINDEX_PARENT_ID = 4;
     public static final int COLINDEX_ORG_TYPE_ID = 5;
     public static final int COLINDEX_ORG_TYPE = 6;
     
@@ -50,13 +50,13 @@ public final class OrgClassificationTable
         this.accessors = table.getQueryDefinition().getSelects();
         crSessIdForeignKey = table.getColumns().get(COLINDEX_CR_SESS_ID).getForeignKey();
         recStatIdForeignKey = table.getColumns().get(COLINDEX_REC_STAT_ID).getForeignKey();
-        orgIdForeignKey = (ParentForeignKey)table.getColumns().get(COLINDEX_ORG_ID).getForeignKey();
+        parentIdForeignKey = (ParentForeignKey)table.getColumns().get(COLINDEX_PARENT_ID).getForeignKey();
         orgTypeIdForeignKey = table.getColumns().get(COLINDEX_ORG_TYPE_ID).getForeignKey();
     }
     
-    public final OrgClassificationTable.Record createChildLinkedByOrgId(OrgTable.Record parentRecord)
+    public final OrgClassificationTable.Record createChildLinkedByParentId(OrgTable.Record parentRecord)
     {
-        return new OrgClassificationTable.Record(table.createRow(orgIdForeignKey, parentRecord.getRow()));
+        return new OrgClassificationTable.Record(table.createRow(parentIdForeignKey, parentRecord.getRow()));
     }
     
     public final OrgClassificationTable.Record createRecord()
@@ -74,11 +74,6 @@ public final class OrgClassificationTable
         return accessors.get(ACCESSORID_BY_CR_STAMP_EQUALITY);
     }
     
-    public final QueryDefnSelect getAccessorByOrgIdEquality()
-    {
-        return accessors.get(ACCESSORID_BY_ORG_ID_EQUALITY);
-    }
-    
     public final QueryDefnSelect getAccessorByOrgTypeEquality()
     {
         return accessors.get(ACCESSORID_BY_ORG_TYPE_EQUALITY);
@@ -87,6 +82,11 @@ public final class OrgClassificationTable
     public final QueryDefnSelect getAccessorByOrgTypeIdEquality()
     {
         return accessors.get(ACCESSORID_BY_ORG_TYPE_ID_EQUALITY);
+    }
+    
+    public final QueryDefnSelect getAccessorByParentIdEquality()
+    {
+        return accessors.get(ACCESSORID_BY_PARENT_ID_EQUALITY);
     }
     
     public final QueryDefnSelect getAccessorByParentKeyEquality()
@@ -134,16 +134,6 @@ public final class OrgClassificationTable
         return (DateTimeColumn)table.getColumns().get(COLINDEX_CR_STAMP);
     }
     
-    public final LongIntegerColumn getOrgIdColumn()
-    {
-        return (LongIntegerColumn)table.getColumns().get(COLINDEX_ORG_ID);
-    }
-    
-    public final ParentForeignKey getOrgIdForeignKey()
-    {
-        return orgIdForeignKey;
-    }
-    
     public final TextColumn getOrgTypeColumn()
     {
         return (TextColumn)table.getColumns().get(COLINDEX_ORG_TYPE);
@@ -159,14 +149,24 @@ public final class OrgClassificationTable
         return orgTypeIdForeignKey;
     }
     
+    public final LongIntegerColumn getParentIdColumn()
+    {
+        return (LongIntegerColumn)table.getColumns().get(COLINDEX_PARENT_ID);
+    }
+    
+    public final ParentForeignKey getParentIdForeignKey()
+    {
+        return parentIdForeignKey;
+    }
+    
     /**
-     * Parent reference: ParentForeignKey Sources: Org_Classification.org_id;
+     * Parent reference: ParentForeignKey Sources: Org_Classification.parent_id;
      *  Referenced Columns: Org.org_id
      */
-    public final OrgClassificationTable.Records getParentRecordsByOrgId(OrgTable.Record parentRecord, ConnectionContext cc)
+    public final OrgClassificationTable.Records getParentRecordsByParentId(OrgTable.Record parentRecord, ConnectionContext cc)
     throws NamingException, SQLException
     {
-        Records result = new Records(parentRecord, orgIdForeignKey.getChildRowsByParentRow(cc, parentRecord.getRow()));
+        Records result = new Records(parentRecord, parentIdForeignKey.getChildRowsByParentRow(cc, parentRecord.getRow()));
         return result;
     }
     
@@ -217,8 +217,8 @@ public final class OrgClassificationTable
     }
     private QueryDefnSelects accessors;
     private ForeignKey crSessIdForeignKey;
-    private ParentForeignKey orgIdForeignKey;
     private ForeignKey orgTypeIdForeignKey;
+    private ParentForeignKey parentIdForeignKey;
     private ForeignKey recStatIdForeignKey;
     private Schema schema;
     private com.netspective.axiom.schema.table.BasicTable table;
@@ -261,11 +261,6 @@ public final class OrgClassificationTable
             return (DateColumn.DateColumnValue)values.getByColumnIndex(COLINDEX_CR_STAMP);
         }
         
-        public final LongIntegerColumn.LongIntegerColumnValue getOrgId()
-        {
-            return (LongIntegerColumn.LongIntegerColumnValue)values.getByColumnIndex(COLINDEX_ORG_ID);
-        }
-        
         public final TextColumn.TextColumnValue getOrgType()
         {
             return (TextColumn.TextColumnValue)values.getByColumnIndex(COLINDEX_ORG_TYPE);
@@ -274,6 +269,11 @@ public final class OrgClassificationTable
         public final EnumerationIdRefColumn.EnumerationIdRefValue getOrgTypeId()
         {
             return (EnumerationIdRefColumn.EnumerationIdRefValue)values.getByColumnIndex(COLINDEX_ORG_TYPE_ID);
+        }
+        
+        public final LongIntegerColumn.LongIntegerColumnValue getParentId()
+        {
+            return (LongIntegerColumn.LongIntegerColumnValue)values.getByColumnIndex(COLINDEX_PARENT_ID);
         }
         
         public final EnumerationIdRefColumn.EnumerationIdRefValue getRecStatId()
@@ -302,7 +302,7 @@ public final class OrgClassificationTable
             valueObject.setCrSessId((java.lang.String) values.getByColumnIndex(COLINDEX_CR_SESS_ID).getValue());
             valueObject.setRecStatId((java.lang.Integer) values.getByColumnIndex(COLINDEX_REC_STAT_ID).getValue());
             valueObject.setSystemId((java.lang.String) values.getByColumnIndex(COLINDEX_SYSTEM_ID).getValue());
-            valueObject.setOrgId((java.lang.Long) values.getByColumnIndex(COLINDEX_ORG_ID).getValue());
+            valueObject.setParentId((java.lang.Long) values.getByColumnIndex(COLINDEX_PARENT_ID).getValue());
             valueObject.setOrgTypeId((java.lang.Integer) values.getByColumnIndex(COLINDEX_ORG_TYPE_ID).getValue());
             valueObject.setOrgType((java.lang.String) values.getByColumnIndex(COLINDEX_ORG_TYPE).getValue());
             return valueObject;
@@ -330,11 +330,6 @@ public final class OrgClassificationTable
             getCrStamp().copyValueByReference(value);
         }
         
-        public final void setOrgId(com.netspective.commons.value.Value value)
-        {
-            getOrgId().copyValueByReference(value);
-        }
-        
         public final void setOrgType(com.netspective.commons.value.Value value)
         {
             getOrgType().copyValueByReference(value);
@@ -343,6 +338,11 @@ public final class OrgClassificationTable
         public final void setOrgTypeId(com.netspective.commons.value.Value value)
         {
             getOrgTypeId().copyValueByReference(value);
+        }
+        
+        public final void setParentId(com.netspective.commons.value.Value value)
+        {
+            getParentId().copyValueByReference(value);
         }
         
         public final void setRecStatId(com.netspective.commons.value.Value value)
@@ -361,7 +361,7 @@ public final class OrgClassificationTable
             values.getByColumnIndex(COLINDEX_CR_SESS_ID).setValue(valueObject.getCrSessId());
             values.getByColumnIndex(COLINDEX_REC_STAT_ID).setValue(valueObject.getRecStatId());
             values.getByColumnIndex(COLINDEX_SYSTEM_ID).setValue(valueObject.getSystemId());
-            values.getByColumnIndex(COLINDEX_ORG_ID).setValue(valueObject.getOrgId());
+            values.getByColumnIndex(COLINDEX_PARENT_ID).setValue(valueObject.getParentId());
             values.getByColumnIndex(COLINDEX_ORG_TYPE_ID).setValue(valueObject.getOrgTypeId());
             values.getByColumnIndex(COLINDEX_ORG_TYPE).setValue(valueObject.getOrgType());
         }
@@ -399,6 +399,12 @@ public final class OrgClassificationTable
         {
             this(rows);
             this.parentRecord = parentRecord;
+        }
+        
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
         }
         
         public final OrgClassificationTable.Record get(int i)

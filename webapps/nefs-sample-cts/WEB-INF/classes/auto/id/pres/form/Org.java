@@ -5,6 +5,6 @@ package auto.id.pres.form;
 
 public interface Org
 {
-    static public final String PERSON_REGISTRATION = "org.person_registration";
-    static public final String PROFILE = "org.profile";
+    static public final String ADDRESS = "org.address";
+    static public final String EMPLOYEE = "org.employee";
 }

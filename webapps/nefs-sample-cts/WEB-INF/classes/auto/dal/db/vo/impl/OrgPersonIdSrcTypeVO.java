@@ -30,14 +30,44 @@ implements auto.dal.db.vo.OrgPersonIdSrcType
         return itemId;
     }
     
+    public int getItemIdInt()
+    {
+        return getItemIdInt(-1);
+    }
+    
+    public int getItemIdInt(int defaultValue)
+    {
+        return itemId != null ? itemId.intValue() : defaultValue;
+    }
+    
     public java.lang.Long getOrgId()
     {
         return orgId;
     }
     
+    public long getOrgIdLong()
+    {
+        return getOrgIdLong(-1);
+    }
+    
+    public long getOrgIdLong(long defaultValue)
+    {
+        return orgId != null ? orgId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -70,14 +100,29 @@ implements auto.dal.db.vo.OrgPersonIdSrcType
         this.itemId = itemId;
     }
     
+    public void setItemIdInt(int itemId)
+    {
+        this.itemId = new java.lang.Integer(itemId);
+    }
+    
     public void setOrgId(java.lang.Long orgId)
     {
         this.orgId = orgId;
     }
     
+    public void setOrgIdLong(long orgId)
+    {
+        this.orgId = new java.lang.Long(orgId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)

@@ -10,7 +10,15 @@ public interface PersonRole
     
     public java.lang.Long getPersonId();
     
+    public long getPersonIdLong();
+    
+    public long getPersonIdLong(long defaultValue);
+    
     public java.lang.Integer getRecStatId();
+    
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
     
     public java.lang.String getRoleNameId();
     
@@ -22,7 +30,11 @@ public interface PersonRole
     
     public void setPersonId(java.lang.Long personId);
     
+    public void setPersonIdLong(long personId);
+    
     public void setRecStatId(java.lang.Integer recStatId);
+    
+    public void setRecStatIdInt(int recStatId);
     
     public void setRoleNameId(java.lang.String roleNameId);
     

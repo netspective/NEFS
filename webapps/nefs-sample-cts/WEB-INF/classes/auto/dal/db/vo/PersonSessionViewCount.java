@@ -12,6 +12,10 @@ public interface PersonSessionViewCount
     
     public java.lang.Integer getViewCount();
     
+    public int getViewCountInt();
+    
+    public int getViewCountInt(int defaultValue);
+    
     public java.util.Date getViewInit();
     
     public java.lang.String getViewKey();
@@ -27,6 +31,8 @@ public interface PersonSessionViewCount
     public void setViewCaption(java.lang.String viewCaption);
     
     public void setViewCount(java.lang.Integer viewCount);
+    
+    public void setViewCountInt(int viewCount);
     
     public void setViewInit(java.util.Date viewInit);
     

@@ -1,7 +1,7 @@
 package auto.dal.db.enum;
 
 
-public final class StudyPersonRelStatus
+public final class PersonStudyRelStatus
 {
     public final int ACTIVE = 1;
     public final int INACTIVE = 0;

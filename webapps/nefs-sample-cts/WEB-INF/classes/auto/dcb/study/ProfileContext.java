@@ -22,6 +22,13 @@ public class ProfileContext
     public DialogContext getDialogContext() { return dialogContext; }
 
 
+	public com.netspective.sparx.form.field.type.TextField.TextFieldState getStudyIdState() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState) fieldStates.getState("study_id"); }
+	public com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue getStudyId() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue) getStudyIdState().getValue(); }
+	public DialogFieldFlags getStudyIdStateFlags() { return getStudyIdState().getStateFlags(); }
+	public String getStudyIdPrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.study_id"); }
+	public String getStudyIdPublicRequestParam() { return dialogContext.getRequest().getParameter("study_id"); }
+	public com.netspective.sparx.form.field.type.TextField getStudyIdField() { return (com.netspective.sparx.form.field.type.TextField) getStudyIdState().getField(); }
+
 	public com.netspective.sparx.form.field.type.TextField.TextFieldState getStudyNameState() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState) fieldStates.getState("study_name"); }
 	public com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue getStudyName() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue) getStudyNameState().getValue(); }
 	public DialogFieldFlags getStudyNameStateFlags() { return getStudyNameState().getStateFlags(); }
@@ -50,12 +57,12 @@ public class ProfileContext
 	public String getStudyStatusPublicRequestParam() { return dialogContext.getRequest().getParameter("study_status"); }
 	public com.netspective.sparx.form.field.type.SelectField getStudyStatusField() { return (com.netspective.sparx.form.field.type.SelectField) getStudyStatusState().getField(); }
 
-	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState getStudyPhaseState() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState) fieldStates.getState("study_phase"); }
-	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue getStudyPhase() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue) getStudyPhaseState().getValue(); }
-	public DialogFieldFlags getStudyPhaseStateFlags() { return getStudyPhaseState().getStateFlags(); }
-	public String getStudyPhasePrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.study_phase"); }
-	public String getStudyPhasePublicRequestParam() { return dialogContext.getRequest().getParameter("study_phase"); }
-	public com.netspective.sparx.form.field.type.SelectField getStudyPhaseField() { return (com.netspective.sparx.form.field.type.SelectField) getStudyPhaseState().getField(); }
+	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState getStudyStageState() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState) fieldStates.getState("study_stage"); }
+	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue getStudyStage() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue) getStudyStageState().getValue(); }
+	public DialogFieldFlags getStudyStageStateFlags() { return getStudyStageState().getStateFlags(); }
+	public String getStudyStagePrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.study_stage"); }
+	public String getStudyStagePublicRequestParam() { return dialogContext.getRequest().getParameter("study_stage"); }
+	public com.netspective.sparx.form.field.type.SelectField getStudyStageField() { return (com.netspective.sparx.form.field.type.SelectField) getStudyStageState().getField(); }
 
 	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState getSponsorOrgNameState() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState) fieldStates.getState("sponsor_org_name"); }
 	public com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue getSponsorOrgName() { return (com.netspective.sparx.form.field.type.SelectField.SelectFieldState.SelectFieldValue) getSponsorOrgNameState().getValue(); }
@@ -63,20 +70,6 @@ public class ProfileContext
 	public String getSponsorOrgNamePrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.sponsor_org_name"); }
 	public String getSponsorOrgNamePublicRequestParam() { return dialogContext.getRequest().getParameter("sponsor_org_name"); }
 	public com.netspective.sparx.form.field.type.SelectField getSponsorOrgNameField() { return (com.netspective.sparx.form.field.type.SelectField) getSponsorOrgNameState().getField(); }
-
-	public com.netspective.sparx.form.field.type.PhoneField.State getPrimaryPhoneState() { return (com.netspective.sparx.form.field.type.PhoneField.State) fieldStates.getState("primary_phone"); }
-	public com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue getPrimaryPhone() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue) getPrimaryPhoneState().getValue(); }
-	public DialogFieldFlags getPrimaryPhoneStateFlags() { return getPrimaryPhoneState().getStateFlags(); }
-	public String getPrimaryPhonePrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.primary_phone"); }
-	public String getPrimaryPhonePublicRequestParam() { return dialogContext.getRequest().getParameter("primary_phone"); }
-	public com.netspective.sparx.form.field.type.PhoneField getPrimaryPhoneField() { return (com.netspective.sparx.form.field.type.PhoneField) getPrimaryPhoneState().getField(); }
-
-	public com.netspective.sparx.form.field.type.TextField.TextFieldState getPrimaryEmailState() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState) fieldStates.getState("primary_email"); }
-	public com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue getPrimaryEmail() { return (com.netspective.sparx.form.field.type.TextField.TextFieldState.TextFieldValue) getPrimaryEmailState().getValue(); }
-	public DialogFieldFlags getPrimaryEmailStateFlags() { return getPrimaryEmailState().getStateFlags(); }
-	public String getPrimaryEmailPrivateRequestParam() { return dialogContext.getRequest().getParameter("_dc.primary_email"); }
-	public String getPrimaryEmailPublicRequestParam() { return dialogContext.getRequest().getParameter("primary_email"); }
-	public com.netspective.sparx.form.field.type.TextField getPrimaryEmailField() { return (com.netspective.sparx.form.field.type.TextField) getPrimaryEmailState().getField(); }
 
 
 	public com.netspective.sparx.form.field.type.DateTimeField.DateTimeFieldState getStartDateState() { return (com.netspective.sparx.form.field.type.DateTimeField.DateTimeFieldState) fieldStates.getState("start_date"); }

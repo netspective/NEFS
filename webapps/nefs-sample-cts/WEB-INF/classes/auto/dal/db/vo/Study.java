@@ -20,6 +20,10 @@ public interface Study
     
     public java.lang.Integer getRecStatId();
     
+    public int getRecStatIdInt();
+    
+    public int getRecStatIdInt(int defaultValue);
+    
     public java.util.Date getStartDate();
     
     public java.lang.String getStudyCode();
@@ -28,11 +32,23 @@ public interface Study
     
     public java.lang.Long getStudyId();
     
+    public long getStudyIdLong();
+    
+    public long getStudyIdLong(long defaultValue);
+    
     public java.lang.String getStudyName();
     
     public java.lang.Integer getStudyStage();
     
+    public int getStudyStageInt();
+    
+    public int getStudyStageInt(int defaultValue);
+    
     public java.lang.Integer getStudyStatus();
+    
+    public int getStudyStatusInt();
+    
+    public int getStudyStatusInt(int defaultValue);
     
     public java.util.Date getTargetEndDate();
     
@@ -52,6 +68,8 @@ public interface Study
     
     public void setRecStatId(java.lang.Integer recStatId);
     
+    public void setRecStatIdInt(int recStatId);
+    
     public void setStartDate(java.util.Date startDate);
     
     public void setStudyCode(java.lang.String studyCode);
@@ -60,11 +78,17 @@ public interface Study
     
     public void setStudyId(java.lang.Long studyId);
     
+    public void setStudyIdLong(long studyId);
+    
     public void setStudyName(java.lang.String studyName);
     
     public void setStudyStage(java.lang.Integer studyStage);
     
+    public void setStudyStageInt(int studyStage);
+    
     public void setStudyStatus(java.lang.Integer studyStatus);
+    
+    public void setStudyStatusInt(int studyStatus);
     
     public void setTargetEndDate(java.util.Date targetEndDate);
 }

@@ -39,6 +39,7 @@ import auto.dal.db.dao.person.PersonRelationshipTable;
 import auto.dal.db.dao.person.PersonRoleTable;
 import auto.dal.db.dao.person.PersonSessionTable;
 import auto.dal.db.dao.person.PersonOrgRelationshipTable;
+import auto.dal.db.dao.person.PersonStudyRelationshipTable;
 import auto.dal.db.dao.person.StaffLicenseTable;
 
 public final class PersonTable
@@ -93,7 +94,7 @@ public final class PersonTable
     
     public PersonTable(Table table)
     {
-        this.table = (com.netspective.axiom.schema.table.BasicTable)table;
+        this.table = (app.cts.schema.PersonTable)table;
         this.schema = table.getSchema();
         this.accessors = table.getQueryDefinition().getSelects();
         crSessIdForeignKey = table.getColumns().get(COLINDEX_CR_SESS_ID).getForeignKey();
@@ -117,6 +118,7 @@ public final class PersonTable
         personRoleTable = new PersonRoleTable(schema.getTables().getByName("Person_Role"));
         personSessionTable = new PersonSessionTable(schema.getTables().getByName("Person_Session"));
         personOrgRelationshipTable = new PersonOrgRelationshipTable(schema.getTables().getByName("PersonOrg_Relationship"));
+        personStudyRelationshipTable = new PersonStudyRelationshipTable(schema.getTables().getByName("PersonStudy_Relationship"));
         staffLicenseTable = new StaffLicenseTable(schema.getTables().getByName("Staff_License"));
     }
     
@@ -445,6 +447,11 @@ public final class PersonTable
         return personSessionTable;
     }
     
+    public final PersonStudyRelationshipTable getPersonStudyRelationshipTable()
+    {
+        return personStudyRelationshipTable;
+    }
+    
     public final RecordStatusIdColumn getRecStatIdColumn()
     {
         return (RecordStatusIdColumn)table.getColumns().get(COLINDEX_REC_STAT_ID);
@@ -503,7 +510,7 @@ public final class PersonTable
         return staffLicenseTable;
     }
     
-    public final com.netspective.axiom.schema.table.BasicTable getTable()
+    public final app.cts.schema.PersonTable getTable()
     {
         return table;
     }
@@ -533,10 +540,11 @@ public final class PersonTable
     private PersonRelationshipTable personRelationshipTable;
     private PersonRoleTable personRoleTable;
     private PersonSessionTable personSessionTable;
+    private PersonStudyRelationshipTable personStudyRelationshipTable;
     private ForeignKey recStatIdForeignKey;
     private Schema schema;
     private StaffLicenseTable staffLicenseTable;
-    private com.netspective.axiom.schema.table.BasicTable table;
+    private app.cts.schema.PersonTable table;
     
     public final class Record
     {
@@ -623,6 +631,11 @@ public final class PersonTable
             return personSessionTable.createChildLinkedByPersonId(this);
         }
         
+        public final PersonStudyRelationshipTable.Record createPersonStudyRelationshipTableRecord()
+        {
+            return personStudyRelationshipTable.createChildLinkedByParentId(this);
+        }
+        
         public final StaffLicenseTable.Record createStaffLicenseTableRecord()
         {
             return staffLicenseTable.createChildLinkedByPersonId(this);
@@ -644,6 +657,28 @@ public final class PersonTable
         throws NamingException, SQLException
         {
             table.delete(cc, row);
+        }
+        
+        public final void deleteChildren(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            perEthnicityIdSetTableRecords.delete(cc);
+            perLanguageIdSetTableRecords.delete(cc);
+            personAddressTableRecords.delete(cc);
+            personClassificationTableRecords.delete(cc);
+            personContactTableRecords.delete(cc);
+            personEthnicityTableRecords.delete(cc);
+            personFlagTableRecords.delete(cc);
+            personIdentifierTableRecords.delete(cc);
+            personLanguageTableRecords.delete(cc);
+            personLoginTableRecords.delete(cc);
+            personNoteTableRecords.delete(cc);
+            personRelationshipTableRecords.delete(cc);
+            personRoleTableRecords.delete(cc);
+            personSessionTableRecords.delete(cc);
+            personOrgRelationshipTableRecords.delete(cc);
+            personStudyRelationshipTableRecords.delete(cc);
+            staffLicenseTableRecords.delete(cc);
         }
         
         public final IntegerColumn.IntegerColumnValue getAge()
@@ -931,6 +966,19 @@ public final class PersonTable
             return personSessionTableRecords;
         }
         
+        public final PersonStudyRelationshipTable.Records getPersonStudyRelationshipTableRecords(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            if (personStudyRelationshipTableRecords != null) return personStudyRelationshipTableRecords;
+            personStudyRelationshipTableRecords = personStudyRelationshipTable.getParentRecordsByParentId(this, cc);
+            return personStudyRelationshipTableRecords;
+        }
+        
+        public final PersonStudyRelationshipTable.Records getPersonStudyRelationshipTableRecords()
+        {
+            return personStudyRelationshipTableRecords;
+        }
+        
         public final EnumerationIdRefColumn.EnumerationIdRefValue getRecStatId()
         {
             return (EnumerationIdRefColumn.EnumerationIdRefValue)values.getByColumnIndex(COLINDEX_REC_STAT_ID);
@@ -1038,6 +1086,7 @@ public final class PersonTable
             personRoleTableRecords = getPersonRoleTableRecords(cc);
             personSessionTableRecords = getPersonSessionTableRecords(cc, retrieveGrandchildren);
             personOrgRelationshipTableRecords = getPersonOrgRelationshipTableRecords(cc);
+            personStudyRelationshipTableRecords = getPersonStudyRelationshipTableRecords(cc);
             staffLicenseTableRecords = getStaffLicenseTableRecords(cc);
         }
         
@@ -1214,6 +1263,7 @@ public final class PersonTable
         private PersonRelationshipTable.Records personRelationshipTableRecords;
         private PersonRoleTable.Records personRoleTableRecords;
         private PersonSessionTable.Records personSessionTableRecords;
+        private PersonStudyRelationshipTable.Records personStudyRelationshipTableRecords;
         private Row row;
         private StaffLicenseTable.Records staffLicenseTableRecords;
         private ColumnValues values;
@@ -1226,6 +1276,12 @@ public final class PersonTable
         {
             this.rows = rows;
             this.cache = new Record[rows.size()];
+        }
+        
+        public final void delete(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            for(int i = 0; i < cache.length; i++)get(i).delete(cc);
         }
         
         public final PersonTable.Record get(int i)

@@ -15,11 +15,6 @@ implements auto.dal.db.vo.OrgClassification
         return crStamp;
     }
     
-    public java.lang.Long getOrgId()
-    {
-        return orgId;
-    }
-    
     public java.lang.String getOrgType()
     {
         return orgType;
@@ -30,9 +25,44 @@ implements auto.dal.db.vo.OrgClassification
         return orgTypeId;
     }
     
+    public int getOrgTypeIdInt()
+    {
+        return getOrgTypeIdInt(-1);
+    }
+    
+    public int getOrgTypeIdInt(int defaultValue)
+    {
+        return orgTypeId != null ? orgTypeId.intValue() : defaultValue;
+    }
+    
+    public java.lang.Long getParentId()
+    {
+        return parentId;
+    }
+    
+    public long getParentIdLong()
+    {
+        return getParentIdLong(-1);
+    }
+    
+    public long getParentIdLong(long defaultValue)
+    {
+        return parentId != null ? parentId.longValue() : defaultValue;
+    }
+    
     public java.lang.Integer getRecStatId()
     {
         return recStatId;
+    }
+    
+    public int getRecStatIdInt()
+    {
+        return getRecStatIdInt(-1);
+    }
+    
+    public int getRecStatIdInt(int defaultValue)
+    {
+        return recStatId != null ? recStatId.intValue() : defaultValue;
     }
     
     public java.lang.String getSystemId()
@@ -50,11 +80,6 @@ implements auto.dal.db.vo.OrgClassification
         this.crStamp = crStamp;
     }
     
-    public void setOrgId(java.lang.Long orgId)
-    {
-        this.orgId = orgId;
-    }
-    
     public void setOrgType(java.lang.String orgType)
     {
         this.orgType = orgType;
@@ -65,9 +90,29 @@ implements auto.dal.db.vo.OrgClassification
         this.orgTypeId = orgTypeId;
     }
     
+    public void setOrgTypeIdInt(int orgTypeId)
+    {
+        this.orgTypeId = new java.lang.Integer(orgTypeId);
+    }
+    
+    public void setParentId(java.lang.Long parentId)
+    {
+        this.parentId = parentId;
+    }
+    
+    public void setParentIdLong(long parentId)
+    {
+        this.parentId = new java.lang.Long(parentId);
+    }
+    
     public void setRecStatId(java.lang.Integer recStatId)
     {
         this.recStatId = recStatId;
+    }
+    
+    public void setRecStatIdInt(int recStatId)
+    {
+        this.recStatId = new java.lang.Integer(recStatId);
     }
     
     public void setSystemId(java.lang.String systemId)
@@ -76,9 +121,9 @@ implements auto.dal.db.vo.OrgClassification
     }
     private java.lang.String crSessId;
     private java.util.Date crStamp;
-    private java.lang.Long orgId;
     private java.lang.String orgType;
     private java.lang.Integer orgTypeId;
+    private java.lang.Long parentId;
     private java.lang.Integer recStatId;
     private java.lang.String systemId;
 }
