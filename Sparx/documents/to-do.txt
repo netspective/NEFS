@@ -1,15 +1,12 @@
+* Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
-* Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
-* Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
-* Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Add XML skins to SQL reports so that statements can emit XML and be associated with a stylesheet for reports (all within XDM) -- is this similar to NBCS?
+* Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
-
-* Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
 	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
@@ -17,18 +14,20 @@
 
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
-* Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
-* Add 'style-sheet' DialogExecuteHandler class that will take the XML representation of a DialogContext and apply a user-specified XML style-sheet in the dialog execution (output).
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
 * Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 * Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
 * Run through all the code to make sure all "TODO" tags are completed -- many of the TODO tags indicated code that hasn't been migrated over from 2.3 to 7.0.
-* Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add ability for pages' body to be read in from databases, URLs, etc as well as files and local xml content
 * Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
-* Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does
+* Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
+* Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does (general plumbing for this already available in NavigationPage)
+* Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
+* Create a 16x16 Console icon that will appear in browser window tabs and URL address line
+* Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
+
 
 * Check out http://just4log.sourceforge.net/ features and incorporate them into Console
 * Consider how to integrate http://jbpm.org/ (BPM) into Sparx
