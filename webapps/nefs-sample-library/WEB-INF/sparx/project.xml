@@ -128,7 +128,7 @@
         <table-type name="Entity">
             <column name="${owner.name.toLowerCase()}_id" type="auto-inc" primary-key="yes" descr="Unique identifier for ${owner.name}">
                 <presentation>
-                    <field name="${column.name}" type="integer" caption="ID" primary-key="yes"/>
+                    <field name="${column.name}" type="integer" caption="ID" primary-key-generated="yes"/>
                 </presentation>
             </column>
         </table-type>
