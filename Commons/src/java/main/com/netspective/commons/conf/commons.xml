@@ -3,7 +3,7 @@
 <!--
   ************************************************************************************
   * Commons standard configuration file (designed to be included in other XDM files.
-  * $Id: commons.xml,v 1.4 2003-09-06 16:43:49 shahid.shah Exp $
+  *  
   ************************************************************************************
  -->
 
@@ -25,5 +25,5 @@
     <tabular-report-column-type name="general" class="com.netspective.commons.report.tabular.column.GeneralColumn"/>
     <tabular-report-column-type name="numeric" class="com.netspective.commons.report.tabular.column.NumericColumn"/>
     <tabular-report-column-type name="decimal" class="com.netspective.commons.report.tabular.column.DecimalColumn"/>
-
+    <tabular-report-column-type name="clob" class="com.netspective.commons.report.tabular.column.ClobColumn"/>
 </xdm:container>
