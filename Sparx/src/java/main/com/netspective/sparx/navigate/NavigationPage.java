@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.21 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.22 2003-06-08 13:51:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -246,6 +246,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             if (getQualifiedName().equals(checkPath.getQualifiedName())) return true;
         }
 
+        /*
+        TODO: [SNS] I commented this out since it was causing problems in ConsoleNavigationSkin -- need to investigate
         //get the default children if any and set the property of current to true
         Map childrenMap = activePath.getChildrenMap();
         List childrenList = activePath.getChildrenList();
@@ -261,6 +263,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             childrenMap = defaultChildPath.getChildrenMap();
             childrenList = defaultChildPath.getChildrenList();
         }
+        */
 
         return false;
     }
