@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntegerColumn.java,v 1.2 2003-06-13 03:45:30 roque.hernandez Exp $
+ * $Id: IntegerColumn.java,v 1.3 2003-12-15 22:56:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -61,7 +61,17 @@ public class IntegerColumn extends BasicColumn
         public void setValue(Object value)
         {
             if (value != null && !value.getClass().isAssignableFrom(Integer.class))
-                throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
+            {
+                try
+                {
+                    // try and get the text representation and assign it instead
+                    setTextValue(value.toString());
+                }
+                catch (Exception e)
+                {
+                    throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
+                }
+            }
 
             super.setValue(value);
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ShortIntegerColumn.java,v 1.2 2003-12-15 22:56:36 shahid.shah Exp $
+ * $Id: DoubleColumn.java,v 1.1 2003-12-15 22:56:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -49,18 +49,18 @@ import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.column.BasicColumn;
 import com.netspective.commons.value.exception.ValueException;
 
-public class ShortIntegerColumn extends BasicColumn
+public class DoubleColumn extends BasicColumn
 {
-    public class SmallIntegerColumnValue extends BasicColumnValue
+    public class DoubleColumnValue extends BasicColumnValue
     {
         public Class getValueHolderClass()
         {
-            return Short.class;
+            return Double.class;
         }
 
         public void setValue(Object value)
         {
-            if (value != null && !value.getClass().isAssignableFrom(Short.class))
+            if (value != null && !value.getClass().isAssignableFrom(Double.class))
             {
                 try
                 {
@@ -78,11 +78,18 @@ public class ShortIntegerColumn extends BasicColumn
 
         public void setTextValue(String value) throws ValueException
         {
-            setValue(new Short(Short.parseShort(value)));
+            try
+            {
+                setValue(new Double(Double.parseDouble(value)));
+            }
+            catch (NumberFormatException e)
+            {
+                throw new ValueException(e);
+            }
         }
     }
 
-    public ShortIntegerColumn(Table table)
+    public DoubleColumn(Table table)
     {
         super(table);
         setAllowAddToTable(true);
@@ -90,6 +97,6 @@ public class ShortIntegerColumn extends BasicColumn
 
     public ColumnValue constructValueInstance()
     {
-        return new SmallIntegerColumnValue();
+        return new DoubleColumnValue();
     }
 }

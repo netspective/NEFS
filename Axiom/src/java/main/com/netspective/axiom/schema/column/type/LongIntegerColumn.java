@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LongIntegerColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: LongIntegerColumn.java,v 1.2 2003-12-15 22:56:36 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -56,6 +56,24 @@ public class LongIntegerColumn extends BasicColumn
         public Class getValueHolderClass()
         {
             return Long.class;
+        }
+
+        public void setValue(Object value)
+        {
+            if (value != null && !value.getClass().isAssignableFrom(Long.class))
+            {
+                try
+                {
+                    // try and get the text representation and assign it instead
+                    setTextValue(value.toString());
+                }
+                catch (Exception e)
+                {
+                    throw new ClassCastException("Attempting to assign " + value.getClass().getName() + " to " + this.getClass().getName());
+                }
+            }
+
+            super.setValue(value);
         }
 
         public void setTextValue(String value) throws ValueException
