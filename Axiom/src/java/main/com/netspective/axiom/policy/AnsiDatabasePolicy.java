@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.13 2003-12-18 20:09:06 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.14 2004-02-06 03:07:06 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -1402,7 +1402,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         if(defaultExpr != null)
         {
             writer.write(" DEFAULT ");
-            writer.write(column.formatSqlLiteral(defaultExpr.getSql(gc.valueContext)));
+            writer.write(defaultExpr.getSql(gc.valueContext));
         }
 
         if(column.isPrimaryKey())
