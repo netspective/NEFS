@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.13 2003-07-17 20:55:58 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.14 2003-08-01 21:27:58 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -641,9 +641,26 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             haveErrors = true;
         }
 
+        String hintHtml = "";
         String hint = field.getHint().getTextValue(dc);
-        if(hint != null && (field.isReadOnly(dc) && dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
-            hint = null;
+        if(hint != null)
+        {
+            DialogFlags dialogFlags = dc.getDialog().getDialogFlags();
+            if ((field.isReadOnly(dc) && dialogFlags.flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
+            {
+                hintHtml = "";
+            }
+            else if (dialogFlags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
+            {
+                // hide the hints until the field is being edited
+                hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint-hidden\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
+            }
+            else
+            {
+                hintHtml = "<br><span id=\"" + field.getQualifiedName() + "_hint\" class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>";
+            }
+
+        }
 
         /*
 		 * each field row gets its own ID so DHTML can hide/show the row
@@ -667,11 +684,49 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         }
         else
         {
-            fieldsHtml.append(
+            String accessKey = field.getAccessKey();
+			if (accessKey != null && accessKey.length() > 0)
+			{
+				int accessKeyPos = caption.toLowerCase().indexOf(accessKey.toLowerCase());
+				if (accessKeyPos > 0 && accessKeyPos < caption.length() - 1)
+				{
+					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
+						caption.substring(accessKeyPos, accessKeyPos + 1) + "</span>" + caption.substring(accessKeyPos + 1) + "</label></td>" +
+						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                        "</td></tr>\n");
+				}
+				else if (accessKeyPos == caption.length() - 1)
+				{
+					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
+						caption.substring(accessKeyPos) + "</span></label></td>" +
+						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                        "</td></tr>\n");
+				}
+				else if (accessKeyPos == 0)
+				{
+					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
+						field.getAccessKey() + "\">" + "<span class=\"accesskey\">" +
+						caption.substring(0, 1) + "</span>" + caption.substring(1) + "</label></td>" +
+						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                        "</td></tr>\n");
+				}
+				else
+				{
+					fieldsHtml.append(
+						"<tr " + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
+						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                        "</td></tr>\n");
+				}
+			}
+			else
+			{
+				fieldsHtml.append(
                     "<tr" + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
-                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml +
-                    (hint != null ? "<br><span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span>": "") +
+                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
                     "</td></tr>\n");
+			}
 
             if (haveErrors)
                 fieldsHtml.append("<tr><td>&nbsp;</td><td>" +
@@ -857,6 +912,8 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             writer.write("<script>SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = true;</script>");
         if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_KEYPRESS_FILTERS))
             writer.write("<script>ENABLE_KEYPRESS_FILTERS = flase;</script>");
+        if(dflags.flagIsSet(DialogFlags.HIDE_HINTS_UNTIL_FOCUS))
+            writer.write("<script>HIDE_HINTS_UNITL_FOCUS = true;</script>");
 
         String dialogName = dialog.getHtmlFormName();
         String encType = dialog.getDialogFlags().flagIsSet(DialogFlags.ENCTYPE_MULTIPART_FORMDATA) ? "enctype=\"multipart/form-data\"" : "";
