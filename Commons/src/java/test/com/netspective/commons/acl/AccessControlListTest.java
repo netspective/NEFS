@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.13 2003-08-08 00:52:27 shahid.shah Exp $
+ * $Id: AccessControlListTest.java,v 1.14 2003-08-14 17:57:05 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -48,6 +48,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.BitSet;
+
+import org.apache.commons.discovery.tools.DiscoverClass;
 
 import junit.framework.TestCase;
 
@@ -443,7 +445,8 @@ public class AccessControlListTest extends TestCase
         ValueContext vcOne = ValueSources.getInstance().createDefaultValueContext();
 		assertNotNull(vcOne);
 
-        AuthenticatedUser userOne = vcOne.createAuthenticatedUser();
+        Class authUserClass = new DiscoverClass().find(AuthenticatedUser.class, BasicAuthenticatedUser.class.getName());
+        AuthenticatedUser userOne = (AuthenticatedUser) authUserClass.newInstance();
 	    assertNotNull(userOne);
 
         userOne.setUserId("admin");

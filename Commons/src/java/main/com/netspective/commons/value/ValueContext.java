@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueContext.java,v 1.5 2003-03-24 13:24:31 shahid.shah Exp $
+ * $Id: ValueContext.java,v 1.6 2003-08-14 17:55:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -67,19 +67,9 @@ public interface ValueContext extends RuntimeEnvironment
     public AccessControlListsManager getAccessControlListsManager();
 
     /**
-     * Constructs an instance of a logged-in user (factory method)
-     */
-    public AuthenticatedUser createAuthenticatedUser() throws InstantiationException, IllegalAccessException;
-
-    /**
      * Returns the currently logged-in user, if any (used to retrieve ACLs for a particular user)
      */
     public AuthenticatedUser getAuthenticatedUser();
-
-    /**
-     * Sets the currently logged-in user
-     */
-    public void setAuthenticatedUser(AuthenticatedUser user);
 
     /**
      * Returns the value of the value-context attribute named attributeId.

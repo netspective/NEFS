@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.10 2003-06-20 20:50:29 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.11 2003-08-14 17:55:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -100,12 +100,6 @@ public class DefaultValueContext implements ValueContext
     public ConfigurationsManager getConfigurationsManager()
     {
         return null;
-    }
-
-    public AuthenticatedUser createAuthenticatedUser() throws InstantiationException, IllegalAccessException
-    {
-        Class authUserClass = discoverClass.find(AuthenticatedUser.class, BasicAuthenticatedUser.class.getName());
-        return (AuthenticatedUser) authUserClass.newInstance();
     }
 
     public AuthenticatedUser getAuthenticatedUser()
