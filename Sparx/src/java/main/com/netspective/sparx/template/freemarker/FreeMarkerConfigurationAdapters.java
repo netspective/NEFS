@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.4 2003-08-20 19:00:22 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.5 2003-08-20 19:58:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -66,7 +66,6 @@ import freemarker.cache.FileTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
 
 import com.netspective.sparx.value.ServletValueContext;
-import com.netspective.sparx.ProductRelease;
 import com.netspective.commons.text.TextUtils;
 
 public class FreeMarkerConfigurationAdapters
@@ -159,7 +158,10 @@ public class FreeMarkerConfigurationAdapters
             throw new NestableRuntimeException(e);
         }
 
-        templateLoaders.add(new ClassTemplateLoader(ProductRelease.class, "console")); // this makes the console FTL libraries and stuff available too)
+        // allow stuff to be loaded from CLASSPATH too (like Console, etc)
+        templateLoaders.add(new ClassTemplateLoader(com.netspective.sparx.ProductRelease.class));
+        templateLoaders.add(new ClassTemplateLoader(com.netspective.axiom.ProductRelease.class));
+        templateLoaders.add(new ClassTemplateLoader(com.netspective.commons.ProductRelease.class));
 
         result.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) templateLoaders.toArray(new TemplateLoader[templateLoaders.size()])));
 
