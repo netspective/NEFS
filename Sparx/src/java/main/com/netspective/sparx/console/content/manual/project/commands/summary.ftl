@@ -1,0 +1,2 @@
+Commands are Java classes that implement the <code>Command</code> interface and execute arbitrary tasks defined either
+by the you or the framework. They are used to encapsulate common logic and reuse that logic across pages and dialogs/forms.

@@ -1,0 +1,2 @@
+The Presentation module provides documentation, statistics, and unit testing for user interface components like
+navigation, forms (dialogs, fields, conditionals, client-side JavaScript, etc.), reports, panels, skins, and themes.

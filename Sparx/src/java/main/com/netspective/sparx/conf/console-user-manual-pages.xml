@@ -1,0 +1,312 @@
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <page name="manual" caption="User's Manual">
+        <page name="overview" caption="Sparx Overview">
+            <body config="console" source="console-page-content:documentation.ftl"/>
+        </page>
+        <page name="project" caption="Project">
+            <panels>
+                <panel type="console-page-summary"/>
+                <panel type="console-children-summaries">
+                    <frame heading="Project Module Overview"/>
+                </panel>
+                <panel type="xdm-doc" xdm-class="com.netspective.sparx.Project">
+                    <frame heading="Sparx Project Source"/>
+                </panel>
+            </panels>
+
+            <page name="input-source" caption="Source">
+                <panels>
+                    <panel type="console-page-summary"/>
+                </panels>
+            </page>
+            <page name="build" caption="Ant Build" heading="Execute Ant Build Target">
+                <panels>
+                    <panel type="console-page-summary"/>
+                </panels>
+            </page>
+            <page name="runtime-environment" caption="Environment">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using the Runtime Environment"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+            <page name="commands" caption="Commands">
+                <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="command-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Command Documentation" retain-params="command-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.project.CommandsCatalogPanel"/>
+                    </panels>
+                </page>
+            </page>
+            <page name="value-sources" caption="Value Sources">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="html">
+                        <frame heading="Using Value Sources"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
+                <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Value Source Documentation" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="usage" caption="Usage" heading="Value Sources Usage" retain-params="value-source-class">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.project.ValueSourcesUsagePanel"/>
+                    </panels>
+                </page>
+            </page>
+            <page name="access-control" caption="Access Control"/>
+            <page name="documents" caption="Documents"/>
+        </page>
+
+        <page name="presentation" caption="Presentation" heading="Presentation Layer">
+
+            <panels>
+                <panel type="console-page-summary"/>
+
+                <panel type="console-children-summaries">
+                    <frame heading="Presentation Layer Features"/>
+                </panel>
+            </panels>
+
+	        <page name="navigation" caption="Navigation">
+                <panels>
+                    <panel type="console-page-summary"/>
+                </panels>
+
+                <page name="catalog" caption="Catalog"/>
+                <page name="test" caption="Unit Test"/>
+	        </page>
+
+	        <page name="dialogs" caption="Dialogs" retain-params="selected-dialog-id">
+                <panels>
+                    <panel type="console-page-summary"/>
+                    <panel type="console-children-summaries">
+                        <frame heading="Dialog Features"/>
+                    </panel>
+                    <panel type="html">
+                        <frame heading="Using Dialogs in XML"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
+                <page name="implementing" caption="Implementing">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Implementing and Extending Forms"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="controls" caption="Controls">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Control (Field Type) Detail"/>
+                            <body config="console" source="console-page-content:detail.ftl"/>
+                        </panel>
+                        <panel type="html">
+                            <frame heading="Available Controls (Field Types)"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="perspectives" caption="Perspectives">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialog Data Perspectives"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="web-services" caption="Web Services">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialogs as Web Services"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="conditionals" caption="Conditionals">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Conditionals"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="client-js" caption="JavaScript">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Client-side JavaScript"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="popups" caption="Popups">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Popups"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="states" caption="States">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialog and Field States"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="data-binding" caption="Data Binding">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Data Binding"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="data-validation" caption="Data Validation">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Data Validation"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="transactions" caption="Transactions">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Transaction Protection"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="skins" caption="Skins">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Transaction Protection"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+	        </page>
+
+            <page name="reports" caption="Reports"/>
+	        <page name="panels" caption="Panels"/>
+	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
+            <page name="template-engines" caption="Template Engines"/>
+        </page>
+
+        <page name="data-management" caption="Data Management" heading="Data Management Layer">
+
+            <panels>
+                <panel type="console-page-summary"/>
+
+                <panel type="console-children-summaries">
+                    <frame heading="Data Management Layer Features"/>
+                </panel>
+            </panels>
+
+	        <page name="static-queries" caption="Static Queries">
+
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="html">
+                        <frame heading="Static Query Features"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+
+	        </page>
+
+	        <page name="dynamic-queries" caption="Dynamic Queries">
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Dynamic Queries Features"/>
+                    </panel>
+                </panels>
+	        </page>
+
+	        <page name="schemas" caption="Schemas">
+                <panels>
+                    <panel type="console-page-summary"/>
+
+                    <panel type="console-children-summaries">
+                        <frame heading="Schema Management Features"/>
+                    </panel>
+
+                    <panel type="html">
+                        <frame heading="Schema Conversion Features"/>
+                        <body config="console" source="console-page-content:documentation.ftl"/>
+                    </panel>
+                </panels>
+	        </page>
+        </page>
+
+        <page name="tutorials" caption="Tutorials"/>
+
+        <page name="reference" caption="XDM Reference" heading="XML Data Model (XDM) Reference">
+            <panels>
+                <panel type="console-page-summary"/>
+                <panel type="html">
+                    <frame heading="Using XDM"/>
+                    <body config="console" source="console-page-content:documentation.ftl"/>
+                </panel>
+            </panels>
+
+            <page name="components" caption="Instances">
+                <panels>
+                    <panel class="com.netspective.sparx.console.panel.framework.XdmComponentsPanel"/>
+                </panels>
+            </page>
+            <page name="structure" caption="Structure" retain-params="xdm-class">
+                <panels>
+                    <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel"/>
+                </panels>
+            </page>
+            <page name="detail" caption="Detail" retain-params="xdm-class">
+                <panels style="horizontal">
+                    <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="tree" height="320"/>
+                    <panels style="tabbed">
+                        <frame heading="tabbed"/>
+                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail-ancestors"/>
+                        <panel class="com.netspective.sparx.console.panel.framework.XdmSchemaStructurePanel" view="detail"/>
+                    </panels>
+                </panels>
+            </page>
+        </page>
+    </page>
+
+</xdm:container>

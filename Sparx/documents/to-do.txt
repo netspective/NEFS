@@ -1,4 +1,5 @@
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
+* Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
 * Create "Define, Declare, Test, Customize, Deploy" tutorials
 * Create a 16x16 Console icon that will appear in browser window tabs and URL address line
 * Use http://informa.sourceforge.net/ RSS library to setup RSS panels that can connect to RSS channels via URLs or files

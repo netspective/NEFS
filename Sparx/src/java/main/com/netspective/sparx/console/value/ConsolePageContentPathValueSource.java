@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsolePageContentPathValueSource.java,v 1.1 2003-06-12 16:08:05 shahid.shah Exp $
+ * $Id: ConsolePageContentPathValueSource.java,v 1.2 2003-07-02 18:23:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.value;
@@ -65,10 +65,11 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
             "Provides the relative path of a Console page's content.",
             new ValueSourceDocumentation.Parameter[]
             {
-                new ValueSourceDocumentation.Parameter("source", true, "The source to locate in the console page content path.")
+                new ValueSourceDocumentation.Parameter("source", true, "The source to locate in the console page content path. If the source starts with ../ it will be assumed to be in the parent's path.")
             }
     );
 
+    private boolean inParent;
     private String source;
 
     public static String[] getIdentifiers()
@@ -85,6 +86,11 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
     {
         super.initialize(spec);
         source = spec.getParams();
+        if(source.startsWith("../"))
+        {
+            inParent = true;
+            source = source.substring(3);
+        }
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
@@ -108,7 +114,7 @@ public class ConsolePageContentPathValueSource extends AbstractValueSource
         {
             public Object getValue()
             {
-                return "content/" + nc.getActivePage().getQualifiedName() + "/" + source;
+                return "content/" + (inParent ? nc.getActivePage().getParent().getQualifiedName() : nc.getActivePage().getQualifiedName()) + "/" + source;
             }
 
             public String getTextValue()
