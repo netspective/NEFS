@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.116 2003-11-16 17:39:05 shahid.shah Exp $
+  * $Id: console.xml,v 1.117 2003-11-21 19:46:39 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -27,6 +27,7 @@
                 <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
 	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" class="com.netspective.sparx.console.page.project.AntBuildProjectsPage"/>
+	        <page name="inspect" caption="Inspect" heading="Inspect Objects" command="dialog,console.inspect"/>
             <page name="commands" caption="Commands">
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="selected-command">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
@@ -313,6 +314,13 @@
             <frame heading="Test Value Source Specification"/>
             <field name="value-source-spec" type="text" caption="Value Source" size="60" default="simple-expr:${request:selected-value-source}:"/>
             <body config="console" source="content/project/value-sources/unit-test-execute.ftl"/>
+        </dialog>
+
+        <dialog name="inspect" class="com.netspective.sparx.console.form.InspectObject" allow-multiple-executes="yes" redirect-after-execute="no">
+            <frame heading="Inspect an Object"/>
+            <field name="context" type="select" caption="Context" choices="text-list:Project;Application;Request;Session" required="yes"/>
+            <field name="action" type="select" caption="Action" choices="text-list:getValue;iterate" required="yes"/>
+            <field name="jxpath-expr" type="memo" caption="JXPath Expression" cols="70" required="yes"/>
         </dialog>
     </dialogs>
 
