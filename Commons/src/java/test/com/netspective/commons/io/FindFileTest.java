@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FindFileTest.java,v 1.1 2003-03-23 16:47:18 shahbaz.javeed Exp $
+ * $Id: FindFileTest.java,v 1.2 2003-03-25 08:03:15 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.io;
@@ -47,20 +47,40 @@ package com.netspective.commons.io;
 import java.io.IOException;
 import java.io.File;
 import junit.framework.TestCase;
+import com.netspective.commons.text.TextUtils;
 
 public class FindFileTest extends TestCase
 {
 	public void testDirectoryFinder() throws IOException
 	{
 		// Test the ability to locate the test directory
-		FileFind.FileFindResults ffrDir = FileFind.findInClasspath("com/netspective/commons/io/FindFileTestDirectory", FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY);
+		final String searchFileName = "com/netspective/commons/io/FindFileTestDirectory";
+
+		FileFind.FileFindResults ffrDir = FileFind.findInClasspath(searchFileName, FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY);
 		assertNotNull(ffrDir);
 
 		assertTrue(ffrDir.isFileFound());
+        assertEquals(searchFileName, ffrDir.getSearchFileName());
+
+		// Verify that the search path is identical to the classpath...
+		String[] classPath = TextUtils.split(System.getProperty("java.class.path"), File.pathSeparator, true);
+        String[] searchPath = ffrDir.getSearchPaths();
+
+		for (int i = 0; i < searchPath.length; i ++)
+			assertEquals(classPath[i], searchPath[i]);
 
 		File foundDir = ffrDir.getFoundFile();
 		assertNotNull(foundDir);
 		assertTrue(foundDir.isDirectory());
+
+		// Search through the exact path that contains the dir to see whether its found or not...
+		int searchPathIndex = ffrDir.getFoundFileInPathItem();
+		String searchPathName = searchPath[searchPathIndex];
+        FileFind.FileFindResults ffrConfirm = FileFind.findInPath(new String[] { searchPathName }, searchFileName, FileFind.FINDINPATHFLAG_DEFAULT);
+		assertNotNull(ffrConfirm);
+		assertTrue(ffrConfirm.isFileFound());
+		assertEquals(searchFileName, ffrConfirm.getSearchFileName());
+		assertEquals(0, ffrConfirm.getFoundFileInPathItem());
 	}
 
 	public void testDirFinder() throws IOException
@@ -75,6 +95,7 @@ public class FindFileTest extends TestCase
 		assertTrue(foundDir.isDirectory());
 		String dirNameOne = foundDir.getCanonicalPath();
 
+		// Test recursive search...
 		FileFind.FileFindResults ffrDirRecursive = FileFind.findInClasspath("FindFileTestDirectory", FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY | FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
 		assertNotNull(ffrDirRecursive);
 		assertTrue(ffrDirRecursive.isFileFound());
@@ -111,4 +132,42 @@ public class FindFileTest extends TestCase
 		assertEquals("c", FileFind.getExtension(file11C));
 		assertEquals("c", FileFind.getExtension(file11C.getCanonicalPath()));
 	}
+
+	public void testJarFileFinder() throws IOException
+	{
+		final String manifest = "META-INF/MANIFEST.MF";
+
+		FileFind.FileFindResults ffrManifest = FileFind.findInClasspath(manifest, FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING);
+		assertNotNull(ffrManifest);
+		assertTrue(ffrManifest.isFileFound());
+		assertEquals(manifest, ffrManifest.getSearchFileName());
+		assertTrue(ffrManifest.isFoundFileInJar());
+
+		String[] searchPath = ffrManifest.getSearchPaths();
+		int searchPathIdx = ffrManifest.getFoundFileInPathItem();
+		assertTrue(FileFind.existsInJarFile(ffrManifest.getFoundFile(), manifest, true));
+
+		String fileContents = new String (FileFind.getJarEntry(ffrManifest.getFoundFile(), manifest));
+		assertTrue(fileContents.indexOf("Manifest-Version") != -1);
+	}
+
+	public void testFinderErrors()
+	{
+		// Test the ability to locate a non-existant test directory
+		FileFind.FileFindResults ffrDir = FileFind.findInClasspath("com/netspective/commons/io/FileFindTestDirectory", FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING | FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY);
+		assertNotNull(ffrDir);
+		assertFalse(ffrDir.isFileFound());
+		assertNull(ffrDir.getFoundFile());
+
+		// Test the ability to locate a non-existant test directory
+		FileFind.FileFindResults ffrDirTwo = FileFind.findInClasspath(null, FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING | FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY);
+		assertNull(ffrDirTwo);
+
+		// Test recursive search for a non-existant test dir
+		FileFind.FileFindResults ffrDirRecursive = FileFind.findInClasspath("FileFindTestDirectory", FileFind.FINDINPATHFLAG_SEARCH_FILE_MAY_BE_DIRECTORY | FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY | FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_DURING);
+		assertNotNull(ffrDirRecursive);
+		assertFalse(ffrDirRecursive.isFileFound());
+        assertNull(ffrDirRecursive.getFoundFile());
+	}
+
 }
