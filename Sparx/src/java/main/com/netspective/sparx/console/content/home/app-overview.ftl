@@ -1,7 +1,7 @@
 <#include "*/library.ftl"/>
 
 <div class="textbox">
-    <table class="report" width=100% border="0" cellspacing="2" cellpadding="0">
+    <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
             <td class="report-column-heading">Property</td>
             <td class="report-column-heading">Value</td>

@@ -16,7 +16,6 @@
  -->
 <#macro childrenSummaries sourcePageType>
 
-<div class="textbox">
     <#if sourcePageType = 'parent'>
         <#assign sourcePage = vc.navigationContext.activePage.parent/>
         <#assign parentName = '.'/>
@@ -49,7 +48,6 @@
         </#if>
     </#list>
     </table>
-</div>
 
 </#macro>
 
@@ -91,7 +89,7 @@
     <img src="${xmlImageSrc}/xml.gif"/> <b>${heading}</b> (<@classReference className = schema.bean.name/>)<br>
     ${schema.description}
 
-    <table class="report" width=100% border="0" cellspacing="2" cellpadding="0">
+    <table class="report" border="0" cellspacing="2" cellpadding="0">
         <tr>
             <td class="report-column-heading">Node</td>
             <td class="report-column-heading">Type</td>
