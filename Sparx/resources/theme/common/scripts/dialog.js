@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.5 2004-04-21 04:01:12 aye.thu Exp $
+ * $Id: dialog.js,v 1.6 2004-07-14 18:59:37 shahid.shah Exp $
  */
 
  /**
@@ -134,6 +134,30 @@ function radioButtonSelected(fieldName, value)
 	}
 
 	return control.checked;
+}
+
+//****************************************************************************
+// ClientDataEntrypion type
+//****************************************************************************
+
+function ClientDataEncryption(type, salt)
+{
+	this.type = type;
+	this.salt = salt;
+	this.getEncryptedValue = ClientDataEncryption_getEncryptedValue;
+}
+
+function ClientDataEncryption_getEncryptedValue(value)
+{
+    if(this.type == 'unix-crypt')
+    {
+        var result = Javacrypt.crypt(this.salt, value);
+        return result[0];
+    }
+    else
+    {
+        alert("Unknown encryption type:  " + this.type);
+    }
 }
 
 //****************************************************************************
@@ -232,7 +256,19 @@ function Dialog_isValid()
 		}
 	}
 
-	if (isValid) submittedDialogValid = true;
+	if (isValid)
+	{
+	    submittedDialogValid = true;
+        for(var i = 0; i < dialogFields.length; i++)
+        {
+            var field = dialogFields[i];
+            if(field.encryption != null)
+            {
+                var control = field.getControl(this);
+                control.value = field.encryption.getEncryptedValue(control.value);
+            }
+        }
+	}
 	return isValid;
 }
 
@@ -311,6 +347,7 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.style = null;
 	this.requiresPreSubmit = false;
 	this.currentlyVisible = true;
+	this.encryption = null;
 
 	this.fieldIndex = -1;
 	this.prevFieldIndex = -1;
