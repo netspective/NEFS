@@ -1,4 +1,5 @@
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
+* Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Need to move error messages that occur in XDM parsing into Console too (instead of just stdout)
 * Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
 * Need to add support for table dialogs (from Sparx 2.3)
