@@ -24,7 +24,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="text" caption="${column.getCaption()}" max-length="${column.getSize()}" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="text" caption="${column.getCaption()}" max-length="${column.getSize()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -34,7 +34,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(20,6)</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="float" size="16" min="0.0" caption="${column.getCaption()}" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="float" size="16" min="0.0" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -44,7 +44,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(8)</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="99999999" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="99999999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -54,7 +54,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(4)</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="9999" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="9999" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -64,7 +64,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -76,7 +76,7 @@
             <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="boolean" style="radio" caption="${column.getCaption()}" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="boolean" style="radio" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -99,7 +99,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="date" size="16" format="MM-dd-yyyy" min="01-01-1900" caption="${column.getCaption()}" required="${column.isRequiredByApp()}"/>
+            <field name="${column.getName()}" type="date" size="16" format="MM-dd-yyyy" min="01-01-1900" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -111,7 +111,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp()}"/> <!-- escape : in 'min' since it's a value source -->
+            <field name="${column.getName()}" type="date-time" size="16" format="MM-dd-yyyy H:mm" min="01-01-1900 00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/> <!-- escape : in 'min' since it's a value source -->
         </presentation>
     </data-type>
 
@@ -140,7 +140,8 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
         </sql-ddl>
         <presentation>
-            <field name="${column.getName()}" type="time" size="16" format="H:mm" min="00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp()}"/> <!-- escape : in 'min' since it's a value source -->
+            <!-- escape : in 'min' since it's a value source -->
+            <field name="${column.getName()}" type="time" size="16" format="H:mm" min="00\:00" caption="${column.getCaption()}" required="${column.isRequiredByApp() || column.isPrimaryKey()}"/>
         </presentation>
     </data-type>
 
@@ -148,8 +149,8 @@
         <xdm:template-param name="name" required="yes" copy-attribute="name"/>
 
         <composite>
-            <column name="${params.name}_begin_date" type="date" caption="${owner.getCaption()} Begin" required="${owner.isRequiredByApp()}" descr="${params.name} beginning date"/>
-            <column name="${params.name}_end_date" type="date" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp()}" descr="${params.name} ending date"/>
+            <column name="${params.name}_begin_date" type="date" caption="${owner.getCaption()} Begin" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}" descr="${params.name} beginning date"/>
+            <column name="${params.name}_end_date" type="date" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}" descr="${params.name} ending date"/>
         </composite>
     </data-type>
 
@@ -157,8 +158,8 @@
         <xdm:template-param name="name" required="yes" copy-attribute="name"/>
 
         <composite>
-            <column name="${params.name}_begin_stamp" type="date-time" caption="${owner.getCaption()} Begin" required="${owner.isRequiredByApp()}"/>
-            <column name="${params.name}_end_stamp" type="date-time" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp()}" />
+            <column name="${params.name}_begin_stamp" type="date-time" caption="${owner.getCaption()} Begin" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}"/>
+            <column name="${params.name}_end_stamp" type="date-time" caption="${owner.getCaption()} End" required="${owner.isRequiredByApp() || owner.isPrimaryKey()}" />
         </composite>
     </data-type>
 
