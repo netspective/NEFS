@@ -39,22 +39,22 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.Table;
-import javax.ejb.Transient;
 
 @Entity
 @Table(name = "Party_Role_Type")
-public class PartyRoleType extends AbstractCustomReferenceEntity implements EntitySeedDataProvider
+public class PartyRoleType extends AbstractCustomReferenceEntity
 {
-
-    /**
+    public enum Cache implements CachedCustomReferenceEntity
+    {
+        /**
      * PROSPECT, SHAREHOLDER
      * <p/>
      * // PERSON ROLES
@@ -67,6 +67,36 @@ public class PartyRoleType extends AbstractCustomReferenceEntity implements Enti
      * // CUSTOMER ROLES
      * BILL_TO_CUSTOMER SHIP_TO_CUSTOMER END_USER_CUSTOMER
      */
+        PROSPECT("P", "Prospect", "A sales prospect"),
+        DIVISION("DIV", "Division", null),
+        OTHER_ORG_UNIT("OORG", "Other Organization Unit", null),
+        DEPARTMENT("DEPT", "Department", null),
+        SUBSIDIARY("SORG", "Subsidiary", null),
+        PARENT_ORG("PORG", "Parent Organization", null),
+        FAMILY_MEMBER("F", "Family Member", null),
+        CONTRACTOR("C", "Contractor", null),
+        EMPLOYEE("E", "Employee", null) ;
+
+        private PartyRoleType entity = new PartyRoleType();
+
+        Cache(final String code, final String label, final String description)
+        {
+            entity.setCode(code);
+            entity.setLabel(label);
+            entity.setDescription(description);
+        }
+
+        public PartyRoleType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (PartyRoleType) entity;
+        }
+    }
+
     public PartyRoleType()
     {
     }
@@ -82,19 +112,5 @@ public class PartyRoleType extends AbstractCustomReferenceEntity implements Enti
         super.setSystemId(id);
     }
 
-    @Transient
-    public EntitySeedData getEntitySeedData()
-    {
-        return createSeedData(new CustomSeedData[]{
-            new CustomSeedData("E", "Employee", ""),
-            new CustomSeedData("C", "Contractor", ""),
-            new CustomSeedData("F", "Family Member", ""),
-            new CustomSeedData("PORG", "Parent Organization", ""),
-            new CustomSeedData("SORG", "Subsidiary", ""),
-            new CustomSeedData("DEPT", "Department", ""),
-            new CustomSeedData("OORG", "Other Organization Unit", ""),
-            new CustomSeedData("DIV", "Division", ""),
-            new CustomSeedData("P", "Prospect", "A sales prospect"),
-        });
-    }
+
 }
