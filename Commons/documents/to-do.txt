@@ -1,3 +1,6 @@
+* Add getAuthenticatedUser() to ValueContext
+* Add metrics to ValueSources so that usages of particular value sources may be instrumented/reviewed and stats gathered
+* Add classpath search to Resource class (instead of just relative to class or relative to classloader)
 * Integrate with AppStats Framework (http://appstats.sourceforge.net/). The Metrics and SqlExectionLog in Axiom may be replaced by or built upon this library.
 * Add an exception notification facility similar to http://sijpkes.20m.com/jexn/.
 * Consider adding isJmx() methods as a RuntimeEnvironment option to indicate when runtime is under JMX.
