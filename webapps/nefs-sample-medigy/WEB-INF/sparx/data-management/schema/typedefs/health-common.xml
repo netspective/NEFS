@@ -7,55 +7,55 @@
     =====================================================
      -->
 
-    <data-type name="action-id" type="guid32"/>
+    <data-type name="transaction-id" type="system-id"/>
+    <data-type name="clinical-transaction-id" type="transaction-id"/>
+
+    <data-type name="action-id" type="system-id"/>
     <data-type name="clinical-action-id" type="action-id"/>
     <data-type name="communication-action-id" type="action-id"/>
 
-    <data-type name="artifact-id" type="guid32"/>
-    <data-type name="message-id" type="guid32"/>
-    <data-type name="asset-id" type="guid32"/>
-    <data-type name="asset-serial-number" type="guid32"/>
-    <data-type name="asset-maintenance-id" type="guid32"/>
+    <data-type name="artifact-id" type="system-id"/>
+    <data-type name="asset-id" type="system-id"/>
+    <data-type name="asset-serial-number" type="system-id"/>
+    <data-type name="asset-maintenance-id" type="system-id"/>
 
-    <data-type name="catalog-id" type="guid32"/>
-    <data-type name="catalog-item-id" type="guid32"/>
+    <data-type name="catalog-id" type="system-id"/>
+    <data-type name="catalog-item-id" type="system-id"/>
     <data-type name="product-catalog-id" type="catalog-id"/>
     <data-type name="service-catalog-id" type="catalog-id"/>
 
-    <data-type name="claim-id" type="guid32"/>
+    <data-type name="claim-id" type="system-id"/>
     <data-type name="claim-batch-id" type="integer"/>
     <data-type name="claim-authorization-number" type="text"/>
 
-    <data-type name="claim-to-diagnosis-map-id" type="guid32"/>
-    <data-type name="claim-diagnosis-id" type="guid32"/>
+    <data-type name="claim-to-diagnosis-map-id" type="system-id"/>
+    <data-type name="claim-diagnosis-id" type="system-id"/>
     <data-type name="claim-diagnosis-code" type="text"/>
     <data-type name="claim-diagnosis-code-modifier" type="text"/>
-    <data-type name="claim-procedure-id" type="guid32"/>
+    <data-type name="claim-procedure-id" type="system-id"/>
     <data-type name="claim-procedure-code" type="text"/>
     <data-type name="claim-procedure-code-modifier" type="text"/>
 
-    <data-type name="claim-data-history-id" type="guid32"/>
+    <data-type name="claim-data-history-id" type="system-id"/>
 
-    <data-type name="claim-data-archive-id" type="guid32"/>
+    <data-type name="claim-data-archive-id" type="system-id"/>
     <data-type name="x12-data" type="text"/>
 
-    <data-type name="event-id" type="guid32"/>
-
     <!-- Insurance Related -->
-    <data-type name="insurance-product-id" type="guid32"/>
-    <data-type name="insurance-plan-id" type="guid32"/>
+    <data-type name="insurance-product-id" type="system-id"/>
+    <data-type name="insurance-plan-id" type="system-id"/>
     <data-type name="remit-payer-id" type="text"/>
     <data-type name="medigap-id" type="text"/>
-    <data-type name="insurance-policy-id" type="guid32"/>
-    <data-type name="insurance-policy-number" type="guid32"/>
-    <data-type name="insurance-policy-member-number" type="guid32"/>
-    <data-type name="insurance-policy-group-number" type="guid32"/>
-    <data-type name="insurance-coverage-id" type="guid32"/>
+    <data-type name="insurance-policy-id" type="system-id"/>
+    <data-type name="insurance-policy-number" type="system-id"/>
+    <data-type name="insurance-policy-member-number" type="system-id"/>
+    <data-type name="insurance-policy-group-number" type="system-id"/>
+    <data-type name="insurance-coverage-id" type="system-id"/>
 
-    <data-type name="organization-medication-id" type="guid32"/>
+    <data-type name="organization-medication-id" type="system-id"/>
 
-    <data-type name="patient-indication-id" type="guid32"/>
-    <data-type name="patient-medication-id" type="guid32"/>
+    <data-type name="patient-indication-id" type="system-id"/>
+    <data-type name="patient-medication-id" type="system-id"/>
 
     <data-type name="medication-dose" type="float"/>
     <data-type name="medication-dosage-unit" type="text"/>
@@ -65,7 +65,6 @@
     <data-type name="medication-consumption-duration" type="integer"/>
     <data-type name="medication-quantity-per-refill" type="integer"/>
 
-    <data-type name="medication-quantity-per-refill" type="guid32"/>
     <data-type name="referral-authorization-number" type="text"/>
 
     <data-type name="deductible" type="currency"/>
@@ -73,9 +72,9 @@
     <data-type name="family-deductible" type="deductible"/>
     <data-type name="copay" type="currency"/>
 
-    <data-type name="invoice-id" type="guid32"/>
+    <data-type name="invoice-id" type="system-id"/>
     <data-type name="invoice-number" type="text"/>
-    <data-type name="invoice-line-item-id" type="guid32"/>
+    <data-type name="invoice-line-item-id" type="system-id"/>
     <data-type name="product-invoice-id" type="invoice-id"/>
     <data-type name="service-invoice-id" type="invoice-id"/>
 

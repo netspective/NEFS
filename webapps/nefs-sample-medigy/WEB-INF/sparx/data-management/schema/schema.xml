@@ -2,6 +2,7 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <schema name="db">
         <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+        <xdm:include resource="com/netspective/axiom/conf/data-model/common.xml"/>
 
     <!-- **************************************************************************************
          * Override the Presentation table type so that it creates our own SchemaRecordEditor *
