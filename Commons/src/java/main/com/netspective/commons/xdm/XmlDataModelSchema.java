@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.42 2003-12-10 21:01:00 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.43 2003-12-11 17:49:23 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -188,7 +188,7 @@ public class XmlDataModelSchema
 
         public boolean ignoreAttribute(String attrName)
         {
-            return ignoreAttributes.contains(attrName);
+            return attrName.startsWith("__") || ignoreAttributes.contains(attrName);
         }
 
         public boolean ignoreNestedElement(String elementName)
