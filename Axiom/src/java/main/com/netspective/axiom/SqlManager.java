@@ -39,48 +39,47 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.12 2003-08-28 00:39:31 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.13 2003-09-02 17:06:56 roque.hernandez Exp $
  */
 
 package com.netspective.axiom;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
-import com.netspective.commons.xdm.DefaultXdmComponentItems;
-import com.netspective.commons.metric.Metric;
-import com.netspective.commons.metric.MetricsProducer;
-import com.netspective.commons.product.NetspectiveComponent;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
-import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.axiom.connection.JndiConnectionProvider;
+import com.netspective.axiom.schema.*;
+import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.sql.Queries;
+import com.netspective.axiom.sql.QueriesNameSpace;
+import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.Queries;
-import com.netspective.axiom.sql.QueriesNameSpace;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Schemas;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
-import com.netspective.axiom.schema.table.type.EnumerationTableRow;
-import com.netspective.axiom.schema.BasicSchema;
-import com.netspective.axiom.schema.SchemasCollection;
+import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.axiom.sql.dynamic.QueryDefinitions;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.xdm.DefaultXdmComponentItems;
+import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class SqlManager extends DefaultXdmComponentItems implements MetricsProducer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(SqlManager.class);
+
+    public static final ConnectionProvider DEFAULT_CONN_PROVIDER = (ConnectionProvider) DiscoverSingleton.find(ConnectionProvider.class, JndiConnectionProvider.class.getName());
+    private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
 
     public static final String PREFIX_CUSTOM = "custom.";
     public static final String PREFIX_SCHEMA = "schema.";
@@ -270,6 +269,24 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     public void addRegisterDatabasePolicy(DatabasePolicy policy)
     {
         DatabasePolicies.getInstance().registerDatabasePolicy(policy);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public ConnectionProvider createConnectionProvider()
+    {
+        return getConnectionProvider();
+    }
+
+    public void addConnectionProvider(ConnectionProvider provider)
+    {
+        System.out.println("NEW NEW NEW @@@@@@@@@@@@@@@@@@ SqlManager.addConnectionProvider()");
+        this.provider = provider;
+    }
+
+    public ConnectionProvider getConnectionProvider()
+    {
+        return provider;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDatabaseConnValueContext.java,v 1.5 2003-08-31 22:42:16 shahid.shah Exp $
+ * $Id: BasicDatabaseConnValueContext.java,v 1.6 2003-09-02 17:06:56 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.value;
@@ -57,15 +57,15 @@ import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.ConnectionProvider;
 import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.connection.JndiConnectionProvider;
 import com.netspective.axiom.connection.AutoCommitConnectionContext;
 import com.netspective.axiom.connection.TransactionConnectionContext;
 
 public class BasicDatabaseConnValueContext extends DefaultValueContext implements DatabaseConnValueContext
 {
     private static final Log log = LogFactory.getLog(BasicDatabaseConnValueContext.class);
-    public static final ConnectionProvider DEFAULT_CONN_PROVIDER = (ConnectionProvider) DiscoverSingleton.find(ConnectionProvider.class, JndiConnectionProvider.class.getName());
-    private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
+
+    private ConnectionProvider provider;
+
 	protected String defaultDataSource = DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE;
 
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
@@ -84,7 +84,7 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
 
     public ConnectionProvider getConnectionProvider()
     {
-        return provider;
+        return provider == null ? getSqlManager().getConnectionProvider() : provider;
     }
 
     public void returnConnection(ConnectionContext cc) throws SQLException
