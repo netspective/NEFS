@@ -274,8 +274,8 @@
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../.." />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto/dal" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/app" />
-      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../database" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao" />
+      <expanded_node type="directory" url="file://$PROJECT_DIR$/../../database" />
       <expanded_node type="directory" url="file://$PROJECT_DIR$/../../classes/auto/dal/db" />
     </view>
     <view id="SourcepathPane" />

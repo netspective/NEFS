@@ -4,10 +4,10 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <!--
-*******************************************************
-** JAKARTA TOMCAT WEB-INF/web.xml CONFIGURATION FILE **
-*******************************************************
-$Id: tomcat-web.xml,v 1.1 2003-08-28 22:10:20 roque.hernandez Exp $
+*****************************************************
+** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
+*****************************************************
+$Id: tomcat-web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
 -->
 
 <web-app>

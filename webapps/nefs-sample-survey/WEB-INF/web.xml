@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.1 2003-08-28 01:52:30 shahid.shah Exp $
+$Id: web.xml,v 1.2 2003-08-31 15:44:56 shahid.shah Exp $
 -->
 
 <web-app>
@@ -85,17 +85,15 @@ $Id: web.xml,v 1.1 2003-08-28 01:52:30 shahid.shah Exp $
 	</servlet-mapping>
 
     <!--
-    *********************************************************************
-    * Specify the default database connection - the default-data-source *
-    * context-param's value is defined as a resource-ref in this        *
-    * web.xml file (see below).                                         *
-    *********************************************************************
+    *******************************************************************************************************************
+    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
+    ** ============================================================================================================= **
+    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
+    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
+    ** <project>                                                                                                     **
+    **     <default-data-source>jdbc/other</default-data-source>                                                     **
+    *******************************************************************************************************************
     -->
-	<context-param>
-	  <param-name>com.netspective.sparx.DEFAULT_DATA_SOURCE</param-name>
-	  <param-value>jdbc/default</param-value>
-	</context-param>
-
 	<resource-ref>
 	  <res-ref-name>jdbc/default</res-ref-name>
 	  <res-type>javax.sql.DataSource</res-type>
