@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.31 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.32 2003-08-19 17:09:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,6 +66,7 @@ import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -181,11 +182,13 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     private ValueSource subHeading;
     private ValueSource retainParams;
     private ValueSource assignStateParams;
+    private List requireRequestParams = new ArrayList();
     private ValueSource redirect;
     private ValueSource forward;
     private ValueSource include;
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
+    private TemplateProcessor missingParamsBodyTemplate;
     private Command bodyCommand;
     private List pageTypesConsumed = new ArrayList();
     private List customHandlers = new ArrayList();
@@ -247,8 +250,42 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
+    public void setRequireRequestParams(String params)
+    {
+        String[] paramNames = TextUtils.split(params, ",", true);
+        for(int i = 0; i < paramNames.length; i++)
+            requireRequestParams.add(paramNames[i]);
+    }
+
+    public void setRequireRequestParam(String param)
+    {
+        requireRequestParams.add(param);
+    }
+
+    public List getRequireRequestParams()
+    {
+        return requireRequestParams;
+    }
+
+    /* -------------------------------------------------------------------------------------------------------------*/
+
     public boolean isValid(NavigationContext nc)
     {
+        List reqParams = getRequireRequestParams();
+        if(reqParams.size() > 0)
+        {
+            ServletRequest request = nc.getRequest();
+            for(int i = 0; i < reqParams.size(); i++)
+            {
+                String name = (String) reqParams.get(i);
+                if(request.getParameter(name) == null)
+                {
+                    nc.setMissingRequiredReqParam(name);
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
@@ -640,14 +677,14 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
         return bodyPanel;
     }
 
-    public TemplateProcessor createBody()
-    {
-        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
-    }
-
     public HtmlLayoutPanel getBodyPanel()
     {
         return bodyPanel;
+    }
+
+    public TemplateProcessor createBody()
+    {
+        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
     }
 
     public void addBody(TemplateProcessor templateProcessor)
@@ -659,6 +696,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public TemplateProcessor getBodyTemplate()
     {
         return bodyTemplate;
+    }
+
+    public TemplateProcessor createMissingParamsBody()
+    {
+        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
+    }
+
+    public void addMissingParamsBody(TemplateProcessor templateProcessor)
+    {
+        missingParamsBodyTemplate = templateProcessor;
+    }
+
+    public TemplateProcessor getMissingParamsBody()
+    {
+        return missingParamsBodyTemplate;
     }
 
     public boolean canHandlePage(NavigationContext nc)
@@ -802,6 +854,22 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             handlePageBody(writer, nc);
             handlePageFooter(writer, nc);
         }
+        exitPage(nc);
+    }
+
+    public void handleInvalidPage(Writer writer, NavigationContext nc) throws ServletException, IOException
+    {
+        enterPage(nc);
+        handlePageMetaData(writer, nc);
+        handlePageHeader(writer, nc);
+
+        TemplateProcessor templateProcessor = getMissingParamsBody();
+        if(templateProcessor != null)
+            templateProcessor.process(writer, nc, null);
+        else
+            writer.write("This page is missing some required parameters.");
+
+        handlePageFooter(writer, nc);
         exitPage(nc);
     }
 }

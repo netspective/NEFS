@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.13 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.14 2003-08-19 17:09:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -276,7 +276,12 @@ public class NavigationControllerServlet extends HttpServlet
         Writer writer = nc.getResponse().getWriter();
 
         if(activePage != null)
-            activePage.handlePage(writer, nc);
+        {
+            if(nc.isActivePageValid())
+                activePage.handlePage(writer, nc);
+            else
+                activePage.handleInvalidPage(writer, nc);
+        }
         else
         {
             NavigationSkin skin = nc.getSkin();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.14 2003-08-05 17:41:53 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.15 2003-08-19 17:09:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -70,7 +70,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 {
     private NavigationTree ownerTree;
     private NavigationPage activePage;
+    private boolean activePageValid;
     private boolean redirectToAlternateChildRequired;
+    private boolean missingRequiredReqParams;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
     private String pageTitle;
@@ -103,16 +105,30 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
         if(activePage != null)
         {
-            if(! activePage.isValid(this))
-                throw new RuntimeException("Page " + activePage + " is not valid.");
-
-            activePage.makeStateChanges(this);
+            activePageValid = activePage.isValid(this);
+            if(! activePageValid)
+                activePage.makeStateChanges(this);
         }
+    }
+
+    public boolean isActivePageValid()
+    {
+        return activePageValid;
     }
 
     public boolean isRedirectToAlternateChildRequired()
     {
         return redirectToAlternateChildRequired;
+    }
+
+    public void setMissingRequiredReqParam(String name)
+    {
+        this.missingRequiredReqParams = true;
+    }
+
+    public boolean isMissingRequiredReqParams()
+    {
+        return missingRequiredReqParams;
     }
 
     public NavigationPage findFirstMemberWithBody(NavigationPage parent)
