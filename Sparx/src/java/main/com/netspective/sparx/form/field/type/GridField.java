@@ -48,7 +48,7 @@ import com.netspective.sparx.form.field.DialogFields;
 /**
  * Logical dialog field class to allow creation of grids.
  *
- * @version $Id: GridField.java,v 1.12 2004-08-15 02:27:27 shahid.shah Exp $
+ * @version $Id: GridField.java,v 1.13 2004-09-13 13:44:11 aye.thu Exp $
  */
 public class GridField extends DialogField
 {
@@ -152,7 +152,7 @@ public class GridField extends DialogField
             for(int i = 0; i < firstRowChildren.size(); i++)
             {
                 DialogField field = firstRowChildren.get(i);
-                if(field.isAvailable(dc))
+                if(field.isAvailable(dc) && !field.isInputHiddenFlagSet(dc))
                     result[i] = field.getCaption().getTextValue(dc);
             }
         }
