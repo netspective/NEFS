@@ -53,9 +53,9 @@
         <p style="margin-top:5px;">Declarative tags, which work in any IDE, reduce Java code and
         let you focus on your customers' requirements instead of J2EE infrastructure.</p>
         <ul class="check-list" style="margin-bottom:0px; ">
-            <li class="home-page">Automate navigation and workflow</li>
-            <li class="home-page">Create auto-validating data entry forms</li>
-            <li class="home-page">Auto-generate DAOs and SQL DDL/DML</li>
+            <li class="home-page">Finish apps in days instead of months</li>
+            <li class="home-page">Create pages and forms 12 times faster</li>
+            <li class="home-page">Generate SQL/DAOs/VOs in seconds</li>
             <li class="home-page">Protect data with role-based security</li>
         </ul>
     </tr>
