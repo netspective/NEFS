@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.2 2004-07-25 21:11:29 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.3 2004-08-09 20:28:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -90,12 +90,12 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
     {
     }
 
-    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException
+    public void generateSqlDdl(File output, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException
     {
         Writer writer = new FileWriter(output);
         try
         {
-            generateSqlDdl(writer, vc, schema, dropFirst);
+            generateSqlDdl(writer, vc, schema, dropFirst, createCommentObjects);
         }
         finally
         {
@@ -103,9 +103,9 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         }
     }
 
-    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst) throws IOException
+    public void generateSqlDdl(Writer writer, DatabasePolicyValueContext vc, Schema schema, boolean dropFirst, boolean createCommentObjects) throws IOException
     {
-        SqlDdlGeneratorContext gc = new SqlDdlGeneratorContext(writer, vc, schema, dropFirst);
+        SqlDdlGeneratorContext gc = new SqlDdlGeneratorContext(writer, vc, schema, dropFirst, createCommentObjects);
         renderSqlDdlSchemaScript(gc);
     }
 
@@ -145,14 +145,17 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             {
                 writer.write(ddlFormats.getScriptStatementTerminator());
                 writer.write("\n");
+
+                renderSqlDdlIndexStatements(gc, table, false);
+
+                if(gc.isCreateCommentObjects())
+                    renderSqlDdlCommentObjects(gc, table);
+
+                if(table.getData() != null)
+                    tablesWithData.add(table);
             }
 
-            renderSqlDdlIndexStatements(gc, table, false);
-
             gc.getVisitedTables().add(table);
-
-            if(table.getData() != null)
-                tablesWithData.add(table);
         }
 
         if(gc.getDelayedConstraints().size() > 0)
@@ -190,6 +193,41 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
                 {
                     log.error(e.getMessage(), e);
                 }
+            }
+        }
+    }
+
+    public void renderSqlDdlCommentObjects(SqlDdlGeneratorContext gc, Table table) throws IOException
+    {
+        Writer writer = gc.getWriter();
+        SqlDdlFormats ddlFormats = gc.getSqlDdlFormats();
+
+        String tableCommentClauseFormat = ddlFormats.getTableCommentClauseFormat();
+        String columnCommentClauseFormat = ddlFormats.getColumnCommentClauseFormat();
+
+        Map vars = new HashMap();
+        vars.put("table", table);
+
+        if(tableCommentClauseFormat != null)
+        {
+            JavaExpressionText jet = new JavaExpressionText(tableCommentClauseFormat, vars);
+            writer.write(jet.getFinalText(gc.getValueContext()));
+            writer.write(ddlFormats.getScriptStatementTerminator());
+            writer.write("\n");
+        }
+
+        if(columnCommentClauseFormat != null)
+        {
+            Columns columns = table.getColumns();
+            for(int i = 0; i < columns.size(); i++)
+            {
+                Column column = columns.get(i);
+                vars.put("column", column);
+
+                JavaExpressionText jet = new JavaExpressionText(ddlFormats.getColumnCommentClauseFormat(), vars);
+                writer.write(jet.getFinalText(gc.getValueContext()));
+                writer.write(ddlFormats.getScriptStatementTerminator());
+                writer.write("\n");
             }
         }
     }
@@ -311,7 +349,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             return;
 
         Map vars = new HashMap();
-        vars.put("table", fkey);
+        vars.put("table", table);
         vars.put("fkey", fkey);
 
         JavaExpressionText jet = new JavaExpressionText(format, vars);

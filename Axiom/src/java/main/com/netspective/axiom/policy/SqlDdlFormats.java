@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlDdlFormats.java,v 1.2 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: SqlDdlFormats.java,v 1.3 2004-08-09 20:28:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -78,4 +78,10 @@ public interface SqlDdlFormats
 
     boolean isCreateParentKeyIndex();
     void setCreateParentKeyIndex(boolean createParentKeyIndex);
+
+    public String getTableCommentClauseFormat();
+    public void setTableCommentClauseFormat(String tableCommentClauseFormat);
+
+    public String getColumnCommentClauseFormat();
+    public void setColumnCommentClauseFormat(String columnCommentClauseFormat);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlFormats.java,v 1.1 2004-03-26 02:15:36 shahid.shah Exp $
+ * $Id: AnsiSqlDdlFormats.java,v 1.2 2004-08-09 20:28:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -57,6 +57,8 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     private String dropSequenceStatementFormat;
     private String fkeyConstraintAlterTableStatementFormat;
     private String fkeyConstraintTableClauseFormat;
+    private String tableCommentClauseFormat;
+    private String columnCommentClauseFormat;
     private boolean createPrimaryKeyIndex;
     private boolean createParentKeyIndex;
 
@@ -183,5 +185,25 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     public void setCreateParentKeyIndex(boolean createParentKeyIndex)
     {
         this.createParentKeyIndex = createParentKeyIndex;
+    }
+
+    public String getTableCommentClauseFormat()
+    {
+        return tableCommentClauseFormat;
+    }
+
+    public void setTableCommentClauseFormat(String tableCommentClauseFormat)
+    {
+        this.tableCommentClauseFormat = tableCommentClauseFormat;
+    }
+
+    public String getColumnCommentClauseFormat()
+    {
+        return columnCommentClauseFormat;
+    }
+
+    public void setColumnCommentClauseFormat(String columnCommentClauseFormat)
+    {
+        this.columnCommentClauseFormat = columnCommentClauseFormat;
     }
 }

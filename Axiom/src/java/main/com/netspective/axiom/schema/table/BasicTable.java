@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.24 2004-06-10 19:57:45 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.25 2004-08-09 20:28:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;

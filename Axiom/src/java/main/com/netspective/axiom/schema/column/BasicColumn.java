@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.25 2004-07-30 16:35:09 aye.thu Exp $
+ * $Id: BasicColumn.java,v 1.26 2004-08-09 20:28:52 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
