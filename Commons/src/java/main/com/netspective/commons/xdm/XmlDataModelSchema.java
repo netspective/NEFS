@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.36 2003-10-13 03:07:53 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.37 2003-11-02 17:25:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1298,6 +1298,27 @@ public class XmlDataModelSchema
             return element;
         else
         {
+            // see if we're trying to set a named flag as a sub-element
+            for(Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                AttributeAccessor accessor = (AttributeAccessor) entry.getValue();
+                Object returnVal = null;
+                try
+                {
+                    returnVal = accessor.get(pc, element);
+                }
+                catch (Exception e)
+                {
+                }
+
+                if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                {
+                    XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
+                    return element;
+                }
+            }
+
             UnsupportedElementException e = new UnsupportedElementException(this, pc, element, elementName);
             if(pc != null)
             {
