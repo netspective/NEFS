@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.6 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.7 2003-04-03 18:40:22 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -560,7 +560,10 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                 url = resolvePattern(value);
             }
             else
+            {
+				clearFlag(TabularReportColumn.COLFLAG_WRAPURL);
                 url = null;
+            }
         }
 
         public final void setUrlAnchorAttrs(String value)
@@ -572,7 +575,10 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
                 urlAnchorAttrs = resolvePattern(value);
             }
             else
+            {
+	            clearFlag(TabularReportColumn.COLFLAG_HAVEANCHORATTRS);
                 urlAnchorAttrs = "";
+            }
 
         }
     }
