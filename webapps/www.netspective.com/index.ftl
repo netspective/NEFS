@@ -54,8 +54,8 @@
         let you focus on your customers' requirements instead of J2EE infrastructure.</p>
         <ul class="check-list" style="margin-bottom:0px; ">
             <li class="home-page">Finish apps in days instead of months</li>
-            <li class="home-page">Create pages and forms 12 times faster</li>
-            <li class="home-page">Generate SQL/DAOs/VOs in seconds</li>
+            <li class="home-page">Create beautiful sites that impress users</li>
+            <li class="home-page">Generate SQL/DAOs/VOs 25 times faster</li>
             <li class="home-page">Protect data with role-based security</li>
         </ul>
     </tr>
