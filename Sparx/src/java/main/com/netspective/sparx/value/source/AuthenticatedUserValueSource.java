@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUserValueSource.java,v 1.2 2003-09-01 17:05:18 aye.thu Exp $
+ * $Id: AuthenticatedUserValueSource.java,v 1.3 2003-09-02 17:07:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -134,8 +134,6 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
 
     public Value getAuthenticatedUserAttrValue(AuthenticatedUser authUser)
     {
-        System.out.println("HEY HEY");
-
         if(authUser == null)
             return new GenericValue("No active user");
         switch(attrType.getValueIndex())
