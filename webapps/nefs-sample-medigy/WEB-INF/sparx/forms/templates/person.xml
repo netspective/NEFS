@@ -5,16 +5,15 @@
        The profile is common to all user. This means that only the name and the ID is included.
     -->
     <xdm:template name="person.personal-profile">
-        <field type="integer" name="person_id" caption="" hidden="yes"/>
-        <field type="separator" heading="Personal Profile"/>
         <!--field type="select" name="name_prefix" caption="Prefix" choices="schema-enum:Name_Prefix_Type" prepend-blank="yes"/-->
-        <section name="profile" display-columns="4">
+        <section name="profile" caption="Profile">
             <!--composite name="fullName" caption="Full Name"-->
             <field type="text" name="name_last" caption="Last Name" required="yes"  max-length="16" />
             <field type="text" name="name_first" caption="First Name" required="yes" max-length="16"/>
             <field type="text" name="name_middle" caption="Middle Name" max-length="16"/>
             <!--/composite-->
             <field type="text" name="name_suffix" caption="Suffix" size="4" max-length="4"/>
+            <field type="integer" name="person_id" caption="ID" hidden="yes"/>
         </section>
     </xdm:template>
 
@@ -24,10 +23,10 @@
     -->
     <xdm:template name="patient.demographic-information">
         <!--field type="separator" heading="Demographic Information"/-->
-        <section name="demographics" display-columns="5" >
+        <section name="demographics" caption="Demographics">
             <field type="ssn" name="ssn" caption="SSN" required="yes" size="25" />
             <field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" required="yes" />
-            <field type="date" caption="Date of Birth" name="birth_date" size="12" required="yes"/>
+            <field type="date" caption="Date of Birth" name="birth_date" size="12" required="yes" format="MM/dd/yyyy" client-calendar-format="%m/%d/%Y"/>
             <field type="select" name="marital_status_id" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
             <field type="select" name="blood_type_id" caption="Blood Type" choices="schema-enum:Blood_Type" required="yes" prepend-blank="yes"/>
             <field type="select" name="ethnicity_id" caption="Ethnicity" choices="schema-enum:Ethnicity_Type"
@@ -66,10 +65,6 @@
         Personal identification such as login ID and driver's license
     -->
     <xdm:template name="person.identification-information">
-        <field type="separator" heading="Personal Identification"/>
-        <field type="text" name="user_name" caption="System Login" size="16" max-length="16"  required="yes"
-            hint="This is the text based ID that will be used for this person in the application.  This is also the login name used by people if they want to access their information online."/>
-
         <!--composite name="driversLicense" caption="Driver License">
             <field type="integer" name="system_id" caption="" hidden="yes"/>
             <field type="text" name="license_number" caption="License Number"/>
@@ -79,7 +74,9 @@
                 <conditional action="display" partner-field-name="driversLicense.license_src" expression="control.options[control.selectedIndex].text == 'Other'"/>
             </field>
         </composite-->
-        <section name="driversLicense" display-columns="3">
+        <section name="identification" caption="Person Identification">
+            <field type="text" name="user_name" caption="System Login" size="16" max-length="16"  required="yes"
+            hint="This is the text based ID that will be used for this person in the application.  This is also the login name used by people if they want to access their information online."/>
             <field type="text" name="license_number" caption="License Number"/>
             <field type="select" name="license_src" caption="Issuing State" choices="schema-enum:US_State_Type" style="combo" prepend-blank="yes">
                 <!--conditional action="apply-flags" flag="required" has-value="field:license_number"/-->
@@ -94,9 +91,9 @@
 
     -->
     <xdm:template name="person.contact-information">
-        <field type="separator" heading="Contact Methods"/>
+
         <!--field type="text" name="line2" caption="Line 2" size="64"/-->
-        <section name="address" display-columns="4">
+        <section name="address" caption="Address">
             <field type="text" name="line1" caption="Home Address" required="yes" size="50" />
             <field type="text" name="city" caption="City" required="yes" size="16"/>
             <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes" prepend-blank="yes"/>
@@ -104,7 +101,7 @@
         </section>
         <!-- field type="text" name="country" caption="Country" size="16"/-->
 
-        <section name="contact" display-columns="3">
+        <section name="contact" caption="Contact Information">
             <field type="phone" name="work_phone" caption="Work Phone" size="25"/>
             <field type="phone" name="home_phone" caption="Home Phone" size="25"/>
             <field type="e-mail" name="email" caption="Email" size="25"/>
@@ -115,8 +112,8 @@
         Employment information for a patient
     -->
     <xdm:template name="person.employment-information">
-        <field type="separator" heading="Employment Information"/>
-        <section name="employment" display-columns="3">
+
+        <section name="employment" caption="Employment Information" column-break-after="yes">
             <field type="select" name="employment_status" caption="Employment Status"
                 prepend-blank="yes" choices="schema-enum:PersonOrg_Rel_Type"/>
             <!--field type="select" name="employer_id" caption="Employer ID" choices="query:org.get-all-orgs" prepend-blank="yes"/-->
@@ -133,32 +130,60 @@
        Insurance information for a patient
     -->
     <xdm:template name="patient.insurance-information">
-        <field type="separator" heading="Insurance Information"/>
-        <section name="insurance" display-columns="3">
-            <field type="select" name="insurance_name" caption="Insurance Company" prepend-blank="yes"
-                choices="query:orgAttribute.get-insurance-orgs" />
-            <field type="text" name="insurance_id" caption="Policy#" />
-            <field type="text" name="insurance_group_id" caption="Group ID#" />
+
+        <section name="insured" caption="Insurance Information">
+            <field type="select" name="ins_rel_type_id" caption="Relationship to patient" choices="schema-enum:Person_Relationship_Type"/>
+            <field type="text" name="rel_descr" caption="Other Relationship" size="16" max-length="16" hint="Describe 'Other' relationship">
+                <conditional action="display" partner-field-name="insured.ins_rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
+            </field>
+
+            <field type="boolean" name="ins_party_exists" caption="Does insured party already exist?" >
+                <conditional action="display" partner-field-name="insured.ins_rel_type_id" expression="control.selectedIndex != 0"/>
+            </field>
+
+            <field type="static" name="instruction1" default="Please search for the insured party using the search icon">
+                <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '1'"/>
+            </field>
+            <field type="composite" name="exist_party" caption="Exisitng Insured Party">
+                <field type="text" name="name_last" caption="Last Name" browser-readonly="yes" hint="Last Name" size="20">
+                    <!--conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/-->
+                    <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '1'"/>
+                </field>
+                <field type="text" name="name_first" caption="First Name"  browser-readonly="yes" hint="First Name" size="20">
+                    <popup action="page-id:/search/person/people_popup" fill="insured.exist_party.name_last,insured.exist_party.name_first,insured.exist_party.party_id"/>
+                    <!--conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/-->
+                    <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '1'"/>
+                </field>
+                <field type="text" name="party_id" hidden="yes" >
+                    <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '1'"/>
+                </field>
+                <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '1'"/>
+            </field>
+
+            <field type="static" name="instruction2" default="Please enter the insured party's information">
+                <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '0'"/>
+            </field>
+            <field type="composite" name="new_party" caption="Insured Party">
+
+                <field type="text" name="name_last" caption="Last Name" hint="Last Name" size="20">
+                    <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '0'"/>
+                </field>
+                <field type="text" name="name_first" caption="First Name" hint="First Name" size="20">
+                    <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '0'"/>
+                </field>
+                <conditional action="display" partner-field-name="insured.ins_party_exists" expression="control.value == '0'"/>
+            </field>
+
+            <!--field type="select" name="insurance_name" caption="Insurance Company" prepend-blank="yes"
+                choices="query:orgAttribute.get-insurance-orgs" /-->
+            <field type="text" name="policy_id" caption="Policy #" />
+            <field type="text" name="policy_group_id" caption="Group #" />
         </section>
-        <field type="select" name="ins_rel_type_id" caption="Insured party's relationship to patient" choices="schema-enum:Person_Relationship_Type"/>
-        <field type="text" name="ins_party_name" caption="Insured Party Name" hint="Last Name, First Name">
-            <popup action="page-id:/search/person/people_popup" fill="ins_party_name,ins_party_id"/>
-            <conditional action="display" partner-field-name="ins_rel_type_id" expression="control.selectedIndex != 0"/>
-        </field>
-        <field type="text" name="ins_party_id" hidden="yes" />
-        <!-- maybe display the insurance company information if it doesn't exist in the list -->
-        <!--section name="insurance-addr" display-columns="4">
-            <field type="text" name="line1" caption="Insurance Co. Address" size="32" />
-            <field type="text" name="city" caption="City" required="yes" size="16"/>
-            <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes" prepend-blank="yes"/>
-            <field type="zip-code" name="zip" caption="Zip Code"/>
-            <field type="phone" name="insurance_phone" caption="Insurance Phone"/>
-        </section-->
+
     </xdm:template>
     <xdm:template name="patient.responsible-party">
-        <field type="separator" heading="Responsible Party"/>
-        <section name="responsible"  display-columns="2" >
-            <field type="select" name="rel_type_id" caption="Responsible party's relationship to patient" choices="schema-enum:Person_Relationship_Type"/>
+        <section name="responsible"  caption="Responsible Party">
+            <field type="select" name="rel_type_id" caption="Relationship to patient" choices="schema-enum:Person_Relationship_Type"/>
             <!--field type="boolean" name="self" caption="Are you the responsible party?" default="yes"
                 hint="If you select 'No', make sure to select who is responsible for you."/>
             <field type="select" name="party_id" caption="Responsible Party" prepend-blank="yes" choices="query:person.get-all-persons">
@@ -168,14 +193,19 @@
                 prepend-blank="yes" style="combo">
                 <conditional action="display" partner-field-name="responsible.party_id" expression="control.selectedIndex != 0"/>
             </field-->
-            <field type="text" name="rel_descr" caption="Other Relationship" size="16" max-length="16">
+            <field type="text" name="rel_descr" caption="Other Relationship" size="16" max-length="16" hint="Describe 'Other' relationship">
                 <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
             </field>
-            <field type="text" name="name_last" caption="Responsible Party's Last Name" >
-                <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
-            </field>
-            <field type="text" name="name_first" caption="First Name">
-                <popup action="page-id:/search/person/people_popup" fill="responsible.name_last,responsible.name_first,resp_party_id"/>
+
+            <field type="composite" name="exist_party" caption="Responsible Party">
+                <field type="text" name="name_last" caption="Last Name" size="20" hint="Last Name">
+                    <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
+                </field>
+                <field type="text" name="name_first" caption="First Name" size="20" hint="First Name">
+                    <popup action="page-id:/search/person/people_popup" fill="responsible.exist_party.name_last,responsible.exist_party.name_first,responsible.exist_party.resp_party_id"/>
+                    <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
+                </field>
+                <field type="text" name="resp_party_id" hidden="yes" />
                 <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
             </field>
         </section>
@@ -185,12 +215,11 @@
             <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
         </field-->
         
-        <field type="text" name="resp_party_id" hidden="no" />
 
     </xdm:template>
 
     <xdm:template name="patient.physician-information">
-        <section name="physicians" display-columns="2">
+        <section name="physicians" >
             <field type="select" name="attending_physician" caption="Attending Physician" prepend-blank="yes" choices="query:person.get-all-physicians"/>
             <field type="select" name="primary_physician" caption="Primary Care Physician" prepend-blank="yes" choices="query:person.get-all-physicians"/>
             <!--field type="select" name="referring_physician" caption="Referring Physician" prepend-blank="yes" choices="query:person.get-all-physicians"/-->
