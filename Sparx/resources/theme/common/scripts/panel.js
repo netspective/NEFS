@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: panel.js,v 1.1 2003-08-22 14:29:40 shahid.shah Exp $
+ * $Id: panel.js,v 1.2 2003-11-19 02:20:43 shahid.shah Exp $
  */
 
 // **************************************************************************
@@ -204,6 +204,110 @@ function toggleDisplay(controllerId, partnerId, visibleHtml, invisibleHtml)
 }
 
 // -------------------------------------------------------------------------------------------------------------------
+// -- PanelStates collection object
+// -------------------------------------------------------------------------------------------------------------------
+
+function PanelStates()
+{
+    this.statesCookieName = "SPARX_PANEL_STATES";
+    this.cookieValuesById = new Array();
+    this.cookiePanelIds = new Array();
+    this.statesByIndex = new Array();
+    this.statesById = new Array();
+    this.getState = PanelStates_getState;
+    this.stateChanged = PanelStates_stateChanged;
+
+    var statesValue = getCookie(this.statesCookieName);
+    if(statesValue != null)
+    {
+        var panelsData = statesValue.split(';');
+        for(i = 0; i < panelsData.length; i++)
+        {
+            var panelData = panelsData[i].split('=');
+            var panelId = panelData[0];
+            this.cookieValuesById[panelId] = panelData[1];
+            this.cookiePanelIds[this.cookiePanelIds.length] = panelId;
+        }
+    }
+}
+
+function PanelStates_getState(panelId, minimized)
+{
+    var state = this.statesById[panelId];
+    if(state == null)
+    {
+        state = new PanelState(this, panelId, minimized);
+
+        this.statesByIndex[this.statesByIndex.length] = state;
+        this.statesById[state.panelId] = state;
+
+        var stateCookieText = this.cookieValuesById[panelId];
+        if(stateCookieText != null)
+            state.loadFromCookieText(stateCookieText);
+    }
+
+    return state;
+}
+
+function PanelStates_stateChanged(state)
+{
+    var cookieValue = "";
+
+    // first copy the panels that are not on this page so we don't lose other pages' panels
+    for(i = 0; i < this.cookiePanelIds.length; i++)
+    {
+        var panelId = this.cookiePanelIds[i];
+        if(this.statesById[panelId] == null)
+        {
+            if(cookieValue != "") cookieValue += ';';
+            cookieValue += (panelId + "=" + this.cookieValuesById[panelId]);
+        }
+    }
+
+    // now set the values for the panels on this page
+    for(i = 0; i < this.statesByIndex.length; i++)
+    {
+        var state = this.statesByIndex[i];
+        if(cookieValue != "") cookieValue += ';';
+        cookieValue += state.getCookieText();
+    }
+
+    setCookie(this.statesCookieName, cookieValue, new Date("December 31, 2049"));
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+// -- PanelState object
+// -------------------------------------------------------------------------------------------------------------------
+
+function PanelState(owner, panelId, minimized)
+{
+    this.owner = owner;
+    this.panelId = panelId;
+    this.minimized = minimized;
+    this.loadFromCookieText = PanelState_loadFromCookieText;
+    this.getCookieText = PanelState_getCookieText;
+    this.setMinimized = PanelState_setMinimized;
+}
+
+function PanelState_loadFromCookieText(storedValue)
+{
+    // right now we only have one value, the "isMinimized" value but in the future we could have more
+    var values = storedValue.split(',');
+    this.minimized = values[0] == "1" ? true : false;
+}
+
+function PanelState_getCookieText()
+{
+    return this.panelId + "=" + (this.minimized ? "1" : "0");
+}
+
+function PanelState_setMinimized(value)
+{
+    this.minimized = value;
+    this.owner.stateChanged(this);
+}
+
+// -------------------------------------------------------------------------------------------------------------------
 // -- Panels collection object
 // -------------------------------------------------------------------------------------------------------------------
 
@@ -211,6 +315,7 @@ function Panels()
 {
     this.byId = new Array();
     this.byIndex = new Array();
+
     this.initialize = Panels_initialize;
     this.registerPanel = Panels_registerPanel;
     this.getPanel = Panels_getPanel;
@@ -220,8 +325,17 @@ function Panels()
 
 function Panels_initialize()
 {
+    var totalMinimized = 0;
     for(var i = 0; i < this.byIndex.length; i++)
+    {
         this.byIndex[i].initialize();
+        if(this.byIndex[i].state.minimized)
+            totalMinimized++;
+    }
+
+    // check to make sure at least one item is tabbed (if none are open, open the first one)
+    if(totalMinimized == this.byIndex.length)
+        this.byIndex[0].toggleExpandCollapse()
 }
 
 function Panels_registerPanel(panel)
@@ -257,6 +371,7 @@ function Panels_togglePanelExpandCollapse(panelId)
         panel.toggleExpandCollapse();
 }
 
+var ALL_PANEL_STATES = new PanelStates();
 var ALL_PANELS = new Panels();
 var ACTIVE_PANEL_PARENT = ALL_PANELS;   // new panels created will become children of this panel
 
@@ -290,17 +405,22 @@ function Panel(panelId, minimized, style, classNamePrefix)
 {
     this.parent = null;
     this.identifier = panelId;
-    this.minimized = minimized == null ? (style == PANELSTYLE_TABBED ? true : false) : minimized;
+    this.state = ALL_PANEL_STATES.getState(panelId, minimized == null ? (style == PANELSTYLE_TABBED ? true : false) : minimized);
     this.classNamePrefix = classNamePrefix;
     this.initialize = Panel_initialize;
     this.setStyle = Panel_setStyle;
-    this.getMinimizedCookieName = Panel_getMinimizedCookieName;
     this.toggleExpandCollapse = Panel_toggleExpandCollapse;
+    this.isTabbed = Panel_isTabbed;
     this.children = new Panels();
 
     this.setStyle(style == null ? PANELSTYLE_TOPLEVEL : style, true);
 
     return this;
+}
+
+function Panel_isTabbed()
+{
+    return this.style == PANELSTYLE_TABBED;
 }
 
 function Panel_setStyle(style, inConstructor)
@@ -310,31 +430,19 @@ function Panel_setStyle(style, inConstructor)
     if(this.style == PANELSTYLE_TOPLEVEL)
         this.setExpandCollapse = Panel_setExpandCollapseTopLevel;
     else if(this.style == PANELSTYLE_TABBED)
-    {
         this.setExpandCollapse = Panel_setExpandCollapseTabbed;
-        this.minimized = true;
-    }
     else
         alert("Unknown panel style " + this.style + " in panel " + this.identifier);
 }
 
 function Panel_initialize()
 {
-    var isMinimized = getCookie(this.getMinimizedCookieName());
-    if(isMinimized != null)
-        this.minimized = isMinimized == 1 ? true : false;
-
-    this.setExpandCollapse(this.minimized);
-}
-
-function Panel_getMinimizedCookieName()
-{
-    return "panel_" + this.identifier + "_minimized";
+    this.setExpandCollapse(this.state.minimized);
 }
 
 function Panel_setExpandCollapseTopLevel(minimized)
 {
-    this.minimized = minimized;
+    this.state.setMinimized(minimized);
 
     setDisplay(this.identifier + "_content", ! minimized, true);
     setDisplay(this.identifier + "_tabs", ! minimized, false);
@@ -343,14 +451,12 @@ function Panel_setExpandCollapseTopLevel(minimized)
 
     var actionCell = browser.getElement(this.identifier + "_action");
     if(actionCell != null)
-        actionCell.className = this.classNamePrefix + "-" + (this.minimized ? "frame-heading-action-expand" : "frame-heading-action-collapse");
-
-    setCookie(this.getMinimizedCookieName(), this.minimized ? 1 : 0, new Date("December 31, 2049"));
+        actionCell.className = this.classNamePrefix + "-" + (this.state.minimized ? "frame-heading-action-expand" : "frame-heading-action-collapse");
 }
 
 function Panel_setExpandCollapseTabbed(minimized, recursive)
 {
-    this.minimized = minimized;
+    this.state.setMinimized(minimized);
 
     // if we're being selected, turn all the other siblings "off"
     if(!recursive && !minimized)
@@ -371,14 +477,12 @@ function Panel_setExpandCollapseTabbed(minimized, recursive)
 
     var tab = browser.getElement(this.identifier + "_tab");
     if(tab != null)
-        tab.className = this.classNamePrefix + "-" + (this.minimized ? "tab" : "tab-active");
-
-    setCookie(this.getMinimizedCookieName(), this.minimized ? 1 : 0, new Date("December 31, 2049"));
+        tab.className = this.classNamePrefix + "-" + (this.state.minimized ? "tab" : "tab-active");
 }
 
 function Panel_toggleExpandCollapse()
 {
-    this.setExpandCollapse(this.minimized ? false : true);
+    this.setExpandCollapse(this.state.minimized ? false : true);
 }
 
 // -------------------------------------------------------------------------------------------------------------------
