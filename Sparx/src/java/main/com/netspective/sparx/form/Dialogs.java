@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Dialogs.java,v 1.4 2003-11-19 05:24:00 aye.thu Exp $
+ * $Id: Dialogs.java,v 1.5 2003-12-08 05:15:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -62,6 +62,7 @@ public class Dialogs implements MetricsProducer
     private Project project;
     private List dialogs = new ArrayList();
     private Map byName = new TreeMap();
+    private Map byNameSpace = new TreeMap();
     private Set nameSpaceNames = new TreeSet();
 
     public Dialogs(Project project)
@@ -78,10 +79,15 @@ public class Dialogs implements MetricsProducer
     {
         dialogs.add(dialog);
         byName.put(dialog.getNameForMapKey(), dialog);
-
 		//TODO: Modify this to also use a method similar to getNameForMapKey() for case-insensitive namespaces
 		if (null != dialog.getNameSpace())
+        {
+            String nameSpaceId = dialog.getNameSpace().getNameSpaceId();
+            if (!byNameSpace.containsKey(nameSpaceId))
+                byNameSpace.put(nameSpaceId, new ArrayList());
+            ((ArrayList) byNameSpace.get(nameSpaceId)).add(dialog);
             nameSpaceNames.add(dialog.getNameSpace().getNameSpaceId());
+        }
     }
 
     public Dialog get(int i)
@@ -92,6 +98,18 @@ public class Dialogs implements MetricsProducer
     public Dialog get(String name)
     {
         return (Dialog) byName.get(Dialog.translateNameForMapKey(name));
+    }
+
+    /**
+     * Gets a subset of dialogs belonging to one name space
+     * @param nameSpace
+     * @return
+     */
+    public List getByNameSpace(String nameSpace)
+    {
+        if (byNameSpace.containsKey(nameSpace))
+            return (ArrayList) byNameSpace.get(nameSpace);
+        return null;
     }
 
     public List getDialogs()

@@ -39,18 +39,44 @@
  */
 
 /**
- * $Id: DialogsManager.java,v 1.2 2003-08-24 22:29:37 shahid.shah Exp $
+ * $Id: DialogsManager.java,v 1.3 2003-12-08 05:15:41 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
 
+import java.util.List;
+
 public interface DialogsManager
 {
+    /**
+     * Gets all dialogs
+     * @return Dialogs object
+     */
     Dialogs getDialogs();
 
+    /**
+     * Gets a list of dialogs by the package they belong to
+     * @param pkgName dialog package name
+     * @return Dialogs object
+     */
+    public List getDialogs(String pkgName);
+
+    /**
+     * Gets a dialog by its fully qualified name (e.g. packageName.dialogName)
+     * @param name
+     * @return
+     */
     Dialog getDialog(String name);
 
+    /**
+     * Creates a dialogs package
+     * @return
+     */
     DialogsPackage createDialogs();
 
+    /**
+     * Adds a dialog package
+     * @param pkg
+     */
     void addDialogs(DialogsPackage pkg);
 }
