@@ -50,26 +50,6 @@
 	<xdm:include file="schema/scheduling.xml"/>
 	<xdm:include file="schema/transaction.xml"/>
 
-	<table name="Test" abbrev="Tst" type="Default">
-		<description>
-			This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-		</description>
-		<column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-		<column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-		<column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-		<column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-	</table>
-
-	<table name="Test_Two" abbrev="Tst2" type="Default">
-		<description>
-			This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
-		</description>
-		<column name="system_id" type="guid32" primarykey="yes" descr="A unique identifier for each record in this table"/>
-		<column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
-		<column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
-		<column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
-	</table>
-
 	<table name="Person_Session" abbrev="PerSess">
 <description>
 			An active session of a user connected to the application

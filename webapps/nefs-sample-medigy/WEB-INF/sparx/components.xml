@@ -10,4 +10,34 @@
 	<xdm:include file="data-management/query.xml"/>
 	<xdm:include file="data-management/schema.xml"/>
 
+	<dialogs package="package-00">
+		<dialog name="dialog_01" disable-client-validation="yes">
+			<frame heading="test heading 1"/>
+			<field type="select" name="select-01" hint="Select" required="yes" style="radio" required="yes" choices="text-list:First=a,Second=b,Third=c"/>
+			<field type="boolean" name="boolean-01" hint="boolean" required="yes" style="radio" check-label="abc" none-text="Neither"/>
+			<field type="currency" caption="Currency 1" name="currency-01" hint="currency"/>
+			<grid name="grid-01" caption="Test">
+				<row name="row-01">
+					<field type="text" caption="Hi there" name="f-01" default="default" hint="Testing..."/>
+					<field type="text" caption="Hi there" name="f-02" default="default" hint="Testing..."/>
+					<field type="text" caption="Hi there" name="f-03" default="default" hint="Testing..."/>
+				</row>
+				<row name="row-02">
+					<field type="text" caption="Hi there" name="f-01" default="default" hint="Testing..."/>
+					<field type="text" caption="Hi there" name="f-02" default="default" hint="Testing..."/>
+					<field type="text" caption="Hi there" name="f-03" default="default" hint="Testing..."/>
+				</row>
+			</grid>
+			<field type="text" caption="Field 1" name="field-01-01" hint="abc" required="yes" min-length="5" max-length="7"/>
+			<field type="text" name="field-01-02"/>
+			<field type="text" name="field-01-03"/>
+			<separator heading="Separator"/>
+			<composite name="c-01" caption="*">
+				<field type="text" caption="Hi there" size="5" name="field-01-01" default="default" hint="Testing..."/>
+				<field type="text" caption="Hi there" size="6" name="field-01-02" default="default" hint="Testing..."/>
+				<field type="text" caption="Hi there" size="7" name="field-01-03" default="default" hint="Testing..."/>
+			</composite>
+		</dialog>
+	</dialogs>
+
 </component>
