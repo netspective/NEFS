@@ -24,7 +24,7 @@
             <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${column.getSize()})</define>
         </sql-ddl>
         <presentation>
-            <field type="text" size="20"/>
+            <field name="${column.getName()}" type="text" caption="${column.getCaption()}" max-length="${column.getSize()}"/>
         </presentation>
     </data-type>
 
@@ -259,7 +259,7 @@
             <rule class="com.netspective.commons.validate.rule.EmailValueValidationRule"/>
         </validation>
         <presentation>
-            <field type="email" size="20"/>
+            <field type="e-mail" size="20"/>
         </presentation>
     </data-type>
 
@@ -292,6 +292,19 @@
             </column>
         </composite>
     </data-type>
+
+    <!-- ***************************************************************************
+         * Assigning this table-type to any table will give it a default dialog    *
+         *************************************************************************** -->
+
+    <table-type name="Presentation">
+        <presentation>
+            <dialog name="${table.name}">
+                <frame heading="create-dialog-perspective-heading:${table.getCaption()}"/>
+                <data-type-presentation columns="*"/>
+            </dialog>
+        </presentation>
+    </table-type>
 
     <!-- ***************************************************************************
          * Standard table types and tables                                         *
