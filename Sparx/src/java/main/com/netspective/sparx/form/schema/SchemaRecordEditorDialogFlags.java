@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialogFlags.java,v 1.1 2003-10-16 17:10:54 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialogFlags.java,v 1.2 2003-10-21 15:31:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -50,14 +50,16 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 public class SchemaRecordEditorDialogFlags extends DialogFlags
 {
     public static final int ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND = DialogFlags.CUSTOM_START;
-    public static final int CUSTOM_START = ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND * 2;
+    public static final int DONT_POPULATE_USING_REQUEST_PARAMS = ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND * 2;
+    public static final int CUSTOM_START = DONT_POPULATE_USING_REQUEST_PARAMS * 2;
 
-    public static final FlagDefn[] TABLE_DIALOG_FLAG_DEFNS = new FlagDefn[DialogFlags.FLAG_DEFNS.length + 1];
+    public static final FlagDefn[] TABLE_DIALOG_FLAG_DEFNS = new FlagDefn[DialogFlags.FLAG_DEFNS.length + 2];
     static
     {
         for(int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
             TABLE_DIALOG_FLAG_DEFNS[i] = DialogFlags.FLAG_DEFNS[i];
         TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND", ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND);
+        TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "DONT_POPULATE_USING_REQUEST_PARAMS", DONT_POPULATE_USING_REQUEST_PARAMS);
     }
 
     public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.6 2003-10-20 22:21:49 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.7 2003-10-21 15:31:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
@@ -172,6 +173,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 return;
             }
 
+            //TODO: either synchronize this or take care of thread-safety issue (changing a shared resource!)
             autoMapColumnNamesToFieldNames();
         }
 
@@ -330,9 +332,58 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
      ** Data population (placing column values into fields) methods                                                  **
      ******************************************************************************************************************/
 
-    public void populateFieldValuesUsingAttributes(SchemaRecordEditorDialogContext tdc, Row row, TemplateElement templateElement)
+    public void populateFieldValuesUsingRequestParameters(SchemaRecordEditorDialogContext sredc, TemplateElement templateElement)
     {
-        DialogContext.DialogFieldStates states = tdc.getFieldStates();
+        // make sure auto-mapping expansion is taken care of
+        SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, templateElement);
+
+        DialogContext.DialogFieldStates states = sredc.getFieldStates();
+        HttpServletRequest request = sredc.getHttpRequest();
+
+        Attributes templateAttributes = templateElement.getAttributes();
+        for(int i = 0; i < templateAttributes.getLength(); i++)
+        {
+            String columnName = templateAttributes.getQName(i);
+            String columnTextValue = templateAttributes.getValue(i);
+
+            // these are private "instructions"
+            if(columnName.startsWith("_"))
+                continue;
+
+            String columnRequestValue = request.getParameter(columnName);
+
+            if(columnRequestValue != null)
+            {
+                DialogField.State fieldState = states.getState(columnTextValue, null);
+                if(fieldState != null)
+                    fieldState.getValue().setTextValue(columnRequestValue);
+            }
+        }
+    }
+
+    public void populateFieldValuesUsingRequestParameters(DialogContext dc, TemplateProducer templateProducer)
+    {
+        if(templateProducer == null)
+            return;
+
+        final List templateInstances = templateProducer.getInstances();
+        if(templateInstances.size() == 0)
+            return;
+
+        // make sure to get the last template only because inheritance may have create multiples
+        Template template = (Template) templateInstances.get(templateInstances.size()-1);
+        List childTableElements = template.getChildren();
+
+        for(int i = 0; i < childTableElements.size(); i++)
+        {
+            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
+            populateFieldValuesUsingRequestParameters((SchemaRecordEditorDialogContext) dc, childTableElement);
+        }
+    }
+
+    public void populateFieldValuesUsingAttributes(SchemaRecordEditorDialogContext sredc, Row row, TemplateElement templateElement)
+    {
+        DialogContext.DialogFieldStates states = sredc.getFieldStates();
         ColumnValues columnValues = row.getColumnValues();
 
         Attributes templateAttributes = templateElement.getAttributes();
@@ -413,42 +464,47 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateValues(DialogContext dc, int formatType)
     {
-        if(dc.isInitialEntry() && ! dc.addingData())
+        if(dc.isInitialEntry())
         {
-            ConnectionContext cc = null;
-            try
+            if(dc.addingData() && ! getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.DONT_POPULATE_USING_REQUEST_PARAMS))
+                populateFieldValuesUsingRequestParameters(dc, insertDataTemplateProducer);
+            else
             {
-                cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
-                switch((int) dc.getPerspectives().getFlags())
-                {
-                    case DialogPerspectives.EDIT:
-                    case DialogPerspectives.PRINT:
-                    case DialogPerspectives.CONFIRM:
-                        populateValuesUsingTemplateProducer(dc, cc, editDataTemplateProducer);
-                        break;
-
-                    case DialogPerspectives.DELETE:
-                        populateValuesUsingTemplateProducer(dc, cc, deleteDataTemplateProducer);
-                        break;
-                }
-            }
-            catch (SQLException e)
-            {
-                getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
-            }
-            catch (NamingException e)
-            {
-                getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
-            }
-            finally
-            {
+                ConnectionContext cc = null;
                 try
                 {
-                    if(cc != null) cc.close();
+                    cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
+                    switch((int) dc.getPerspectives().getFlags())
+                    {
+                        case DialogPerspectives.EDIT:
+                        case DialogPerspectives.PRINT:
+                        case DialogPerspectives.CONFIRM:
+                            populateValuesUsingTemplateProducer(dc, cc, editDataTemplateProducer);
+                            break;
+
+                        case DialogPerspectives.DELETE:
+                            populateValuesUsingTemplateProducer(dc, cc, deleteDataTemplateProducer);
+                            break;
+                    }
                 }
                 catch (SQLException e)
                 {
-                    getLog().error("Unable to close connection in populateValues()", e);
+                    getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
+                }
+                catch (NamingException e)
+                {
+                    getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
+                }
+                finally
+                {
+                    try
+                    {
+                        if(cc != null) cc.close();
+                    }
+                    catch (SQLException e)
+                    {
+                        getLog().error("Unable to close connection in populateValues()", e);
+                    }
                 }
             }
         }
@@ -473,7 +529,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
         // find the connector from the child table to the parent table if one is available
         Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
-        if(parentKeyCols.size() == 1)
+        if(parentKeyCols.size() == 1 && parentRow != null)
         {
             Column connector = parentKeyCols.getSole();
             activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
