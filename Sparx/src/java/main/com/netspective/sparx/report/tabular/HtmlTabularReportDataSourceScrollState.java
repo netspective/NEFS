@@ -39,17 +39,15 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceScrollState.java,v 1.2 2003-08-31 22:59:04 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollState.java,v 1.3 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import javax.servlet.http.HttpSessionBindingListener;
-
 import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 
-public interface HtmlTabularReportDataSourceScrollState extends TabularReportDataSourceScrollState, HttpSessionBindingListener
+public interface HtmlTabularReportDataSourceScrollState extends TabularReportDataSourceScrollState
 {
     public HtmlTabularReportPanel getPanel();
     public void setPanel(HtmlTabularReportPanel panel);

@@ -39,12 +39,10 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportDataSource.java,v 1.4 2003-08-31 22:59:04 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportDataSource.java,v 1.5 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
-
-import javax.servlet.http.HttpSessionBindingEvent;
 
 import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
@@ -69,15 +67,6 @@ public abstract class AbstractHtmlTabularReportDataSource extends AbstractTabula
         public void setPanel(HtmlTabularReportPanel panel)
         {
             this.panel = panel;
-        }
-
-        public void valueBound(HttpSessionBindingEvent event)
-        {
-        }
-
-        public void valueUnbound(HttpSessionBindingEvent event)
-        {
-            close();
         }
     }
 

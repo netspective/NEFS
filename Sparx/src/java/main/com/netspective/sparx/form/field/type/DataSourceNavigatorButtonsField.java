@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.8 2003-09-14 05:35:38 shahid.shah Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.9 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -65,7 +65,6 @@ import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.sql.QueryDialogContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceSessionScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;

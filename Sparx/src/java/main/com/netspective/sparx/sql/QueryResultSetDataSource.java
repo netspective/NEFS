@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.5 2003-09-02 06:39:33 aye.thu Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.6 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -67,7 +67,6 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     protected ValueSource message;
     protected boolean calculatedTotalRows;
     protected int totalRows = TOTAL_ROWS_UNKNOWN;
-    protected boolean closed;
 
     public QueryResultSetDataSource(ValueSource noDataMessage) throws SQLException
     {
@@ -77,13 +76,12 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
 
     public void close()
     {
-        if(! closed)
+        if(! isClosed())
         {
             super.close();
             try
             {
                 queryResultSet.close(true);
-                closed = true;
             }
             catch (SQLException e)
             {

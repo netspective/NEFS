@@ -39,15 +39,13 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceMapScrollStates.java,v 1.1 2003-09-14 05:39:58 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollStatesManager.java,v 1.1 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Iterator;
 import java.util.HashSet;
 import java.util.Set;
@@ -63,10 +61,10 @@ import com.netspective.sparx.value.HttpServletValueContext;
  * An implementation of HtmlTabularReportDataSourceScrollStates that stores the scroll states in a Map and provides
  * for a periodic check and retirement of inactive scroll states.
  */
-public class HtmlTabularReportDataSourceMapScrollStates implements HtmlTabularReportDataSourceScrollStates
+public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabularReportDataSourceScrollStates
 {
     private static final String ATTRNAME_ACTIVE_SCROLL_STATE = "active-scroll-state";
-    private static final long DEFAULT_TIMEOUT_CHECK_DELAY = 5 * 60 * 1000; // 5 minutes
+    private static final long DEFAULT_TIMEOUT_CHECK_DELAY = 3 * 60 * 1000; // 3 minutes
     private static final Set allScrollStateManagers = new HashSet();
 
     public static Set getAllScrollStateManagers()
@@ -74,67 +72,22 @@ public class HtmlTabularReportDataSourceMapScrollStates implements HtmlTabularRe
         return allScrollStateManagers;
     }
 
-    public static void timeoutAllScrollStates(Log log)
+    public static void closeAllScrollStates(Log log)
     {
         for(Iterator i = allScrollStateManagers.iterator(); i.hasNext(); )
         {
-            HtmlTabularReportDataSourceMapScrollStates states = (HtmlTabularReportDataSourceMapScrollStates) i.next();
-            states.timeoutCheckTimer.cancel();
-            int count = states.timouteAll();
-            log.debug("Timed out " + count + " scroll states from " + states);
+            HtmlTabularReportDataSourceScrollStatesManager states = (HtmlTabularReportDataSourceScrollStatesManager) i.next();
+            int count = states.closeAll();
+            log.debug("Closed " + count + " scroll states from " + states);
         }
     }
 
     private Map scrollStates = Collections.synchronizedMap(new HashMap());
-    private long timeoutDuration;
-    private long timeoutCheckDelay;
-    private Timer timeoutCheckTimer;
+    private long timeoutDuration = DEFAULT_TIMEOUT_CHECK_DELAY;
 
-    class RetireInactiveStatesTask extends TimerTask
+    public HtmlTabularReportDataSourceScrollStatesManager()
     {
-        public void run()
-        {
-            Set statesRetired = new HashSet();
-            Set keysRetired = new HashSet();
-
-            for(Iterator i = scrollStates.entrySet().iterator(); i.hasNext(); )
-            {
-                Map.Entry entry = (Map.Entry) i.next();
-                HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) entry.getValue();
-                if(state.getInactivityTime() > timeoutDuration)
-                {
-                    keysRetired.add(entry.getKey());
-                    if(! statesRetired.contains(state))
-                    {
-                        statesRetired.add(state);
-                        state.timeOut();
-                    }
-                }
-            }
-
-            for(Iterator i = keysRetired.iterator(); i.hasNext(); )
-                scrollStates.remove(i.next());
-        }
-    }
-
-    public HtmlTabularReportDataSourceMapScrollStates()
-    {
-        setTimeoutCheckDelay(DEFAULT_TIMEOUT_CHECK_DELAY);
         allScrollStateManagers.add(this);
-    }
-
-    public long getTimeoutCheckDelay()
-    {
-        return timeoutCheckDelay;
-    }
-
-    public void setTimeoutCheckDelay(long timeoutCheckDelay)
-    {
-        this.timeoutCheckDelay = timeoutCheckDelay;
-        if(timeoutCheckTimer != null)
-            timeoutCheckTimer.cancel();
-        timeoutCheckTimer = new Timer();
-        timeoutCheckTimer.schedule(new RetireInactiveStatesTask(), timeoutCheckDelay);
     }
 
     public long getTimeoutDuration()
@@ -154,16 +107,30 @@ public class HtmlTabularReportDataSourceMapScrollStates implements HtmlTabularRe
 
     public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc)
     {
-        return (HtmlTabularReportDataSourceScrollState) scrollStates.get(dc.getHttpRequest().getSession().getId() + "." + dc.getTransactionId());
+        HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) scrollStates.get(dc.getHttpRequest().getSession().getId() + "." + dc.getTransactionId());
+
+        // since set the data source to auto close after a period of time, make sure the data source didn't close itself
+        if(state != null && ! state.isClosed())
+            return state;
+        else
+            return null;
     }
 
     public HtmlTabularReportDataSourceScrollState getActiveScrollState(HttpServletValueContext vc)
     {
-        return (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + ATTRNAME_ACTIVE_SCROLL_STATE);
+        HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + ATTRNAME_ACTIVE_SCROLL_STATE);
+
+        // since set the data source to auto close after a period of time, make sure the data source didn't close itself
+        if(state != null && ! state.isClosed())
+            return state;
+        else
+            return null;
     }
 
     public void setActiveScrollState(DialogContext dc, TabularReportDataSourceScrollState state)
     {
+        state.getDataSource().setAutoClose(timeoutDuration);
+
         final String sessionId = dc.getHttpRequest().getSession().getId();
         scrollStates.put(sessionId + "." + state.getIdentifier(), state);
         scrollStates.put(sessionId + "." + ATTRNAME_ACTIVE_SCROLL_STATE, state);
@@ -184,7 +151,7 @@ public class HtmlTabularReportDataSourceMapScrollStates implements HtmlTabularRe
             removeActiveState(vc, state);
     }
 
-    public int timouteAll()
+    public int closeAll()
     {
         Set statesRetired = new HashSet();
 
@@ -196,7 +163,7 @@ public class HtmlTabularReportDataSourceMapScrollStates implements HtmlTabularRe
             if(! statesRetired.contains(state))
             {
                 statesRetired.add(state);
-                state.timeOut();
+                state.close();
             }
         }
 

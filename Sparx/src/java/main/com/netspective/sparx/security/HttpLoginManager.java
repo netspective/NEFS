@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.15 2003-09-14 05:36:23 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.16 2003-09-14 17:04:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -56,7 +56,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceSessionScrollStates;
 import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.DialogValidationContext;
 import com.netspective.sparx.form.Dialog;
