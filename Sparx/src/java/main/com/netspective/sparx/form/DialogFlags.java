@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.10 2003-11-11 19:43:30 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.11 2003-11-13 17:15:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -80,8 +80,12 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final int HIDE_HINTS_UNTIL_FOCUS = DISABLE_CLIENT_KEYPRESS_FILTERS * 2;
     // save the initial state of the dialog
     public static final int RETAIN_INITIAL_STATE = HIDE_HINTS_UNTIL_FOCUS * 2;
-    // automatically bind fields to database columns
-    public static final int CUSTOM_START = RETAIN_INITIAL_STATE * 2;
+    // disable the auto-execution capability for this dialog (force input always)
+    public static final int DISABLE_AUTO_EXECUTE = RETAIN_INITIAL_STATE * 2;
+    // allow the dialog to execute multiple times (using back button)
+    public static final int ALLOW_MULTIPLE_EXECUTES = DISABLE_AUTO_EXECUTE * 2;
+    // custom start
+    public static final int CUSTOM_START = ALLOW_MULTIPLE_EXECUTES * 2;
 
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
@@ -96,7 +100,9 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE", SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_CLIENT_KEYPRESS_FILTERS", DISABLE_CLIENT_KEYPRESS_FILTERS),
         new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_HINTS_UNTIL_FOCUS", HIDE_HINTS_UNTIL_FOCUS),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "RETAIN_INITIAL_STATE", RETAIN_INITIAL_STATE),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "DISABLE_AUTO_EXECUTE", DISABLE_AUTO_EXECUTE),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES)
     };
 
     public DialogFlags()
