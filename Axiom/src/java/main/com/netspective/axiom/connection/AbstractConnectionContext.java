@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.5 2003-03-20 15:05:07 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.6 2003-03-24 13:24:55 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -69,9 +69,11 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     private DatabasePolicy dbPolicy;
     private String dataSourceId;
     private Connection connection;
+    private long creationTime;
 
     public AbstractConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc)
     {
+        this.creationTime = System.currentTimeMillis();
         this.dataSourceId = dataSourceId;
         this.dbvc = dbvc;
     }
@@ -142,6 +144,11 @@ public abstract class AbstractConnectionContext implements ConnectionContext
      delegate all other calls to the parent value context
      --------------------------------------------------------------*/
 
+    public long getCreationTime()
+    {
+        return creationTime;
+    }
+
     public AccessControlListsManager getAccessControlListsManager()
     {
         return dbvc.getAccessControlListsManager();
@@ -182,14 +189,24 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         return dbvc.getContextLocation();
     }
 
-    public boolean inMaintenanceMode()
+    public boolean isInMaintenanceMode()
     {
-        return dbvc.inMaintenanceMode();
+        return dbvc.isInMaintenanceMode();
     }
 
-    public boolean withinACE()
+    public void setMaintenanceMode(boolean maintenance)
     {
-        return dbvc.withinACE();
+        dbvc.setMaintenanceMode(maintenance);
+    }
+
+    public boolean isInConsoleMode()
+    {
+        return dbvc.isInConsoleMode();
+    }
+
+    public void setConsoleMode(boolean consoleMode)
+    {
+        dbvc.setConsoleMode(consoleMode);
     }
 
     public boolean isAntBuildEnvironment()
