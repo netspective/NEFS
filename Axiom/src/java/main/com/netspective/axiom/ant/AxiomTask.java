@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.5 2003-07-08 02:29:16 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.6 2003-07-09 02:10:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -223,20 +223,31 @@ public class AxiomTask extends XdmComponentTask
 
     public void getDefaultSchemaName(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(sqlManager);
-        String propertyName = getProperty();
-        project.setProperty(propertyName != null ? propertyName : "sparx.default.schema.name", schema.getName());
+        Schema schema = getSchema(sqlManager, false);
+        if(schema != null)
+        {
+            String propertyName = getProperty();
+            project.setProperty(propertyName != null ? propertyName : "sparx.default.schema.name", schema.getName());
+        }
     }
 
-    public Schema getSchema(SqlManager sqlManager) throws BuildException
+    public Schema getSchema(SqlManager sqlManager, boolean throwExceptionIfNotFound) throws BuildException
     {
+        // no schema provided, use the "default"
         if(schemaName == null)
         {
             //if no schema name provided, just use the first one unless there are multiple schemas available
             if(sqlManager.getSchemas().size() > 1)
-                throw new BuildException("No schema attribute provide for source of DDL. Available: " + sqlManager.getSchemas().getNames());
-            else
+                throw new BuildException("No schema attribute provided. Available: " + sqlManager.getSchemas().getNames());
+            else if(sqlManager.getSchemas().size() == 1)
                 return sqlManager.getSchemas().get(0);
+            else
+            {
+                if(throwExceptionIfNotFound)
+                    throw new BuildException("No schemas available.");
+                else
+                    return null;
+            }
         }
 
         Schema schema = sqlManager.getSchema(schemaName);
@@ -298,7 +309,7 @@ public class AxiomTask extends XdmComponentTask
     public void generateImportDtd(SqlManager sqlManager) throws BuildException
     {
         dtdFile.getParentFile().mkdirs();
-        Schema schema = getSchema(sqlManager);
+        Schema schema = getSchema(sqlManager, true);
         try
         {
             new DataImportDtd().generate(schema, dtdFile);
@@ -312,7 +323,7 @@ public class AxiomTask extends XdmComponentTask
 
     public void importData(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(sqlManager);
+        Schema schema = getSchema(sqlManager, true);
 
         final String dataSourceId = AxiomTask.class.getName();
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
@@ -386,7 +397,7 @@ public class AxiomTask extends XdmComponentTask
 
     public void generateGraphVizErd(SqlManager sqlManager) throws BuildException
     {
-        Schema schema = getSchema(sqlManager);
+        Schema schema = getSchema(sqlManager, true);
         try
         {
             FileWriter file = new FileWriter(graphVizErdFile);
@@ -398,7 +409,7 @@ public class AxiomTask extends XdmComponentTask
         {
             throw new BuildException(e);
         }
-        log("Created GraphViz digraph " + graphVizErdFile);
+        log("Created GraphViz digraph " + graphVizErdFile + " for schema '"+ schema.getName() +"'.");
     }
 
     /* ----- reverse-engineer specific attributes and methods -------------------------------------------------------*/
@@ -485,7 +496,7 @@ public class AxiomTask extends XdmComponentTask
         if(policies.length == 0)
             throw new BuildException("Can not generate DDL -- no policies matched '"+ dbPolicyIdMatchRegEx +"'.");
 
-        Schema schema = getSchema(sqlManager);
+        Schema schema = getSchema(sqlManager, true);
         for(int i = 0; i < policies.length; i++)
         {
             DatabasePolicy policy = policies[i];
@@ -528,7 +539,7 @@ public class AxiomTask extends XdmComponentTask
             throw new BuildException("No destDir attribute provided for destination of DAL files.");
         getDestDir().mkdirs();
 
-        Schema schema = getSchema(sqlManager);
+        Schema schema = getSchema(sqlManager, true);
         try
         {
             schema.generateDataAccessLayer(getDestDir(), dalRootPackage, dalClassNameWithoutPackage);
@@ -537,7 +548,7 @@ public class AxiomTask extends XdmComponentTask
         {
             throw new BuildException(e);
         }
-        log("Created DAL package '"+ dalRootPackage +"' for schema '"+ schema.getName() +"' in " + getDestDir());
+        log("Created DAL package '"+ dalRootPackage +"' for schema '"+ schema.getName() +"' in " + getDestDir() + ".");
     }
 
     /* ----- Utility methods ----------------------------------------------------------------------------------------*/
