@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.19 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.20 2003-09-02 06:24:51 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -205,6 +205,11 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
                 scrollState.setPageFirst();
             }
             vc.produceReport(writer, scrollState.getDataSource());
+            // if there is only one page, then no need to keep the scroll state around
+            if (scrollState.getTotalPages() == 1)
+            {
+                scrollStates.removeActiveState(vc, scrollState);
+            }
         }
         else
         {
