@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: Project.java,v 1.3 2003-06-30 02:34:45 shahid.shah Exp $
+ * $Id: Project.java,v 1.4 2003-06-30 15:34:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.SAXException;
 
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
@@ -71,8 +72,13 @@ import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
+import com.netspective.sparx.schema.PresentationSchema;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateContentHandler;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -82,7 +88,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
  * SQL statement, schema, and other components, all users (requests) of the Servlet reuse the same instances.
  */
 
-public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager
+public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener
 {
     private static final Log log = LogFactory.getLog(Project.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
@@ -133,6 +139,22 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------ */
 
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
+    {
+        // schemas generated dynamic templates so lets "run" them now before we're done with the rest of the project
+        TemplateContentHandler handler = (TemplateContentHandler) pc.getParser().getContentHandler();
+        try
+        {
+            handler.executeDynamicTemplates();
+        }
+        catch (SAXException e)
+        {
+            throw new DataModelException(pc, e);
+        }
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
     public DialogFieldConditionalActionTemplate getConditionalActions()
     {
         return CONDITIONAL_ACTIONS;
@@ -159,6 +181,13 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public com.netspective.axiom.sql.Query createQuery()
     {
         return new com.netspective.sparx.sql.Query();
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public Schema createSchema()
+    {
+        return new PresentationSchema();
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

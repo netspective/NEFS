@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: AbstractTemplateProcessor.java,v 1.1 2003-04-29 02:27:41 shahid.shah Exp $
+ * $Id: AbstractTemplateProcessor.java,v 1.2 2003-06-30 15:34:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
 
 public abstract class AbstractTemplateProcessor implements TemplateProcessor, XmlDataModelSchema.ConstructionFinalizeListener
@@ -73,7 +74,7 @@ public abstract class AbstractTemplateProcessor implements TemplateProcessor, Xm
         templateContent.append(text);
     }
 
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.10 2003-06-14 22:16:21 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.11 2003-06-30 15:34:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -60,6 +60,7 @@ import com.netspective.sparx.template.AbstractTemplateProcessor;
 import com.netspective.sparx.template.TemplateProcessorException;
 import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 
@@ -100,9 +101,9 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
         this.source = source;
     }
 
-    public void finalizeConstruction() throws DataModelException
+    public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
-        super.finalizeConstruction();
+        super.finalizeConstruction(pc, element, elementName);
         if(source == null)
             FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader().addTemplate(Integer.toString(this.hashCode()), getTemplateContent());
     }
