@@ -38,6 +38,7 @@
                 <field type="text" name="${column.name}" caption="Time Zone" size="8" hint="descr"/>
             </presentation>
         </column>
+        <column name="org_notes" type="text" size="512" descr="General notes about this org (used for human readable notes only)"/>
     </table>
     <table name="Org_Address" abbrev="OrgAdr" type="Physical_Address" xdm:param-parentRef="Org.org_id">
         <!-- presentation>
