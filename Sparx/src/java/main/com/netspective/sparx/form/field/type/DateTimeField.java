@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.14 2003-10-15 22:13:59 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.15 2003-11-02 17:31:16 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -110,18 +110,9 @@ public class DateTimeField extends TextField
             super(POPUP_CALENDAR);
         }
 
-        public Flags(State dfs)
-        {
-            super(dfs, POPUP_CALENDAR);
-        }
-
-        public Flags(DateTimeField dtf)
-        {
-            super(dtf, POPUP_CALENDAR);
-        }
-
         public void flagsChanged()
         {
+            super.flagsChanged();
             if (getField() != null)
             {
                 DateValueValidationRule dateValidationRule = ((DateTimeField)getField()).getDateValidationRule();
@@ -144,10 +135,11 @@ public class DateTimeField extends TextField
         public static final int DATE_ONLY = 0;
         public static final int TIME_ONLY = 1;
         public static final int BOTH = 2;
+        public static final int MONTH_YEAR_ONLY = 3;
 
-        public static final String[] VALUES = new String[] { "date-only", "time-only", "date-and-time" };
-        public static final String[] SERVER_FORMATS = new String[] { "MM/dd/yyyy", "HH:mm", "MM/dd/yyyy HH:mm" };
-        public static final String[] CLIENT_FORMATS = new String[] { "mm/dd/yy", "mm/dd/yy", "mm/dd/yy" };
+        public static final String[] VALUES = new String[] { "date-only", "time-only", "date-and-time", "month-and-year-only" };
+        public static final String[] SERVER_FORMATS = new String[] { "MM/dd/yyyy", "HH:mm", "MM/dd/yyyy HH:mm", "MM/yyyy" };
+        public static final String[] CLIENT_FORMATS = new String[] { "%m/%d/%Y", "%H:%M", "%m/%d/%Y %H:%M", "%m/%Y" };
 
         public DataType()
         {
