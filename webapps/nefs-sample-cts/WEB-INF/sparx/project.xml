@@ -106,7 +106,7 @@
         nav tree will be changed based on the logged in User type.
     -->
     <navigation-tree name="default" default="yes">
-        <page name="home" caption="Home" title="Home" heading="Home"/>
+        <page name="home" caption="Home" title="Home" heading="Home" default="yes"/>
     </navigation-tree>
 
     <!-- This is the navigation tree for subjects associated with the clinical trial -->
