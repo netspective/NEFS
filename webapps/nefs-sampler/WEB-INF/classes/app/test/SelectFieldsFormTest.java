@@ -51,7 +51,7 @@
  */
 
 /**
- * @version $Id: SelectFieldsFormTest.java,v 1.3 2004-01-04 04:40:27 aye.thu Exp $
+ * @version $Id: SelectFieldsFormTest.java,v 1.4 2004-06-21 11:31:37 shahid.shah Exp $
  */
 package app.test;
 
@@ -106,15 +106,17 @@ public class SelectFieldsFormTest extends FormInputTest
         assertEquals("sel_field_multilist ", fieldStates[6][0]);
         assertEquals("sel_field_multicheck ", fieldStates[7][0]);
         assertEquals("sel_field_multidual ", fieldStates[8][0]);
+        assertEquals("sel_field_dynamic ", fieldStates[10][0]);
 
         // verify the fourth column to make sure all the values were submitted
         assertEquals("A'S ", fieldStates[2][4]);
         assertEquals("A ", fieldStates[3][4]);
         assertEquals("B ", fieldStates[4][4]);
         assertEquals("B ", fieldStates[5][4]);
-        assertEquals("A ", fieldStates[6][4]);
-        assertEquals("A ", fieldStates[7][4]);
-        assertEquals("A ", fieldStates[8][4]);
+        assertEquals("[A, B] ", fieldStates[6][4]);
+        assertEquals("[A, C] ", fieldStates[7][4]);
+        assertEquals("[A] ", fieldStates[8][4]);
+        assertEquals("D1 ", fieldStates[10][4]);
 
     }
 }
