@@ -162,6 +162,16 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
                                  ? theme.getDefaultReportSkin() : theme.getReportSkin(reportSkin));
     }
 
+    public void renderBeforeReport(Writer writer, NavigationContext nc, Theme theme, TabularReportDataSource ds) throws IOException
+    {
+
+    }
+
+    public void renderAfterReport(Writer writer, NavigationContext nc, Theme theme, TabularReportDataSource ds) throws IOException
+    {
+
+    }
+
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         HtmlTabularReportValueContext vc = createContext(nc, (reportSkin == null || theme.getReportSkin(reportSkin) == null)
@@ -169,7 +179,9 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
                                                              : theme.getReportSkin(reportSkin));
         vc.setPanelRenderFlags(flags);
         TabularReportDataSource ds = createDataSource(nc);
+        renderBeforeReport(writer, nc, theme, ds);
         vc.produceReport(writer, ds);
+        renderAfterReport(writer, nc, theme, ds);
         ds.close();
     }
 

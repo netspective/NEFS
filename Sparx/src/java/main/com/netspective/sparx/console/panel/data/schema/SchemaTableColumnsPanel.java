@@ -123,7 +123,7 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
     public void renderBeforeReport(Writer writer, NavigationContext nc, Theme theme, TabularReportDataSource ds) throws IOException
     {
         Table table = (Table) nc.getAttribute(ATTRID_ACTIVE_TABLE);
-        if(table != null)
+        if(table != null && table.getDescription() != null)
             writer.write("<div class='textbox'>" + table.getDescription() + "</div>");
     }
 
