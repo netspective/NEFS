@@ -51,15 +51,13 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.7 2003-07-02 14:07:04 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.8 2003-08-06 04:48:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.IOException;
 import java.io.Writer;
-
-import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.LogFactory;
@@ -77,6 +75,7 @@ import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.field.type.BooleanField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
+import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
@@ -194,6 +193,19 @@ public class QueryBuilderDialog extends Dialog
     public DialogFlags createDialogFlags()
     {
         return new QueryBuilderDialogFlags();
+    }
+
+    /**
+     *  Creates the selected item field. By default, the field is hidden.
+     */
+    public void addSelectedItemsField()
+    {
+        ReportSelectedItemsField selectedItemsField = new ReportSelectedItemsField();
+        selectedItemsField.setName("selected_item_list");
+        selectedItemsField.setSize(5);
+        selectedItemsField.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        selectedItemsField.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        addField(selectedItemsField);
     }
 
     public void addInputFields()
@@ -322,6 +334,7 @@ public class QueryBuilderDialog extends Dialog
         addResultsSepatorField();
         addOutputDestinationFields();
         addDisplayOptionsFields();
+        addSelectedItemsField();
         addField(new DataSourceNavigatorButtonsField());
     }
 
@@ -390,6 +403,7 @@ public class QueryBuilderDialog extends Dialog
                 // this will also set the flags of all children fields
                 states.getState("condition_" + i).getStateFlags().setFlag(flag);
             }
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
         }
         else
         {

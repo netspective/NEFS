@@ -73,7 +73,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.3 2003-07-07 03:43:39 aye.thu Exp $
+ * $Id: QuerySelectDialog.java,v 1.4 2003-08-06 04:50:28 aye.thu Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -101,8 +101,9 @@ public class QuerySelectDialog extends QueryBuilderDialog
         addInputFields();
         addOutputDestinationFields();
         addDisplayOptionsFields();
-        addReportSelectionField();
         addField(new DataSourceNavigatorButtonsField());
+        addSelectedItemsField();
+
     }
 
     public void addDisplayOptionsFields()
@@ -156,17 +157,6 @@ public class QuerySelectDialog extends QueryBuilderDialog
         return new QueryBuilderDialogFlags();
     }
 
-    /**
-     * Add a selection field that keeps track of selected rows of the report
-     */
-    public void addReportSelectionField()
-    {
-        ReportSelectedItemsField selectedItemsField = new ReportSelectedItemsField();
-        selectedItemsField.setName("selected_item_list");
-        selectedItemsField.setSize(5);
-        selectedItemsField.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
-        addField(selectedItemsField);
-    }
 
     public void makeStateChanges(DialogContext dc, int stage)
     {
@@ -196,10 +186,12 @@ public class QuerySelectDialog extends QueryBuilderDialog
 
             fieldStates.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.READ_ONLY);
             fieldStates.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
         }
         else
         {
+            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
             if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
                 fieldStates.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             fieldStates.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
