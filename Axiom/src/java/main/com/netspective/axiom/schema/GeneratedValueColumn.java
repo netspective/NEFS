@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GeneratedValueColumn.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: GeneratedValueColumn.java,v 1.2 2003-12-03 01:40:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -51,7 +51,8 @@ import com.netspective.axiom.ConnectionContext;
 
 public interface GeneratedValueColumn
 {
-    public boolean retainValueInDml(ConnectionContext cc) throws NamingException, SQLException;
+    public boolean retainValueInInsertDml(ConnectionContext cc) throws NamingException, SQLException;
+    public boolean retainValueInUpdateDml(ConnectionContext cc) throws NamingException, SQLException;
     public Object handlePreDmlExecute(ConnectionContext cc) throws NamingException, SQLException;
     public Object handlePostDmlExecute(ConnectionContext cc, Object valueFromPreDmlExecute) throws NamingException, SQLException;
 }

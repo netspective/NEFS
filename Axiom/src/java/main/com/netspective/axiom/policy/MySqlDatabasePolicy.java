@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MySqlDatabasePolicy.java,v 1.1 2003-03-13 18:25:39 shahid.shah Exp $
+ * $Id: MySqlDatabasePolicy.java,v 1.2 2003-12-03 01:40:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -65,6 +65,11 @@ public class MySqlDatabasePolicy extends AnsiDatabasePolicy
     }
 
     public boolean retainAutoIncColInInsertDml()
+    {
+        return false;
+    }
+
+    public boolean retainAutoIncColInUpdateDml()
     {
         return false;
     }

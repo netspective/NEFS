@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AutoIncColumn.java,v 1.2 2003-07-19 00:37:47 shahid.shah Exp $
+ * $Id: AutoIncColumn.java,v 1.3 2003-12-03 01:40:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -60,9 +60,14 @@ public class AutoIncColumn extends LongIntegerColumn implements GeneratedValueCo
         setAllowAddToTable(true);
     }
 
-    public boolean retainValueInDml(ConnectionContext cc) throws NamingException, SQLException
+    public boolean retainValueInInsertDml(ConnectionContext cc) throws NamingException, SQLException
     {
         return cc.getDatabasePolicy().retainAutoIncColInInsertDml();
+    }
+
+    public boolean retainValueInUpdateDml(ConnectionContext cc) throws NamingException, SQLException
+    {
+        return cc.getDatabasePolicy().retainAutoIncColInUpdateDml();
     }
 
     public Object handlePreDmlExecute(ConnectionContext cc) throws NamingException, SQLException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlServerDatabasePolicy.java,v 1.3 2003-11-22 01:44:29 shahid.shah Exp $
+ * $Id: SqlServerDatabasePolicy.java,v 1.4 2003-12-03 01:40:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -82,6 +82,11 @@ public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
     }
 
     public boolean retainAutoIncColInInsertDml()
+    {
+        return false;
+    }
+
+    public boolean retainAutoIncColInUpdateDml()
     {
         return false;
     }

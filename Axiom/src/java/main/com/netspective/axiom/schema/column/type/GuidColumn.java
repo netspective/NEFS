@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GuidColumn.java,v 1.2 2003-07-19 00:37:30 shahid.shah Exp $
+ * $Id: GuidColumn.java,v 1.3 2003-12-03 01:40:29 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -59,9 +59,14 @@ public class GuidColumn extends GuidTextColumn implements GeneratedValueColumn
         setAllowAddToTable(true);
     }
 
-    public boolean retainValueInDml(ConnectionContext cc) throws NamingException, SQLException
+    public boolean retainValueInInsertDml(ConnectionContext cc) throws NamingException, SQLException
     {
         return cc.getDatabasePolicy().retainGUIDColInInsertDml();
+    }
+
+    public boolean retainValueInUpdateDml(ConnectionContext cc) throws NamingException, SQLException
+    {
+        return cc.getDatabasePolicy().retainGUIDColInUpdateDml();
     }
 
     public Object handlePreDmlExecute(ConnectionContext cc) throws NamingException, SQLException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.10 2003-11-22 04:52:20 roque.hernandez Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.11 2003-12-03 01:40:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -336,6 +336,11 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         return true;
     }
 
+    public boolean retainAutoIncColInUpdateDml()
+    {
+        return true;
+    }
+
     public Object handleGUIDPreDmlInsertExecute(ConnectionContext cc, GuidColumn column) throws SQLException
     {
         try
@@ -358,6 +363,11 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     }
 
     public boolean retainGUIDColInInsertDml()
+    {
+        return true;
+    }
+
+    public boolean retainGUIDColInUpdateDml()
     {
         return true;
     }
@@ -754,7 +764,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 generators[i] = generator;
                 haveGenerators = true;
 
-                if(! generator.retainValueInDml(cc)) continue;
+                if(! generator.retainValueInInsertDml(cc)) continue;
                 bindValue = generator.handlePreDmlExecute(cc);
             }
 
@@ -840,12 +850,19 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         Object[] bindValues = new Object[columnsCount];
         ColumnUpdateListener[] colListeners = new ColumnUpdateListener[columnsCount];
         boolean haveColListeners = false;
+        boolean isFirstColumn = true;
 
         for (int i = 0; i < columnsCount; i++)
         {
             ColumnValue value = columnValues.getByColumnIndex(i);
             Column column = value.getColumn();
             Object bindValue = value.getValueForSqlBindParam();
+
+            if(execute && (column instanceof GeneratedValueColumn))
+            {
+                GeneratedValueColumn generator = (GeneratedValueColumn) column;
+                if(! generator.retainValueInUpdateDml(cc)) continue;
+            }
 
             if(execute && (column instanceof ColumnUpdateListener))
             {
@@ -854,9 +871,10 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 haveColListeners = true;
             }
 
-            if (i != 0)
+            if (! isFirstColumn)
                 setsSql.append(", ");
 
+            isFirstColumn = false;
             setsSql.append(column.getName());
             setsSql.append(" = ");
 

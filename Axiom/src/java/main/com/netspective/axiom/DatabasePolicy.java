@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicy.java,v 1.2 2003-11-22 04:52:20 roque.hernandez Exp $
+ * $Id: DatabasePolicy.java,v 1.3 2003-12-03 01:40:28 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -123,10 +123,17 @@ public interface DatabasePolicy
 
     /**
      * Returns a boolean value whether to retain autoinc columns in any
-     * insert or update DMLs.  Required because SQL Server does not allow
+     * insert DMLs.  Required because SQL Server does not allow
      * including the column in either case, generating an exception if it is
      */
     public boolean retainAutoIncColInInsertDml();
+
+    /**
+     * Returns a boolean value whether to retain autoinc columns in any
+     * update DMLs.  Required because SQL Server does not allow
+     * including the column in either case, generating an exception if it is
+     */
+    public boolean retainAutoIncColInUpdateDml();
 
     /**
      * When a globally unique ID (GUID) is needed in a SQL insert, this method is called before the execution of the insert
@@ -153,9 +160,15 @@ public interface DatabasePolicy
 
     /**
      * Returns a boolean value whether to retain GUIDs in any
-     * insert or update DMLs.
+     * insert DMLs.
      */
     public boolean retainGUIDColInInsertDml();
+
+    /**
+     * Returns a boolean value whether to retain GUIDs in any
+     * update DMLs.
+     */
+    public boolean retainGUIDColInUpdateDml();
 
     /**
      * Reverse engineer the catalog from the given connection into a valid XML file that may be processed by Axiom.
