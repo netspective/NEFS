@@ -3,11 +3,47 @@
 <netspective>
     <release>
         <product name="Sparx" version="7.1.0"/>
+        <product name="Axiom" version="7.1.0"/>
+        <product name="Commons" version="7.1.0"/>
         <change-log>
             <summary>Major and minor enhancements</summary>
             <change-log-entry>
                 <![CDATA[
-                Created a new component called <b>panel editor</b> which contains children elements that are
+                Added new <i>starts-with-ignore-case</i> and <i>ends-with-ignore-case</i> SQL comparisons.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added new validation, <code>TimeZoneValidationRule</code>, for timezones using the TimeZone class. Also added
+                validation class called <code>InternetHostnameValidationRule</code> for validating internet hostnames and IPs.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added capability for DAL import XML files to import CSV delimited text entries. Introduced two new 'dal:csv'
+                and 'dal:csv-file' attributes that perform the action. For example, in the 'initial-and-test-data.xml' you can now do the following:
+                <pre>
+                  <dal xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer">
+                      <book-info dal:csv="test-cvs-01,CSV Book 01,&quot;Shah, Shahid N.&quot;,Mystery,ISBNCSV01"/>
+                      <book-info dal:csv-file="c:\X\Y\initial-and-test-data.csv"/>
+                  </dal>
+                 </pre>
+                The first version (dal:csv) supports a single line of CSV. The second points to a file. In either version, all
+                columns must be provided in the order they were defined in the Schema XML.  Be sure to add the
+                xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer" namespace in the <dal> tag and
+                replace the table name.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added new flag called <i>hidden-unless-active</i> that works just like the hidden flag which keeps a page from
+                being clicked by a user. However, this one is different in that once a page is active then the menu item will
+                appear and be clickable. 
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Created a new GUI component called <b>panel editor</b> which contains children elements that are
                 comprised of a <i>content</i> and a <i>dialog</i>  for editing the <i>content</i>.  The dialog is for
                 adding, editing, and deleting information related to the <i>content</i> of the panel editor child element.
                 Currently, the panel editor supports <b>report</b> type children elements whose <i>content</i> is a report.
@@ -38,11 +74,13 @@
                 ]]>
             </change-log-entry>
             <change-log-entry>
+                <![CDATA[
                 Added a new field type called <b>Section</b> which is similar to the Composite field. The new field allows
                 grouping of fields based on how you want to lay them out in the dialog. The main idea behind this field is
                 to allow different layouts within the dialog without having to extend from existing field classes. Currently, this
                 field is NOT SUPPORTED in the default dialog skin. A new skin named <i>modern</i> will be introduced
                 later on that will support this new field type.
+                ]]>
             </change-log-entry>
             <change-log-entry>
                 <![CDATA[
