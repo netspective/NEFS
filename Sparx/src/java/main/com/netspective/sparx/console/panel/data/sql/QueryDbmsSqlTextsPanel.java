@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDbmsSqlTextsPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: QueryDbmsSqlTextsPanel.java,v 1.2 2003-05-06 14:52:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.sql;
@@ -61,7 +61,6 @@ import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
-import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDetailPanel;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.commons.report.tabular.TabularReportDataSource;

@@ -39,34 +39,27 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.presentation;
+package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import java.util.TreeSet;
-import java.util.Set;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
-import com.netspective.sparx.form.Dialogs;
-import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
 import com.netspective.sparx.ApplicationManager;
+import com.netspective.sparx.form.DialogFlags;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.TextUtils;
 
-public class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
+public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
 {
     public static final HtmlTabularReport catalogReport = new BasicHtmlTabularReport();
     private static final TabularReportColumn dialogIdColumn = new GeneralColumn();
@@ -74,7 +67,7 @@ public class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
     static
     {
         dialogIdColumn.setHeading(new StaticValueSource("Dialog"));
-        dialogIdColumn.setCommand("redirect,detail?"+ QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY +"=%{1}");
+        dialogIdColumn.setCommand("redirect,detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}");
         catalogReport.addColumn(dialogIdColumn);
 
         // this is here just so that it will be available as part of the URL (it's hidden)
@@ -83,19 +76,43 @@ public class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
         column.getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
         catalogReport.addColumn(column);
 
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("HTML Form Name"));
+        catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Heading"));
+        catalogReport.addColumn(column);
+
         column = new NumericColumn();
         column.setHeading(new StaticValueSource("Fields"));
         catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Loop"));
+        catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Retain Params"));
+        catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Dialog Flags"));
+        catalogReport.addColumn(column);
+
+        column = new GeneralColumn();
+        column.setHeading(new StaticValueSource("Debug Flags"));
+        catalogReport.addColumn(column);
     }
 
-    public DialogsCatalogPanel()
+    public DialogsCatalogOverviewPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Available Dialogs"));
+        getFrame().setHeading(new StaticValueSource("Overview"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        return new CatalogDataSource(vc, nc.getApplicationManager(), nc.getHttpRequest().getParameter(QueryDbmsSqlTextsPanel.REQPARAMNAME_QUERY));
+        return new CatalogDataSource(vc, nc.getApplicationManager(), nc.getHttpRequest().getParameter(DialogDetailPanel.REQPARAMNAME_DIALOG));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
@@ -103,128 +120,46 @@ public class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
         return catalogReport;
     }
 
-    public class CatalogDataSource extends AbstractHtmlTabularReportDataSource
+    public class CatalogDataSource extends DialogsCatalogDataSource
     {
-        private Dialogs dialogs;
-        private Dialog activeRowDialog;
-        private String selectedDialogName;
-        private String activeNameSpace;
-        private List rows = new ArrayList();
-        private int activeRow = -1;
-        private int lastRow;
-        private TabularReportDataSource.Hierarchy hierarchy = new ActiveHierarchy();
-
-        protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
+        public CatalogDataSource(HtmlTabularReportValueContext vc, ApplicationManager appManager, String selectedDialogName)
         {
-            public int getColumn()
-            {
-                return 0;
-            }
-
-            public int getLevel()
-            {
-                return activeRowDialog != null ? 1 : 0;
-            }
-
-            public int getParentRow()
-            {
-                return -1; //TODO: need to implement this
-            }
-        }
-
-        public CatalogDataSource(HtmlTabularReportValueContext vc, ApplicationManager appManager, String selectedQueryName)
-        {
-            super(vc);
-            dialogs = appManager.getDialogs();
-            this.selectedDialogName = selectedQueryName;
-
-            //TODO: this does not account for queries that are not contained within a namespace
-            Set sortedNamesSpaces = new TreeSet(dialogs.getNameSpaceNames());
-            for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext(); )
-            {
-                String nameSpaceId = (String) nsi.next();
-                Set sortedDialogNamesInNameSpace = new TreeSet();
-
-                for(int i = 0; i < dialogs.size(); i++)
-                {
-                    Dialog dialog = dialogs.get(i);
-                    if(nameSpaceId.equals(dialog.getNameSpace().getNameSpaceId()))
-                    {
-                        sortedDialogNamesInNameSpace.add(dialog.getQualifiedName());
-                    }
-                }
-
-                rows.add(nameSpaceId);
-                rows.addAll(sortedDialogNamesInNameSpace);
-            }
-
-            lastRow = rows.size() - 1;
-        }
-
-        public boolean isHierarchical()
-        {
-            return true;
-        }
-
-        public boolean isActiveRowSelected()
-        {
-            if(activeRowDialog == null)
-                return false;
-
-            return activeRowDialog.getQualifiedName().equals(selectedDialogName);
-        }
-
-        public TabularReportDataSource.Hierarchy getActiveHierarchy()
-        {
-            return hierarchy;
-        }
-
-        public int getActiveRowNumber()
-        {
-            return activeRow;
-        }
-
-        public boolean next()
-        {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                String itemName = (String) rows.get(activeRow);
-                activeRowDialog = dialogs.get(itemName);
-                if(activeRowDialog == null)
-                    activeNameSpace = itemName;
-                else
-                    activeNameSpace = null;
-                return true;
-            }
-
-            return false;
+            super(vc, appManager, selectedDialogName);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
             if(activeNameSpace != null)
-            {
-                switch(columnIndex)
-                {
-                    case 0:
-                        return activeNameSpace;
-
-                    default:
-                        return null;
-                }
-            }
+                return super.getActiveRowColumnData(columnIndex, flags);
 
             switch(columnIndex)
             {
                 case 0:
-                    return reportValueContext.getSkin().constructRedirect(reportValueContext, dialogIdColumn.getCommand(), activeRowDialog.getName(), activeRowDialog.getQualifiedName(), null);
-
                 case 1:
-                    return activeRowDialog.getQualifiedName();
-
                 case 2:
-                    return activeRowDialog.getFields() != null ? new Integer(activeRowDialog.getFields().size()) : null;
+                    return super.getActiveRowColumnData(columnIndex, flags);
+
+                case 3:
+                    return activeRowDialog.getHeading() != null && activeRowDialog.getHeading() != ValueSource.NULL_VALUE_SOURCE ?
+                            activeRowDialog.getHeading().getSpecification() :
+                            null;
+
+                case 4:
+                    return activeRowDialog.getFields() != null ? new Integer(activeRowDialog.getFields().totalSize()) : null;
+
+                case 5:
+                    return activeRowDialog.getLoop().getValue();
+
+                case 6:
+                    return activeRowDialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_ALL_REQUEST_PARAMS) ?
+                            "ALL" :
+                            (activeRowDialog.getRetainParams() != null ? TextUtils.join(activeRowDialog.getRetainParams(), ", ") : null);
+
+                case 7:
+                    return activeRowDialog.getDialogFlags().getFlagsText();
+
+                case 8:
+                    return activeRowDialog.getDebugFlags().getFlagsText();
 
                 default:
                     return null;

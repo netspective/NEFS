@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -137,7 +137,7 @@ public class Dialog
     private DialogFlags dialogFlags;
     private DialogDebugFlags debugFlags;
     private DialogLoopStyle loop = new DialogLoopStyle(DialogLoopStyle.APPEND);
-    private DialogDirector director;
+    private DialogDirector director = createDirector();
     private DialogsPackage nameSpace;
     private String name;
     private String htmlFormName;
@@ -145,7 +145,6 @@ public class Dialog
     private int layoutColumnsCount = 1;
     private String[] retainRequestParams;
     private Class dcClass = DialogContext.class;
-    private Class directorClass = DialogDirector.class;
     private ValueSource includeJSFile = null;
 
     /**
@@ -301,16 +300,6 @@ public class Dialog
         this.dcClass = dcClass;
     }
 
-    public Class getDirectorClass()
-    {
-        return directorClass;
-    }
-
-    public void setDirectorClass(Class directorClass)
-    {
-        this.directorClass = directorClass;
-    }
-
     public int getLayoutColumnsCount()
     {
         return layoutColumnsCount;
@@ -431,14 +420,14 @@ public class Dialog
         return director;
     }
 
-    public void setDirector(DialogDirector value)
+    public DialogDirector createDirector()
     {
-        director = value;
+        return new DialogDirector(this);
     }
 
-    public void setDialogDirectorClass(Class cls)
+    public void addDirector(DialogDirector value)
     {
-        directorClass = cls;
+        director = value;
     }
 
     public ValueSource getIncludeJSFile()

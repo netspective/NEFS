@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.26 2003-05-05 21:25:30 shahid.shah Exp $
+  * $Id: console.xml,v 1.27 2003-05-06 14:52:13 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -92,10 +92,19 @@
                 <page name="catalog" caption="Catalog"/>
                 <page name="test" caption="Unit Test"/>
 	        </page>
-	        <page name="dialog" caption="Dialogs">
+	        <page name="dialog" caption="Dialogs" retain-params="selected-dialog-id">
 				<page name="catalog" caption="Catalog">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.presentation.DialogsCatalogPanel"/>
+                        <panels style="tabbed">
+                            <frame heading="Available Dialogs"/>
+                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogsCatalogOverviewPanel"/>
+                            <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogsCatalogClassesPanel"/>
+                        </panels>
+                    </panels>
+                </page>
+				<page name="detail" caption="Dialog">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsPanel"/>
                     </panels>
                 </page>
 				<page name="test" caption="Unit Test"/>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -180,6 +180,17 @@ public class DialogFields
     {
         for(int i = 0; i < fields.size(); i++)
             ((DialogField) fields.get(i)).getFlags().setFlag(flags);
+    }
+
+    public int totalSize()
+    {
+        int result = 0;
+        for(int i = 0; i < fields.size(); i++)
+        {
+            DialogFields children = get(i).getChildren();
+            result += children != null ? (get(i).getChildren().totalSize() + 1) : 1;
+        }
+        return result;
     }
 
     public int size()

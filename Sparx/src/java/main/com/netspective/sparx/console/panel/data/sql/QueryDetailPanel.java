@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: QueryDetailPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
+ * $Id: QueryDetailPanel.java,v 1.1 2003-05-06 14:52:13 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data.sql.dynamic;
+package com.netspective.sparx.console.panel.data.sql;
 
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;

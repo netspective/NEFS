@@ -39,147 +39,117 @@
  */
 
 /**
- * $Id: QueryParametersPanel.java,v 1.2 2003-05-06 14:52:13 shahid.shah Exp $
+ * $Id: DialogsCatalogClassesPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data.sql;
+package com.netspective.sparx.console.panel.presentation.dialogs;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import java.util.TreeSet;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+
+import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.axiom.sql.QueryParameters;
-import com.netspective.axiom.sql.QueryParameter;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
+import com.netspective.sparx.form.Dialogs;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.ApplicationManager;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
 
-public class QueryParametersPanel extends QueryDetailPanel
+public class DialogsCatalogClassesPanel extends DialogsCatalogPanel
 {
-    public static final HtmlTabularReport queryParamsReport = new BasicHtmlTabularReport();
-    protected static final ValueSource noParams = new StaticValueSource("Query has no parameters.");
+    public static final HtmlTabularReport catalogReport = new BasicHtmlTabularReport();
+    private static final TabularReportColumn dialogIdColumn = new GeneralColumn();
 
     static
     {
+        dialogIdColumn.setHeading(new StaticValueSource("Dialog"));
+        dialogIdColumn.setCommand("redirect,detail?"+ DialogDetailPanel.REQPARAMNAME_DIALOG +"=%{1}");
+        catalogReport.addColumn(dialogIdColumn);
+
+        // this is here just so that it will be available as part of the URL (it's hidden)
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Index"));
-        queryParamsReport.addColumn(column);
-
-        column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Name"));
-        queryParamsReport.addColumn(column);
+        column.getFlags().setFlag(TabularReportColumn.Flags.HIDDEN);
+        catalogReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("JDBC Type"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("HTML Form Name"));
+        catalogReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Java Type"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Director"));
+        catalogReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Class"));
+        catalogReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source Class"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Context"));
+        catalogReport.addColumn(column);
     }
 
-    public QueryParametersPanel()
+    public DialogsCatalogClassesPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Query Parameters"));
+        getFrame().setHeading(new StaticValueSource("Classes"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(vc);
-        if(selectedQuery.getDataSource() != null)
-            return selectedQuery.getDataSource();
-        else
-            return new SqlParamsDataSource(vc, selectedQuery);
+        return new CatalogDataSource(vc, nc.getApplicationManager(), nc.getHttpRequest().getParameter(DialogDetailPanel.REQPARAMNAME_DIALOG));
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return queryParamsReport;
+        return catalogReport;
     }
 
-    public class SqlParamsDataSource extends AbstractHtmlTabularReportDataSource
+    public class CatalogDataSource extends DialogsCatalogDataSource
     {
-        private QueryParameters params;
-        private int activeRow = -1;
-        private int lastRow;
-
-        public SqlParamsDataSource(HtmlTabularReportValueContext vc, QueryDetailPanel.SelectedQuery selectedQuery)
+        public CatalogDataSource(HtmlTabularReportValueContext vc, ApplicationManager appManager, String selectedDialogName)
         {
-            super(vc);
-            params = selectedQuery.getQuery().getParams();
-            if(params != null)
-                lastRow = params.size() - 1;
-            else
-                lastRow = -1;
-        }
-
-        public int getActiveRowNumber()
-        {
-            return activeRow;
-        }
-
-        public boolean next()
-        {
-            if(activeRow < lastRow)
-            {
-                activeRow++;
-                return true;
-            }
-
-            return false;
+            super(vc, appManager, selectedDialogName);
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            QueryParameter param = params.get(activeRow);
+            if(activeNameSpace != null)
+                return super.getActiveRowColumnData(columnIndex, flags);
 
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(activeRow + 1);
-
                 case 1:
-                    return param.getName();
-
                 case 2:
-                    return new Integer(param.getSqlTypeCode());
+                    return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    return param.getJavaType();
+                    return reportValueContext.getSkin().constructClassRef(activeRowDialog.getDirector().getClass());
 
                 case 4:
-                    ValueSource vs = param.getValue();
-                    if(vs != null)
-                        return vs.getSpecification();
-                    else
-                        return null;
+                    return reportValueContext.getSkin().constructClassRef(activeRowDialog.getClass());
 
                 case 5:
-                    vs = param.getValue();
-                    if(vs != null)
-                        return reportValueContext.getSkin().constructClassRef(vs.getClass());
-                    else
-                        return null;
+                    return reportValueContext.getSkin().constructClassRef(activeRowDialog.getDcClass());
 
                 default:
                     return null;
             }
         }
 
-        public ValueSource getNoDataFoundMessage()
-        {
-            return noParams;
-        }
     }
 }
+

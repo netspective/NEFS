@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.1 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: TextField.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -266,24 +266,24 @@ public class TextField extends DialogField
         String controlAreaStyle = dc.getSkin().getControlAreaStyleAttrs();
         if(isReadOnly(dc))
         {
-            writer.write("<input type='hidden' name='" + getId() + "' value=\"" + textValue + "\"><span id='" + getQualifiedName() + "'>" + textValue + "</span>");
+            writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + textValue + "\"><span id='" + getQualifiedName() + "'>" + textValue + "</span>");
         }
         else if(isBrowserReadOnly(dc))
         {
             className = dc.getSkin().getControlAreaReadonlyStyleClass();
-            writer.write("<input type=\"text\" name=\"" + getId() + "\" readonly value=\"" +
+            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
                     textValue + "\" maxlength=\"" + textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle +
                     " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else if(!stateFlags.flagIsSet(Flags.MASKENTRY))
         {
-            writer.write("<input type=\"text\" name=\"" + getId() + "\" value=\"" + textValue + "\" maxlength=\"" +
+            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
                     textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }
         else
         {
-            writer.write("<input type=\"password\" name=\"" + getId() + "\" value=\"" + textValue + "\" maxlength=\"" +
+            writer.write("<input type=\"password\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
                     textValidationRule.getMaxLength() + "\" size=\"" + size + "\" " + controlAreaStyle + " class=\"" + className + "\" " +
                     dc.getSkin().getDefaultControlAttrs() + ">");
         }

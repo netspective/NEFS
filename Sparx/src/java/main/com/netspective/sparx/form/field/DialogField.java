@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.1 2003-05-05 21:25:30 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.2 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -285,7 +285,7 @@ public class DialogField
 
     private Dialog owner;
 	private DialogField parent;
-	private String id;
+	private String htmlFormControlId;
 	private String name;
 	private String qualifiedName;
 	private ValueSource caption = ValueSource.NULL_VALUE_SOURCE;
@@ -506,9 +506,9 @@ public class DialogField
 		this.multi = multi;
 	}
 
-	public String getId()
+	public String getHtmlFormControlId()
 	{
-		return id;
+		return htmlFormControlId;
 	}
 
 	/**
@@ -546,7 +546,7 @@ public class DialogField
 		name = newName;
 		if (name != null)
 		{
-			id = Dialog.PARAMNAME_CONTROLPREFIX + name;
+			setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.xmlTextToJavaIdentifier(name, false));
 			setQualifiedName(name);
 		}
 	}
@@ -560,8 +560,13 @@ public class DialogField
 	{
 		qualifiedName = newName;
 		if (qualifiedName != null)
-			id = Dialog.PARAMNAME_CONTROLPREFIX + qualifiedName;
+			setHtmlFormControlId(Dialog.PARAMNAME_CONTROLPREFIX + TextUtils.xmlTextToJavaIdentifier(qualifiedName, false));
 	}
+
+    public void setHtmlFormControlId(String htmlFormControlId)
+    {
+        this.htmlFormControlId = htmlFormControlId;
+    }
 
 	/**
 	 * Gets the cookie name associated with the dialog
@@ -648,7 +653,7 @@ public class DialogField
 	 *
 	 * @return ValueSource    value source containing the field's value
 	 */
-	public ValueSource getDefaultValue()
+	public ValueSource getDefault()
 	{
 		return defaultValue;
 	}
@@ -658,7 +663,7 @@ public class DialogField
 	 *
 	 * @param value value source containing the value
 	 */
-	public void setDefaultValue(ValueSource value)
+	public void setDefault(ValueSource value)
 	{
 		defaultValue = value;
 	}
@@ -923,7 +928,7 @@ public class DialogField
 	{
         DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
 		String value = state.getValue().getTextValue();
-		return "<input type='hidden' name='" + getId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
+		return "<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
 	}
 
 	public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
@@ -1039,14 +1044,14 @@ public class DialogField
 
 	public void populateValue(DialogContext dc, int formatType)
 	{
-		if (id == null) return;
+		if (htmlFormControlId == null) return;
 
         DialogField.DialogFieldState state = dc.getFieldStates().getState(this);
 		DialogFieldValue dfValue = state.getValue();
         String textValue = dfValue.getTextValue();
 
 		if (textValue == null)
-			textValue = dc.getRequest().getParameter(id);
+			textValue = dc.getRequest().getParameter(htmlFormControlId);
 
 		if (dc.getRunSequence() == 1)
 		{
@@ -1079,7 +1084,7 @@ public class DialogField
 		String fieldQualfName = this.getQualifiedName();
         String fieldCaption = caption != null ? caption.getTextValueOrBlank(dc) : "";
 		String js =
-			"field = new DialogField(\"" + fieldClassName + "\", \"" + this.getId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags() + ");\n" +
+			"field = new DialogField(\"" + fieldClassName + "\", \"" + this.getHtmlFormControlId() + "\", \"" + this.getName() + "\", \"" + fieldQualfName + "\", \"" + fieldCaption + "\", " + dc.getFieldStates().getState(this).getStateFlags() + ");\n" +
 			"dialog.registerField(field);\n";
 		String customStr = this.getEventJavaScriptFunctions(dc);
 		customStr += this.getCustomJavaScriptDefn(dc);

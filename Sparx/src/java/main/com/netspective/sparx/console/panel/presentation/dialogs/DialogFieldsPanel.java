@@ -39,147 +39,171 @@
  */
 
 /**
- * $Id: QueryParametersPanel.java,v 1.2 2003-05-06 14:52:13 shahid.shah Exp $
+ * $Id: DialogFieldsPanel.java,v 1.1 2003-05-06 14:52:14 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data.sql;
+package com.netspective.sparx.console.panel.presentation.dialogs;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.axiom.sql.QueryParameters;
-import com.netspective.axiom.sql.QueryParameter;
+import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogDetailPanel;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSource;
 
-public class QueryParametersPanel extends QueryDetailPanel
+public class DialogFieldsPanel extends DialogDetailPanel
 {
-    public static final HtmlTabularReport queryParamsReport = new BasicHtmlTabularReport();
-    protected static final ValueSource noParams = new StaticValueSource("Query has no parameters.");
+    public static final HtmlTabularReport dialogFieldsReport = new BasicHtmlTabularReport();
+    protected static final ValueSource noFields = new StaticValueSource("Dialog has no parameters.");
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Index"));
-        queryParamsReport.addColumn(column);
-
-        column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Name"));
-        queryParamsReport.addColumn(column);
+        dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("JDBC Type"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Control Id"));
+        dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Java Type"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Caption"));
+        dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Flags"));
+        dialogFieldsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source Class"));
-        queryParamsReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Default"));
+        dialogFieldsReport.addColumn(column);
     }
 
-    public QueryParametersPanel()
+    public DialogFieldsPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Query Parameters"));
+        getFrame().setHeading(new StaticValueSource("Dialog Fields"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(vc);
-        if(selectedQuery.getDataSource() != null)
-            return selectedQuery.getDataSource();
+        DialogDetailPanel.SelectedDialog selectedDialog = getSelectedDialog(vc);
+        if(selectedDialog.getDataSource() != null)
+            return selectedDialog.getDataSource();
         else
-            return new SqlParamsDataSource(vc, selectedQuery);
+            return new DialogFieldsDataSource(vc, selectedDialog);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return queryParamsReport;
+        return dialogFieldsReport;
     }
 
-    public class SqlParamsDataSource extends AbstractHtmlTabularReportDataSource
+    protected class DialogFieldsDataSource extends AbstractHtmlTabularReportDataSource
     {
-        private QueryParameters params;
-        private int activeRow = -1;
-        private int lastRow;
+        protected int activeRowIndex = -1;
+        protected int lastRowIndex;
+        protected DialogDetailPanel.FieldRow activeRow;
+        protected DialogDetailPanel.FieldRows fieldRows;
+        protected TabularReportDataSource.Hierarchy hierarchy = new ActiveHierarchy();
 
-        public SqlParamsDataSource(HtmlTabularReportValueContext vc, QueryDetailPanel.SelectedQuery selectedQuery)
+        protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
         {
-            super(vc);
-            params = selectedQuery.getQuery().getParams();
-            if(params != null)
-                lastRow = params.size() - 1;
-            else
-                lastRow = -1;
-        }
-
-        public int getActiveRowNumber()
-        {
-            return activeRow;
-        }
-
-        public boolean next()
-        {
-            if(activeRow < lastRow)
+            public int getColumn()
             {
-                activeRow++;
-                return true;
+                return 0;
             }
 
-            return false;
+            public int getLevel()
+            {
+                return activeRow.level;
+            }
+
+            public int getParentRow()
+            {
+                return activeRow.getParentRow() != null ? fieldRows.indexOf(activeRow.getParentRow()) : -1;
+            }
+        }
+
+        public boolean isHierarchical()
+        {
+            return true;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHierarchy()
+        {
+            return hierarchy;
+        }
+
+        public DialogFieldsDataSource(HtmlTabularReportValueContext vc, DialogDetailPanel.SelectedDialog selectedDialog)
+        {
+            super(vc);
+            fieldRows = new DialogDetailPanel.FieldRows(selectedDialog.getDialog());
+            lastRowIndex = fieldRows.size() - 1;
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            QueryParameter param = params.get(activeRow);
+            DialogField activeField = activeRow.getField();
 
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(activeRow + 1);
+                    if(activeField != null)
+                        return activeField.getQualifiedName();
+                    else
+                        return activeRow.heading;
 
                 case 1:
-                    return param.getName();
+                    if(activeField != null)
+                        return activeField.getHtmlFormControlId();
 
                 case 2:
-                    return new Integer(param.getSqlTypeCode());
+                    if(activeField != null)
+                        return activeField.getCaption() != ValueSource.NULL_VALUE_SOURCE ?
+                                activeField.getCaption().getSpecification() :
+                                null;
 
                 case 3:
-                    return param.getJavaType();
+                    if(activeField != null)
+                        return activeField.getFlags().getFlagsText();
 
                 case 4:
-                    ValueSource vs = param.getValue();
-                    if(vs != null)
-                        return vs.getSpecification();
-                    else
-                        return null;
-
-                case 5:
-                    vs = param.getValue();
-                    if(vs != null)
-                        return reportValueContext.getSkin().constructClassRef(vs.getClass());
-                    else
-                        return null;
+                    if(activeField != null)
+                        return activeField.getDefault() != null && activeField.getDefault() != ValueSource.NULL_VALUE_SOURCE ?
+                                activeField.getDefault().getSpecification() :
+                                null;
 
                 default:
                     return null;
             }
         }
 
+        public boolean next()
+        {
+            if(activeRowIndex < lastRowIndex)
+            {
+                activeRowIndex++;
+                activeRow = fieldRows.get(activeRowIndex);
+                return true;
+            }
+
+            return false;
+        }
+
+        public int getActiveRowNumber()
+        {
+            return activeRowIndex + 1;
+        }
+
         public ValueSource getNoDataFoundMessage()
         {
-            return noParams;
+            return noFields;
         }
     }
 }
