@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefinition.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
+ * $Id: QueryDefinition.java,v 1.3 2003-08-01 22:04:15 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -51,6 +51,7 @@ import java.util.StringTokenizer;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.value.source.QueryDefnFieldsValueSource;
@@ -108,14 +109,16 @@ public class QueryDefinition implements QueriesNameSpace
     private QueryDefnSqlWhereExpressions defaultWhereExprs = new QueryDefnSqlWhereExpressions();
     private QueryDefnFieldsValueSource fieldsValueSource = new QueryDefnFieldsValueSource(this);
     private QueryDefnSelectsValueSource selectsValueSource = new QueryDefnSelectsValueSource(this);
-
     public QueryDefinition()
     {
     }
 
     public static String translateNameForMapKey(String name)
     {
-        return name.toUpperCase();
+        if (name == null)
+            return null;
+        else
+            return name.toUpperCase();
     }
 
     public String getName()
