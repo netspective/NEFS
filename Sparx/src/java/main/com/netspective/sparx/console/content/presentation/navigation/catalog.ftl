@@ -11,10 +11,10 @@
         <#else>
             <#assign isDefault='&nbsp;'>
         </#if>
-        <#assign catalog = catalog + [[ "<a href='tree/${tree.name}'>${tree.name}</a>", tree.size(), getClassReference(tree.class.name), isDefault ]]/>
+        <#assign catalog = catalog + [[ "<img src='${vc.activeTheme.getResourceUrl('/images/navigation/tree.gif')}'/>", "<a href='tree/${tree.name}'>${tree.name}</a>", tree.size(), getClassReference(tree.class.name), isDefault ]]/>
     </#if>
 </#list>
 
 <@panel heading="All Available Navigation Trees">
-    <@reportTable headings=["Tree", "Pages", "Class", "Default"] data=catalog columnAttrs=["", "align=right", "", ""]/>
+    <@reportTable headings=["&nbsp;", "Tree", "Pages", "Class", "Default"] data=catalog columnAttrs=["", "", "align=right", "", ""]/>
 </@panel>

@@ -18,7 +18,7 @@
                 <tr>
                     <td class="report-column-${classSuffix}">
                         <nobr>
-                        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
+                        <img src="${vc.activeTheme.getResourceUrl('/images/access-control/acl.gif')}"/>
                         <a href="${vc.consoleUrl}/project/access-control/tree/${activeItem.owner.name}">${activeItem.owner.name}</a>
                         </nobr>
                     </td>
@@ -30,7 +30,11 @@
                         <td class="report-column-${classSuffix}">
                             <nobr>
                             <#list 0..parent.level as i>&nbsp;&nbsp;</#list>
-                            <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
+                            <#if parent.children?size gt 0>
+                                <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permissions.gif')}"/>
+                            <#else>
+                                <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permission.gif')}"/>
+                            </#if>
                             <a href="${vc.consoleUrl}/project/access-control/perm-inspector${parent.qualifiedName}">${parent.name}</a>
                             </nobr>
                         </td>
@@ -42,7 +46,11 @@
                 <tr><td class="report-column-${classSuffix}">
                     <nobr>
                     <#list 0..activeItem.level as i>&nbsp;&nbsp;</#list>
-                    <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
+                    <#if activeItem.children?size gt 0>
+                        <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permissions.gif')}"/>
+                    <#else>
+                        <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permission.gif')}"/>
+                    </#if>
                     <b><#if activeItem.name = ''>${activeACLName}<#else>${activeItem.name}</#if></b>
                     </nobr>
                 </td></tr>
@@ -52,7 +60,11 @@
                     <tr><td class="report-column-${classSuffix}">
                     <nobr>
                     <#list 0..child.level as i>&nbsp;&nbsp;</#list>
-                    <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
+                    <#if child.children?size gt 0>
+                        <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permissions.gif')}"/>
+                    <#else>
+                        <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permission.gif')}"/>
+                    </#if>
                     <#if vc.request.requestURI?ends_with('/')>
                         <a href="${vc.request.requestURI}${child.name}">${child.name}</a>
                     <#else>

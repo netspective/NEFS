@@ -20,43 +20,58 @@
             <table cellspacing=5>
             <tr valign=top>
             <td>
-                <@panel heading="Location">
-                <table class="report" border="0" cellspacing="2" cellpadding="0">
-                    <#assign level = 0>
+                <@panel heading="Page Locator">
+                <table class="report" border="0" cellspacing="2" cellpadding="0" width="100%">
                     <#assign classSuffix="odd"/>
-                    <#assign ancestorIndex = activePage.ancestorsList.size()-1/>
+
+                    <tr>
+                        <td class="report-column-${classSuffix}">
+                            <nobr>
+                            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/tree.gif')}"/>
+                            <a href="${vc.consoleUrl}/presentation/navigation/tree/${activePage.owner.name}">${activePage.owner.name}</a>
+                            </nobr>
+                        </td>
+                    </tr>
+                    <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
 
                     <#list activePage.ancestorsList.iterator() as parent>
+                        <#if parent.name != ''>
                         <tr>
                             <td class="report-column-${classSuffix}">
                                 <nobr>
-                                <#list 0..level as i>&nbsp;&nbsp;</#list>
-                                <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
-                                <a href="${vc.consoleUrl}/presentation/navigation/inspector${parent.qualifiedNameIncludingTreeId}"><#if parent.name = ''>${activeTreeName}<#else>${parent.name}</#if></a>
+                                <#list 0..parent.level as i>&nbsp;&nbsp;</#list>
+                                <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
+                                <a href="${vc.consoleUrl}/presentation/navigation/inspector${parent.qualifiedNameIncludingTreeId}">${parent.name}</a>
                                 </nobr>
                             </td>
                         </tr>
 
-                        <#assign level = level + 1/>
-                        <#assign ancestorIndex = ancestorIndex - 1/>
                         <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
+                        </#if>
                     </#list>
 
                     <tr><td class="report-column-${classSuffix}">
                         <nobr>
-                        <#list 0..level as i>&nbsp;&nbsp;</#list>
-                        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-folder-open.gif')}"/>
+                        <#list 0..activePage.level as i>&nbsp;&nbsp;</#list>
+                        <#if activePage.childrenList?size gt 0>
+                            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
+                        <#else>
+                            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
+                        </#if>
                         <b><#if activePage.name = ''>${activeTreeName}<#else>${activePage.name}</#if></b>
                         </nobr>
                     </td></tr>
-                    <#assign level = level + 1/>
                     <#if classSuffix = 'odd'><#assign classSuffix='even'/><#else><#assign classSuffix='odd'/></#if>
 
                     <#list activePage.childrenList.iterator() as child>
                         <tr><td class="report-column-${classSuffix}">
                         <nobr>
-                        <#list 0..level as i>&nbsp;&nbsp;</#list>
-                        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
+                        <#list 0..child.level as i>&nbsp;&nbsp;</#list>
+                        <#if child.childrenList?size gt 0>
+                            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
+                        <#else>
+                            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
+                        </#if>
                         <#if vc.request.requestURI?ends_with('/')>
                             <a href="${vc.request.requestURI}${child.name}">${child.name}</a>
                         <#else>

@@ -10,7 +10,11 @@
         <#if activePage.level gt 0>
         <#list 1..activePage.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
         </#if>
-        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
+        <#if activePage.childrenList?size gt 0>
+            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
+        <#else>
+            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
+        </#if>
         <#if activePage.name = ''>
             <a href="${vc.consoleUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
         <#else>

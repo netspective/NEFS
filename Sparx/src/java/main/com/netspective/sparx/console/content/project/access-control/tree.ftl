@@ -8,9 +8,13 @@
     <td class="report-column-${classSuffix}">
         <nobr>
         <#if activeItem.level gt 0>
-        <#list 1..activeItem.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+        <#list 1..activeItem.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
         </#if>
-        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
+        <#if activeItem.children?size gt 0>
+            <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permissions.gif')}"/>
+        <#else>
+            <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permission.gif')}"/>
+        </#if>
         <a href="${vc.consoleUrl}/project/access-control/perm-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
         </nobr>
     </td>
@@ -33,9 +37,13 @@
     <td class="report-column-${classSuffix}">
         <nobr>
         <#if activeItem.level gt 0>
-        <#list 1..activeItem.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+        <#list 1..activeItem.level as i>&nbsp;&nbsp;&nbsp;&nbsp;</#list>
         </#if>
-        <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
+        <#if activeItem.children?size gt 0>
+            <img src="${vc.activeTheme.getResourceUrl('/images/access-control/roles.gif')}"/>
+        <#else>
+            <img src="${vc.activeTheme.getResourceUrl('/images/access-control/role.gif')}"/>
+        </#if>
         <a href="${vc.consoleUrl}/project/access-control/role-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
         </nobr>
     </td>
@@ -80,7 +88,7 @@
             <@panel heading="ACL '${activeACL.name}' Roles">
             <table cellspacing=5>
                 <tr>
-                    <td class="report-column-heading">Permission</td>
+                    <td class="report-column-heading">Role</td>
                     <td class="report-column-heading">Id</td>
                     <td class="report-column-heading">Children</td>
                     <td class="report-column-heading">Permissions</td>
