@@ -47,7 +47,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     {
         if (showReferenceData && isReferenceRelationship(generator, foreignKey))
         {
-            edge.setArrowHead("none");
+            edge.setArrowHead("normal");
             edge.setStyle("dotted");
             return;
         }
@@ -55,7 +55,6 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
         if (isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
         {
             // the subclass will point to the superclass and be formatted as a "back" reference to properly set the weight
-            edge.setArrowSize("2");
             edge.getAttributes().put("dir", "back");
             edge.getAttributes().put("arrowtail", "onormal");
             return;
@@ -66,8 +65,8 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
         {
             if (showClassStructure)
             {
-                edge.setArrowHead("odiamond");
-                edge.getAttributes().put("arrowtail", "normal");
+                edge.setArrowHead("normal");
+                edge.getAttributes().put("arrowtail", "odiamond");
             }
             else
             {
