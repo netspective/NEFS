@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlField.java,v 1.2 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: HtmlField.java,v 1.3 2003-08-31 22:50:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -62,7 +62,7 @@ import java.io.Writer;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 public class HtmlField extends DialogField

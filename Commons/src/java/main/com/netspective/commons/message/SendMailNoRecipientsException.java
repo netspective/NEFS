@@ -39,62 +39,31 @@
  */
 
 /**
- * $Id: TemplateDialog.java,v 1.2 2003-08-31 22:50:32 shahid.shah Exp $
+ * $Id: SendMailNoRecipientsException.java,v 1.1 2003-08-31 22:46:24 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form;
+package com.netspective.commons.message;
 
-import java.io.Writer;
-import java.io.IOException;
+import org.apache.commons.lang.exception.NestableException;
 
-import com.netspective.commons.template.TemplateProcessor;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.commons.value.ValueSource;
-
-/**
- * A dialog that executes an HTML valueSource or template in the execute method.
- */
-public class TemplateDialog extends Dialog
+public class SendMailNoRecipientsException extends NestableException
 {
-    private TemplateProcessor bodyTemplate;
-    private ValueSource html;
-
-    public TemplateDialog()
+    public SendMailNoRecipientsException()
     {
     }
 
-    public TemplateDialog(DialogsPackage pkg)
+    public SendMailNoRecipientsException(String s)
     {
-        super(pkg);
+        super(s);
     }
 
-    public ValueSource getHtml()
+    public SendMailNoRecipientsException(String s, Throwable throwable)
     {
-        return html;
+        super(s, throwable);
     }
 
-    public void setHtml(ValueSource html)
+    public SendMailNoRecipientsException(Throwable throwable)
     {
-        this.html = html;
-    }
-
-    public TemplateProcessor createBody()
-    {
-        return new FreeMarkerTemplateProcessor();
-    }
-
-    public void addBody(TemplateProcessor templateProcessor)
-    {
-        bodyTemplate = templateProcessor;
-    }
-
-    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
-    {
-        if(html != null)
-            writer.write(html.getTextValue(dc));
-        else if(bodyTemplate != null)
-            bodyTemplate.process(writer, dc, null);
-        else
-            writer.write("Neither an html value source nor a body template was provided.");
+        super(throwable);
     }
 }

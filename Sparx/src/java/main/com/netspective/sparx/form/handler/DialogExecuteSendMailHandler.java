@@ -39,179 +39,40 @@
  */
 
 /**
- * $Id: DialogExecuteSendMailHandler.java,v 1.1 2003-08-31 03:11:00 shahid.shah Exp $
+ * $Id: DialogExecuteSendMailHandler.java,v 1.2 2003-08-31 22:52:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import java.io.Writer;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.Properties;
-import java.util.List;
-import java.util.ArrayList;
-
-import javax.mail.Transport;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.MessagingException;
-import javax.mail.Address;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.AddressException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.message.SendMail;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
 
-public class DialogExecuteSendMailHandler extends DialogExecuteDefaultHandler
+public class DialogExecuteSendMailHandler extends SendMail implements DialogExecuteHandler
 {
     private static final Log log = LogFactory.getLog(DialogExecuteSendMailHandler.class);
-    private static ValueSource LOCAL_HOST = new StaticValueSource("localhost");
-
-    protected static class Header
-    {
-        private String name;
-        private ValueSource value;
-
-        public Header()
-        {
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public ValueSource getValue()
-        {
-            return value;
-        }
-
-        public void setValue(ValueSource value)
-        {
-            this.value = value;
-        }
-    }
-
-    protected static class Headers
-    {
-        private List headers = new ArrayList();
-
-        public Headers()
-        {
-        }
-
-        public List getHeaders()
-        {
-            return headers;
-        }
-
-        public Header createHeader()
-        {
-            return new Header();
-        }
-
-        public void addHeader(Header header)
-        {
-            headers.add(header);
-        }
-    }
-
-    private ValueSource host = LOCAL_HOST;
-    private Headers headers;
-    private ValueSource from;
-    private ValueSource to;
-    private ValueSource replyTo;
-    private ValueSource cc;
-    private ValueSource bcc;
-    private ValueSource subject;
-    private TemplateProcessor body;
 
     public DialogExecuteSendMailHandler()
     {
     }
 
-    public ValueSource getBcc()
+    public TemplateConsumerDefn getTemplateConsumerDefn()
     {
-        return bcc;
+        return DialogExecuteHandlerTemplateConsumer.INSTANCE;
     }
 
-    public void setBcc(ValueSource bcc)
+    public void registerTemplateConsumption(Template template)
     {
-        this.bcc = bcc;
-    }
-
-    public ValueSource getCc()
-    {
-        return cc;
-    }
-
-    public void setCc(ValueSource cc)
-    {
-        this.cc = cc;
-    }
-
-    public ValueSource getFrom()
-    {
-        return from;
-    }
-
-    public void setFrom(ValueSource from)
-    {
-        this.from = from;
-    }
-
-    public ValueSource getReplyTo()
-    {
-        return replyTo;
-    }
-
-    public void setReplyTo(ValueSource replyTo)
-    {
-        this.replyTo = replyTo;
-    }
-
-    public ValueSource getHost()
-    {
-        return host;
-    }
-
-    public void setHost(ValueSource host)
-    {
-        this.host = host;
-    }
-
-    public ValueSource getTo()
-    {
-        return to;
-    }
-
-    public void setTo(ValueSource to)
-    {
-        this.to = to;
-    }
-
-    public ValueSource getSubject()
-    {
-        return subject;
-    }
-
-    public void setSubject(ValueSource subject)
-    {
-        this.subject = subject;
     }
 
     public TemplateProcessor createBody()
@@ -219,102 +80,15 @@ public class DialogExecuteSendMailHandler extends DialogExecuteDefaultHandler
         return new FreeMarkerTemplateProcessor();
     }
 
-    public TemplateProcessor getBody()
-    {
-        return body;
-    }
-
-    public void addBody(TemplateProcessor templateProcessor)
-    {
-        body = templateProcessor;
-    }
-
-    public Headers createHeaders()
-    {
-        return new Headers();
-    }
-
-    public void addHeaders(Headers headers)
-    {
-        this.headers = headers;
-    }
-
-    protected Address[] getAddresses(Value value) throws AddressException, MessagingException
-    {
-        if(value.isListValue())
-        {
-            String[] addressTexts = value.getTextValues();
-            Address[] result = new Address[addressTexts.length];
-            for(int i = 0; i < addressTexts.length; i++)
-                result[i] = new InternetAddress(addressTexts[i]);
-            return result;
-        }
-        else
-            return new InternetAddress[] { new InternetAddress(value.getTextValue()) };
-    }
-
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if(from == null)
-        {
-            dc.getDialog().getLog().error("No FROM address provided.");
-            return;
-        }
-
-        if(to == null && cc == null && bcc == null)
-        {
-            dc.getDialog().getLog().error("No TO, CC, or BCC addresses provided.");
-            return;
-        }
-
-        Properties props = System.getProperties();
-        props.put("mail.smtp.host", host.getTextValue(dc));
-
-        Session mailSession = Session.getDefaultInstance(props, null);
-
         try
         {
-            MimeMessage message = new MimeMessage(mailSession);
-
-            if(headers != null)
-            {
-                List headersList = headers.getHeaders();
-                for(int i = 0; i < headersList.size(); i++)
-                {
-                    Header header = (Header) headersList.get(i);
-                    message.setHeader(header.getName(), header.getValue().getTextValue(dc));
-                }
-            }
-
-            message.setFrom(new InternetAddress(from.getTextValue(dc)));
-
-            if(replyTo != null)
-                message.setReplyTo(getAddresses(replyTo.getValue(dc)));
-
-            if(to != null)
-                message.setRecipients(Message.RecipientType.TO, getAddresses(to.getValue(dc)));
-
-            if(cc != null)
-                message.setRecipients(Message.RecipientType.CC, getAddresses(cc.getValue(dc)));
-
-            if(bcc != null)
-                message.setRecipients(Message.RecipientType.BCC, getAddresses(bcc.getValue(dc)));
-
-            if(subject != null)
-                message.setSubject(subject.getTextValue(dc));
-
-            if(body != null)
-            {
-                StringWriter messageText = new StringWriter();
-                body.process(messageText, dc, null);
-                message.setText(messageText.toString());
-            }
-
-            Transport.send(message);
+            send(dc);
         }
-        catch (MessagingException e)
+        catch (Exception e)
         {
-            log.error("unable to send e-mail", e);
+            log.error("Unable to send mail", e);
             throw new DialogExecuteException(e);
         }
     }
