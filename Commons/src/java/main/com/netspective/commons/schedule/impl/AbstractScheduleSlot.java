@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractScheduleSlot.java,v 1.4 2004-03-29 04:34:20 shahid.shah Exp $
+ * $Id: AbstractScheduleSlot.java,v 1.5 2004-03-31 14:24:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
@@ -59,7 +59,7 @@ public class AbstractScheduleSlot implements ScheduleSlot
     private int beginJulianDay;
     private Date endDate;
     private int endJulianDay;
-    private MinuteRangesSet minutesSet = new MinuteRangesSet();
+    private MinuteRangesSet minutesSet;
 
     public AbstractScheduleSlot(ScheduleManager scheduleManager, Date beginDate, Date endDate)
     {
@@ -71,7 +71,8 @@ public class AbstractScheduleSlot implements ScheduleSlot
         this.endDate = endDate;
         this.beginJulianDay = calendarUtils.getJulianDay(beginDate);
         this.endJulianDay = calendarUtils.getJulianDay(endDate);
-        this.minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
+        this.minutesSet = new MinuteRangesSet(calendarUtils);
+        this.minutesSet.applyDateRange(beginDate, endDate);
     }
 
     public Object getScheduleSlotIdentifier()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MinuteRangesSet.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
+ * $Id: MinuteRangesSet.java,v 1.3 2004-03-31 14:24:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -47,6 +47,7 @@ package com.netspective.commons.set;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.netspective.commons.schedule.CalendarUtils;
@@ -56,7 +57,8 @@ import com.netspective.commons.set.IntSpan.Mappable;
 import com.netspective.commons.set.IntSpan.Testable;
 
 /**
- * A type-safe wrapper of the IntSpan object designed to manage minutes of a day treated as an integer set.
+ * A type-safe wrapper of the IntSpan object designed to manage minutes of a day treated as an integer set. Can handle
+ * multiple days if required.
  */
 public class MinuteRangesSet implements Set
 {
@@ -64,15 +66,20 @@ public class MinuteRangesSet implements Set
     public static final int HOURS_PER_DAY = 24;
     public static final int MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY;
 
+    private CalendarUtils calendarUtils;
     private boolean multipleDays = false;
+    private int beginDateOffsetDays = 0;
+    private int beginDateOffsetMinutes = 0;
     private IntSpan minutesSet = new IntSpan();
 
-    public MinuteRangesSet()
+    public MinuteRangesSet(CalendarUtils calendarUtils)
     {
+        this.calendarUtils = calendarUtils;
     }
 
-    public MinuteRangesSet(IntSpan minutesSet)
+    public MinuteRangesSet(CalendarUtils calendarUtils, IntSpan minutesSet)
     {
+        this(calendarUtils);
         this.minutesSet = minutesSet;
     }
 
@@ -81,7 +88,25 @@ public class MinuteRangesSet implements Set
         return multipleDays;
     }
 
-    public void applyDateRange(CalendarUtils calendarUtils, Date beginDate, Date endDate)
+    public int getBeginDateOffsetDays()
+    {
+        return beginDateOffsetDays;
+    }
+
+    public int getBeginDateOffsetMinutes()
+    {
+        return beginDateOffsetMinutes;
+    }
+
+    /**
+     * Create the minutes range in this class using the date/time specified in the beginDate and endDate instances.
+     * @param beginDate The starting date/time of the minutes range
+     * @param beginDateOffsetDays The number of minutes (in days) to offset the starting date/time. This is useful if
+     *                            this minutes range needs to be compared or unioned with another minutes range set
+     *                            that matches a different range of dates.
+     * @param endDate The ending date/time of the minutes range
+     */
+    public void applyDateRange(Date beginDate, int beginDateOffsetDays, Date endDate)
     {
         Calendar calendar = calendarUtils.getCalendar();
 
@@ -96,19 +121,27 @@ public class MinuteRangesSet implements Set
         int endHours = calendar.get(Calendar.HOUR_OF_DAY);
         int endMinutes = calendar.get(Calendar.MINUTE);
 
+        this.beginDateOffsetDays = beginDateOffsetDays;
+        beginDateOffsetMinutes = beginDateOffsetDays * MINUTES_PER_DAY;
+
         if(beginDay == endDay)
         {
             multipleDays = false;
-            minutesSet.addClosed((beginHours * MINUTES_PER_HOUR) + beginMinutes,
-                                 (endHours * MINUTES_PER_HOUR) + endMinutes);
+            minutesSet.addClosed(beginDateOffsetMinutes + (beginHours * MINUTES_PER_HOUR) + beginMinutes,
+                                 beginDateOffsetMinutes + (endHours * MINUTES_PER_HOUR) + endMinutes);
         }
         else
         {
             multipleDays = true;
             int daysBetween = endDay - beginDay;
-            minutesSet.addClosed((beginHours * MINUTES_PER_HOUR) + beginMinutes,
-                                 (MINUTES_PER_DAY * daysBetween) + (endHours * MINUTES_PER_HOUR) + endMinutes);
+            minutesSet.addClosed(beginDateOffsetMinutes + (beginHours * MINUTES_PER_HOUR) + beginMinutes,
+                                 beginDateOffsetMinutes + (MINUTES_PER_DAY * daysBetween) + (endHours * MINUTES_PER_HOUR) + endMinutes);
         }
+    }
+
+    public void applyDateRange(Date beginDate, Date endDate)
+    {
+        applyDateRange(beginDate, 0, endDate);
     }
 
     public boolean add(Object o)
@@ -258,12 +291,12 @@ public class MinuteRangesSet implements Set
 
     public MinuteRangesSet grep(Testable predicate)
     {
-        return new MinuteRangesSet(minutesSet.grep(predicate));
+        return new MinuteRangesSet(calendarUtils, minutesSet.grep(predicate));
     }
 
     public MinuteRangesSet map(Mappable trans)
     {
-        return new MinuteRangesSet(minutesSet.map(trans));
+        return new MinuteRangesSet(calendarUtils, minutesSet.map(trans));
     }
 
     public IntSpanIterator first()
@@ -281,6 +314,21 @@ public class MinuteRangesSet implements Set
         return minutesSet.start(n);
     }
 
+    public MinuteDateSpanIterator first(Date relativeToDate)
+    {
+        return new MinuteDateSpanIterator(minutesSet.first(), relativeToDate);
+    }
+
+    public MinuteDateSpanIterator last(Date relativeToDate)
+    {
+        return new MinuteDateSpanIterator(minutesSet.last(), relativeToDate);
+    }
+
+    public MinuteDateSpanIterator start(int n, Date relativeToDate)
+    {
+        return new MinuteDateSpanIterator(minutesSet.start(n), relativeToDate);
+    }
+
     public String toString(String delim)
     {
         if(isMultipleDays())
@@ -296,27 +344,27 @@ public class MinuteRangesSet implements Set
 
     public static MinuteRangesSet union(MinuteRangesSet a, MinuteRangesSet b)
     {
-        return new MinuteRangesSet(IntSpan.union(a.minutesSet, b.minutesSet));
+        return new MinuteRangesSet(a.calendarUtils, IntSpan.union(a.minutesSet, b.minutesSet));
     }
 
     public static MinuteRangesSet intersect(MinuteRangesSet a, MinuteRangesSet b)
     {
-        return new MinuteRangesSet(IntSpan.intersect(a.minutesSet, b.minutesSet));
+        return new MinuteRangesSet(a.calendarUtils, IntSpan.intersect(a.minutesSet, b.minutesSet));
     }
 
     public static MinuteRangesSet diff(MinuteRangesSet a, MinuteRangesSet b)
     {
-        return new MinuteRangesSet(IntSpan.diff(a.minutesSet, b.minutesSet));
+        return new MinuteRangesSet(a.calendarUtils, IntSpan.diff(a.minutesSet, b.minutesSet));
     }
 
     public static MinuteRangesSet xor(MinuteRangesSet a, MinuteRangesSet b)
     {
-        return new MinuteRangesSet(IntSpan.xor(a.minutesSet, b.minutesSet));
+        return new MinuteRangesSet(a.calendarUtils, IntSpan.xor(a.minutesSet, b.minutesSet));
     }
 
     public static MinuteRangesSet complement(MinuteRangesSet s)
     {
-        return new MinuteRangesSet(IntSpan.complement(s.minutesSet));
+        return new MinuteRangesSet(s.calendarUtils, IntSpan.complement(s.minutesSet));
     }
 
     public static boolean superset(MinuteRangesSet a, MinuteRangesSet b)
@@ -339,6 +387,11 @@ public class MinuteRangesSet implements Set
         return IntSpan.equivalent(a.minutesSet, b.minutesSet);
     }
 
+    private static final String formatDaysHoursMinutes(int days, int hours, int minutes)
+    {
+        return days + "d "  + (hours < 10 ? "0" + hours : Integer.toString(hours)) + ":" + (minutes < 10 ? "0" + minutes : Integer.toString(minutes));
+    }
+
     private class SingleDayElementFormatter implements IntSpan.ElementFormatter
     {
         private String delim;
@@ -355,9 +408,12 @@ public class MinuteRangesSet implements Set
 
         public String getFormattedElement(int element)
         {
-            int hours = element / MINUTES_PER_HOUR;
-            int minutes = element - (hours * MINUTES_PER_HOUR);
-            return (hours < 10 ? "0" + hours : Integer.toString(hours))  + ":" + (minutes < 10 ? "0" + minutes : Integer.toString(minutes));
+            int actualElement = element - beginDateOffsetMinutes;
+
+            int hours = actualElement / MINUTES_PER_HOUR;
+            int minutes = actualElement - (hours * MINUTES_PER_HOUR);
+
+            return formatDaysHoursMinutes(beginDateOffsetDays, hours, minutes);
         }
     }
 
@@ -377,12 +433,97 @@ public class MinuteRangesSet implements Set
 
         public String getFormattedElement(int element)
         {
-            int days = element / MINUTES_PER_DAY;
-            int hours = (element - (days * MINUTES_PER_DAY)) / MINUTES_PER_HOUR;
-            int minutes = (element - (days * MINUTES_PER_DAY)) - (hours * MINUTES_PER_HOUR);
+            int actualElement = element - beginDateOffsetMinutes;
 
-            return days + "d "  + (hours < 10 ? "0" + hours : Integer.toString(hours)) + ":" + (minutes < 10 ? "0" + minutes : Integer.toString(minutes));
+            int days = actualElement / MINUTES_PER_DAY;
+            int hours = (actualElement - (days * MINUTES_PER_DAY)) / MINUTES_PER_HOUR;
+            int minutes = (actualElement - (days * MINUTES_PER_DAY)) - (hours * MINUTES_PER_HOUR);
+
+            return formatDaysHoursMinutes(days + beginDateOffsetDays, hours, minutes);
         }
     }
 
+    public class MinuteDateSpanIterator implements Iterator
+    {
+        private IntSpanIterator i;
+        private Date relativeToDate;
+        private int relativeToJulianDay;
+
+        public MinuteDateSpanIterator(IntSpanIterator i, Date relativeToDate)
+        {
+            this.i = i;
+            this.relativeToDate = relativeToDate;
+            this.relativeToJulianDay = calendarUtils.getJulianDay(relativeToDate);
+        }
+
+        public Date getRelativeToDate()
+        {
+            return relativeToDate;
+        }
+
+        public int getRelativeToJulianDay()
+        {
+            return relativeToJulianDay;
+        }
+
+        public boolean hasNext()
+        {
+            return i.hasNext();
+        }
+
+        public boolean hasPrevious()
+        {
+            return i.hasPrevious();
+        }
+
+        public Object next()
+        {
+            return nextDate();
+        }
+
+        public Object previous()
+        {
+            return previousDate();
+        }
+
+        public Date getDateForMinutes(int element)
+        {
+            int actualElement = element - beginDateOffsetMinutes;
+
+            if(multipleDays)
+            {
+                int days = actualElement / MINUTES_PER_DAY;
+                int hours = (actualElement - (days * MINUTES_PER_DAY)) / MINUTES_PER_HOUR;
+                int minutes = (actualElement - (days * MINUTES_PER_DAY)) - (hours * MINUTES_PER_HOUR);
+
+                return calendarUtils.getDateFromJulianDay(beginDateOffsetDays + days + relativeToJulianDay, hours, minutes, 0);
+            }
+            else
+            {
+                int hours = actualElement / MINUTES_PER_HOUR;
+                int minutes = actualElement - (hours * MINUTES_PER_HOUR);
+
+                return calendarUtils.getDateFromJulianDay(beginDateOffsetDays + relativeToJulianDay, hours, minutes, 0);
+            }
+        }
+
+        public Date nextDate()
+        {
+            return getDateForMinutes(((Integer) i.next()).intValue());
+        }
+
+        public Date previousDate()
+        {
+            return getDateForMinutes(((Integer) i.previous()).intValue());
+        }
+
+        public void remove()
+        {
+        }
+
+        public String toString()
+        {
+            return calendarUtils.formatDateTime(getDateForMinutes(Integer.parseInt(i.toString())));
+        }
+    }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CalendarUtils.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
+ * $Id: CalendarUtils.java,v 1.4 2004-03-31 14:24:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -48,6 +48,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Manages calendar, date formatting, julian day calculations, and other utility methods. Just like Calendar, Date,
+ * DateFormat, and other utility classes, instances of the CalendarUtils class are not thread safe. It is best to create
+ * an instance per user or create a thread-safe synchronized wrapper if the same instance needs to be reused across
+ * multiple threads.
+ */
 public class CalendarUtils
 {
     private static int JGREG = 2299161; //Julian day of adoption of Gregorian cal.
@@ -58,12 +64,17 @@ public class CalendarUtils
 
     public CalendarUtils(Calendar calendar)
     {
-        this.calendar = calendar;
+        setCalendar(calendar);
     }
 
     public Calendar getCalendar()
     {
         return calendar;
+    }
+
+    public void setCalendar(Calendar calendar)
+    {
+        this.calendar = calendar;
     }
 
     public Date createDate(int month, int day, int year)
@@ -102,6 +113,36 @@ public class CalendarUtils
         calendar.set(Calendar.SECOND, seconds);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
+    }
+
+    public SimpleDateFormat getDateTimeFormat()
+    {
+        return dateTimeFormat;
+    }
+
+    public void setDateTimeFormat(SimpleDateFormat dateTimeFormat)
+    {
+        this.dateTimeFormat = dateTimeFormat;
+    }
+
+    public SimpleDateFormat getDateOnlyFormat()
+    {
+        return dateOnlyFormat;
+    }
+
+    public void setDateOnlyFormat(SimpleDateFormat dateOnlyFormat)
+    {
+        this.dateOnlyFormat = dateOnlyFormat;
+    }
+
+    public SimpleDateFormat getTimeOnlyFormat()
+    {
+        return timeOnlyFormat;
+    }
+
+    public void setTimeOnlyFormat(SimpleDateFormat timeOnlyFormat)
+    {
+        this.timeOnlyFormat = timeOnlyFormat;
     }
 
     public String formatDateTime(Date date)

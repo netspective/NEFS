@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MinuteRangesSetTest.java,v 1.2 2004-03-29 04:34:21 shahid.shah Exp $
+ * $Id: MinuteRangesSetTest.java,v 1.3 2004-03-31 14:24:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -67,11 +67,11 @@ public class MinuteRangesSetTest extends TestCase
         Date beginDate = createDate(0, 1, 2004, 9, 30);
         Date endDate = createDate(0, 1, 2004, 10, 00);
 
-        MinuteRangesSet minutesSet = new MinuteRangesSet();
-        minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
+        MinuteRangesSet minutesSet = new MinuteRangesSet(calendarUtils);
+        minutesSet.applyDateRange(beginDate, endDate);
 
         assertFalse(minutesSet.isMultipleDays());
-        assertEquals("09:30-10:00", minutesSet.toString());
+        assertEquals("0d 09:30-0d 10:00", minutesSet.toString());
     }
 
     public void testMinuteRangesSetMultiDay()
@@ -79,10 +79,34 @@ public class MinuteRangesSetTest extends TestCase
         Date beginDate = createDate(0, 1, 2004, 11, 00);
         Date endDate = createDate(0, 3, 2004, 8, 30);
 
-        MinuteRangesSet minutesSet = new MinuteRangesSet();
-        minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
+        MinuteRangesSet minutesSet = new MinuteRangesSet(calendarUtils);
+        minutesSet.applyDateRange(beginDate, endDate);
 
         assertTrue(minutesSet.isMultipleDays());
         assertEquals("0d 11:00-2d 08:30", minutesSet.toString());
+    }
+
+    public void testMinuteRangesSetSingleDayOffset()
+    {
+        Date beginDate = createDate(0, 1, 2004, 9, 30);
+        Date endDate = createDate(0, 1, 2004, 10, 00);
+
+        MinuteRangesSet minutesSet = new MinuteRangesSet(calendarUtils);
+        minutesSet.applyDateRange(beginDate, 3, endDate);
+
+        assertFalse(minutesSet.isMultipleDays());
+        assertEquals("3d 09:30-3d 10:00", minutesSet.toString());
+    }
+
+    public void testMinuteRangesSetMultiDayOffset()
+    {
+        Date beginDate = createDate(0, 1, 2004, 11, 00);
+        Date endDate = createDate(0, 3, 2004, 8, 30);
+
+        MinuteRangesSet minutesSet = new MinuteRangesSet(calendarUtils);
+        minutesSet.applyDateRange(beginDate, 12, endDate);
+
+        assertTrue(minutesSet.isMultipleDays());
+        assertEquals("12d 11:00-14d 08:30", minutesSet.toString());
     }
 }
