@@ -51,13 +51,14 @@
  */
 
 /**
- * $Id: Command.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
+ * $Id: Command.java,v 1.3 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.StringTokenizer;
 
 import com.netspective.commons.value.ValueContext;
 
@@ -67,7 +68,7 @@ public interface Command
      * Set the active command for the component
      * @param params the parameters being sent to the command
      */
-    public void setParameters(String[] params);
+    public void setParameters(StringTokenizer params);
 
     /**
      * Get the active command for the component
@@ -80,11 +81,4 @@ public interface Command
      * @return parameters delimiter
      */
     public String getParametersDelimiter();
-
-    /**
-     * Render the html for this command
-     * @param vc the value context
-     * @throws IOException
-     */
-    public void handleCommand(ValueContext vc, Writer writer, boolean unitTest) throws CommandException, IOException;
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.3 2003-04-05 14:14:27 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.4 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -50,6 +50,12 @@ import com.netspective.commons.value.source.StaticValueSource;
 public abstract class AbstractTabularReportDataSource implements TabularReportDataSource
 {
     private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
+    protected TabularReportValueContext reportValueContext;
+
+    public AbstractTabularReportDataSource(TabularReportValueContext reportValueContext)
+    {
+        this.reportValueContext = reportValueContext;
+    }
 
     public boolean next()
     {
@@ -61,12 +67,18 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         return 0;
     }
 
-    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
+    public String getHeadingRowColumnData(int columnIndex)
+    {
+        ValueSource vs = reportValueContext.getReport().getColumn(columnIndex).getHeading();
+        return vs != null ? vs.getTextValue(reportValueContext) : null;
+    }
+
+    public Object getActiveRowColumnData(int columnIndex, int flags)
     {
         return null;
     }
 
-    public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName)
+    public Object getActiveRowColumnData(String columnName, int flags)
     {
         throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
     }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.4 2003-04-04 20:12:12 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.5 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -64,16 +64,17 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
 
 public interface TabularReportColumn
 {
     public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
     {
         new Flags.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN),
+        new Flags.FlagDefn(Flags.ACCESS_XDM, "HAS_COMMAND", Flags.HAS_COMMAND),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_PLACEHOLDERS", Flags.HAS_PLACEHOLDERS),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_OUTPUT_PATTERN", Flags.HAS_OUTPUT_PATTERN),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "WRAP_URL", Flags.WRAP_URL),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAVE_ANCHOR_ATTRS", Flags.HAVE_ANCHOR_ATTRS),
         new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAVE_CONDITIONALS", Flags.HAVE_CONDITIONALS),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "PREVENT_WORD_WRAP", Flags.PREVENT_WORD_WRAP),
         new Flags.FlagDefn(Flags.ACCESS_XDM, "ALLOW_SORT", Flags.ALLOW_SORT),
@@ -84,11 +85,10 @@ public interface TabularReportColumn
     public class Flags extends XdmBitmaskedFlagsAttribute
     {
         public static final int HIDDEN = 1;
-        public static final int HAS_PLACEHOLDERS = HIDDEN * 2;
+        public static final int HAS_COMMAND = HIDDEN * 2;
+        public static final int HAS_PLACEHOLDERS = HAS_COMMAND * 2;
         public static final int HAS_OUTPUT_PATTERN = HAS_PLACEHOLDERS * 2;
-        public static final int WRAP_URL = HAS_OUTPUT_PATTERN * 2;
-        public static final int HAVE_ANCHOR_ATTRS = WRAP_URL * 2;
-        public static final int HAVE_CONDITIONALS = HAVE_ANCHOR_ATTRS * 2;
+        public static final int HAVE_CONDITIONALS = HAS_OUTPUT_PATTERN * 2;
         public static final int PREVENT_WORD_WRAP = HAVE_CONDITIONALS * 2;
         public static final int ALLOW_SORT = PREVENT_WORD_WRAP * 2;
         public static final int SORTED_ASCENDING = ALLOW_SORT * 2;
@@ -144,17 +144,13 @@ public interface TabularReportColumn
 
     public void setHeading(ValueSource value);
 
-    public ValueSource getHeadingAnchorAttrs();
+    public Command getHeadingCommand();
 
-    public void setHeadingAnchorAttrs(ValueSource value);
+    public void setHeadingCommand(String command) throws CommandNotFoundException;
 
-    public ValueSource getUrl();
+    public Command getCommand();
 
-    public void setUrl(ValueSource value);
-
-    public ValueSource getUrlAnchorAttrs();
-
-    public void setUrlAnchorAttrs(ValueSource value);
+    public void setCommand(String command) throws CommandNotFoundException;
 
     public int getWidth();
 

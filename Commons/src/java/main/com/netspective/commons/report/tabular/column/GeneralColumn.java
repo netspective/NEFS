@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.8 2003-04-04 20:12:12 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.9 2003-04-06 03:57:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -73,6 +73,9 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.Commands;
+import com.netspective.commons.command.CommandNotFoundException;
 
 public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 {
@@ -97,9 +100,8 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     private int align;
     private int colIndex = -1;
     private ValueSource heading;
-    private ValueSource headingAnchorAttrs;
-    private ValueSource url;
-    private ValueSource urlAnchorAttrs;
+    private Command headingCommand;
+    private Command command;
     private String calcCmd;
     private Format formatter;
     private String outputPattern;
@@ -165,36 +167,24 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         this.heading = heading;
     }
 
-    public ValueSource getHeadingAnchorAttrs()
+    public Command getCommand()
     {
-        return headingAnchorAttrs;
+        return command;
     }
 
-    public void setHeadingAnchorAttrs(ValueSource headingAnchorAttrs)
+    public void setCommand(String command) throws CommandNotFoundException
     {
-        this.headingAnchorAttrs = headingAnchorAttrs;
+        this.command = Commands.getInstance().getCommand(command);;
     }
 
-    public final ValueSource getUrl()
+    public Command getHeadingCommand()
     {
-        return url;
+        return headingCommand;
     }
 
-    public void setUrl(ValueSource url)
+    public void setHeadingCommand(String headingCommand) throws CommandNotFoundException
     {
-        this.url = url;
-        getFlags().updateFlag(Flags.WRAP_URL, url != null);
-    }
-
-    public ValueSource getUrlAnchorAttrs()
-    {
-        return urlAnchorAttrs;
-    }
-
-    public void setUrlAnchorAttrs(ValueSource urlAnchorAttrs)
-    {
-        this.urlAnchorAttrs = urlAnchorAttrs;
-        getFlags().updateFlag(Flags.HAVE_ANCHOR_ATTRS, urlAnchorAttrs != null);
+        this.headingCommand = Commands.getInstance().getCommand(headingCommand);;
     }
 
     public final int getWidth()
@@ -292,7 +282,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
     public String getFormattedData(TabularReportValueContext rc, TabularReportDataSource ds, int flags)
     {
-        Object oData = ds.getActiveRowColumnData(rc, getColIndex(), flags);
+        Object oData = ds.getActiveRowColumnData(getColIndex(), flags);
         String data = oData == null ? "" : oData.toString();
         if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
         {
@@ -326,9 +316,8 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         flags = rc.getFlags();
 
         this.heading = rc.getHeading();
-        this.headingAnchorAttrs = rc.getHeadingAnchorAttrs();
-        this.url = rc.getUrl();
-        this.urlAnchorAttrs = rc.getUrlAnchorAttrs();
+        this.headingCommand = rc.getHeadingCommand();
+        this.command = rc.getCommand();
         this.conditionals = rc.getConditionals();
         setAlign(new AlignStyle(rc.getAlign()));
         setWidth(rc.getWidth());
@@ -363,20 +352,13 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     public class GeneralColumnState implements TabularReportColumnState
     {
         protected TabularReportValueContext rc;
-        protected String heading;
         protected ColumnDataCalculator calc;
         protected Flags flags;
         protected String outputFormat;
-        protected String url;
-        protected String urlAnchorAttrs;
 
         protected GeneralColumnState(TabularReportValueContext rc)
         {
             this.rc = rc;
-
-            ValueSource headingVs = GeneralColumn.this.getHeading();
-            if(headingVs != null)
-                heading = headingVs.getValue(rc).getTextValue();
 
             String calcCmd = getCalcCmd();
             if(calcCmd != null)
@@ -392,14 +374,6 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             {
                 if(flags.flagIsSet(Flags.HAS_OUTPUT_PATTERN))
                     outputFormat = resolvePattern(GeneralColumn.this.getOutput());
-
-                if(flags.flagIsSet(Flags.WRAP_URL))
-                    url = resolvePattern(GeneralColumn.this.getUrl().getValue(rc).getTextValue());
-
-                if(flags.flagIsSet(Flags.HAVE_ANCHOR_ATTRS))
-                    urlAnchorAttrs = resolvePattern(GeneralColumn.this.getUrlAnchorAttrs().getValue(rc).getTextValue());
-                else
-                    urlAnchorAttrs = "";
             }
 
             if(flags.flagIsSet(Flags.HAVE_CONDITIONALS))
@@ -430,24 +404,9 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             return flags;
         }
 
-        public final String getHeading()
-        {
-            return heading;
-        }
-
         public final String getOutputFormat()
         {
             return outputFormat;
-        }
-
-        public final String getUrl()
-        {
-            return url;
-        }
-
-        public final String getUrlAnchorAttrs()
-        {
-            return urlAnchorAttrs;
         }
 
         public String getCssStyleAttrValue()
@@ -470,46 +429,9 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
             return style.toString();
         }
 
-        public final void setHeading(String value)
-        {
-            heading = value;
-        }
-
         public final void setOutputFormat(String value)
         {
             outputFormat = value;
-        }
-
-        public final void setUrl(String value)
-        {
-            url = value;
-
-            if(value != null)
-            {
-                flags.setFlag(Flags.WRAP_URL);
-                url = resolvePattern(value);
-            }
-            else
-            {
-				flags.clearFlag(Flags.WRAP_URL);
-                url = null;
-            }
-        }
-
-        public final void setUrlAnchorAttrs(String value)
-        {
-            urlAnchorAttrs = value;
-            if(value != null)
-            {
-                flags.setFlag(Flags.HAVE_ANCHOR_ATTRS);
-                urlAnchorAttrs = resolvePattern(value);
-            }
-            else
-            {
-	            flags.clearFlag(Flags.HAVE_ANCHOR_ATTRS);
-                urlAnchorAttrs = "";
-            }
-
         }
     }
 }

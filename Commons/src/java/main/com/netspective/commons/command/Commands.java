@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Commands.java,v 1.2 2003-04-02 22:53:22 shahid.shah Exp $
+ * $Id: Commands.java,v 1.3 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.StringTokenizer;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.discovery.tools.DiscoverClass;
@@ -184,7 +185,7 @@ public class Commands implements MetricsProducer
             try
             {
                 Command command = (Command) ccClass.newInstance();
-                if(params != null) command.setParameters(TextUtils.split(params, command.getParametersDelimiter(), false));
+                if(params != null) command.setParameters(new StringTokenizer(params, command.getParametersDelimiter()));
                 return command;
             }
             catch (Exception e)

@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: CommandNotFoundException.java,v 1.1 2003-04-01 01:45:33 shahid.shah Exp $
+ * $Id: CommandNotFoundException.java,v 1.2 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
 
-import org.apache.commons.lang.exception.NestableException;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
-public class CommandNotFoundException extends NestableException
+public class CommandNotFoundException extends NestableRuntimeException
 {
     private String cmdSpecification;
 

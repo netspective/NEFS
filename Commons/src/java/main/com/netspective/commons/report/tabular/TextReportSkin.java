@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextReportSkin.java,v 1.5 2003-04-04 20:12:12 shahid.shah Exp $
+ * $Id: TextReportSkin.java,v 1.6 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -47,19 +47,19 @@ package com.netspective.commons.report.tabular;
 import java.io.IOException;
 import java.io.Writer;
 
+import com.netspective.commons.command.Command;
+
 public class TextReportSkin implements TabularReportSkin
 {
     private String fileExtn;
     private String delimiter;
     private String textQualifier;
-    private boolean firstRowContainsFieldNames;
 
-    public TextReportSkin(String fileExtn, String delimiter, String textQualifier, boolean firstRowContainsFieldNames)
+    public TextReportSkin(String fileExtn, String delimiter, String textQualifier)
     {
         this.fileExtn = fileExtn;
         this.delimiter = delimiter;
         this.textQualifier = textQualifier;
-        this.firstRowContainsFieldNames = firstRowContainsFieldNames;
     }
 
     public String getFileExtension()
@@ -77,11 +77,6 @@ public class TextReportSkin implements TabularReportSkin
         return textQualifier;
     }
 
-    public boolean firstRowContainsFieldNames()
-    {
-        return firstRowContainsFieldNames;
-    }
-
     public String getBlankValue()
     {
         return "";
@@ -92,65 +87,34 @@ public class TextReportSkin implements TabularReportSkin
         return cls.getName();
     }
 
-    public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
+    public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target)
     {
-        if(firstRowContainsFieldNames)
-        {
-            if(!rc.getReport().getFlags().flagIsSet(TabularReport.Flags.FIRST_DATA_ROW_HAS_HEADINGS))
-                produceHeadingRow(writer, rc);
-            else
-                produceHeadingRow(writer, rc, ds);
-        }
-
-        produceDataRows(writer, rc, ds);
-        produceFootRow(writer, rc);
+        return label;
     }
 
-    public void produceHeadingRow(Writer writer, TabularReportValueContext rc) throws IOException
+    public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        TabularReportColumns columns = rc.getColumns();
-        TabularReportColumnState[] states = rc.getStates();
-        int dataColsCount = columns.size();
-        int lastDataCol = dataColsCount - 1;
-
-        StringBuffer row = new StringBuffer();
-        for(int i = 0; i < dataColsCount; i++)
-        {
-            TabularReportColumnState rcs = rc.getState(i);
-            if(! states[i].isVisible())
-                continue;
-
-            String colHeading = rcs.getHeading();
-            if(colHeading != null)
-                writeText(row, colHeading, i < lastDataCol);
-            else
-                writeText(row, getBlankValue(), i < lastDataCol);
-        }
-        writer.write(row.toString());
-        writer.write("\n");
+        produceHeadingRow(writer, rc, ds);
+        produceDataRows(writer, rc, ds);
+        produceFootRow(writer, rc);
     }
 
     public void produceHeadingRow(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
         TabularReportColumns columns = rc.getColumns();
         TabularReportColumnState[] states = rc.getStates();
-
         int dataColsCount = columns.size();
         int lastDataCol = dataColsCount - 1;
-
-        // get the first row (heading)
-        if(!ds.next()) return;
 
         StringBuffer row = new StringBuffer();
         for(int i = 0; i < dataColsCount; i++)
         {
-            TabularReportColumn rcd = columns.getColumn(i);
             if(! states[i].isVisible())
                 continue;
 
-            Object heading = ds.getActiveRowColumnData(rc, rcd.getColIndex(), TabularReportColumn.GETDATAFLAGS_DEFAULT);
-            if(heading != null)
-                writeText(row, heading.toString(), i < lastDataCol);
+            String colHeading = ds.getHeadingRowColumnData(i);
+            if(colHeading != null)
+                writeText(row, colHeading, i < lastDataCol);
             else
                 writeText(row, getBlankValue(), i < lastDataCol);
         }
@@ -183,7 +147,6 @@ public class TextReportSkin implements TabularReportSkin
             StringBuffer row = new StringBuffer();
             for(int i = 0; i < dataColsCount; i++)
             {
-
                 TabularReportColumn column = columns.getColumn(i);
                 TabularReportColumnState state = states[i];
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.6 2003-04-04 20:12:12 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.7 2003-04-06 03:57:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
@@ -48,8 +48,6 @@ import com.netspective.commons.io.Resource;
 import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.xdm.XdmComponentFactory;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSource;
 import junit.framework.TestCase;
 
 import java.io.IOException;
@@ -72,8 +70,9 @@ public class ReportTest extends TestCase
         private int activeRowNum = -1;
         private int lastRowNum;
 
-        public TestReportDataSource()
+        public TestReportDataSource(TabularReportValueContext vc)
         {
+            super(vc);
             for(int i = 0; i < 25; i++)
             {
                 rows.add(new Object[] { "row " + i, new Integer(100 + i), new Double(200 + i + (200.0 + i)/1000.0) });
@@ -93,7 +92,7 @@ public class ReportTest extends TestCase
             return false;
         }
 
-        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
+        public Object getActiveRowColumnData(int columnIndex, int flags)
         {
             return activeRow[columnIndex];
         }
@@ -105,7 +104,7 @@ public class ReportTest extends TestCase
 
 	public void testDataSource()
 	{
-		TabularReportDataSource trds = new TestReportDataSource();
+		TabularReportDataSource trds = new TestReportDataSource(null);
 
 		assertNotNull(trds);
 		assertFalse(trds.isHierarchical());
@@ -116,9 +115,9 @@ public class ReportTest extends TestCase
 			assertEquals(i, trds.getActiveRowNumber());
 
 			// Verify stored data...
-			assertEquals("row " + i, trds.getActiveRowColumnData(null, 0, 0));
-			assertEquals(new Integer(100 + i), trds.getActiveRowColumnData(null, 1, 0));
-			assertEquals(new Double(200 + i + (200.0 + i)/1000.0), trds.getActiveRowColumnData(null, 2, 0));
+			assertEquals("row " + i, trds.getActiveRowColumnData(0, 0));
+			assertEquals(new Integer(100 + i), trds.getActiveRowColumnData(1, 0));
+			assertEquals(new Double(200 + i + (200.0 + i)/1000.0), trds.getActiveRowColumnData(2, 0));
 		}
 	}
 
@@ -170,7 +169,7 @@ public class ReportTest extends TestCase
 
 	public void testReportSkins()
 	{
-		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null);
 		TextReportSkin trSkin = (TextReportSkin) skin;
 
 		assertEquals(".txt", skin.getFileExtension());
@@ -180,7 +179,6 @@ public class ReportTest extends TestCase
 		assertEquals(".txt", trSkin.getFileExtension());
 		assertEquals("\t", trSkin.getDelimiter());
 		assertNull(trSkin.getTextQualifier());
-		assertTrue(trSkin.firstRowContainsFieldNames());
 		assertEquals("", trSkin.getBlankValue());
         assertEquals(String.class.getName(), trSkin.constructClassRef(String.class));
 	}
@@ -189,7 +187,7 @@ public class ReportTest extends TestCase
 	{
 		TabularReport report = (TabularReport) reports.get(0);
 
-		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null);
 		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
 
         assertEquals(0, vc.getListeners().size());
@@ -230,7 +228,7 @@ public class ReportTest extends TestCase
 		expectedSw.write("25\t2,800\t5,305.3\t\n");
 
 		StringWriter sw = new StringWriter();
-		vc.produceReport(sw, new TestReportDataSource());
+		vc.produceReport(sw, new TestReportDataSource(vc));
 		assertEquals(expectedSw.toString(), sw.toString());
 	}
 
@@ -238,7 +236,7 @@ public class ReportTest extends TestCase
 	{
 		TabularReport report = (TabularReport) reports.get(0);
 
-		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null);
 		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
 
 		TabularReportColumns columns = vc.getColumns();
@@ -263,24 +261,6 @@ public class ReportTest extends TestCase
 			assertEquals(i, column.getColIndex());
 			assertNull(column.getConditionals());
 			assertEquals(colHeading[i], column.getHeading().getTextValue(null));
-
-			assertNull(column.getHeadingAnchorAttrs());
-			ValueSource vsHeadingAnchorAttrs = ValueSources.getInstance().getValueSource("strings:one,two,three", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-			column.setHeadingAnchorAttrs(vsHeadingAnchorAttrs);
-			assertEquals(vsHeadingAnchorAttrs, column.getHeadingAnchorAttrs());
-			column.setHeadingAnchorAttrs(null);
-
-			assertNull(column.getUrl());
-			ValueSource vsUrl = ValueSources.getInstance().getValueSource("static:http://developer.netspective.com", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-			column.setUrl(vsUrl);
-			assertEquals(vsUrl, column.getUrl());
-			column.setUrl(null);
-
-			assertNull(column.getUrlAnchorAttrs());
-			ValueSource vsUrlAnchorAttrs = ValueSources.getInstance().getValueSource("static:http://developer.netspective.com", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-			column.setUrlAnchorAttrs(vsUrlAnchorAttrs);
-			assertEquals(vsUrlAnchorAttrs, column.getUrlAnchorAttrs());
-			column.setUrlAnchorAttrs(null);
 
 			assertEquals(0, column.getWidth());
 			column.setWidth(10);
@@ -339,7 +319,7 @@ public class ReportTest extends TestCase
 	{
 		TabularReport report = (TabularReport) reports.get(0);
 
-		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+		TabularReportSkin skin = new TextReportSkin(".txt", "\t", null);
 		TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
 
 		TabularReportColumnState[] trcState = vc.getStates();
@@ -348,26 +328,12 @@ public class ReportTest extends TestCase
 		{
 			assertEquals(trcState[i], vc.getState(i));
 			assertTrue(trcState[i].isVisible());
-			assertEquals(colHeadings[i], trcState[i].getHeading());
-
-			trcState[i].setHeading("Column #" + i);
-			assertEquals("Column #" + i, trcState[i].getHeading());
-			trcState[i].setHeading(colHeadings[i]);
+			assertEquals(colHeadings[i], report.getColumn(i).getHeading().getTextValue(vc));
 
 			String origOutputFormat = trcState[i].getOutputFormat();
 			trcState[i].setOutputFormat("${" + i + "}");
 			assertEquals("${" + i + "}", trcState[i].getOutputFormat());
 			trcState[i].setOutputFormat(origOutputFormat);
-
-			assertNull(trcState[i].getUrl());
-			trcState[i].setUrl("http://developer.netspective.com");
-			assertEquals("http://developer.netspective.com", trcState[i].getUrl());
-			trcState[i].setUrl(null);
-
-            assertEquals("", trcState[i].getUrlAnchorAttrs());
-			trcState[i].setUrlAnchorAttrs("target=\"_blank\"");
-			assertEquals("target=\"_blank\"", trcState[i].getUrlAnchorAttrs());
-			trcState[i].setUrlAnchorAttrs(null);
 
 			if (1 == i || 2 == i)
 				assertEquals("text-align: right;", trcState[i].getCssStyleAttrValue());

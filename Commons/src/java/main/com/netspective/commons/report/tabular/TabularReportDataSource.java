@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.5 2003-04-05 14:14:27 shahid.shah Exp $
+ * $Id: TabularReportDataSource.java,v 1.6 2003-04-06 03:57:43 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -81,21 +81,26 @@ public interface TabularReportDataSource
     public int getActiveRowNumber();
 
     /**
+     * Retrieve data for the heading row's columns based on a column index.
+     * @param columnIndex The column we're interested in (0-based)
+     * @return The column's heading as text
+     */
+    public String getHeadingRowColumnData(int columnIndex);
+
+    /**
      * Retrieve data for one of the current row's columns based on a column index.
-     * @param vc The value context of the report
      * @param columnIndex The column we're interested in (0-based)
      * @return The raw data the report can use to put into the report
      */
-    public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags);
+    public Object getActiveRowColumnData(int columnIndex, int flags);
 
     /**
      * Retrieve data for one of the current row's columns based on a column name (may throw an exception if not
      * supported).
-     * @param vc The value context of the report
      * @param columnName The name of the column we're interested in
      * @return The raw data the report can use to put into the report
      */
-    public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName);
+    public Object getActiveRowColumnData(String columnName, int flags);
 
     /**
      * Return true if this data source has some structure
