@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.1 2004-02-23 14:22:28 robert.yuhasz Exp $
+ * $Id: AppTheme.java,v 1.2 2004-07-11 16:21:44 jeremy.d.hulick Exp $
  */
 
 package app;
@@ -47,7 +47,6 @@ package app;
 import app.AppNavigationSkin;
 
 import com.netspective.sparx.theme.basic.BasicTheme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.navigate.NavigationSkin;
 
 public class AppTheme extends BasicTheme
