@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.4 2003-03-20 20:42:04 shahbaz.javeed Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.5 2003-03-20 20:54:19 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -136,6 +136,11 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userRoles;
     }
 
+    public BitSet createPermissionsBitSet(AccessControlListsManager aclsManager)
+    {
+        return new BitSet(aclsManager.getAccessControlLists().getHighestPermissionId());
+    }
+
     public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
     {
         userRoles = roles;
@@ -143,7 +148,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
             return;
 
         if(userPermissions == null)
-            userPermissions = new BitSet(aclsManager.getAccessControlLists().getHighestPermissionId());
+            userPermissions = createPermissionsBitSet(aclsManager);
 
         for(int i = 0; i < userRoles.length; i++)
         {
@@ -171,7 +176,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
 
 	    // Clear all permissions until the shakeup is complete...
-	    userPermissions.clear();
+        userPermissions = createPermissionsBitSet(aclsManager);
 
         if(roles == userRoles)
         {
