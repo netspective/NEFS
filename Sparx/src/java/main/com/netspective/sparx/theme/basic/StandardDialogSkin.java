@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.34 2004-07-14 20:58:55 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.35 2004-07-26 13:37:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -441,58 +441,70 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
     public String getPopupHtml(DialogContext dc, DialogField field)
     {        
-        DialogFieldPopup popup = field.getPopup();
-        if (popup == null)
+        DialogFieldPopup[] popup = field.getPopups();
+
+        if (popup == null || popup.length == 0)
             return null;
 
-        String expression = "new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
-                "', '" + popup.getAction().getTextValueOrBlank(dc) + "', '" + popup.getWindowClass() + "', " + popup.isCloseAfterSelect() +
-                ", " + popup.isAllowMulti() + ", ";
-
-        StringBuffer expressionBuffer = new StringBuffer();
-        String[] fillFields = popup.getFill();
-        if (fillFields != null && fillFields.length > 0)
+        StringBuffer html = new StringBuffer();
+        StringBuffer expression = null;
+        for (int i=0; i < popup.length; i++)
         {
-            expressionBuffer.append("new Array(");
-            for (int i = 0; i < fillFields.length; i++)
+            expression = new StringBuffer("new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
+                "', '" + popup[i].getAction().getTextValueOrBlank(dc) + "', '" + popup[i].getWindowClass() + "', " + popup[i].isCloseAfterSelect() +
+                ", " + popup[i].isAllowMulti() + ", ");
+
+            StringBuffer tmpBuffer = new StringBuffer();
+            String[] fillFields = popup[i].getFill();
+            if (fillFields != null && fillFields.length > 0)
             {
-                expressionBuffer.append("'" + fillFields[i] + (i < fillFields.length - 1 ? "', " : "'"));
+                tmpBuffer.append("new Array(");
+                for (int k = 0; k < fillFields.length; k++)
+                    tmpBuffer.append("'" + fillFields[k] + (k < fillFields.length - 1 ? "', " : "'"));
+                tmpBuffer.append(")");
             }
-            expressionBuffer.append(")");
-        }
-        else
-            expressionBuffer.append("null");
-        expression += expressionBuffer.toString() + ", ";
+            else
+                tmpBuffer.append("null");
+            expression.append(tmpBuffer.toString() + ", ");
 
-        expressionBuffer = new StringBuffer();
-        String[] extractFields = popup.getExtract();
-        // append the list of extract fields if they exist
-        if (extractFields != null && extractFields.length > 0)
-        {
-            StringBuffer buf = new StringBuffer(expression);
-            buf.append(", new Array(");
-            for (int i = 0; i < extractFields.length; i++)
+            tmpBuffer = new StringBuffer();
+            String[] extractFields = popup[i].getExtract();
+            // append the list of extract fields if they exist
+            if (extractFields != null && extractFields.length > 0)
             {
-                buf.append("'" + extractFields[i] + (i < extractFields.length - 1 ? "', " : "'"));
+                tmpBuffer.append("new Array(");
+                for (int k = 0; k < extractFields.length; k++)
+                {
+                    tmpBuffer.append("'" + extractFields[k] + (k < extractFields.length - 1 ? "', " : "'"));
+                }
+                tmpBuffer.append(")");
             }
-            buf.append(")");
-            expression = buf.toString();
+            else
+                tmpBuffer.append("null");
+            expression.append(tmpBuffer.toString() + ", ");
+
+            // append evaluation script
+            if (popup[i].getPreActionScript() != null)
+                expression.append("'" + popup[i].getPreActionScript() +  "'");
+            else
+                expression.append("null");
+            expression.append(")");
+
+            if (popup[i].getStyle().getValueIndex() == DialogFieldPopup.Style.TEXT)
+            {
+                html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +
+                    ";return false;\">"+  popup[i].getStyleText().getTextValue(dc) + "</a>&nbsp;");
+            }
+            else
+            {
+                String imageUrl = popup[i].getImageSrc().getTextValue(dc);
+                if (imageUrl == null)
+                    imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
+                html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +
+                    ";return false;\"><img border='0' src='" + imageUrl + "' alt='pop-up'></a>&nbsp;");
+            }
         }
-        else
-            expressionBuffer.append("null");
-        expression += expressionBuffer.toString() + ", ";
-
-        // append evaluation script
-        if (popup.getPreActionScript() != null)
-            expression = expression + "'" + popup.getPreActionScript() +  "'";
-
-        expression += ")";
-
-        String imageUrl = popup.getImageSrc().getTextValue(dc);
-        if (imageUrl == null)
-            imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
-
-        return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "' alt='pop-up'></a>&nbsp;";
+        return html.toString();
     }
 
     public void appendFieldHtml(DialogContext dc, DialogField field, StringBuffer fieldsHtml, StringBuffer fieldsJSDefn, List fieldErrorMsgs) throws IOException
