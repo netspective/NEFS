@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.54 2003-06-21 23:41:32 shahid.shah Exp $
+  * $Id: console.xml,v 1.55 2003-06-22 04:29:34 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -370,7 +370,7 @@
         <dialog name="ant-build" class="com.netspective.sparx.console.form.AntBuildDialog">
             <frame heading="Ant Build"/>
             <field name="project" type="text" caption="Ant Project File" read-only="yes" default="servlet-context-path:/WEB-INF/build.xml"/>
-            <field name="target" type="select" caption="Execute Target" style="radio" choices="ant-build-project-targets:" required="yes"/>
+            <field name="target" type="select" caption="Execute Target" style="radio" choices="ant-build-project-targets:servlet-context-path:/WEB-INF/build.xml" required="yes"/>
         </dialog>
     </dialogs>
 
