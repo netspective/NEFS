@@ -131,7 +131,7 @@
 
     <target name="generate-all" depends="generate-auto-classes,generate-sql-ddl,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
 
-    <target name="create-database-hsqldb" depends="generate-sql-ddl" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
+    <target name="create-database-hsqldb" depends="generate-sql-ddl,generate-import-data-dtd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
         <property name="app.database.instance.path" value="${app.database.home}/instance"/>
         <property name="jdbc.driver" value="org.hsqldb.jdbcDriver"/>
         <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/${app.database.default-schema-name}"/>
