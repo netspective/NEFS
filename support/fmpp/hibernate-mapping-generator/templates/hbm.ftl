@@ -58,7 +58,7 @@
         <#if column.foreignKey.type = FKEYTYPE_PARENT || column.isRequiredByApp() || column.isPrimaryKey()>
             <#assign notNull="true"/>
         </#if>
-        <many-to-one name="${parentSrcCol.javaPropertyName}"
+        <many-to-one name="${parentSrcCol.getJavaPropertyName(textUtils.xmlTextToJavaIdentifier(parentRefCol.table.name, false))}"
                      column="${parentSrcCol.name}"
                      class="${package}.${textUtils.xmlTextToJavaIdentifier(parentRefCol.table.name, true)}" not-null="${notNull}"/>
     <#else>
