@@ -50,6 +50,8 @@ import org.xml.sax.SAXException;
 
 import com.netspective.axiom.ConnectionProviderEntryStatistics;
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.sql.StoredProceduresNameSpace;
@@ -155,7 +157,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         }
     }
 
-    protected static class DialogTypeTemplate extends TemplateProducer
+    public static class DialogTypeTemplate extends TemplateProducer
     {
         public DialogTypeTemplate()
         {
@@ -179,7 +181,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         }
     }
 
-    protected static class DialogFieldTypeTemplate extends TemplateProducer
+    public static class DialogFieldTypeTemplate extends TemplateProducer
     {
         public DialogFieldTypeTemplate()
         {
@@ -237,6 +239,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private HtmlTabularReportDataSourceScrollStates scrollStates = new HtmlTabularReportDataSourceScrollStatesManager();
     private Set countLinesInFileExtn = new HashSet();
     private boolean ignoreCaseInFileExtn = true;
+    private String defaultDbPolicy;
     private Map clientServiceRequestHandlers = new HashMap();
 
     public Project()
@@ -350,6 +353,16 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void setDefaultTheme(String defaultTheme)
     {
         getThemes().setDefaultTheme(defaultTheme);
+    }
+
+    public void setDefaultDatabasePolicy(String policyName)
+    {
+        this.defaultDbPolicy = policyName;
+    }
+
+    public DatabasePolicy getDefaultDatabasePolicy()
+    {
+        return DatabasePolicies.getInstance().getDatabasePolicy(defaultDbPolicy);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
