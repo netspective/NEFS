@@ -11,6 +11,10 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.DialogsNameSpace;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.sql.QueriesPackage;
+import com.netspective.sparx.Project;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 public class PanelEditorsPackage
 {
@@ -83,12 +87,23 @@ public class PanelEditorsPackage
         return dialogsPkg;
     }
 
-    public ReportPanelEditor createPanelEditor()
+    public PanelEditor createPanelEditor()
     {
-        return new ReportPanelEditor(container.getProject(), this);
+        return new PanelEditor(container.getProject(), this);
     }
 
-    public void addPanelEditor(ReportPanelEditor panel)
+    public PanelEditor createPanelEditor(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(PanelEditor.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { Project.class, PanelEditorsPackage.class });
+            return (PanelEditor) c.newInstance(new Object[] { container.getProject(), this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
+    }
+
+    public void addPanelEditor(PanelEditor panel)
     {
         panel.setNameSpace(this);
         container.add(panel);

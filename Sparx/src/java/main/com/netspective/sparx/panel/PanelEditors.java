@@ -96,7 +96,7 @@ public class PanelEditors implements MetricsProducer
      *
      * @param panel
      */
-    public void add(ReportPanelEditor panel)
+    public void add(PanelEditor panel)
     {
         panels.add(panel);
         byName.put(panel.getNameForMapKey(), panel);
@@ -108,9 +108,6 @@ public class PanelEditors implements MetricsProducer
             ((ArrayList) byNameSpace.get(nameSpaceId)).add(panel);
             nameSpaceNames.add(panel.getNameSpace().getNameSpaceId());
         }
-        //  add the panels' defined query to the project's list of queries
-        //getProject().getQueries().add(panel.getQuery());
-
     }
 
     /**
@@ -119,9 +116,9 @@ public class PanelEditors implements MetricsProducer
      * @param i
      * @return
      */
-    public ReportPanelEditor get(int i)
+    public PanelEditor get(int i)
     {
-        return (ReportPanelEditor) panels.get(i);
+        return (PanelEditor) panels.get(i);
     }
 
     /**
@@ -130,9 +127,9 @@ public class PanelEditors implements MetricsProducer
      * @param name
      * @return
      */
-    public ReportPanelEditor get(String name)
+    public PanelEditor get(String name)
     {
-        return (ReportPanelEditor) byName.get(ReportPanelEditor.translateNameForMapKey(name));
+        return (PanelEditor) byName.get(ReportPanelEditor.translateNameForMapKey(name));
     }
 
     /**

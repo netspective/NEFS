@@ -39,22 +39,63 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.8 2004-03-05 20:18:27 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.9 2004-03-06 17:16:28 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.sparx.Project;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
+import com.netspective.commons.xml.template.TemplateCatalog;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public abstract class PanelEditor extends AbstractPanel
+import java.util.List;
+import java.util.ArrayList;
+import java.io.Writer;
+import java.io.IOException;
+
+/**
+ * Base class for custom panel editors. This class is meant to be EXTENDED to create new panel editor types. This does not
+ * define a complete panel editor behavior since the content editing will be up to the child class to implement. The
+ * constructor's of this class are all protected and only meant to be instantiated by the PanelEditorsPackage.
+ *
+ */
+public class PanelEditor extends AbstractPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
+    public static final String PANELTYPE_TEMPLATE_NAMESPACE = PanelEditor.class.getName();
+    public static final String PANELTYPE_ATTRNAME_TYPE = "type";
+    public static final String[] PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
+    public static final PanelEditorTypeTemplateConsumerDefn panelEditorTemplateConsumer = new PanelEditorTypeTemplateConsumerDefn();
+
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(panelEditorTemplateConsumer, PanelEditor.class, true, true);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
+    }
+
+    protected static class PanelEditorTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public PanelEditorTypeTemplateConsumerDefn()
+        {
+            super(PANELTYPE_TEMPLATE_NAMESPACE, PANELTYPE_ATTRNAME_TYPE, PANELTYPE_ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+
+        public String getNameSpaceId()
+        {
+            return PanelEditor.class.getName();
+        }
+    }
+
     protected static final Log log = LogFactory.getLog(ReportPanelEditor.class);
     public static final String PANEL_RECORD_EDIT_ACTION     = "Edit";
     public static final String PANEL_CONTENT_ADD_ACTION      = "Add";
@@ -99,8 +140,10 @@ public abstract class PanelEditor extends AbstractPanel
     /* indicates what request parameter is required for this panel */
     private String requireRequestParam = null;
 
+    /* all available panel editor types */
+    private List panelEditorTypes = new ArrayList();
 
-    public PanelEditor(Project project)
+    protected PanelEditor(Project project)
     {
         this.project = project;
     }
@@ -108,11 +151,23 @@ public abstract class PanelEditor extends AbstractPanel
     /**
      *
      */
-    public PanelEditor(Project project, PanelEditorsPackage pkg)
+    protected PanelEditor(Project project, PanelEditorsPackage pkg)
     {
         this(project);
         setNameSpace(pkg);
     }
+
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return panelEditorTemplateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        panelEditorTypes.add(template.getTemplateName());
+    }
+
 
     /**
     * Calculate the mode the record editor panel is in and also set the
@@ -308,7 +363,10 @@ public abstract class PanelEditor extends AbstractPanel
      * @param actionMode    the mode  for which the URL is being calculated
      * @return              url string (containing context sensitive elements) used to construct a redirect value source
      */
-    public abstract String generatePanelActionUrl(NavigationContext nc, int actionMode);
+    public String generatePanelActionUrl(NavigationContext nc, int actionMode)
+    {
+        return null;
+    }
 
     public static String calculateNextMode(DialogContext dc, String panelName, String panelMode, String prevMode,
                                          String panelRecordKey)
@@ -343,14 +401,14 @@ public abstract class PanelEditor extends AbstractPanel
      *
      * @param nc
      */
-    public abstract void createPanelContentActions(NavigationContext nc);
+    public void createPanelContentActions(NavigationContext nc) {}
 
     /**
      * Creates actions to be defined in the frame of the panel
      *
      * @param nc
      */
-    public abstract void createPanelFrameActions(NavigationContext nc);
+    public  void createPanelFrameActions(NavigationContext nc) {}
 
 
     /**
@@ -358,7 +416,17 @@ public abstract class PanelEditor extends AbstractPanel
      *
      * @param nc    current navigation context
      */
-    public abstract void createPanelBannerActions(NavigationContext nc);
+    public void createPanelBannerActions(NavigationContext nc){}
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
+    {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
     /**
      * Calculate and process the state of the all the panel actions based on current context

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.45 2004-03-03 16:06:56 aye.thu Exp $
+ * $Id: Project.java,v 1.46 2004-03-06 17:19:59 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -130,6 +130,7 @@ import java.util.Set;
 public class Project extends SqlManager implements NavigationTreesManager, ConsoleManager, DialogsManager, XmlDataModelSchema.ConstructionFinalizeListener, LoginManagersManager
 {
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
+    public static final String TEMPLATEELEMNAME_PANEL_EDITOR_TYPE = "panel-editor-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
     public static final String TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER = "dialog-execute-handler";
     public static final String TEMPLATEELEMNAME_PAGE_BODY_HANDLER = "page-body-handler";
@@ -139,6 +140,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     private static final Log log = LogFactory.getLog(Project.class);
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
+    private static final PanelEditorTypeTemplate PANEL_EDITOR_TYPES = new PanelEditorTypeTemplate();
     private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
     private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
     private static final NavigationPageBodyHandlerTemplate PAGE_BODY_HANDLERS = new NavigationPageBodyHandlerTemplate();
@@ -151,6 +153,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public PanelTypeTemplate()
         {
             super(HtmlPanel.class.getName(), TEMPLATEELEMNAME_PANEL_TYPE, "name", "extends", true, false);
+        }
+    }
+
+    protected static class PanelEditorTypeTemplate extends TemplateProducer
+    {
+        public PanelEditorTypeTemplate()
+        {
+            super(PanelEditor.class.getName(), TEMPLATEELEMNAME_PANEL_EDITOR_TYPE, "name", "extends", true, false);
         }
     }
 
@@ -206,6 +216,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     {
         NetspectiveComponent.getInstance().registerProduct(com.netspective.sparx.ProductRelease.PRODUCT_RELEASE);
         templateProducers.add(PANEL_TYPES);
+        templateProducers.add(PANEL_EDITOR_TYPES);
         templateProducers.add(DIALOG_TYPES);
         templateProducers.add(DIALOG_EXECUTE_HANDLERS);
         templateProducers.add(PAGE_BODY_HANDLERS);
@@ -297,6 +308,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public PanelTypeTemplate getPanelTypes()
     {
         return PANEL_TYPES;
+    }
+
+    public PanelEditorTypeTemplate getPanelEditorTypes()
+    {
+        return PANEL_EDITOR_TYPES;
     }
 
     public DialogFieldConditionalActionTemplate getFieldConditionalActions()
@@ -476,14 +492,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public PanelEditor getPanelEditor(final String name)
     {
         String actualName = PanelEditor.translateNameForMapKey(name);
-        PanelEditor dialog = panelEditors.get(actualName);
+        PanelEditor pe = panelEditors.get(actualName);
 
-        if(dialog == null && log.isDebugEnabled())
+        if(pe == null && log.isDebugEnabled())
         {
             log.debug("Unable to find panel editor '"+ name +"' as '"+ actualName +"'. Available: " + panelEditors);
             return null;
         }
-        return dialog;
+        return pe;
     }
 
     public PanelEditorsPackage createPanelEditors()

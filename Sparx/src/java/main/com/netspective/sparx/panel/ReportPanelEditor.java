@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ReportPanelEditor.java,v 1.2 2004-03-05 20:18:45 aye.thu Exp $
+ * $Id: ReportPanelEditor.java,v 1.3 2004-03-06 17:16:28 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -85,15 +85,6 @@ import java.io.Writer;
 
 public class ReportPanelEditor extends PanelEditor
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
-
-    static
-    {
-        XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreAttributes(new String[] {  });
-        XML_DATA_MODEL_SCHEMA_OPTIONS.addIgnoreNestedElements(new String[] {  });
-    }
-
     /* default name assigned to the query defined in the panel editor */
     public static final String DEFAULT_QUERY_NAME = "panel-editor-query";
 
