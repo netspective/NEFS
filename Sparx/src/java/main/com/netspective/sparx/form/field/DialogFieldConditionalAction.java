@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.7 2003-06-09 06:41:18 aye.thu Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.8 2003-06-10 03:51:41 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -73,7 +73,6 @@ public class DialogFieldConditionalAction implements TemplateConsumer
     private DialogField sourceField = null;
     private DialogField partnerField = null;
     private String partnerFieldName = null;
-    private String jsExpr = null;
     private String name;
 
     public static final String ATTRNAME_TYPE = "action";
@@ -194,17 +193,6 @@ public class DialogFieldConditionalAction implements TemplateConsumer
         if(partnerField != null)
             partnerField.getDependentConditions().addAction(this);
     }
-
-    public String getJsExpr()
-    {
-        return jsExpr;
-    }
-
-    public void setJsExpr(String jsExpr)
-    {
-        this.jsExpr = jsExpr;
-    }
-
 
     public String getName()
     {
