@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableTest.java,v 1.1 2003-06-20 21:00:50 roque.hernandez Exp $
+ * $Id: SchemaTableTest.java,v 1.2 2003-06-26 05:06:13 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -50,14 +50,18 @@ import com.netspective.axiom.schema.column.*;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.value.exception.ValueException;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import junit.framework.TestCase;
 
@@ -68,6 +72,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.lang.reflect.InvocationTargetException;
 
 public class SchemaTableTest extends TestCase
 {
@@ -105,11 +111,112 @@ public class SchemaTableTest extends TestCase
         assertEquals("One", rows.getEnumerationsPresentationValue().getTextValues()[1]);
         assertEquals("Two", rows.getEnumerationsPresentationValue().getTextValues()[2]);
         assertNotNull(rows.getEnumerationsValue());
+    }
 
-        //Row row = table.createRow();
-        //EnumerationIdRefColumn.EnumerationIdRefValue colValue = (EnumerationIdRefColumn.EnumerationIdRefValue) row.getColumnValues().getByName("enumIdRef");
-        //assertEquals(colValue.getValueHolderClass(), Integer.class);
-        //EnumerationIdRefColumn col = (EnumerationIdRefColumn) table.getColumns().getByName("enumIdRef");
+    public void testBasicTable() throws NamingException, SQLException
+    {
+        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
+        BasicTable table2 = (BasicTable)populatedSchema.getTables().getByName("Enum_set_Lookup");
+
+        //Test getTableTypes Method
+        assertEquals("Default", table.getTableTypes().get(0));
+
+        //For this particular table there is no ParentColumn.  Need to create a scenario where this is not null and assert
+        assertNull(table.getParentColumn());
+
+        table.setXmlNodeName("Test-Three");
+        assertEquals("Test-Three",table.getXmlNodeName());
+
+        assertEquals("This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.",table.getDescription());
+
+        assertNotNull(table.getForeignKeyColumns().getByName("rec_stat_id"));
+        assertNotNull(table.getForeignKeyColumns().getByName("enumIdRef"));
+
+        try
+        {
+            table.createColumn(Byte.class);
+            fail();
+        }
+        catch (RuntimeException e)
+        {
+            //This is good
+        }
+        catch (NoSuchMethodException e)
+        {
+            fail();
+        }
+        catch (InstantiationException e)
+        {
+            fail();
+        }
+        catch (IllegalAccessException e)
+        {
+            fail();
+        }
+        catch (InvocationTargetException e)
+        {
+            fail();
+        }
+
+        assertTrue(table.isParentTable());
+        assertTrue(!table2.isParentTable());
+
+        TableHierarchyReference hierarchy = table.createHierarchy();
+        assertNotNull(hierarchy);
+        assertSame(hierarchy, table.getHierarchy());
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+        Row initialRow = table.createRow();
+        QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));
+        QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
+        ResultSet rs = qrs.getResultSet();
+        if (rs.next())
+            initialRow.getColumnValues().populateValues(rs,1);
+
+
+        Row row = table.createRow();
+        row = table.getRowByPrimaryKeys(cc,initialRow.getPrimaryKeyValues(),row);
+
+        assertEquals(initialRow, row);
+
+        assertTrue(!table.dataChangedInStorage(cc, row));
+        row.getColumnValues().getByName("column_a").setTextValue("cba");
+        assertTrue(table.dataChangedInStorage(cc, row));
+
+
+        table.refreshData(cc, row);
+        assertEquals(initialRow, row);
+
+        Rows rows = table.createRows();
+        assertNotNull(rows);
+
+        ColumnsCollection columns = new ColumnsCollection();
+        columns.add(table.getColumns().getByName("column_a"));
+        columns.add(table.getColumns().getByName("column_b"));
+        table.getAccessorByColumnsEquality(columns);
+
+        //TODO: Need to do some assertion on the columns accessor
+        //QueryResultSet qrs3 = query.execute(dbvc, new Object[]{"abc","a"}, false);
+        //ResultSet rs3 = qrs3.getResultSet();
+        //if (rs3.next())
+        //    initialRow.getColumnValues().populateValues(rs,1);
+
+        try
+        {
+            assertNotNull(table.createAccessor());
+        }
+        catch (QueryDefinitionException e)
+        {
+            fail();
+        }
+
+        //getRowByPrimaryKeys
+        //getRowByPrimaryKeys
+
     }
 
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.7 2003-06-20 04:08:39 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.8 2003-06-26 05:06:13 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -546,7 +546,7 @@ public class SchemaColumnsTest extends TestCase
 
         assertTrue(cols.contains(col2));
 
-        assertEquals("cr-stamp|rec-stat-id|auto-inc-column|text-set-column|enum-set-column|column-a|enumidref", cols.getOnlyXmlNodeNames("|"));
+        assertEquals("cr-stamp|rec-stat-id|auto-inc-column|text-set-column|enum-set-column|column-a|enumidref|column-b", cols.getOnlyXmlNodeNames("|"));
 
         int byName = cols.getColumnIndexInRowByName("column_a");
         int byXml = cols.getColumnIndexInRowByNameOrXmlNodeName("column-a");
