@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.17 2003-08-10 21:10:45 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.18 2003-08-18 05:32:54 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -160,9 +160,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         controlAreaFontAttrs = "size='2' face='tahoma,arial,helvetica' style='font-size:8pt' ";
 
         controlAreaStyleAttrs = "";
-        controlAreaStyleClass = "dialog_control";
-        controlAreaRequiredStyleClass = "dialog_control_required";
-        controlAreaReadonlyStyleClass = "dialog_control_readonly";
+        controlAreaStyleClass = "dialog-input";
+        controlAreaRequiredStyleClass = "dialog-input-required";
+        controlAreaReadonlyStyleClass = "dialog-input-readonly";
 
         controlAttrs = " onfocus='return controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
                 "onblur='controlOnBlur(this, event)' onkeypress='controlOnKeypress(this, event)' onclick='controlOnClick(this, event) '";
