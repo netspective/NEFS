@@ -51,14 +51,13 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReport.java,v 1.5 2003-07-11 05:29:38 aye.thu Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.6 2003-07-11 14:36:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
 import com.netspective.commons.report.tabular.AbstractTabularReport;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.sparx.report.tabular.destination.HtmlReportAction;
 
 public class BasicHtmlTabularReport extends AbstractTabularReport implements HtmlTabularReport
 {

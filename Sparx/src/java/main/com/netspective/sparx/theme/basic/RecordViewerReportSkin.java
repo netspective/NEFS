@@ -5,7 +5,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.destination.HtmlReportAction;
+import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelActions;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordViewerReportSkin.java,v 1.1 2003-07-11 05:26:04 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.2 2003-07-11 14:37:46 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
