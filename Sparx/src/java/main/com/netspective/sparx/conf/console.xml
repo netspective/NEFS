@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.102 2003-10-11 14:41:53 shahid.shah Exp $
+  * $Id: console.xml,v 1.103 2003-10-12 18:10:07 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -112,6 +112,15 @@
                 </page>
 	        </page>
 
+            <page name="panels" caption="Panels">
+                <page name="catalog" caption="Catalog" heading="Panel Types Catalog" retain-params="type-name">
+                    <body config="console" source="console-page-content:../catalog.ftl"/>
+                </page>
+                <page name="documentation" caption="Documentation" heading="Panel Type Documentation" retain-params="type-name">
+                    <body config="console" source="console-page-content:../documentation.ftl"/>
+                </page>
+            </page>
+
 	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
                 <page name="catalog" caption="Catalog" heading="Dialogs Catalog" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
@@ -127,7 +136,6 @@
 	        </page>
 
             <page name="reports" caption="Reports"/>
-	        <page name="panels" caption="Panels"/>
 	        <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
             <page name="template-engines" caption="Template Engines"/>
         </page>

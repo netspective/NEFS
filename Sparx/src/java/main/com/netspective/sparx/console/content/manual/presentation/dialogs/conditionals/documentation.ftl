@@ -20,7 +20,7 @@
     <b>Conditional Actions</b>
     <p>
     <#list vc.project.conditionalActions.instances as action>
-        <@xdmStructure className=action.attributes.getValue("class") heading="&lt;conditional action='${action.templateName}'&gt;" expandFlagAliases='no'/>
+        <@xdmStructure className=action.alternateClassName heading="&lt;conditional action='${action.templateName}'&gt;" expandFlagAliases='no'/>
         <p>
     </#list>
 

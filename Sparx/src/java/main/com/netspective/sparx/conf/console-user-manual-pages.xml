@@ -79,10 +79,10 @@
 	        <page name="navigation" caption="Navigation">
                 <panels>
                     <panel type="console-page-summary"/>
+                    <panel type="console-children-summaries">
+                        <frame heading="Navigation Features"/>
+                    </panel>
                 </panels>
-
-                <page name="catalog" caption="Catalog"/>
-                <page name="test" caption="Unit Test"/>
 	        </page>
 
 	        <page name="dialogs" caption="Dialogs" retain-params="selected-dialog-id">

@@ -8,17 +8,16 @@
     <td class="report-column-${classSuffix}">
         <nobr>
         <#if activePage.level gt 0>
-        <#list 1..activePage.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
-        </#if>
-        <#if activePage.childrenList?size gt 0>
-            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
-        <#else>
-            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
-        </#if>
-        <#if activePage.name = ''>
-            <a href="${vc.consoleUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
-        <#else>
+            <#list 1..activePage.level as i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</#list>
+            <#if activePage.childrenList?size gt 0>
+                <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
+            <#else>
+                <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
+            </#if>
             <a href="${vc.consoleUrl}/presentation/navigation/inspector${activePage.qualifiedNameIncludingTreeId}">${activePage.name}</a>
+        <#else>
+            <img src="${vc.activeTheme.getResourceUrl('/images/navigation/tree.gif')}"/>
+            <a href="${vc.consoleUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
         </#if>
         </nobr>
     </td>

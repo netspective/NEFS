@@ -77,6 +77,54 @@
 
 <!--
  ****************************************************************************************
+ ** MACRO: templateProducerInstances
+ ** PARAMS: templateProducer
+ ****************************************************************************************
+ -->
+<#macro templateProducerInstances templateProducer consumerTag consumerTagNameAttr="type" caption="Type" detail="-" detailUrl="documentation?type-name=" noDetailMessage="-">
+<div class="textbox">
+    <#assign instancesMap = templateProducer.instancesMap/>
+    <#if detail != '-'>
+        <#assign template = instancesMap.get(detail)/>
+        <#assign className = template.alternateClassName/>
+        <@xdmStructure className=className heading="Documentation for &lt;${consumerTag} ${consumerTagNameAttr}='${detail}'&gt;" expandFlagAliases='yes' inputSourceLocator=template.inputSourceLocator/>
+    <#else>
+        <#if noDetailMessage != '-'>
+            ${noDetailMessage}
+        <#else>
+            <@reportTable>
+            <#assign classSuffix="odd"/>
+                <tr>
+                    <td class="report-column-heading">${caption}</td>
+                    <td class="report-column-heading">Class</td>
+                    <td class="report-column-heading">Description</td>
+                </tr>
+            <#list instancesMap.keySet().iterator() as typeName>
+                <tr>
+                    <td class="report-column-${classSuffix}">
+                        <a href="${detailUrl}${typeName}"><b>${typeName}</b></a>
+                    </td>
+                    <td class="report-column-${classSuffix}">
+                        <@classReference className=instancesMap.get(typeName).alternateClassName/>
+                    </td>
+                    <td class="report-column-${classSuffix}">
+                        <@classDescription className=instancesMap.get(typeName).alternateClassName/>
+                    </td>
+                </tr>
+                <#if classSuffix = 'odd'>
+                    <#assign classSuffix='even'/>
+                <#else>
+                    <#assign classSuffix='odd'/>
+                </#if>
+            </#list>
+            </@reportTable>
+        </#if>
+    </#if>
+</div>
+</#macro>
+
+<!--
+ ****************************************************************************************
  ** MACRO: xdmChildStructure
  ** PARAMS: parentClassName (the name of the class the structure is being requested for)
  ** PARAMS: childElementName (the name of the child element that should be displayed)
@@ -109,7 +157,7 @@
 
         <!-- start from 1 because of the leading / -->
         <#list 1..tagsList?size-1 as index>
-            ${separator}<code>&lt;<a href="?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
+            ${separator}<code>&lt;<a href="${vc.consoleUrl}/reference?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}">${tagsList[index]}</a>&gt;</code>
             <#assign activeTags = "${activeTags}/${tagsList[index]}"/>
             <#assign activeClasses = "${activeClasses}/${classesList[index]}"/>
         </#list>
@@ -123,7 +171,7 @@
  ** PARAMS: heading (the heading to display above the description of the class)
  ****************************************************************************************
  -->
-<#macro xdmStructure className tag="" heading="" expandFlagAliases="yes" parentTags="" parentXdmClasses="">
+<#macro xdmStructure className tag="" heading="" expandFlagAliases="yes" parentTags="" parentXdmClasses="" inputSourceLocator="-">
 <div class="textbox">
 
     <#assign schema = getXmlDataModelSchema(className)/>
@@ -156,7 +204,10 @@
             <td colspan=2>${schema.javaDoc.description?default('&nbsp;')}</td>
         </tr>
     </table>
-
+    <#if inputSourceLocator != '-'>
+        <p>
+        Source: <code>${vc.getConsoleFileBrowserLink(inputSourceLocator.inputSourceTracker.identifier, true)} line ${inputSourceLocator.lineNumber}</code>
+    </#if>
     <p>
     <b>Attributes</b><br>
     <table class="report" border="0" cellspacing="2" cellpadding="0">
@@ -239,7 +290,7 @@
             </td>
             <td class="report-column-${classSuffix}">
                 <nobr>
-                <#if href != ''><a href="?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"></#if>
+                <#if href != ''><a href="${vc.consoleUrl}/reference?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"></#if>
                 <#if childDetail.isRequired()>
                     &lt;<b>${childDetail.elemName}</b>&gt;
                 <#else>
@@ -288,7 +339,9 @@
 </#macro>
 
 <#macro classReference className>
-    ${getClassReference(className)}
+    <#if className?exists>
+        ${getClassReference(className)}
+    </#if>
 </#macro>
 
 <#function getClassReference className>
