@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicies.java,v 1.2 2003-12-06 17:20:26 shahid.shah Exp $
+ * $Id: DatabasePolicies.java,v 1.3 2004-04-28 16:55:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -134,7 +134,10 @@ public class DatabasePolicies
         String databaseProductName = conn.getMetaData().getDatabaseProductName();
         DatabasePolicy policy = getDatabasePolicy(databaseProductName);
         if(policy == null)
-            throw new SQLException("Database policy not found for database '" + databaseProductName + "'. Available: " + policiesById.keySet());
+        {
+            log.error("Database policy not found for database '" + databaseProductName + "', using 'ansi'. Available: " + policiesById.keySet());
+            return getDatabasePolicy(DBMSID_DEFAULT);
+        }
         else
             return policy;
     }
