@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.4 2003-03-31 20:16:25 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.5 2003-04-01 22:36:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -67,7 +67,7 @@ import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportColumnConditionalApplyFlag;
 import com.netspective.commons.report.tabular.TabularReportColumnConditionalState;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.calc.ColumnDataCalculatorFactory;
+import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
@@ -421,7 +421,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 
             String calcCmd = getCalcCmd();
             if(calcCmd != null)
-                calc = ColumnDataCalculatorFactory.createDataCalc(calcCmd);
+                calc = TabularReportCalcs.getInstance().createDataCalc(calcCmd);
 
             flags = GeneralColumn.this.getFlags();
 

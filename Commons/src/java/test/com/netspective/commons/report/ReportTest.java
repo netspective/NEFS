@@ -39,36 +39,60 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.1 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.2 2003-04-01 22:36:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.report;
 
-import java.io.StringReader;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
-
-import org.xml.sax.InputSource;
-
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XmlDataModelDtd;
-import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.io.Resource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.DefaultValueContext;
-import com.netspective.commons.config.*;
+import junit.framework.TestCase;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportTest extends TestCase
 {
 	public static String RESOURCE_NAME_ONE = "ReportTest-One.xml";
+
+    public class TestReportDataSource extends AbstractTabularReportDataSource
+    {
+        private List rows = new ArrayList();
+        private Object[] activeRow;
+        private int activeRowNum = -1;
+        private int lastRowNum;
+
+        public TestReportDataSource()
+        {
+            for(int i = 0; i < 25; i++)
+            {
+                rows.add(new Object[] { "row " + i, new Integer(100 + i), new Double(200 + i) });
+            }
+            lastRowNum = rows.size() - 1;
+        }
+
+        public boolean next()
+        {
+            if(activeRowNum < lastRowNum)
+            {
+                activeRowNum++;
+                activeRow = (Object[]) rows.get(activeRowNum);
+                return true;
+            }
+
+            return false;
+        }
+
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex, int flags)
+        {
+            return activeRow[columnIndex];
+        }
+    }
 
     public void testComponent() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
     {
@@ -78,21 +102,21 @@ public class ReportTest extends TestCase
 	                    new Resource(ReportTest.class, RESOURCE_NAME_ONE),
 	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
-        assertEquals(0, component.getErrors().size());
         if(component.getErrors().size() > 0)
                 System.out.println(component.getErrors());
+        assertEquals(0, component.getErrors().size());
 
         ReportsManager reportsManager = component.getItems();
         Reports reports = reportsManager.getReports();
-        //System.out.println(reports.size());
-    }
+        TabularReport report = (TabularReport) reports.get(0);
 
-    public void testComponentDtd() throws DataModelException
-    {
-        ReportsComponent component = new ReportsComponent();
-        String dtd = new XmlDataModelDtd().getDtd(component);
-        assertTrue(dtd != null);
+        TabularReportSkin skin = new TextReportSkin(".txt", "\t", null, true);
+        TabularReportValueContext vc = new BasicTabularReportValueContext(report, skin);
+        vc.getState(3).setFlag(TabularReportColumn.COLFLAG_HIDDEN);
 
-        //System.out.println(dtd);
+        StringWriter sw = new StringWriter();
+        vc.produceReport(sw, new TestReportDataSource());
+
+        //System.out.println(sw);
     }
 }

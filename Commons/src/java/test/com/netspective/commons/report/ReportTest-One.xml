@@ -4,9 +4,10 @@
 
     <tabular-report name="test-001">
         <frame heading="Test 001"/>
-        <column type="general" heading="Test 001 Column 001"/>
-        <column type="numeric" heading="Test 001 Column 002"/>
-        <column type="decimal" heading="Test 001 Column 003"/>
+        <column type="general" heading="Test 001 Column 001" calc="count"/>
+        <column type="numeric" heading="Test 001 Column 002" calc="sum"/>
+        <column type="decimal" heading="Test 001 Column 003" calc="sum"/>
+        <column type="general" heading="Test 001 Column 004" output="${0} ${1} ${2}"/>
     </tabular-report>
 
 </component>

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ColumnSumCalculator.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: ColumnSumCalculator.java,v 1.2 2003-04-01 22:36:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.calc;
@@ -61,7 +61,13 @@ import com.netspective.commons.report.tabular.TabularReportDataSource;
 
 public class ColumnSumCalculator implements ColumnDataCalculator
 {
+    public static final String[] IDENTIFIERS = new String[] { "sum" };
     private double sum;
+
+    public static final String[] getIdentifiers()
+    {
+        return IDENTIFIERS;
+    }
 
     public ColumnSumCalculator()
     {

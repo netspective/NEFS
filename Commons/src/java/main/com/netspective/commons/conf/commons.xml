@@ -9,10 +9,17 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <!--
-      ****************************************************************************************
-      * Define all of the valid report column types that can be inherited by tabular report  *
-      * columns.                                                                             *
-      ****************************************************************************************
+      ***************************************************************************
+      * Rreport column calculators that can be used by tabular report columns.  *
+      ***************************************************************************
+     -->
+    <register-tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnSumCalculator"/>
+    <register-tabular-report-calc-type class="com.netspective.commons.report.tabular.calc.ColumnCountCalculator"/>
+
+    <!--
+      **********************************************************************************************************
+      * Report column type template (XDM template producers) that can be inherited by tabular report columns.  *
+      **********************************************************************************************************
      -->
     <tabular-report-column-type name="general" class="com.netspective.commons.report.tabular.column.GeneralColumn"/>
     <tabular-report-column-type name="numeric" class="com.netspective.commons.report.tabular.column.NumericColumn"/>

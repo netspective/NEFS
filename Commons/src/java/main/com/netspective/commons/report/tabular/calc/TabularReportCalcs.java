@@ -51,40 +51,76 @@
  */
  
 /**
- * $Id: ColumnDataCalculatorFactory.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportCalcs.java,v 1.1 2003-04-01 22:36:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.calc;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
+import java.lang.reflect.Method;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.apache.commons.discovery.tools.DiscoverClass;
+import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
-import com.netspective.commons.report.tabular.calc.ColumnCountCalculator;
-import com.netspective.commons.report.tabular.calc.ColumnSumCalculator;
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
 
-public class ColumnDataCalculatorFactory
+public class TabularReportCalcs
 {
-    static private Map calcsClasses = new HashMap();
+    private static DiscoverClass discoverClass = new DiscoverClass();
+    public static final String CALCMETHODNAME_GETIDENTIFIERS = "getIdentifiers";
+    protected static final Log log = LogFactory.getLog(TabularReportCalcs.class);
 
-    static
+    private static TabularReportCalcs instance = (TabularReportCalcs) DiscoverSingleton.find(TabularReportCalcs.class, TabularReportCalcs.class.getName());
+
+    private Map calcsClassesMap = new HashMap();
+    private Set calcsClassesSet = new HashSet();
+
+    public static TabularReportCalcs getInstance()
     {
-        addColumnDataCalc("sum", ColumnSumCalculator.class);
-        addColumnDataCalc("count", ColumnCountCalculator.class);
+        return instance;
     }
 
-    static public void addColumnDataCalc(String name, Class cls)
+    public void registerColumnDataCalc(Class cls)
     {
-        calcsClasses.put(name, cls);
+        Class actualClass = discoverClass.find(cls, cls.getName());
+        String[] identifiers = getCalcIdentifiers(actualClass);
+        for(int i = 0; i < identifiers.length; i++)
+        {
+            calcsClassesMap.put(identifiers[i], actualClass);
+            if(log.isTraceEnabled())
+                log.trace("Registered column data calculator "+ actualClass.getName() +" as '"+ identifiers[i] +"'.");
+        }
+        calcsClassesSet.add(actualClass);
     }
 
-    static public void addColumnDataCalc(String name, String className) throws ClassNotFoundException
+    public String[] getCalcIdentifiers(Class vsClass)
     {
-        addColumnDataCalc(name, Class.forName(className));
+        Method getIdsMethod = null;
+        try
+        {
+            getIdsMethod = vsClass.getMethod(CALCMETHODNAME_GETIDENTIFIERS, null);
+        }
+        catch (NoSuchMethodException e)
+        {
+            log.error(e);
+            throw new NestableRuntimeException("Static method 'String[] "+ CALCMETHODNAME_GETIDENTIFIERS +"()' not found in column data calc " + vsClass.getName(), e);
+        }
+
+        try
+        {
+            return (String[]) getIdsMethod.invoke(null, null);
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+            throw new NestableRuntimeException("Exception while obtaining identifiers using 'String[] "+ CALCMETHODNAME_GETIDENTIFIERS +"()' method in column data calc " + vsClass.getName(), e);
+        }
     }
 
     /**
@@ -93,15 +129,15 @@ public class ColumnDataCalculatorFactory
      * particular class will be created and the class will be cached in the calcsClasses Map.
      */
 
-    static public ColumnDataCalculator createDataCalc(String cmd)
+    public ColumnDataCalculator createDataCalc(String id)
     {
-        Class cls = (Class) calcsClasses.get(cmd);
+        Class cls = (Class) calcsClassesMap.get(id);
         if(cls == null)
         {
             try
             {
-                cls = Class.forName(cmd);
-                addColumnDataCalc(cmd, cls);
+                cls = Class.forName(id);
+                registerColumnDataCalc(cls);
             }
             catch(ClassNotFoundException e)
             {
@@ -118,24 +154,4 @@ public class ColumnDataCalculatorFactory
             throw new RuntimeException(e.toString());
         }
     }
-
-    public static void createCatalog(Element parent)
-    {
-        Document doc = parent.getOwnerDocument();
-        Element factoryElem = doc.createElement("factory");
-        parent.appendChild(factoryElem);
-        factoryElem.setAttribute("name", "Column Data Calculators");
-        factoryElem.setAttribute("class", ColumnDataCalculatorFactory.class.getName());
-
-        for(Iterator i = calcsClasses.entrySet().iterator(); i.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            Element childElem = doc.createElement("calculator");
-            childElem.setAttribute("name", (String) entry.getKey());
-            childElem.setAttribute("class", ((Class) entry.getValue()).getName());
-            factoryElem.appendChild(childElem);
-        }
-    }
-
 }
