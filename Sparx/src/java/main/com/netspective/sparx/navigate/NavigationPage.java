@@ -105,7 +105,7 @@ import java.util.Map;
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
  *
- * @version $Id: NavigationPage.java,v 1.65 2004-03-26 14:21:45 zahara.khan Exp $
+ * @version $Id: NavigationPage.java,v 1.66 2004-04-22 03:36:15 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -1538,7 +1538,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                 getLog().error("Error occurred while handling the page.", e);
                 if(! findErrorPage(nc, e))
                     nc.setErrorPageException(getOwner().getDefaultErrorPage(), e, e.getClass());
-                nc.getErrorPage().handlePage(writer, nc);
+                nc.getErrorPage().handlePageBody(writer, nc);
                 hasError = true;
             }
 
