@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentTask.java,v 1.4 2003-08-24 18:34:26 shahid.shah Exp $
+ * $Id: XdmComponentTask.java,v 1.5 2003-08-27 16:35:59 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -53,6 +53,7 @@ import java.util.HashMap;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.taskdefs.Delete;
 
 import com.netspective.commons.io.Resource;
@@ -67,6 +68,10 @@ public abstract class XdmComponentTask extends Task
         public void execute() throws BuildException;
     }
 
+    public static final int CLEAN_FIRST_FALSE = 0;
+    public static final int CLEAN_FIRST_DIR = 1;
+    public static final int CLEAN_FIRST_PRESERVE_CVS = 2;
+
     private Map actionHandlers;
     private ActionHandler actionHandler;
     private File projectFile;
@@ -76,7 +81,7 @@ public abstract class XdmComponentTask extends Task
     private boolean metrics = false;
     private boolean debug = false;
     private boolean executeHandled = false;
-    private boolean cleanFirst = false;
+    private int cleanFirst = CLEAN_FIRST_FALSE;
     private String genIdConstantsRootPkgAndClass;
     private Delete deleteTask = new Delete();
 
@@ -102,7 +107,7 @@ public abstract class XdmComponentTask extends Task
         debug = false;
         metrics = false;
         executeHandled = false;
-        cleanFirst = false;
+        cleanFirst = CLEAN_FIRST_FALSE;
         genIdConstantsRootPkgAndClass = null;
     }
 
@@ -133,12 +138,17 @@ public abstract class XdmComponentTask extends Task
 
     public boolean isCleanFirst()
     {
-        return cleanFirst;
+        return cleanFirst != CLEAN_FIRST_FALSE;
     }
 
-    public void setCleanFirst(boolean cleanFirst)
+    public void setCleanFirst(String cleanFirstStyle)
     {
-        this.cleanFirst = cleanFirst;
+        if("no".equals(cleanFirstStyle))
+            this.cleanFirst = CLEAN_FIRST_FALSE;
+        else if("yes".equals(cleanFirstStyle))
+            this.cleanFirst = CLEAN_FIRST_DIR;
+        else if("preserve-cvs".equals(cleanFirstStyle))
+            this.cleanFirst = CLEAN_FIRST_PRESERVE_CVS;
     }
 
     /**
@@ -147,8 +157,30 @@ public abstract class XdmComponentTask extends Task
      */
     public synchronized void delete(File dir)
     {
-        deleteTask.setDir(dir);
-        deleteTask.execute();
+        switch(cleanFirst)
+        {
+            case CLEAN_FIRST_DIR:
+                deleteTask.setDir(dir);
+                deleteTask.execute();
+                break;
+
+            case CLEAN_FIRST_PRESERVE_CVS:
+                if(dir.exists())
+                {
+                    FileSet everythingButCVSFileSet = new FileSet();
+                    everythingButCVSFileSet.setDir(dir);
+                    everythingButCVSFileSet.createInclude().setName("**/*");
+                    everythingButCVSFileSet.createExclude().setName("CVS");
+
+                    deleteTask.addFileset(everythingButCVSFileSet);
+                    deleteTask.setIncludeEmptyDirs(false);
+                    deleteTask.execute();
+                }
+                break;
+
+            default:
+                log("Unknown cleanFirst style: " + cleanFirst);
+        }
     }
 
     public boolean isExecuteHandled()
