@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlEditorDialog.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: SqlEditorDialog.java,v 1.4 2003-11-08 16:32:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -109,7 +109,7 @@ public class SqlEditorDialog extends ConsoleDialog
             dbmsSqlText.setSql(sql);
             query.addSql(dbmsSqlText);
 
-            sqlManager.addQuery(query);
+            sqlManager.appendQuery(query);
 
             try
             {
