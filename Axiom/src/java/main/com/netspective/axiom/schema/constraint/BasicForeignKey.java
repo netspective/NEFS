@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicForeignKey.java,v 1.3 2003-06-21 21:39:21 shahid.shah Exp $
+ * $Id: BasicForeignKey.java,v 1.4 2003-07-04 05:32:46 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.constraint;
@@ -135,9 +135,16 @@ public class BasicForeignKey implements ForeignKey
 
     public void setReferencedColumns(Columns columns)
     {
-        // never store a placeholder
-        if(columns instanceof ForeignKeyPlaceholderColumn)
+        if (columns == null)
             return;
+
+        // never store a placeholder
+        for (int i = 0; i < columns.size(); i++)
+        {
+            Column column = columns.get(i);
+            if(column instanceof ForeignKeyPlaceholderColumn)
+                return;
+       }
 
         // if we have an existing referenced column, remove it from the dependencies
         if(referenced != null)
