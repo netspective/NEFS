@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.5 2003-11-04 16:33:40 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.6 2004-04-29 12:31:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
+
+import java.sql.ResultSet;
 
 import com.netspective.sparx.security.LoginDialogContext;
 import com.netspective.sparx.security.HttpLoginManager;
@@ -51,6 +53,7 @@ import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import org.apache.commons.logging.LogFactory;
@@ -64,6 +67,7 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     private Query passwordQuery;        // the query to get the user's password
     private Query roleQuery;            // the query to get the user's roles
     private boolean passwordEncrypted;  // true if the password is encrypted
+    private static final String ATTRNAME_PASSWORD_QUERY_RESULTS = "PASSWORD_QUERY_RESULTS";
 
     public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
@@ -78,7 +82,10 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
             QueryResultSet qrs = passwordQuery.execute(loginDialogContext, new Object[] { loginDialogContext.getUserIdInput() }, false);
             if(qrs == null)
                 return false;
-            Object loginPasswordObj = ResultSetUtils.getInstance().getResultSetSingleColumn(qrs.getResultSet());
+
+            Object[] passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsArray(qrs.getResultSet());
+            Object loginPasswordObj = passwordQueryResultRow[0];
+            loginDialogContext.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
             qrs.close(true);
 
             if(loginPasswordObj == null)
@@ -105,6 +112,25 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         super.initAuthenticatedUser(loginManager, ldc, user);
+
+        Object[] passwordQueryResultsRow = (Object[]) ldc.getAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS);
+        if(passwordQueryResultsRow != null)
+        {
+            if(passwordQueryResultsRow.length > 1)
+                user.setUserId(passwordQueryResultsRow[1].toString());
+
+            if(passwordQueryResultsRow.length > 2)
+                user.setUserName(passwordQueryResultsRow[2].toString());
+
+            if(passwordQueryResultsRow.length > 3 && (user instanceof AuthenticatedOrgUser))
+            {
+                AuthenticatedOrgUser orgUser = (AuthenticatedOrgUser) user;
+                orgUser.setUserOrgId(passwordQueryResultsRow[3].toString());
+
+                if(passwordQueryResultsRow.length > 4)
+                    orgUser.setUserOrgId(passwordQueryResultsRow[4].toString());
+            }
+        }
 
         if(roleQuery != null)
         {
