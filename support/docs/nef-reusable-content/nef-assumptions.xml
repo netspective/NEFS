@@ -1,25 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section>
-<title>Assumptions</title>
+  <title>Assumptions</title>
 
-<para>For the purpose of this tutorial, we will be assuming that you
-installed the following:</para>
+  <para>For the purpose of this tutorial, we will be assuming that you
+  installed the following:</para>
 
-<itemizedlist>
-<listitem>
-<para>Java Developer Kit (JDK) 1.2, 1.3 or 1.4</para>
-</listitem>
+  <itemizedlist>
+    <listitem>
+      <para>Java Developer's Kit (JDK) 1.2, 1.3 or 1.4 See <xref
+      linkend="desc-download-jdk" /></para>
+    </listitem>
 
-<listitem>
-<para>A Servlet Container (application server) supporting the Servlet
-2.2 or higher specification</para>
-</listitem>
-</itemizedlist>
+    <listitem>
+      <para>An Application Server (servlet container) supporting the Servlet
+      2.2 or higher specification See <xref
+      linkend="desc-app-server" /></para>
+    </listitem>
+  </itemizedlist>
 
-<para>We assume that you are using the default port
-<literal>8080</literal> for your web server. If you chose different values
-for the installation path andthe port number, you should substitute the
-paths and the URLs in our example with your values as needed. This
-tutorial also assumes your familiarity with XML, SQL, Java, Servlets and
-JDBC.</para>
+  <para>We assume that you are using the default port <literal>8080</literal>
+  for your web server. If you chose different values for the installation path
+  and the port number, you should substitute the paths and the URLs in our
+  example with your values as needed. This tutorial also assumes your
+  familiarity with XML, SQL, Java, Servlets and JDBC.</para>
+
+  <section id="desc-download-jdk">
+    <title>Downloading Java Developer's Kit (JDK)</title>
+
+    <para>Since NEFS comprises Java libraries, a fundamental requirement to
+    develop applications with it is a Java SDK (the full SDK is required, the
+    JRE will not be enough). You can obtain Sun’s official Java SDK from its
+    Java web site at <ulink
+    url="http://java.sun.com/j2se/1.4/download.html">http://java.sun.com/j2se/1.4/download.html</ulink>.
+    This is a link to the Java 1.4 SDK but Java 1.2 and 1.3 will also
+    work.</para>
+  </section>
+
+  <section id="desc-app-server">
+    <title id="desc-servlet-container">Application Server (Servlet
+    Container)</title>
+
+    <para>Since Sparx works with standard J2EE application servers, a Servlet
+    container is required if you're going to use Sparx. Both Axiom and Commons
+    work in web-based or non-web-based applications but Sparx is a web
+    application development library so an application server with a Servlet
+    2.2 or better container is necessary. Sparx-based applications have been
+    tested on the following application servers:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><ulink url="http://jakarta.apache.org/tomcat">Apache
+        Tomcat</ulink> (free)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.caucho.com">Caucho Resin</ulink> (free
+        for development, commercial license required for deployment)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink
+        url="http://www.bea.com/framework.jsp?CNT=index.htm&amp;FP=/content/products/server">BEA
+        WebLogic</ulink> (commercial)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.ibm.com/websphere">IBM WebSphere</ulink>
+        (commercial)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.oracle.com/appserver/">ORACLE Application
+        Server</ulink> (commercial)</para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="http://www.macromedia.com/software/jrun/">Macromedia
+        JRun</ulink> (commercial)</para>
+      </listitem>
+    </itemizedlist>
+
+    <note>
+      <para>We recommend the <ulink url="http://www.caucho.com">Caucho
+      Resin</ulink> application server if you're not familiar with other
+      Servlet containers or if you're new to Java/J2EE application servers.
+      It's an easy to install, easy to use, and fast Servlet container with
+      advanced features that rival other more expensive application servers
+      such as WebLogic and WebSphere. Resin is free for development use but
+      requires a paid license before putting your application into production
+      use. Rest assured though that all Sparx-based applications you write,
+      even on Resin, will remain app-server neutral.</para>
+    </note>
+  </section>
 </section>
