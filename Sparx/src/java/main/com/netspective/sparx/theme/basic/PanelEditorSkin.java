@@ -39,14 +39,16 @@
  */
 
 /**
- * $Id: PanelEditorSkin.java,v 1.2 2004-03-03 20:26:43 aye.thu Exp $
+ * $Id: PanelEditorSkin.java,v 1.3 2004-03-05 18:45:57 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.HtmlPanelAction;
 import com.netspective.sparx.panel.HtmlPanelActionStates;
 import com.netspective.sparx.panel.HtmlPanelActions;
@@ -76,6 +78,84 @@ public class PanelEditorSkin extends RecordEditorReportSkin
         super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
+    public void renderFrameBegin(Writer writer, HtmlPanelValueContext vc) throws IOException
+    {
+        HtmlPanel panel = vc.getPanel();
+        HtmlPanelFrame frame = panel.getFrame();
+
+        Theme theme = getTheme();
+
+        writer.write("<table id=\""+ panel.getPanelIdentifier() +"_frame\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
+        if(flags.flagIsSet(BasicHtmlPanelSkin.Flags.FULL_WIDTH))
+            writer.write("width='100%' ");
+        writer.write(">\n");
+
+        if(frame.hasHeadingOrFooting())
+        {
+            String heading = null;
+            ValueSource hvs = frame.getHeading();
+            if(hvs != null)
+                heading = hvs.getValue(vc).getTextValue();
+            if(heading != null && !frame.isHideHeading(vc))
+            {
+                writer.write("<tr>\n");
+                writer.write("    <td class=\""+ panelClassNamePrefix +"\">\n");
+                writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
+                writer.write("        <tr>\n");
+                if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
+                {
+                    if (vc.isMinimized())
+                        writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-expand\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
+                            "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
+                    else
+                        writer.write("            <td id=\""+ panel.getPanelIdentifier() +"_action\" class=\""+ panelClassNamePrefix +"-frame-heading-action-collapse\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"ALL_PANELS.togglePanelExpandCollapse('"+ panel.getPanelIdentifier() +"')\">" +
+                            "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
+
+                    writer.write("<script>ALL_PANELS.getPanel(\""+ panel.getPanelIdentifier() +"\").minimized = "+ (vc.isMinimized() ? "true" : "false") +"</script>");
+                }
+                else
+                {
+                    writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-left-blank\" align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
+                        "<!-- <img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>\n");
+                }
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading\" align=\"left\" valign=\"middle\" nowrap>" + heading +
+                        "</td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-heading-action-right-blank\" align=\"center\" valign=\"middle\" nowrap width=\"17\">" +
+                    "</td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
+                //writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
+                produceHeadingExtras(writer, vc, frame);
+                writer.write("        </tr>\n");
+                writer.write("    </table>\n");
+                writer.write("    </td>\n");
+                writer.write("</tr>\n");
+            }
+            else
+            {
+                writer.write("<tr>\n");
+                writer.write("    <td class=\""+ panelClassNamePrefix +"\">\n");
+                writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
+                writer.write("        <tr>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-begin-cap\" align=\"left\" valign=\"top\" nowrap width=\"2\"></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-mid\" align=\"right\" valign=\"top\" nowrap width=\"100%\"></td>\n");
+                writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\"></td>\n");
+                writer.write("        </tr>\n");
+                writer.write("    </table>\n");
+                writer.write("    </td>\n");
+                writer.write("</tr>\n");
+            }
+        }
+
+        renderBanner(writer, vc);
+
+        int height = panel.getHeight();
+        int width = panel.getWidth();
+        if(height > 0)
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + "; height: "+ height +"; overflow: auto;\">\n");
+        else
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_content\">\n     <td class=\""+ panelClassNamePrefix +"-content\"><div class='"+ contentDivClass +"' style=\"width: " + width + ";\">\n");
+    }
+
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
     {
         HtmlPanelActions actions = frame.getActions();
@@ -96,34 +176,26 @@ public class PanelEditorSkin extends RecordEditorReportSkin
 
                 if (displayedItems == 0)
                 {
-                    itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"5\" height=\"5\"></td>");
+                    itemBuffer.append("            <td class=\"panel-editor-frame-mid\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"25\" height=\"5\"></td>");
                     displayedItems++;
                 }
 
                 RedirectValueSource redirect = item.getRedirect();
+
                 String itemUrl = redirect.getUrl(vc);
+                // NOTE: This is a fix to process any remaining value sources in the URL
+                ValueSource vs = ValueSources.getInstance().createValueSourceOrStatic("simple-expr:" + itemUrl);
+                itemUrl = vs.getTextValue(vc);
                 String itemCaption = item.getCaption().getTextValue(vc);
-                ValueSource itemIcon = item.getIcon();
-                /*
-                if (itemIcon != null)
-                {
-                    // icon for this item is defined so use the passed in image INSTEAD of using the CSS based background image
-                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"></td>");
-                    displayedItems++;
-                }
-                else
-                {
-                    itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-item\" width=\"18\"><img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/spacer.gif") + "\" width=\"18\" height=\"19\"></td>");
-                    displayedItems++;
-                }
-                */
                 itemBuffer.append("            <td class=\""+ panelClassNamePrefix +"-frame-action-box\">" +
                         "<a class=\""+ panelClassNamePrefix +"-frame-action\" href=\""+ itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
                 displayedItems++;
             }
-
             if (itemBuffer.length() > 0)
                 writer.write(itemBuffer.toString());
+            writer.write("            <td class=\""+ panelClassNamePrefix +"-frame-end-cap\" align=\"right\" valign=\"top\" nowrap width=\"2\">" +
+                    "<img src=\"" + theme.getResourceUrl("/images/" + panelResourcesPrefix + "/login/spacer.gif") + "\" width=\"2\" height=\"5\"></td>\n");
+
         }
     }
 
