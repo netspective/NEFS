@@ -1,57 +1,56 @@
-    <table border="0" cellspacing="0" cellpadding="0">
-        <tbody><tr>
-            <td><img src="${resourcesPath}/images/home/home_13.gif" width="600" height="13" alt=""></td>
-        </tr>
-        <tr>
-            <td><img src="${resourcesPath}/images/home/homepage-headline.gif" width="600" height="46" alt=""></td>
-        </tr>
-    </tbody></table>
-    <table width="600" border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0">
+    <tbody><tr>
+        <td><img src="${resourcesPath}/images/home/home_13.gif" width="600" height="13" alt=""></td>
+    </tr>
+    <tr>
+        <td><img src="${resourcesPath}/images/home/homepage-headline.gif" width="600" height="46" alt=""></td>
+    </tr>
+</tbody></table>
+<table width="600" border="0" cellspacing="0" cellpadding="0">
 
-        <tbody><tr>
-            <td><img src="${resourcesPath}/images/home/NEFS.gif" width="306" height="86" alt=""></td>
-            <td><img src="${resourcesPath}/images/home/paragraph1.gif" width="294" height="86" alt=""></td>
-        </tr>
-        <tr>
-            <td>
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <tbody><tr>
-                        <td><img src="${resourcesPath}/images/home/release-7.gif" width="116" height="23" alt=""></td>
+    <tbody>
+    <tr>
+        <td valign=top><img src="${resourcesPath}/images/home/NEFS.gif" width="306" height="86" alt=""><table border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                    <td><img src="${resourcesPath}/images/home/release-7.gif" width="116" height="23" alt=""></td>
 
-                        <td><a onmouseover="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation.gif');return true" href="#"><img name="home_21" src="${resourcesPath}/images/home/presentation.gif" width="80" height="23" border="0" alt=""></a></td>
-                        <td><a onmouseover="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database.gif');return true" href="#"><img name="home_23" src="${resourcesPath}/images/home/database.gif" width="55" height="23" border="0" alt=""></a></td>
-                        <td><a onmouseover="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security.gif');return true" href="#"><img name="home_27" src="${resourcesPath}/images/home/security.gif" width="55" height="23" border="0" alt=""></a></td>
-                    </tr>
-                </tbody></table>
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <tbody><tr>
-                        <td>
-                            <table border="0" cellspacing="0" cellpadding="0">
+                    <td><a onmouseover="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_21',/*URL*/'${resourcesPath}/images/home/presentation.gif');return true" href="#"><img name="home_21" src="${resourcesPath}/images/home/presentation.gif" width="80" height="23" border="0" alt=""></a></td>
+                    <td><a onmouseover="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_23',/*URL*/'${resourcesPath}/images/home/database.gif');return true" href="#"><img name="home_23" src="${resourcesPath}/images/home/database.gif" width="55" height="23" border="0" alt=""></a></td>
+                    <td><a onmouseover="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_27',/*URL*/'${resourcesPath}/images/home/security.gif');return true" href="#"><img name="home_27" src="${resourcesPath}/images/home/security.gif" width="55" height="23" border="0" alt=""></a></td>
+                </tr>
+            </tbody></table><table border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr>
+                    <td><table border="0" cellspacing="0" cellpadding="0">
 
-                                <tbody><tr>
-                                    <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'images/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="#"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
-                                </tr>
-                                <tr>
-                                    <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'images/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="#"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
-                                </tr>
-                                <tr>
-                                    <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'images/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="#"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
-                                </tr>
+                            <tbody><tr>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_28',/*URL*/'images/what-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_28',/*URL*/'${resourcesPath}/images/home/what.gif');return true" href="#"><img name="home_28" src="${resourcesPath}/images/home/what.gif" width="116" height="24" border="0" alt=""></a></td>
+                            </tr>
+                            <tr>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_29',/*URL*/'images/how-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_29',/*URL*/'${resourcesPath}/images/home/how.gif');return true" href="#"><img name="home_29" src="${resourcesPath}/images/home/how.gif" width="116" height="22" border="0" alt=""></a></td>
+                            </tr>
+                            <tr>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_30',/*URL*/'images/online-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_30',/*URL*/'${resourcesPath}/images/home/online.gif');return true" href="#"><img name="home_30" src="${resourcesPath}/images/home/online.gif" width="116" height="22" border="0" alt=""></a></td>
+                            </tr>
 
-                                <tr>
-                                    <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'images/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
-                                </tr>
-                            </tbody></table>
-                        </td>
-                        <td><img src="${resourcesPath}/images/home/anima-pane.gif" width="190" height="90" alt=""></td>
-                    </tr>
-                </tbody></table>
-            </td>
+                            <tr>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'images/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
+                            </tr>
+                        </tbody></table></td>
+                    <td><img src="${resourcesPath}/images/home/anima-pane.gif" width="190" height="90" alt=""></td>
+                </tr>
+            </tbody></table></td>
 
-            <td><img src="${resourcesPath}/images/home/paragraph2.gif" width="294" height="113" alt=""></td>
-        </tr>
-    </tbody></table>
-</span>
+        <td valign="top" style="padding-left: 10px; padding-right: 10px; border-right: 1px solid #999999; font-family: trebuchet ms, arial; font-size: 9pt;">
+        <font color="darkred" style="font-size: 12pt;"><b>Our Java libraries accelerate web development on any app server</b></font>
+        <p style="margin-top:5px;">Declarative tags that work in any IDE let you focus on your customers' requirements instead of J2EE infrastructure.</p>
+        <ul class="check-list" style="margin-bottom:0px; ">
+            <li>Automate navigation and workflow
+            <li>Create auto-validating forms
+            <li>Auto-generate DAOs and SQL DDL/DML
+            <li>Secure your applications
+        </ul>
+    </tr>
+</tbody></table>
 <table border="0" cellspacing="0" cellpadding="0">
     <tbody><tr>
         <td><img src="${resourcesPath}/images/home/home_27.gif" alt="" height="1" width="600" border="0"></td>

@@ -15,7 +15,7 @@
         </page>
 
         <page class="app.AppPage" name="products" caption="Products">
-            <page name="frameworks" caption="Frameworks" tag-line="Developing J2EE Applications Gets Easier">
+            <page name="frameworks" caption="Frameworks" tag-line="Developing Java Web Applications Gets Easier">
                 <body source="products/frameworks/index.ftl"/>
                 <summary>
                     The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
@@ -25,9 +25,9 @@
 
                 <page name="features" caption="Features" tag-line="Features that Jump-start Development">
                     <summary>
-                        Stop cobbling together solutions from disparate open-source and commercial providers that may
-                        work independently but not together. The Netspective Java Frameworks contain everything you need in one
-                        integrated suite where everything is guaranteed to work well together.
+                        Stop cobbling together solutions from disparate open-source and commercial providers. Our Java
+                        Frameworks contain everything you need in one integrated suite where everything is guaranteed to
+                        work great together. And, when something doesn't work, help is only a phone call or e-mail away.
                     </summary>
                     <body source="products/frameworks/features.ftl"/>
                 </page>
