@@ -67,18 +67,13 @@ import java.util.TreeSet;
 @InheritanceJoinColumn(name="partyId")
 public class Person extends Party
 {
-    //private Long personId;
-
     private String firstName;
     private String lastName;
     private String middleName;
     private String suffix;
     private Date birthDate;
-    private String ssn;
 
     private Set<Gender> genders = new HashSet<Gender>();
-
-    private Set<ContactMechanism> contactMechanisms = new HashSet<ContactMechanism>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
 
     public Person()
@@ -216,29 +211,6 @@ public class Person extends Party
         return inverseSorted.first().getType();
     }
 
-    @Column(name="ssn", length=9)
-    public String getSsn()
-    {
-        return ssn;
-    }
-
-    public void setSsn(String ssn)
-    {
-        this.ssn = ssn;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "partyId")
-    public Set<ContactMechanism> getContactMechanisms()
-    {
-        return contactMechanisms;
-    }
-
-    protected void setContactMechanisms(final Set<ContactMechanism> contactMechanisms)
-    {
-        this.contactMechanisms = contactMechanisms;
-    }
-
     @Transient
     public MaritalStatusType getCurrentMaritalStatus()
     {
@@ -272,10 +244,9 @@ public class Person extends Party
                 ", firstName='" + firstName + "'" +
                 ", middleName='" + middleName + "'" +
                 ", suffix=" + suffix + "'" +
-                ", ssn=" + ssn + "'" +
                 ", gender='" + getCurrentGender().getTypeLabel() + "'" +
                 ", maritalStatuses=" + maritalStatuses +
-                ", contactMechanisms=" + contactMechanisms +
+                //", contactMechanisms=" + getContactMechanisms() +
                 "}";
     }
 }

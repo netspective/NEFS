@@ -39,102 +39,36 @@
  */
 package com.netspective.medigy.model.common;
 
-import com.netspective.medigy.reference.type.FacilityType;
-
-import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
-import javax.ejb.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceType;
+import javax.ejb.Table;
 
 @Entity
-public class Facility extends AbstractTopLevelEntity
+@Table(name = "Contact_Mech")
+@Inheritance(strategy=InheritanceType.JOINED )
+public abstract class ContactMechanism extends AbstractTopLevelEntity
 {
-    private Long facilityId;
-    private String description;
-    private Float squareFootage;
+    private Long contactMechanismId;
 
-    private FacilityType type;
-    // children childFacilities (e.g Rooms on a Floor, offices in a building)
-    private Set<Facility> childFacilities = new HashSet<Facility>();
-    //private PartyFacilityRole facilityRole;
-
-    public Facility()
+    public ContactMechanism()
     {
     }
 
     @Id(generate=GeneratorType.AUTO)
-    public Long getFacilityId()
+    @Column(name = "contact_mech_id")
+    public Long getContactMechanismId()
     {
-        return facilityId;
+        return contactMechanismId;
     }
 
-    protected void setFacilityId(final Long facilityId)
+    public void setContactMechanismId(final Long contactMechanismId)
     {
-        this.facilityId = facilityId;
+        this.contactMechanismId = contactMechanismId;
     }
 
-    @Column(length = 100)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    public Float getSquareFootage()
-    {
-        return squareFootage;
-    }
-
-    public void setSquareFootage(final Float squareFootage)
-    {
-        this.squareFootage = squareFootage;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "facility_type_id")
-    public FacilityType getType()
-    {
-        return type;
-    }
-
-    public void setType(final FacilityType type)
-    {
-        this.type = type;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "child_facility_id", referencedColumnName = "facility_id")
-    public Set<Facility> getChildFacilities()
-    {
-        return childFacilities;
-    }
-
-    public void setChildFacilities(final Set<Facility> childFacilities)
-    {
-        this.childFacilities = childFacilities;
-    }
-
-    /*
-    @OneToOne
-    @JoinColumn(name = "facility_id")
-    public PartyFacilityRole getFacilityRole()
-    {
-        return facilityRole;
-    }
-
-    public void setFacilityRole(final PartyFacilityRole facilityRole)
-    {
-        this.facilityRole = facilityRole;
-    }
-    */
+    
 }

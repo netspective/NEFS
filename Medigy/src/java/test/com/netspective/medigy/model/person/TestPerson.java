@@ -70,7 +70,6 @@ public class TestPerson extends TestCase
         newPerson.setFirstName("Ryan");
         newPerson.setMiddleName("Bluegrass");
         newPerson.setLastName("Hackett");
-        newPerson.setSsn("123456789");
 
         final MaritalStatus singleStatus = new MaritalStatus();
         singleStatus.setPerson(newPerson);
@@ -105,22 +104,21 @@ public class TestPerson extends TestCase
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
         assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
-        assertEquals(persistedPerson.getSsn(), "123456789");
 
         HibernateUtil.beginTransaction();
 
-        ContactMechanism contactMechanism = new ContactMechanism();
-        contactMechanism.setPerson(persistedPerson);
+        //ContactMechanism contactMechanism = new ContactMechanism();
+        //contactMechanism.setPerson(persistedPerson);
         //persistedPerson.getContactMechanisms().add(contactMechanism);
 
-        HibernateUtil.getSession().save(contactMechanism);
+        //HibernateUtil.getSession().save(contactMechanism);
         //HibernateUtil.getSession().save(persistedPerson);
-        HibernateUtil.commitTransaction();
-        HibernateUtil.closeSession();
+        //HibernateUtil.commitTransaction();
+        //HibernateUtil.closeSession();
 
         final Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
         assertNotNull(updatedPerson);
-        assertEquals(1, updatedPerson.getContactMechanisms().size());
+        //assertEquals(1, updatedPerson.getContactMechanisms().size());
         assertEquals(2, updatedPerson.getMaritalStatuses().size());
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
         assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getCurrentGender());

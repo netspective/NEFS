@@ -39,102 +39,67 @@
  */
 package com.netspective.medigy.model.common;
 
-import com.netspective.medigy.reference.type.FacilityType;
-
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
-import javax.ejb.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ejb.Column;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceType;
+import javax.ejb.InheritanceJoinColumn;
 
 @Entity
-public class Facility extends AbstractTopLevelEntity
+@Inheritance(strategy=InheritanceType.JOINED)
+@InheritanceJoinColumn(name="contact_mech_id")
+public class PhoneNumber extends ContactMechanism
 {
-    private Long facilityId;
-    private String description;
-    private Float squareFootage;
+    private String countryCode;
+    private String areaCode;
+    private String number;
+    private String extension;
 
-    private FacilityType type;
-    // children childFacilities (e.g Rooms on a Floor, offices in a building)
-    private Set<Facility> childFacilities = new HashSet<Facility>();
-    //private PartyFacilityRole facilityRole;
-
-    public Facility()
+    public PhoneNumber()
     {
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    public Long getFacilityId()
+    @Column(length = 5)
+    public String getCountryCode()
     {
-        return facilityId;
+        return countryCode;
     }
 
-    protected void setFacilityId(final Long facilityId)
+    public void setCountryCode(final String countryCode)
     {
-        this.facilityId = facilityId;
+        this.countryCode = countryCode;
     }
 
-    @Column(length = 100)
-    public String getDescription()
+    @Column(length = 5)
+    public String getAreaCode()
     {
-        return description;
+        return areaCode;
     }
 
-    public void setDescription(final String description)
+    public void setAreaCode(final String areaCode)
     {
-        this.description = description;
+        this.areaCode = areaCode;
     }
 
-    public Float getSquareFootage()
+    @Column(length = 7)
+    public String getNumber()
     {
-        return squareFootage;
+        return number;
     }
 
-    public void setSquareFootage(final Float squareFootage)
+    public void setNumber(final String number)
     {
-        this.squareFootage = squareFootage;
+        this.number = number;
     }
 
-    @OneToOne
-    @JoinColumn(name = "facility_type_id")
-    public FacilityType getType()
+    @Column(length = 5)
+    public String getExtension()
     {
-        return type;
+        return extension;
     }
 
-    public void setType(final FacilityType type)
+    public void setExtension(final String extension)
     {
-        this.type = type;
+        this.extension = extension;
     }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "child_facility_id", referencedColumnName = "facility_id")
-    public Set<Facility> getChildFacilities()
-    {
-        return childFacilities;
-    }
-
-    public void setChildFacilities(final Set<Facility> childFacilities)
-    {
-        this.childFacilities = childFacilities;
-    }
-
-    /*
-    @OneToOne
-    @JoinColumn(name = "facility_id")
-    public PartyFacilityRole getFacilityRole()
-    {
-        return facilityRole;
-    }
-
-    public void setFacilityRole(final PartyFacilityRole facilityRole)
-    {
-        this.facilityRole = facilityRole;
-    }
-    */
 }

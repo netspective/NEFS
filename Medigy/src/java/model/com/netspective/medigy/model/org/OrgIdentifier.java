@@ -51,7 +51,8 @@ import javax.ejb.ManyToOne;
 import javax.ejb.Table;
 
 import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.model.common.IdentifierType;
+import com.netspective.medigy.model.party.PartyIdentifierType;
+import com.netspective.medigy.model.party.PartyIdentifierType;
 
 @Entity
 @Table(name = "Org_Identifier")
@@ -59,7 +60,7 @@ public class OrgIdentifier extends AbstractEntity
 {
     private Long systemId;
     private Organization organization;
-    private IdentifierType type;
+    private PartyIdentifierType type;
     private String idValue;
 
     @Id
@@ -86,12 +87,12 @@ public class OrgIdentifier extends AbstractEntity
     }
 
     @Column(name = "type_id", nullable = false)
-    public IdentifierType getType()
+    public PartyIdentifierType getType()
     {
         return type;
     }
 
-    public void setType(IdentifierType type)
+    public void setType(PartyIdentifierType type)
     {
         this.type = type;
     }

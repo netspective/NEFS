@@ -35,106 +35,97 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
+ * @author Shahid N. Shah
  */
-package com.netspective.medigy.model.common;
 
-import com.netspective.medigy.reference.type.FacilityType;
+/*
+ * Copyright (c) 2005 Your Corporation. All Rights Reserved.
+ */
+package com.netspective.medigy.model.party;
 
-import javax.ejb.CascadeType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.DataEncryptionType;
+
 import javax.ejb.Column;
+import javax.ejb.DiscriminatorColumn;
+import javax.ejb.DiscriminatorType;
 import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
 import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
-import javax.ejb.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceType;
+import javax.ejb.Table;
+import javax.ejb.GeneratorType;
 
 @Entity
-public class Facility extends AbstractTopLevelEntity
+@Table(name = "Party_Identifier_Type")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE, discriminatorType = DiscriminatorType.CHAR, discriminatorValue = "A")
+@DiscriminatorColumn(name = "discriminator_id")
+//TODO: Add unique constraints code plus discriminator id plus org_id (same code shouldn't occur more than once for a single or org or 'all')
+//      * keep in mind that subclass like OrgIdentifierType adds 'org_id' as another column.
+//      * it may make sense to collapse PartyIdentifierType and OrgIdentifierType and create a global "system" org that would refer to "all" instead of using a discriminator and inheritance (may get better constraints without triggers)
+public class PartyIdentifierType extends AbstractTopLevelEntity
 {
-    private Long facilityId;
-    private String description;
-    private Float squareFootage;
+    private Long identifierTypeId;
+    private String appCode;
+    private String name;
+    private DataEncryptionType encryptionType;
+    private int maxAllowed = 1;
 
-    private FacilityType type;
-    // children childFacilities (e.g Rooms on a Floor, offices in a building)
-    private Set<Facility> childFacilities = new HashSet<Facility>();
-    //private PartyFacilityRole facilityRole;
-
-    public Facility()
+    public PartyIdentifierType()
     {
     }
 
     @Id(generate=GeneratorType.AUTO)
-    public Long getFacilityId()
+    public Long getIdentifierTypeId()
     {
-        return facilityId;
+        return identifierTypeId;
     }
 
-    protected void setFacilityId(final Long facilityId)
+    protected void setIdentifierTypeId(Long identifierTypeId)
     {
-        this.facilityId = facilityId;
+        this.identifierTypeId = identifierTypeId;
     }
 
-    @Column(length = 100)
-    public String getDescription()
+    public String getAppCode()
     {
-        return description;
+        return appCode;
     }
 
-    public void setDescription(final String description)
+    public void setAppCode(String appCode)
     {
-        this.description = description;
+        this.appCode = appCode;
     }
 
-    public Float getSquareFootage()
+    @Column(nullable = false)
+    public String getName()
     {
-        return squareFootage;
+        return name;
     }
 
-    public void setSquareFootage(final Float squareFootage)
+    public void setName(String name)
     {
-        this.squareFootage = squareFootage;
+        this.name = name;
     }
 
-    @OneToOne
-    @JoinColumn(name = "facility_type_id")
-    public FacilityType getType()
+    @Column(nullable = false)
+    public DataEncryptionType getEncryptionType()
     {
-        return type;
+        return encryptionType;
     }
 
-    public void setType(final FacilityType type)
+    public void setEncryptionType(DataEncryptionType encryptionType)
     {
-        this.type = type;
+        this.encryptionType = encryptionType;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "child_facility_id", referencedColumnName = "facility_id")
-    public Set<Facility> getChildFacilities()
+    @Column(nullable = false)
+    public int getMaxAllowed()
     {
-        return childFacilities;
+        return maxAllowed;
     }
 
-    public void setChildFacilities(final Set<Facility> childFacilities)
+    public void setMaxAllowed(int maxAllowed)
     {
-        this.childFacilities = childFacilities;
+        this.maxAllowed = maxAllowed;
     }
-
-    /*
-    @OneToOne
-    @JoinColumn(name = "facility_id")
-    public PartyFacilityRole getFacilityRole()
-    {
-        return facilityRole;
-    }
-
-    public void setFacilityRole(final PartyFacilityRole facilityRole)
-    {
-        this.facilityRole = facilityRole;
-    }
-    */
 }

@@ -43,20 +43,6 @@
  */
 package com.netspective.medigy.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.LogManager;
-
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
@@ -64,6 +50,19 @@ import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
@@ -101,24 +100,32 @@ public abstract class TestCase extends junit.framework.TestCase
         for (final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
             config.addAnnotatedClass(c);
 
-        config.addAnnotatedClass(com.netspective.medigy.model.common.IdentifierType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.session.Session.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
+        config.addAnnotatedClass(com.netspective.medigy.model.common.ContactMechanism.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.common.PhoneNumber.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.common.PostalAddress.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.common.ElectronicAddress.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.common.Facility.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifierType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.Priority.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationshipStatus.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanism.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyFacilityRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEvent.class);        
+        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);
+
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.OrgIdentifierType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PersonIdentifier.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.ContactMechanism.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
 
         return config;

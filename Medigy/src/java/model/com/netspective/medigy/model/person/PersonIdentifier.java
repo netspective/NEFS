@@ -43,6 +43,9 @@
  */
 package com.netspective.medigy.model.person;
 
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.model.party.PartyIdentifierType;
+
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.Id;
@@ -50,16 +53,13 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.Table;
 
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.model.common.IdentifierType;
-
 @Entity
 @Table(name = "Person_Identifier")       
 public class PersonIdentifier extends AbstractEntity
 {
     private Long systemId;
     private Person person;
-    private IdentifierType type;
+    private PartyIdentifierType type;
     private String idValue;
 
     @Id
@@ -86,12 +86,12 @@ public class PersonIdentifier extends AbstractEntity
     }
 
     @Column(nullable = false)
-    public IdentifierType getType()
+    public PartyIdentifierType getType()
     {
         return type;
     }
 
-    public void setType(IdentifierType type)
+    public void setType(PartyIdentifierType type)
     {
         this.type = type;
     }

@@ -56,8 +56,10 @@ public class ContactMechanismType extends AbstractReferenceEntity
 {
     public enum Cache implements CachedReferenceEntity
     {
-        PHONE("P", "Phone", ""),
+        PHONE("PH", "Phone", ""),
         FAX("F", "Fax", ""),
+        PAGER("PG", "Pager", ""),
+        MOBILE("M", "Mobile", ""),
         EMAIL_ADDRESS("E", "Email Address", ""),
         POSTAL_ADDRESS("PA", "Postal Address", ""),
         WEB_ADDRESS("WA", "Web Address", "");

@@ -37,104 +37,74 @@
  *
  * @author Aye Thu
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.reference.type.FacilityType;
+import com.netspective.medigy.model.common.AbstractEntity;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
 import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
 import javax.ejb.Id;
+import javax.ejb.ManyToOne;
+import javax.ejb.CascadeType;
 import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
 import javax.ejb.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ejb.Column;
 
 @Entity
-public class Facility extends AbstractTopLevelEntity
+public class PartyIdentifier extends AbstractEntity
 {
-    private Long facilityId;
-    private String description;
-    private Float squareFootage;
+    private Long identifierId;
+    private Party party;
+    private PartyIdentifierType type;
+    private String identifierValue;
 
-    private FacilityType type;
-    // children childFacilities (e.g Rooms on a Floor, offices in a building)
-    private Set<Facility> childFacilities = new HashSet<Facility>();
-    //private PartyFacilityRole facilityRole;
-
-    public Facility()
+    public PartyIdentifier()
     {
+
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    public Long getFacilityId()
+    @Id
+    public Long getIdentifierId()
     {
-        return facilityId;
+        return identifierId;
     }
 
-    protected void setFacilityId(final Long facilityId)
+    protected void setIdentifierId(final Long identifierId)
     {
-        this.facilityId = facilityId;
+        this.identifierId = identifierId;
     }
 
-    @Column(length = 100)
-    public String getDescription()
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Party getParty()
     {
-        return description;
+        return party;
     }
 
-    public void setDescription(final String description)
+    protected void setParty(final Party party)
     {
-        this.description = description;
-    }
-
-    public Float getSquareFootage()
-    {
-        return squareFootage;
-    }
-
-    public void setSquareFootage(final Float squareFootage)
-    {
-        this.squareFootage = squareFootage;
+        this.party = party;
     }
 
     @OneToOne
-    @JoinColumn(name = "facility_type_id")
-    public FacilityType getType()
+    @JoinColumn(name = "identifier_type_id")
+    public PartyIdentifierType getType()
     {
         return type;
     }
 
-    public void setType(final FacilityType type)
+    protected void setType(final PartyIdentifierType type)
     {
         this.type = type;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "child_facility_id", referencedColumnName = "facility_id")
-    public Set<Facility> getChildFacilities()
+    @Column(length = 100)
+    public String getIdentifierValue()
     {
-        return childFacilities;
+        return identifierValue;
     }
 
-    public void setChildFacilities(final Set<Facility> childFacilities)
+    protected void setIdentifierValue(final String identifierValue)
     {
-        this.childFacilities = childFacilities;
+        this.identifierValue = identifierValue;
     }
-
-    /*
-    @OneToOne
-    @JoinColumn(name = "facility_id")
-    public PartyFacilityRole getFacilityRole()
-    {
-        return facilityRole;
-    }
-
-    public void setFacilityRole(final PartyFacilityRole facilityRole)
-    {
-        this.facilityRole = facilityRole;
-    }
-    */
 }

@@ -43,21 +43,21 @@
  */
 package com.netspective.medigy.model.org;
 
+import com.netspective.medigy.model.party.PartyIdentifierType;
+
 import javax.ejb.Entity;
 import javax.ejb.Inheritance;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 
-import com.netspective.medigy.model.common.IdentifierType;
-
 @Entity
 @Inheritance(discriminatorValue = "O")
-public class OrgIdentifierType extends IdentifierType
+public class OrgIdentifierType extends PartyIdentifierType
 {
     private Organization organization;
 
     @ManyToOne
-    @JoinColumn(name = "org_id", nullable = false)
+    @JoinColumn(name = "party_id", nullable = false)
     public Organization getOrganization()
     {
         return organization;

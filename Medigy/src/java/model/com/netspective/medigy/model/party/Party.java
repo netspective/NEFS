@@ -42,18 +42,18 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
-import javax.ejb.InheritanceType;
-import javax.ejb.Inheritance;
+import javax.ejb.CascadeType;
 import javax.ejb.Entity;
+import javax.ejb.GeneratorType;
+import javax.ejb.Id;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceType;
+import javax.ejb.JoinColumn;
+import javax.ejb.OneToMany;
 import javax.ejb.Table;
 import javax.ejb.Transient;
-import javax.ejb.OneToMany;
-import javax.ejb.CascadeType;
-import javax.ejb.JoinColumn;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity()
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -63,6 +63,9 @@ public abstract class Party extends AbstractTopLevelEntity
     private Long partyId;
 
     private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
+    private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
+    private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
+    private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
 
     public Party()
     {
@@ -83,15 +86,52 @@ public abstract class Party extends AbstractTopLevelEntity
     public abstract String getPartyName();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "partyId")
+    @JoinColumn(name = "party_id")
     public Set<PartyRole> getPartyRoles()
     {
         return partyRoles;
     }
 
-    protected void setPartyRoles(final Set<PartyRole> partyRoles)
+    public void setPartyRoles(final Set<PartyRole> partyRoles)
     {
         this.partyRoles = partyRoles;
     }
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyIdentifier> getPartyIdentifiers()
+    {
+        return partyIdentifiers;
+    }
+
+    public void setPartyIdentifiers(final Set<PartyIdentifier> partyIdentifiers)
+    {
+        this.partyIdentifiers = partyIdentifiers;
+    }
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyContactMechanism> getContactMechanisms()
+    {
+        return contactMechanisms;
+    }
+
+    protected void setContactMechanisms(final Set<PartyContactMechanism> contactMechanisms)
+    {
+        this.contactMechanisms = contactMechanisms;
+    }
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyFacilityRole> getPartyFacilityRoles()
+    {
+        return partyFacilityRoles;
+    }
+
+    public void setPartyFacilityRoles(final Set<PartyFacilityRole> partyFacilityRoles)
+    {
+        this.partyFacilityRoles = partyFacilityRoles;
+    }
 }

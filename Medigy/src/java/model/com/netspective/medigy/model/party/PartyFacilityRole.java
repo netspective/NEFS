@@ -40,16 +40,15 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.common.Facility;
 import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
 
+import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
-import javax.ejb.OneToOne;
-import javax.ejb.Column;
 import javax.ejb.ManyToOne;
+import javax.ejb.OneToOne;
 import javax.ejb.Table;
 
 @Entity
@@ -60,7 +59,7 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
 
     private Party party;
     private PartyFacilityRoleType type;
-    private Facility facility;
+    //private Facility facility;
 
     public PartyFacilityRole()
     {
@@ -103,6 +102,7 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
         this.type = type;
     }
 
+    /*
     @OneToOne
     @JoinColumn(name = "facility_id")
     public Facility getFacility()
@@ -114,4 +114,5 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
     {
         this.facility = facility;
     }
+    */
 }
