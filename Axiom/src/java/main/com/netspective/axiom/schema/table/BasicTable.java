@@ -909,10 +909,20 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         final ColumnValues columnValues = row.getColumnValues();
 
         // if a record exists with the same primary key, do an immediate update and leave
-        if(getAccessorByPrimaryKeyEquality().recordsExist(cc, row.getPrimaryKeyValues().getValuesForSqlBindParams()))
+        final Object[] valuesForSqlBindParams = row.getPrimaryKeyValues().getValuesForSqlBindParams();
+        int nonNullsCount = 0;
+        for(int i = 0; i < valuesForSqlBindParams.length; i++)
         {
-            update(cc, row);
-            return;
+            if(valuesForSqlBindParams[i] != null)
+                nonNullsCount++;
+        }
+        if(nonNullsCount == valuesForSqlBindParams.length)
+        {
+            if(getAccessorByPrimaryKeyEquality().recordsExist(cc, valuesForSqlBindParams))
+            {
+                update(cc, row);
+                return;
+            }
         }
 
         // now look to see if there are any rows with the same values as a unique index somewhere in the table; if so,
