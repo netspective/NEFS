@@ -30,78 +30,94 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.sparx.navigate.fts;
+package com.netspective.sparx.navigate;
 
-import java.io.IOException;
-import java.io.Serializable;
-
-import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Query;
-
-import com.netspective.sparx.navigate.DefaultScrollableRowState;
-import com.netspective.sparx.navigate.ScrollableRowsState;
-
-public class DefaultSearchResults implements Serializable, FullTextSearchResults
+public class DefaultScrollableRowState implements ScrollableRowsState
 {
-    private final FullTextSearchPage searchPage;
-    private final SearchExpression expression;
-    private final Query query;
-    private final SearchHits searchHits;
-    private final ScrollableRowsState scrollState;
+    private final int scrollTotalRows;
+    private final int scrollRowsPerPage;
+    private final int scrollTotalPages;
+    private final int scrollPagesRangeSize;  // number of scrollable pages to show in the page navigation screen
+    private int scrollActivePage;
 
-    public DefaultSearchResults(final FullTextSearchPage searchPage, final SearchExpression expression, final Query query, final SearchHits searchHits, final int rowsPerPage)
+    public DefaultScrollableRowState(int scrollTotalRows, int scrollRowsPerPage, int scrollPagesRangeSize)
     {
-        this.searchPage = searchPage;
-        this.expression = expression;
-        this.query = query;
-        this.searchHits = searchHits;
-        this.scrollState = new DefaultScrollableRowState(searchHits.length(), rowsPerPage, 10);
+        this.scrollTotalRows = scrollTotalRows;
+        this.scrollRowsPerPage = scrollRowsPerPage;
+        this.scrollPagesRangeSize = scrollPagesRangeSize;
+
+        this.scrollActivePage = 1;
+        this.scrollTotalPages = (scrollTotalRows % scrollRowsPerPage == 0) ? (scrollTotalRows / scrollRowsPerPage) :
+                                ((scrollTotalRows / scrollRowsPerPage) + 1);
     }
 
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException
+    public int getScrollActivePageStartRow()
     {
-        final int startRow = scrollState.getScrollActivePageStartRow();
-        final int endRow = scrollState.getScrollActivePageEndRow();
-        String[][] hitsMatrix = new String[endRow - startRow][fieldNames.length];
-        for(int i = startRow; i < endRow; i++)
-        {
-            Document doc = searchHits.getDoc(i);
-            String[] row = hitsMatrix[i - startRow];
-            for(int j = 0; j < fieldNames.length; j++)
-            {
-                row[j] = doc.get(fieldNames[j]);
-            }
-        }
-        return hitsMatrix;
+        return ((scrollActivePage - 1) * scrollRowsPerPage);
     }
 
-    public String[][] getActivePageHitValues() throws IOException
+    public int getScrollActivePageEndRow()
     {
-        return getActivePageHitValues(searchPage.getRenderer().getHitsMatrixFieldNames());
+        int result = getScrollActivePageStartRow() + scrollRowsPerPage;
+        if(result > scrollTotalRows)
+            result = scrollTotalRows;
+        return result;
     }
 
-    public ScrollableRowsState getScrollState()
+    public int getScrollTotalRows()
     {
-        return scrollState;
+        return scrollTotalRows;
     }
 
-    public SearchExpression getExpression()
+    public int getScrollRowsPerPage()
     {
-        return expression;
+        return scrollRowsPerPage;
     }
 
-    public FullTextSearchPage getSearchPage()
+    public int getScrollTotalPages()
     {
-        return searchPage;
+        return scrollTotalPages;
     }
 
-    public SearchHits getHits()
+    public int getScrollActivePage()
     {
-        return searchHits;
+        return scrollActivePage;
     }
 
-    public Query getQuery()
+    public boolean scrollToPage(int page)
     {
-        return query;
+        if(page < 0 || page > scrollTotalPages)
+            return false;
+
+        this.scrollActivePage = page;
+        return true;
+    }
+
+    public boolean isScrollable()
+    {
+        return scrollTotalRows > scrollRowsPerPage;
+    }
+
+    public int getScrollPagesRangeSize()
+    {
+        return scrollPagesRangeSize;
+    }
+
+    public int getScrollPagesRangeStartPage()
+    {
+        if(scrollTotalPages < scrollPagesRangeSize)
+            return 1;
+
+        int result = scrollActivePage - scrollPagesRangeSize;
+        return result > 0 ? result : 1;
+    }
+
+    public int getScrollPagesRangeEndPage()
+    {
+        if(scrollTotalPages < scrollPagesRangeSize)
+            return scrollTotalPages;
+
+        int result = scrollActivePage + scrollPagesRangeSize;
+        return result <= scrollTotalPages ? result : scrollTotalPages;
     }
 }

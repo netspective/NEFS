@@ -36,6 +36,8 @@ import java.io.IOException;
 
 import org.apache.lucene.search.Query;
 
+import com.netspective.sparx.navigate.ScrollableRowsState;
+
 public interface FullTextSearchResults
 {
     public SearchExpression getExpression();
@@ -48,27 +50,6 @@ public interface FullTextSearchResults
 
     public FullTextSearchPage getSearchPage();
 
-    public int getScrollTotalRows();
-
-    public int getScrollTotalPages();
-
-    public int getScrollRowsPerPage();
-
-    public int getScrollActivePage();
-
-    public int getScrollActivePageStartRow();
-
-    public int getScrollActivePageEndRow();
-
-    public boolean scrollToPage(int page);
-
-    public boolean isScrollable();
-
-    public int getScrollPagesRangeSize();
-
-    public int getScrollPagesRangeStartPage();
-
-    public int getScrollPagesRangeEndPage();
-
+    public ScrollableRowsState getScrollState();
 }
 

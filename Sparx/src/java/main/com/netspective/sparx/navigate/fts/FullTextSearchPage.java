@@ -356,7 +356,7 @@ public class FullTextSearchPage extends NavigationPage
                 {
                     final String activePageParamValue = request.getParameter(activeScrollPageParamName);
                     if(activePageParamValue != null)
-                        searchResults.scrollToPage(Integer.parseInt(activePageParamValue));
+                        searchResults.getScrollState().scrollToPage(Integer.parseInt(activePageParamValue));
                     renderer.renderSearchResults(writer, nc, searchResults);
                     return;
                 }
@@ -381,7 +381,7 @@ public class FullTextSearchPage extends NavigationPage
             FullTextSearchResultsActivity activity = new FullTextSearchResultsActivity(nc, searchResults);
             nc.getProject().broadcastActivity(activity);
 
-            if(searchResults.isScrollable())
+            if(searchResults.getScrollState().isScrollable())
                 setActiveUserSearchResults(nc, searchResults);
 
             renderer.renderSearchResults(writer, nc, searchResults);

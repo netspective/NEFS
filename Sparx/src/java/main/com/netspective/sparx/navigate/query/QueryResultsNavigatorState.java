@@ -30,78 +30,35 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.sparx.navigate.fts;
+package com.netspective.sparx.navigate.query;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.sql.SQLException;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Query;
-
-import com.netspective.sparx.navigate.DefaultScrollableRowState;
+import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.sparx.navigate.ScrollableRowsState;
 
-public class DefaultSearchResults implements Serializable, FullTextSearchResults
+public interface QueryResultsNavigatorState
 {
-    private final FullTextSearchPage searchPage;
-    private final SearchExpression expression;
-    private final Query query;
-    private final SearchHits searchHits;
-    private final ScrollableRowsState scrollState;
+    /**
+     * Get the unique identifier that indicates a specific execution of this query with specific parameters.
+     */
+    public String getExecutionIdentifer();
 
-    public DefaultSearchResults(final FullTextSearchPage searchPage, final SearchExpression expression, final Query query, final SearchHits searchHits, final int rowsPerPage)
-    {
-        this.searchPage = searchPage;
-        this.expression = expression;
-        this.query = query;
-        this.searchHits = searchHits;
-        this.scrollState = new DefaultScrollableRowState(searchHits.length(), rowsPerPage, 10);
-    }
+    /**
+     * Ascertain whether the state is valid
+     *
+     * @return True if valid, false if it's timed out or automatically closed
+     */
+    public boolean isValid();
 
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException
-    {
-        final int startRow = scrollState.getScrollActivePageStartRow();
-        final int endRow = scrollState.getScrollActivePageEndRow();
-        String[][] hitsMatrix = new String[endRow - startRow][fieldNames.length];
-        for(int i = startRow; i < endRow; i++)
-        {
-            Document doc = searchHits.getDoc(i);
-            String[] row = hitsMatrix[i - startRow];
-            for(int j = 0; j < fieldNames.length; j++)
-            {
-                row[j] = doc.get(fieldNames[j]);
-            }
-        }
-        return hitsMatrix;
-    }
+    public QueryResultSet getQueryResultSet();
 
-    public String[][] getActivePageHitValues() throws IOException
-    {
-        return getActivePageHitValues(searchPage.getRenderer().getHitsMatrixFieldNames());
-    }
+    public ScrollableRowsState getScrollState();
 
-    public ScrollableRowsState getScrollState()
-    {
-        return scrollState;
-    }
+    public Object[][] getActivePageColumnValues() throws SQLException;
 
-    public SearchExpression getExpression()
-    {
-        return expression;
-    }
+    public Object[][] getActivePageColumnValuesByColNames(String[] columnNames) throws SQLException;
 
-    public FullTextSearchPage getSearchPage()
-    {
-        return searchPage;
-    }
-
-    public SearchHits getHits()
-    {
-        return searchHits;
-    }
-
-    public Query getQuery()
-    {
-        return query;
-    }
+    public Object[][] getActivePageColumnValuesByColNumbers(int[] columnNumbers) throws SQLException;
 }
+

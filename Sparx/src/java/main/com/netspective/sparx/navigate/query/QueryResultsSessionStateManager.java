@@ -30,78 +30,43 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF IT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  */
-package com.netspective.sparx.navigate.fts;
+package com.netspective.sparx.navigate.query;
 
-import java.io.IOException;
-import java.io.Serializable;
+import java.sql.SQLException;
 
-import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Query;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
 
-import com.netspective.sparx.navigate.DefaultScrollableRowState;
-import com.netspective.sparx.navigate.ScrollableRowsState;
+import com.netspective.sparx.navigate.NavigationContext;
 
-public class DefaultSearchResults implements Serializable, FullTextSearchResults
+/**
+ * Holds the results of one invocation of any particular query navigator page. If another query with a different execution
+ * id is passed in (meaning new parameters were probably used) then the old one is disposed and a new query is created.
+ */
+public class QueryResultsSessionStateManager implements QueryResultsStateManager
 {
-    private final FullTextSearchPage searchPage;
-    private final SearchExpression expression;
-    private final Query query;
-    private final SearchHits searchHits;
-    private final ScrollableRowsState scrollState;
-
-    public DefaultSearchResults(final FullTextSearchPage searchPage, final SearchExpression expression, final Query query, final SearchHits searchHits, final int rowsPerPage)
+    public QueryResultsNavigatorState getQueryResultsNavigatorState(QueryResultsNavigatorPage page, NavigationContext nc, String executionId) throws SQLException, NamingException
     {
-        this.searchPage = searchPage;
-        this.expression = expression;
-        this.query = query;
-        this.searchHits = searchHits;
-        this.scrollState = new DefaultScrollableRowState(searchHits.length(), rowsPerPage, 10);
-    }
+        final String sessAttrName = page.getQualifiedName() + "_active-query-results";
+        final HttpSession session = nc.getHttpRequest().getSession();
+        QueryResultsNavigatorState result = (QueryResultsNavigatorState) session.getAttribute(sessAttrName);
 
-    public String[][] getActivePageHitValues(String[] fieldNames) throws IOException
-    {
-        final int startRow = scrollState.getScrollActivePageStartRow();
-        final int endRow = scrollState.getScrollActivePageEndRow();
-        String[][] hitsMatrix = new String[endRow - startRow][fieldNames.length];
-        for(int i = startRow; i < endRow; i++)
+        if(result != null)
         {
-            Document doc = searchHits.getDoc(i);
-            String[] row = hitsMatrix[i - startRow];
-            for(int j = 0; j < fieldNames.length; j++)
+            // if the state has timed out or we're now starting a new execution of the same query (using different params),
+            // we want to get rid of it and create another one
+            if(!result.isValid() || !result.getExecutionIdentifer().equals(executionId))
             {
-                row[j] = doc.get(fieldNames[j]);
+                session.removeAttribute(sessAttrName);
+                result = null;
             }
         }
-        return hitsMatrix;
-    }
 
-    public String[][] getActivePageHitValues() throws IOException
-    {
-        return getActivePageHitValues(searchPage.getRenderer().getHitsMatrixFieldNames());
-    }
-
-    public ScrollableRowsState getScrollState()
-    {
-        return scrollState;
-    }
-
-    public SearchExpression getExpression()
-    {
-        return expression;
-    }
-
-    public FullTextSearchPage getSearchPage()
-    {
-        return searchPage;
-    }
-
-    public SearchHits getHits()
-    {
-        return searchHits;
-    }
-
-    public Query getQuery()
-    {
-        return query;
+        if(result == null)
+        {
+            result = page.constructQueryResults(nc, executionId);
+            session.setAttribute(sessAttrName, result);
+        }
+        return result;
     }
 }
