@@ -3,6 +3,7 @@ package com.netspective.axiom.sql;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.lang.StringUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.GenericValue;
@@ -270,11 +271,13 @@ public class StoredProcedure
     protected void executeAndIgnoreStatistics(ConnectionContext cc, Object[] overrideParams) throws NamingException, SQLException
     {
         //if(log.isTraceEnabled()) trace(cc, overrideParams);
+        Connection conn = null;
+        CallableStatement stmt = null;
+
         try
         {
-            Connection conn = cc.getConnection();
-            CallableStatement stmt = null;
-            String sql = getSqlText(cc);
+            conn = cc.getConnection();
+            String sql = StringUtils.strip(getSqlText(cc));
             stmt = conn.prepareCall(sql);
 
             if(overrideParams != null)
@@ -282,17 +285,24 @@ public class StoredProcedure
                 for(int i = 0; i < overrideParams.length; i++)
                     stmt.setObject(i + 1, overrideParams[i]);
             }
-            else if(parameters != null)
-                parameters.apply(cc, stmt);
 
-            boolean executeStmtResult = stmt.execute();
+            if(parameters != null)
+                parameters.apply(cc, stmt);
+            stmt.execute();
             parameters.extract(cc, stmt);
-            //StoredProcedureParameter[] outParams = parameters.getOuts();
         }
         catch(SQLException e)
         {
             log.error(createExceptionMessage(cc, overrideParams), e);
             throw e;
+        }
+        finally
+        {
+            if (conn != null)
+            {
+                stmt.close();
+                conn.close();
+            }
         }
     }
 
