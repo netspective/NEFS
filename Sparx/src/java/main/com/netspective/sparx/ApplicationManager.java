@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.7 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: ApplicationManager.java,v 1.8 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -48,6 +48,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.SqlManager;
+import com.netspective.axiom.ConnectionProviderEntryStatistics;
+import com.netspective.axiom.connection.BasicConnectionProviderEntry;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.sparx.navigate.NavigationTreesManager;
 import com.netspective.sparx.navigate.NavigationTree;
@@ -128,6 +130,15 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     {
         Themes.getInstance().registerTheme(theme);
     }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public void addRegisterConnectionProviderEntryStatistics(ConnectionProviderEntryStatistics stats)
+    {
+        BasicConnectionProviderEntry.registerStatisticsProvider(stats);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
 
     public TabularReport createTabularReport()
     {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.13 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.14 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -582,7 +582,7 @@ public class Dialog extends AbstractPanel
     public void handlePostExecuteException(Writer writer, DialogContext dc, String message, Exception e) throws IOException
     {
         dc.setExecuteStageHandled(true);
-        log.error(e);
+        log.error("Dialog execute error", e);
         dc.setRedirectDisabled(true);
         dc.performDefaultRedirect(writer, null);
         writer.write(message + e.toString());
@@ -697,7 +697,7 @@ public class Dialog extends AbstractPanel
         }
         catch (DialogExecuteException e)
         {
-            log.error(e);
+            log.error("Dialog execute error", e);
             writer.write(e.toString());
         }
     }

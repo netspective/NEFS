@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.3 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -411,7 +411,7 @@ public class DateTimeField extends TextField
                 }
                 catch(Exception e)
                 {
-                    log.error(e);
+                    log.error("Unable to translate date string " + str, e);
                 }
             }
             else

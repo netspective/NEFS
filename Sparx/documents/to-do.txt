@@ -17,6 +17,7 @@
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
+* Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
 * Allow documentation panels in console which borrow ideas form Sparx 2.0 documentation (XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates

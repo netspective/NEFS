@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.19 2003-05-23 02:18:40 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.20 2003-05-24 20:28:36 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -20,6 +20,8 @@
     <register-command class="com.netspective.sparx.command.DialogCommand"/>
     <register-command class="com.netspective.sparx.command.ValueSourceCommand"/>
     <register-command class="com.netspective.sparx.command.QueryCommand"/>
+
+    <register-connection-provider-entry-statistics class="com.netspective.sparx.console.panel.data.ResinDataSourcePoolStatistics"/>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>

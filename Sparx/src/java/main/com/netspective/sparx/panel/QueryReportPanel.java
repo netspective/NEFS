@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.3 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.4 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -140,7 +140,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         }
         catch (Exception e)
         {
-            log.error(e);
+            log.error("Unable to create data source", e);
             throw new NestableRuntimeException(e);
         }
     }
@@ -160,7 +160,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (Exception e)
             {
-                log.error(e);
+                log.error("Unable to create report", e);
                 throw new NestableRuntimeException(e);
             }
         }
@@ -205,7 +205,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to set result set", e);
                 throw new NestableRuntimeException(e);
             }
 
@@ -221,7 +221,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to retrieve column data", e);
                 return e.toString();
             }
         }
@@ -242,7 +242,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to get total rows", e);
                 throw new NestableRuntimeException(e);
             }
 
@@ -258,7 +258,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to check if more rows are available", e);
                 throw new NestableRuntimeException(e);
             }
         }
@@ -297,7 +297,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to set active row", e);
                 throw new NestableRuntimeException(e);
             }
         }
@@ -314,7 +314,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             }
             catch (SQLException e)
             {
-                log.error(e);
+                log.error("Unable to move to next row", e);
                 throw new NestableRuntimeException(e);
             }
 

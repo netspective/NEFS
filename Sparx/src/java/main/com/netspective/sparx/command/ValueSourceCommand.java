@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceCommand.java,v 1.1 2003-05-09 15:56:37 shahid.shah Exp $
+ * $Id: ValueSourceCommand.java,v 1.2 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -129,7 +129,7 @@ public class ValueSourceCommand extends AbstractHttpServletCommand
             }
             catch (CommandNotFoundException e)
             {
-                log.error(e);
+                log.error("error handling command", e);
                 writer.write(e.toString());
             }
         }

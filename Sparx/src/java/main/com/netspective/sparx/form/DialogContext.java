@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.9 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.10 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -354,7 +354,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             catch(NoSuchAlgorithmException e)
             {
                 transactionId = "No MessageDigest Algorithm found!";
-                log.error(e);
+                log.error("Unable to create transation id", e);
             }
             dataCmdStr = (String) request.getAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL);
             if(dataCmdStr == null)

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.12 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: TextField.java,v 1.13 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -274,7 +274,7 @@ public class TextField extends DialogField
                 catch(MalformedPerl5PatternException e)
                 {
                     value = e.toString();
-                    log.error(e);
+                    log.error("Unable to format display value " + value, e);
                 }
             }
         }
@@ -308,7 +308,7 @@ public class TextField extends DialogField
                 catch(MalformedPerl5PatternException e)
                 {
                     value = e.toString();
-                    log.error(e);
+                    log.error("Unable to format submit value " + value, e);
                 }
             }
         }

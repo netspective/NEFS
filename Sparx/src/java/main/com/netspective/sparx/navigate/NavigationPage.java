@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.20 2003-05-21 11:10:29 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.21 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -592,7 +592,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
                 }
                 catch (CommandException e)
                 {
-                    log.error(e);
+                    log.error("Command error in body", e);
                     throw new ServletException(e);
                 }
                 return;
@@ -607,7 +607,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
             }
             catch (CommandException e)
             {
-                log.error(e);
+                log.error("Command error in body", e);
                 throw new ServletException(e);
             }
             return;

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlCommandPanel.java,v 1.2 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: HtmlCommandPanel.java,v 1.3 2003-05-24 20:28:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -90,7 +90,7 @@ public class HtmlCommandPanel extends AbstractPanel
         }
         catch (CommandException e)
         {
-            log.error(e);
+            log.error("Command error in panel", e);
             writer.write(e.toString());
         }
     }
@@ -110,7 +110,7 @@ public class HtmlCommandPanel extends AbstractPanel
         }
         catch (CommandException e)
         {
-            log.error(e);
+            log.error("Command error in panel", e);
             writer.write(e.toString());
         }
     }
