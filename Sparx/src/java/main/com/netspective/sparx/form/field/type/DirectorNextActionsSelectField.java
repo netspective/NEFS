@@ -51,17 +51,104 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.3 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.4 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
-import com.netspective.sparx.form.Dialog;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogDataCommands;
+import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.DialogField;
 
-public class DirectorNextActionsSelectField extends DialogField
+public class DirectorNextActionsSelectField extends SelectField
 {
+    public static final String DEFAULT_NAME = "director_next_actions";
+
+    private DialogDataCommands dataCmd = new DialogDataCommands();
+    private boolean displayOneItemOnly = false;
+
     public DirectorNextActionsSelectField()
     {
+        super();
+        getFlags().setFlag(Flags.PERSIST);
+    }
+
+    public void setParent(DialogField newParent)
+    {
+        super.setParent(newParent);
+        if(getName() == null)
+            setName(DEFAULT_NAME);
+    }
+
+    /**
+     * The next actions field is a SelectField which has a caption and a value. The caption is displayed to the
+     * user and the value is a URL which indicates where they want to go next. The URL can be either a String or
+     * a ValueSource that can dynamically compute the next location based on the current location.
+     */
+    public String getSelectedActionUrl(DialogContext dc)
+    {
+        String value = dc.getRequest().getParameter(getHtmlFormControlId());
+        if (value == null)
+            return null;
+        ValueSource svs = ValueSources.getInstance().getValueSourceOrStatic(value);
+        if (svs == null)
+            return null;
+        return svs.getTextValue(dc);
+    }
+
+    public void makeStateChanges(DialogContext dc, int stage)
+    {
+        super.makeStateChanges(dc, stage);
+        if(stage != DialogContext.STATECALCSTAGE_FINAL)
+            return;
+
+        ValueSource choices = getChoices();
+        PresentationValue pValue = choices != null ? choices.getPresentationValue(dc) : null;
+        PresentationValue.Items items = pValue != null ? pValue.getItems() : null;
+
+        int listSize = items != null ? items.size() : 0;
+        if(listSize == 0)
+            return;
+
+        // if there's only a single item but we don't want to display "one item only" then get the value but hide the field
+        if (listSize == 1 && !displayOneItemOnly)
+        {
+            SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
+            state.getValue().setTextValue(((PresentationValue.Items.Item) items.get(0)).getValue());
+            state.getStateFlags().setFlag(Flags.INPUT_HIDDEN);
+        }
+    }
+
+    public DialogDataCommands getDataCmd()
+    {
+        return dataCmd;
+    }
+
+    public void setDataCmd(DialogDataCommands dataCmd)
+    {
+        this.dataCmd.copy(dataCmd);
+        if (this.dataCmd.getFlags() != DialogDataCommands.NONE)
+        {
+            getFlags().setFlag(Flags.INPUT_HIDDEN);
+            DialogFieldConditionalApplyFlag dataCmdAction = new DialogFieldConditionalApplyFlag(this);
+            dataCmdAction.getFlags().setFlag(Flags.INPUT_HIDDEN);
+            dataCmdAction.setClear(true);
+            dataCmdAction.setDataCmd(this.dataCmd);
+            addConditional(dataCmdAction);
+        }
+    }
+
+    public boolean isDisplayOneItemOnly()
+    {
+        return displayOneItemOnly;
+    }
+
+    public void setDisplayOneItemOnly(boolean displayOneItemOnly)
+    {
+        this.displayOneItemOnly = displayOneItemOnly;
     }
 }

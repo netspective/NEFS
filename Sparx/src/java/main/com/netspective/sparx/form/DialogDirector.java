@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogDirector.java,v 1.4 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: DialogDirector.java,v 1.5 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -198,13 +198,13 @@ public class DialogDirector extends DialogField
 
     public String getNextActionUrl(DialogContext dc)
     {
-        //TODO: return nextActionsField == null ? null : nextActionsField.getSelectedActionUrl(dc);
-        return null;
+        return nextActionsField == null ? null : nextActionsField.getSelectedActionUrl(dc);
     }
 
     public void addNextActions(DirectorNextActionsSelectField nextActionsField)
     {
         this.nextActionsField = nextActionsField;
+        this.nextActionsField.setParent(this);
     }
 
     public void makeStateChanges(DialogContext dc, int stage)

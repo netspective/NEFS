@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalAction.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogFieldConditionalAction.java,v 1.3 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -119,32 +119,32 @@ public abstract class DialogFieldConditionalAction
         return true;
     }
 
-    public final DialogField getSourceField()
+    public DialogField getSourceField()
     {
         return sourceField;
     }
 
-    public final void setSourceField(DialogField value)
+    public void setSourceField(DialogField value)
     {
         sourceField = value;
     }
 
-    public final String getPartnerFieldName()
+    public String getPartnerFieldName()
     {
         return partnerFieldName;
     }
 
-    public final void setPartnerFieldName(String value)
+    public void setPartnerFieldName(String value)
     {
         partnerFieldName = value;
     }
 
-    public final DialogField getPartnerField()
+    public DialogField getPartnerField()
     {
         return partnerField;
     }
 
-    public final void setPartnerField(DialogField value)
+    public void setPartnerField(DialogField value)
     {
         partnerField = value;
         if(partnerField != null)

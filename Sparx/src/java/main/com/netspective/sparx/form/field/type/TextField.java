@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.8 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: TextField.java,v 1.9 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -146,6 +146,11 @@ public class TextField extends DialogField
     public DialogField.State constructStateInstance(DialogContext dc)
     {
         return new TextFieldState(dc);
+    }
+
+    public int getMaxLength()
+    {
+        return textValidationRule.getMaxLength();
     }
 
     /**

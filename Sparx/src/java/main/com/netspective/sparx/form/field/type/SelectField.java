@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.1 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.2 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -81,7 +81,7 @@ public class SelectField extends TextField
     private static final Log log = LogFactory.getLog(SelectField.class);
     private static final int PRESENTATIONITEMFLAG_IS_SELECTED = 1;
 
-    public static final Flags.FlagDefn[] SELECT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 3];
+    public static final Flags.FlagDefn[] SELECT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 4];
     static
     {
         for(int i = 0; i < TextField.TEXT_FIELD_FLAG_DEFNS.length; i++)
@@ -89,6 +89,7 @@ public class SelectField extends TextField
         SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SORT_CHOICES", Flags.SORT_CHOICES);
         SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 1] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "PREPEND_BLANK", Flags.PREPEND_BLANK);
         SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 2] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "APPEND_BLANK", Flags.APPEND_BLANK);
+        SELECT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 3] = new Flags.FlagDefn(TextField.Flags.ACCESS_XDM, "SEND_CHOICES_TO_CLIENT", Flags.SEND_CHOICES_TO_CLIENT);
     }
 
     public class Flags extends TextField.Flags
@@ -96,7 +97,8 @@ public class SelectField extends TextField
         public static final int SORT_CHOICES = TextField.Flags.START_CUSTOM;
         public static final int PREPEND_BLANK = SORT_CHOICES * 2;
         public static final int APPEND_BLANK = PREPEND_BLANK * 2;
-        public static final int START_CUSTOM = APPEND_BLANK * 2;
+        public static final int SEND_CHOICES_TO_CLIENT = APPEND_BLANK * 2;
+        public static final int START_CUSTOM = SEND_CHOICES_TO_CLIENT * 2;
 
         public Flags()
         {
@@ -290,6 +292,10 @@ public class SelectField extends TextField
                 if(! flags.flagIsSet(Flags.CREATE_ADJACENT_AREA | Flags.CREATE_ADJACENT_AREA_HIDDEN))
                     flags.setFlag(Flags.CREATE_ADJACENT_AREA);
                 addPopup(new SelectFieldPopup());
+                break;
+
+            case Style.TEXT:
+                getFlags().setFlag(Flags.SEND_CHOICES_TO_CLIENT);
                 break;
         }
     }
@@ -490,6 +496,12 @@ public class SelectField extends TextField
         SelectFieldState.SelectFieldValue sfValue = (SelectFieldState.SelectFieldValue) state.getValue();
         sfValue.calcSelections(choices);
 
+        if(isInputHidden(dc))
+        {
+            writer.write(getHiddenControlHtml(dc, choices, false));
+            return;
+        }
+
         if(isReadOnly(dc))
         {
             writer.write(getHiddenControlHtml(dc, choices, true));
@@ -616,7 +628,7 @@ public class SelectField extends TextField
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
         buf.append("field.style = " + getStyle().getValueIndex() + ";\n");
 
-        if (style.getValueIndex() == Style.POPUP ||  style.getValueIndex() == Style.TEXT)
+        if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.SEND_CHOICES_TO_CLIENT))
         {
             PresentationValue pValue = this.choices.getPresentationValue(dc);
             PresentationValue.Items choices = pValue.getItems();

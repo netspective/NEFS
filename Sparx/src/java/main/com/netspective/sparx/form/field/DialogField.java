@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.10 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.11 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -846,15 +846,8 @@ public class DialogField implements TemplateConsumer
 	 */
 	public boolean isRequired(DialogContext dc)
 	{
-		String qName = getQualifiedName();
-		if (qName != null)
-		{
-			if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.REQUIRED)) return true;
-		}
-		else
-		{
-			if (flags.flagIsSet(Flags.REQUIRED)) return true;
-		}
+    	if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.REQUIRED))
+            return true;
 
 		if (children != null)
 		{
@@ -943,27 +936,20 @@ public class DialogField implements TemplateConsumer
 
 	public boolean isInputHidden(DialogContext dc)
 	{
-		String qName = getQualifiedName();
-		if (qName != null)
-		{
-            DialogField.State state = dc.getFieldStates().getState(this);
-            DialogField.Flags stateFlags = state.getStateFlags();
+        DialogField.State state = dc.getFieldStates().getState(this);
+        DialogField.Flags stateFlags = state.getStateFlags();
 
-			if (stateFlags.flagIsSet(Flags.INPUT_HIDDEN))
-				return true;
+        if (stateFlags.flagIsSet(Flags.INPUT_HIDDEN))
+            return true;
 
-			if (children == null && stateFlags.flagIsSet(Flags.READ_ONLY) &&
-				(stateFlags.flagIsSet(Flags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
-				dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA)))
-			{
-				Object value = state.getValue().getValue();
-				return value == null ? true : (value instanceof String ? (((String) value).length() == 0 ? true : false) : false);
-			}
-			else
-				return false;
-		}
-		else
-			return flags.flagIsSet(Flags.INPUT_HIDDEN);
+        if (children == null && stateFlags.flagIsSet(Flags.READ_ONLY) &&
+            (stateFlags.flagIsSet(Flags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
+            dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA)))
+        {
+            return ! state.hasRequiredValue();
+        }
+        else
+            return flags.flagIsSet(Flags.INPUT_HIDDEN);
 	}
 
 	public boolean persistValue()

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.3 2003-05-15 15:51:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -67,7 +67,7 @@ import com.netspective.sparx.form.DialogDataCommands;
 public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalAction
 {
     private boolean clear;
-    private DialogField.Flags flags; //TODO: need to initialize this!
+    private DialogField.Flags flags;
     private DialogDataCommands dataCmd = new DialogDataCommands();
     private String[] hasPermissions;
     private String[] lackPermissions;
@@ -77,6 +77,17 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     public DialogFieldConditionalApplyFlag()
     {
         super();
+    }
+
+    public DialogFieldConditionalApplyFlag(DialogField sourceField)
+    {
+        super(sourceField);
+    }
+
+    public void setSourceField(DialogField value)
+    {
+        super.setSourceField(value);
+        flags = value.createFlags();
     }
 
     public DialogField.Flags getFlags()
@@ -168,7 +179,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     public void setDataCmd(DialogDataCommands dataCmd)
     {
-        this.dataCmd = dataCmd;
+        this.dataCmd.copy(dataCmd);
     }
 
     public String[] getHasPermissions()

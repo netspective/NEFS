@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.11 2003-05-13 19:52:03 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.12 2003-05-15 15:51:17 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -12,6 +12,7 @@
     <register-value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
 
+    <register-theme name="console" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/console"/>
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate"/>
 
     <register-command class="com.netspective.sparx.command.RedirectCommand"/>
@@ -25,5 +26,10 @@
     <dialog-field-type name="boolean" class="com.netspective.sparx.form.field.type.BooleanField"/>
     <dialog-field-type name="currency" class="com.netspective.sparx.form.field.type.CurrencyField"/>
     <dialog-field-type name="select" class="com.netspective.sparx.form.field.type.SelectField"/>
+    <dialog-field-type name="static" class="com.netspective.sparx.form.field.type.StaticField"/>
+    <dialog-field-type name="integer" class="com.netspective.sparx.form.field.type.IntegerField"/>
+    <dialog-field-type name="float" class="com.netspective.sparx.form.field.type.FloatField"/>
+    <dialog-field-type name="memo" class="com.netspective.sparx.form.field.type.MemoField"/>
+    <dialog-field-type name="text-area" class="com.netspective.sparx.form.field.type.MemoField"/>
 
 </xdm:container>
