@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFlags.java,v 1.14 2003-11-16 01:10:54 shahid.shah Exp $
+ * $Id: DialogFlags.java,v 1.15 2004-03-18 03:02:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -96,7 +96,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
     public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
     {
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "RETAIN_ALL_REQUEST_PARAMS", RETAIN_ALL_REQUEST_PARAMS),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS),
+        new FlagDefn(DialogFlags.ACCESS_XDM, "HIDE_READONLY_HINTS", HIDE_READONLY_HINTS, "If set, all the hints of fields in this dialog will be hidden in read-only mode."),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "ENCTYPE_MULTIPART_FORMDATA", ENCTYPE_MULTIPART_FORMDATA),
         new FlagDefn(DialogFlags.ACCESS_PRIVATE, "HIDE_HEADING_IN_EXEC_MODE", HIDE_HEADING_IN_EXEC_MODE),
         new FlagDefn(DialogFlags.ACCESS_XDM, "READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA", READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA),
@@ -111,7 +111,7 @@ public class DialogFlags extends XdmBitmaskedFlagsAttribute
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_MULTIPLE_EXECUTES", ALLOW_MULTIPLE_EXECUTES),
         new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_PENDING_DATA", ALLOW_PENDING_DATA),
         new FlagDefn(DialogFlags.ACCESS_XDM, "GENERATE_DCB", GENERATE_DCB),
-        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON)
+        new FlagDefn(DialogFlags.ACCESS_XDM, "ALLOW_EXECUTE_WITH_CANCEL_BUTTON", ALLOW_EXECUTE_WITH_CANCEL_BUTTON, "If set, the cancel button will cause the form to be submitted and the dialog's execute method will be called. The default is to just send a JavaScript 'history.back()' event.")
     };
 
     public DialogFlags()
