@@ -1,3 +1,5 @@
+* Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
+* Need to add support for table dialogs (from Sparx 2.3)
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
 * Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
