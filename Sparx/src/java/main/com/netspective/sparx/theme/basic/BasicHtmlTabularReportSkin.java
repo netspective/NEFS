@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportSkin.java,v 1.1 2003-04-03 14:08:13 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportSkin.java,v 1.2 2003-04-03 14:10:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -87,8 +87,8 @@ public class BasicHtmlTabularReportSkin extends BasicHtmlPanelSkin implements Ht
         {
             for(int i = 0; i < BasicHtmlPanelSkin.Flags.FLAGDEFNS.length; i++)
                 FLAGDEFNS[i] = BasicHtmlPanelSkin.Flags.FLAGDEFNS[i];
-            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn("SHOW_HEAD_ROW", SHOW_HEAD_ROW);
-            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 2] = new FlagDefn("SHOW_FOOT_ROW", SHOW_FOOT_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn("SHOW_HEAD_ROW", SHOW_HEAD_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn("SHOW_FOOT_ROW", SHOW_FOOT_ROW);
         }
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
