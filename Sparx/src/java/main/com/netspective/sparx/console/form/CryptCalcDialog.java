@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CryptCalcDialog.java,v 1.1 2004-07-14 18:58:00 shahid.shah Exp $
+ * $Id: CryptCalcDialog.java,v 1.2 2004-07-18 15:42:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -54,6 +54,7 @@ import com.netspective.sparx.console.form.ConsoleDialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.command.HttpServletCommand;
@@ -68,7 +69,7 @@ import com.netspective.commons.security.Crypt;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.SqlManager;
 
-public class CryptCalcDialog extends ConsoleDialog
+public class CryptCalcDialog extends Dialog
 {
     private static final Log log = LogFactory.getLog(CryptCalcDialog.class);
 
