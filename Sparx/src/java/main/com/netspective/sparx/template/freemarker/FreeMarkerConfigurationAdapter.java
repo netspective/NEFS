@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.15 2003-08-20 19:00:22 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.16 2003-11-27 19:25:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -73,6 +73,11 @@ public class FreeMarkerConfigurationAdapter
 
     public FreeMarkerConfigurationAdapter()
     {
+        configuration = new Configuration();
+        configuration.setTemplateUpdateDelay(templateUpdateDelay);
+        configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
+        FreeMarkerConfigurationAdapters.getInstance().configureSharedVariables(configuration);
+        SyntaxHighlightTransform.registerTransforms(configuration);
     }
 
     public boolean isDefault()
@@ -89,14 +94,6 @@ public class FreeMarkerConfigurationAdapter
 
     public Configuration getConfiguration()
     {
-        if(configuration == null)
-        {
-            configuration = new Configuration();
-            configuration.setTemplateUpdateDelay(templateUpdateDelay);
-            configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-            FreeMarkerConfigurationAdapters.getInstance().configureSharedVariables(configuration);
-            SyntaxHighlightTransform.registerTransforms(configuration);
-        }
         return configuration;
     }
 
