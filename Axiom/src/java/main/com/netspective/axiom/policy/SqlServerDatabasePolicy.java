@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlServerDatabasePolicy.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: SqlServerDatabasePolicy.java,v 1.2 2003-11-22 01:44:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -54,6 +54,19 @@ public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
 {
     public static final String DBMSID_MICROSOFT_SQL_SERVER = "mssql";
 
+    protected class SqlServerSqlDdlFormats extends AnsiSqlDdlFormats
+    {
+        public SqlServerSqlDdlFormats()
+        {
+            super();
+
+            // don't do on delete cascade because SQL Server 2000 is very strict about paths to cascade
+            setFkeyConstraintTableClauseFormat("CONSTRAINT ${fkey.constraintName} FOREIGN KEY (${fkey.sourceColumns.getOnlyNames(', ')}) REFERENCES ${fkey.referencedColumns.first.table.name} (${fkey.referencedColumns.getOnlyNames(', ')})");
+        }
+    }
+
+    private SqlServerSqlDdlFormats sqlDdlFormats = new SqlServerSqlDdlFormats();
+
     public String getDbmsIdentifier()
     {
         return DBMSID_MICROSOFT_SQL_SERVER;
@@ -62,6 +75,11 @@ public class SqlServerDatabasePolicy extends AnsiDatabasePolicy
     public String[] getDbmsIdentifiers()
     {
         return new String[] { getDbmsIdentifier(), "Microsoft SQL Server" };
+    }
+
+    public SqlDdlFormats getDdlFormats()
+    {
+        return sqlDdlFormats;
     }
 
     public boolean retainAutoIncColInInsertDml()
