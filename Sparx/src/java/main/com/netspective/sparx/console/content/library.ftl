@@ -589,7 +589,7 @@
         <#assign isl = object.inputSourceLocator/>
         Source: <code>${vc.getConsoleFileBrowserLink(isl.inputSourceTracker.identifier, true)} ${isl.lineNumbersText}</code>
         <@xmlCode>
-            ${statics["com.netspective.commons.text.TextUtils"].getUnindentedText(isl.sourceText?default(isl.toString() + " unavailable"))}
+            ${statics["com.netspective.commons.text.TextUtils"].getInstance().getUnindentedText(isl.sourceText?default(isl.toString() + " unavailable"))}
         </@xmlCode>
     <#else>
         Unable to get input source locator for ${object.class.name};
