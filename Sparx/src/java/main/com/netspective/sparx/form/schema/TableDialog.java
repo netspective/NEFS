@@ -39,38 +39,44 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.11 2003-08-31 22:52:06 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.12 2003-09-29 03:07:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
-import com.netspective.sparx.form.*;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.axiom.schema.*;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.value.ValueSource;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.naming.NamingException;
-import java.sql.SQLException;
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
+import java.sql.SQLException;
+import java.text.MessageFormat;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogContextUtils;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogPerspectives;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.navigate.NavigationContext;
 
 public class TableDialog extends Dialog
 {
     private static final Log log = LogFactory.getLog(TableDialog.class);
     public static final String PARAMNAME_PRIMARYKEY = "pk";
 
-    private String schemaName;
-    private String tableName;
-    private Schema schema;
-    private Table table;
+    private boolean valid;
     private Column primaryKeyColumn;
     private ValueSource dataSrc;
     private ValueSource primaryKeyValueForEditOrDelete;
@@ -89,50 +95,6 @@ public class TableDialog extends Dialog
     public DialogFlags createDialogFlags()
     {
         return new TableDialogFlags();
-    }
-
-    public String getSchemaName()
-    {
-        return schemaName;
-    }
-
-    public void setSchemaName(String schemaName)
-    {
-        this.schemaName = schemaName;
-    }
-
-    public String getTableName()
-    {
-        return tableName;
-    }
-
-    public void setTableName(String tableName)
-    {
-        this.tableName = tableName;
-    }
-
-    public Schema getSchema()
-    {
-        return schema;
-    }
-
-    public void setSchema(Schema schema)
-    {
-        this.schema = schema;
-        this.schemaName = schema.getName();
-    }
-
-    public Table getTable()
-    {
-        return table;
-    }
-
-    public void setTable(Table table)
-    {
-        this.table = table;
-        this.tableName = table.getName();
-        if(table.getPrimaryKeyColumns().size() == 1)
-            primaryKeyColumn = table.getPrimaryKeyColumns().getSole();
     }
 
     public ValueSource getDataSrc()
@@ -155,51 +117,34 @@ public class TableDialog extends Dialog
         this.primaryKeyValueForEditOrDelete = primaryKeyValueForEditOrDelete;
     }
 
-    /**
-     * If the schema and table objects are null then try and use the names and look them up.
-     * @param nc
-     */
-    public void finalizeContents(NavigationContext nc)
+    public synchronized void finalizeContents(NavigationContext nc)
     {
         super.finalizeContents(nc);
 
-        if(getSchema() == null)
-            setSchema(nc.getSqlManager().getSchema(getSchemaName()));
-
-        if(getTable() == null && getSchema() != null)
-            setTable(getSchema().getTables().getByName(getTableName()));
-
-        String pkColName = primaryKeyColumn.getName();
-        DialogFields fields = getFields();
-        for(int i = 0; i < fields.size(); i++)
+        Table table = getBindTable();
+        if(table != null)
         {
-            DialogField field = fields.get(i);
-            if(pkColName.equals(field.getName()))
+            if(table.getPrimaryKeyColumns().size() != 1)
+                log.error(MessageFormat.format("Table {0}.{1} does not have a single primary key. This dialog can only manage tables with single primary keys.'", new Object[] { table.getSchema().getName(), table.getName() }));
+            else
             {
-                field.getFlags().setFlag(DialogFieldFlags.PRIMARY_KEY);
-                break;
+                valid = true;
+                primaryKeyColumn = table.getPrimaryKeyColumns().getSole();
             }
         }
+        else
+            log.error(MessageFormat.format("Unable to bind to table {0}. Check that the 'bind-table' attribute is valid.", new Object[] { getBindTableName() }));
     }
 
-    public boolean isValid(DialogContext dc)
+    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
-        if(! super.isValid(dc))
-            return false;
-
-        if(table == null)
+        if(! valid)
         {
-            dc.getValidationContext().addValidationError("Unable to find table {1} in schema {0}.", new Object[] { getSchemaName(), getTableName() });
-            return false;
+            writer.write("There is an error in dialog '"+ getQualifiedName() +"', please check the error log.");
+            return;
         }
 
-        if(table.getPrimaryKeyColumns().size() != 1)
-        {
-            dc.getValidationContext().addValidationError("Table {1} in schema {0} does not have a single primary key.'", new Object[] { getSchemaName(), getTableName() });
-            return false;
-        }
-
-        return true;
+        super.render(writer, dc, contextPreparedAlready);
     }
 
     protected Object getPrimaryKeyValueForEditDeleteConfirmOrPrint(DialogContext dc)
@@ -242,7 +187,7 @@ public class TableDialog extends Dialog
                         try
                         {
                             cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
-                            Row row = table.getRowByPrimaryKeys(cc, new Object[] { pkValue }, null);
+                            Row row = getBindTable().getRowByPrimaryKeys(cc, new Object[] { pkValue }, null);
                             if(row != null)
                             {
                                 DialogContextUtils.getInstance().populateFieldValuesFromRow(dc, row);
@@ -273,6 +218,32 @@ public class TableDialog extends Dialog
         super.populateValues(dc, formatType);
     }
 
+    public void insertParentAndChildren(DialogContext dc, ConnectionContext cc, Table table, Row row) throws SQLException
+    {
+        table.insert(cc, row);
+
+        for(int i = 0; i < table.getChildTables().size(); i++)
+        {
+            Table childTable = table.getChildTables().get(i);
+
+            // does the child table have any columns that are bound to fields in the dialog?
+            if(getBindColumnTablesSet().contains(childTable))
+            {
+                // find the connector from the child table to the parent table
+                Columns parentKeyCols = childTable.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
+                if(parentKeyCols.size() == 1)
+                {
+                    Column connector = parentKeyCols.getSole();
+                    Row childRow = childTable.createRow((ParentForeignKey) connector.getForeignKey(), row);
+                    DialogContextUtils.getInstance().populateColumnValuesWithFieldValues(dc, childRow.getColumnValues());
+                    insertParentAndChildren(dc, cc, childTable, childRow);
+                }
+                else
+                    log.error("Child table '"+ childTable.getName() +"' has bound fields but doesn't have a single parent foreign key column.");
+            }
+        }
+    }
+
     public void execute(Writer writer, DialogContext dc) throws IOException
     {
         TableDialogContext tdc = ((TableDialogContext) dc);
@@ -288,14 +259,14 @@ public class TableDialog extends Dialog
             return;
         }
 
-        Row row = DialogContextUtils.getInstance().createRowWithFieldValues(dc, getTable());
+        Table table = getBindTable();
+        Row row = DialogContextUtils.getInstance().createRowWithFieldValues(dc, table);
         try
         {
             switch((int) dc.getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
-                    table.insert(cc, row);
-                    tdc.setLastRowManipulated(row);
+                    insertParentAndChildren(dc, cc, table, row);
                     break;
 
                 case DialogPerspectives.EDIT:
@@ -303,18 +274,16 @@ public class TableDialog extends Dialog
                     {
                         Object pkValue = tdc.getPrimaryKeyValue();
                         if(pkValue == null)
-                            table.insert(cc, row);
+                            insertParentAndChildren(dc, cc, table, row);
                         else
                             table.update(cc, row);
                     }
                     else
                         table.update(cc, row);
-                    tdc.setLastRowManipulated(row);
                     break;
 
                 case DialogPerspectives.DELETE:
                     table.delete(cc, row);
-                    tdc.setLastRowManipulated(row);
                     break;
             }
 
