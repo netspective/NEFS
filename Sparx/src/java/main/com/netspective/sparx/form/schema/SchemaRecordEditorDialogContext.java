@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialogContext.java,v 1.2 2003-10-16 19:30:56 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialogContext.java,v 1.3 2003-10-17 15:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -56,6 +56,7 @@ import java.util.ArrayList;
 public class SchemaRecordEditorDialogContext extends DialogContext
 {
     private static final Log log = LogFactory.getLog(SchemaRecordEditorDialogContext.class);
+
     private List rowsAdded = new ArrayList();
     private List rowsUpdated = new ArrayList();
     private List rowsDeleted = new ArrayList();

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.25 2003-09-29 02:06:33 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.26 2003-10-17 15:59:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -208,15 +208,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
 
             return state;
-        }
-
-        public DialogField.State getState(Column column)
-        {
-            DialogField field = dialog.getFields().getFieldForColumn(column);
-            if(field != null)
-                return getState(field);
-            else
-                return null;
         }
 
         public DialogField.State getState(String qualifiedName)

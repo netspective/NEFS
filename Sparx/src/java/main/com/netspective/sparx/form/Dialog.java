@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.35 2003-10-16 12:46:01 aye.thu Exp $
+ * $Id: Dialog.java,v 1.36 2003-10-17 15:59:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -61,9 +61,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -94,17 +91,12 @@ import com.netspective.sparx.form.listener.DialogListener;
 import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.io.InputSourceLocator;
-import com.netspective.axiom.schema.Table;
-import com.netspective.axiom.schema.Tables;
-import com.netspective.axiom.schema.Schema;
 
 /**
  * The <code>Dialog</code> object contains the dialog/form's structural information, field types, rules, and
@@ -138,24 +130,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         public String getNameSpaceId()
         {
             return Dialog.class.getName();
-        }
-    }
-
-    public static class ConnectionShareType extends XdmEnumeratedAttribute
-    {
-        public ConnectionShareType()
-        {
-            super(BasicDbHttpServletValueContext.SHARED_CONN_TYPE_NONE);
-        }
-
-        public ConnectionShareType(int valueIndex)
-        {
-            super(valueIndex);
-        }
-
-        public String[] getValues()
-        {
-            return BasicDbHttpServletValueContext.SHARED_CONN_TYPES;
         }
     }
 
@@ -218,12 +192,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     private List clientJavascripts = new ArrayList();
     private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
     private DialogNextActionProvider nextActionProvider;
-    private String bindSchemaTableName;
-
-    private Table bindTable;
-    private Map bindColumnFieldsMap = new HashMap();  // key is a Column instance, value is a DialogField
-    private Set bindColumnTablesSet = new HashSet(); // a list of all the tables the fields map to (in case of child tables, etc)
-    private ConnectionShareType sharedType = new ConnectionShareType();
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -260,24 +228,6 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     {
         this();
         setNameSpace(pkg);
-    }
-
-    /**
-     * Gets the connection sharing mode
-     * @return
-     */
-    public ConnectionShareType getConnectionShareType()
-    {
-        return sharedType;
-    }
-
-    /**
-     * Sets the connection sharing mode
-     * @param share
-     */
-    public void setConnectionShareType(ConnectionShareType share)
-    {
-        sharedType = share;
     }
 
     public InputSourceLocator getInputSourceLocator()
@@ -647,45 +597,12 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         addField(field);
     }
 
-    public String getBindTableName()
-    {
-        return bindSchemaTableName;
-    }
-
-    public void setBindTable(String schemaTableNames)
-    {
-        bindSchemaTableName = schemaTableNames;
-    }
-
-    public Table getBindTable()
-    {
-        return bindTable;
-    }
-
-    public Map getBindColumnFieldsMap()
-    {
-        return bindColumnFieldsMap;
-    }
-
-    public Set getBindColumnTablesSet()
-    {
-        return bindColumnTablesSet;
-    }
-
     /**
      * Loops through each dialog field and finalize them. Because this can be called via multiple threads but all threads
      * usually use the same dialog, it is synchronized.
      */
     public synchronized void finalizeContents(NavigationContext nc)
     {
-        // be sure to get the bound table first because children may need it
-        if(bindSchemaTableName != null)
-        {
-            bindTable = nc.getProject().getSchemas().getTable(bindSchemaTableName);
-            if(bindTable == null)
-                log.error("Dialog '"+ getQualifiedName() +"' tried to bind to table '"+ bindSchemaTableName +"' but it does not exist.");
-        }
-
         fields.finalizeContents(nc);
         for(int i = 0; i < fields.size(); i++)
         {

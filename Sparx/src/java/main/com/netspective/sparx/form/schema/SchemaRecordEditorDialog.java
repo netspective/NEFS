@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.2 2003-10-16 19:30:56 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.3 2003-10-17 15:59:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -149,8 +149,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             String[] tableNameParts = TextUtils.split(templateElement.getElementName(), ".", false);
             if(tableNameParts.length == 1)
             {
-                Table bindTable = getBindTable();
-                schema = bindTable != null ? bindTable.getSchema() : sredc.getProject().getSchemas().get(0);
+                schema = sredc.getProject().getSchemas().getDefault();
                 tableName = tableNameParts[0];
             }
             else
@@ -159,6 +158,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 if(schema == null)
                 {
                     getLog().error("Unable to find schema '"+ tableNameParts[0] +"' in SchemaRecordEditorDialog '"+ getQualifiedName() +"'");
+                    return;
                 }
 
                 tableName = tableNameParts[1];
@@ -189,7 +189,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 for(int i = 0; i < columns.size(); i++)
                 {
                     Column column = columns.get(i);
-                    attrs.addAttribute(null, null, column.getXmlNodeName(), "CDATA", column.getXmlNodeName());
+                    attrs.addAttribute(null, null, column.getXmlNodeName(), "CDATA", column.getName());
                 }
             }
             else
@@ -249,7 +249,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     }
 
     private ValueSource dataSrc;
-    private ValueSource primaryKeyValueForEditOrDelete;
     private InsertDataTemplate insertDataTemplateProducer;
     private EditDataTemplate editDataTemplateProducer;
     private DeleteDataTemplate deleteDataTemplateProducer;
@@ -294,16 +293,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     public void setDataSrc(ValueSource dataSrc)
     {
         this.dataSrc = dataSrc;
-    }
-
-    public ValueSource getPrimaryKeyValueForEditOrDelete()
-    {
-        return primaryKeyValueForEditOrDelete;
-    }
-
-    public void setPrimaryKeyValueForEditOrDelete(ValueSource primaryKeyValueForEditOrDelete)
-    {
-        this.primaryKeyValueForEditOrDelete = primaryKeyValueForEditOrDelete;
     }
 
     public boolean isConditionalExpressionTrue(SchemaRecordEditorDialogContext tdc, String exprText)
@@ -378,30 +367,36 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
 
-        ValueSource primaryKeyValue = stte.getPrimaryKeyValueSource();
-        if(primaryKeyValue != null)
+        ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+        if(primaryKeyValueSource != null)
         {
-            Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue.getValue(sredc).getValue() }, null);
+            final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
+            Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
             if(activeRow != null)
                 populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
             else
-                sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0} in table {1}.", new Object[] { primaryKeyValue.getTextValue(sredc), table.getName() });
+            {
+                if(! sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+                    sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+            }
         }
         else
-            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[] { table.getName() });
+            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
     }
 
-    public void populateValuesUsingTemplateProducer(DialogContext dc, TemplateProducer templateProducer) throws NamingException, SQLException
+    public void populateValuesUsingTemplateProducer(DialogContext dc, ConnectionContext cc, TemplateProducer templateProducer) throws NamingException, SQLException
     {
         if(templateProducer == null)
             return;
 
-        if(templateProducer.getInstances().size() == 0)
+        final List templateInstances = templateProducer.getInstances();
+        if(templateInstances.size() == 0)
             return;
 
-        ConnectionContext cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
-        Template editDataTemplate = (Template) editDataTemplateProducer.getInstances().get(0);
-        List childTableElements = editDataTemplate.getChildren();
+        // make sure to get the last template only because inheritance may have create multiples
+        Template template = (Template) templateInstances.get(templateInstances.size()-1);
+        List childTableElements = template.getChildren();
+
         for(int i = 0; i < childTableElements.size(); i++)
         {
             TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
@@ -411,18 +406,22 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
     public void populateValues(DialogContext dc, int formatType)
     {
-        if(dc.isInitialEntry())
+        if(dc.isInitialEntry() && ! dc.addingData())
         {
+            ConnectionContext cc = null;
             try
             {
+                cc = dc.getConnection(dataSrc != null ? dataSrc.getTextValue(dc) : null, false);
                 switch((int) dc.getPerspectives().getFlags())
                 {
                     case DialogPerspectives.EDIT:
-                        populateValuesUsingTemplateProducer(dc, editDataTemplateProducer);
+                    case DialogPerspectives.PRINT:
+                    case DialogPerspectives.CONFIRM:
+                        populateValuesUsingTemplateProducer(dc, cc, editDataTemplateProducer);
                         break;
 
                     case DialogPerspectives.DELETE:
-                        populateValuesUsingTemplateProducer(dc, deleteDataTemplateProducer);
+                        populateValuesUsingTemplateProducer(dc, cc, deleteDataTemplateProducer);
                         break;
                 }
             }
@@ -433,6 +432,17 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             catch (NamingException e)
             {
                 getLog().error("Error in populateValues for perspective " + dc.getPerspectives(), e);
+            }
+            finally
+            {
+                try
+                {
+                    if(cc != null) cc.close();
+                }
+                catch (SQLException e)
+                {
+                    getLog().error("Unable to close connection in populateValues()", e);
+                }
             }
         }
 
@@ -524,10 +534,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(insertDataTemplateProducer == null)
             return;
 
-        if(insertDataTemplateProducer.getInstances().size() == 0)
+        final List templateInstances = insertDataTemplateProducer.getInstances();
+        if(templateInstances.size() == 0)
             return;
 
-        Template insertDataTemplate = (Template) insertDataTemplateProducer.getInstances().get(0);
+        // make sure to get the last template only because inheritance may have create multiples
+        Template insertDataTemplate = (Template) templateInstances.get(templateInstances.size()-1);
         List childTableElements = insertDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
@@ -549,13 +561,20 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
 
-        ValueSource primaryKeyValue = stte.getPrimaryKeyValueSource();
-        if(primaryKeyValue == null)
-            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[] { table.getName() });
+        ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+        if(primaryKeyValueSource == null)
+            sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
 
-        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue.getValue(sredc).getValue() }, null);
+        final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
+        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
         if(activeRow == null)
-            sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0} in table {1}.", new Object[] { primaryKeyValue.getTextValue(sredc), table.getName() });
+        {
+            if(getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+                addDataUsingTemplateElement(sredc, cc, templateElement, null);
+            else
+                sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+            return;
+        }
 
         ColumnValues columnValues = activeRow.getColumnValues();
         boolean doUpdate = true;
@@ -617,10 +636,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(editDataTemplateProducer == null)
             return;
 
-        if(editDataTemplateProducer.getInstances().size() == 0)
+        final List templateInstances = editDataTemplateProducer.getInstances();
+        if(templateInstances.size() == 0)
             return;
 
-        Template editDataTemplate = (Template) editDataTemplateProducer.getInstances().get(0);
+        // make sure to get the last template only because inheritance may have create multiples
+        Template editDataTemplate = (Template) templateInstances.get(templateInstances.size()-1);
         List childTableElements = editDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
@@ -642,13 +663,17 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         // now we have the table we're dealing with for this template element
         Table table = stte.getTable();
 
-        ValueSource primaryKeyValue = stte.getPrimaryKeyValueSource();
-        if(primaryKeyValue == null)
+        ValueSource primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+        if(primaryKeyValueSource == null)
             sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0}.", new Object[] { table.getName() });
 
-        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue.getValue(sredc).getValue() }, null);
+        final Object primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
+        Row activeRow = table.getRowByPrimaryKeys(cc, new Object[] { primaryKeyValue }, null);
         if(activeRow == null)
-            sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0} in table {1}.", new Object[] { primaryKeyValue.getTextValue(sredc), table.getName() });
+        {
+            sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
+            return;
+        }
 
         ColumnValues columnValues = activeRow.getColumnValues();
         boolean doDelete = true;
@@ -710,10 +735,12 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(deleteDataTemplateProducer == null)
             return;
 
-        if(deleteDataTemplateProducer.getInstances().size() == 0)
+        final List templateInstances = deleteDataTemplateProducer.getInstances();
+        if(templateInstances.size() == 0)
             return;
 
-        Template deleteDataTemplate = (Template) deleteDataTemplateProducer.getInstances().get(0);
+        // make sure to get the last template only because inheritance may have create multiples
+        Template deleteDataTemplate = (Template) templateInstances.get(templateInstances.size()-1);
         List childTableElements = deleteDataTemplate.getChildren();
         for(int i = 0; i < childTableElements.size(); i++)
         {
@@ -731,7 +758,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         if(dc.executeStageHandled())
             return;
 
-        SchemaRecordEditorDialogContext tdc = ((SchemaRecordEditorDialogContext) dc);
+        SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
 
         ConnectionContext cc = null;
         DialogExecuteHandlers handlers = getExecuteHandlers();
@@ -750,15 +777,15 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             switch((int) dc.getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
-                    addDataUsingTemplate(tdc, cc);
+                    addDataUsingTemplate(sredc, cc);
                     break;
 
                 case DialogPerspectives.EDIT:
-                    editDataUsingTemplate(tdc, cc);
+                    editDataUsingTemplate(sredc, cc);
                     break;
 
                 case DialogPerspectives.DELETE:
-                    deleteDataUsingTemplate(tdc, cc);
+                    deleteDataUsingTemplate(sredc, cc);
                     break;
             }
 

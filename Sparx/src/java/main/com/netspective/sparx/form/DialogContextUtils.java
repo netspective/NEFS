@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogContextUtils.java,v 1.4 2003-10-14 14:47:47 shahid.shah Exp $
+ * $Id: DialogContextUtils.java,v 1.5 2003-10-17 15:59:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -307,35 +307,6 @@ public class DialogContextUtils
         }
     }
 
-    public void populateFieldValuesFromRow(DialogContext dc, Row row)
-    {
-        populateFieldValuesFromColumnValues(dc, row.getColumnValues());
-    }
-
-    public void populateFieldValuesFromColumnValues(DialogContext dc, ColumnValues columnValues)
-    {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        for(int i = 0; i < columnValues.size(); i++)
-        {
-            ColumnValue columnValue = columnValues.getByColumnIndex(i);
-            DialogField.State state = states.getState(columnValue.getColumn());
-            if(state != null)
-                state.getValue().copyValueByReference(columnValue);
-        }
-    }
-
-    public Row createRowWithFieldValues(DialogContext dc, Table table)
-    {
-        Row row = table.createRow();
-        return populateRowWithFieldValues(dc, row);
-    }
-
-    public Row populateRowWithFieldValues(DialogContext dc, Row row)
-    {
-        populateColumnValuesWithFieldValues(dc, row.getColumnValues());
-        return row;
-    }
-
     public void populateColumnValueWithFieldValue(DialogContext dc, ColumnValue columnValue, String fieldName)
     {
         DialogContext.DialogFieldStates states = dc.getFieldStates();
@@ -344,18 +315,5 @@ public class DialogContextUtils
             columnValue.copyValueByReference(state.getValue());
         else
             dc.getDialog().getLog().error("Unable to find fieldName '"+ fieldName +"' to populate column value with.");
-    }
-
-    public ColumnValues populateColumnValuesWithFieldValues(DialogContext dc, ColumnValues columnValues)
-    {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        for(int i = 0; i < columnValues.size(); i++)
-        {
-            ColumnValue columnValue = columnValues.getByColumnIndex(i);
-            DialogField.State state = states.getState(columnValue.getColumn());
-            if(state != null)
-                columnValue.copyValueByReference(state.getValue());
-        }
-        return columnValues;
     }
 }

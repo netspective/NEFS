@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.39 2003-10-16 12:48:06 aye.thu Exp $
+ * $Id: DialogField.java,v 1.40 2003-10-17 15:59:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -89,7 +89,6 @@ import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.io.InputSourceLocator;
-import com.netspective.axiom.schema.Column;
 
 /**
  * A <code>DialogField</code> object represents a data field of a form/dialog. It contains functionalities
@@ -422,8 +421,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
     private DialogFieldSubmitOnBlur submitOnBlur;
-    private String bindSchemaTableColumnNames;
-    private Column bindColumn;
     private DialogFieldValidations validationRules = constructValidationRules();
     private String requiredFieldMissingMessage = "{0} is required.";
     private String accessKey;
@@ -633,16 +630,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
     public DialogFieldPopup createPopup()
     {
         return new DialogFieldPopup();
-    }
-
-    public Column getBindColumn()
-    {
-        return bindColumn;
-    }
-
-    public void setBindColumn(String schemaTableColumnNames)
-    {
-        bindSchemaTableColumnNames = schemaTableColumnNames;
     }
 
 	/**
@@ -968,21 +955,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
 		if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
 			this.setupDoubleEntry();
-
-        // if we're auto-binding then find a column in our dialog's bind-table with the same name as the field and bind it
-        if(getOwner().getDialogFlags().flagIsSet(DialogFlags.AUTO_BIND_FIELDS_TO_COLUMNS))
-            bindColumn = nc.getProject().getSchemas().getColumn(getName(), getOwner().getBindTable());
-
-        if(bindSchemaTableColumnNames != null)
-        {
-            bindColumn = nc.getProject().getSchemas().getColumn(bindSchemaTableColumnNames, getOwner().getBindTable());
-            if(bindColumn == null)
-                log.error("DialogField '"+ getQualifiedName() +"' tried to bind to table '"+ bindSchemaTableColumnNames +"' but it does not exist.");
-
-        }
-
-        if(bindColumn != null && bindColumn.isPrimaryKey())
-            getFlags().setFlag(DialogFieldFlags.PRIMARY_KEY);
 
         if(requiresMultiPartEncoding())
             getOwner().getDialogFlags().setFlag(DialogFlags.ENCTYPE_MULTIPART_FORMDATA);

@@ -271,7 +271,7 @@
     <schema name="db">
         <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
-        <table name="Respondent" type="Presentation">
+        <table name="Respondent">
             <column name="pin" primary-key="yes" caption="PIN" type="integer" descr="The respondent's public identifier (PIN)."/>
             <column name="title" lookup-ref="Job_Title" caption="Title" required="yes" descr="The job title the respondent holds."/>
             <column name="function" lookup-ref="Job_Function" caption="Function" required="yes" descr="The function the respondent performs."/>
@@ -331,14 +331,14 @@
             </query>
 
             <presentation>
-                <dialog class="com.netspective.sparx.form.schema.TableDialog"
-                        name="${table.name}"
-                        bind-table="${table.schema.name}.${table.name}"
-                        auto-bind-fields-to-columns="yes"
-                        primary-key-value-for-edit-or-delete="authenticated-user:user-id">
+                <dialog class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog"
+                        name="${table.name}">
                     <frame heading="create-dialog-perspective-heading:My General Information"/>
                     <next-action-provider class="app.Util"/>
                     <data-type-presentation columns="*"/>
+                    <on-edit-data>
+                        <respondent _pk-value="authenticated-user:user-id" _auto-map="*"/>
+                    </on-edit-data>
                 </dialog>
             </presentation>
         </table>
@@ -466,15 +466,15 @@
             </column>
 
             <presentation>
-                <dialog class="com.netspective.sparx.form.schema.TableDialog"
+                <dialog class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog"
                         name="${table.name}"
-                        bind-table="${table.schema.name}.${table.name}"
-                        auto-bind-fields-to-columns="yes"
-                        allow-insert-if-edit-pk-not-found="yes"
-                        primary-key-value-for-edit-or-delete="authenticated-user:user-id">
+                        allow-insert-if-edit-pk-not-found="yes">
                     <frame heading="create-dialog-perspective-heading:Risk Management Environment"/>
                     <next-action-provider class="app.Util"/>
                     <data-type-presentation columns="*"/>
+                    <on-edit-data>
+                        <current-environment _pk-value="authenticated-user:user-id" _auto-map="*"/>
+                    </on-edit-data>
                 </dialog>
             </presentation>
         </table>
