@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.4 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.5 2003-06-25 07:11:23 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -79,6 +79,7 @@ import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 
 public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContext implements TabularReportValueContext, HtmlPanelValueContext
 {
@@ -94,6 +95,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private int visibleColsCount;
     private TabularReportSkin skin;
     private int rowCurrent, rowStart, rowEnd;
+    private TabularReportDataSourceScrollState scrollState;
 
     public HtmlTabularReportValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
@@ -238,6 +240,20 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     public final int getRowEnd()
     {
         return rowEnd;
+    }
+
+    public final void setResultsScrolling(TabularReportDataSourceScrollState scrollState)
+    {
+        this.scrollState = scrollState;
+        this.rowCurrent = 0; // rowStart;
+        this.rowStart = 0; // rowStart;
+        this.rowEnd = rowStart + scrollState.getRowsPerPage(); //rowStart + pageSize;
+        //this.pageSize = scrollState.getRowsPerPage(); //pageSize;
+    }
+
+    public TabularReportDataSourceScrollState getScrollState()
+    {
+        return scrollState;
     }
 
     public void produceReport(Writer writer, TabularReportDataSource ds) throws IOException
