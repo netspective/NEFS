@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.4 2003-04-23 15:42:15 shahid.shah Exp $
+ * $Id: SchemaStructurePanel.java,v 1.5 2003-04-25 02:23:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -81,7 +81,7 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
     static
     {
         schemaTableColumn.setHeading(new StaticValueSource("SQL Table Name"));
-        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}");
+        schemaTableColumn.setCommand("redirect,table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}");
         structureReport.addColumn(schemaTableColumn);
 
         GeneralColumn column = new GeneralColumn();
@@ -314,45 +314,37 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
         public String createTableHref(Table table)
         {
-            return "<a href=\"detail?schema-table="+ table.getSchema().getName() + "." + table.getName() +"\">" + table.getName() + "</a>";
+            return "<a href=\"table?schema-table="+ table.getSchema().getName() + "." + table.getName() +"\">" + table.getName() + "</a>";
         }
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
+            Table activeTable = activeRow.getTable();
+
             switch(columnIndex)
             {
                 case 0:
-                    if(activeRow.tableTreeNode != null)
-                        return createTableHref(activeRow.tableTreeNode.getTable());
-                    else if(activeRow.enumTable != null)
-                        return createTableHref(activeRow.enumTable);
+                    if(activeTable != null)
+                        return createTableHref(activeTable);
                     else
                         return activeRow.heading;
 
                 case 1:
-                    if(activeRow.tableTreeNode != null)
-                        return activeRow.tableTreeNode.getTable().getXmlNodeName();
-                    else if(activeRow.enumTable != null)
-                        return activeRow.enumTable.getXmlNodeName();
+                    if(activeTable != null)
+                        return activeTable.getXmlNodeName();
 
                 case 2:
-                    if(activeRow.tableTreeNode != null)
-                        return new Integer(activeRow.tableTreeNode.getTable().getColumns().size());
-                    else if(activeRow.enumTable != null)
-                        return new Integer(activeRow.enumTable.getColumns().size());
+                    if(activeTable != null)
+                        return new Integer(activeTable.getColumns().size());
 
                 case 3:
-                    if(activeRow.tableTreeNode != null)
-                        return new Integer(activeRow.tableTreeNode.getTable().getIndexes().size());
-                    else if(activeRow.enumTable != null)
-                        return new Integer(activeRow.enumTable.getIndexes().size());
+                    if(activeTable != null)
+                        return new Integer(activeTable.getIndexes().size());
 
                 case 4:
                     Rows rows = null;
-                    if(activeRow.tableTreeNode != null)
-                        rows = activeRow.tableTreeNode.getTable().getData();
-                    else if(activeRow.enumTable != null)
-                        rows = activeRow.enumTable.getData();
+                    if(activeTable != null)
+                        rows = activeTable.getData();
                     return rows != null ? new Integer(rows.size()) : null;
 
                 case 5:

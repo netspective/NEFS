@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.19 2003-04-24 02:26:21 shahid.shah Exp $
+  * $Id: console.xml,v 1.20 2003-04-25 02:23:03 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -119,15 +119,21 @@
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
 	        </page>
 	        <page name="schema" caption="Schemas">
-                <page name="structure" caption="Structure" heading="Schema Structure" retain-params="schema-table">
+                <page name="schema" caption="Schema" heading="Schema Structure" retain-params="schema-table,schema-table-column">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
                     </panels>
                 </page>
-                <page name="detail" caption="Documentation" heading="Table Documentation" retain-params="schema-table">
+                <page name="table" caption="Table" heading="Table Documentation" retain-params="schema-table,schema-table-column">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableAncestorsPanel"/>
-                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel"/>
+                        <panels style="tabbed">
+                            <frame heading="Table Column Documentation"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsDescrsPanel"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsInheritancePanel"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsDalPanel"/>
+                        </panels>
                     </panels>
                 </page>
 	        </page>

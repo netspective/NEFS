@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.5 2003-04-13 02:37:07 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.6 2003-04-25 02:23:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -281,6 +281,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public Theme getActiveTheme()
     {
-        return Themes.getInstance().getDefaultTheme();
+        return (Theme) request.getAttribute("sparx-active-theme");
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.7 2003-04-22 03:38:26 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.8 2003-04-25 02:23:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -111,6 +111,8 @@ public class ConsoleServlet extends HttpServlet
         ApplicationManager pm = getApplicationManager();
 
         Theme defaultTheme = Themes.getInstance().getTheme("console");
+        httpServletRequest.setAttribute("sparx-active-theme", defaultTheme);
+
         ConsoleNavigationTree tree = pm.getConsoleNavigationTree();
 
         if(tree == null)
