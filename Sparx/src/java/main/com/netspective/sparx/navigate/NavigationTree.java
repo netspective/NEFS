@@ -144,7 +144,7 @@ public class NavigationTree implements TemplateProducerParent, XmlDataModelSchem
                 {
                     popupPage = createPage();
                     NavigationPathFlags flags = popupPage.createFlags();
-                    flags.setFlag(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.HIDDEN);
+                    flags.setFlag(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.HIDDEN | NavigationPage.Flags.ALLOW_PAGE_CMD_PARAM);
                     popupPage.setFlags(flags);
                     popupPage.setName("popup");
                     root.addPage(popupPage);
