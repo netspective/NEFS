@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.1 2003-06-11 23:23:55 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.2 2003-06-13 03:46:13 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -59,10 +59,14 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.exception.ValueException;
 import com.netspective.axiom.sql.*;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.*;
+import com.netspective.axiom.schema.dal.db.model.SchemaTest;
+import com.netspective.axiom.schema.dal.db.DataAccessLayer;
+import com.netspective.axiom.schema.column.type.*;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
@@ -72,19 +76,180 @@ import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
 
 public class SchemaColumnsTest extends TestCase
 {
-    public static final String RESOURCE_NAME = "SqlManagerQueryTest.xml";
-	 protected SqlManagerComponent component = null;
-	 protected SqlManager manager = null;
-    protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
+    public static final String RESOURCE_NAME = "test-data-schema.xml";
+    protected SqlManagerComponent component = null;
+    protected SqlManager manager = null;
+    protected String[] queryNames = new String[]{"statement-0", "statement-1", "bad-statement", "statement-2"};
     protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "statement-2"};
+    protected Schema schema = null;
 
-	protected void setUp () throws Exception
+    protected void setUp() throws Exception
     {
-		super.setUp();
-	}
+        super.setUp();
 
-   public void test1(){
-       TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
-   }
+        component =
+                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaColumnsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+        assertNotNull(component);
+
+        schema = component.getManager().getSchema("db");
+        assertNotNull(schema);
+    }
+
+    public void test1()
+    {
+
+
+        //TODO:  The main thing to do here is to actually assign a value to each of the column types.
+        //       1. We could do it through loading the data through xml.
+        //       2. We could generate the DAL and create a row programatically.  In #1 we may still need to create the DAL.
+
+
+        Table table = schema.getTables().getByName("SchemaTest");
+        Row row = table.createRow();
+        BooleanColumn.BooleanColumnValue colValue = (BooleanColumn.BooleanColumnValue) row.getColumnValues().getByName("boolean_column");
+        assertEquals(colValue.getValueHolderClass(), Boolean.class);
+
+        Boolean trueVal = new Boolean(true);
+        colValue.setValue(trueVal);
+        assertEquals(colValue.getValue(), trueVal);
+
+        colValue.setTextValue("true");
+        assertTrue(((Boolean) colValue.getValue()).booleanValue());
+
+        try
+        {
+            colValue.setValue(new Integer(0));
+            fail();
+        }
+        catch (ClassCastException e)
+        {
+            //This is good
+        }
+    }
+
+    public void testNumericColumns()
+    {
+
+        Table table = schema.getTables().getByName("SchemaTest");
+        Row row = table.createRow();
+
+        //Testing Float
+        FloatColumn.FloatColumnValue floatColValue = (FloatColumn.FloatColumnValue) row.getColumnValues().getByName("float_column");
+        assertEquals(floatColValue.getValueHolderClass(), Float.class);
+
+        Float floatValue = new Float(0.5);
+        floatColValue.setTextValue("0.5");
+        assertEquals(floatColValue.getValue(), floatValue);
+
+        try
+        {
+            floatColValue.setValue(new Integer(0));
+            fail();
+        }
+        catch (ClassCastException e)
+        {
+            //This is good
+        }
+
+        try
+        {
+            floatColValue.setTextValue("abc");
+            fail();
+        }
+        catch (ValueException e)
+        {
+            //This is good
+        }
+
+        //Testing Integer
+        IntegerColumn.IntegerColumnValue intColValue = (IntegerColumn.IntegerColumnValue) row.getColumnValues().getByName("integer_column");
+        assertEquals(intColValue.getValueHolderClass(), Integer.class);
+
+        Integer intValue = new Integer(1);
+        intColValue.setTextValue("1");
+        assertEquals(intColValue.getValue(), intValue);
+
+        try
+        {
+            intColValue.setValue(new Float(0.0));
+            fail();
+        }
+        catch (ClassCastException e)
+        {
+            //This is good
+        }
+
+        try
+        {
+            intColValue.setTextValue("abc");
+            fail();
+        }
+        catch (ValueException e)
+        {
+            //This is good
+        }
+
+
+
+
+
+        //Testing Small Integer
+        ShortIntegerColumn.SmallIntegerColumnValue smallIntColValue = (ShortIntegerColumn.SmallIntegerColumnValue) row.getColumnValues().getByName("small_int_column");
+        assertEquals(smallIntColValue.getValueHolderClass(), Short.class);
+
+        Short shortValue = new Short((short)1);
+        smallIntColValue.setTextValue("1");
+        assertEquals(smallIntColValue.getValue(), shortValue);
+
+        try
+        {
+            intColValue.setValue(new Float(0.0));
+            fail();
+        }
+        catch (ClassCastException e)
+        {
+            //This is good
+        }
+
+        try
+        {
+            intColValue.setTextValue("abc");
+            fail();
+        }
+        catch (ValueException e)
+        {
+            //This is good
+        }
+
+        //Testing Long Integer
+        LongIntegerColumn.LongIntegerColumnValue longIntColValue = (LongIntegerColumn.LongIntegerColumnValue) row.getColumnValues().getByName("long_integer_column");
+        assertEquals(longIntColValue.getValueHolderClass(), Long.class);
+
+        Long longValue = new Long(1);
+        longIntColValue.setTextValue("1");
+        assertEquals(longIntColValue.getValue(), longValue);
+
+        try
+        {
+            intColValue.setValue(new String(""));
+            fail();
+        }
+        catch (ClassCastException e)
+        {
+            //This is good
+        }
+
+        try
+        {
+            intColValue.setTextValue("abc");
+            fail();
+        }
+        catch (ValueException e)
+        {
+            //This is good
+        }
+
+
+    }
 
 }
