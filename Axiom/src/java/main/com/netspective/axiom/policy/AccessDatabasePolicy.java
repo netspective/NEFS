@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessDatabasePolicy.java,v 1.1 2004-06-05 03:52:58 jeremy.d.hulick Exp $
+ * $Id: AccessDatabasePolicy.java,v 1.2 2004-06-05 04:15:16 jeremy.d.hulick Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -47,14 +47,13 @@ package com.netspective.axiom.policy;
 import java.sql.SQLException;
 
 import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.policy.ddl.AccessSqlDdlFormats;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class AccessDatabasePolicy extends AnsiDatabasePolicy
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_ACCESS_SQL = "access";
+    public static final String DBMSID_ACCESS_SQL = "ACCESS";
 
     public String getDbmsIdentifier()
     {
@@ -64,11 +63,6 @@ public class AccessDatabasePolicy extends AnsiDatabasePolicy
     public String[] getDbmsIdentifiers()
     {
         return new String[] { getDbmsIdentifier(), "Access Database Engine" };
-    }
-
-    public SqlDdlFormats createDdlFormats()
-    {
-        return new AccessSqlDdlFormats();
     }
 
     public boolean retainAutoIncColInInsertDml()
