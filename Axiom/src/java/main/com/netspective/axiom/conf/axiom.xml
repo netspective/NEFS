@@ -3,7 +3,7 @@
 <!--
   ****************************************************************************************
   * Axiom standard configuration file (designed to be included in other Axiom XDM files.
-  * $Id: axiom.xml,v 1.6 2003-09-06 16:43:32 shahid.shah Exp $
+  * $Id: axiom.xml,v 1.7 2003-10-22 15:30:46 shahid.shah Exp $
   ****************************************************************************************
  -->
 
@@ -19,5 +19,6 @@
     <value-source class="com.netspective.axiom.value.source.QueryDefnFieldsValueSource"/>
     <value-source class="com.netspective.axiom.value.source.QueryDefnSelectsValueSource"/>
     <value-source class="com.netspective.axiom.value.source.SqlComparisonsValueSource"/>
+    <value-source class="com.netspective.axiom.value.source.SqlExpressionValueSource"/>
 
 </xdm:container>
