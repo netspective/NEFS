@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.43 2003-11-13 20:42:56 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.44 2003-11-13 22:56:36 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -154,6 +154,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public static final String PARAMNAME_POST_EXECUTE_REDIRECT = ".post_exec_redirect";
     public static final String PARAMNAME_SUBMIT_DATA = ".submit_data";
     public static final String PARAMNAME_PEND_DATA = ".pend_data";
+    public static final String PARAMNAME_CANCEL_DATA = ".cancel_data";
     public static final String PARAMNAME_RESET_CONTEXT = ".reset_context";
 
     public static final String translateNameForMapKey(String name)
@@ -410,6 +411,15 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public String getSubmitDataParamName()
     {
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_SUBMIT_DATA;
+    }
+
+    /**
+     * Gets the name of the Cancel button
+     * @return
+     */
+    public String getCancelDataParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_CANCEL_DATA;
     }
 
     public String getPendDataParamName()
@@ -819,7 +829,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             executeHandlers.handleDialogExecute(writer, dc);
         else
             dc.renderDebugPanels(writer);
-
+        getDialogState(dc).setAlreadyExecuted();
         handlePostExecute(writer, dc);
     }
 
