@@ -40,14 +40,15 @@
                 </tr>
             </tbody></table></td>
 
-        <td valign="top" style="padding-left: 10px; padding-right: 10px; border-right: 1px solid #999999; font-family: trebuchet ms, arial; font-size: 9pt;">
+        <td valign="top" style="padding-left: 10px; padding-right: 10px; border-left: 1px solid #CCCCCC; border-right: 1px solid #999999; font-family: trebuchet ms, arial; font-size: 9pt;">
         <font color="darkred" style="font-size: 12pt;"><b>Our Java libraries accelerate web development on any app server</b></font>
-        <p style="margin-top:5px;">Declarative tags that work in any IDE let you focus on your customers' requirements instead of J2EE infrastructure.</p>
+        <p style="margin-top:5px;">Declarative tags, which work in any IDE, reduce Java code and
+        let you focus on your customers' requirements instead of J2EE infrastructure.</p>
         <ul class="check-list" style="margin-bottom:0px; ">
             <li>Automate navigation and workflow
             <li>Create auto-validating forms
             <li>Auto-generate DAOs and SQL DDL/DML
-            <li>Secure your applications
+            <li>Protect data with role-based security
         </ul>
     </tr>
 </tbody></table>
