@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE dal SYSTEM "db.dtd">
+<!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
 
 <dal>
     <!-- some default data so that the system has a user as soon as the database is created -->
@@ -11,10 +11,10 @@
         <password>aib</password>
     </person>
 
-    <product ID="PRODUCT_1">
+    <case-source ID="PRODUCT_1">
         <cr-person-id IDREF="PERSONID"/>
         <record-status-id>Active</record-status-id>
-        <product-id>Test Product 029</product-id>
+        <source-id>Test Product 029</source-id>
         <caption>Test Product 002 Caption</caption>
 
         <product-milestone ID="MILESTONE">
@@ -29,18 +29,18 @@
             <version>V029</version>
         </product-version>
 
-        <issue>
+        <case-incidence>
             <cr-person-id IDREF="PERSONID"/>
             <record-status-id>Active</record-status-id>
             <version-id IDREF="VERSION"/>
-            <overview>This is an issue</overview>
-        </issue>
+            <case-title>This is an issue</case-title>
+        </case-incidence>
 
-        <issue>
+        <case-incidence>
             <cr-person-id IDREF="PERSONID"/>
             <record-status-id>Active</record-status-id>
             <milestone-id IDREF="MILESTONE"/>
-            <overview>This is another issue</overview>
-        </issue>
-    </product>
+            <case-title>This is another issue</case-title>
+        </case-incidence>
+    </case-source>
 </dal>
