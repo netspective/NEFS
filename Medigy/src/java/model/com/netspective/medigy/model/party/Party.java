@@ -49,6 +49,11 @@ import javax.ejb.Inheritance;
 import javax.ejb.Entity;
 import javax.ejb.Table;
 import javax.ejb.Transient;
+import javax.ejb.OneToMany;
+import javax.ejb.CascadeType;
+import javax.ejb.JoinColumn;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity()
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -56,6 +61,8 @@ import javax.ejb.Transient;
 public abstract class Party extends AbstractTopLevelEntity
 {
     private Long partyId;
+
+    private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
 
     public Party()
     {
@@ -75,6 +82,16 @@ public abstract class Party extends AbstractTopLevelEntity
     @Transient
     public abstract String getPartyName();
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "partyId")
+    public Set<PartyRole> getPartyRoles()
+    {
+        return partyRoles;
+    }
 
+    protected void setPartyRoles(final Set<PartyRole> partyRoles)
+    {
+        this.partyRoles = partyRoles;
+    }
 
 }

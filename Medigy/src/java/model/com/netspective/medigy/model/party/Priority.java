@@ -39,114 +39,71 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.PartyRelationshipType;
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.reference.type.PriorityType;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
 import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
+import javax.ejb.GeneratorType;
+import javax.ejb.Column;
 import javax.ejb.OneToOne;
-import javax.ejb.Table;
+import javax.ejb.CascadeType;
+import javax.ejb.JoinColumn;
+import javax.ejb.Entity;
 
-@Entity
-@Table(name = "Party_Relationship")
-public class PartyRelationship extends AbstractDateDurationEntity
+@Entity        
+public class Priority extends AbstractEntity implements Comparable
 {
-    public static final String PK_COLUMN_NAME = "party_rel_id";
+    private Long identifier;
 
-    private Long partyRelationshipId;
-    private String comment;
-    private PartyRole partyRole;
-    private PartyRelationshipType relationshipType;
-    private PartyRelationshipStatus relationshipStatus;
-    private Priority priority;
+    private PartyRelationship partyRelationship;
+    private PriorityType type;
 
-    public PartyRelationship()
+    public Priority()
     {
     }
 
-    @Id(generate = GeneratorType.AUTO)
-    @Column(name = PartyRelationship.PK_COLUMN_NAME)
-    public Long getPartyRelationshipId()
+    @Id(generate=GeneratorType.AUTO)
+    @Column(name = "priority_id")
+    public Long getIdentifier()
     {
-        return partyRelationshipId;
+        return identifier;
     }
 
-    protected void setPartyRelationshipId(final Long partyRelationshipId)
+    protected void setIdentifier(final Long identifier)
     {
-        this.partyRelationshipId = partyRelationshipId;
-    }
-
-    public PartyRelationshipType getRelationshipType()
-    {
-        return relationshipType;
-    }
-
-    protected void setRelationshipType(final PartyRelationshipType relationshipType)
-    {
-        this.relationshipType = relationshipType;
-    }
-
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_role_id")
-    public PartyRole getPartyRole()
-    {
-        return partyRole;
-    }
-
-    protected void setPartyRole(final PartyRole partyRole)
-    {
-        this.partyRole = partyRole;
-    }
-
-    @Column(length = 256)
-    public String getComment()
-    {
-        return comment;
-    }
-
-    protected void setComment(final String comment)
-    {
-        this.comment = comment;
-    }
-
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_type_id")
-    public PartyRelationshipType getType()
-    {
-        return relationshipType;
-    }
-
-    public void setType(final PartyRelationshipType type)
-    {
-        this.relationshipType = type;
+        this.identifier = identifier;
     }
 
     @OneToOne(cascade={CascadeType.ALL})
     @JoinColumn(name = "party_rel_id")
-    public PartyRelationshipStatus getRelationshipStatus()
+    public PartyRelationship getPartyRelationship()
     {
-        return relationshipStatus;
+        return partyRelationship;
     }
 
-    protected void setRelationshipStatus(final PartyRelationshipStatus relationshipStatus)
+    protected void setPartyRelationship(final PartyRelationship partyRelationship)
     {
-        this.relationshipStatus = relationshipStatus;
+        this.partyRelationship = partyRelationship;
     }
 
-    @OneToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id")
-    public Priority getPriority()
+    @OneToOne
+    @JoinColumn(name = "party_rel_stat_type_id")
+    public PriorityType getType()
     {
-        return priority;
+        return type;
     }
 
-    protected void setPriority(final Priority priority)
+    protected void setType(final PriorityType type)
     {
-        this.priority = priority;
+        this.type = type;
+    }
+
+    public int compareTo(Object o)
+    {
+        if(o == this)
+            return 0;
+
+        final Priority otherStatus = (Priority) o;
+        return ((PriorityType) getType()).compareTo(otherStatus.getType());
     }
 }
