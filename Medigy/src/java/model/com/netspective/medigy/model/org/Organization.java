@@ -51,7 +51,6 @@ import javax.ejb.InheritanceJoinColumn;
 import javax.ejb.InheritanceType;
 import javax.ejb.Table;
 import javax.ejb.Transient;
-import javax.ejb.Column;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -60,7 +59,6 @@ import javax.ejb.Column;
 public class Organization extends Party
 {
     private String name;
-    private String ein;     // Employment Identification Number (EIN)
 
     public Organization()
     {
@@ -93,28 +91,12 @@ public class Organization extends Party
         super.setPartyId(orgId);
     }
 
-    /**
-     * Gets the Employment Identification Number (EIN). Also known as Federal Tax Identification Number
-     * @return
-     */
-    @Column(name="ein", length=9)
-    public String getEin()
-    {
-        return ein;
-    }
-
-    public void setEin(String ein)
-    {
-        this.ein = ein;
-    }
-
     @Override
     public String toString()
     {
         return "Org{" +
                 "indentifier=" + getOrgId() +
                 ",name='" + name + "'" +
-                ",ein='" + ein + "'" +
                 "}";
     }
 
