@@ -39,22 +39,28 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.23 2004-02-23 19:15:25 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.24 2004-03-18 04:42:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
-import java.io.Writer;
-import java.io.IOException;
-
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.*;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.command.CommandNotFoundException;
-import com.netspective.commons.command.Command;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActions;
+import com.netspective.sparx.panel.HtmlPanelBanner;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelSkin;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.theme.Theme;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 
 public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSkin
 {
@@ -396,23 +402,29 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         ValueSource content = banner.getContent();
         if(content == null && (actions == null || actions.size() == 0))
             return;
-        writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n");
         if(content != null)
         {
-            writer.write(content.getTextValue(vc));
+            writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n" + content.getTextValue(vc) + "</td></tr>\n");
         }
         else
         {
             try
             {
-                produceBannerActionsHtml(writer, vc, actions);
+                // even though there are actions in the banner, they might not be displayed based on the flags set
+                // on them
+                StringWriter sw = new StringWriter();
+                produceBannerActionsHtml(sw, vc, actions);
+                if (sw.getBuffer().length() > 0)
+                {
+                    writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n" +
+                            sw.getBuffer() + "</td></tr>\n");
+                }
             }
             catch (CommandNotFoundException e)
             {
-                writer.write(e.toString());
+                writer.write("<tr id=\""+ panel.getPanelIdentifier() +"_banner\"><td class=\""+ panelClassNamePrefix +"-banner\">\n" + e.toString() + "</td></tr>\n");
             }
         }
-        writer.write("</td></tr>\n");
     }
 
     /**
