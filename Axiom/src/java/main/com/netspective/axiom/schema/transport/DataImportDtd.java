@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.4 2003-06-21 21:33:35 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.5 2003-12-18 22:19:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -131,6 +131,7 @@ public class DataImportDtd
     {
         out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
         out.println("<!ENTITY % boolean \"(true | false | on | off | yes | no)\">");
+        out.println("<!ENTITY % enum_table_without_enums \"CDATA\">");
         out.println("<!ENTITY % elements \"dal\">\n");
         out.print("<!ELEMENT dal (");
         boolean first = true;
@@ -263,7 +264,8 @@ public class DataImportDtd
                     }
                 }
                 else
-                    sb.append("CDATA <!-- "+ "Enum table '"+ enumTable.getName() +"' (referenced by "+ column.getQualifiedName() +") has no enumerations." +" -->");
+                    // Enum table enumTable.getName() (referenced by column.getQualifiedName() has no enumerations
+                    sb.append("CDATA ");
             }
             else
             {
