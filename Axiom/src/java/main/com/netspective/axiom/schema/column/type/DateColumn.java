@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DateColumn.java,v 1.4 2004-04-12 03:40:37 aye.thu Exp $
+ * $Id: DateColumn.java,v 1.5 2004-04-12 14:35:05 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -75,11 +75,13 @@ public class DateColumn extends BasicColumn
 
         public String getTextValue()
         {
-            if (getValue() == null)
+            Date date = (Date) getValue();
+            if (date == null)
                 return null;
+            
             synchronized(dateFormat)
             {
-                return dateFormat.format((Date) getValue());
+                return dateFormat.format(date);
             }
         }
 
