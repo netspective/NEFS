@@ -15,6 +15,14 @@
             </library>
 
             <library>
+                <name>MySQL JDBC Driver</name>
+                <version>3.0.9</version>
+                <class-path>mysql.jar</class-path>
+                <source home-uri="http://www.mysql.com/products/connector-j/index.html"
+                        license="GPL"/>
+            </library>
+
+            <library>
                 <name>ZQL SQL Parser Library</name>
                 <version>1.0</version>
                 <class-path>zql.jar</class-path>
