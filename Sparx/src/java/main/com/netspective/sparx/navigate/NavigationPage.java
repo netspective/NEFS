@@ -90,7 +90,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.74 2004-08-15 02:27:28 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.75 2004-08-18 21:09:32 aye.thu Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -287,10 +287,42 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private List errorPagesList = new ArrayList();
     private Map errorPagesMap = new HashMap();
     private Map errorPageDescendantsByQualifiedName = new HashMap();
+    private ValueSource customJsFile;
+    private ValueSource customCssFile;
 
     public NavigationPage(NavigationTree owner)
     {
         super(owner);
+    }
+
+    /**
+     * Sets the page specific javascript file to include in the page metadata section
+     *
+     * @return
+     */
+    public ValueSource getCustomJsFile()
+    {
+        return customJsFile;
+    }
+
+    public void setCustomJsFile(ValueSource customJsFile)
+    {
+        this.customJsFile = customJsFile;
+    }
+
+    public ValueSource getCustomCssFile()
+    {
+        return customCssFile;
+    }
+
+    /**
+     * Sets the page-specific css file to include in the page metadata section
+     *
+     * @param customCssFile
+     */
+    public void setCustomCssFile(ValueSource customCssFile)
+    {
+        this.customCssFile = customCssFile;
     }
 
     public InputSourceLocator getInputSourceLocator()

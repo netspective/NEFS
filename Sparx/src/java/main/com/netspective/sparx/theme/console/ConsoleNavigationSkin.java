@@ -124,9 +124,15 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/docbook.css") + "\" type=\"text/css\">\n");
+        if (activePage.getCustomCssFile() != null)
+            writer.write("	<link rel=\"stylesheet\" href=\"" + activePage.getCustomCssFile().getTextValue(nc) + "\" type=\"text/css\">\n");
+
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/popup.js") + "\" language=\"JavaScript1.2\"></script>\n");
+
+        if (activePage.getCustomJsFile() != null)
+            writer.write("  <script src=\""+ activePage.getCustomJsFile().getTextValue(nc) + "\" language=\"JavaScript1.2\"></script>\n");
         writer.write("</head>\n");
     }
 
