@@ -803,6 +803,14 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         }
     }
 
+    protected void renderPageNotFound(NavigationContext nc) throws IOException, ServletException
+    {
+        final String queryString = nc.getHttpRequest().getQueryString();
+        final String rootUrl = nc.getRootUrl() + (queryString != null && queryString.length() > 0 ? ("?" + queryString) : "");
+        log.error("Redirecting to the ROOT URL "+ rootUrl +": no active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree? For example <page name=\"foo\" default=\"yes\"/>?");
+        nc.getHttpResponse().sendRedirect(rootUrl);
+    }
+
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
         // record the starting time because it may be used by skins to show complete render times.
@@ -850,8 +858,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
         if(nc.getActivePage() == null)
         {
-            httpServletResponse.setContentType("text/html");
-            httpServletResponse.getWriter().println("No active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree?<p>For example <code>&lt;page name=\"blah\" default=\"yes\"/&gt;</code>");
+            renderPageNotFound(nc);
             return;
         }
 
