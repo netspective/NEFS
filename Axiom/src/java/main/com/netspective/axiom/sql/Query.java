@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.4 2003-04-13 02:36:50 shahid.shah Exp $
+ * $Id: Query.java,v 1.5 2003-05-13 03:12:02 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -414,7 +414,7 @@ public class Query
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
         return executeAndRecordStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, false),
+                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
 
@@ -422,7 +422,7 @@ public class Query
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
         return executeAndIgnoreStatistics(
-                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, false),
+                    dataSrcIdText != null ? dbvc.getConnection(dataSrcIdText, false) : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
                     overrideParams, scrollable);
     }
 
@@ -433,7 +433,6 @@ public class Query
 
     public QueryResultSet execute(DatabaseConnValueContext dbvc, String dataSourceId, Object[] overrideParams) throws NamingException, SQLException
     {
-		this.dataSourceId = null == dataSourceId ? null : ValueSources.getInstance().getValueSource(dataSourceId, ValueSources.VSNOTFOUNDHANDLER_NULL);
         return log.isInfoEnabled() ? executeAndRecordStatistics(dbvc, overrideParams, false) : executeAndIgnoreStatistics(dbvc, overrideParams, false);
     }
 
