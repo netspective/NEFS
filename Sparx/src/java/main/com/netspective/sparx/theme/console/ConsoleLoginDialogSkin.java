@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.2 2003-08-10 21:10:46 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.3 2003-08-19 16:21:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -81,7 +81,7 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
         //writer.write("        <table width=\"100%\" height=\"100%\" border=\"2\" cellspacing=\"0\" cellpadding=\"0\">");
         //writer.write("            <tr>");
         //writer.write("                <td class=\"panel-input-login-content\">");
-        writer.write("                    <table class=\"panel-input-login\"border=\"0\" width=\"50%\" cellspacing=\"0\" cellpadding=\"0\">");
+        writer.write("                    <table border=\"0\" width=\"50%\" cellspacing=\"0\" cellpadding=\"0\">");
 
            writer.write("                        <tr width=\"100%\" height=\"100%\">");
             writer.write("                            <td class=\"login-dialog-fields-header\" align=\"left\" valign=\"bottom\" height=\"90\">&nbsp;</td>");
@@ -112,9 +112,19 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
 
         writer.write("                                        </td>");
         writer.write("                                    </tr>");
+
         writer.write("                                </table>");
+
         writer.write("                            </td>");
+
         writer.write("                        </tr>");
+        writer.write("<table class=\"panel-input-login\" border=\"0\" width=\"692\" height=\"85\" cellspacing=\"0\" cellpadding=\"17\">");
+		writer.write("	<tr>");
+		writer.write("	    <td align=\"center\" valign=\"middle\"><img src=\"" + themeImagesRootUrl + "/login/sparx-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/axiom-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+        writer.write("	    <td align=\"center\"><img src=\"" + themeImagesRootUrl + "/login/commons-76px.gif\" alt=\"\" border=\"0\"></td>\n");
+		writer.write("	</tr>  ");
+		writer.write("</table> ");
         writer.write("                    </table>");
         //writer.write("                </td>");
         //writer.write("            </tr>");
