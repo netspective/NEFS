@@ -39,83 +39,89 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.29 2004-04-03 22:50:04 shahid.shah Exp $
+ * $Id: ActionDialogContext.java,v 1.1 2004-04-03 22:50:04 shahid.shah Exp $
  */
 
-package com.netspective.sparx;
+package com.netspective.sparx.form.action;
 
-import com.netspective.commons.Product;
+import java.io.Writer;
+import java.sql.SQLException;
 
-public class ProductRelease implements Product
+import javax.naming.NamingException;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.sparx.form.DialogContext;
+
+/**
+ * Dialog context container class for the ActionDialog
+ */
+public class ActionDialogContext extends DialogContext
 {
-    public static final Product PRODUCT_RELEASE = new ProductRelease();
+    private Writer writer;
+    private Object actionInstance;
+    private String actionDataSourceId;
+    private ConnectionContext actionConnectionContext;
 
-    public static final String PRODUCT_NAME = "Netspective Sparx";
-    public static final String PRODUCT_ID = "netspective-sparx";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 1;
-    public static final int PRODUCT_VERSION_MINOR = 2;
-
-    public ProductRelease()
+    public Writer getWriter()
     {
+        return writer;
     }
 
-    public String getProductId()
+    public void setWriter(Writer writer)
     {
-        return PRODUCT_ID;
+        this.writer = writer;
     }
 
-    public String getProductName()
+    public Object getActionInstance()
     {
-        return PRODUCT_NAME;
+        if(actionInstance == null)
+        {
+            ActionDialog actionDialog = ((ActionDialog) getDialog());
+            try
+            {
+                actionInstance = actionDialog.getAction().constructInstance(writer, this);
+            }
+            catch (Exception e)
+            {
+                actionDialog.getLog().error(e);
+                try
+                {
+                    closeActionConnection(); // in case any database connection was opened
+                }
+                catch (Exception e1)
+                {
+                    actionDialog.getLog().error(e1);
+                    throw new NestableRuntimeException(e1);
+                }
+                throw new NestableRuntimeException(e);
+            }
+        }
+
+        return actionInstance;
     }
 
-    public final int getReleaseNumber()
+    public ConnectionContext openActionConnection(String dataSourceId) throws NamingException, SQLException
     {
-        return PRODUCT_RELEASE_NUMBER;
+        this.actionDataSourceId = dataSourceId;
+        this.actionConnectionContext = getConnection(dataSourceId, true);
+        return this.actionConnectionContext;
     }
 
-    public final int getVersionMajor()
+    public String getActionDataSourceId()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return actionDataSourceId;
     }
 
-    public final int getVersionMinor()
+    public ConnectionContext getActionConnectionContext()
     {
-        return PRODUCT_VERSION_MINOR;
+        return actionConnectionContext;
     }
 
-    public final int getBuildNumber()
+    public void closeActionConnection() throws NamingException, SQLException
     {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        if(actionConnectionContext != null)
+            actionConnectionContext.close();
     }
 }

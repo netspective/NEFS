@@ -39,15 +39,15 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.8 2003-10-20 15:56:37 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.9 2004-04-03 22:50:04 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.netspective.sparx.form.Dialog;
@@ -76,6 +76,11 @@ public class DialogFields
     public List getFieldsList()
     {
         return fields;
+    }
+
+    public Map getFieldsMapByQualifiedName()
+    {
+        return mapByQualifiedName;
     }
 
     protected void storeNames(DialogField field)
