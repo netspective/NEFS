@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.6 2003-04-22 03:38:26 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.7 2003-04-23 02:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -180,6 +180,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         Theme theme = ((BasicDbHttpServletValueContext) vc).getActiveTheme();
         String imgPath = ((BasicDbHttpServletValueContext) vc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
+        writer.write("<script>PANELS.registerPanel(new Panel(\""+ panel.getIdentifier() +"\"))</script>\n");
         writer.write("<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap ");
         if(flags.flagIsSet(Flags.FULL_WIDTH))
             writer.write("width='100%' ");
@@ -201,11 +202,13 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 if (frame.getFlags().flagIsSet(HtmlPanelFrame.Flags.ALLOW_COLLAPSE))
                 {
                     if (vc.isMinimized())
-                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-expand-output\" align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"PANELS.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\">--></td>");
                     else
-                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
+                        writer.write("            <td id=\""+ panel.getIdentifier() +"_action\" class=\"panel-frame-heading-action-collapse-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\" onclick=\"PANELS.togglePanelExpandCollapse('"+ panel.getIdentifier() +"')\">" +
                             "<!-- <img src=\"" + imgPath + "/panel/output/spacer.gif\" alt=\"\" height=\"5\" width=\"17\" border=\"0\"> --></td>");
+
+                    writer.write("<script>PANELS.getPanel(\""+ panel.getIdentifier() +"\").minimized = "+ (vc.isMinimized() ? "true" : "false") +"</script>");
                 }
                 else
                 {

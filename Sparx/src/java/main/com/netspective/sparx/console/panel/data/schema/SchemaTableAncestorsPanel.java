@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableAncestorsPanel.java,v 1.1 2003-04-13 16:43:44 shahid.shah Exp $
+ * $Id: SchemaTableAncestorsPanel.java,v 1.2 2003-04-23 02:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -52,12 +52,14 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 
 public class SchemaTableAncestorsPanel extends SchemaStructurePanel
 {
     public SchemaTableAncestorsPanel()
     {
         getFrame().setHeading(new StaticValueSource("Table Hierarchy"));
+        getFrame().getFlags().setFlag(HtmlPanelFrame.Flags.ALLOW_COLLAPSE);
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.4 2003-04-22 03:38:26 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.5 2003-04-23 02:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -233,7 +233,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     public void renderPageMasthead(Writer writer, NavigationContext nc) throws IOException
     {
-        writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\">\n");
+        writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
 
         renderAuthenticatedUser(writer, nc);
         String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());

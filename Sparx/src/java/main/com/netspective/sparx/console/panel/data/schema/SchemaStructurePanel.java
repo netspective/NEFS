@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.2 2003-04-13 16:43:44 shahid.shah Exp $
+ * $Id: SchemaStructurePanel.java,v 1.3 2003-04-23 02:58:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -68,6 +68,7 @@ import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
+import com.netspective.axiom.schema.table.BasicTable;
 
 public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
@@ -344,9 +345,9 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
                     return rows != null ? new Integer(rows.size()) : null;
 
                 case 5:
-                    if(activeRow.tableTreeNode != null)
+                    if(activeRow.tableTreeNode != null && (selectedRow == activeRow || activeRow.tableTreeNode.getTable().getClass() != BasicTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.tableTreeNode.getTable().getClass());
-                    else if(activeRow.enumTable != null)
+                    else if(activeRow.enumTable != null && (selectedRow == activeRow || activeRow.enumTable.getClass() != EnumerationTable.class))
                         return reportValueContext.getSkin().constructClassRef(activeRow.enumTable.getClass());
 
                 default:
