@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.18 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.19 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -49,7 +49,6 @@ import java.io.IOException;
 
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.panel.*;
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Command;
@@ -87,10 +86,9 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
         flags = createFlags();
     }
 
-    public BasicHtmlPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public BasicHtmlPanelSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme);
-        setName("default");
+        super(theme, name);
         flags = createFlags();
         setPanelClassNamePrefix(panelClassNamePrefix);
         setPanelResourcesPrefix(panelResourcesPrefix);

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.29 2003-08-30 00:23:34 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.30 2003-08-30 16:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -818,7 +818,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
      * @param dc                        dialog context
      * @param contextPreparedAlready    flag to indicate whether or not the context has been prepared
      */
-    protected void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
+    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
         if(!contextPreparedAlready)
             prepareContext(dc);

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.24 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.25 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -81,10 +81,9 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 {
     private int sidebarWidth = 125;
 
-    public BasicTabbedNavigationSkin(Theme theme)
+    public BasicTabbedNavigationSkin(Theme theme, String name)
     {
-        super(theme);
-        setName("default");
+        super(theme, name);
     }
 
     public int getSidebarWidth()

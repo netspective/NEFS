@@ -65,7 +65,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.9 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.10 2003-08-30 16:41:29 shahid.shah Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -74,9 +74,9 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
         super();
     }
 
-    public RecordEditorReportSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public RecordEditorReportSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
     public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException

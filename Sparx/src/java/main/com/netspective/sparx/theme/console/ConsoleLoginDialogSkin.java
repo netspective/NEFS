@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.6 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.7 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -56,9 +56,9 @@ public class ConsoleLoginDialogSkin extends LoginDialogSkin
 {
     private String loginImage = "login.gif";
 
-    public ConsoleLoginDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public ConsoleLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         setCaptionClass(" class=\"login-dialog-fields\"");
     }
 

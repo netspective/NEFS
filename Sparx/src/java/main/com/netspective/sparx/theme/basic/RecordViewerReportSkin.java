@@ -70,7 +70,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.8 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.9 2003-08-30 16:41:29 shahid.shah Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -79,9 +79,9 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
         super();
     }
 
-    public RecordViewerReportSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public RecordViewerReportSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
     /**

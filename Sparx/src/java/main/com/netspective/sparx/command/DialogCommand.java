@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.9 2003-07-11 20:53:15 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.10 2003-08-30 16:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -247,7 +247,15 @@ public class DialogCommand extends AbstractHttpServletCommand
         if(unitTest || (debugFlags != null && debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA)))
             dc.setRedirectDisabled(true);
 
-        dialog.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        try
+        {
+            dialog.render(writer, dc, true);
+        }
+        catch (DialogExecuteException e)
+        {
+            log.error("Unable to execute dialog", e);
+            throw new CommandException("Unable to execute dialog", e, this);
+        }
     }
 
     public static class SkinParameter extends CommandDocumentation.Parameter

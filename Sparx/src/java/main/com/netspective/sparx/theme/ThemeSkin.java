@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemeSkin.java,v 1.3 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: ThemeSkin.java,v 1.4 2003-08-30 16:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -47,6 +47,8 @@ package com.netspective.sparx.theme;
 
 public interface ThemeSkin
 {
+    public boolean isDefault();
+
     /**
      * Return the name of this skin
      * @return

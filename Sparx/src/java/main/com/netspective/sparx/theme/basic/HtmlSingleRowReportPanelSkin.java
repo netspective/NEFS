@@ -48,7 +48,7 @@
  * OF SUCH DAMAGES.
  *
  * @author Shahid N. Shah
- * $Id: HtmlSingleRowReportPanelSkin.java,v 1.3 2003-08-30 14:26:29 shahid.shah Exp $
+ * $Id: HtmlSingleRowReportPanelSkin.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -103,9 +103,9 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
         flags.clearFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW);
     }
 
-    public HtmlSingleRowReportPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth, int tableCols, boolean horizontalLayout)
+    public HtmlSingleRowReportPanelSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth, int tableCols, boolean horizontalLayout)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         this.tableCols = tableCols;
         this.horizontalLayout = horizontalLayout;
         flags.setFlag(Flags.SHOW_BANNER | Flags.SKIP_NULL_COLUMNS);

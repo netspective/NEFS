@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.17 2003-08-23 16:05:57 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.18 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -76,9 +76,9 @@ public class AbstractTheme implements Theme
     private NavigationSkin defaultNavigationSkin;
     private HtmlPanelSkin tabbedPanelSkin;
     private HtmlPanelSkin templatePanelSkin;
-    private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel-output", "panel/output", false);
-    private StandardDialogSkin defaultDialogSkin = new StandardDialogSkin(this, "panel-input", "panel/input", false);
-    private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, "panel-input", "panel/input", false);
+    private HtmlTabularReportSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "default", "panel-output", "panel/output", false);
+    private DialogSkin defaultDialogSkin = new StandardDialogSkin(this, "default", "panel-input", "panel/input", false);
+    private LoginDialogSkin defaulLoginDialogSkin = new LoginDialogSkin(this, "login", "panel-input", "panel/input", false);
     private String[] inheritResourcesFromThemes = new String[0];
 
     public AbstractTheme()
@@ -159,7 +159,7 @@ public class AbstractTheme implements Theme
 
     protected HtmlPanelSkin constructTabbedPanelSkin()
     {
-        return new BasicHtmlPanelSkin(this, "panel-output", "panel/output", false);
+        return new BasicHtmlPanelSkin(this, name, "panel-output", "panel/output", false);
     }
 
     public String getName()
@@ -189,12 +189,12 @@ public class AbstractTheme implements Theme
 
     public DialogSkin createDialogSkin()
     {
-        return defaultDialogSkin;
+        return new StandardDialogSkin(this, "default", "panel-output", "panel/output", false);
     }
 
     public HtmlPanelSkin getTabbedPanelSkin()
     {
-        return tabbedPanelSkin;
+        return constructTabbedPanelSkin();
     }
 
     public HtmlPanelSkin getTemplatePanelSkin()
@@ -236,12 +236,16 @@ public class AbstractTheme implements Theme
     {
         skin.setTheme(this);
         dialogSkins.put(skin.getName(), skin);
+        if(skin.isDefault())
+            defaultDialogSkin = skin;
     }
 
     public void addNavigationSkin(NavigationSkin skin)
     {
         skin.setTheme(this);
         navigationSkins.put(skin.getName(), skin);
+        if(skin.isDefault())
+            defaultNavigationSkin = skin;
     }
 
     public void addPanelSkin(HtmlPanelSkin skin)
@@ -254,7 +258,8 @@ public class AbstractTheme implements Theme
     {
         skin.setTheme(this);
         tabularReportSkins.put(skin.getName(), skin);
-
+        if(skin.isDefault())
+            defaultReportSkin = skin;
     }
 
     public Map getDialogSkins()

@@ -20,7 +20,7 @@ import java.io.Writer;
 
 /**
  * @author aye
- * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.3 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: SelectableHtmlTabularReportPanelSkin.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
  */
 public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularReportPanelSkin
 {
@@ -31,9 +31,9 @@ public class SelectableHtmlTabularReportPanelSkin  extends BasicHtmlTabularRepor
         super();
     }
 
-    public SelectableHtmlTabularReportPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public SelectableHtmlTabularReportPanelSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
     public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException

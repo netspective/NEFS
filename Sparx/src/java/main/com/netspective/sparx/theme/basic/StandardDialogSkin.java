@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.21 2003-08-29 14:27:45 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.22 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -136,9 +136,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     private String controlAreaClass;
     private String captionClass;
 
-    public StandardDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public StandardDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         summarizeErrors = true;
         outerTableAttrs = "border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap";
         innerTableAttrs = "width='100%' cellspacing='0' cellpadding='4' bgcolor='#EEEEEE' ";
@@ -692,7 +692,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
 						caption.substring(accessKeyPos, accessKeyPos + 1) + "</span>" + caption.substring(accessKeyPos + 1) + "</label></td>" +
-						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else if (accessKeyPos == caption.length() - 1)
@@ -700,7 +700,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + caption.substring(0, accessKeyPos) + "<span class=\"accesskey\">" +
 						caption.substring(accessKeyPos) + "</span></label></td>" +
-						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else if (accessKeyPos == 0)
@@ -708,14 +708,14 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 					fieldsHtml.append("<tr " + rowAttr + "><td " + captionClass + "><label for=\"" + field.getHtmlFormControlId() + "\" accesskey=\"" +
 						field.getAccessKey() + "\">" + "<span class=\"accesskey\">" +
 						caption.substring(0, 1) + "</span>" + caption.substring(1) + "</label></td>" +
-						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 				else
 				{
 					fieldsHtml.append(
 						"<tr " + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
-						"<td " + controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+						"<td " + controlAreaClass + ">" + controlHtml + hintHtml +
                         "</td></tr>\n");
 				}
 			}
@@ -723,14 +723,14 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 			{
 				fieldsHtml.append(
                     "<tr" + rowAttr + "><td " + captionClass + ">" + caption + "</td>" +
-                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                    "<td "+ controlAreaClass + ">" + controlHtml + hintHtml +
                     "</td></tr>\n");
 			}
             else
             {
                 fieldsHtml.append(
                     "<tr" + rowAttr + "><td>&nbsp;</td>" +
-                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + hintHtml +
+                    "<td "+ controlAreaClass + ">" + controlHtml + hintHtml +
                     "</td></tr>\n");
             }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.6 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.7 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -56,9 +56,9 @@ public class LoginDialogSkin extends StandardDialogSkin
 {
     private String loginImage = "netspective-keys.gif";
 
-    public LoginDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
+    public LoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
     }
 
     public String getLoginImage()

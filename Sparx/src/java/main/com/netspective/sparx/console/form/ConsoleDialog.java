@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleDialog.java,v 1.3 2003-08-24 20:07:51 shahid.shah Exp $
+ * $Id: ConsoleDialog.java,v 1.4 2003-08-30 16:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -59,7 +59,7 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
  */
 public class ConsoleDialog extends Dialog
 {
-    protected void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
+    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
         if(! (dc.getServlet() instanceof ConsoleServlet))
         {

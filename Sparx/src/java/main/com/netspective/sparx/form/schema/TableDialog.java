@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.8 2003-08-28 14:44:30 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.9 2003-08-30 16:41:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -201,7 +201,7 @@ public class TableDialog extends Dialog
         return true;
     }
 
-    protected Object getPrimaryKeyValueForEditOrDelete(DialogContext dc)
+    protected Object getPrimaryKeyValueForEditDeleteConfirmOrPrint(DialogContext dc)
     {
         if(primaryKeyValueForEditOrDelete != null)
             return primaryKeyValueForEditOrDelete.getValue(dc).getValue();
@@ -229,9 +229,9 @@ public class TableDialog extends Dialog
             {
                 DialogContextUtils.getInstance().populateFieldValuesFromRequestParamsAndAttrs(dc);
             }
-            else if((dc.editingData() || dc.deletingData()))
+            else
             {
-                Object pkValue = getPrimaryKeyValueForEditOrDelete(dc);
+                Object pkValue = getPrimaryKeyValueForEditDeleteConfirmOrPrint(dc);
 
                 try
                 {

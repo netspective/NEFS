@@ -39,38 +39,20 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: DialogAsReportSkin.java,v 1.1 2003-08-30 16:41:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
-import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.theme.basic.StandardDialogSkin;
+import com.netspective.sparx.theme.Theme;
 
-public class BasicTheme extends AbstractTheme
+public class DialogAsReportSkin extends StandardDialogSkin
 {
-    public BasicTheme()
+    public DialogAsReportSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        addReportSkin(new RecordViewerReportSkin(this, "record-viewer", "panel-output", "panel/output", true));
-        addReportSkin(new RecordViewerReportSkin(this, "record-viewer-compressed", "panel-output", "panel/output", false));
-        addReportSkin(new RecordEditorReportSkin(this, "record-editor", "panel-output", "panel/output", true));
-        addReportSkin(new RecordEditorReportSkin(this, "record-editor-compressed", "panel-output", "panel/output", false));
-
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail", "panel-output", "panel/output", true, 1, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-compressed", "panel-output", "panel/output", false, 1, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-2col", "panel-output", "panel/output", true, 2, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-2col-compressed", "panel-output", "panel/output", false, 2, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-3col", "panel-output", "panel/output", true, 3, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-3col-compressed", "panel-output", "panel/output", false, 3, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-4col", "panel-output", "panel/output", true, 4, true));
-        addReportSkin(new HtmlSingleRowReportPanelSkin(this, "detail-4col-compressed", "panel-output", "panel/output", false, 4, true));
-
-        // these are dialog skins that make the dialog look like a single row report skin (detail)
-        addDialogSkin(new DialogAsReportSkin(this, "report", "panel-output", "panel/output", true));
-        addDialogSkin(new DialogAsReportSkin(this, "report-compressed", "panel-output", "panel/output", false));
-    }
-
-    protected NavigationSkin constructDefaultNavigationSkin()
-    {
-        return new BasicTabbedNavigationSkin(this, "default");
+        super(theme, name, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
+        setCaptionClass(" class=\"report-column-heading\"");
+        setControlAreaClass(" class=\"report-column-even\"");
     }
 }
