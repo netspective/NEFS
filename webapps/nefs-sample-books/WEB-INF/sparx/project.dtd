@@ -1,0 +1,1440 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % elements "project">
+
+<!ELEMENT project (scrollstates | connectionproviderentrystatistics | database-policy | tabular-report | system-property | classpathprovider | connection-provider-entry-statistics | navigationtree | storedprocedures | access-control-list | stored-procedures | loginmanager | freemarkerconfiguration | command | scroll-states | class-path-provider | accesscontrollist | login-manager | querydefn | connectionprovider | dialogs | antproject | freemarker-configuration | theme | navigation-tree | ant-project | value-source | configuration | query-defn | schema | tabularreportcalctype | connection-provider | databasepolicy | tabularreport | listener | valuesource | queries | systemproperty | tabular-report-calc-type | xdm:include)*>
+<!ATTLIST project
+          class CDATA "com.netspective.sparx.Project"
+          defaulttheme CDATA #IMPLIED <!-- alias for 'default-theme' attribute, java.lang.String -->
+          default-data-source CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default-navigation-tree CDATA #IMPLIED <!-- java.lang.String -->
+          default-theme CDATA #IMPLIED <!-- java.lang.String -->
+          defaultdatasource CDATA #IMPLIED <!-- alias for 'default-data-source' attribute, com.netspective.commons.value.ValueSource -->
+          defaultnavigationtree CDATA #IMPLIED <!-- alias for 'default-navigation-tree' attribute, java.lang.String -->>
+
+<!ELEMENT scrollstates (xdm:include)*> <!-- alias for 'scroll-states' element -->
+<!ATTLIST scrollstates
+          class CDATA "com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates">
+
+<!ELEMENT connectionproviderentrystatistics (xdm:include)*> <!-- alias for 'connection-provider-entry-statistics' element -->
+<!ATTLIST connectionproviderentrystatistics
+          class CDATA "com.netspective.axiom.ConnectionProviderEntryStatistics">
+
+<!ELEMENT database-policy (xdm:include)*>
+<!ATTLIST database-policy
+          class CDATA "com.netspective.axiom.DatabasePolicy"
+          prefixtablenameswithschemaname %boolean; #IMPLIED <!-- alias for 'prefix-table-names-with-schema-name' attribute, boolean -->
+          prefix-table-names-with-schema-name %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT tabular-report (column | flags | xdm:include)*>
+<!ATTLIST tabular-report
+          class CDATA "com.netspective.sparx.report.tabular.HtmlTabularReport"
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT column (xdm:include)*>
+<!ATTLIST column
+          class CDATA "com.netspective.commons.report.tabular.TabularReportColumn"
+          width CDATA #IMPLIED <!-- int -->
+          headingcommand CDATA #IMPLIED <!-- alias for 'heading-command' attribute, java.lang.String -->
+          colindex CDATA #IMPLIED <!-- alias for 'col-index' attribute, int -->
+          output CDATA #IMPLIED <!-- java.lang.String -->
+          calc CDATA #IMPLIED <!-- java.lang.String -->
+          align (left | center | right) #IMPLIED <!-- com.netspective.commons.report.tabular.TabularReportColumn$AlignStyle -->
+          heading-command CDATA #IMPLIED <!-- java.lang.String -->
+          datatype CDATA #IMPLIED <!-- alias for 'data-type' attribute, int -->
+          col-index CDATA #IMPLIED <!-- int -->
+          data-type CDATA #IMPLIED <!-- int -->
+          break CDATA #IMPLIED <!-- java.lang.String -->
+          redirect CDATA #IMPLIED <!-- com.netspective.commons.value.source.RedirectValueSource -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          format CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT flags (xdm:include)*>
+<!ATTLIST flags
+          class CDATA "com.netspective.commons.report.tabular.TabularReport$Flags"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          flag CDATA #IMPLIED <!-- long -->
+          flag-delimiter CDATA #IMPLIED <!-- java.lang.String -->
+          flagdelimiter CDATA #IMPLIED <!-- alias for 'flag-delimiter' attribute, java.lang.String -->>
+
+<!ELEMENT system-property (#PCDATA | xdm:include)*>
+<!ATTLIST system-property
+          class CDATA "com.netspective.commons.config.SystemProperty"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          file CDATA #IMPLIED <!-- java.io.File -->
+          resourcerelativetoclass CDATA #IMPLIED <!-- alias for 'resource-relative-to-class' attribute, java.lang.Class -->
+          resource-relative-to-class CDATA #IMPLIED <!-- java.lang.Class -->
+          resource CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT classpathprovider (xdm:include)*> <!-- alias for 'class-path-provider' element -->
+<!ATTLIST classpathprovider
+          class CDATA "com.netspective.commons.lang.ClassPath$ClassPathProvider">
+
+<!ELEMENT connection-provider-entry-statistics (xdm:include)*>
+<!ATTLIST connection-provider-entry-statistics
+          class CDATA "com.netspective.axiom.ConnectionProviderEntryStatistics">
+
+<!ELEMENT navigationtree (dialog-next-action-provider | error-page | page | dialognextactionprovider | errorpage | xdm:include)*> <!-- alias for 'navigation-tree' element -->
+<!ATTLIST navigationtree
+          class CDATA "com.netspective.sparx.navigate.NavigationTree"
+          maxlevel CDATA #IMPLIED <!-- alias for 'max-level' attribute, int -->
+          max-level CDATA #IMPLIED <!-- int -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          dialognextactionurl CDATA #IMPLIED <!-- alias for 'dialog-next-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-next-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT dialog-next-action-provider (xdm:include)*>
+<!ATTLIST dialog-next-action-provider
+          class CDATA "com.netspective.sparx.form.handler.DialogNextActionProvider">
+
+<!ELEMENT error-page (conditional | dialog-next-action-provider | missing-params-body | error-page | page | panels | flags | body-handler | listener | missingparamsbody | dialognextactionprovider | bodyhandler | error | body | errorpage | xdm:include)*>
+<!ATTLIST error-page
+          class CDATA "com.netspective.sparx.navigate.NavigationErrorPage"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          level CDATA #IMPLIED <!-- int -->
+          assignandretainparams CDATA #IMPLIED <!-- alias for 'assign-and-retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          flag-recursively CDATA #IMPLIED <!-- long -->
+          require-request-params CDATA #IMPLIED <!-- java.lang.String -->
+          title CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          target CDATA #IMPLIED <!-- java.lang.String -->
+          bodytype CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- alias for 'body-type' attribute, com.netspective.sparx.navigate.NavigationPageBodyType -->
+          include CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assign-and-retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          maxchildlevel CDATA #IMPLIED <!-- alias for 'max-child-level' attribute, int -->
+          pageflagsparamname CDATA #IMPLIED <!-- alias for 'page-flags-param-name' attribute, java.lang.String -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assignstateparams CDATA #IMPLIED <!-- alias for 'assign-state-params' attribute, com.netspective.commons.value.ValueSource -->
+          assign-state-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          dialog-next-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          command CDATA #IMPLIED <!-- com.netspective.commons.command.Command -->
+          base-attributes CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          body-type CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPageBodyType -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPathFlags -->
+          baseattributes CDATA #IMPLIED <!-- alias for 'base-attributes' attribute, com.netspective.commons.value.ValueSource -->
+          flagrecursively CDATA #IMPLIED <!-- alias for 'flag-recursively' attribute, long -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          sub-heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          redirecttarget CDATA #IMPLIED <!-- alias for 'redirect-target' attribute, java.lang.String -->
+          command-expr CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          subheading CDATA #IMPLIED <!-- alias for 'sub-heading' attribute, com.netspective.commons.value.ValueSource -->
+          requirerequestparam CDATA #IMPLIED <!-- alias for 'require-request-param' attribute, java.lang.String -->
+          require-request-param CDATA #IMPLIED <!-- java.lang.String -->
+          page-flags-param-name CDATA #IMPLIED <!-- java.lang.String -->
+          commandexpr CDATA #IMPLIED <!-- alias for 'command-expr' attribute, com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          forward CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          redirect CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          requirerequestparams CDATA #IMPLIED <!-- alias for 'require-request-params' attribute, java.lang.String -->
+          dialognextactionurl CDATA #IMPLIED <!-- alias for 'dialog-next-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          max-child-level CDATA #IMPLIED <!-- int -->
+          redirect-target CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT conditional (xdm:include)*>
+<!ATTLIST conditional
+          class CDATA "com.netspective.sparx.navigate.NavigationConditionalAction"
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT missing-params-body (xdm:include)*>
+<!ATTLIST missing-params-body
+          class CDATA "com.netspective.commons.template.TemplateProcessor">
+
+<!ELEMENT page (conditional | dialog-next-action-provider | missing-params-body | error-page | page | panels | flags | body-handler | listener | missingparamsbody | dialognextactionprovider | bodyhandler | body | errorpage | xdm:include)*>
+<!ATTLIST page
+          class CDATA "com.netspective.sparx.navigate.NavigationPage"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          level CDATA #IMPLIED <!-- int -->
+          assignandretainparams CDATA #IMPLIED <!-- alias for 'assign-and-retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          flag-recursively CDATA #IMPLIED <!-- long -->
+          require-request-params CDATA #IMPLIED <!-- java.lang.String -->
+          title CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          target CDATA #IMPLIED <!-- java.lang.String -->
+          bodytype CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- alias for 'body-type' attribute, com.netspective.sparx.navigate.NavigationPageBodyType -->
+          include CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assign-and-retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          maxchildlevel CDATA #IMPLIED <!-- alias for 'max-child-level' attribute, int -->
+          pageflagsparamname CDATA #IMPLIED <!-- alias for 'page-flags-param-name' attribute, java.lang.String -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assignstateparams CDATA #IMPLIED <!-- alias for 'assign-state-params' attribute, com.netspective.commons.value.ValueSource -->
+          assign-state-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          dialog-next-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          command CDATA #IMPLIED <!-- com.netspective.commons.command.Command -->
+          base-attributes CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          body-type CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPageBodyType -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPathFlags -->
+          baseattributes CDATA #IMPLIED <!-- alias for 'base-attributes' attribute, com.netspective.commons.value.ValueSource -->
+          flagrecursively CDATA #IMPLIED <!-- alias for 'flag-recursively' attribute, long -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          sub-heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          redirecttarget CDATA #IMPLIED <!-- alias for 'redirect-target' attribute, java.lang.String -->
+          command-expr CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          subheading CDATA #IMPLIED <!-- alias for 'sub-heading' attribute, com.netspective.commons.value.ValueSource -->
+          requirerequestparam CDATA #IMPLIED <!-- alias for 'require-request-param' attribute, java.lang.String -->
+          require-request-param CDATA #IMPLIED <!-- java.lang.String -->
+          page-flags-param-name CDATA #IMPLIED <!-- java.lang.String -->
+          commandexpr CDATA #IMPLIED <!-- alias for 'command-expr' attribute, com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          forward CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          redirect CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          requirerequestparams CDATA #IMPLIED <!-- alias for 'require-request-params' attribute, java.lang.String -->
+          dialognextactionurl CDATA #IMPLIED <!-- alias for 'dialog-next-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          max-child-level CDATA #IMPLIED <!-- int -->
+          redirect-target CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT panels (banner | frame | panels | panel | xdm:include)*>
+<!ATTLIST panels
+          class CDATA "com.netspective.sparx.panel.HtmlLayoutPanel"
+          width CDATA #IMPLIED <!-- int -->
+          height CDATA #IMPLIED <!-- int -->
+          style (vertical | horizontal | tabbed | two-columns) #IMPLIED <!-- com.netspective.sparx.panel.HtmlPanelsStyleEnumeratedAttribute -->
+          identifier CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT banner (action | xdm:include)*>
+<!ATTLIST banner
+          class CDATA "com.netspective.sparx.panel.HtmlPanelBanner"
+          content CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          style (horizontal | vertical) #IMPLIED <!-- com.netspective.sparx.panel.HtmlPanelBanner$Style -->>
+
+<!ELEMENT action (action | xdm:include)*>
+<!ATTLIST action
+          class CDATA "com.netspective.sparx.panel.HtmlPanelAction"
+          icon CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          style (horizontal | vertical) #IMPLIED <!-- com.netspective.sparx.panel.HtmlPanelActions$Style -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          redirect CDATA #IMPLIED <!-- com.netspective.commons.value.source.RedirectValueSource -->>
+
+<!ELEMENT frame (action | xdm:include)*>
+<!ATTLIST frame
+          class CDATA "com.netspective.sparx.panel.HtmlPanelFrame"
+          allowselect CDATA #IMPLIED <!-- alias for 'allow-select' attribute, com.netspective.commons.value.ValueSource -->
+          hide-heading %boolean; #IMPLIED <!-- boolean -->
+          footing CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.panel.HtmlPanelFrame$Flags -->
+          allow-select CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          hideheading %boolean; #IMPLIED <!-- alias for 'hide-heading' attribute, boolean -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT panel (xdm:include)*>
+<!ATTLIST panel
+          class CDATA "com.netspective.sparx.panel.HtmlPanel"
+          width CDATA #IMPLIED <!-- int -->
+          height CDATA #IMPLIED <!-- int -->>
+
+<!ELEMENT body-handler (xdm:include)*>
+<!ATTLIST body-handler
+          class CDATA "com.netspective.sparx.navigate.NavigationPageBodyHandler">
+
+<!ELEMENT listener (xdm:include)*>
+<!ATTLIST listener
+          class CDATA "com.netspective.sparx.navigate.listener.NavigationPathListener">
+
+<!ELEMENT missingparamsbody (xdm:include)*> <!-- alias for 'missing-params-body' element -->
+<!ATTLIST missingparamsbody
+          class CDATA "com.netspective.commons.template.TemplateProcessor">
+
+<!ELEMENT dialognextactionprovider (xdm:include)*> <!-- alias for 'dialog-next-action-provider' element -->
+<!ATTLIST dialognextactionprovider
+          class CDATA "com.netspective.sparx.form.handler.DialogNextActionProvider">
+
+<!ELEMENT bodyhandler (xdm:include)*> <!-- alias for 'body-handler' element -->
+<!ATTLIST bodyhandler
+          class CDATA "com.netspective.sparx.navigate.NavigationPageBodyHandler">
+
+<!ELEMENT body (xdm:include)*>
+<!ATTLIST body
+          class CDATA "com.netspective.commons.template.TemplateProcessor">
+
+<!ELEMENT errorpage (conditional | dialog-next-action-provider | missing-params-body | error-page | page | panels | flags | body-handler | listener | missingparamsbody | dialognextactionprovider | bodyhandler | error | body | errorpage | xdm:include)*> <!-- alias for 'error-page' element -->
+<!ATTLIST errorpage
+          class CDATA "com.netspective.sparx.navigate.NavigationErrorPage"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          level CDATA #IMPLIED <!-- int -->
+          assignandretainparams CDATA #IMPLIED <!-- alias for 'assign-and-retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          flag-recursively CDATA #IMPLIED <!-- long -->
+          require-request-params CDATA #IMPLIED <!-- java.lang.String -->
+          title CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          target CDATA #IMPLIED <!-- java.lang.String -->
+          bodytype CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- alias for 'body-type' attribute, com.netspective.sparx.navigate.NavigationPageBodyType -->
+          include CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assign-and-retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          maxchildlevel CDATA #IMPLIED <!-- alias for 'max-child-level' attribute, int -->
+          pageflagsparamname CDATA #IMPLIED <!-- alias for 'page-flags-param-name' attribute, java.lang.String -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          assignstateparams CDATA #IMPLIED <!-- alias for 'assign-state-params' attribute, com.netspective.commons.value.ValueSource -->
+          assign-state-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          dialog-next-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          command CDATA #IMPLIED <!-- com.netspective.commons.command.Command -->
+          base-attributes CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          body-type CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPageBodyType -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.navigate.NavigationPathFlags -->
+          baseattributes CDATA #IMPLIED <!-- alias for 'base-attributes' attribute, com.netspective.commons.value.ValueSource -->
+          flagrecursively CDATA #IMPLIED <!-- alias for 'flag-recursively' attribute, long -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          sub-heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retain-params CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          redirecttarget CDATA #IMPLIED <!-- alias for 'redirect-target' attribute, java.lang.String -->
+          command-expr CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          subheading CDATA #IMPLIED <!-- alias for 'sub-heading' attribute, com.netspective.commons.value.ValueSource -->
+          requirerequestparam CDATA #IMPLIED <!-- alias for 'require-request-param' attribute, java.lang.String -->
+          require-request-param CDATA #IMPLIED <!-- java.lang.String -->
+          page-flags-param-name CDATA #IMPLIED <!-- java.lang.String -->
+          commandexpr CDATA #IMPLIED <!-- alias for 'command-expr' attribute, com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          forward CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, com.netspective.commons.value.ValueSource -->
+          redirect CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          requirerequestparams CDATA #IMPLIED <!-- alias for 'require-request-params' attribute, java.lang.String -->
+          dialognextactionurl CDATA #IMPLIED <!-- alias for 'dialog-next-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          max-child-level CDATA #IMPLIED <!-- int -->
+          redirect-target CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT error (xdm:include)*>
+<!ATTLIST error
+          class CDATA "com.netspective.sparx.navigate.NavigationErrorPage$Error"
+          exception-class CDATA #IMPLIED <!-- java.lang.Class -->
+          exceptionclass CDATA #IMPLIED <!-- alias for 'exception-class' attribute, java.lang.Class -->>
+
+<!ELEMENT storedprocedures (xdm:include)*> <!-- alias for 'stored-procedures' element -->
+<!ATTLIST storedprocedures
+          class CDATA "com.netspective.axiom.sql.StoredProceduresNameSpace"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT access-control-list (role | permission | xdm:include)*>
+<!ATTLIST access-control-list
+          class CDATA "com.netspective.commons.acl.AccessControlList"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT role (revoke | grant | role | xdm:include)*>
+<!ATTLIST role
+          class CDATA "com.netspective.commons.acl.Role"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          level CDATA #IMPLIED <!-- int -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT revoke (xdm:include)*>
+<!ATTLIST revoke
+          class CDATA "com.netspective.commons.acl.RoleOrPermissionReference"
+          role CDATA #IMPLIED <!-- java.lang.String -->
+          permission CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT grant (xdm:include)*>
+<!ATTLIST grant
+          class CDATA "com.netspective.commons.acl.RoleOrPermissionReference"
+          role CDATA #IMPLIED <!-- java.lang.String -->
+          permission CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT permission (permission | xdm:include)*>
+<!ATTLIST permission
+          class CDATA "com.netspective.commons.acl.Permission"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          level CDATA #IMPLIED <!-- int -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT stored-procedures (stored-procedure | storedprocedure | xdm:include)*>
+<!ATTLIST stored-procedures
+          class CDATA "com.netspective.sparx.sql.StoredProceduresPackage"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          package CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT stored-procedure (#PCDATA | params | sql | xdm:include)*>
+<!ATTLIST stored-procedure
+          class CDATA "com.netspective.axiom.sql.StoredProcedure"
+          procedurename CDATA #IMPLIED <!-- alias for 'procedure-name' attribute, java.lang.String -->
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          procedure-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT params (param | xdm:include)*>
+<!ATTLIST params
+          class CDATA "com.netspective.axiom.sql.StoredProcedureParameters">
+
+<!ELEMENT param (xdm:include)*>
+<!ATTLIST param
+          class CDATA "com.netspective.axiom.sql.StoredProcedureParameter"
+          index CDATA #IMPLIED <!-- int -->
+          value CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          sqltype (decimal | double | strings | resultset | blob | text | bigint | varchar | integer | smallint | clob | float | real | date) #IMPLIED <!-- alias for 'sql-type' attribute, com.netspective.axiom.sql.QueryParameterTypeEnumeratedAttribute -->
+          type (in | out | in-out) #IMPLIED <!-- com.netspective.axiom.sql.StoredProcedureParameter$Type -->
+          sql-type (decimal | double | strings | resultset | blob | text | bigint | varchar | integer | smallint | clob | float | real | date) #IMPLIED <!-- com.netspective.axiom.sql.QueryParameterTypeEnumeratedAttribute -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT sql (#PCDATA | xdm:include)*>
+<!ATTLIST sql
+          class CDATA "com.netspective.axiom.sql.DbmsSqlText"
+          dbms CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- com.netspective.axiom.DatabasePolicies$DatabasePolicyEnumeratedAttribute -->
+          sql CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT storedprocedure (#PCDATA | params | sql | xdm:include)*> <!-- alias for 'stored-procedure' element -->
+<!ATTLIST storedprocedure
+          class CDATA "com.netspective.axiom.sql.StoredProcedure"
+          procedurename CDATA #IMPLIED <!-- alias for 'procedure-name' attribute, java.lang.String -->
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          procedure-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT loginmanager (login-attempts-listener | loginauthenticator | login-authenticator | login-dialog | loginattemptslistener | logindialog | xdm:include)*> <!-- alias for 'login-manager' element -->
+<!ATTLIST loginmanager
+          class CDATA "com.netspective.sparx.security.HttpLoginManager"
+          allow-remember-user-id %boolean; #IMPLIED <!-- boolean -->
+          remember-user-id-cookie-max-age CDATA #IMPLIED <!-- int -->
+          rememberpasswordcookiename CDATA #IMPLIED <!-- alias for 'remember-password-cookie-name' attribute, java.lang.String -->
+          rememberuseridcookiemaxage CDATA #IMPLIED <!-- alias for 'remember-user-id-cookie-max-age' attribute, int -->
+          allowrememberuserid %boolean; #IMPLIED <!-- alias for 'allow-remember-user-id' attribute, boolean -->
+          remember-user-id-cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          invalid-user-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          rememberpasswordcookiepath CDATA #IMPLIED <!-- alias for 'remember-password-cookie-path' attribute, com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          remember-password-cookie-path CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          invalidusermessage CDATA #IMPLIED <!-- alias for 'invalid-user-message' attribute, com.netspective.commons.value.ValueSource -->
+          authenticated-user-session-attr-name CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          rememberuseridcookiename CDATA #IMPLIED <!-- alias for 'remember-user-id-cookie-name' attribute, java.lang.String -->
+          authenticatedusersessionattrname CDATA #IMPLIED <!-- alias for 'authenticated-user-session-attr-name' attribute, java.lang.String -->
+          remember-password-cookie-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT login-attempts-listener (xdm:include)*>
+<!ATTLIST login-attempts-listener
+          class CDATA "com.netspective.sparx.security.HttpLoginAttemptsManager">
+
+<!ELEMENT loginauthenticator (xdm:include)*> <!-- alias for 'login-authenticator' element -->
+<!ATTLIST loginauthenticator
+          class CDATA "com.netspective.sparx.security.LoginAuthenticator">
+
+<!ELEMENT login-authenticator (xdm:include)*>
+<!ATTLIST login-authenticator
+          class CDATA "com.netspective.sparx.security.LoginAuthenticator">
+
+<!ELEMENT login-dialog (composite | dialog-flags | director | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*>
+<!ATTLIST login-dialog
+          class CDATA "com.netspective.sparx.security.LoginDialog"
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          width CDATA #IMPLIED <!-- int -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          height CDATA #IMPLIED <!-- int -->
+          remember-id-field-name CDATA #IMPLIED <!-- java.lang.String -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          user-id-field-name CDATA #IMPLIED <!-- java.lang.String -->
+          maximumattempts CDATA #IMPLIED <!-- alias for 'maximum-attempts' attribute, int -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          passwordfieldname CDATA #IMPLIED <!-- alias for 'password-field-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          rememberidfieldname CDATA #IMPLIED <!-- alias for 'remember-id-field-name' attribute, java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          maximum-attempts CDATA #IMPLIED <!-- int -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->
+          useridfieldname CDATA #IMPLIED <!-- alias for 'user-id-field-name' attribute, java.lang.String -->
+          password-field-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT composite (conditional | validation | composite | dialog-context-member-info | popup | scan-entry | submitonblur | scanentry | submit-on-blur | flags | dialogcontextmemberinfo | field | client-js | auto-blur | autoblur | clientjs | xdm:include)*>
+<!ATTLIST composite
+          class CDATA "com.netspective.sparx.form.field.type.CompositeField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT validation (rule | xdm:include)*>
+<!ATTLIST validation
+          class CDATA "com.netspective.sparx.form.field.DialogFieldValidations">
+
+<!ELEMENT rule (xdm:include)*>
+<!ATTLIST rule
+          class CDATA "com.netspective.commons.validate.ValidationRule"
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT dialog-context-member-info (xdm:include)*>
+<!ATTLIST dialog-context-member-info
+          class CDATA "com.netspective.sparx.form.DialogContextBeanMemberInfo"
+          fieldname CDATA #IMPLIED <!-- alias for 'field-name' attribute, java.lang.String -->
+          field-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT popup (xdm:include)*>
+<!ATTLIST popup
+          class CDATA "com.netspective.sparx.form.field.DialogFieldPopup"
+          extract CDATA #IMPLIED <!-- java.lang.String -->
+          action CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          allow-multi %boolean; #IMPLIED <!-- boolean -->
+          window-class CDATA #IMPLIED <!-- java.lang.String -->
+          closeafterselect %boolean; #IMPLIED <!-- alias for 'close-after-select' attribute, boolean -->
+          imagesrc CDATA #IMPLIED <!-- alias for 'image-src' attribute, com.netspective.commons.value.ValueSource -->
+          fill CDATA #IMPLIED <!-- java.lang.String -->
+          allowmulti %boolean; #IMPLIED <!-- alias for 'allow-multi' attribute, boolean -->
+          windowclass CDATA #IMPLIED <!-- alias for 'window-class' attribute, java.lang.String -->
+          image-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          close-after-select %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT scan-entry (xdm:include)*>
+<!ATTLIST scan-entry
+          class CDATA "com.netspective.sparx.form.field.DialogFieldScanEntry"
+          ignore-case %boolean; #IMPLIED <!-- boolean -->
+          ignorecase %boolean; #IMPLIED <!-- alias for 'ignore-case' attribute, boolean -->
+          custom-script CDATA #IMPLIED <!-- java.lang.String -->
+          start-code CDATA #IMPLIED <!-- java.lang.String -->
+          stopcode CDATA #IMPLIED <!-- alias for 'stop-code' attribute, java.lang.String -->
+          stop-code CDATA #IMPLIED <!-- java.lang.String -->
+          customscript CDATA #IMPLIED <!-- alias for 'custom-script' attribute, java.lang.String -->
+          startcode CDATA #IMPLIED <!-- alias for 'start-code' attribute, java.lang.String -->
+          partner-field CDATA #IMPLIED <!-- java.lang.String -->
+          partnerfield CDATA #IMPLIED <!-- alias for 'partner-field' attribute, java.lang.String -->>
+
+<!ELEMENT submitonblur (xdm:include)*> <!-- alias for 'submit-on-blur' element -->
+<!ATTLIST submitonblur
+          class CDATA "com.netspective.sparx.form.field.DialogFieldSubmitOnBlur"
+          partner CDATA #IMPLIED <!-- java.lang.String -->
+          custom-script CDATA #IMPLIED <!-- java.lang.String -->
+          customscript CDATA #IMPLIED <!-- alias for 'custom-script' attribute, java.lang.String -->>
+
+<!ELEMENT scanentry (xdm:include)*> <!-- alias for 'scan-entry' element -->
+<!ATTLIST scanentry
+          class CDATA "com.netspective.sparx.form.field.DialogFieldScanEntry"
+          ignore-case %boolean; #IMPLIED <!-- boolean -->
+          ignorecase %boolean; #IMPLIED <!-- alias for 'ignore-case' attribute, boolean -->
+          custom-script CDATA #IMPLIED <!-- java.lang.String -->
+          start-code CDATA #IMPLIED <!-- java.lang.String -->
+          stopcode CDATA #IMPLIED <!-- alias for 'stop-code' attribute, java.lang.String -->
+          stop-code CDATA #IMPLIED <!-- java.lang.String -->
+          customscript CDATA #IMPLIED <!-- alias for 'custom-script' attribute, java.lang.String -->
+          startcode CDATA #IMPLIED <!-- alias for 'start-code' attribute, java.lang.String -->
+          partner-field CDATA #IMPLIED <!-- java.lang.String -->
+          partnerfield CDATA #IMPLIED <!-- alias for 'partner-field' attribute, java.lang.String -->>
+
+<!ELEMENT submit-on-blur (xdm:include)*>
+<!ATTLIST submit-on-blur
+          class CDATA "com.netspective.sparx.form.field.DialogFieldSubmitOnBlur"
+          partner CDATA #IMPLIED <!-- java.lang.String -->
+          custom-script CDATA #IMPLIED <!-- java.lang.String -->
+          customscript CDATA #IMPLIED <!-- alias for 'custom-script' attribute, java.lang.String -->>
+
+<!ELEMENT dialogcontextmemberinfo (xdm:include)*> <!-- alias for 'dialog-context-member-info' element -->
+<!ATTLIST dialogcontextmemberinfo
+          class CDATA "com.netspective.sparx.form.DialogContextBeanMemberInfo"
+          fieldname CDATA #IMPLIED <!-- alias for 'field-name' attribute, java.lang.String -->
+          field-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT field (conditional | validation | composite | dialog-context-member-info | popup | scan-entry | submitonblur | scanentry | submit-on-blur | flags | dialogcontextmemberinfo | field | client-js | auto-blur | autoblur | clientjs | xdm:include)*>
+<!ATTLIST field
+          class CDATA "com.netspective.sparx.form.field.DialogField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT client-js (xdm:include)*>
+<!ATTLIST client-js
+          class CDATA "com.netspective.sparx.form.field.DialogFieldClientJavascript"
+          type (extends | override) #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldClientJavascript$ScriptType -->
+          js-expr CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          event (is-valid | value-changed | click | key-press | get-focus | lose-focus) #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldClientJavascript$ControlEvent -->
+          jsexpr CDATA #IMPLIED <!-- alias for 'js-expr' attribute, com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT auto-blur (xdm:include)*>
+<!ATTLIST auto-blur
+          class CDATA "com.netspective.sparx.form.field.DialogFieldAutoBlur"
+          exclude-expr CDATA #IMPLIED <!-- java.lang.String -->
+          length CDATA #IMPLIED <!-- int -->
+          excludeexpr CDATA #IMPLIED <!-- alias for 'exclude-expr' attribute, java.lang.String -->>
+
+<!ELEMENT autoblur (xdm:include)*> <!-- alias for 'auto-blur' element -->
+<!ATTLIST autoblur
+          class CDATA "com.netspective.sparx.form.field.DialogFieldAutoBlur"
+          exclude-expr CDATA #IMPLIED <!-- java.lang.String -->
+          length CDATA #IMPLIED <!-- int -->
+          excludeexpr CDATA #IMPLIED <!-- alias for 'exclude-expr' attribute, java.lang.String -->>
+
+<!ELEMENT clientjs (xdm:include)*> <!-- alias for 'client-js' element -->
+<!ATTLIST clientjs
+          class CDATA "com.netspective.sparx.form.field.DialogFieldClientJavascript"
+          type (extends | override) #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldClientJavascript$ScriptType -->
+          js-expr CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          event (is-valid | value-changed | click | key-press | get-focus | lose-focus) #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldClientJavascript$ControlEvent -->
+          jsexpr CDATA #IMPLIED <!-- alias for 'js-expr' attribute, com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT dialog-flags (xdm:include)*>
+<!ATTLIST dialog-flags
+          class CDATA "com.netspective.sparx.form.DialogFlags"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          flag CDATA #IMPLIED <!-- long -->
+          flag-delimiter CDATA #IMPLIED <!-- java.lang.String -->
+          flagdelimiter CDATA #IMPLIED <!-- alias for 'flag-delimiter' attribute, java.lang.String -->>
+
+<!ELEMENT director (composite | validation | submitonblur | scan-entry | next-actions | submit-on-blur | dialogcontextmemberinfo | auto-blur | conditional | nextactions | popup | dialog-context-member-info | scanentry | flags | field | client-js | autoblur | clientjs | xdm:include)*>
+<!ATTLIST director
+          class CDATA "com.netspective.sparx.form.DialogDirector"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          cancelactionurl CDATA #IMPLIED <!-- alias for 'cancel-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cancel-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          style (data | confirm | acknowledge) #IMPLIED <!-- com.netspective.sparx.form.DialogDirector$DialogDirectorStyle -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          pending-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          submitactionurl CDATA #IMPLIED <!-- alias for 'submit-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          submit-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cancel-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          pending-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cancelcaption CDATA #IMPLIED <!-- alias for 'cancel-caption' attribute, com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          submit-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          pendingactionurl CDATA #IMPLIED <!-- alias for 'pending-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          submitcaption CDATA #IMPLIED <!-- alias for 'submit-caption' attribute, com.netspective.commons.value.ValueSource -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          pendingcaption CDATA #IMPLIED <!-- alias for 'pending-caption' attribute, com.netspective.commons.value.ValueSource -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT next-actions (validation | composite | submitonblur | scan-entry | submit-on-blur | dialogcontextmemberinfo | auto-blur | conditional | popup | dialog-context-member-info | items | scanentry | flags | field | client-js | autoblur | clientjs | xdm:include)*>
+<!ATTLIST next-actions
+          class CDATA "com.netspective.sparx.form.field.type.DirectorNextActionsSelectField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multidualwidth CDATA #IMPLIED <!-- alias for 'multi-dual-width' attribute, int -->
+          multi-dual-caption-right CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          displaypattern CDATA #IMPLIED <!-- alias for 'display-pattern' attribute, java.lang.String -->
+          regexpr CDATA #IMPLIED <!-- alias for 'reg-expr' attribute, java.lang.String -->
+          submit-pattern CDATA #IMPLIED <!-- java.lang.String -->
+          multidualcaptionright CDATA #IMPLIED <!-- alias for 'multi-dual-caption-right' attribute, com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          display-pattern CDATA #IMPLIED <!-- java.lang.String -->
+          perspective CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogPerspectives -->
+          invalid-reg-ex-message CDATA #IMPLIED <!-- java.lang.String -->
+          multi-dual-caption-left CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          invalidregexmessage CDATA #IMPLIED <!-- alias for 'invalid-reg-ex-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          style (radio | combo | list | multicheck | multilist | multidual | popup | text) #IMPLIED <!-- com.netspective.sparx.form.field.type.SelectField$Style -->
+          choices CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          size CDATA #IMPLIED <!-- int -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          minlength CDATA #IMPLIED <!-- alias for 'min-length' attribute, int -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          reg-expr CDATA #IMPLIED <!-- java.lang.String -->
+          maxlength CDATA #IMPLIED <!-- alias for 'max-length' attribute, int -->
+          submitpattern CDATA #IMPLIED <!-- alias for 'submit-pattern' attribute, java.lang.String -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          min-length CDATA #IMPLIED <!-- int -->
+          controlseparator CDATA #IMPLIED <!-- alias for 'control-separator' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          multi-dual-width CDATA #IMPLIED <!-- int -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->
+          multidualcaptionleft CDATA #IMPLIED <!-- alias for 'multi-dual-caption-left' attribute, com.netspective.commons.value.ValueSource -->
+          max-length CDATA #IMPLIED <!-- int -->
+          control-separator CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT items (#PCDATA | item | xdm:include)*>
+<!ATTLIST items
+          class CDATA "com.netspective.sparx.form.field.type.SelectFieldChoicesValueSource$Items">
+
+<!ELEMENT item (#PCDATA | xdm:include)*>
+<!ATTLIST item
+          class CDATA "com.netspective.sparx.form.field.type.SelectFieldChoicesValueSource$Items$Item"
+          value CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT nextactions (validation | composite | submitonblur | scan-entry | submit-on-blur | dialogcontextmemberinfo | auto-blur | conditional | popup | dialog-context-member-info | items | scanentry | flags | field | client-js | autoblur | clientjs | xdm:include)*> <!-- alias for 'next-actions' element -->
+<!ATTLIST nextactions
+          class CDATA "com.netspective.sparx.form.field.type.DirectorNextActionsSelectField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multidualwidth CDATA #IMPLIED <!-- alias for 'multi-dual-width' attribute, int -->
+          multi-dual-caption-right CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          displaypattern CDATA #IMPLIED <!-- alias for 'display-pattern' attribute, java.lang.String -->
+          regexpr CDATA #IMPLIED <!-- alias for 'reg-expr' attribute, java.lang.String -->
+          submit-pattern CDATA #IMPLIED <!-- java.lang.String -->
+          multidualcaptionright CDATA #IMPLIED <!-- alias for 'multi-dual-caption-right' attribute, com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          display-pattern CDATA #IMPLIED <!-- java.lang.String -->
+          perspective CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogPerspectives -->
+          invalid-reg-ex-message CDATA #IMPLIED <!-- java.lang.String -->
+          multi-dual-caption-left CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          invalidregexmessage CDATA #IMPLIED <!-- alias for 'invalid-reg-ex-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          style (radio | combo | list | multicheck | multilist | multidual | popup | text) #IMPLIED <!-- com.netspective.sparx.form.field.type.SelectField$Style -->
+          choices CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          size CDATA #IMPLIED <!-- int -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          minlength CDATA #IMPLIED <!-- alias for 'min-length' attribute, int -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          reg-expr CDATA #IMPLIED <!-- java.lang.String -->
+          maxlength CDATA #IMPLIED <!-- alias for 'max-length' attribute, int -->
+          submitpattern CDATA #IMPLIED <!-- alias for 'submit-pattern' attribute, java.lang.String -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          min-length CDATA #IMPLIED <!-- int -->
+          controlseparator CDATA #IMPLIED <!-- alias for 'control-separator' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          multi-dual-width CDATA #IMPLIED <!-- int -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->
+          multidualcaptionleft CDATA #IMPLIED <!-- alias for 'multi-dual-caption-left' attribute, com.netspective.commons.value.ValueSource -->
+          max-length CDATA #IMPLIED <!-- int -->
+          control-separator CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT debugflags (xdm:include)*> <!-- alias for 'debug-flags' element -->
+<!ATTLIST debugflags
+          class CDATA "com.netspective.sparx.form.DialogDebugFlags"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          flag CDATA #IMPLIED <!-- long -->
+          flag-delimiter CDATA #IMPLIED <!-- java.lang.String -->
+          flagdelimiter CDATA #IMPLIED <!-- alias for 'flag-delimiter' attribute, java.lang.String -->>
+
+<!ELEMENT grid (composite | validation | submitonblur | scan-entry | submit-on-blur | dialogcontextmemberinfo | auto-blur | conditional | row | popup | dialog-context-member-info | scanentry | flags | field | client-js | autoblur | clientjs | xdm:include)*>
+<!ATTLIST grid
+          class CDATA "com.netspective.sparx.form.field.type.GridField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          captions CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT row (conditional | validation | composite | dialog-context-member-info | popup | scan-entry | submitonblur | scanentry | submit-on-blur | flags | dialogcontextmemberinfo | field | client-js | auto-blur | autoblur | clientjs | xdm:include)*>
+<!ATTLIST row
+          class CDATA "com.netspective.sparx.form.field.type.GridFieldRow"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT onexecute (xdm:include)*> <!-- alias for 'on-execute' element -->
+<!ATTLIST onexecute
+          class CDATA "com.netspective.sparx.form.handler.DialogExecuteHandler">
+
+<!ELEMENT dialogflags (xdm:include)*> <!-- alias for 'dialog-flags' element -->
+<!ATTLIST dialogflags
+          class CDATA "com.netspective.sparx.form.DialogFlags"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          flag CDATA #IMPLIED <!-- long -->
+          flag-delimiter CDATA #IMPLIED <!-- java.lang.String -->
+          flagdelimiter CDATA #IMPLIED <!-- alias for 'flag-delimiter' attribute, java.lang.String -->>
+
+<!ELEMENT separator (conditional | validation | composite | dialog-context-member-info | popup | scan-entry | submitonblur | scanentry | submit-on-blur | flags | dialogcontextmemberinfo | field | client-js | auto-blur | autoblur | clientjs | xdm:include)*>
+<!ATTLIST separator
+          class CDATA "com.netspective.sparx.form.field.type.SeparatorField"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          multi %boolean; #IMPLIED <!-- boolean -->
+          error-caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          access-key CDATA #IMPLIED <!-- java.lang.String -->
+          errorcaption CDATA #IMPLIED <!-- alias for 'error-caption' attribute, com.netspective.commons.value.ValueSource -->
+          hint CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          caption CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          cookiename CDATA #IMPLIED <!-- alias for 'cookie-name' attribute, java.lang.String -->
+          banner CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          accesskey CDATA #IMPLIED <!-- alias for 'access-key' attribute, java.lang.String -->
+          requiredfieldmissingmessage CDATA #IMPLIED <!-- alias for 'required-field-missing-message' attribute, java.lang.String -->
+          flags CDATA #IMPLIED <!-- com.netspective.sparx.form.field.DialogFieldFlags -->
+          htmlformcontrolid CDATA #IMPLIED <!-- alias for 'html-form-control-id' attribute, java.lang.String -->
+          required-field-missing-message CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          html-form-control-id CDATA #IMPLIED <!-- java.lang.String -->
+          heading CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT nextactionprovider (xdm:include)*> <!-- alias for 'next-action-provider' element -->
+<!ATTLIST nextactionprovider
+          class CDATA "com.netspective.sparx.form.handler.DialogNextActionProvider">
+
+<!ELEMENT next-action-provider (xdm:include)*>
+<!ATTLIST next-action-provider
+          class CDATA "com.netspective.sparx.form.handler.DialogNextActionProvider">
+
+<!ELEMENT debug-flags (xdm:include)*>
+<!ATTLIST debug-flags
+          class CDATA "com.netspective.sparx.form.DialogDebugFlags"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          flag CDATA #IMPLIED <!-- long -->
+          flag-delimiter CDATA #IMPLIED <!-- java.lang.String -->
+          flagdelimiter CDATA #IMPLIED <!-- alias for 'flag-delimiter' attribute, java.lang.String -->>
+
+<!ELEMENT on-execute (xdm:include)*>
+<!ATTLIST on-execute
+          class CDATA "com.netspective.sparx.form.handler.DialogExecuteHandler">
+
+<!ELEMENT loginattemptslistener (xdm:include)*> <!-- alias for 'login-attempts-listener' element -->
+<!ATTLIST loginattemptslistener
+          class CDATA "com.netspective.sparx.security.HttpLoginAttemptsManager">
+
+<!ELEMENT logindialog (composite | dialog-flags | director | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*> <!-- alias for 'login-dialog' element -->
+<!ATTLIST logindialog
+          class CDATA "com.netspective.sparx.security.LoginDialog"
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          width CDATA #IMPLIED <!-- int -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          height CDATA #IMPLIED <!-- int -->
+          remember-id-field-name CDATA #IMPLIED <!-- java.lang.String -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          user-id-field-name CDATA #IMPLIED <!-- java.lang.String -->
+          maximumattempts CDATA #IMPLIED <!-- alias for 'maximum-attempts' attribute, int -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          passwordfieldname CDATA #IMPLIED <!-- alias for 'password-field-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          rememberidfieldname CDATA #IMPLIED <!-- alias for 'remember-id-field-name' attribute, java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          maximum-attempts CDATA #IMPLIED <!-- int -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->
+          useridfieldname CDATA #IMPLIED <!-- alias for 'user-id-field-name' attribute, java.lang.String -->
+          password-field-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT freemarkerconfiguration (xdm:include)*> <!-- alias for 'freemarker-configuration' element -->
+<!ATTLIST freemarkerconfiguration
+          class CDATA "com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter"
+          baseclasspath CDATA #IMPLIED <!-- alias for 'base-class-path' attribute, java.lang.String -->
+          templateupdatedelay CDATA #IMPLIED <!-- alias for 'template-update-delay' attribute, int -->
+          base-dir CDATA #IMPLIED <!-- java.io.File -->
+          base-class CDATA #IMPLIED <!-- java.lang.Class -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          base-class-path CDATA #IMPLIED <!-- java.lang.String -->
+          template-update-delay CDATA #IMPLIED <!-- int -->
+          baseclass CDATA #IMPLIED <!-- alias for 'base-class' attribute, java.lang.Class -->
+          basedir CDATA #IMPLIED <!-- alias for 'base-dir' attribute, java.io.File -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT command (xdm:include)*>
+<!ATTLIST command
+          class CDATA "com.netspective.commons.command.Command"
+          parameters CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT scroll-states (xdm:include)*>
+<!ATTLIST scroll-states
+          class CDATA "com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates">
+
+<!ELEMENT class-path-provider (xdm:include)*>
+<!ATTLIST class-path-provider
+          class CDATA "com.netspective.commons.lang.ClassPath$ClassPathProvider">
+
+<!ELEMENT accesscontrollist (role | permission | xdm:include)*> <!-- alias for 'access-control-list' element -->
+<!ATTLIST accesscontrollist
+          class CDATA "com.netspective.commons.acl.AccessControlList"
+          qualified-name CDATA #IMPLIED <!-- java.lang.String -->
+          qualifiedname CDATA #IMPLIED <!-- alias for 'qualified-name' attribute, java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT login-manager (login-attempts-listener | loginauthenticator | login-authenticator | login-dialog | loginattemptslistener | logindialog | xdm:include)*>
+<!ATTLIST login-manager
+          class CDATA "com.netspective.sparx.security.HttpLoginManager"
+          allow-remember-user-id %boolean; #IMPLIED <!-- boolean -->
+          remember-user-id-cookie-max-age CDATA #IMPLIED <!-- int -->
+          rememberpasswordcookiename CDATA #IMPLIED <!-- alias for 'remember-password-cookie-name' attribute, java.lang.String -->
+          rememberuseridcookiemaxage CDATA #IMPLIED <!-- alias for 'remember-user-id-cookie-max-age' attribute, int -->
+          allowrememberuserid %boolean; #IMPLIED <!-- alias for 'allow-remember-user-id' attribute, boolean -->
+          remember-user-id-cookie-name CDATA #IMPLIED <!-- java.lang.String -->
+          invalid-user-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          rememberpasswordcookiepath CDATA #IMPLIED <!-- alias for 'remember-password-cookie-path' attribute, com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          remember-password-cookie-path CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          invalidusermessage CDATA #IMPLIED <!-- alias for 'invalid-user-message' attribute, com.netspective.commons.value.ValueSource -->
+          authenticated-user-session-attr-name CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          rememberuseridcookiename CDATA #IMPLIED <!-- alias for 'remember-user-id-cookie-name' attribute, java.lang.String -->
+          authenticatedusersessionattrname CDATA #IMPLIED <!-- alias for 'authenticated-user-session-attr-name' attribute, java.lang.String -->
+          remember-password-cookie-name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT querydefn (join | field | select | xdm:include)*> <!-- alias for 'query-defn' element -->
+<!ATTLIST querydefn
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefinition"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT join (xdm:include)*>
+<!ATTLIST join
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnJoin"
+          table CDATA #IMPLIED <!-- java.lang.String -->
+          fromexpr CDATA #IMPLIED <!-- alias for 'from-expr' attribute, java.lang.String -->
+          autoinclude %boolean; #IMPLIED <!-- alias for 'auto-include' attribute, boolean -->
+          imply-join CDATA #IMPLIED <!-- java.lang.String -->
+          implyjoin CDATA #IMPLIED <!-- alias for 'imply-join' attribute, java.lang.String -->
+          condition CDATA #IMPLIED <!-- java.lang.String -->
+          auto-include %boolean; #IMPLIED <!-- boolean -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          from-expr CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT select (group-by | display | where-expr | groupby | orderby | whereexpr | condition | sql | order-by | xdm:include)*>
+<!ATTLIST select
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSelect"
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          distinct %boolean; #IMPLIED <!-- boolean -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT group-by (xdm:include)*>
+<!ATTLIST group-by
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnFieldReference"
+          field CDATA #IMPLIED <!-- java.lang.String -->
+          fields CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT display (xdm:include)*>
+<!ATTLIST display
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnFieldReference"
+          field CDATA #IMPLIED <!-- java.lang.String -->
+          fields CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT where-expr (xdm:include)*>
+<!ATTLIST where-expr
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpression"
+          value CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          connector (and | or) #IMPLIED <!-- com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAttribute -->>
+
+<!ELEMENT groupby (xdm:include)*> <!-- alias for 'group-by' element -->
+<!ATTLIST groupby
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnFieldReference"
+          field CDATA #IMPLIED <!-- java.lang.String -->
+          fields CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT orderby (xdm:include)*> <!-- alias for 'order-by' element -->
+<!ATTLIST orderby
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference"
+          field CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT whereexpr (xdm:include)*> <!-- alias for 'where-expr' element -->
+<!ATTLIST whereexpr
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSqlWhereExpression"
+          value CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          connector (and | or) #IMPLIED <!-- com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAttribute -->>
+
+<!ELEMENT condition (condition | xdm:include)*>
+<!ATTLIST condition
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnCondition"
+          bind-expr CDATA #IMPLIED <!-- java.lang.String -->
+          value CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          bindexpr CDATA #IMPLIED <!-- alias for 'bind-expr' attribute, java.lang.String -->
+          allownull %boolean; #IMPLIED <!-- alias for 'allow-null' attribute, boolean -->
+          join-only %boolean; #IMPLIED <!-- boolean -->
+          connector (and | or) #IMPLIED <!-- com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAttribute -->
+          comparison CDATA (NOT VALID XML-NMTOKENS) #IMPLIED <!-- com.netspective.axiom.sql.dynamic.SqlComparisonEnumeratedAttribute -->
+          field CDATA #IMPLIED <!-- java.lang.String -->
+          allow-null %boolean; #IMPLIED <!-- boolean -->
+          joinonly %boolean; #IMPLIED <!-- alias for 'join-only' attribute, boolean -->>
+
+<!ELEMENT order-by (xdm:include)*>
+<!ATTLIST order-by
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference"
+          field CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT connectionprovider (xdm:include)*> <!-- alias for 'connection-provider' element -->
+<!ATTLIST connectionprovider
+          class CDATA "com.netspective.axiom.ConnectionProvider">
+
+<!ELEMENT dialogs (dialog | xdm:include)*>
+<!ATTLIST dialogs
+          class CDATA "com.netspective.sparx.form.DialogsPackage"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          package CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT dialog (composite | dialog-flags | director | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*>
+<!ATTLIST dialog
+          class CDATA "com.netspective.sparx.form.Dialog"
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          width CDATA #IMPLIED <!-- int -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          height CDATA #IMPLIED <!-- int -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT antproject (dialog | xdm:include)*> <!-- alias for 'ant-project' element -->
+<!ATTLIST antproject
+          class CDATA "com.netspective.sparx.ant.AntProject"
+          privatetargetprefixchars CDATA #IMPLIED <!-- alias for 'private-target-prefix-chars' attribute, java.lang.String -->
+          showprivatetargets %boolean; #IMPLIED <!-- alias for 'show-private-targets' attribute, boolean -->
+          private-target-prefix-chars CDATA #IMPLIED <!-- java.lang.String -->
+          file CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          caption CDATA #IMPLIED <!-- java.lang.String -->
+          id CDATA #IMPLIED <!-- java.lang.String -->
+          show-private-targets %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT freemarker-configuration (xdm:include)*>
+<!ATTLIST freemarker-configuration
+          class CDATA "com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter"
+          baseclasspath CDATA #IMPLIED <!-- alias for 'base-class-path' attribute, java.lang.String -->
+          templateupdatedelay CDATA #IMPLIED <!-- alias for 'template-update-delay' attribute, int -->
+          base-dir CDATA #IMPLIED <!-- java.io.File -->
+          base-class CDATA #IMPLIED <!-- java.lang.Class -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          base-class-path CDATA #IMPLIED <!-- java.lang.String -->
+          template-update-delay CDATA #IMPLIED <!-- int -->
+          baseclass CDATA #IMPLIED <!-- alias for 'base-class' attribute, java.lang.Class -->
+          basedir CDATA #IMPLIED <!-- alias for 'base-dir' attribute, java.io.File -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT theme (report-skin | panelskin | reportskin | dialog-skin | navigation-skin | dialogskin | navigationskin | panel-skin | xdm:include)*>
+<!ATTLIST theme
+          class CDATA "com.netspective.sparx.theme.Theme"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT report-skin (xdm:include)*>
+<!ATTLIST report-skin
+          class CDATA "com.netspective.sparx.report.tabular.HtmlTabularReportSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT panelskin (xdm:include)*> <!-- alias for 'panel-skin' element -->
+<!ATTLIST panelskin
+          class CDATA "com.netspective.sparx.panel.HtmlPanelSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT reportskin (xdm:include)*> <!-- alias for 'report-skin' element -->
+<!ATTLIST reportskin
+          class CDATA "com.netspective.sparx.report.tabular.HtmlTabularReportSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT dialog-skin (xdm:include)*>
+<!ATTLIST dialog-skin
+          class CDATA "com.netspective.sparx.form.DialogSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT navigation-skin (xdm:include)*>
+<!ATTLIST navigation-skin
+          class CDATA "com.netspective.sparx.navigate.NavigationSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT dialogskin (xdm:include)*> <!-- alias for 'dialog-skin' element -->
+<!ATTLIST dialogskin
+          class CDATA "com.netspective.sparx.form.DialogSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT navigationskin (xdm:include)*> <!-- alias for 'navigation-skin' element -->
+<!ATTLIST navigationskin
+          class CDATA "com.netspective.sparx.navigate.NavigationSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT panel-skin (xdm:include)*>
+<!ATTLIST panel-skin
+          class CDATA "com.netspective.sparx.panel.HtmlPanelSkin"
+          default %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT navigation-tree (dialog-next-action-provider | error-page | page | dialognextactionprovider | errorpage | xdm:include)*>
+<!ATTLIST navigation-tree
+          class CDATA "com.netspective.sparx.navigate.NavigationTree"
+          maxlevel CDATA #IMPLIED <!-- alias for 'max-level' attribute, int -->
+          max-level CDATA #IMPLIED <!-- int -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          dialognextactionurl CDATA #IMPLIED <!-- alias for 'dialog-next-action-url' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-next-action-url CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->>
+
+<!ELEMENT ant-project (dialog | xdm:include)*>
+<!ATTLIST ant-project
+          class CDATA "com.netspective.sparx.ant.AntProject"
+          privatetargetprefixchars CDATA #IMPLIED <!-- alias for 'private-target-prefix-chars' attribute, java.lang.String -->
+          showprivatetargets %boolean; #IMPLIED <!-- alias for 'show-private-targets' attribute, boolean -->
+          private-target-prefix-chars CDATA #IMPLIED <!-- java.lang.String -->
+          file CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          default %boolean; #IMPLIED <!-- boolean -->
+          caption CDATA #IMPLIED <!-- java.lang.String -->
+          id CDATA #IMPLIED <!-- java.lang.String -->
+          show-private-targets %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT value-source (xdm:include)*>
+<!ATTLIST value-source
+          class CDATA "com.netspective.commons.value.ValueSource">
+
+<!ELEMENT configuration (property | system-property | systemproperty | xdm:include)*>
+<!ATTLIST configuration
+          class CDATA "com.netspective.commons.config.Configuration"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          description CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT property (#PCDATA | property | xdm:include)*>
+<!ATTLIST property
+          class CDATA "com.netspective.commons.config.Property"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          description CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT systemproperty (#PCDATA | xdm:include)*> <!-- alias for 'system-property' element -->
+<!ATTLIST systemproperty
+          class CDATA "com.netspective.commons.config.SystemProperty"
+          value CDATA #IMPLIED <!-- java.lang.String -->
+          file CDATA #IMPLIED <!-- java.io.File -->
+          resourcerelativetoclass CDATA #IMPLIED <!-- alias for 'resource-relative-to-class' attribute, java.lang.Class -->
+          resource-relative-to-class CDATA #IMPLIED <!-- java.lang.Class -->
+          resource CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT query-defn (presentation | query-builder-dialog | querybuilderdialog | join | field | select | xdm:include)*>
+<!ATTLIST query-defn
+          class CDATA "com.netspective.sparx.sql.QueryDefinition"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT presentation (#PCDATA | select-dialog | dialog | selectdialog | xdm:include)*>
+<!ATTLIST presentation
+          class CDATA "com.netspective.sparx.sql.QueryDefinition$Presentation">
+
+<!ELEMENT select-dialog (composite | dialog-flags | director | select | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*>
+<!ATTLIST select-dialog
+          class CDATA "com.netspective.sparx.form.sql.QuerySelectDialog"
+          maxconditions CDATA #IMPLIED <!-- alias for 'max-conditions' attribute, int -->
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          width CDATA #IMPLIED <!-- int -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          report-id CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          reportid CDATA #IMPLIED <!-- alias for 'report-id' attribute, java.lang.String -->
+          height CDATA #IMPLIED <!-- int -->
+          max-conditions CDATA #IMPLIED <!-- int -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->>
+
+<!ELEMENT selectdialog (composite | dialog-flags | director | select | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*> <!-- alias for 'select-dialog' element -->
+<!ATTLIST selectdialog
+          class CDATA "com.netspective.sparx.form.sql.QuerySelectDialog"
+          maxconditions CDATA #IMPLIED <!-- alias for 'max-conditions' attribute, int -->
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          width CDATA #IMPLIED <!-- int -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          report-id CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          reportid CDATA #IMPLIED <!-- alias for 'report-id' attribute, java.lang.String -->
+          height CDATA #IMPLIED <!-- int -->
+          max-conditions CDATA #IMPLIED <!-- int -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->>
+
+<!ELEMENT query-builder-dialog (composite | dialog-flags | director | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*>
+<!ATTLIST query-builder-dialog
+          class CDATA "com.netspective.sparx.form.sql.QueryBuilderDialog"
+          maxconditions CDATA #IMPLIED <!-- alias for 'max-conditions' attribute, int -->
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          width CDATA #IMPLIED <!-- int -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          report-id CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          reportid CDATA #IMPLIED <!-- alias for 'report-id' attribute, java.lang.String -->
+          height CDATA #IMPLIED <!-- int -->
+          max-conditions CDATA #IMPLIED <!-- int -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->>
+
+<!ELEMENT querybuilderdialog (composite | dialog-flags | director | debugflags | banner | grid | frame | onexecute | dialogflags | separator | nextactionprovider | next-action-provider | listener | field | debug-flags | client-js | clientjs | on-execute | xdm:include)*> <!-- alias for 'query-builder-dialog' element -->
+<!ATTLIST querybuilderdialog
+          class CDATA "com.netspective.sparx.form.sql.QueryBuilderDialog"
+          maxconditions CDATA #IMPLIED <!-- alias for 'max-conditions' attribute, int -->
+          dialogcontextclass CDATA #IMPLIED <!-- alias for 'dialog-context-class' attribute, java.lang.Class -->
+          dialog-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogFlags -->
+          width CDATA #IMPLIED <!-- int -->
+          panel-identifier CDATA #IMPLIED <!-- java.lang.String -->
+          report-id CDATA #IMPLIED <!-- java.lang.String -->
+          html-form-name CDATA #IMPLIED <!-- java.lang.String -->
+          dialog-context-class CDATA #IMPLIED <!-- java.lang.Class -->
+          multiple-exec-error-message CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          reportid CDATA #IMPLIED <!-- alias for 'report-id' attribute, java.lang.String -->
+          height CDATA #IMPLIED <!-- int -->
+          max-conditions CDATA #IMPLIED <!-- int -->
+          redirect-after-execute %boolean; #IMPLIED <!-- boolean -->
+          debug-flags CDATA #IMPLIED <!-- com.netspective.sparx.form.DialogDebugFlags -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          retain-params CDATA #IMPLIED <!-- java.lang.String -->
+          multipleexecerrormessage CDATA #IMPLIED <!-- alias for 'multiple-exec-error-message' attribute, com.netspective.commons.value.ValueSource -->
+          loopseparator CDATA #IMPLIED <!-- alias for 'loop-separator' attribute, java.lang.String -->
+          loop-separator CDATA #IMPLIED <!-- java.lang.String -->
+          redirectafterexecute %boolean; #IMPLIED <!-- alias for 'redirect-after-execute' attribute, boolean -->
+          htmlformname CDATA #IMPLIED <!-- alias for 'html-form-name' attribute, java.lang.String -->
+          debugflags CDATA #IMPLIED <!-- alias for 'debug-flags' attribute, com.netspective.sparx.form.DialogDebugFlags -->
+          panelidentifier CDATA #IMPLIED <!-- alias for 'panel-identifier' attribute, java.lang.String -->
+          dialogflags CDATA #IMPLIED <!-- alias for 'dialog-flags' attribute, com.netspective.sparx.form.DialogFlags -->
+          retainparams CDATA #IMPLIED <!-- alias for 'retain-params' attribute, java.lang.String -->
+          loop (no | append | prepend) #IMPLIED <!-- com.netspective.sparx.form.DialogLoopStyle -->>
+
+<!ELEMENT schema (table | xdm:include)*>
+<!ATTLIST schema
+          class CDATA "com.netspective.axiom.schema.Schema"
+          xmlnodename CDATA #IMPLIED <!-- alias for 'xml-node-name' attribute, java.lang.String -->
+          xml-node-name CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT table (trigger | index | hierarchy | rows | row | column | schemarecordeditordialogtemplates | schema-record-editor-dialog-templates | accessor | xdm:include)*>
+<!ATTLIST table
+          class CDATA "com.netspective.axiom.schema.Table"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          xmlnodename CDATA #IMPLIED <!-- alias for 'xml-node-name' attribute, java.lang.String -->
+          description CDATA #IMPLIED <!-- java.lang.String -->
+          xml-node-name CDATA #IMPLIED <!-- java.lang.String -->
+          caption CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->
+          abbrev CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT trigger (xdm:include)*>
+<!ATTLIST trigger
+          class CDATA "com.netspective.axiom.schema.TableRowTrigger">
+
+<!ELEMENT index (xdm:include)*>
+<!ATTLIST index
+          class CDATA "com.netspective.axiom.schema.Index"
+          unique %boolean; #IMPLIED <!-- boolean -->
+          columns CDATA #IMPLIED <!-- java.lang.String -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT hierarchy (xdm:include)*>
+<!ATTLIST hierarchy
+          class CDATA "com.netspective.axiom.schema.TableHierarchyReference"
+          parent CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT rows (row | xdm:include)*>
+<!ATTLIST rows
+          class CDATA "com.netspective.axiom.schema.Rows">
+
+<!ELEMENT schemarecordeditordialogtemplates (child | xdm:include)*> <!-- alias for 'schema-record-editor-dialog-templates' element -->
+<!ATTLIST schemarecordeditordialogtemplates
+          class CDATA "com.netspective.commons.xml.template.Template">
+
+<!ELEMENT child (xdm:include)*>
+<!ATTLIST child
+          class CDATA "com.netspective.commons.xml.template.TemplateNode">
+
+<!ELEMENT schema-record-editor-dialog-templates (child | xdm:include)*>
+<!ATTLIST schema-record-editor-dialog-templates
+          class CDATA "com.netspective.commons.xml.template.Template">
+
+<!ELEMENT accessor (group-by | display | where-expr | groupby | orderby | whereexpr | condition | sql | order-by | xdm:include)*>
+<!ATTLIST accessor
+          class CDATA "com.netspective.axiom.sql.dynamic.QueryDefnSelect"
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          distinct %boolean; #IMPLIED <!-- boolean -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT tabularreportcalctype (xdm:include)*> <!-- alias for 'tabular-report-calc-type' element -->
+<!ATTLIST tabularreportcalctype
+          class CDATA "com.netspective.commons.report.tabular.calc.ColumnDataCalculator">
+
+<!ELEMENT connection-provider (xdm:include)*>
+<!ATTLIST connection-provider
+          class CDATA "com.netspective.axiom.ConnectionProvider">
+
+<!ELEMENT databasepolicy (xdm:include)*> <!-- alias for 'database-policy' element -->
+<!ATTLIST databasepolicy
+          class CDATA "com.netspective.axiom.DatabasePolicy"
+          prefixtablenameswithschemaname %boolean; #IMPLIED <!-- alias for 'prefix-table-names-with-schema-name' attribute, boolean -->
+          prefix-table-names-with-schema-name %boolean; #IMPLIED <!-- boolean -->>
+
+<!ELEMENT tabularreport (column | flags | xdm:include)*> <!-- alias for 'tabular-report' element -->
+<!ATTLIST tabularreport
+          class CDATA "com.netspective.commons.report.tabular.TabularReport"
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT valuesource (xdm:include)*> <!-- alias for 'value-source' element -->
+<!ATTLIST valuesource
+          class CDATA "com.netspective.commons.value.ValueSource">
+
+<!ELEMENT queries (query | xdm:include)*>
+<!ATTLIST queries
+          class CDATA "com.netspective.sparx.sql.QueriesPackage"
+          namespaceid CDATA #IMPLIED <!-- alias for 'name-space-id' attribute, java.lang.String -->
+          name-space-id CDATA #IMPLIED <!-- java.lang.String -->
+          package CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT query (#PCDATA | presentation | params | sql | xdm:include)*>
+<!ATTLIST query
+          class CDATA "com.netspective.sparx.sql.Query"
+          data-src CDATA #IMPLIED <!-- com.netspective.commons.value.ValueSource -->
+          datasrc CDATA #IMPLIED <!-- alias for 'data-src' attribute, com.netspective.commons.value.ValueSource -->
+          name CDATA #IMPLIED <!-- java.lang.String -->>
+
+<!ELEMENT tabular-report-calc-type (xdm:include)*>
+<!ATTLIST tabular-report-calc-type
+          class CDATA "com.netspective.commons.report.tabular.calc.ColumnDataCalculator">
+
+<!ELEMENT xdm:include EMPTY>
+<!ATTLIST xdm:include
+          file CDATA #IMPLIED
+          template CDATA #IMPLIED
+          resource CDATA #IMPLIED>
+          relative-to CDATA #IMPLIED>
