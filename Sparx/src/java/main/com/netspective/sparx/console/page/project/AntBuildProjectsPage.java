@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildProjectsPage.java,v 1.2 2003-07-12 03:32:42 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.3 2003-10-11 14:41:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -70,7 +70,8 @@ public class AntBuildProjectsPage extends ConsoleServletPage
             AntProjectPage page = new AntProjectPage();
             page.setAntProject(antProject);
             page.setName(TextUtils.xmlTextToJavaIdentifier(antProject.getId(), false));
-            page.setCaption(new StaticValueSource(antProject.getId()));
+            page.setCaption(new StaticValueSource(antProject.getCaptionOrId()));
+            page.setHeading(new StaticValueSource(antProject.getCaptionOrId() + " Ant Build"));
             appendChild(page);
 
             if(antProject.isDefault())
