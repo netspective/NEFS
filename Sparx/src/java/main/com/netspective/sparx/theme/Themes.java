@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Themes.java,v 1.5 2003-08-22 03:33:43 shahid.shah Exp $
+ * $Id: Themes.java,v 1.6 2003-09-13 23:04:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -70,10 +70,15 @@ public class Themes
 
         if(theme.isDefault())
         {
-            defaultTheme = theme;
-            if(log.isTraceEnabled())
-                log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
+            setDefaultTheme(theme);
         }
+    }
+
+    public void setDefaultTheme(Theme theme)
+    {
+        defaultTheme = theme;
+        if(log.isTraceEnabled())
+            log.trace("Default theme is "+ theme.getClass().getName() +" ("+ theme.getName() +").");
     }
 
     public Map getThemesByName()
@@ -91,6 +96,15 @@ public class Themes
         }
 
         return result;
+    }
+
+    public void setDefaultTheme(String themeName)
+    {
+        Theme theme = getTheme(themeName);
+        if(theme != null)
+            setDefaultTheme(theme);
+        else
+            log.error("Unable to set default theme to '"+ themeName +"' since it does not exist.");
     }
 
     public Theme getDefaultTheme()
