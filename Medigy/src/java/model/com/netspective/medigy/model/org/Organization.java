@@ -51,6 +51,7 @@ import javax.ejb.InheritanceJoinColumn;
 import javax.ejb.InheritanceType;
 import javax.ejb.Table;
 import javax.ejb.Transient;
+import javax.ejb.Column;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -58,26 +59,32 @@ import javax.ejb.Transient;
 @Table(name = "Org")
 public class Organization extends Party
 {
-    private String name;
+    private String organizationName;
 
     public Organization()
     {
     }
 
-    @Transient
     public String getPartyName()
     {
-        return getName();
+        return getOrganizationName();
     }
 
-    public String getName()
+    public void setPartyName(final String partyName)
     {
-        return this.name;
+        super.setPartyName(partyName);
+        setOrganizationName(partyName);
     }
 
-    public void setName(final String name)
+    @Column(name = "org_name", length = 256, nullable = false)
+    public String getOrganizationName()
     {
-        this.name = name;
+        return this.organizationName;
+    }
+
+    public void setOrganizationName(final String organizationName)
+    {
+        this.organizationName = organizationName;
     }
 
     @Transient
@@ -96,7 +103,7 @@ public class Organization extends Party
     {
         return "Org{" +
                 "indentifier=" + getOrgId() +
-                ",name='" + name + "'" +
+                ",organizationName='" + organizationName + "'" +
                 "}";
     }
 

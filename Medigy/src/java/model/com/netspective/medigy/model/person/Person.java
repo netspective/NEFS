@@ -81,7 +81,6 @@ public class Person extends Party
     {
     }
 
-    @Transient
     public String getPartyName()
     {
         return getFullName();
