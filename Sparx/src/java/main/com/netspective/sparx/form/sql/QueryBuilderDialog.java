@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.12 2003-09-14 05:35:38 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.13 2003-09-29 03:00:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -365,7 +365,7 @@ public class QueryBuilderDialog extends Dialog
         this.queryDefn = queryDefn;
     }
 
-    public void finalizeContents(NavigationContext nc)
+    public synchronized void finalizeContents(NavigationContext nc)
     {
         createContents();
         super.finalizeContents(nc);
