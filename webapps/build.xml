@@ -3,14 +3,15 @@
 <project name="manage-test-apps" default="nefs.show-properties">
 
     <description>
-        This project helps manage the Framework test applications. Provides targets that help to globally
-        maintain the test applications (such as copying standard files across test apps).
+        This project helps manage the Framework starter, sample, and test applications. Provides targets that help to globally
+        maintain the applications such as copying standard files across test apps and preparing for integration testing.
     </description>
 
     <target name="nefs.init">
         <property name="nefs.webapps.home" value="${basedir}"/>
         <property name="nefs.starter.empty-app.name" value="nefs-starter-empty"/>
         <property name="nefs.starter.empty-app.home" value="${nefs.webapps.home}/${nefs.starter.empty-app.name}"/>
+        <property name="nefs.app.execution-properties.file" value="WEB-INF/sparx/conf/execution.properties"/>
     </target>
 
     <target name="nefs.show-properties" depends="nefs.init">
@@ -31,6 +32,7 @@
             </fileset>
         </copy>
 
+        <delete file="${specific.test-app-path}/${nefs.app.execution-properties.file}"/>
         <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
         <mkdir dir="${specific.test-app-path}/WEB-INF/lib"/>
         <copy todir="${specific.test-app-path}/WEB-INF/lib" flatten="yes">
@@ -87,8 +89,9 @@
         <property name="specific.test-app-path" value="${nefs.webapps.home}/${param.test-app-id}"/>
         <echo message="Preparing ${specific.test-app-path} for SDE"/>
 
-        <delete dir="${specific.test-app-path}/nefs"/>
+        <delete dir="${specific.test-app-path}/sparx"/>
         <delete dir="${specific.test-app-path}/WEB-INF/lib"/>
+        <delete file="${specific.test-app-path}/${nefs.app.execution-properties.file}"/>
     </target>
 
     <target name="nefs.prepare-starter-SDE-resources-and-web-app-libs" depends="nefs.init" description="Removes the APP_ROOT/nefs and APP_ROOT/WEB-INF/lib folders for a specific (provided via parameter) test app. Used to ensure that items don't conflict when doing framework development.">
@@ -130,7 +133,7 @@
             <include name="WEB-INF/classes/log4j.properties"/>
             <include name="WEB-INF/sparx/conf/**"/>
             <include name="WEB-INF/lib/**"/>
-            <exclude name="WEB-INF/sparx/conf/execution.properties"/>
+            <exclude name="${nefs.app.execution-properties.file}"/>
         </fileset>
 
         <copy todir="${nefs.webapps.home}/nefs-sample-case-manager" overwrite="${force}">
