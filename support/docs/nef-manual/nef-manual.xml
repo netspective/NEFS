@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-26 04:20:54 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-30 02:56:37 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -5021,7 +5021,16 @@
       <section>
         <title>Conditionally Displaying or Hiding Pages</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Under certain circumstances you may not want to display a page
+        to a user. For example, security policy may require that only users
+        with given permissions should be allowed to view a page. In this case
+        you can display or hide your pages conditionally based on role or
+        access control list by using a conditional XML flag for the page.
+        <programlisting>&lt;page name="EmployeePay" caption="Employee Salary" heading="-" title="Emp Salary"
+    &lt;page name="header" caption="Sample Applications"&gt;
+        &lt;conditional action="apply-flags" hidden="yes" lack-permissions="/acl-HR-Management"/&gt;
+    &lt;/page&gt;
+&lt;/page&gt;</programlisting></para>
       </section>
 
       <section>
@@ -6921,7 +6930,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
     will be used in the application security policy then declare the Login
     Managers, Authenticated Users and Personalization, Access Control Lists,
     Role-based Navigation Trees, and Role- and permission-based Forms and
-    Fields. </para>
+    Fields.</para>
 
     <section>
       <title>Login Managers</title>
@@ -6978,7 +6987,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
           <callout arearefs="???">
             <para>The <sgmltag>authenticated-user-class</sgmltag> tag is used
-            to define the authenticated user. </para>
+            to define the authenticated user.</para>
           </callout>
 
           <callout arearefs="???">
@@ -7010,7 +7019,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
       <para>Principal A may have access to portion T of your application,
       principal B may not. NEFS discretionary access control provides
       developers a mechanism to maintain a list of permissions in an access
-      control list. </para>
+      control list.</para>
 
       <para><example>
           <title>Setting up the Access Control List for CTS
@@ -7035,14 +7044,14 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         </example><calloutlist>
           <callout arearefs="declare-conn-provider-tags-eg-1">
             <para>A <sgmltag>access-control-list</sgmltag> tag is used to
-            declare the security declarations for your application. </para>
+            declare the security declarations for your application.</para>
           </callout>
 
           <callout arearefs="???">
             <para>The <sgmltag>permission</sgmltag> tag is used to grant a
             privelege to resources in your application. The permission tag may
-            have zero or more sub-tags for organizing resource types and pr.
-            </para>
+            have zero or more sub-tags for organizing resource types and
+            pr.</para>
           </callout>
         </calloutlist></para>
     </section>
@@ -7055,7 +7064,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
       of the system. Roles are mapped to a principal, the principal involved
       with a particular role-sensitive operation is compared with the
       principal name extracted from the role. This method is used to determine
-      whether the operation is permitted to proceed. </para>
+      whether the operation is permitted to proceed.</para>
 
       <para><example>
           <title>Setting up the Roles for CTS Application</title>
@@ -7090,7 +7099,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
           <callout arearefs="???">
             <para>The <sgmltag>grant</sgmltag> tag is used to provide a
-            permission to access a domain. </para>
+            permission to access a domain.</para>
           </callout>
         </calloutlist></para>
     </section>
