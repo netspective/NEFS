@@ -39,22 +39,13 @@
  */
 
 /**
- * $Id: Suite.java,v 1.2 2003-03-19 08:17:03 shahbaz.javeed Exp $
+ * $Id: Suite.java,v 1.3 2004-04-10 18:08:00 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
 
-import junit.framework.TestSuite;
 import junit.framework.Test;
-
-import com.netspective.commons.set.BinaryTest;
-import com.netspective.commons.set.CardinalTest;
-import com.netspective.commons.set.UnaryTest;
-import com.netspective.commons.set.RelationTest;
-import com.netspective.commons.set.MemberTest;
-import com.netspective.commons.set.GrepTest;
-import com.netspective.commons.set.MapTest;
-import com.netspective.commons.set.IteratorTest;
+import junit.framework.TestSuite;
 
 public class Suite
 {
