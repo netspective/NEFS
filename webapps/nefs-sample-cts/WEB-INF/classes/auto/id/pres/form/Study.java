@@ -5,6 +5,5 @@ package auto.id.pres.form;
 
 public interface Study
 {
-    static public final String NEW_SPONSOR = "study.new-sponsor";
     static public final String PROFILE = "study.profile";
 }
