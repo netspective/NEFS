@@ -46,6 +46,7 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.HibernateException;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.HSQLDialect;
 
@@ -60,6 +61,7 @@ import java.util.logging.LogManager;
 public abstract class TestCase extends junit.framework.TestCase
 {
     protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-01");
+    protected static final File DEFAULT_DDL_NAME = new File("medigy.ddl");
 
     protected String getClassNameWithoutPackage()
     {
@@ -122,6 +124,11 @@ public abstract class TestCase extends junit.framework.TestCase
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
         HibernateUtil.initReferenceEntityCaches(hibernateConfiguration.getReferenceEntitiesAndCachesMap());
+
+        final SchemaExport se = new SchemaExport(hibernateConfiguration);
+        final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
+        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectName.substring(dialectName.lastIndexOf('.')+1) + ".ddl");
+        se.create(false, false);
     }
 
     protected void tearDown() throws Exception
