@@ -39,31 +39,22 @@
  */
 
 /**
- * $Id: XdmComponent.java,v 1.2 2003-08-18 22:11:28 shahid.shah Exp $
+ * $Id: XdmComponentEvent.java,v 1.1 2003-08-18 22:11:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
-import java.util.List;
-import java.util.Map;
-import java.io.File;
-import java.io.IOException;
+import java.util.EventObject;
 
-import com.netspective.commons.io.InputSourceTracker;
-import com.netspective.commons.metric.Metrics;
-
-public interface XdmComponent extends XmlDataModel, XmlDataModelSchema.InputSourceTrackerListener
+public class XdmComponentEvent extends EventObject
 {
-    public void loadedFromXml();
-    public void removedFromCache(Map cache, Object key);
-    public void addedToCache(Map cache, Object key);
-    public List getLifecycleListeners();
+    public XdmComponentEvent(XdmComponent component)
+    {
+        super(component);
+    }
 
-    public List getErrors();
-    public List getWarnings();
-    public InputSourceTracker getInputSource();
-    public long getLoadDuration();
-    public void setLoadDuration(long startTime, long endTime);
-    public Metrics getMetrics();
-    public void generateIdentifiersConstants(File rootPath, String rootPkgAndClassName) throws IOException;
+    public XdmComponent getXdmComponent()
+    {
+        return (XdmComponent) getSource();
+    }
 }

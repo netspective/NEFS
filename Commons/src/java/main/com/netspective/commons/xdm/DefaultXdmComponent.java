@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: DefaultXdmComponent.java,v 1.2 2003-03-14 03:56:08 shahid.shah Exp $
+ * $Id: DefaultXdmComponent.java,v 1.3 2003-08-18 22:11:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.io.File;
 import java.io.IOException;
 
@@ -59,10 +60,56 @@ import com.netspective.commons.metric.Metric;
 public abstract class DefaultXdmComponent implements XdmComponent, MetricsProducer
 {
     private InputSourceTracker inputSource;
+    private List lifecycleListeners = new ArrayList();
     private List errors = new ArrayList();
     private List warnings = new ArrayList();
     private Metrics metrics;
     private long loadDuration; // time it took to load/parse
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public void removedFromCache(Map cache, Object key)
+    {
+        List listeners = getLifecycleListeners();
+        if(listeners.size() > 0)
+        {
+            XdmComponentEvent event = new XdmComponentEvent(this);
+            for(int i = 0; i < listeners.size(); i++)
+                ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentRemovedFromCache(event);
+        }
+    }
+
+    public void addedToCache(Map cache, Object key)
+    {
+        List listeners = getLifecycleListeners();
+        if(listeners.size() > 0)
+        {
+            XdmComponentEvent event = new XdmComponentEvent(this);
+            for(int i = 0; i < listeners.size(); i++)
+                ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentAddedToCache(event);
+        }
+    }
+
+    public void loadedFromXml()
+    {
+        List listeners = getLifecycleListeners();
+        if(listeners.size() > 0)
+        {
+            XdmComponentEvent event = new XdmComponentEvent(this);
+            for(int i = 0; i < listeners.size(); i++)
+                ((XdmComponentLifecyleListener) listeners.get(i)).xdmComponentLoadedFromXml(event);
+        }
+    }
+
+    public void addLifecycleListenener(XdmComponentLifecyleListener listener)
+    {
+        lifecycleListeners.add(listener);
+    }
+
+    public List getLifecycleListeners()
+    {
+        return lifecycleListeners;
+    }
 
     /* ------------------------------------------------------------------------------------------------------------- */
 

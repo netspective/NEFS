@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.5 2003-08-15 01:48:53 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.6 2003-08-18 22:11:28 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -95,10 +95,17 @@ public class XdmComponentFactory
             // If we get to this point, we have an existing component and we are allowing reloads but the source seems
             // to have changed; we need to read the entire component again so remove the instance from the map and set
             // it to null to give the GC a hint to get rid of the instance as soon as possible.
+            component.removedFromCache(componentsBySystemId, systemId);
             componentsBySystemId.remove(systemId);
             component = null;
         }
         return component;
+    }
+
+    public static void cacheComponent(String key, XdmComponent component)
+    {
+        componentsBySystemId.put(key, component);
+        component.addedToCache(componentsBySystemId, key);
     }
 
     /**
@@ -140,9 +147,11 @@ public class XdmComponentFactory
         if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
 
+        component.loadedFromXml();
+
         // if there are no errors, cache this component so if the file is needed again, it's available immediately
         if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
-            componentsBySystemId.put(file.getAbsolutePath(), component);
+            cacheComponent(file.getAbsolutePath(), component);
 
         return component;
     }
@@ -208,6 +217,8 @@ public class XdmComponentFactory
 
         if(pc != null && pc.getWarnings().size() != 0)
             warnings.addAll(pc.getWarnings());
+
+        component.loadedFromXml();
 
         return component;
     }
@@ -278,9 +289,11 @@ public class XdmComponentFactory
                 if(pc != null && pc.getWarnings().size() != 0)
                     warnings.addAll(pc.getWarnings());
 
+                component.loadedFromXml();
+
                 // if there are no errors, cache this component so if the file is needed again, it's available immediately
                 if((flags & XDMCOMPFLAG_CACHE_ALWAYS) != 0 || (((flags & XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS) != 0) && errors.size() == 0))
-                    componentsBySystemId.put(systemId, component);
+                    cacheComponent(systemId, component);
 
                 return component;
             }
