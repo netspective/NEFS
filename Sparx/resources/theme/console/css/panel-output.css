@@ -18,8 +18,8 @@
 .panel-frame-action-output:visited { color: #999; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
 .panel-frame-action-output:hover { color: black; font-weight: normal; font-size: 9px; font-family: Tahoma; text-decoration: none; text-transform: uppercase }
 .panel-frame-action-box-output   { background-image: url(../images/panel/output/frame-action-mid.gif); text-transform: uppercase; padding-top: 1px }
-.panel-banner-output     { color: #696969; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-left: 3px; border-right: 1px solid #696969; border-left: 1px solid #696969 }
-.panel-banner-footer-output     { color: #696969; font-weight: bold; font-size: 10px; font-family: Verdana; text-decoration: none; background-color: #f1eeee; text-align: left; padding-left: 3px; border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
+.panel-banner-output     { color: #696969; font-size: 11px; font-family: Verdana; text-decoration: none; text-align: left; padding-top: 4px; padding-left: 3px; border-right: 1px solid #696969; border-left: 1px solid #696969 }
+.panel-banner-footer-output     { color: #696969; font-size: 11px; font-family: Verdana; text-decoration: none; background-color: #f1eeee; text-align: left; padding-left: 3px; border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 
 .panel-content-output     { border-right: 1px solid #696969; border-bottom: 1px solid #696969; border-left: 1px solid #696969 }
 .panel-frame-table-action-output { background-color: white }

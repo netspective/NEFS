@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.5 2003-04-13 02:36:50 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.6 2003-04-23 15:42:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -99,6 +99,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.text.TextUtils;
 
 public class BasicTable implements Table, TemplateProducerParent, TemplateConsumer
@@ -140,6 +141,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private String name;
     private String abbrev;
     private String xmlNodeName;
+    private List tableTypesConsumed = new ArrayList();
     private String description;
     private Tables parentTables = new TablesCollection();
     private TableHierarchyReference hierarchyRef;
@@ -166,6 +168,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         if(templateConsumer == null)
             templateConsumer = new TableTypeTemplateConsumerDefn();
         return templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        tableTypesConsumed.add(template.getTemplateName());
     }
 
     public TemplateProducers getTemplateProducers()

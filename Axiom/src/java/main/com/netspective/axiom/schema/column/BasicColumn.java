@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.4 2003-04-13 02:36:50 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.5 2003-04-23 15:42:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -47,6 +47,7 @@ package com.netspective.axiom.schema.column;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ArrayList;
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
@@ -88,6 +89,7 @@ import com.netspective.commons.xml.template.TemplateProducerParent;
 import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.NodeIdentifiers;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
@@ -288,6 +290,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private String name;
     private String abbrev;
     private String xmlNodeName;
+    private List dataTypesConsumed = new ArrayList();
     private int requirement = RequirementEnumeratedAttribute.NOT_REQUIRED;
     private boolean primaryKey;
     private boolean unique;
@@ -321,6 +324,11 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         if(templateConsumer == null)
             templateConsumer = new DataTypeTemplateConsumerDefn();
         return templateConsumer;
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
+        dataTypesConsumed.add(template.getTemplateName());
     }
 
     public TemplateProducers getTemplateProducers()
@@ -406,6 +414,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         setSize(column.getSize());
         getSqlDdl().mergeReferenced(column.getSqlDdl());
+        dataTypesConsumed = column.getDataTypeNames();
     }
 
     protected void inheritForeignKeyPlaceholderColumn(ForeignKeyPlaceholderColumn column)
@@ -470,6 +479,11 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     public void setXmlNodeName(String xmlNodeName)
     {
         this.xmlNodeName = xmlNodeName;
+    }
+
+    public List getDataTypeNames()
+    {
+        return dataTypesConsumed;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

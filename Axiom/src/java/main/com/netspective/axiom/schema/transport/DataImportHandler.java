@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportHandler.java,v 1.3 2003-04-05 18:02:39 shahid.shah Exp $
+ * $Id: DataImportHandler.java,v 1.4 2003-04-23 15:42:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -71,6 +71,7 @@ import com.netspective.commons.xml.ParseContext;
 import com.netspective.commons.xml.ContentHandlerException;
 import com.netspective.commons.xml.AbstractContentHandler;
 import com.netspective.commons.xml.template.TemplateApplyContext;
+import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
@@ -344,6 +345,10 @@ public class DataImportHandler extends AbstractContentHandler
     public void startTemplateElement(TemplateApplyContext tac, String url, String localName, String qName, Attributes attributes) throws SAXException
     {
         startElement(url, localName, qName, attributes);
+    }
+
+    public void registerTemplateConsumption(Template template)
+    {
     }
 
     public void startElement(String url, String localName, String qName, Attributes attributes) throws SAXException

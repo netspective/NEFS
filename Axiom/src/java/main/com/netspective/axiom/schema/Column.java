@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: Column.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: Column.java,v 1.2 2003-04-23 15:42:09 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import java.util.Set;
+import java.util.List;
 
 import com.netspective.axiom.schema.column.SqlDataDefns;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
@@ -164,6 +165,11 @@ public interface Column
      * Sets the table that owns this column.
      */
     public void setTable(Table value);
+
+    /**
+     * Gets the data types assigned to this column.
+     */
+    public List getDataTypeNames();
 
     /* ------------------------------------------------------------------------------------------------------------- */
 

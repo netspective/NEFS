@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaStructurePanel.java,v 1.3 2003-04-23 02:58:56 shahid.shah Exp $
+ * $Id: SchemaStructurePanel.java,v 1.4 2003-04-23 15:42:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -80,7 +80,7 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
     static
     {
-        schemaTableColumn.setHeading(new StaticValueSource("Table"));
+        schemaTableColumn.setHeading(new StaticValueSource("SQL Table Name"));
         schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}");
         structureReport.addColumn(schemaTableColumn);
 
@@ -131,6 +131,17 @@ public class SchemaStructurePanel extends AbstractHtmlTabularReportPanel
             this.level = level;
             this.ancestors = ancestors;
             this.enumTable = enumTable;
+        }
+
+        public Table getTable()
+        {
+            if(tableTreeNode != null)
+                return tableTreeNode.getTable();
+
+            if(enumTable != null)
+                return enumTable;
+
+            return null;
         }
 
         public boolean isTable(String schemaAndTableName)

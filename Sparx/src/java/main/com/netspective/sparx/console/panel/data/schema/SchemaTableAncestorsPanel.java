@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableAncestorsPanel.java,v 1.2 2003-04-23 02:58:56 shahid.shah Exp $
+ * $Id: SchemaTableAncestorsPanel.java,v 1.3 2003-04-23 15:42:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -49,16 +49,56 @@ import java.util.ArrayList;
 
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.axiom.schema.Table;
 
 public class SchemaTableAncestorsPanel extends SchemaStructurePanel
 {
+    public static final String REQATTRNAME_SELECTED_ROW = "selected-row";
+
+    public class TableDescriptionValueSource extends AbstractValueSource
+    {
+        private Value emptyValue = new GenericValue("");
+
+        public Value getPresentationValue(ValueContext vc)
+        {
+            StructureRow selectedRow = (StructureRow) ((ServletValueContext) vc).getRequest().getAttribute(REQATTRNAME_SELECTED_ROW);
+
+            if(selectedRow == null)
+                return emptyValue;
+            else
+            {
+                Table table = selectedRow.getTable();
+                if(table != null)
+                    return new GenericValue(table.getDescription());
+                else
+                    return emptyValue;
+            }
+        }
+
+        public Value getValue(ValueContext vc)
+        {
+            return getPresentationValue(vc);
+        }
+
+        public boolean hasValue(ValueContext vc)
+        {
+            return true;
+        }
+    }
+
     public SchemaTableAncestorsPanel()
     {
         getFrame().setHeading(new StaticValueSource("Table Hierarchy"));
+        getBanner().setContent(new TableDescriptionValueSource());
         getFrame().getFlags().setFlag(HtmlPanelFrame.Flags.ALLOW_COLLAPSE);
     }
 
@@ -66,6 +106,7 @@ public class SchemaTableAncestorsPanel extends SchemaStructurePanel
     {
         List rows = createStructureRows(nc.getSqlManager().getSchemas());
         StructureRow selectedRow = getSelectedStructureRow(nc, rows);
+        vc.getRequest().setAttribute(REQATTRNAME_SELECTED_ROW, selectedRow);
 
         if(selectedRow == null)
             return new SimpleMessageDataSource(vc, noTableSelected);
@@ -98,5 +139,4 @@ public class SchemaTableAncestorsPanel extends SchemaStructurePanel
             return noTableSelected;
         }
     }
-
 }
