@@ -36,8 +36,7 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
- * @author Aye Thu
- *         $Id: DialogIncludeJavascriptFile.java,v 1.3 2004-08-15 01:47:08 shahid.shah Exp $
+ *         $Id: DialogIncludeJavascriptFile.java,v 1.4 2004-08-18 21:16:35 aye.thu Exp $
  */
 public class DialogIncludeJavascriptFile
 {
