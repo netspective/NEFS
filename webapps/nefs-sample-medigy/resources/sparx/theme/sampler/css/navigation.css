@@ -2,3 +2,6 @@
 
 .masthead-left      { background: url(../images/masthead/masthead-left.gif) no-repeat left top }
 .masthead-top-right  { background: url(../images/masthead/masthead-right.gif) no-repeat right top; width: 25px; height: 65px }
+
+.page-sub-heading .sub-heading-item { color: #ededed; padding-left: 2px; padding-right: 20px;}
+.page-sub-heading .sub-heading-item .sub-heading-item-caption { font-weight: normal; font-style: italic}
