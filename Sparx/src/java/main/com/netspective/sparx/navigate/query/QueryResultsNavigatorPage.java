@@ -272,6 +272,11 @@ public class QueryResultsNavigatorPage extends NavigationPage
         nc.getRequest().setAttribute(refreshResultSetParamName, new Boolean(true));
     }
 
+    public void setActiveScrollPage(NavigationContext nc, int activePage)
+    {
+        nc.getRequest().setAttribute(activeScrollPageParamName, new Integer(activePage));
+    }
+
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         if(!valid)
@@ -296,9 +301,15 @@ public class QueryResultsNavigatorPage extends NavigationPage
                     getQueryResultsNavigatorStatesManager().setActiveUserQueryResults(nc, queryResults);
             }
 
-            final String scrollToPage = request.getParameter(activeScrollPageParamName);
-            if(scrollToPage != null)
-                queryResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
+            final Integer scrollToPageOverride = (Integer) request.getAttribute(activeScrollPageParamName);
+            if(scrollToPageOverride != null)
+                queryResults.getScrollState().scrollToPage(scrollToPageOverride.intValue());
+            else
+            {
+                final String scrollToPage = request.getParameter(activeScrollPageParamName);
+                if(scrollToPage != null && scrollToPage.length() > 0)
+                    queryResults.getScrollState().scrollToPage(Integer.parseInt(scrollToPage));
+            }
 
             templateVars = createDefaultResultsBodyTemplateVars(nc, queryResults);
         }
