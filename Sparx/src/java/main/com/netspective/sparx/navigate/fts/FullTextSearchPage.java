@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Collections;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -66,6 +67,21 @@ import com.netspective.sparx.navigate.NavigationTree;
 
 public class FullTextSearchPage extends NavigationPage
 {
+    private static final Map indexSearchersPool = new HashMap();
+
+    public static final synchronized IndexSearcher getSharedIndexSearcher(File directory) throws IOException
+    {
+        final String dir = directory.getAbsolutePath();
+        IndexSearcher searcher = (IndexSearcher) indexSearchersPool.get(dir);
+        if(searcher == null)
+        {
+            searcher = new IndexSearcher(dir);
+            indexSearchersPool.put(dir, searcher);
+        }
+
+        return searcher;
+    }
+
     private String activeScrollPageParamName = "scroll-page";
     private String activeUserSearchResultsSessAttrName = "active-search-results";
     private boolean valid; // is the search page valid?
@@ -111,7 +127,7 @@ public class FullTextSearchPage extends NavigationPage
         }
 
         if(indexDirectory == null || !indexDirectory.exists() || !indexDirectory.isDirectory())
-            getLog().error("Index directory '" + indexDirectory + "' in FullTextSearchPage " + getQualifiedName() + " is not valid. Use index-directory, index-locator-properties, or <index-directory-search-path> to specify a valid index directory location.");
+            getLog().error("Index directory '" + indexDirectory + "' in FullTextSearchPage " + getQualifiedName() + " is not valid. Use index-directory, index-locator-properties, or <index-directory-search-path> to specify a valid index directory location. Search Path: " + indexDirectorySearchPath);
     }
 
     public FileSearchPath createIndexDirectorySearchPath()
@@ -142,7 +158,7 @@ public class FullTextSearchPage extends NavigationPage
             try
             {
                 readIndexInfo(indexDir);
-                indexSearcher = new IndexSearcher(indexDir.getAbsolutePath());
+                indexSearcher = getSharedIndexSearcher(indexDir);
                 valid = true;
             }
             catch(Exception e)
