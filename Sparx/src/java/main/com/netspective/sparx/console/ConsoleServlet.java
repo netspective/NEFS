@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.14 2003-08-08 01:03:32 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.15 2003-08-08 01:58:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -110,7 +110,7 @@ public class ConsoleServlet extends NavigationControllerServlet
                     ldc.hasEncryptedPassword() ? providedPassword :
                         Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, providedPassword);
             if(! encryptedProvidedPassword.equals(loginPasswordEncrypted))
-                loginDialog.getPasswordField().invalidate(ldc, "Invalid password -- comparing '"+ encryptedProvidedPassword +"' against '"+ loginPasswordEncrypted +"'.");
+                loginDialog.getPasswordField().invalidate(ldc, "Invalid password.");
         }
     }
 
