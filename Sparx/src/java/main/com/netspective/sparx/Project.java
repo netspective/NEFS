@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.41 2003-11-24 05:27:58 aye.thu Exp $
+ * $Id: Project.java,v 1.42 2003-12-08 05:14:20 aye.thu Exp $
  */
 
 package com.netspective.sparx;
@@ -462,6 +462,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public Dialogs getDialogs()
     {
         return dialogs;
+    }
+
+    public List getDialogs(String pkgName)
+    {
+        return dialogs.getByNameSpace(pkgName);
     }
 
     public Dialog getDialog(final String name)
