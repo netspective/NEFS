@@ -49,7 +49,6 @@ import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.reference.type.PartyRelationshipType;
 import com.netspective.medigy.reference.type.PriorityType;
 import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
-import com.netspective.medigy.reference.type.party.PartyRoleType;
 
 public interface Catalog
 {
@@ -58,7 +57,6 @@ public interface Catalog
         MaritalStatusType.class,
         GenderType.class,
         ContactMechanismType.class,
-        PartyRoleType.class,
         PartyRelationshipType.class,
         PartyFacilityRoleType.class,
         PriorityType.class,
