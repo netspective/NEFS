@@ -2,6 +2,18 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.18"/>
+        <change-log>
+            <summary>Minor enhancement</summary>
+            <change-log-entry>
+                Added createErrorPage(Class) method to NavigationPage so that &lt;error-page class="x.y.z"&gt; may be defined
+                through XML instead of only instantiated through Java. Prior to this change custom error pages could only
+                be defined through Java (in a custom page constructor).
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
         <product name="Axiom" version="7.0.12"/>
         <change-log>
             <summary>Minor enhancement</summary>
