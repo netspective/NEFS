@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueriesPackage.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueriesPackage.java,v 1.2 2003-12-06 17:09:48 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -97,10 +97,11 @@ package com.netspective.axiom.sql.collection;
  */
 
 /**
- * $Id: QueriesPackage.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueriesPackage.java,v 1.2 2003-12-06 17:09:48 shahid.shah Exp $
  */
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueriesNameSpace;
@@ -118,6 +119,7 @@ public class QueriesPackage implements QueriesNameSpace
 
     private Queries container;
     private String packageName;
+    private ValueSource defaultDataSrc;
 
     public QueriesPackage(Queries queries)
     {
@@ -152,5 +154,17 @@ public class QueriesPackage implements QueriesNameSpace
     public void addQuery(Query query)
     {
         container.add(query);
+        if(query.getDataSrc() == null && getDefaultDataSrc() != null)
+            query.setDataSrc(getDefaultDataSrc());
+    }
+
+    public ValueSource getDefaultDataSrc()
+    {
+        return defaultDataSrc;
+    }
+
+    public void setDefaultDataSrc(ValueSource defaultDataSource)
+    {
+        this.defaultDataSrc = defaultDataSource;
     }
 }
