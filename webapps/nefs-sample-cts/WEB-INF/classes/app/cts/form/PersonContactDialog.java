@@ -23,6 +23,7 @@ import auto.dal.db.dao.person.PersonContactTable;
 import auto.dal.db.dao.PersonTable;
 import auto.dcb.cts.PersonContactInfoContext;
 import auto.id.sql.schema.db.enum.RecordStatus;
+import app.AppAuthenticatedUser;
 
 
 /**
@@ -90,7 +91,8 @@ public class PersonContactDialog extends com.netspective.sparx.form.Dialog
                     pContact.setRecStatId(new Integer(RecordStatus.ACTIVE));
                     pContact.setMethodValue(pcic.getMethodValue().getTextValue());
                     pContact.setMethodType(Integer.valueOf(pcic.getContactType_methodType().getTextValue()));
-                    pContact.setParentId(Long.valueOf(pcic.getId().getTextValue()));
+                    String personId = (String) ((AppAuthenticatedUser) dc.getAuthenticatedUser()).getAttribute("person_id");
+                    pContact.setParentId(Long.valueOf(personId));
 
                     PersonContactTable.Record record = pcTable.createRecord();
                     record.setValues(pContact);

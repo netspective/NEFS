@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.1 2003-09-17 03:57:24 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.2 2003-09-17 04:53:33 aye.thu Exp $
  */
 
 package app;
@@ -78,7 +78,6 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
             {
                 for (int i=1; i <= rsmd.getColumnCount(); i++)
                 {
-                    System.out.println(rsmd.getColumnName(i).toLowerCase())  ;
                     setAttribute(rsmd.getColumnName(i).toLowerCase(), rs.getString(i));
                 }
             }
