@@ -69,7 +69,7 @@ public class GloballyUniqueIdentifier extends Object
      * (Useful for SQL Server UniqueIdentifiers, etc.)
      * Example: C2FEEEAC-CFCD-11D1-8B05-00600806D9B6
      */
-    static public String getRandomGUID(boolean secure) throws NoSuchAlgorithmException, UnknownHostException
+    public static String getRandomGUID(boolean secure) throws NoSuchAlgorithmException, UnknownHostException
     {
         String valueBeforeMD5 = "";
         String valueAfterMD5 = "";
@@ -130,5 +130,15 @@ public class GloballyUniqueIdentifier extends Object
         sb.append(raw.substring(20));
 
         return sb.toString();
+    }
+
+    public static String generateGUID() throws NoSuchAlgorithmException, UnknownHostException
+    {
+        return getRandomGUID(false);
+    }
+
+    public static String generateSecureGUID() throws NoSuchAlgorithmException, UnknownHostException
+    {
+        return getRandomGUID(true);
     }
 }
