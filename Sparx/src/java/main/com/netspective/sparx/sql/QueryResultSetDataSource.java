@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultSetDataSource.java,v 1.7 2004-03-03 08:22:04 aye.thu Exp $
+ * $Id: QueryResultSetDataSource.java,v 1.8 2004-03-14 00:57:50 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -66,11 +66,43 @@ public class QueryResultSetDataSource extends AbstractHtmlTabularReportDataSourc
     protected ValueSource message;
     protected boolean calculatedTotalRows;
     protected int totalRows = TOTAL_ROWS_UNKNOWN;
+    /* primary key value of the selected row */
+    protected String selectedRowPkValue;
+    /* primary key column of the selected row */
+    protected int selectedRowPkColumn = -1;
 
     public QueryResultSetDataSource(ValueSource noDataMessage) throws SQLException
     {
         super();
         this.message = noDataMessage;
+    }
+
+    public String getSelectedRowPkValue()
+    {
+        return selectedRowPkValue;
+    }
+
+    public void setSelectedRowPkValue(String selectedRowPkValue)
+    {
+        this.selectedRowPkValue = selectedRowPkValue;
+    }
+
+    public int getSelectedRowPkColumn()
+    {
+        return selectedRowPkColumn;
+    }
+
+    public void setSelectedRowPkColumn(int selectedRowPkColumn)
+    {
+        this.selectedRowPkColumn = selectedRowPkColumn;
+    }
+
+    public boolean isActiveRowSelected()
+    {
+        if (selectedRowPkValue == null || selectedRowPkColumn == -1)
+            return false;
+        else
+            return (selectedRowPkValue.equals(getActiveRowColumnData(selectedRowPkColumn, 0)));
     }
 
     public void close()
