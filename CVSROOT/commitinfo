@@ -13,4 +13,5 @@
 #
 # If the name "ALL" appears as a regular expression it is always used
 # in addition to the first matching regex or "DEFAULT".
-ALL /home/netspective/cvs/Frameworks/CVSROOT/commit_prep -u $USER
+# ALL /home/netspective/cvs/Frameworks/CVSROOT/commit_prep -u $USER
+^Frameworks /home/netspective/cvs/Frameworks/CVSROOT/record_lastdir.rb

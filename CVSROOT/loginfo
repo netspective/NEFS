@@ -25,4 +25,4 @@
 # or
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
-ALL /home/netspective/cvs/Frameworks/CVSROOT/log_accum "%{sVv}"
+^Frameworks /home/netspective/cvs/Frameworks/CVSROOT/collect_diffs.rb --from $USER %{sVv}
