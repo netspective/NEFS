@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.2 2003-04-21 20:05:17 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.3 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -58,6 +58,7 @@ import com.Ostermiller.Syntax.Lexer.Lexer;
 import com.Ostermiller.Syntax.Lexer.Token;
 
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
 
 public class HtmlSyntaxHighlightPanel implements HtmlPanel
 {
@@ -149,7 +150,7 @@ public class HtmlSyntaxHighlightPanel implements HtmlPanel
         return width;
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException
     {
         if(text != null)
         {
@@ -160,11 +161,6 @@ public class HtmlSyntaxHighlightPanel implements HtmlPanel
         {
             emitHtml(file, writer);
         }
-    }
-
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
-    {
-        render(writer, nc);
     }
 
     public void setBanner(HtmlPanelBanner value)

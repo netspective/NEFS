@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.5 2003-04-23 15:42:09 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.6 2003-04-24 02:26:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -414,7 +414,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     {
         setSize(column.getSize());
         getSqlDdl().mergeReferenced(column.getSqlDdl());
-        dataTypesConsumed = column.getDataTypeNames();
+        dataTypesConsumed.addAll(column.getDataTypeNames());
     }
 
     protected void inheritForeignKeyPlaceholderColumn(ForeignKeyPlaceholderColumn column)

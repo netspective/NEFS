@@ -1,4 +1,5 @@
 * [IMPORTANT] -- wherever a "close()" method is called for result sets and exceptions are being thrown, be sure to capture the close() in a try..finally block (reported by Aye)
+* [IMPORTANT] -- allowd for pooled/cached PreparedStatements in Queries (tests show that prepared statements are 20% slower than non-prepared unless they are reused)
 * Add new 'denormalize-ref' foreign key type that would allow automated table denomalization to occur through DAL
 * Start using SPI for Query, Query Definition, Schema, etc
 * Add feature that would allow rows to be automatically read immediately after an insert/update in case triggers fire in the database

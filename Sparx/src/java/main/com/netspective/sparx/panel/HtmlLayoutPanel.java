@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.6 2003-04-21 20:05:17 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.7 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -48,6 +48,7 @@ import java.io.Writer;
 import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
 
 public class HtmlLayoutPanel implements HtmlPanel
 {
@@ -174,51 +175,50 @@ public class HtmlLayoutPanel implements HtmlPanel
         return children;
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException
     {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
+        switch(getStyle())
         {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div style='padding-bottom: 6'>");
-                children.get(i).render(writer, nc);
-                writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
-        }
-    }
+            case HtmlPanelsStyleEnumeratedAttribute.VERTICAL:
+                for(int i = 0; i < children.size(); i++)
+                {
+                    writer.write("<div style='padding-bottom: 6'>");
+                    children.get(i).render(writer, nc, theme);
+                    writer.write("</div>");
+                }
+                break;
 
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
-    {
-        if(getStyle() == HtmlPanelsStyleEnumeratedAttribute.VERTICAL)
-        {
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<div style='padding-bottom: 6'>");
-                children.get(i).render(writer, nc, skin);
+            case HtmlPanelsStyleEnumeratedAttribute.HORIZONTAL:
+                writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
+                for(int i = 0; i < children.size(); i++)
+                {
+                    writer.write("<td>");
+                    children.get(i).render(writer, nc, theme);
+                    writer.write("</td>");
+                }
+                writer.write("</tr></table>");
+                break;
+
+            case HtmlPanelsStyleEnumeratedAttribute.TABBED:
+                HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+                theme.getPanelSkin().renderFrameBegin(writer, vc);
+                writer.write("<div id=\""+ getIdentifier() + "_tabs\">");
+                for(int i = 0; i < children.size(); i++)
+                {
+                    HtmlPanel panel = children.get(i);
+                    writer.write("<span class=\"panel-tab\">"+ panel.getFrame().getHeading().getTextValue(vc) +"</span>");
+                }
                 writer.write("</div>");
-            }
-        }
-        else
-        {
-            writer.write("<table cellspacing=0 cellpadding=3><tr valign=top>");
-            for(int i = 0; i < children.size(); i++)
-            {
-                writer.write("<td>");
-                children.get(i).render(writer, nc, skin);
-                writer.write("</td>");
-            }
-            writer.write("</tr></table>");
+
+                for(int i = 0; i < children.size(); i++)
+                {
+                    HtmlPanel panel = children.get(i);
+                    writer.write("<div id=\""+ getIdentifier() + "_" + panel.getIdentifier() +"\" style='display: none'>");
+                    panel.render(writer, nc, theme);
+                    writer.write("</div>");
+                }
+                theme.getPanelSkin().renderFrameEnd(writer, vc);
+                break;
         }
     }
 }

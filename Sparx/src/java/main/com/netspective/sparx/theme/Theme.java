@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: Theme.java,v 1.4 2003-04-02 23:57:34 shahid.shah Exp $
+ * $Id: Theme.java,v 1.5 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
 
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.io.InheritableFileResources;
@@ -61,6 +62,8 @@ public interface Theme
     public void setResourcesPath(ValueSource path);
 
     public NavigationSkin getNavigationSkin();
+
+    public HtmlPanelSkin getPanelSkin();
 
     public HtmlTabularReportSkin getReportSkin();
 

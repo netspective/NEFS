@@ -39,32 +39,35 @@
  */
 
 /**
- * $Id: HtmlPanelsStyleEnumeratedAttribute.java,v 1.2 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: BasicHtmlPanelValueContext.java,v 1.1 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import javax.servlet.ServletContext;
+import javax.servlet.Servlet;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
-public class HtmlPanelsStyleEnumeratedAttribute extends XdmEnumeratedAttribute
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+
+public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext
 {
-    public static final int VERTICAL = 0;
-    public static final int HORIZONTAL = 1;
-    public static final int TABBED = 2;
+    private HtmlPanel panel;
 
-    private static final String[] VALUES = new String[] { "vertical", "horizontal", "tabbed" };
-
-    public HtmlPanelsStyleEnumeratedAttribute()
+    public BasicHtmlPanelValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel)
     {
+        super(context, servlet, request, response);
+        this.panel = panel;
     }
 
-    public HtmlPanelsStyleEnumeratedAttribute(int valueIndex)
+    public HtmlPanel getPanel()
     {
-        super(valueIndex);
+        return panel;
     }
 
-    public String[] getValues()
+    public boolean isMinimized()
     {
-        return VALUES;
+        return false;
     }
 }

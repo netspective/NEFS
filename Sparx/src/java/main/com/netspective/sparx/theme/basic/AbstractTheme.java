@@ -6,14 +6,9 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 
-/**
- * The Theme class is used to save theme related information such as name, style, and location.
- *
- * @author Aye Thu
- * Created on Feb 16, 2003 10:32:51 PM
- */
 public class AbstractTheme implements Theme
 {
     private String name;
@@ -21,16 +16,23 @@ public class AbstractTheme implements Theme
     private InheritableFileResources resources;
     private boolean defaultTheme;
     private NavigationSkin navigationSkin;
+    private HtmlPanelSkin panelSkin;
     private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel/output", false);
 
     public AbstractTheme()
     {
         navigationSkin = constructNavigationSkin();
+        panelSkin = constructPanelSkin();
     }
 
     protected NavigationSkin constructNavigationSkin()
     {
         return null;
+    }
+
+    protected HtmlPanelSkin constructPanelSkin()
+    {
+        return new BasicHtmlPanelSkin(this, "panel/output", false);
     }
 
     public String getName()
@@ -68,6 +70,11 @@ public class AbstractTheme implements Theme
     public NavigationSkin getNavigationSkin()
     {
         return navigationSkin;
+    }
+
+    public HtmlPanelSkin getPanelSkin()
+    {
+        return panelSkin;
     }
 
     public HtmlTabularReportSkin getReportSkin()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.3 2003-04-21 20:05:17 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.4 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -55,6 +55,7 @@ import com.netspective.sparx.panel.HtmlPanelBanner;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
@@ -156,14 +157,9 @@ public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularRepor
         return new HtmlTabularReportValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme) throws IOException
     {
-        render(writer, nc, nc.getActiveTheme().getReportSkin());
-    }
-
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
-    {
-        HtmlTabularReportValueContext vc = createContext(nc, (HtmlTabularReportSkin) skin);
+        HtmlTabularReportValueContext vc = createContext(nc, theme.getReportSkin());
         vc.produceReport(writer, createDataSource(nc, vc));
     }
 

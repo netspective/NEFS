@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.18 2003-04-13 16:43:44 shahid.shah Exp $
+  * $Id: console.xml,v 1.19 2003-04-24 02:26:21 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -32,7 +32,8 @@
                 <page name="detail" caption="Detail" retain-params="xdm-class">
                     <panels style="horizontal">
                         <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="tree" height="320"/>
-                        <panels style="vertical">
+                        <panels style="tabbed">
+                            <frame heading="tabbed"/>
                             <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="detail-ancestors"/>
                             <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="detail"/>
                         </panels>

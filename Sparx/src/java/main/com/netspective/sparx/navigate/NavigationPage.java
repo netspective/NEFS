@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.11 2003-04-08 18:06:28 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.12 2003-04-24 02:26:21 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -127,7 +127,7 @@ public class NavigationPage extends NavigationPath
     private boolean inheritRetainParams = true;
     private boolean inheritAssignStateParams = true;
     private ValueSource redirect;
-    private HtmlLayoutPanel panel;
+    private HtmlLayoutPanel bodyPanel;
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
@@ -490,9 +490,9 @@ public class NavigationPage extends NavigationPath
 
     public HtmlLayoutPanel createPanels()
     {
-        panel = new HtmlLayoutPanel();
+        bodyPanel = new HtmlLayoutPanel();
         getFlags().setFlag(Flags.HAS_BODY);
-        return panel;
+        return bodyPanel;
     }
 
     public boolean requireLogin(NavigationContext nc)
@@ -519,8 +519,8 @@ public class NavigationPage extends NavigationPath
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        if(panel != null)
-            panel.render(writer, nc);
+        if(bodyPanel != null)
+            bodyPanel.render(writer, nc, nc.getActiveTheme());
         else
             writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
     }
@@ -533,7 +533,7 @@ public class NavigationPage extends NavigationPath
 
     public boolean bodyAffectsNavigationContext(NavigationContext nc)
     {
-        if(panel != null && panel.affectsNavigationContext(nc))
+        if(bodyPanel != null && bodyPanel.affectsNavigationContext(nc))
             return true;
         else
             return false;
