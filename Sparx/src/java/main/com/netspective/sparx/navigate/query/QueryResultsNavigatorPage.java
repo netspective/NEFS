@@ -58,6 +58,7 @@ import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 public class QueryResultsNavigatorPage extends NavigationPage
 {
     private String rowsPerPageParamName = "scroll-rpp";
+    private String refreshResultSetParamName = "scroll-refresh";
     private String activeScrollPageParamName = "scroll-page";
     private String queryRef;
     private Query query;
@@ -266,6 +267,11 @@ public class QueryResultsNavigatorPage extends NavigationPage
         return queryExecutionId.getTextValue(nc);
     }
 
+    public void refreshResultSet(NavigationContext nc)
+    {
+        nc.getRequest().setAttribute(refreshResultSetParamName, new Boolean(true));
+    }
+
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         if(!valid)
@@ -279,8 +285,10 @@ public class QueryResultsNavigatorPage extends NavigationPage
         try
         {
             final String executionId = getQueryExectionId(nc);
+            final boolean refresh = request.getParameter(refreshResultSetParamName) != null ||
+                                    request.getAttribute(refreshResultSetParamName) != null;
 
-            QueryResultsNavigatorState queryResults = getQueryResultsNavigatorStatesManager().getActiveUserQueryResults(this, nc, executionId);
+            QueryResultsNavigatorState queryResults = refresh ? null : getQueryResultsNavigatorStatesManager().getActiveUserQueryResults(this, nc, executionId);
             if(queryResults == null)
             {
                 queryResults = constructQueryResults(nc, executionId);
