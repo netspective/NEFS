@@ -48,7 +48,7 @@
        ======================================
     -->
     <record-editor-panels package="personAttribute">
-        <record-editor-panel name="contact" dialogs="personAttribute.contact">
+        <record-editor-panel name="contact" dialog="personAttribute.contact">
             <query>
                 select
 				system_id,
@@ -184,13 +184,13 @@
             <page name="documents" caption="Documents"/>
         </page>
 
-        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
+        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes"  allow-page-cmd-param="yes" retain-params="person_id">
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
                     <panel type="command" command="query,personAttribute.address,-,-,-,record-editor"/>
                     <panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/>
-                    <panel type="command" command="record-editor-panel,personAttribute.contact,personAttribute.contact,-"/>
+                    <panel type="command" command="record-editor-panel,personAttribute.contact"/>
                     <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
                 </panels>
             </page>
