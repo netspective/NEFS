@@ -124,10 +124,10 @@
             <field type="select" name="sel_field_list" caption="Select Field (List)" style="list" size="5" default="B"
                 hidden="no" choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
             <field type="select" name="sel_field_multilist" caption="Select Field (MultiList)" style="multilist" size="5"
-                default="text-list:A,B"
+                default="text-list:A;B"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
             <field type="select" name="sel_field_multicheck" caption="Select Field (MultiCheck)" style="multicheck" required="yes"
-                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" default="text-list:A,C"/>
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" default="text-list:A;C"/>
             <field type="select" name="sel_field_multidual" caption="Select Field (MultiDual)" style="multidual" required="yes"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" default="text-list:A" persist="true"
                 multi-dual-caption-left="Left Caption" multi-dual-caption-right="Right Caption" multi-dual-width="100"/>
