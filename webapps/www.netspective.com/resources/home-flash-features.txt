@@ -1,8 +1,1 @@
-spruch1=Create graphical web interfaces in no time.
-&spruch2=Generate all your DAOs and VOs.
-&spruch3=Build multi-database applications with ease.
-&spruch4=Use powerful web-based UI controls and validators.
-&spruch5=Fully integrated login and access control.
-&spruch6=Go beyond Struts with less coding.
-&spruch7=Use open tools like Ant, JUnit, and Tomcat.
-&numvars=7
+spruch1=Create graphical web interfaces in no time.&spruch2=Generate all your DAOs and VOs. &spruch3=Build multi-database applications with ease. &spruch4=Use powerful web-based UI controls and validators.&spruch5=Fully integrated login and access control.&spruch6=Go beyond Struts with less coding. &spruch7=Use open tools like Ant, JUnit, and Tomcat.&numvars=7
