@@ -45,6 +45,7 @@ package com.netspective.medigy.model;
 
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
 import com.netspective.tool.hibernate.document.diagram.DefaultHibernateDiagramFilter;
@@ -143,7 +144,7 @@ public abstract class TestCase extends junit.framework.TestCase
         final File dotDestFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".dot");
         final File diagramFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".png");
         final GraphvizDiagramGenerator diagrammer = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
-        final HibernateDiagramGeneratorFilter filter = new DefaultHibernateDiagramFilter();
+        final HibernateDiagramGeneratorFilter filter = new HibernateDiagramFilter();
         final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(hibernateConfiguration, diagrammer, filter);
         hdg.generate();
         diagrammer.generateDOTSource(dotDestFile);

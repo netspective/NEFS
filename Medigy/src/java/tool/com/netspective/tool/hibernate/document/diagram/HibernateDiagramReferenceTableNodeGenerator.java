@@ -32,12 +32,20 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
+import java.util.Map;
+
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.HibernateException;
 
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.AbstractReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.util.HibernateConfiguration;
 
-public class HibernateDiagramTableDataNodeGenerator implements HibernateDiagramTableNodeGenerator
+public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDiagramTableNodeGenerator
 {
     private String name;
 
@@ -45,7 +53,7 @@ public class HibernateDiagramTableDataNodeGenerator implements HibernateDiagramT
     private String entityTableAttrs = "BORDER=\"1\" CELLSPACING=\"0\" CELLBORDER=\"0\"";
     private String tableNameBgColor = "bisque";
 
-    public HibernateDiagramTableDataNodeGenerator(String name)
+    public HibernateDiagramReferenceTableNodeGenerator(String name)
     {
         this.name = name;
     }
@@ -57,37 +65,37 @@ public class HibernateDiagramTableDataNodeGenerator implements HibernateDiagramT
 
     public GraphvizDiagramNode generateTableNode(final HibernateDiagramGenerator generator,
                                                  final HibernateDiagramGeneratorFilter filter,
-                                                 final Table table)
+                                                 final PersistentClass pclass)
     {
+        final Class refEntityCacheEnum = ((HibernateConfiguration) generator.getConfiguration()).getReferenceEntitiesAndCachesMap().get(pclass.getMappedClass());
+        final Table table = pclass.getTable();
         final StringBuffer dataRowsHtml = new StringBuffer();
-        int colSpan = 0;
-/*
-        TODO: for reference type tables we want to put in the data
 
-        Rows dataRows = table.getData();
-        if(dataRows != null && dataRows.size() > 0)
+        int colSpan = 0;
+        Object[] dataRows = refEntityCacheEnum.getEnumConstants();
+        if(dataRows != null && dataRows.length > 0)
         {
-            int count = dataRows.size() > maxRowsToShow ? maxRowsToShow : dataRows.size();
+            int count = dataRows.length > maxRowsToShow ? maxRowsToShow : dataRows.length;
             for(int i = 0; i < count; i++)
             {
+                final CachedReferenceEntity row = (CachedReferenceEntity) dataRows[i];
                 dataRowsHtml.append("<TR>");
-                Row row = dataRows.getRow(i);
-                ColumnValues values = row.getColumnValues();
-                colSpan = values.size();
-                for(int j = 0; j < colSpan; j++)
-                {
-                    Value value = values.getByColumnIndex(j);
-                    dataRowsHtml.append("<TD ALIGN=\"LEFT\">");
-                    dataRowsHtml.append(value.getTextValueOrDefault(" "));
-                    dataRowsHtml.append("</TD>");
-                }
+                colSpan = 2;
+
+                dataRowsHtml.append("<TD ALIGN=\"LEFT\">");
+                dataRowsHtml.append(row.getId());
+                dataRowsHtml.append("</TD>");
+
+                dataRowsHtml.append("<TD ALIGN=\"LEFT\">");
+                dataRowsHtml.append(row.getLabel());
+                dataRowsHtml.append("</TD>");
+
                 dataRowsHtml.append("</TR>\n");
             }
 
-            if(count < dataRows.size())
-                dataRowsHtml.append("        <TR><TD COLSPAN=\"" + colSpan + "\">(Only " + count + " of " + dataRows.size() + " shown)</TD></TR>\n");
+            if(count < dataRows.length)
+                dataRowsHtml.append("        <TR><TD COLSPAN=\"" + colSpan + "\">(Only " + count + " of " + dataRows.length + " shown)</TD></TR>\n");
         }
-*/
 
         StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + entityTableAttrs + ">\n");
         tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" BGCOLOR=\"" + tableNameBgColor + "\">" + table.getName() + "</TD></TR>\n");

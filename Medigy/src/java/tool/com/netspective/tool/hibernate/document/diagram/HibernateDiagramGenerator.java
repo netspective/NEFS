@@ -35,6 +35,8 @@ package com.netspective.tool.hibernate.document.diagram;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -56,6 +58,11 @@ import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 public class HibernateDiagramGenerator
 {
     protected static final String COLUMN_PORT_NAME_CONSTRAINT_SUFFIX = "_CONSTR";
+
+    /**
+     * Map of tables and the persistent classes they represent.
+     */
+    private final Map tableToClassMap = new HashMap();
 
     /**
      * The database policy for which we're generating the schema generator; null to generate db-independent ERD
@@ -133,6 +140,14 @@ public class HibernateDiagramGenerator
         {
             throw new HibernateDiagramGeneratorException(e);
         }
+
+        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
+        {
+            final PersistentClass pclass = (PersistentClass) classes.next();
+            final Table table = (Table) pclass.getTable();
+
+            tableToClassMap.put(table, pclass);
+        }
     }
 
     public void generate()
@@ -141,30 +156,33 @@ public class HibernateDiagramGenerator
         final HibernateDiagramGeneratorFilter filter = getDiagramFilter();
         final Set includedTables = new HashSet();
 
-        for(final Iterator tables = configuration.getTableMappings(); tables.hasNext(); )
+        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
         {
-            final Table table = (Table) tables.next();
-            if(filter.includeTableInDiagram(this, table))
+            final PersistentClass pclass = (PersistentClass) classes.next();
+            final Table table = (Table) pclass.getTable();
+            if(filter.includeClassInDiagram(this, pclass))
             {
-                final HibernateDiagramTableNodeGenerator nodeGenerator = filter.getTableNodeGenerator(this, table);
-                final GraphvizDiagramNode node = nodeGenerator.generateTableNode(this, filter, table);
+                final HibernateDiagramTableNodeGenerator nodeGenerator = filter.getTableNodeGenerator(this, pclass);
+                final GraphvizDiagramNode node = nodeGenerator.generateTableNode(this, filter, pclass);
+                filter.formatTableNode(this, pclass, node);
                 gdg.addNode(node);
                 includedTables.add(table);
             }
         }
 
-        for(final Iterator tables = configuration.getTableMappings(); tables.hasNext(); )
+        for(final Iterator classes = configuration.getClassMappings(); classes.hasNext(); )
         {
-            final Table table = (Table) tables.next();
+            final PersistentClass pclass = (PersistentClass) classes.next();
+            final Table table = (Table) pclass.getTable();
             if(includedTables.contains(table))
             {
                 for(final Iterator fKeys = table.getForeignKeyIterator(); fKeys.hasNext(); )
                 {
                     final ForeignKey foreignKey = (ForeignKey) fKeys.next();
-                    if(includedTables.contains(foreignKey.getReferencedTable()))
+                    if(filter.includeForeignKeyEdgeInDiagram(this, foreignKey) && includedTables.contains(foreignKey.getReferencedTable()))
                     {
-                        final HibernateDiagramTableNodeGenerator sourceTableNodeGenerator = filter.getTableNodeGenerator(this, table);
-                        final HibernateDiagramTableNodeGenerator refTableNodeGenerator = filter.getTableNodeGenerator(this, foreignKey.getReferencedTable());
+                        final HibernateDiagramTableNodeGenerator sourceTableNodeGenerator = filter.getTableNodeGenerator(this, pclass);
+                        final HibernateDiagramTableNodeGenerator refTableNodeGenerator = filter.getTableNodeGenerator(this, getClassForTable(foreignKey.getReferencedTable()));
 
                         GraphvizDiagramEdge edge = new GraphvizDiagramEdge(gdg, sourceTableNodeGenerator.getEdgeSourceElementAndPort(this, foreignKey),
                                                                            refTableNodeGenerator.getEdgeDestElementAndPort(this, foreignKey));
@@ -201,5 +219,10 @@ public class HibernateDiagramGenerator
     public Dialect getDialect()
     {
         return dialect;
+    }
+
+    public PersistentClass getClassForTable(final Table table)
+    {
+        return (PersistentClass) tableToClassMap.get(table);
     }
 }

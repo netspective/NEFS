@@ -32,8 +32,8 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
 
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
@@ -41,7 +41,7 @@ public interface HibernateDiagramTableNodeGenerator
 {
     public String getName();
 
-    public GraphvizDiagramNode generateTableNode(HibernateDiagramGenerator generator, HibernateDiagramGeneratorFilter filter, Table table);
+    public GraphvizDiagramNode generateTableNode(HibernateDiagramGenerator generator, HibernateDiagramGeneratorFilter filter, PersistentClass pclass);
 
     public String getEdgeSourceElementAndPort(HibernateDiagramGenerator generator, ForeignKey foreignKey);
 

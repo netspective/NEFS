@@ -43,8 +43,12 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.OneToMany;
 
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
+import com.netspective.medigy.reference.ReferenceEntity;
 
 public class HibernateDiagramTableStructureNodeGenerator implements HibernateDiagramTableNodeGenerator
 {
@@ -129,8 +133,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
 
     public GraphvizDiagramNode generateTableNode(final HibernateDiagramGenerator generator,
                                                  final HibernateDiagramGeneratorFilter filter,
-                                                 final Table table)
+                                                 final PersistentClass pclass)
     {
+        final Table table = pclass.getTable();
         final StringBuffer primaryKeyRows = new StringBuffer();
         final StringBuffer parentKeyRows = new StringBuffer();
         final StringBuffer columnRows = new StringBuffer();
@@ -204,51 +209,39 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
 
     public String getEdgeSourceElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
+        for(Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext(); )
+        {
+            final Collection coll = (Collection) colls.next();
+            if(coll.isOneToMany())
+            {
+                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+                //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
+                if(foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                    return foreignKey.getReferencedTable().getName();
+            }
+        }
+
         return foreignKey.getTable().getName() + ":" + (showConstraints
                                                                ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
                                                                : foreignKey.getColumn(0).getName());
 
-/*
-        TODO: we want use crows feet to show parent/child relationship but Hibernate doesn't know how yet?
-        final Column firstSourceColumn = foreignKey.getColumn(0);
-        final Column firstReferenceColumn = foreignKey.getReferencedTable().getPrimaryKey().getColumn(0);
-
-        switch(foreignKey.getType())
-        {
-            // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
-            case ForeignKey.FKEYTYPE_PARENT:
-                return firstReferenceColumn.getTable().getName();
-
-            default:
-                return firstSourceColumn.getTable().getName() + ":" + (showConstraints
-                                                                       ? (firstSourceColumn.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
-                                                                       : firstSourceColumn.getName());
-        }
-*/
     }
 
     public String getEdgeDestElementAndPort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
-        return foreignKey.getReferencedTable().getName() + ":" + foreignKey.getReferencedTable().getPrimaryKey().getColumn(0).getName();
-/*
-        TODO: we want use crows feet to show parent/child relationship but Hibernate doesn't know how yet?
-
-        final Column firstSourceColumn = foreignKey.getSourceColumns().getFirst();
-        final Column firstReferenceColumn = foreignKey.getReference().getColumns().getFirst();
-
-        switch(foreignKey.getType())
+        for(Iterator colls = generator.getConfiguration().getCollectionMappings(); colls.hasNext(); )
         {
-            // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
-            case ForeignKey.FKEYTYPE_PARENT:
-                return firstSourceColumn.getTable().getName();
-
-            case ForeignKey.FKEYTYPE_SELF:
-                return firstReferenceColumn.getTable().getName();
-
-            default:
-                return firstReferenceColumn.getTable().getName() + ":" + firstReferenceColumn.getName();
+            final Collection coll = (Collection) colls.next();
+            if(coll.isOneToMany())
+            {
+                // for parents, we put the crow arrow pointing to us (the source becomes the parent, not the child -- this way it will look like a tree)
+                //System.out.println(coll.getOwner().getTable().getName() + " -> " + coll.getCollectionTable().getName());
+                if(foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
+                    return foreignKey.getTable().getName();
+            }
         }
-*/
+
+        return foreignKey.getReferencedTable().getName() + ":" + foreignKey.getReferencedTable().getPrimaryKey().getColumn(0).getName();
     }
 
     public boolean isShowConstraints()

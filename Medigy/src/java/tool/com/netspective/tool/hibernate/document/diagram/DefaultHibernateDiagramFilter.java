@@ -39,18 +39,21 @@ import java.util.Set;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
 
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
+import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
 public class DefaultHibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 {
     private String name;
+    private Set ignoreClassNamesAndPatterns = new HashSet();
     private Set ignoreTableNamesAndPatterns = new HashSet();
     private Set ignoreColumnNamesAndPatterns = new HashSet();
     private boolean showParentForeignKeyTypeEdges = true;
     private boolean showLookupForeignKeyTypeEdges = false;
     private boolean showSelfRefForeignKeyTypeEdges = true;
-    private final HibernateDiagramTableNodeGenerator tableDataNodeGenerator = new HibernateDiagramTableDataNodeGenerator("enum");
+    private final HibernateDiagramTableNodeGenerator tableDataNodeGenerator = new HibernateDiagramReferenceTableNodeGenerator("enum");
     private final HibernateDiagramTableNodeGenerator tableStructureNodeGenerator = new HibernateDiagramTableStructureNodeGenerator("app");
 
     public DefaultHibernateDiagramFilter()
@@ -99,7 +102,7 @@ public class DefaultHibernateDiagramFilter implements HibernateDiagramGeneratorF
 
     protected boolean isIgnoreColumnName(final Column column)
     {
-        for(Iterator i = ignoreColumnNamesAndPatterns.iterator(); i.hasNext();)
+        for(Iterator i = ignoreClassNamesAndPatterns.iterator(); i.hasNext();)
         {
             String pattern = (String) i.next();
             if(pattern.startsWith("/"))
@@ -108,6 +111,23 @@ public class DefaultHibernateDiagramFilter implements HibernateDiagramGeneratorF
                     return true;
             }
             else if(column.getName().equalsIgnoreCase(pattern))
+                return true;
+        }
+
+        return false;
+    }
+
+    protected boolean isIgnoreClassName(final PersistentClass pclass)
+    {
+        for(Iterator i = ignoreTableNamesAndPatterns.iterator(); i.hasNext();)
+        {
+            String pattern = (String) i.next();
+            if(pattern.startsWith("/"))
+            {
+                if(pclass.getClassName().matches(pattern.substring(1, pattern.length()-2)))
+                    return true;
+            }
+            else if(pclass.getClassName().equalsIgnoreCase(pattern))
                 return true;
         }
 
@@ -136,16 +156,16 @@ public class DefaultHibernateDiagramFilter implements HibernateDiagramGeneratorF
         return isIgnoreColumnName(column) ? false : true;
     }
 
-    public HibernateDiagramTableNodeGenerator getTableNodeGenerator(HibernateDiagramGenerator generator, Table table)
+    public HibernateDiagramTableNodeGenerator getTableNodeGenerator(final HibernateDiagramGenerator generator, final PersistentClass pclass)
     {
         // TODO: should treat enum/type tables differently but we don't yet
         // return (table instanceof EnumerationTable) ? tableDataNodeGenerator : tableStructureNodeGenerator;
         return tableStructureNodeGenerator;
     }
 
-    public boolean includeTableInDiagram(final HibernateDiagramGenerator generator, final Table table)
+    public boolean includeClassInDiagram(final HibernateDiagramGenerator generator, final PersistentClass pclass)
     {
-        return isIgnoreTableName(table) ? false : true;
+        return isIgnoreClassName(pclass) || isIgnoreTableName(pclass.getTable()) ? false : true;
     }
 
     public boolean includeForeignKeyEdgeInDiagram(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
@@ -189,6 +209,18 @@ public class DefaultHibernateDiagramFilter implements HibernateDiagramGeneratorF
         final String[] items = commaSeparatedListOfNamesAndPatterns.split(",");
         for(int i = 0; i < items.length; i++)
             ignoreTableNamesAndPatterns.add(items[i]);
+    }
+
+    public void setIgnoreClassNamesAndPatterns(final String commaSeparatedListOfNamesAndPatterns)
+    {
+        final String[] items = commaSeparatedListOfNamesAndPatterns.split(",");
+        for(int i = 0; i < items.length; i++)
+            ignoreClassNamesAndPatterns.add(items[i]);
+    }
+
+    public void formatTableNode(final HibernateDiagramGenerator generator, final PersistentClass pclass, final GraphvizDiagramNode node)
+    {
+
     }
 
     public void formatForeignKeyEdge(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, final GraphvizDiagramEdge edge)

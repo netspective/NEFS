@@ -65,65 +65,90 @@ public class HibernateNamingStrategy implements NamingStrategy, Serializable
      * Return the unqualified class name, mixed case converted to
      * underscores
      */
-    public String classToTableName(String className)
+    public String classToTableName(final String className)
     {
-        return addUnderscores(unqualify(className));
+        return fixupTableName(unqualify(className));
     }
 
     /**
      * Return the full property path with underscore seperators, mixed
      * case converted to underscores
      */
-    public String propertyToColumnName(String propertyName)
+    public String propertyToColumnName(final String propertyName)
     {
-        return addUnderscores(propertyName);
+        return fixupColumnName(propertyName);
     }
 
     /**
      * Convert mixed case to underscores
      */
-    public String tableName(String tableName)
+    public String tableName(final String tableName)
     {
-        return addUnderscores(tableName);
+        return fixupTableName(tableName);
     }
 
     /**
      * Convert mixed case to underscores
      */
-    public String columnName(String columnName)
+    public String columnName(final String columnName)
     {
-        return addUnderscores(columnName);
+        return fixupColumnName(columnName);
     }
 
     /**
      * Return the full property path prefixed by the unqualified class
      * name, with underscore seperators, mixed case converted to underscores
      */
-    public String propertyToTableName(String className, String propertyName)
+    public String propertyToTableName(final String className, final String propertyName)
     {
         return classToTableName(className) + '_' + propertyToColumnName(propertyName);
     }
 
-    private String unqualify(String qualifiedName)
+    private String unqualify(final String qualifiedName)
     {
         return qualifiedName.substring(qualifiedName.lastIndexOf(".") + 1);
     }
 
-    private String addUnderscores(String name)
+    /**
+     * Take the name of a column and convert it from Java-style mixed case to SQL-style underscores. Table
+     * names have mixed in the first letter and after each underscore.
+     * @param name
+     * @return
+     */
+    public String fixupTableName(final String name)
     {
-        StringBuffer buf = new StringBuffer(name.replace('.', '_'));
+        final StringBuffer buf = new StringBuffer(name.replace('.', '_'));
         for (int i = 1; i < buf.length() - 1; i++)
         {
-            if (
-                    '_' != buf.charAt(i - 1) &&
-                    Character.isUpperCase(buf.charAt(i)) &&
-                    !Character.isUpperCase(buf.charAt(i + 1))
-            )
+            if ('_' != buf.charAt(i - 1) &&
+                Character.isUpperCase(buf.charAt(i)) &&
+                !Character.isUpperCase(buf.charAt(i + 1)))
+            {
+                buf.insert(i++, '_');
+            }
+        }
+        buf.setCharAt(0, Character.toUpperCase(buf.charAt(0)));
+        return buf.toString();
+    }
+
+    /**
+     * Take the name of a column and convert it from Java-style mixed case to SQL-style underscores. Column
+     * names are all forced to lowercase as well.
+     * @param name
+     * @return
+     */
+    public String fixupColumnName(final String name)
+    {
+        final StringBuffer buf = new StringBuffer(name.replace('.', '_'));
+        for (int i = 1; i < buf.length() - 1; i++)
+        {
+            if ('_' != buf.charAt(i - 1) &&
+                Character.isUpperCase(buf.charAt(i)) &&
+                !Character.isUpperCase(buf.charAt(i + 1)))
             {
                 buf.insert(i++, '_');
             }
         }
         return buf.toString().toLowerCase();
     }
-
 }

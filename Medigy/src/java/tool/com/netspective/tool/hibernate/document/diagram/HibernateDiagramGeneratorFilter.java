@@ -35,20 +35,24 @@ package com.netspective.tool.hibernate.document.diagram;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
 
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
+import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
 public interface HibernateDiagramGeneratorFilter
 {
     public String getName();
 
-    public boolean includeTableInDiagram(HibernateDiagramGenerator generator, Table table);
+    public boolean includeClassInDiagram(HibernateDiagramGenerator generator, PersistentClass pclass);
 
-    public HibernateDiagramTableNodeGenerator getTableNodeGenerator(HibernateDiagramGenerator generator, Table table);
+    public HibernateDiagramTableNodeGenerator getTableNodeGenerator(HibernateDiagramGenerator generator, PersistentClass pclass);
 
     public boolean includeColumnInDiagram(HibernateDiagramGenerator generator, Column column);
 
     public boolean includeForeignKeyEdgeInDiagram(HibernateDiagramGenerator generator, ForeignKey foreignKey);
+
+    public void formatTableNode(HibernateDiagramGenerator generator, PersistentClass pclass, GraphvizDiagramNode node);
 
     public void formatForeignKeyEdge(HibernateDiagramGenerator generator, ForeignKey foreignKey, GraphvizDiagramEdge edge);
 }
