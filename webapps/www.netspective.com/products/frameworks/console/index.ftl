@@ -27,20 +27,35 @@ Your development team concentrates on implementation of business functionality w
 collects all relevant project metrics, documentation, and details. Managers can use ACE in real-time to track programmer work and productivity.
 
 <ul class="check-list">
-    <li>Automatically documents web dialogs, SQL statements, schema objects, and other programming artifacts.
-        <@screenShot name="console-schema-doc"/><p>
-        <@screenShot name="console-dynamic-qry"/><p>
-        <@screenShot name="console-dialog-catalog"/>
-
-    <li>Automatically provides browser-based testing of forms and statements.
-        <@screenShot name="console-dialog-unit-test"/><p>
-        <@screenShot name="console-sql-unit-test"/>
-
-    <li>Automatically maintains application metrics.
-        <@screenShot name="console-app-matrics"/><p>
+    <li>Automatically documents web dialogs, SQL statements, schema objects, and other programming artifacts.<p>
+    		<table>
+    		    <tr>
+    		    	<td><@screenShot name="console-schema-doc"/></td>
+    		    	<td><@screenShot name="console-dynamic-qry"/></td>
+    		    </tr>
+    		    <tr>
+		        <td><@screenShot name="console-dialog-catalog"/></td>
+    		    </tr>
+    		</table>
+    	
+    <li>Automatically provides browser-based testing of forms and statements.<p>
+	<table>
+	    <tr>
+		<td><@screenShot name="console-dialog-unit-test"/></td>
+		<td><@screenShot name="console-sql-unit-test"/></td>
+	    </tr>
+	</table>
+    <li>Automatically maintains application metrics.<p>
+        <@screenShot name="console-app-matrics"/>
     
     <li>Tracks execution statistics for SQL statements, servlet and JSP pages, dialogs/forms, and security.
-    <li>Provides a browser-based repository for all project documentation alongside application code.
+    <li>Provides a browser-based repository for all project documentation alongside application code.<p>
+	<table>
+	    <tr>
+		<td><@screenShot name="console-prj-folders"/></td>
+		<td><@screenShot name="console-prj-files"/></td>
+	    </tr>
+	</table>
 </ul>
 
 <h1>Summary of Console Features</h1>
