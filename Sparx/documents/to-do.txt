@@ -1,3 +1,4 @@
+* Move all generated java (DAL, DCB, IDs, etc) under 'auto' package
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
