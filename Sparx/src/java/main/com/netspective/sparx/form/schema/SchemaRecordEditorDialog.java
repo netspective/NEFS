@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.29 2004-04-20 13:11:38 aye.thu Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.30 2004-04-20 14:55:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -1276,7 +1276,6 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
     {
         if (dc.executeStageHandled())
             return;
-        System.out.println("HEY!!!");
         SchemaRecordEditorDialogContext sredc = ((SchemaRecordEditorDialogContext) dc);
 
         ConnectionContext cc;
