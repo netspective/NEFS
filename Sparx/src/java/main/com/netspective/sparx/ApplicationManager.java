@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ApplicationManager.java,v 1.10 2003-06-09 06:56:52 aye.thu Exp $
+ * $Id: ApplicationManager.java,v 1.11 2003-06-13 02:14:11 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -79,6 +79,9 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
+    private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
+    private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
+    private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
 
     protected static class PanelTypeTemplate extends TemplateProducer
     {
@@ -106,9 +109,9 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
 
     static
     {
-        templateProducers.add(new PanelTypeTemplate());
-        templateProducers.add(new DialogFieldTypeTemplate());
-        templateProducers.add(new DialogFieldConditionalActionTemplate());
+        templateProducers.add(PANEL_TYPES);
+        templateProducers.add(FIELD_TYPES);
+        templateProducers.add(CONDITIONAL_ACTIONS);
     }
 
     private NavigationTrees navigationTrees = new NavigationTrees();
@@ -117,6 +120,23 @@ public class ApplicationManager extends SqlManager implements NavigationTreesMan
 
     public ApplicationManager()
     {
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------ */
+
+    public DialogFieldConditionalActionTemplate getConditionalActions()
+    {
+        return CONDITIONAL_ACTIONS;
+    }
+
+    public DialogFieldTypeTemplate getFieldTypes()
+    {
+        return FIELD_TYPES;
+    }
+
+    public PanelTypeTemplate getPanelTypes()
+    {
+        return PANEL_TYPES;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */

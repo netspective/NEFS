@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.43 2003-06-12 16:08:05 shahid.shah Exp $
+  * $Id: console.xml,v 1.44 2003-06-13 02:14:11 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -86,6 +86,33 @@
                     </panels>
                 </page>
 		        <page name="fields" caption="Field Types"/>
+		        <page name="perspectives" caption="Perspectives">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Dialog Data Perspectives"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="conditionals" caption="Conditionals">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Conditionals"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
+		        <page name="client-js" caption="JavaScript">
+                    <panels>
+                        <panel type="console-page-summary"/>
+                        <panel type="html">
+                            <frame heading="Using Client-side JavaScript"/>
+                            <body config="console" source="console-page-content:documentation.ftl"/>
+                        </panel>
+                    </panels>
+                </page>
 	        </page>
 
 	        <page name="panel" caption="Panels"/>
