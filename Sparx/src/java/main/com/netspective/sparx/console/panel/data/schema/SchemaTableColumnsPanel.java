@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableColumnsPanel.java,v 1.4 2003-04-25 02:23:03 shahid.shah Exp $
+ * $Id: SchemaTableColumnsPanel.java,v 1.5 2003-04-25 16:41:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -83,11 +83,11 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         columnsReport.addColumn(schemaTableColumn);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("XML Name"));
+        column.setHeading(new StaticValueSource("Domain"));
         columnsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Domain"));
+        column.setHeading(new StaticValueSource("XML Name"));
         columnsReport.addColumn(column);
 
         column = new GeneralColumn();
@@ -218,11 +218,11 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
                     return column.isPrimaryKey() ? ("<b>" + column.getName() + "</b>") : column.getName();
 
                 case 2:
-                    return column.getXmlNodeName();
-
-                case 3:
                     List dataTypes = column.getDataTypeNames();
                     return dataTypes.size() > 0 ? dataTypes.get(0) : null;
+
+                case 3:
+                    return column.getXmlNodeName();
 
                 case 4:
                     return getSqlTexts(column.getSqlDdl().getSqlDefns());
