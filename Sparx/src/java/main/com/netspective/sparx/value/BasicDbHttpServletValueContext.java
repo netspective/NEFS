@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.26 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.27 2003-08-17 00:15:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -302,9 +302,21 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
                         PROJECT_COMPONENT_CLASS, getProjectFileName(context), compFlags);
 
             if(amComponent.getErrors().size() > 0)
-                System.err.println("You have " + amComponent.getErrors().size() + " error(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#errors.\n");
+            {
+                String message = "You have " + amComponent.getErrors().size() + " error(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#errors.";
+                if(log.isErrorEnabled())
+                    log.error(message);
+                else
+                    System.err.println(message);
+            }
             if(amComponent.getWarnings().size() > 0)
-                System.out.println("You have " + amComponent.getWarnings().size() + " warning(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#warnings.\n");
+            {
+                String message = "You have " + amComponent.getWarnings().size() + " warning(s) in the Sparx project. To see the messages, visit\nhttp://<your-host>"+ context.getServletContextName() +"/console/project/input-source#warnings.";
+                if(log.isWarnEnabled())
+                    log.warn(message);
+                else
+                    System.out.println(message);
+            }
 
             return amComponent;
         }
