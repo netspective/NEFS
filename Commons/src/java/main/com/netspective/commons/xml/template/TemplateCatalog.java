@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateCatalog.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateCatalog.java,v 1.2 2003-06-13 02:17:11 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -99,5 +99,6 @@ public class TemplateCatalog
     {
         Map producerCatalog = getProducerTemplates(producer);
         producerCatalog.put(templateName, template);
+        producer.addInstance(templateName, template);
     }
 }

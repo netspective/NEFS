@@ -2,10 +2,10 @@ package com.netspective.commons;
 
 public class BuildLog
 {
-  public static final int    BUILD_NUMBER = 16;
+  public static final int    BUILD_NUMBER = 28;
   public static final String BUILD_HOST_NAME = "moscow";
   public static final String BUILD_HOST_IP = "192.168.0.103";
-  public static final String BUILD_DATE = "Wed Jun 11 17:45:14 EDT 2003";
+  public static final String BUILD_DATE = "Thu Jun 12 22:18:12 EDT 2003";
 
   public static final String BUILD_OS_NAME = "Windows 2000";
   public static final String BUILD_OS_VERSION = "5.1";
