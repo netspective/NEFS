@@ -3,14 +3,14 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.71 2003-07-12 02:09:45 aye.thu Exp $
+  * $Id: console.xml,v 1.72 2003-07-12 03:32:16 shahid.shah Exp $
   *****************************************************************************************
 -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
     <!-- TODO: the base-dir attribute below is included only because resource loading does not notice file updates (REMOVE before deployment) -->
-    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="/Users/aye/Projects/Frameworks/Sparx/src/java/main/com/netspective/sparx/console"/>
+    <register-freemarker-configuration name="console" base-class="com.netspective.sparx.console.ConsoleServlet" base-dir="C:/Projects/Frameworks/Sparx/src/java/main/com/netspective/sparx/console"/>
     <register-theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" resources-path="servlet-context-path:/sparx/theme/console">
         <report-skin name="record-viewer" class="com.netspective.sparx.theme.basic.RecordViewerReportSkin"
             panel-resources-prefix="panel/output" panel-class-name-prefix="panel-output"/>
@@ -252,13 +252,6 @@
             <field name="sql" type="memo" caption="SQL" rows="10" cols="60"/>
             <field name="name" type="text" caption="Name"/>
             <field name="rows-per-page" type="integer" caption="Rows per page" default="25"/>
-        </dialog>
-
-        <dialog name="ant-build" class="com.netspective.sparx.console.form.AntBuildDialog">
-            <frame heading="Ant Build"/>
-            <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
-            <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
-            <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
         </dialog>
 
         <dialog name="value-source-test" class="com.netspective.sparx.form.TemplateDialog">

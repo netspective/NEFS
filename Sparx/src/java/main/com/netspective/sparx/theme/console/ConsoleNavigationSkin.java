@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.15 2003-07-11 20:53:16 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.16 2003-07-12 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -63,6 +63,7 @@ import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.io.InheritableFileResources;
 
@@ -84,7 +85,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public ConsoleNavigationSkin(Theme theme)
     {
         super(theme);
-        setName("console");
+        setName(ConsoleServlet.CONSOLE_ID);
     }
 
     public int getSidebarWidth()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntProjectPage.java,v 1.1 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: AntProjectPage.java,v 1.2 2003-07-12 03:32:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -50,10 +50,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.console.form.AntBuildDialog;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.ant.AntProject;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.panel.HtmlPanel;
 
 public class AntProjectPage extends ConsoleServletPage
@@ -77,8 +75,6 @@ public class AntProjectPage extends ConsoleServletPage
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        nc.getRequest().setAttribute(AntBuildDialog.REQATTRPARAMNAME_ANT_PROJECT_ID, antProject.getId());
-        Dialog dialog = nc.getProject().getDialog("console.ant-build");
-        dialog.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
+        antProject.getDialog().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 }

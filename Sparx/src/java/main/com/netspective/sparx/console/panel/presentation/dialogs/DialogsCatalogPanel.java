@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogPanel.java,v 1.6 2003-06-26 16:05:58 shahid.shah Exp $
+ * $Id: DialogsCatalogPanel.java,v 1.7 2003-07-12 03:32:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -57,6 +57,7 @@ import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.RuntimeEnvironmentFlags;
@@ -109,7 +110,7 @@ public abstract class DialogsCatalogPanel extends AbstractHtmlTabularReportPanel
             for(Iterator nsi = sortedNamesSpaces.iterator(); nsi.hasNext(); )
             {
                 String nameSpaceId = (String) nsi.next();
-                if(nameSpaceId.startsWith("console") && ! doingFrameworkDeveploment)
+                if(nameSpaceId.startsWith(ConsoleServlet.CONSOLE_ID) && ! doingFrameworkDeveploment)
                     continue;
 
                 Set sortedDialogNamesInNameSpace = new TreeSet();

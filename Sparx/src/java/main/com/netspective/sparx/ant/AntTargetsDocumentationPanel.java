@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: AntTargetsDocumentationPanel.java,v 1.1 2003-07-08 02:30:09 shahid.shah Exp $
+ * $Id: AntTargetsDocumentationPanel.java,v 1.1 2003-07-12 03:31:46 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.form;
+package com.netspective.sparx.ant;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -60,6 +60,8 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.ant.AntProject;
+import com.netspective.sparx.ant.AntBuildDialog;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
@@ -113,23 +115,23 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
         public AntTargetsDocumentationDataSource(NavigationContext nc)
         {
             super();
-            antBuildDialog = (AntBuildDialog) nc.getDialogsManager().getDialog("console.ant-build");
+            antBuildDialog = (AntBuildDialog) nc.getRequest().getAttribute(AntBuildDialog.REQATTRPARAMNAME_ACTIVE_ANT_BUILD_DIALOG);
             if(antBuildDialog == null)
                 throw new RuntimeException("Unable to find console.ant-build dialog!");
 
-            File projectFile = new File(antBuildDialog.getActiveAntProjectFileValueSource().getTextValue(nc));
+            File projectFile = new File(antBuildDialog.getAntProject().getFile().getTextValue(nc));
             if(!projectFile.exists())
             {
                 lastRowIndex = activeRowIndex;
                 return;
             }
 
-            antProject = AntBuildDialog.getConfiguredProject(projectFile);
+            antProject = AntProject.getConfiguredProject(projectFile);
             Set sortedTargetNames = new TreeSet(antProject.getTargets().keySet());
             for(Iterator i = sortedTargetNames.iterator(); i.hasNext(); )
             {
                 String targetName = (String) i.next();
-                if(! antBuildDialog.isShowPrivateTargets() && antBuildDialog.isPrivateTargetName(targetName))
+                if(! antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                     continue;
                 targets.add(antProject.getTargets().get(targetName));
             }
@@ -163,7 +165,7 @@ public class AntTargetsDocumentationPanel extends AbstractHtmlTabularReportPanel
                     for(Enumeration e = activeTarget.getDependencies(); e.hasMoreElements(); )
                     {
                         String targetName = e.nextElement().toString();
-                        if(! antBuildDialog.isShowPrivateTargets() && antBuildDialog.isPrivateTargetName(targetName))
+                        if(! antBuildDialog.getAntProject().isShowPrivateTargets() && antBuildDialog.getAntProject().isPrivateTargetName(targetName))
                             continue;
                         if(! first)
                             dep.append(", ");

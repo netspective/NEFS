@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SparxTask.java,v 1.4 2003-07-09 02:13:29 shahid.shah Exp $
+ * $Id: SparxTask.java,v 1.5 2003-07-12 03:31:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -50,6 +50,7 @@ import com.netspective.axiom.ant.AxiomTask;
 import com.netspective.axiom.SqlManager;
 import com.netspective.commons.xdm.XdmComponent;
 import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.Dialog;
@@ -114,7 +115,7 @@ public class SparxTask extends AxiomTask
                 for(int i = 0; i < dialogs.size(); i++)
                 {
                     Dialog dialog = dialogs.get(i);
-                    if(dialog.getQualifiedName().startsWith("console"))
+                    if(dialog.getQualifiedName().startsWith(ConsoleServlet.CONSOLE_ID))
                         continue;
 
                     dialog.generateDialogContextBean(getDestDir(), dcbPackage);

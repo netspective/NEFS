@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildProjectMethod.java,v 1.1 2003-06-22 00:27:28 shahid.shah Exp $
+ * $Id: AntBuildProjectMethod.java,v 1.2 2003-07-12 03:33:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -54,7 +54,7 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.ext.beans.BeansWrapper;
 
-import com.netspective.sparx.console.form.AntBuildDialog;
+import com.netspective.sparx.ant.AntProject;
 
 public class AntBuildProjectMethod implements TemplateMethodModel
 {
@@ -63,7 +63,7 @@ public class AntBuildProjectMethod implements TemplateMethodModel
         if (args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expecting name of ant build project file.");
 
-        Project project = AntBuildDialog.getConfiguredProject(new File((String) args.get(0)));
+        Project project = AntProject.getConfiguredProject(new File((String) args.get(0)));
         return BeansWrapper.getDefaultInstance().wrap(project);
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildProjectsPage.java,v 1.1 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: AntBuildProjectsPage.java,v 1.2 2003-07-12 03:32:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.page.project;
@@ -48,6 +48,8 @@ import com.netspective.sparx.console.ConsoleServletPage;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.ant.AntProjects;
 import com.netspective.sparx.ant.AntProject;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.text.TextUtils;
 
 public class AntBuildProjectsPage extends ConsoleServletPage
 {
@@ -67,7 +69,8 @@ public class AntBuildProjectsPage extends ConsoleServletPage
             AntProject antProject = antProjects.getByIndex(i);
             AntProjectPage page = new AntProjectPage();
             page.setAntProject(antProject);
-            page.setName(antProject.getId());
+            page.setName(TextUtils.xmlTextToJavaIdentifier(antProject.getId(), false));
+            page.setCaption(new StaticValueSource(antProject.getId()));
             appendChild(page);
 
             if(antProject.isDefault())

@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.32 2003-07-12 02:09:46 aye.thu Exp $
+  * $Id: sparx.xml,v 1.33 2003-07-12 03:32:16 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -12,7 +12,6 @@
     <register-value-source class="com.netspective.sparx.value.source.ServletRequestParameterValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.HttpServletSessionAttributeValueSource"/>
     <register-value-source class="com.netspective.sparx.value.source.DialogPerspectiveExprValueSource"/>
-
 
     <register-theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" resources-path="servlet-context-path:/sparx/theme/slate">
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
@@ -28,8 +27,6 @@
     <register-command class="com.netspective.sparx.command.QueryDefnCommand"/>
 
     <register-connection-provider-entry-statistics class="com.netspective.sparx.console.panel.data.ResinDataSourcePoolStatistics"/>
-
-    <register-ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/ant-build-project.xml" default="yes"/>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>
@@ -82,5 +79,18 @@
 
     <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
     <dialog-field-conditional-action name="display" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay"/>
+
+
+    <dialog-field-type name="ant-build-property" class="com.netspective.sparx.ant.AntBuildDialogPropertyField"/>
+    <dialog-type name="ant-build" class="com.netspective.sparx.ant.AntBuildDialog">
+        <frame heading="Ant Build"/>
+        <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
+        <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
+        <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
+    </dialog-type>
+
+    <register-ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/ant-build-project.xml" default="yes">
+        <dialog type="ant-build"/>
+    </register-ant-project>
 
 </xdm:container>
