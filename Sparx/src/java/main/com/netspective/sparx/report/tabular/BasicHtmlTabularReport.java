@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReport.java,v 1.7 2003-07-12 02:14:08 aye.thu Exp $
+ * $Id: BasicHtmlTabularReport.java,v 1.8 2003-08-01 05:45:58 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -86,5 +86,16 @@ public class BasicHtmlTabularReport extends AbstractTabularReport implements Htm
         return new HtmlReportActions();
     }
 
-
+    public void finalizeContents()
+    {
+        super.finalizeContents();
+        if (actions != null && actions.size() > 0)
+        {
+            HtmlReportAction selectableAction = (HtmlReportAction) actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
+            if (selectableAction != null)
+            {
+                this.getFlags().setFlag(HtmlTabularReport.Flags.SELECTABLE);
+            }
+        }
+    }
 }
