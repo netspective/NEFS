@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.3 2003-04-01 01:45:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -63,11 +63,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletRequest;
 import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.text.TextUtils;
 
 public class NavigationContext extends BasicDbHttpServletValueContext
 {
@@ -106,6 +103,10 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         activePage = (NavigationPage) activePathFindResults.getMatchedPath();
         maxLevel = ownerTree.getMaxLevel();
 
+        NavigationPage firstDescendantWithBody = findFirstMemberWithBody(activePage);
+        if(firstDescendantWithBody != null)
+            activePage = firstDescendantWithBody;
+
         if(activePage != null)
         {
             if(! activePage.isValid(this))
@@ -113,6 +114,17 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
             activePage.makeStateChanges(this);
         }
+    }
+
+    public NavigationPage findFirstMemberWithBody(NavigationPage parent)
+    {
+        if(parent == null || (parent != null && parent.flagIsSet(NavigationPage.NAVGPAGEFLAG_HAS_BODY)))
+            return parent;
+
+        NavigationPage defNavigationPage = (NavigationPage) parent.getDefaultChild();
+        if(defNavigationPage == null)
+            defNavigationPage = parent.getFirstFocusableChild();
+        return findFirstMemberWithBody(defNavigationPage);
     }
 
     public final NavigationTree.FindResults getActivePathFindResults()

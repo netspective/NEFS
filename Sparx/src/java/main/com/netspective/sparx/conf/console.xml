@@ -13,7 +13,7 @@
             </panels>
         </page>
         <page name="application" caption="Application">
-            <page name="xdm" caption="XDM Components">
+            <page name="xdm" caption="XDM">
                 <page name="components" caption="Instances">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
@@ -34,6 +34,7 @@
 	        <page name="metrics" caption="Metrics"/>
 	        <page name="configuration" caption="Configuration Properties"/>
 	        <page name="access-control" caption="Access Control"/>
+            <page name="commands" caption="Commands"/>
 	        <page name="value-source" caption="Value Sources">
                 <page name="documentation" caption="Documentation" heading="Value Sources Documentation">
                     <panels>
@@ -49,8 +50,8 @@
         </page>
         <page name="presentation" caption="Presentation">
 	        <page name="navigation" caption="Navigation">
-				<page name="navigation" caption="Navigation"/>
-				<page name="dialogs" caption="Dialogs"/>
+                <page name="catalog" caption="Catalog"/>
+                <page name="test" caption="Unit Test"/>
 	        </page>
 	        <page name="dialog" caption="Dialogs">
 				<page name="catalog" caption="Catalog"/>

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.3 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.4 2003-04-01 01:45:50 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -71,7 +71,8 @@ import javax.servlet.http.HttpServletRequest;
 public class NavigationPage extends NavigationPath
 {
     static public final long NAVGPAGEFLAG_REJECT_FOCUS = 1;
-    static public final long NAVGPAGEFLAG_HIDDEN = NAVGPAGEFLAG_REJECT_FOCUS * 2;
+    static public final long NAVGPAGEFLAG_HAS_BODY = NAVGPAGEFLAG_REJECT_FOCUS * 2;
+    static public final long NAVGPAGEFLAG_HIDDEN = NAVGPAGEFLAG_HAS_BODY * 2;
     static public final long NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS = NAVGPAGEFLAG_HIDDEN * 2;
     static public final long NAVGPAGEFLAG_STARTCUSTOM = NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS * 2;
 
@@ -375,6 +376,7 @@ public class NavigationPage extends NavigationPath
     public HtmlLayoutPanel createPanels()
     {
         panel = new HtmlLayoutPanel();
+        setFlag(NAVGPAGEFLAG_HAS_BODY);
         return panel;
     }
 
