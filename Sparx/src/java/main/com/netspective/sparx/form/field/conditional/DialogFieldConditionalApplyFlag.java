@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.13 2004-01-27 04:05:05 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.14 2004-06-24 04:29:10 jeremy.d.hulick Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -60,6 +60,7 @@ import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
@@ -225,9 +226,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         return hasPermissions;
     }
 
-    public void setHasPermissions(String[] permissions)
+    public void setHasPermissions(String permissions)
     {
-        this.hasPermissions = permissions;
+        this.hasPermissions = TextUtils.split(permissions, ",", true); //permissions;
     }
 
     public String[] getLackPermissions()
@@ -235,9 +236,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         return lackPermissions;
     }
 
-    public void setLackPermissions(String[] lackPermissions)
+    public void setLackPermissions(String lackPermissions)
     {
-        this.lackPermissions = lackPermissions;
+            this.lackPermissions = TextUtils.split(lackPermissions, ",", true); //lackPermissions;
     }
 
     public void applyFlags(DialogContext dc)
