@@ -55,6 +55,8 @@ import javax.ejb.Inheritance;
 import javax.ejb.InheritanceType;
 import javax.ejb.Table;
 import javax.ejb.GeneratorType;
+import javax.ejb.ManyToOne;
+import javax.ejb.JoinColumn;
 
 @Entity
 @Table(name = "Party_Identifier_Type")
@@ -70,6 +72,8 @@ public class PartyIdentifierType extends AbstractTopLevelEntity
     private String name;
     private DataEncryptionType encryptionType;
     private int maxAllowed = 1;
+
+    private Party party;
 
     public PartyIdentifierType()
     {
@@ -127,5 +131,17 @@ public class PartyIdentifierType extends AbstractTopLevelEntity
     public void setMaxAllowed(int maxAllowed)
     {
         this.maxAllowed = maxAllowed;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "party_id")
+    public Party getParty()
+    {
+        return party;
+    }
+
+    public void setParty(final Party party)
+    {
+        this.party = party;
     }
 }
