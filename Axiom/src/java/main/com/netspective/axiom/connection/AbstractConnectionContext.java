@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.13 2003-08-24 18:33:26 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.14 2003-08-31 22:41:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -78,7 +78,6 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         return connectionContextsWithOpenConnections;
     }
 
-    private int ownership;
     private DatabaseConnValueContext dbvc;
     private DatabasePolicy dbPolicy;
     private String dataSourceId;
@@ -86,26 +85,20 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     private long creationTime;
     private ConnectionContextNotClosedException contextNotClosedException;
 
-    public AbstractConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc, int ownership)
+    public AbstractConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc)
     {
         this.creationTime = System.currentTimeMillis();
         this.dataSourceId = dataSourceId;
         this.dbvc = dbvc;
-        this.ownership = ownership;
-    }
-
-    public int getOwnership()
-    {
-        return ownership;
-    }
-
-    public void setOwnership(int ownership)
-    {
-        this.ownership = ownership;
     }
 
     public void initializeConnection(Connection conn) throws SQLException
     {
+    }
+
+    public boolean isBoundToSession()
+    {
+        return false;
     }
 
     public Connection getConnection() throws NamingException, SQLException
@@ -206,6 +199,28 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         StringWriter sw = new StringWriter();
         contextNotClosedException.printStackTrace(new PrintWriter(sw));
         return sw.getBuffer().toString();
+    }
+
+    public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message)
+    {
+        if(message == null)
+            message = "** CONNECTION LEAK DETECTED ** Connection for DataSource '"+ getDataSourceId() +"' not closed -- rolling back and forcing close now.\n";
+
+        if(log.isErrorEnabled())
+            log.error(message, getContextNotClosedException());
+        else
+        {
+            System.err.println(message);
+            getContextNotClosedException().printStackTrace(System.err);
+        }
+        try
+        {
+            rollbackAndClose();
+        }
+        catch (SQLException e)
+        {
+            log.error("Unable to close leaking connection", e);
+        }
     }
 
     /*-------------------------------------------------------------

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TransactionConnectionContext.java,v 1.2 2003-08-17 00:00:40 shahid.shah Exp $
+ * $Id: TransactionConnectionContext.java,v 1.3 2003-08-31 22:41:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -52,9 +52,9 @@ import com.netspective.axiom.connection.AbstractConnectionContext;
 
 public class TransactionConnectionContext extends AbstractConnectionContext
 {
-    public TransactionConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc, int ownership)
+    public TransactionConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc)
     {
-        super(dataSourceId, dbvc, ownership);
+        super(dataSourceId, dbvc);
     }
 
     public void initializeConnection(Connection conn) throws SQLException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AutoCommitConnectionContext.java,v 1.2 2003-08-17 00:00:40 shahid.shah Exp $
+ * $Id: AutoCommitConnectionContext.java,v 1.3 2003-08-31 22:41:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -49,8 +49,8 @@ import com.netspective.axiom.connection.AbstractConnectionContext;
 
 public class AutoCommitConnectionContext extends AbstractConnectionContext
 {
-    public AutoCommitConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc, int ownership)
+    public AutoCommitConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc)
     {
-        super(dataSourceId, dbvc, ownership);
+        super(dataSourceId, dbvc);
     }
 }

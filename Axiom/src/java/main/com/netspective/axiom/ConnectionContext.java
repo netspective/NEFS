@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionContext.java,v 1.3 2003-08-17 00:00:05 shahid.shah Exp $
+ * $Id: ConnectionContext.java,v 1.4 2003-08-31 22:40:12 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -49,6 +49,8 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
+import org.apache.commons.logging.Log;
+
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.value.DatabasePolicyValueContext;
 import com.netspective.axiom.connection.ConnectionContextNotClosedException;
@@ -56,17 +58,16 @@ import com.netspective.commons.value.ValueContext;
 
 public interface ConnectionContext extends DatabasePolicyValueContext
 {
-    public final static int OWNERSHIP_DEFAULT            = 0;
-    public final static int OWNERSHIP_AUTHENTICATED_USER = 1;
+    /**
+     * Is this a shared connection across a user's session?
+     * @return True if this connection is bound to a user's session or false if it belongs to the application
+     */
+    public boolean isBoundToSession();
 
     /**
      * Retrieve the DatabaseValueContext instance that created this object.
      */
     public DatabaseConnValueContext getDatabaseValueContext();
-
-    public int getOwnership();
-
-    public void setOwnership(int ownership);
 
     /**
      * Retrieve the connection instance associated with this context. If the method is being called the first time for
@@ -103,4 +104,12 @@ public interface ConnectionContext extends DatabasePolicyValueContext
      * @return
      */
     public ConnectionContextNotClosedException getContextNotClosedException();
+
+    /**
+     * This method is useful in error handlers at application closing or other times when this connection should be
+     * considered a connection leak and log message should be presented.
+     * @param log The log to use to send the error to
+     * @param message If null, a default message will appear before the stack trace of the originating cc opener is displayed
+     */
+    public void rollbackAndCloseAndLogAsConnectionLeak(Log log, String message);
 }
