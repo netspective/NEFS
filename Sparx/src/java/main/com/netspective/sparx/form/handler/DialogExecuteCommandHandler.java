@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteCommandHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteCommandHandler.java,v 1.2 2003-08-06 18:05:41 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -67,15 +67,6 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
     {
     }
 
-    public TemplateConsumerDefn getTemplateConsumerDefn()
-    {
-        return DialogExecuteHandlerTemplateConsumer.INSTANCE;
-    }
-
-    public void registerTemplateConsumption(Template template)
-    {
-    }
-
     public Command getCommand()
     {
         return command;
@@ -88,9 +79,16 @@ public class DialogExecuteCommandHandler extends DialogExecuteDefaultHandler
 
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
+        HttpServletCommand httpCommand = (HttpServletCommand) getCommand();
+        if(httpCommand == null)
+        {
+            writer.write("No command provided.");
+            return;
+        }
+
         try
         {
-            ((HttpServletCommand) getCommand()).handleCommand(writer, dc, false);
+            httpCommand.handleCommand(writer, dc, false);
         }
         catch (CommandException e)
         {

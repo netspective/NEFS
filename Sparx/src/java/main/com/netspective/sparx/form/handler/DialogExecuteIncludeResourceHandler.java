@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteIncludeResourceHandler.java,v 1.1 2003-08-06 01:05:37 shahid.shah Exp $
+ * $Id: DialogExecuteIncludeResourceHandler.java,v 1.2 2003-08-06 18:05:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -55,6 +55,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.command.HttpServletCommand;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -69,15 +70,6 @@ public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHan
         this.include = include;
     }
 
-    public TemplateConsumerDefn getTemplateConsumerDefn()
-    {
-        return DialogExecuteHandlerTemplateConsumer.INSTANCE;
-    }
-
-    public void registerTemplateConsumption(Template template)
-    {
-    }
-
     public ValueSource getInclude()
     {
         return include;
@@ -90,6 +82,12 @@ public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHan
 
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
+        if(include == null)
+        {
+            writer.write("No include resource provided.");
+            return;
+        }
+
         // NOTE: the tricky thing about rd.include is that it has it uses the getReponse().getWriter(), not our writer
         //       that was passed in -- that may cause some confusion in the output
         String includeUrl = getInclude().getTextValue(dc);
