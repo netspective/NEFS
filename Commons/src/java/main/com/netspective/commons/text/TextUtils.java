@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.3 2003-03-19 08:15:54 shahbaz.javeed Exp $
+ * $Id: TextUtils.java,v 1.4 2003-04-01 13:06:34 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.text;
@@ -196,8 +196,8 @@ public class TextUtils
     static public String replaceTextValues(final String originalText, final String findText, final String replaceText)
     {
 		//TODO: Might it be better to make it so it's just if (null == findText || null == replaceText) return originalText ?
-        if (originalText == null || findText == null || replaceText == null)
-            return null;
+        if (findText == null || replaceText == null)
+            return originalText;
 
         String activeText = originalText;
         int findLoc = activeText.indexOf(findText);
@@ -219,6 +219,27 @@ public class TextUtils
 
         return activeText;
     }
+
+	/**
+	 * Perform a simple string replacement of findStr to replStr in all the members of origStr and returns the result.
+	 * All instances of findStr are replaced to replStr (regardless of how many there are). Not optimized for
+	 * performance.
+	 * @param originalText An array containing all the source texts on which this replacement should be performed
+	 * @param findText The text to locate
+	 * @param replaceText The text to replace for each findStr
+	 */
+	static public String[] replaceTextValues(final String[] originalText, final String findText, final String replaceText)
+	{
+        String[] returnValue = new String[originalText.length];
+
+		if (null == findText || null == replaceText)
+			returnValue = originalText;
+		else
+			for (int i = 0; i < originalText.length; i ++)
+				returnValue[i] = replaceTextValues(originalText[i], findText, replaceText);
+
+		return returnValue;
+	}
 
     /**
      * returns the boolean equivalent of a string, which is considered true
