@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.2 2003-08-03 17:18:28 shahid.shah Exp $
+$Id: README.TXT,v 1.3 2003-08-03 17:20:45 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -26,6 +26,10 @@ Default location on development boxes
 * NEFS_HOME/tools/idea/classes for build directory through IDEA
 * NEFS_HOME/webapps for test applications
 
+Note: All defaults assume development work is being done on a Win32 platform
+      but everything will work on OS X, Linux, and UNIX as well. Just follow
+      the instructions below in "First-time only steps".
+
 Note: There is a default resin configuration file called
       NEFS_HOME/webapps/resin-2.x.conf available for your use. This
       configuration file points to port 8099 as the webserver and
@@ -35,9 +39,9 @@ Note: There is a default resin configuration file called
 Steps for obtaining the code
 ------------------------------------------------------------------------------
 1. cvs checkout Axiom (into NEFS_HOME/Axiom)
-2. cvs checkout Commons (into NEFS_HOME/Commons) 
-3. cvs checkout Junxion (into NEFS_HOME/Junxion) 
-4. cvs checkout Sparx (into NEFS_HOME/Sparx) 
+2. cvs checkout Commons (into NEFS_HOME/Commons)
+3. cvs checkout Junxion (into NEFS_HOME/Junxion)
+4. cvs checkout Sparx (into NEFS_HOME/Sparx)
 5. cvs checkout tools (into NEFS_HOME/tools -- contains IDEA project)
 6. cvs checkout webapps (into NEFS_HOME/webapps -- contains all the test and
    sample applications)
@@ -56,7 +60,7 @@ Steps for all builds (each time code is updated)
 ------------------------------------------------------------------------------
 1. Open IDEA using NEFS_HOME/tools/idea/Netspective Frameworks.ipr project
    file.
-2. Compile full project (will put classes in NEFS_HOME/tools/idea/classes) 
+2. Compile full project (will put classes in NEFS_HOME/tools/idea/classes)
 3. Start Resin using NEFS_HOME/webapps/resin-2.x.conf configuration file and
    point to http://localhost:8099/ to view the NEFS Web Apps home page.
    Resin is started on Windows from the command line using
