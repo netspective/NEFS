@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.44 2003-10-29 13:29:13 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.45 2003-11-04 16:32:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -98,6 +98,7 @@ import com.netspective.commons.io.InputSourceLocator;
  */
 public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(DialogField.class);
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };

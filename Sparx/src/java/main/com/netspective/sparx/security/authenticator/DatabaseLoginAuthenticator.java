@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.4 2003-08-31 03:11:50 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.5 2003-11-04 16:33:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -51,12 +51,14 @@ import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(DatabaseLoginAuthenticator.class);
 
     private Query passwordQuery;        // the query to get the user's password

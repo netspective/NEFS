@@ -52,7 +52,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * @author aye
- * $Id: QueryDefnSelect.java,v 1.1 2003-07-07 03:40:25 aye.thu Exp $
+ * $Id: QueryDefnSelect.java,v 1.2 2003-11-04 16:34:02 shahid.shah Exp $
  */
 public class QueryDefnSelect  extends com.netspective.axiom.sql.dynamic.QueryDefnSelect
 {
@@ -105,6 +105,11 @@ public class QueryDefnSelect  extends com.netspective.axiom.sql.dynamic.QueryDef
         public void setDefaultPanel(QueryReportPanel defaultPanel)
         {
             this.defaultPanel = defaultPanel;
+        }
+
+        public void addText(String text)
+        {
+            // do nothing, required by XDM because we need to ignore text but can't have a static XML_DATA_MODEL_SCHEMA_OPTIONS in inner class
         }
     }
 
