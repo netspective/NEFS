@@ -56,7 +56,13 @@ div.panel-layout-column   { padding: 3px 0px 3px 0px; }
  * Styles for the record editor panel
  * =============================================
  */
+
+a.panel-editor-manage-frame-heading:link { text-decoration: none; color: #000000; }
+a.panel-editor-manage-frame-heading:visited { text-decoration: none; color: #000000; }
+a.panel-editor-manage-frame-heading:hover { text-decoration: underline; }
+
 .panel-editor-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma, Arial; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 0px }
+
 .panel-editor-frame-heading-action-left-blank   { background: url(../images/panel/output/frame-heading-action-left.gif) no-repeat left top; width: 17px; height: 19px }
 .panel-editor-frame-heading-action-right-blank   { background: url(../images/panel/output/frame-heading-action-right.gif) no-repeat right top; height: 19px }
 .panel-editor-frame-heading-action-collapse   { background: url(../images/panel/output/frame-heading-action-up.gif) no-repeat; width: 22px; height: 19px; cursor: hand; }

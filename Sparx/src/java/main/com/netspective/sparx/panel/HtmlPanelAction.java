@@ -50,6 +50,7 @@ public class HtmlPanelAction
     public class Flags extends XdmBitmaskedFlagsAttribute
     {
         public static final int HIDDEN = 1;
+        public static final int FIRST_AVAILABLE_FLAG = HIDDEN * 2;
         private State state = null;
 
         public Flags()

@@ -54,6 +54,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelAction.Flags;
 import com.netspective.sparx.panel.HtmlPanelActionStates;
 import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.sparx.panel.HtmlPanelBanner;
@@ -76,6 +77,9 @@ public class PanelEditor extends AbstractPanel
     public static final String PANEL_RECORD_DONE_ACTION = "Done";
     public static final String PANEL_CONTENT_DELETE_ACTION = "Delete";
 
+    public static final StaticValueSource CAPTION_MANAGE_ACTION = new StaticValueSource(PANEL_CONTENT_MANAGE_ACTION);
+    public static final StaticValueSource CAPTION_DONE_ACTION = new StaticValueSource(PANEL_RECORD_DONE_ACTION);
+
     // the following are all the possible displaymodes that the editor panel can be in
     public static final int UNKNOWN_MODE = -1;
     public static final int MODE_DISPLAY = 1;    /* default display report mode */
@@ -84,6 +88,7 @@ public class PanelEditor extends AbstractPanel
     public static final int MODE_ADD = 4;    /* add content mode (dialog and current content) */
     public static final int MODE_MANAGE = 5;    /* managing content (report only but different from default) */
 
+    public static final int PANELACTIONFLAG_ISMANAGEACTION = HtmlPanelAction.Flags.FIRST_AVAILABLE_FLAG;
 
     /* default skin to use to display query report panel */
     public static final String DEFAULT_EDITOR_SKIN = "panel-editor";
@@ -112,9 +117,6 @@ public class PanelEditor extends AbstractPanel
     private String requireRequestParam = null;
     /* child elements for content */
     private Map elements = new HashMap();
-
-    /* whether or not the add action should always be shown or only when in Manage mode */
-    private boolean showManageButton;
 
     /* whether or not the add action should always be shown or only when in Manage mode */
     private boolean alwaysShowAddAction;
@@ -213,16 +215,6 @@ public class PanelEditor extends AbstractPanel
     public void setAlwaysShowAddAction(boolean alwaysShowAddAction)
     {
         this.alwaysShowAddAction = alwaysShowAddAction;
-    }
-
-    public boolean isShowManageButton()
-    {
-        return showManageButton;
-    }
-
-    public void setShowManageButton(boolean showManageButton)
-    {
-        this.showManageButton = showManageButton;
     }
 
     /**
@@ -551,7 +543,7 @@ public class PanelEditor extends AbstractPanel
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
         if(mode == MODE_DISPLAY)
         {
-            actionStates.getState("Done").getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             PanelEditorContentElement[] elements = getElementsAsArray();
             String caption = null;
             for(int i = 0; i < elements.length; i++)
@@ -587,17 +579,15 @@ public class PanelEditor extends AbstractPanel
         HtmlPanelActions actions = new HtmlPanelActions();
         HtmlPanelAction manageAction = frame.createAction();
 
-        if(showManageButton)
-        {
-            String manageUrl = generatePanelActionUrl(PanelEditor.MODE_MANAGE);
-            manageAction.setCaption(new StaticValueSource("Manage"));
-            manageAction.setRedirect(new RedirectValueSource(manageUrl));
-            actions.add(manageAction);
-        }
+        String manageUrl = generatePanelActionUrl(PanelEditor.MODE_MANAGE);
+        manageAction.setCaption(CAPTION_MANAGE_ACTION);
+        manageAction.setRedirect(new RedirectValueSource(manageUrl));
+        manageAction.getFlags().setFlag(PANELACTIONFLAG_ISMANAGEACTION | Flags.HIDDEN); // the skin renders the heading of the panel editor as the "manage" button
+        actions.add(manageAction);
 
         String doneUrl = generatePanelActionUrl(PanelEditor.MODE_DISPLAY);
         HtmlPanelAction doneAction = frame.createAction();
-        doneAction.setCaption(new StaticValueSource("Done"));
+        doneAction.setCaption(CAPTION_DONE_ACTION);
         doneAction.setRedirect(new RedirectValueSource(doneUrl));
         actions.add(doneAction);
         frame.setActions(actions);

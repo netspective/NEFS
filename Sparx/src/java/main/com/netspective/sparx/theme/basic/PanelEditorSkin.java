@@ -45,6 +45,7 @@ import com.netspective.sparx.panel.HtmlPanelActionStates;
 import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.panel.editor.PanelEditor;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
@@ -83,7 +84,12 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             String heading = null;
             ValueSource hvs = frame.getHeading();
             if(hvs != null)
+            {
                 heading = hvs.getValue(vc).getTextValue();
+                HtmlPanelAction manageAction = frame.getActions().get(0);
+                heading = "<a class='panel-editor-manage-frame-heading' href='" + manageAction.getRedirect().getUrl(vc) + "'>" + heading + "</a>";
+            }
+
             if(heading != null && !frame.isHideHeading(vc))
             {
                 writer.write("<tr>\n");
@@ -162,7 +168,8 @@ public class PanelEditorSkin extends RecordEditorReportSkin
             {
                 HtmlPanelAction item = actions.get(i);
                 HtmlPanelAction.State state = actionStates.getState(item);
-                if(state != null && state.getStateFlags().flagIsSet(HtmlPanelAction.Flags.HIDDEN))
+                final HtmlPanelAction.Flags stateFlags = state.getStateFlags();
+                if(state != null && stateFlags.flagIsSet(HtmlPanelAction.Flags.HIDDEN) || stateFlags.flagIsSet(PanelEditor.PANELACTIONFLAG_ISMANAGEACTION))
                     continue;
 
                 if(displayedItems == 0)
