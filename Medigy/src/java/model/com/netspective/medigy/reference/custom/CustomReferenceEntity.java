@@ -35,75 +35,14 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
+ * @author Shahid N. Shah
  */
-package com.netspective.medigy.model.common;
 
-import javax.ejb.Column;
-import javax.ejb.Transient;
+/*
+ * Copyright (c) 2005 Your Corporation. All Rights Reserved.
+ */
+package com.netspective.medigy.reference.custom;
 
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
-
-
-public class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity
+public interface CustomReferenceEntity
 {
-    private Long systemId;
-    private String appCode;
-    private String name;
-    private DataEncryptionType encryptionType;
-    private int maxAllowed = 1;
-
-    @Transient
-            public Long getSystemId()
-    {
-        return systemId;
-    }
-
-    protected void setSystemId(Long systemId)
-    {
-        this.systemId = systemId;
-    }
-
-    public String getAppCode()
-    {
-        return appCode;
-    }
-
-    public void setAppCode(String appCode)
-    {
-        this.appCode = appCode;
-    }
-
-    @Column(nullable = false)
-            public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    @Column(nullable = false)
-            public DataEncryptionType getEncryptionType()
-    {
-        return encryptionType;
-    }
-
-    public void setEncryptionType(DataEncryptionType encryptionType)
-    {
-        this.encryptionType = encryptionType;
-    }
-
-    @Column(nullable = false)
-            public int getMaxAllowed()
-    {
-        return maxAllowed;
-    }
-
-    public void setMaxAllowed(int maxAllowed)
-    {
-        this.maxAllowed = maxAllowed;
-    }
 }

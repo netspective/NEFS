@@ -45,8 +45,10 @@ package com.netspective.medigy.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.Table;
 
@@ -56,12 +58,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
 
+import com.netspective.medigy.model.common.EntitySeedData;
+import com.netspective.medigy.model.common.EntitySeedDataProvider;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
 
 public class HibernateConfiguration extends AnnotationConfiguration
 {
     private final Map<Class, Class> referenceEntitiesAndCachesMap = new HashMap<Class, Class>();
+    private final Set<Class> entitiesWithSeedDataSet = new HashSet<Class>();
 
     public HibernateConfiguration()
     {
@@ -75,14 +80,14 @@ public class HibernateConfiguration extends AnnotationConfiguration
 
     public AnnotationConfiguration addAnnotatedClass(final Class aClass) throws MappingException
     {
-        if(ReferenceEntity.class.isAssignableFrom(aClass))
+        if (ReferenceEntity.class.isAssignableFrom(aClass))
         {
             boolean foundCache = false;
-            for(final Class ic : aClass.getClasses())
+            for (final Class ic : aClass.getClasses())
             {
-                if(CachedReferenceEntity.class.isAssignableFrom(ic))
+                if (CachedReferenceEntity.class.isAssignableFrom(ic))
                 {
-                    if(ic.isEnum())
+                    if (ic.isEnum())
                     {
                         referenceEntitiesAndCachesMap.put(aClass, ic);
                         foundCache = true;
@@ -94,12 +99,15 @@ public class HibernateConfiguration extends AnnotationConfiguration
                 }
             }
 
-            if(! foundCache)
+            if (!foundCache)
                 throw new HibernateException(aClass + " is marked as a ReferenceEntity but does not contain a ReferenceEntityCache enum.");
 
             // TODO: find out how to ensure the new mapping for reference type is immutable and read only
             // final PersistentClass pClass = getClassMapping(aClass.getName());
         }
+
+        if (EntitySeedDataProvider.class.isAssignableFrom(aClass))
+            entitiesWithSeedDataSet.add(aClass);
 
         return super.addAnnotatedClass(aClass);
     }
@@ -107,30 +115,83 @@ public class HibernateConfiguration extends AnnotationConfiguration
     public String[] generateSchemaCreationScript(final Dialect dialect) throws HibernateException
     {
         final String[] existingDDL = super.generateSchemaCreationScript(dialect);
-        if(dialect instanceof HSQLDialect)
+        if (dialect instanceof HSQLDialect)
         {
-            for(int i = 0; i < existingDDL.length; i++)
+            for (int i = 0; i < existingDDL.length; i++)
                 existingDDL[i] = existingDDL[i].replaceFirst("create table ", "create cached table ");
         }
 
-        if(referenceEntitiesAndCachesMap.size() == 0)
+        if (referenceEntitiesAndCachesMap.size() == 0)
             return existingDDL;
 
         final List<String> newDDL = new ArrayList<String>();
-        for(String s : existingDDL)
+        for (String s : existingDDL)
             newDDL.add(s);
 
-        for(final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
+        for (final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
         {
             final Class refEntityClass = entry.getKey();
             final Class refEntityCacheEnum = entry.getValue();
             final String tableName = ((Table) refEntityClass.getAnnotation(Table.class)).name();
 
-            for(final Object x : refEntityCacheEnum.getEnumConstants())
+            for (final Object x : refEntityCacheEnum.getEnumConstants())
             {
                 final CachedReferenceEntity cached = (CachedReferenceEntity) x;
                 //TODO: this is kind of dumb right now, we need to do proper formatting of output, etc.
-                newDDL.add("insert into "+ tableName +" (type_id, type_label) values ('"+ cached.getId() +"', '"+ cached.getLabel() +"')");
+                newDDL.add("insert into " + tableName + " (type_id, type_label) values ('" + cached.getId() + "', '" + cached.getLabel() + "')");
+            }
+        }
+
+        for (final Class seedDataEntityClass : entitiesWithSeedDataSet)
+        {
+            final String tableName = ((Table) seedDataEntityClass.getAnnotation(Table.class)).name();
+            try
+            {
+                final EntitySeedDataProvider esdp = (EntitySeedDataProvider) seedDataEntityClass.newInstance();
+                final EntitySeedData esd = esdp.getEntitySeedData();
+                if (esd != null)
+                {
+                    final String[] columnNames = esd.getColumnNames();
+                    if (columnNames == null)
+                        throw new HibernateException("EntitySeedData column names are NULL for " + tableName + " " + seedDataEntityClass);
+
+                    final Object[][] data = esd.getSeedData();
+                    if (data == null || data.length == 0)
+                        throw new HibernateException("EntitySeedData data is NULL for " + tableName + " " + seedDataEntityClass);
+
+                    for (int row = 0; row < columnNames.length; row++)
+                    {
+                        final Object[] rowData = data[row];
+                        if (columnNames.length != rowData.length)
+                            throw new HibernateException("Column names length does not match data columns length for row " + row + " of " + tableName + " " + seedDataEntityClass);
+
+                        final StringBuffer rowSql = new StringBuffer("insert into " + tableName + " (");
+                        for (int i = 0; i < columnNames.length; i++)
+                        {
+                            if (i > 0) rowSql.append(", ");
+                            rowSql.append(columnNames[i]);
+                        }
+
+                        rowSql.append(") values (");
+                        for (int column = 0; column < rowData.length; column++)
+                        {
+                            final Object element = rowData[column];
+                            if (element instanceof Number)
+                                rowSql.append(element.toString());
+                            else
+                                rowSql.append("'" + element.toString().replaceAll("'", "''") + "'");
+                        }
+                        rowSql.append(")");
+                        newDDL.add(rowSql.toString());
+                    }
+
+                }
+                else
+                    throw new HibernateException("EntitySeedData is NULL for " + tableName + " " + seedDataEntityClass);
+            }
+            catch (Exception e)
+            {
+                throw new HibernateException(e);
             }
         }
 
