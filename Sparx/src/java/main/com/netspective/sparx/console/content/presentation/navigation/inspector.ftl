@@ -28,7 +28,7 @@
                         <td class="report-column-${classSuffix}">
                             <nobr>
                             <img src="${vc.activeTheme.getResourceUrl('/images/navigation/tree.gif')}"/>
-                            <a href="${vc.consoleUrl}/presentation/navigation/tree/${activePage.owner.name}">${activePage.owner.name}</a>
+                            <a href="${vc.servletRootUrl}/presentation/navigation/tree/${activePage.owner.name}">${activePage.owner.name}</a>
                             </nobr>
                         </td>
                     </tr>
@@ -41,7 +41,7 @@
                                 <nobr>
                                 <#list 0..parent.level as i>&nbsp;&nbsp;</#list>
                                 <img src="${vc.activeTheme.getResourceUrl('/images/navigation/pages.gif')}"/>
-                                <a href="${vc.consoleUrl}/presentation/navigation/inspector${parent.qualifiedNameIncludingTreeId}">${parent.name}</a>
+                                <a href="${vc.servletRootUrl}/presentation/navigation/inspector${parent.qualifiedNameIncludingTreeId}">${parent.name}</a>
                                 </nobr>
                             </td>
                         </tr>

@@ -19,7 +19,7 @@
                     <td class="report-column-${classSuffix}">
                         <nobr>
                         <img src="${vc.activeTheme.getResourceUrl('/images/access-control/acl.gif')}"/>
-                        <a href="${vc.consoleUrl}/project/access-control/tree/${activeItem.owner.name}">${activeItem.owner.name}</a>
+                        <a href="${vc.servletRootUrl}/project/access-control/tree/${activeItem.owner.name}">${activeItem.owner.name}</a>
                         </nobr>
                     </td>
                 </tr>
@@ -31,7 +31,7 @@
                             <nobr>
                             <#list 0..parent.level as i>&nbsp;&nbsp;</#list>
                             <img src="${vc.activeTheme.getResourceUrl('/images/access-control/roles.gif')}"/>
-                            <a href="${vc.consoleUrl}/project/access-control/role-inspector${parent.qualifiedName}">${parent.name}</a>
+                            <a href="${vc.servletRootUrl}/project/access-control/role-inspector${parent.qualifiedName}">${parent.name}</a>
                             </nobr>
                         </td>
                     </tr>

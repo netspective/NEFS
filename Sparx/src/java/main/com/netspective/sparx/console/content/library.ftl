@@ -157,7 +157,7 @@
 
         <!-- start from 1 because of the leading / -->
         <#list 1..tagsList?size-1 as index>
-            <#local url = "${vc.consoleUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}"/>
+            <#local url = "${vc.servletRootUrl}/reference/tags?parent-tags=${activeTags}&parent-xdm-classes=${activeClasses}&xdm-tag=${tagsList[index]}&xdm-class=${classesList[index]}"/>
             ${separator}<code>&lt;<a href="${vc.constructAppUrl(url)}">${tagsList[index]}</a>&gt;</code>
             <#assign activeTags = "${activeTags}/${tagsList[index]}"/>
             <#assign activeClasses = "${activeClasses}/${classesList[index]}"/>
@@ -221,7 +221,7 @@
             <b>Templates that may be applied to this tag</b>
             <ol>
                 <#list templates.entrySet() as templateEntry>
-                    <#local url = "${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}"/>
+                    <#local url = "${vc.servletRootUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}"/>
                     <li>${consumerData.templateRefAttrName}="<a href="${vc.constructAppUrl(url)}"><b>${templateEntry.key}</b></a>"</li>
                 </#list>
             </ol>
@@ -326,10 +326,10 @@
             <td class="report-column-${classSuffix}">
                 <nobr>
                 <#if childDetail.isTemplateProducer()>
-                    <#local url = "${vc.consoleUrl}/reference/templates?ns=${childDetail.getTemplateProducer().nameSpaceId}"/>
+                    <#local url = "${vc.servletRootUrl}/reference/templates?ns=${childDetail.getTemplateProducer().nameSpaceId}"/>
                 <#else>
                     <#local href="xdm-tag=${childDetail.elemName}&xdm-class=${childDetail.elemType.name}"/>
-                    <#local url="${vc.consoleUrl}/reference/tags?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"/>
+                    <#local url="${vc.servletRootUrl}/reference/tags?parent-tags=${parentTags}/${tag}&parent-xdm-classes=${parentXdmClasses}/${className}&${href}"/>
                 </#if>
                 <a href="${vc.constructAppUrl(url)}">
                 <#if childDetail.isRequired()>
@@ -355,7 +355,7 @@
                         <select onChange="document.location = this.options[this.selectedIndex].value">
                             <option>${templates.size()} templates</option>
                             <#list templates.entrySet() as templateEntry>
-                                <option value="${vc.consoleUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}">${consumerData.templateRefAttrName}="${templateEntry.key}"</option>
+                                <option value="${vc.servletRootUrl}/reference/templates?ns=${templateEntry.value.templateProducer.nameSpaceId}&tmpl=${templateEntry.key}">${consumerData.templateRefAttrName}="${templateEntry.key}"</option>
                             </#list>
                         </select>
                         <#else>
@@ -373,7 +373,7 @@
                     <select onChange="document.location = this.options[this.selectedIndex].value">
                         <option>${templates.size()} templates</option>
                         <#list templates.values() as template>
-                            <option value="${vc.consoleUrl}/reference/templates?ns=${producer.nameSpaceId}&tmpl=${template.templateName}">${template.templateName}</option>
+                            <option value="${vc.servletRootUrl}/reference/templates?ns=${producer.nameSpaceId}&tmpl=${template.templateName}">${template.templateName}</option>
                         </#list>
                     </select>
                 <#else>
@@ -421,7 +421,7 @@
                 <#if classJavaSourceFile.absolutePath.startsWith(servletRootPath)>
                     <#assign relativePath = classJavaSourceFile.absolutePath.substring(servletRootPath.length())/>
                     <#assign relativePathProperDelims = relativePath?replace('\\', '/')/>
-                    <#return "<a href='${vc.consoleUrl}/project/files/${relativePathProperDelims}' title='${class.name} (${classJavaSourceFile})'>${classNameShort}</a>"/>
+                    <#return "<a href='${vc.servletRootUrl}/project/files/${relativePathProperDelims}' title='${class.name} (${classJavaSourceFile})'>${classNameShort}</a>"/>
                 <#else>
                     <#return "<span title='${class.name} (${classJavaSourceFile})'>${classNameShort}</span>"/>
                 </#if>

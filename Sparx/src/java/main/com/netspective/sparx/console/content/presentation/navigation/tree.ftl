@@ -14,10 +14,10 @@
             <#else>
                 <img src="${vc.activeTheme.getResourceUrl('/images/navigation/page.gif')}"/>
             </#if>
-            <a href="${vc.consoleUrl}/presentation/navigation/inspector${activePage.qualifiedNameIncludingTreeId}">${activePage.name}</a>
+            <a href="${vc.servletRootUrl}/presentation/navigation/inspector${activePage.qualifiedNameIncludingTreeId}">${activePage.name}</a>
         <#else>
             <img src="${vc.activeTheme.getResourceUrl('/images/navigation/tree.gif')}"/>
-            <a href="${vc.consoleUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
+            <a href="${vc.servletRootUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
         </#if>
         </nobr>
     </td>

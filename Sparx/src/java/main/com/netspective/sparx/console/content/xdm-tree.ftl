@@ -64,10 +64,10 @@
 
     <#if tmplProducer != ''>
         tagsTree.add(${activeIndex}, ${parentIndex}, '&lt;<i>${tag}</i>&gt;${suffix}',
-                 '${vc.consoleUrl}/reference/templates?ns=${tmplProducer}&page-flags=POPUP');
+                 '${vc.servletRootUrl}/reference/templates?ns=${tmplProducer}&page-flags=POPUP');
     <#else>
         tagsTree.add(${activeIndex}, ${parentIndex}, '&lt;${tag}&gt;${suffix}',
-                 '${vc.consoleUrl}/reference/tags?parent-tags=${tagPath}&parent-xdm-classes=${tagClassPath}&xdm-tag=${tag}&xdm-class=${className}&page-flags=POPUP');
+                 '${vc.servletRootUrl}/reference/tags?parent-tags=${tagPath}&parent-xdm-classes=${tagClassPath}&xdm-tag=${tag}&xdm-class=${className}&page-flags=POPUP');
     </#if>
 
 

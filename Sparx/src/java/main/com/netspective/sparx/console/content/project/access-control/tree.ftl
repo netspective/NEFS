@@ -15,7 +15,7 @@
         <#else>
             <img src="${vc.activeTheme.getResourceUrl('/images/access-control/permission.gif')}"/>
         </#if>
-        <a href="${vc.consoleUrl}/project/access-control/perm-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
+        <a href="${vc.servletRootUrl}/project/access-control/perm-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
         </nobr>
     </td>
     <td class="report-column-${classSuffix}" align=right>${activeItem.id}</td>
@@ -44,7 +44,7 @@
         <#else>
             <img src="${vc.activeTheme.getResourceUrl('/images/access-control/role.gif')}"/>
         </#if>
-        <a href="${vc.consoleUrl}/project/access-control/role-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
+        <a href="${vc.servletRootUrl}/project/access-control/role-inspector${activeItem.qualifiedName}">${activeItem.name}</a>
         </nobr>
     </td>
     <td class="report-column-${classSuffix}" align=right>${activeItem.id}</td>
