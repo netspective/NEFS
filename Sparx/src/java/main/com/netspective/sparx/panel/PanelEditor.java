@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.1 2004-03-03 08:11:33 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.2 2004-03-03 08:22:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -632,7 +632,6 @@ public class PanelEditor extends AbstractPanel
 
         TabularReportDataSource dataRoot = qrp.createDataSource(nc);
         int totalRows = dataRoot.getTotalRows();
-        System.out.println(totalRows);
         // process the context to calculate the states of the panel actions
         preparePanelActionStates(nc, context, totalRows);
 
