@@ -39,18 +39,22 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.4 2003-03-18 22:32:42 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.5 2003-07-07 15:18:08 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.*;
 import java.util.Iterator;
 import java.sql.SQLException;
+import java.net.URL;
 
 import org.inxar.jenesis.*;
+
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
@@ -62,6 +66,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.lang.ResourceLoader;
 
 import javax.naming.NamingException;
 
@@ -82,23 +87,59 @@ public class DataAccessLayerGenerator
 
     public DataAccessLayerGenerator(Schema.TableTree structure, File rootDir, String rootNameSpace, String dalClassName)
     {
-        this.vm = VirtualMachine.getVirtualMachine();
+        this.vm = prepareVirtualMachine();
         this.structure = structure;
         this.rootDir = rootDir;
         this.rootNameSpace = rootNameSpace + "." + structure.getSchema().getName().toLowerCase();
         this.dalClassName = dalClassName;
     }
 
+    /**
+     * Overrides the normal VirtualMachine.getVirtualMachine() because the static method in the inxar package uses
+     * getSystemResource() method call which only looks in the system classpath (which does not work in servlets).
+     * @return
+     */
+    protected VirtualMachine prepareVirtualMachine()
+    {
+        VirtualMachine result = null;
+
+        try
+        {
+            URL resourceUrl = ResourceLoader.getResource("com/inxar/jenesis/blockstyle.properties");
+
+            if (resourceUrl == null)
+                throw new RuntimeException
+                        ("Cannot instantiate VirtualMachine: could not find blockstyle.properties resource ");
+
+            Properties p = new Properties();
+            InputStream is = resourceUrl.openStream();
+            p.load(new BufferedInputStream(is));
+            is.close();
+            is = null;
+
+            result = new com.inxar.jenesis.MVM(p);
+        }
+        catch (IOException ioex)
+        {
+            RuntimeException rex = new RuntimeException
+                    ("Could not load VirtualMachine blockstyles: " + ioex.getMessage());
+            ioex.printStackTrace();
+            throw rex;
+        }
+
+        return result;
+    }
+
     public void addImport(CompilationUnit unit, String importClass)
     {
         Set existingImports = (Set) unitImports.get(unit);
-        if(existingImports == null)
+        if (existingImports == null)
         {
             existingImports = new HashSet();
             unitImports.put(unit, existingImports);
         }
 
-        if(!existingImports.contains(importClass))
+        if (!existingImports.contains(importClass))
         {
             unit.addImport(importClass);
             existingImports.add(importClass);
@@ -152,21 +193,21 @@ public class DataAccessLayerGenerator
         enumsUnit.setNamespace(rootNameSpace + ".enum");
 
         List mainTables = structure.getChildren();
-        for(int i = 0; i < mainTables.size(); i++)
+        for (int i = 0; i < mainTables.size(); i++)
             generate((Schema.TableTreeNode) mainTables.get(i), rootClass, rootClassChildrenAssignmentBlock);
 
         // write out the actual classes to .java files
-        for(Iterator i = tableAccessorGenerators.values().iterator(); i.hasNext(); )
+        for (Iterator i = tableAccessorGenerators.values().iterator(); i.hasNext();)
         {
             TableAccessorGenerator tag = (TableAccessorGenerator) i.next();
             tag.accessorClass.getUnit().encode();
         }
 
         Tables tables = structure.getSchema().getTables();
-        for(int i = 0; i < tables.size(); i++)
+        for (int i = 0; i < tables.size(); i++)
         {
             Table table = tables.get(i);
-            if(table instanceof EnumerationTable)
+            if (table instanceof EnumerationTable)
                 generate((EnumerationTable) table);
         }
 
@@ -190,14 +231,14 @@ public class DataAccessLayerGenerator
         tag.generateChildMethodsInParent();
 
         List children = node.getChildren();
-        for(int i = 0; i < children.size(); i++)
+        for (int i = 0; i < children.size(); i++)
             generate((Schema.TableTreeNode) children.get(i), tag.accessorClass, tag.accessorClassConstructorBlock);
     }
 
     public void generate(EnumerationTable enumTable) throws IOException
     {
         EnumerationTableRows rows = enumTable.getEnums();
-        if(rows != null && rows.size() > 0)
+        if (rows != null && rows.size() > 0)
         {
             CompilationUnit enumUnit = vm.newCompilationUnit(rootDir.getAbsolutePath());
             enumUnit.setNamespace(enumsUnit.getNamespace().getName());
@@ -206,7 +247,7 @@ public class DataAccessLayerGenerator
             enumerationClass.setAccess(Access.PUBLIC);
             enumerationClass.isFinal(true);
 
-            for(int r = 0; r < rows.size(); r++)
+            for (int r = 0; r < rows.size(); r++)
             {
                 EnumerationTableRow row = (EnumerationTableRow) rows.getRow(r);
 
@@ -256,7 +297,7 @@ public class DataAccessLayerGenerator
 
             this.customClass = false;
             this.tableType = vm.newType(Table.class.getName());
-            if(node.getTable().getClass().getClass() != BasicTable.class)
+            if (node.getTable().getClass().getClass() != BasicTable.class)
             {
                 tableType = vm.newType(node.getTable().getClass().getName());
                 customClass = true;
@@ -266,7 +307,7 @@ public class DataAccessLayerGenerator
 
             CompilationUnit unit = vm.newCompilationUnit(rootDir.getAbsolutePath());
             unit = vm.newCompilationUnit(rootDir.getAbsolutePath());
-            if(ancestorNames != null)
+            if (ancestorNames != null)
                 accessorNameSpace = modelsUnit.getNamespace().getName() + "." + ancestorNames.toLowerCase();
             else
                 accessorNameSpace = modelsUnit.getNamespace().getName();
@@ -308,7 +349,7 @@ public class DataAccessLayerGenerator
             constructor.setAccess(Access.PUBLIC);
             constructor.addParameter(vm.newType("Table"), "table");
             Expression tableExpr = vm.newVar("table");
-            if(customClass)
+            if (customClass)
                 tableExpr = vm.newCast(tableType, tableExpr);
             constructor.newStmt(vm.newAssign(vm.newVar("this.table"), tableExpr));
             constructor.newStmt(vm.newAssign(vm.newVar("this.schema"), vm.newVar("table.getSchema()")));
@@ -323,7 +364,7 @@ public class DataAccessLayerGenerator
 
             ClassField field = parentAccessorClass.newField(vm.newType(classNameNoPackage), fieldName);
             field.setAccess(Access.PRIVATE);
-            parentChildAssignmentsBlock.newStmt(vm.newFree(fieldName + " = new " + classNameNoPackage + "(schema.getTables().getByName(\""+ node.getTable().getName() +"\"))"));
+            parentChildAssignmentsBlock.newStmt(vm.newFree(fieldName + " = new " + classNameNoPackage + "(schema.getTables().getByName(\"" + node.getTable().getName() + "\"))"));
 
             ClassMethod method = parentAccessorClass.newMethod(vm.newType(classNameNoPackage), "get" + classNameNoPackage);
             method.setAccess(Access.PUBLIC);
@@ -334,11 +375,11 @@ public class DataAccessLayerGenerator
         public void generateChildMethodsInParent()
         {
             Schema.TableTreeNode parentNode = node.getParentNode();
-            if(parentNode == null)
+            if (parentNode == null)
                 return;
 
             ParentForeignKey parentFKey = node.getParentForeignKey();
-            if(parentFKey == null)
+            if (parentFKey == null)
                 return;
 
             // the rest of the code assumes we're a child table with a parent foreign key available
@@ -351,22 +392,22 @@ public class DataAccessLayerGenerator
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.addParameter(vm.newType(parentTag.recordInnerClassName), "parentRecord");
-            method.newStmt(vm.newFree("return new " + recordInnerClassName + "(table.createRow("+ fKeyVarName + ", parentRecord.getRow()))"));
+            method.newStmt(vm.newFree("return new " + recordInnerClassName + "(table.createRow(" + fKeyVarName + ", parentRecord.getRow()))"));
 
-            method = parentTag.recordInnerClass.newMethod(vm.newType(recordInnerClassName), "create"+ classNameNoPackage +"Record");
+            method = parentTag.recordInnerClass.newMethod(vm.newType(recordInnerClassName), "create" + classNameNoPackage + "Record");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
-            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true) +"(this)"));
+            method.newStmt(vm.newFree("return " + fieldName + ".createChildLinkedBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true) + "(this)"));
 
             ClassField field = parentTag.recordInnerClass.newField(vm.newType(recordsInnerClassName), fieldName + "Records");
             field.setAccess(Access.PRIVATE);
 
-            if(node.hasChildren())
-                parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get"+ classNameNoPackage +"Records(cc, retrieveGrandchildren)"));
+            if (node.hasChildren())
+                parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get" + classNameNoPackage + "Records(cc, retrieveGrandchildren)"));
             else
-                parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get"+ classNameNoPackage +"Records(cc)"));
+                parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get" + classNameNoPackage + "Records(cc)"));
 
-            String getParentRecsByFKeyMethodName = "getParentRecordsBy"+ TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
+            String getParentRecsByFKeyMethodName = "getParentRecordsBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
             method = accessorClass.newMethod(vm.newType(recordsInnerClassName), getParentRecsByFKeyMethodName);
             method.setComment(Comment.D, "Parent reference: " + parentFKey);
             method.setAccess(Access.PUBLIC);
@@ -375,12 +416,12 @@ public class DataAccessLayerGenerator
             method.addThrows("SQLException");
             method.addParameter(vm.newType(parentTag.recordInnerClassName), "parentRecord");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
-            if(node.hasChildren())
+            if (node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
-            method.newStmt((vm.newFree("Records result = new Records(parentRecord, "+ fKeyVarName + ".getChildRowsByParentRow(cc, parentRecord.getRow()))")));
-            if(node.hasChildren())
+            method.newStmt((vm.newFree("Records result = new Records(parentRecord, " + fKeyVarName + ".getChildRowsByParentRow(cc, parentRecord.getRow()))")));
+            if (node.hasChildren())
             {
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     method.newStmt(vm.newFree("if(retrieveChildren) result.retrieveChildren(cc, retrieveChildren)"));
                 else
                     method.newStmt(vm.newFree("if(retrieveChildren) result.retrieveChildren(cc)"));
@@ -388,22 +429,22 @@ public class DataAccessLayerGenerator
             method.newReturn().setExpression(vm.newVar("result"));
 
             String recordsFieldName = fieldName + "Records";
-            method = parentTag.recordInnerClass.newMethod(vm.newType(recordsInnerClassName), "get"+ classNameNoPackage +"Records");
+            method = parentTag.recordInnerClass.newMethod(vm.newType(recordsInnerClassName), "get" + classNameNoPackage + "Records");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
-            if(node.hasChildren())
+            if (node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
             method.newStmt(vm.newFree("if (" + recordsFieldName + " != null) return " + recordsFieldName));
-            if(node.hasChildren())
-                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "."+ getParentRecsByFKeyMethodName +"(this, cc, retrieveChildren)"));
+            if (node.hasChildren())
+                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "." + getParentRecsByFKeyMethodName + "(this, cc, retrieveChildren)"));
             else
-                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "."+ getParentRecsByFKeyMethodName +"(this, cc)"));
+                method.newStmt(vm.newFree(recordsFieldName + " = " + fieldName + "." + getParentRecsByFKeyMethodName + "(this, cc)"));
             method.newReturn().setExpression(vm.newVar(recordsFieldName));
 
-            method = parentTag.recordInnerClass.newMethod(vm.newType(recordsInnerClassName), "get"+ classNameNoPackage +"Records");
+            method = parentTag.recordInnerClass.newMethod(vm.newType(recordsInnerClassName), "get" + classNameNoPackage + "Records");
             method.setAccess(Access.PUBLIC);
             method.isFinal(true);
             method.newReturn().setExpression(vm.newVar(recordsFieldName));
@@ -437,12 +478,12 @@ public class DataAccessLayerGenerator
         public void generateRetrievalByPrimaryKeysMethod()
         {
             PrimaryKeyColumns pkCols = node.getTable().getPrimaryKeyColumns();
-            if(pkCols == null || pkCols.size() == 0)
+            if (pkCols == null || pkCols.size() == 0)
                 return;
 
             // name is singular for one column and plural for multiple
             String methodName = "getRecordByPrimaryKey";
-            if(pkCols.size() > 1)
+            if (pkCols.size() > 1)
                 methodName += "s";
 
             ClassMethod method = accessorClass.newMethod(vm.newType(recordInnerClassName), methodName);
@@ -451,9 +492,9 @@ public class DataAccessLayerGenerator
             method.addParameter(vm.newType("ConnectionContext"), "cc");
 
             StringBuffer callParams = new StringBuffer();
-            for(int i = 0; i < pkCols.size(); i++)
+            for (int i = 0; i < pkCols.size(); i++)
             {
-                if(i > 0)
+                if (i > 0)
                     callParams.append(", ");
 
                 Column pkCol = pkCols.get(i);
@@ -463,17 +504,17 @@ public class DataAccessLayerGenerator
                 method.addParameter(vm.newType(pkValueHolderClass.getName()), paramName);
                 callParams.append(paramName);
             }
-            if(node.hasChildren())
+            if (node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
 
             method.addThrows("NamingException");
             method.addThrows("SQLException");
 
-            method.newStmt(vm.newFree("Row row = table.getRowByPrimaryKeys(cc, new Object[] { "+ callParams +" }, null)"));
+            method.newStmt(vm.newFree("Row row = table.getRowByPrimaryKeys(cc, new Object[] { " + callParams + " }, null)"));
             method.newStmt(vm.newFree("Record result = row != null ? new " + recordInnerClassName + "(row) : null"));
-            if(node.hasChildren())
+            if (node.hasChildren())
             {
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     method.newStmt(vm.newFree("if(retrieveChildren && result != null) result.retrieveChildren(cc, true)"));
                 else
                     method.newStmt(vm.newFree("if(retrieveChildren && result != null) result.retrieveChildren(cc)"));
@@ -486,15 +527,15 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.addParameter(vm.newType("PrimaryKeyColumnValues"), "pkValues");
-            if(node.hasChildren())
+            if (node.hasChildren())
                 method.addParameter(vm.newType(Type.BOOLEAN), "retrieveChildren");
             method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.newStmt(vm.newFree("Row row = table.getRowByPrimaryKeys(cc, pkValues, null)"));
             method.newStmt(vm.newFree("Record result = row != null ? new " + recordInnerClassName + "(row) : null"));
-            if(node.hasChildren())
+            if (node.hasChildren())
             {
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     method.newStmt(vm.newFree("if(retrieveChildren && result != null) result.retrieveChildren(cc, true)"));
                 else
                     method.newStmt(vm.newFree("if(retrieveChildren && result != null) result.retrieveChildren(cc)"));
@@ -575,13 +616,13 @@ public class DataAccessLayerGenerator
             method.addParameter(vm.newType("ConnectionContext"), "cc");
             method.newStmt(vm.newFree("table.delete(cc, row)"));
 
-            if(node.hasChildren())
+            if (node.hasChildren())
             {
                 recordInnerClassRetrieveChildrenMethod = recordInnerClass.newMethod(vm.newType(Type.VOID), "retrieveChildren");
                 recordInnerClassRetrieveChildrenMethod.setAccess(Access.PUBLIC);
                 recordInnerClassRetrieveChildrenMethod.isFinal(true);
                 recordInnerClassRetrieveChildrenMethod.addParameter(vm.newType("ConnectionContext"), "cc");
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     recordInnerClassRetrieveChildrenMethod.addParameter(vm.newType(Type.BOOLEAN), "retrieveGrandchildren");
                 recordInnerClassRetrieveChildrenMethod.addThrows("NamingException");
                 recordInnerClassRetrieveChildrenMethod.addThrows("SQLException");
@@ -606,7 +647,7 @@ public class DataAccessLayerGenerator
             constructor.newStmt(vm.newAssign(vm.newVar("this.rows"), vm.newVar("rows")));
             constructor.newStmt(vm.newAssign(vm.newVar("this.cache"), vm.newFree("new Record[rows.size()]")));
 
-            if(node.getParentForeignKey() != null)
+            if (node.getParentForeignKey() != null)
             {
                 TableAccessorGenerator parentTag = (TableAccessorGenerator) tableAccessorGenerators.get(node.getParentNode());
 
@@ -638,18 +679,18 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.newStmt(vm.newFree("return rows.toString()"));
 
-            if(node.hasChildren())
+            if (node.hasChildren())
             {
                 method = recordsInnerClass.newMethod(vm.newType(Type.VOID), "retrieveChildren");
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
                 method.addParameter(vm.newType("ConnectionContext"), "cc");
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     method.addParameter(vm.newType(Type.BOOLEAN), "retrieveGrandchildren");
                 method.addThrows("NamingException");
                 method.addThrows("SQLException");
                 Freeform forLoop = vm.newFree("for(int i = 0; i < cache.length; i++) ");
-                if(node.hasGrandchildren())
+                if (node.hasGrandchildren())
                     forLoop.write("get(i).retrieveChildren(cc, retrieveGrandchildren)");
                 else
                     forLoop.write("get(i).retrieveChildren(cc)");
@@ -662,7 +703,7 @@ public class DataAccessLayerGenerator
             TableQueryDefinition tqd = node.getTable().getQueryDefinition();
             QueryDefnSelects accessors = tqd.getSelects();
 
-            for(int i = 0; i < accessors.size(); i++)
+            for (int i = 0; i < accessors.size(); i++)
             {
                 QueryDefnSelect accessor = accessors.get(i);
 
@@ -685,17 +726,17 @@ public class DataAccessLayerGenerator
         {
             Columns columns = node.getTable().getColumns();
 
-            for(int i = 0; i < columns.size(); i++)
+            for (int i = 0; i < columns.size(); i++)
             {
                 Column column = columns.get(i);
 
                 Type columnType = vm.newType(Column.class.getName());
-                if(! column.getClass().getPackage().getName().startsWith(BasicColumn.class.getPackage().getName()))
+                if (!column.getClass().getPackage().getName().startsWith(BasicColumn.class.getPackage().getName()))
                     columnType = vm.newType(column.getClass().getName());
                 else
                 {
                     String stdColClassName = column.getClass().getName();
-                    columnType = vm.newType(stdColClassName.substring(stdColClassName.lastIndexOf(".")+1));
+                    columnType = vm.newType(stdColClassName.substring(stdColClassName.lastIndexOf(".") + 1));
                     addImport(accessorClass, stdColClassName);
                 }
 
@@ -710,12 +751,12 @@ public class DataAccessLayerGenerator
                 ClassMethod method = accessorClass.newMethod(columnType, "get" + methodSuffix + "Column");
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
-                Expression columnExpr = vm.newFree("table.getColumns().get("+ constantId +")");
+                Expression columnExpr = vm.newFree("table.getColumns().get(" + constantId + ")");
                 columnExpr = vm.newCast(columnType, columnExpr);
                 method.newReturn().setExpression(columnExpr);
 
                 ForeignKey fKey = column.getForeignKey();
-                if(fKey != null)
+                if (fKey != null)
                 {
                     Type fKeyType = fKey instanceof ParentForeignKey ? vm.newType("ParentForeignKey") : vm.newType("ForeignKey");
                     String fkeyFieldName = TextUtils.xmlTextToJavaIdentifier(column.getName(), false) + "ForeignKey";
@@ -727,10 +768,10 @@ public class DataAccessLayerGenerator
                     method.newReturn().setExpression(vm.newFree(fkeyFieldName));
 
                     field = accessorClass.newField(fKeyType, fkeyFieldName);
-                    if(fKey instanceof ParentForeignKey)
-                        accessorClassConstructorBlock.newStmt(vm.newAssign(vm.newVar(fkeyFieldName), vm.newCast(vm.newType("ParentForeignKey"), vm.newVar("table.getColumns().get("+ constantId +").getForeignKey()"))));
+                    if (fKey instanceof ParentForeignKey)
+                        accessorClassConstructorBlock.newStmt(vm.newAssign(vm.newVar(fkeyFieldName), vm.newCast(vm.newType("ParentForeignKey"), vm.newVar("table.getColumns().get(" + constantId + ").getForeignKey()"))));
                     else
-                        accessorClassConstructorBlock.newStmt(vm.newAssign(vm.newVar(fkeyFieldName), vm.newVar("table.getColumns().get("+ constantId +").getForeignKey()")));
+                        accessorClassConstructorBlock.newStmt(vm.newAssign(vm.newVar(fkeyFieldName), vm.newVar("table.getColumns().get(" + constantId + ").getForeignKey()")));
                     field.setAccess(Access.PRIVATE);
                 }
 
@@ -738,9 +779,9 @@ public class DataAccessLayerGenerator
                 String valueInstClassName = valueInstance.getClass().getName();
 
                 Type columnValueType = vm.newType(valueInstClassName.replace('$', '.'));
-                if(valueInstClassName.startsWith(BasicColumn.class.getPackage().getName()))
+                if (valueInstClassName.startsWith(BasicColumn.class.getPackage().getName()))
                 {
-                    String stdValueTypeName = valueInstClassName.substring(valueInstClassName.lastIndexOf(".")+1);
+                    String stdValueTypeName = valueInstClassName.substring(valueInstClassName.lastIndexOf(".") + 1);
                     columnValueType = vm.newType(stdValueTypeName.replace('$', '.'));
 
                     String valueInstColClassName = valueInstClassName.substring(0, valueInstClassName.indexOf('$'));
@@ -750,7 +791,7 @@ public class DataAccessLayerGenerator
                 method = recordInnerClass.newMethod(columnValueType, "get" + methodSuffix);
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
-                method.newReturn().setExpression(vm.newCast(columnValueType, vm.newFree("values.getByColumnIndex("+ constantId +")")));
+                method.newReturn().setExpression(vm.newCast(columnValueType, vm.newFree("values.getByColumnIndex(" + constantId + ")")));
             }
         }
 
