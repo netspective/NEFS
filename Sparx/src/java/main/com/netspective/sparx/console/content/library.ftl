@@ -181,12 +181,29 @@
 
     <#assign class = getClassForName(className)/>
     <#assign packageName = class.package.name/>
-    <#assign className = class.name?replace('$', '.')/>
+    <#assign classNameNoInner = class.name?replace('$', '.')/>
 
     <#if packageName?starts_with('java.lang')>
-        <span title="${className}">${className[(packageName?length + 1) .. (class.name?length - 1)]}</a>
+        <span title="${className}">${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>
     <#else>
-        <a href="${className}" title="${className}">${className[(packageName?length + 1) .. (class.name?length - 1)]}</a>
+        <!-- need to HREF to something? -->
+        <span title="${className}">${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>
     </#if>
 
+</#macro>
+
+
+<#macro classDescription className>
+
+    <#assign schema = getXmlDataModelSchema(className)/>
+    ${schema.description}
+
+</#macro>
+
+<#macro reportTable>
+    <table class="report" width=100% border="0" cellspacing="2" cellpadding="0">
+
+        <#nested>
+
+    </table>
 </#macro>

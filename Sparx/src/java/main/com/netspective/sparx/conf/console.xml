@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.55 2003-06-22 04:29:34 shahid.shah Exp $
+  * $Id: console.xml,v 1.56 2003-06-23 16:46:00 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -57,6 +57,9 @@
 
             <panels>
                 <panel type="console-page-summary"/>
+                <panel type="console-children-summaries">
+                    <frame heading="Project Module Overview"/>
+                </panel>
                 <panel type="html">
                     <frame heading="Sparx Project Source"/>
                     <body config="console" source="console-page-content:documentation.ftl"/>
@@ -141,7 +144,11 @@
                     <panels>
                         <panel type="console-page-summary"/>
                         <panel type="html">
-                            <frame heading="Using Controls (Field Types)"/>
+                            <frame heading="Control (Field Type) Detail"/>
+                            <body config="console" source="console-page-content:detail.ftl"/>
+                        </panel>
+                        <panel type="html">
+                            <frame heading="Available Controls (Field Types)"/>
                             <body config="console" source="console-page-content:documentation.ftl"/>
                         </panel>
                     </panels>
