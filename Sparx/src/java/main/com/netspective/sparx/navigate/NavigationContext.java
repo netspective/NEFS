@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.25 2004-01-09 14:20:58 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.26 2004-02-26 19:16:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -124,6 +124,11 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public boolean isRedirectRequired()
     {
         return redirectRequired;
+    }
+
+    public void setRedirectRequired(boolean redirectRequired)
+    {
+        this.redirectRequired = redirectRequired;
     }
 
     public void setMissingRequiredReqParam(String name)
