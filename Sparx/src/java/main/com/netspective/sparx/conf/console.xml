@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.38 2003-06-02 01:41:45 shahid.shah Exp $
+  * $Id: console.xml,v 1.39 2003-06-02 19:29:39 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -67,6 +67,7 @@
                 </page>
 		        <page name="fields" caption="Field Types"/>
 	        </page>
+	        <page name="panel" caption="Panels"/>
 	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
         </page>
 

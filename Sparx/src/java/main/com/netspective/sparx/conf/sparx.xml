@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.21 2003-05-30 23:11:32 shahid.shah Exp $
+  * $Id: sparx.xml,v 1.22 2003-06-02 19:29:39 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -49,6 +49,7 @@
     <dialog-field-type name="command" class="com.netspective.sparx.form.field.type.CommandField"/>
     <dialog-field-type name="panels" class="com.netspective.sparx.form.field.type.PanelsField"/>
     <dialog-field-type name="ds-nav-buttons" class="com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField"/>
+    <dialog-field-type name="separator" class="com.netspective.sparx.form.field.type.SeparatorField"/>
 
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
