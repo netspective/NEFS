@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SelectFieldChoicesPanel.java,v 1.3 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: SelectFieldChoicesPanel.java,v 1.4 2003-09-07 19:26:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -69,44 +69,128 @@ import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.command.Command;
 
 public class SelectFieldChoicesPanel extends QueryDetailPanel
 {
     public static final HtmlTabularReport choicesReport = new BasicHtmlTabularReport();
+    public static final String CHOICE_ID_COLUMN_STRING = "ID";
+    public static final String CHOICE_CAPTION_COLUMN_STRING = "Caption";
+
+    public static final int CHOICE_ID_COLUMN_INDEX = 0;
+    public static final int CHOICE_CAPTION_COLUMN_INDEX = 1;
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("ID"));
+        column.setHeading(new StaticValueSource(CHOICE_ID_COLUMN_STRING));
         choicesReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Caption"));
+        column.setHeading(new StaticValueSource(CHOICE_CAPTION_COLUMN_STRING));
         choicesReport.addColumn(column);
     }
+
+    private TabularReportDataSource dataSource;
 
     public SelectFieldChoicesPanel()
     {
         getFrame().setHeading(new StaticValueSource("Select Field Choices"));
+        setIdColumnCommand("redirect,javascript\\:opener.activeDialogPopup.populateControls(\"${0}\"\\, \"${1}\")");
+        setCaptionColumnCommand("redirect,javascript\\:opener.activeDialogPopup.populateControls(\"${0}\"\\, \"${1}\")");
     }
 
+    /**
+     * Sets the datasource with the select choices data
+     * @param ds
+     */
+    public void setDataSource(TabularReportDataSource ds)
+    {
+        dataSource = ds;
+    }
+
+    /**
+     * Creates the datasource containing the data to fill the report with
+     * @param nc
+     * @return
+     */
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(nc);
-        if(selectedQuery.getDataSource() != null)
-            return selectedQuery.getDataSource();
+        if (selectedQuery == null && dataSource != null)
+        {
+            // There is no query associated with this
+            return dataSource;
+        }
         else
         {
-            nc.setPageHeading("Static SQL: " + selectedQuery.getQuery().getQualifiedName());
-            return new SqlTextDataSource(selectedQuery);
+            if(selectedQuery.getDataSource() != null)
+                return selectedQuery.getDataSource();
+            else
+            {
+                nc.setPageHeading("Static SQL: " + selectedQuery.getQuery().getQualifiedName());
+                return new SqlTextDataSource(selectedQuery);
+            }
         }
     }
 
+    /**
+     * Gets the associated report object
+     * @param nc
+     * @return
+     */
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         return choicesReport;
     }
 
+    /**
+     * Gets the <i>Id</i> report column
+     * @return
+     */
+    public  TabularReportColumn getIdReportColumn()
+    {
+        return choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX);
+    }
+
+    /**
+     * Gets the <i>Caption</i> report column
+     * @return
+     */
+    public TabularReportColumn getCaptionReportColumn()
+    {
+        return choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX);
+    }
+
+    public Command getIdColumnCommand()
+    {
+        return choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).getCommand();
+    }
+
+    public Command getCaptionColumnCommand()
+    {
+        return choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).getCommand();
+    }
+
+    /**
+     * Sets the command associated with the ID column
+     */
+    public void setIdColumnCommand(String command)
+    {
+        choicesReport.getColumn(CHOICE_ID_COLUMN_INDEX).setCommand(command);
+    }
+
+    /**
+     * Sets the command asociated with the caption column
+     */
+    public void setCaptionColumnCommand(String command)
+    {
+        choicesReport.getColumn(CHOICE_CAPTION_COLUMN_INDEX).setCommand(command);
+    }
+
+    /**
+     *
+     */
     public class SqlTextDataSource extends AbstractHtmlTabularReportDataSource
     {
         private List rows = new ArrayList();
