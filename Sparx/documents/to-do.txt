@@ -8,10 +8,6 @@
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
 
-* Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
-	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
-	- BUG: reported by Shahid -- hints now seem to be broken on dialogs that _don't_ request hints to be hidden until focus
-
 * Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
@@ -69,6 +65,7 @@
 * Might be interesting to see if Sparx can work with x-Desktop (http://www.x-desktop.org/).
 * Review XP stories and scenarios capture methodology described in http://www.agilealliance.com/articles/articles/breitman.pdf and implement as new Sparx feature for capturing requirements and traceability
 * Review http://www.globecom.se/tora/ to see if creating a Sparx-based version would sell
+* 08/07/2003: Need to add checking for shared connection object in session in addition to checking it from the request
 
 BUGS
 * SelectField:
@@ -106,3 +103,14 @@ java.lang.NullPointerException
 
   	FIXED: Added a null check in static method translateNameForMapKey().
   	TODO: Give each query defn and query a default name like (queryDefnXX)
+
+2. This exception occurs once in a while.
+java.lang.NullPointerException
+        at com.netspective.sparx.sql.QueryResultSetDataSource.getActiveRowColumnData(QueryResultSetDataSource.java:123)
+        at com.netspective.commons.report.tabular.column.GeneralColumn.getFormattedData(GeneralColumn.java:290)
+        at com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin.produceDataRows(BasicHtmlTabularReportPanelSkin.java:332)
+        at com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin.render(BasicHtmlTabularReportPanelSkin.java:187)
+        at com.netspective.sparx.report.tabular.HtmlTabularReportValueContext.produceReport(HtmlTabularReportValueContext.java:263)
+        at com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.render(AbstractHtmlTabularReportPanel.java:207)
+        at com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination.render(HtmlTabularReportBrowserDestination.java:78)
+
