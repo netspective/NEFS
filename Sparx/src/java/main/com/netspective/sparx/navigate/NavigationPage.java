@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.50 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.51 2003-11-19 15:30:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -229,6 +229,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
     private TemplateProcessor missingParamsBodyTemplate;
+    private ValueSource baseAttributes;
     private Command bodyCommand;
     private List pageTypesConsumed = new ArrayList();
     private List customHandlers = new ArrayList();
@@ -722,6 +723,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public void setTarget(String redirectTarget)
     {
         setRedirectTarget(redirectTarget);
+    }
+
+    public ValueSource getBaseAttributes()
+    {
+        return baseAttributes;
+    }
+
+    public void setBaseAttributes(ValueSource baseAttributes)
+    {
+        this.baseAttributes = baseAttributes;
     }
 
     public ValueSource getForward()
