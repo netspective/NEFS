@@ -44,6 +44,7 @@
 package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.model.common.DataEncryptionType;
 
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
@@ -55,8 +56,33 @@ import javax.ejb.Column;
 @Table(name = "Party_Identifier_Type")
 public class PartyIdentifierType extends AbstractCustomReferenceEntity
 {
+    private DataEncryptionType encryptionType;
+    private int maxAllowed = 1;
+
     public PartyIdentifierType()
     {
+    }
+
+    @Column(nullable = false)
+    public DataEncryptionType getEncryptionType()
+    {
+        return encryptionType;
+    }
+
+    public void setEncryptionType(DataEncryptionType encryptionType)
+    {
+        this.encryptionType = encryptionType;
+    }
+
+    @Column(nullable = false)
+    public int getMaxAllowed()
+    {
+        return maxAllowed;
+    }
+
+    public void setMaxAllowed(int maxAllowed)
+    {
+        this.maxAllowed = maxAllowed;
     }
 
     @Id(generate=GeneratorType.AUTO)
