@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalDisplay.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogFieldConditionalDisplay.java,v 1.3 2003-06-10 03:50:36 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -71,6 +71,11 @@ public class DialogFieldConditionalDisplay extends DialogFieldConditionalAction
     public DialogFieldConditionalDisplay()
     {
         super();
+    }
+
+    public DialogFieldConditionalDisplay(DialogField sourceField)
+    {
+        super(sourceField);
     }
 
     public DialogFieldConditionalDisplay(DialogField sourceField, String partnerName, String jsExpr)
