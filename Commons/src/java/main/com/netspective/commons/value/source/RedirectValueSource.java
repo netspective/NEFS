@@ -39,12 +39,18 @@
  */
 
 /**
- * $Id: RedirectValueSource.java,v 1.5 2003-09-25 04:53:44 aye.thu Exp $
+ * $Id: RedirectValueSource.java,v 1.6 2004-03-07 02:59:07 aye.thu Exp $
  */
 
 package com.netspective.commons.value.source;
 
-import com.netspective.commons.value.*;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 
 /**
@@ -81,7 +87,7 @@ public class RedirectValueSource implements ValueSource
 
     public RedirectValueSource(String url)
     {
-        setValueSource(new StaticValueSource(url));
+        setValueSource(ValueSources.getInstance().getValueSourceOrStatic(url));
     }
 
     public void initialize(ValueSourceSpecification srcTokens) throws ValueSourceInitializeException
