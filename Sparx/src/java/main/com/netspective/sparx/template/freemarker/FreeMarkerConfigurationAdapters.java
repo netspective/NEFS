@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.8 2003-10-05 03:40:27 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.9 2003-10-15 19:15:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -123,6 +123,7 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
         configuration.setSharedVariable("getXmlDataModelSchema", new XmlDataModelSchemaMethod());
         configuration.setSharedVariable("getClassForName", new ClassReferenceMethod());
+        configuration.setSharedVariable("getClassSourceForName", new ClassSourceMethod());
         configuration.setSharedVariable("getClassInstanceForName", new ClassInstanceMethod());
         configuration.setSharedVariable("getAntBuildProject", new AntBuildProjectMethod());
         configuration.setSharedVariable("getFile", new GetFileMethod());

@@ -349,12 +349,26 @@
     <#assign class = getClassForName(className)/>
     <#assign packageName = class.package.name/>
     <#assign classNameNoInner = class.name?replace('$', '.')/>
+    <#assign classNameShort = classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]/>
 
     <#if packageName?starts_with('java.lang')>
-        <#return "<span title='${className}'>${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>"/>
+        <#return "<span title='${className}'>${classNameShort}</span>"/>
     <#else>
-        <#-- need to HREF to something? -->
-        <#return "<span title='${className}'>${classNameNoInner[(packageName?length + 1) .. (class.name?length - 1)]}</span>"/>
+        <#assign classJavaSourceFile = getClassSourceForName(class.name)/>
+        <#if classJavaSourceFile = ''>
+            <#return "<span title='${class.name}'>${classNameShort}</span>"/>
+        <#else>
+            <#if classJavaSourceFile.absolutePath?exists>
+                <#assign servletRootPath = vc.servlet.servletContext.getRealPath('')/>
+                <#if classJavaSourceFile.absolutePath.startsWith(servletRootPath)>
+                    <#return "<a href='${vc.consoleUrl}/project/files/${classJavaSourceFile.absolutePath.substring(servletRootPath.length())}' title='${class.name} (${classJavaSourceFile})'>${classNameShort}</a>"/>
+                <#else>
+                    <#return "<span title='${class.name} (${classJavaSourceFile})'>${classNameShort}</span>"/>
+                </#if>
+            <#else>
+                <#return "<span title='${classJavaSourceFile}'>${classNameShort}</span>">
+            </#if>
+        </#if>
     </#if>
 
 </#function>
