@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.10 2003-11-14 19:44:25 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.11 2003-12-06 01:07:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -48,6 +48,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.FileInputStream;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -566,6 +569,25 @@ public class TextUtils
         {
             sb.append((char) iRead);
             iRead = urlIn.read();
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Retrieve the contents of the given File into a String.
+     * @param location The URL
+     * @return The text of the contents of the File
+     * @throws IOException
+     */
+    public static String getFileContents(String location) throws IOException
+    {
+        StringBuffer sb = new StringBuffer();
+        InputStream is = new BufferedInputStream(new FileInputStream(location));
+        int iRead = is.read();
+        while (iRead != -1)
+        {
+            sb.append((char) iRead);
+            iRead = is.read();
         }
         return sb.toString();
     }
