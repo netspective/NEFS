@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.9 2003-10-15 19:15:23 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.10 2003-11-27 19:28:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -65,7 +65,6 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
 
-import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.text.TextUtils;
 
 public class FreeMarkerConfigurationAdapters
@@ -136,13 +135,18 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
     }
 
-    public Configuration constructWebAppConfiguration(HttpServletValueContext vc)
+    public Configuration constructWebAppConfiguration(ServletContext servletContext)
     {
-        ServletContext servletContext = vc.getHttpServlet().getServletContext();
+        Configuration result = new Configuration();
+        applyWebAppConfiguration(result, servletContext);
+        return result;
+    }
+
+    public void applyWebAppConfiguration(Configuration fmConfig, ServletContext servletContext)
+    {
         String templatePathsText = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-paths");
         String templatePathsDelim = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-path-delim");
 
-        Configuration result = new Configuration();
         List templateLoaders = new ArrayList();
         templateLoaders.add(stringTemplateLoader);
         templateLoaders.add(new WebappTemplateLoader(servletContext));
@@ -167,10 +171,9 @@ public class FreeMarkerConfigurationAdapters
         templateLoaders.add(new ClassTemplateLoader(com.netspective.axiom.ProductRelease.class));
         templateLoaders.add(new ClassTemplateLoader(com.netspective.commons.ProductRelease.class));
 
-        result.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) templateLoaders.toArray(new TemplateLoader[templateLoaders.size()])));
+        fmConfig.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) templateLoaders.toArray(new TemplateLoader[templateLoaders.size()])));
 
-        configureSharedVariables(result);
-        return result;
+        configureSharedVariables(fmConfig);
     }
 
     public int size()
