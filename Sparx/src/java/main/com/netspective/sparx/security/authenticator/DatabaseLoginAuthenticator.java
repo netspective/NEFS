@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.7 2004-04-29 13:25:30 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.8 2004-08-03 19:47:26 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
+
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,9 +52,12 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
-import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.MutableAuthenticatedOrgUser;
+import com.netspective.commons.security.MutableAuthenticatedOrgsUser;
+import com.netspective.commons.security.MutableAuthenticatedUser;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.security.LoginDialogContext;
@@ -62,43 +67,60 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(DatabaseLoginAuthenticator.class);
 
+    private String passwordQueryPasswordColumnLabel = "password";
     private Query passwordQuery;        // the query to get the user's password
     private Query roleQuery;            // the query to get the user's roles
+    private Query orgsQuery;            // the query to get the user's multiple organizations
+    private Query orgQuery;             // the query to get the user's single organization
     private boolean passwordEncrypted;  // true if the password is encrypted
     private static final String ATTRNAME_PASSWORD_QUERY_RESULTS = "PASSWORD_QUERY_RESULTS";
+    private static final String ATTRNAME_ORGS_QUERY_RESULTS = "ORGS_QUERY_RESULTS";
 
-    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
+    public String getPasswordQueryPasswordColumnLabel()
     {
-        if(passwordQuery == null)
+        return passwordQueryPasswordColumnLabel;
+    }
+
+    public void setPasswordQueryPasswordColumnLabel(String passwordQueryPasswordColumnLabel)
+    {
+        this.passwordQueryPasswordColumnLabel = passwordQueryPasswordColumnLabel;
+    }
+
+    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext ldc)
+    {
+        if (passwordQuery == null)
         {
-            loginDialogContext.getValidationContext().addError("No password query defined in DatabaseLoginAuthenticator");
+            ldc.getValidationContext().addError("No password query defined in DatabaseLoginAuthenticator");
             return false;
         }
 
         try
         {
-            QueryResultSet qrs = passwordQuery.execute(loginDialogContext, new Object[] { loginDialogContext.getUserIdInput() }, false);
-            if(qrs == null)
+            QueryResultSet qrs = passwordQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+            if (qrs == null)
                 return false;
 
-            Object[] passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsArray(qrs.getResultSet());
-            Object loginPasswordObj = passwordQueryResultRow[0];
-            loginDialogContext.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
+            Map passwordQueryResultRow = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), true);
+            Object loginPasswordObj = passwordQueryResultRow.get(passwordQueryPasswordColumnLabel);
+            ldc.setAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS, passwordQueryResultRow);
             qrs.close(true);
 
-            if(loginPasswordObj == null)
+            // make sure the password doesn't stay in the map as it's passed around the system
+            passwordQueryResultRow.remove(passwordQueryPasswordColumnLabel);
+
+            if (loginPasswordObj == null)
                 return false;
 
             String loginPasswordText = loginPasswordObj.toString();
             // if the password is not encrypted in the database, then encrypt it now because we deal with encrypted passwords internally
-            if(! passwordEncrypted)
-                loginPasswordText = loginDialogContext.encryptPlainTextPassword(loginPasswordText);
+            if (!passwordEncrypted)
+                loginPasswordText = ldc.encryptPlainTextPassword(loginPasswordText);
 
             // now we check if this is a valid user
-            if(! loginPasswordText.equals(loginDialogContext.getPasswordInput(! loginDialogContext.hasEncryptedPassword())))
+            if (!loginPasswordText.equals(ldc.getPasswordInput(!ldc.hasEncryptedPassword())))
                 return false;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Error validating login", e);
             return false;
@@ -107,49 +129,141 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         return true;
     }
 
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
+    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
-        Object[] passwordQueryResultsRow = (Object[]) ldc.getAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS);
-        if(passwordQueryResultsRow != null)
-        {
-            if(passwordQueryResultsRow.length > 1)
-                user.setUserId(passwordQueryResultsRow[1].toString());
-
-            if(passwordQueryResultsRow.length > 2)
-                user.setUserName(passwordQueryResultsRow[2].toString());
-
-            if(passwordQueryResultsRow.length > 3 && (user instanceof AuthenticatedOrgUser))
-            {
-                AuthenticatedOrgUser orgUser = (AuthenticatedOrgUser) user;
-                orgUser.setUserOrgId(passwordQueryResultsRow[3].toString());
-
-                if(passwordQueryResultsRow.length > 4)
-                    orgUser.setUserOrgId(passwordQueryResultsRow[4].toString());
-            }
-        }
-
-        if(roleQuery != null)
-        {
-            try
-            {
-                QueryResultSet qrs = roleQuery.execute(ldc, new Object[] { ldc.getUserIdInput() }, false);
-                if(qrs != null)
-                {
-                    String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
-                    if(roleNames != null && roleNames.length > 0)
-                        user.setRoles(ldc.getAccessControlListsManager(), roleNames);
-                    qrs.close(true);
-                }
-            }
-            catch(Exception e)
-            {
-                log.error("Error assigning roles to user", e);
-            }
-        }
+        assignUserInfo(ldc, user);
+        assignOrganizations(ldc, user);
+        assignRoles(ldc, user);
 
         // the super will call user.init so we want to give the authenticated user class a chance to initalize itself
         // now that the user information and roles have been assigned
         super.initAuthenticatedUser(loginManager, ldc, user);
+    }
+
+    /**
+     * Take all of the columns that were selected by the passwordQuery and assign them using the setXXX() methods
+     * of the AuthenticatedUser object. Using reflection, the assignUserInfo() method will take the labels assigned
+     * in the query and find the appropriate setXXXX() method (where XXXX is the column label in the SQL query).
+     *
+     * @param ldc
+     * @param user
+     */
+    protected void assignUserInfo(LoginDialogContext ldc, AuthenticatedUser user)
+    {
+        XmlDataModelSchema schema = XmlDataModelSchema.getSchema(user.getClass());
+        try
+        {
+            schema.assignMapValues(user, (Map) ldc.getAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS), "*");
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
+    }
+
+    protected void assignRoles(LoginDialogContext ldc, MutableAuthenticatedUser user)
+    {
+        if (roleQuery != null)
+        {
+            try
+            {
+                QueryResultSet qrs = roleQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                if (qrs != null)
+                {
+                    String[] roleNames = ResultSetUtils.getInstance().getResultSetRowsAsStrings(qrs.getResultSet());
+                    if (roleNames != null && roleNames.length > 0)
+                        user.setRoles(ldc.getAccessControlListsManager(), roleNames);
+                    qrs.close(true);
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Error assigning roles to user", e);
+            }
+        }
+    }
+
+    protected void assignOrganizations(LoginDialogContext ldc, AuthenticatedUser user)
+    {
+        if (orgsQuery != null)
+        {
+            if (!(user instanceof MutableAuthenticatedOrgsUser))
+                log.error("Unable to assign organizations using orgs-query since the AuthenticatedUser does not implement MutableAuthenticatedOrgsUser");
+            else
+            {
+                try
+                {
+                    QueryResultSet qrs = orgsQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                    if (qrs != null)
+                    {
+                        Object[][] orgsResult = ResultSetUtils.getInstance().getResultSetRowsAsMatrix(qrs.getResultSet());
+                        ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgsResult);
+
+                        MutableAuthenticatedOrgsUser mutableOrgsUser = (MutableAuthenticatedOrgsUser) user;
+                        for (int rowIndex = 0; rowIndex < orgsResult.length; rowIndex++)
+                        {
+                            Object[] row = orgsResult[rowIndex];
+                            switch (row.length)
+                            {
+                                case 1:
+                                    mutableOrgsUser.addUserOrg(false, row[0].toString(), row[0].toString());
+                                    break;
+
+                                case 2:
+                                    mutableOrgsUser.addUserOrg(false, row[0].toString(), row[1].toString());
+                                    break;
+
+                                default: /** 3 or more **/
+                                    Object isPrimaryObjValue = row[2];
+                                    boolean isPrimary = false;
+                                    if (isPrimaryObjValue instanceof Boolean)
+                                        isPrimary = ((Boolean) isPrimaryObjValue).booleanValue();
+                                    else if (isPrimaryObjValue instanceof Integer)
+                                        isPrimary = ((Integer) isPrimaryObjValue).intValue() == 1 ? true : false;
+                                    else if (isPrimaryObjValue instanceof Long)
+                                        isPrimary = ((Long) isPrimaryObjValue).longValue() == 1 ? true : false;
+                                    else
+                                        isPrimary = TextUtils.toBoolean(isPrimaryObjValue.toString(), false);
+
+                                    mutableOrgsUser.addUserOrg(isPrimary, row[0].toString(), row[1].toString());
+                                    break;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.error("Error assigning orgs to user", e);
+                }
+            }
+        }
+
+        if (orgQuery != null)
+        {
+            if (!(user instanceof MutableAuthenticatedOrgUser))
+                log.error("Unable to assign organization using org-query since the AuthenticatedUser does not implement MutableAuthenticatedOrgUser");
+            else
+            {
+                try
+                {
+                    QueryResultSet qrs = orgQuery.execute(ldc, new Object[]{ldc.getUserIdInput()}, false);
+                    if (qrs != null)
+                    {
+                        Object[] orgResult = ResultSetUtils.getInstance().getResultSetSingleRowAsArray(qrs.getResultSet());
+                        ldc.setAttribute(ATTRNAME_ORGS_QUERY_RESULTS, orgResult);
+
+                        MutableAuthenticatedOrgUser mutableOrgUser = (MutableAuthenticatedOrgUser) user;
+                        mutableOrgUser.setUserOrgId(orgResult[0].toString());
+                        if (orgResult.length > 1)
+                            mutableOrgUser.setUserOrgName(orgResult[1].toString());
+                    }
+                }
+                catch (Exception e)
+                {
+                    log.error("Error assigning orgs to user", e);
+                }
+            }
+        }
     }
 
     public boolean isPasswordEncrypted()
@@ -192,4 +306,33 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         roleQuery = query;
     }
 
+    public Query getOrgsQuery()
+    {
+        return orgsQuery;
+    }
+
+    public Query createOrgsQuery()
+    {
+        return new Query();
+    }
+
+    public void addOrgsQuery(Query query)
+    {
+        orgsQuery = query;
+    }
+
+    public Query getOrgQuery()
+    {
+        return orgQuery;
+    }
+
+    public Query createOrgQuery()
+    {
+        return new Query();
+    }
+
+    public void addOrgQuery(Query query)
+    {
+        orgQuery = query;
+    }
 }
