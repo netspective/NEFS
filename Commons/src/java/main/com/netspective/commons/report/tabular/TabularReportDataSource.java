@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: TabularReportDataSource.java,v 1.4 2003-04-04 17:14:23 shahbaz.javeed Exp $
+ * $Id: TabularReportDataSource.java,v 1.5 2003-04-05 14:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
+
+import com.netspective.commons.value.ValueSource;
 
 public interface TabularReportDataSource
 {
@@ -105,4 +107,15 @@ public interface TabularReportDataSource
      * Return the active hiearchy
      */
     public Hierarchy getActiveHierarchy();
+
+    /**
+     * Return true if the active row is currently "selected" (the exact meaning is important to the skin, not the data)
+     */
+    public boolean isActiveRowSelected();
+
+    /**
+     * Returns the value source that provides the "no data provided" message in case the data source is empty. If this
+     * method returns null, no message is rendered.
+     */
+    public ValueSource getNoDataFoundMessage();
 }

@@ -39,13 +39,18 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.2 2003-04-04 17:14:23 shahbaz.javeed Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.3 2003-04-05 14:14:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+
 public abstract class AbstractTabularReportDataSource implements TabularReportDataSource
 {
+    private static ValueSource defaultNoDataFoundMsg = new StaticValueSource("No data available.");
+
     public boolean next()
     {
         return false;
@@ -74,5 +79,15 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
     public TabularReportDataSource.Hierarchy getActiveHierarchy()
     {
         return null;
+    }
+
+    public boolean isActiveRowSelected()
+    {
+        return false;
+    }
+
+    public ValueSource getNoDataFoundMessage()
+    {
+        return defaultNoDataFoundMsg;
     }
 }
