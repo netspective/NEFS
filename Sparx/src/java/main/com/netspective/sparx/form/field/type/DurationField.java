@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DurationField.java,v 1.8 2003-11-13 17:30:51 shahid.shah Exp $
+ * $Id: DurationField.java,v 1.9 2004-01-04 04:32:38 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -178,7 +178,14 @@ public class DurationField extends DialogField
         Date beginDate = (Date) states.getState(beginField).getValue().getValue();
         Date endDate = (Date) states.getState(endField).getValue().getValue();
 
-        if(beginDate.after(endDate))
+        // if only one value is provided, show error
+        if ((beginDate == null && endDate != null) || (beginDate != null && endDate == null))
+        {
+            invalidate(dc, "Both beginning and ending values should be provided.");
+            return;
+        }
+        // check the relationship only when both values are present
+        if(beginDate != null && endDate != null && beginDate.after(endDate))
         {
             invalidate(dc, "Beginning value should be before ending value.");
             return;
