@@ -39,33 +39,33 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.14 2003-12-19 11:03:29 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.15 2004-07-18 23:21:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import freemarker.template.Configuration;
+import com.netspective.commons.text.TextUtils;
+
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.FileTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
-
-import com.netspective.commons.text.TextUtils;
+import freemarker.template.Configuration;
 
 public class FreeMarkerConfigurationAdapters
 {
@@ -131,6 +131,8 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
         configuration.setSharedVariable("getQueryResultSet", new GetQueryResultSetMethod());
         configuration.setSharedVariable("getQueryResultsAsMatrix", new GetQueryResultsAsMatrixMethod());
+        configuration.setSharedVariable("getQueryResultsAsMapArray", new GetQueryResultsAsMapArrayMethod());
+        configuration.setSharedVariable("getQueryResultsSingleRowAsMap", new GetQueryResultsSingleRowAsMapMethod());
         configuration.setSharedVariable("getFileContentsSyntaxHighlighted", new GetFileContentsSyntaxHighlightedMethod());
         configuration.setSharedVariable("panel", new PanelTransform());
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
