@@ -34,7 +34,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(20,6)</define>
         </sql-ddl>
         <presentation>
-            <field type="float" size="16" min="0.0"/>
+            <field name="${column.getName()}" type="float" size="16" min="0.0" caption="${column.getCaption()}" />
         </presentation>
     </data-type>
 
@@ -44,7 +44,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(8)</define>
         </sql-ddl>
         <presentation>
-            <field type="integer" size="16" min="0" max="99999999"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="99999999"/>
         </presentation>
     </data-type>
 
@@ -54,7 +54,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(4)</define>
         </sql-ddl>
         <presentation>
-            <field type="integer" size="16" min="0" max="9999"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0" max="9999"/>
         </presentation>
     </data-type>
 
@@ -64,7 +64,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
         </sql-ddl>
         <presentation>
-            <field type="integer" size="16" min="0"/>
+            <field name="${column.getName()}" type="integer" caption="${column.getCaption()}" size="16" min="0"/>
         </presentation>
     </data-type>
 
@@ -76,7 +76,7 @@
             <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
         </sql-ddl>
         <presentation>
-            <field type="boolean" size="16" style="radio"/>
+            <field name="${column.getName()}" type="boolean" size="16" style="radio" caption="${column.getCaption()}"/>
         </presentation>
     </data-type>
 
@@ -115,6 +115,22 @@
         </presentation>
     </data-type>
 
+    <!-- this is a regular date/time column but there is no <presentation> tag and has a useful default -->
+    <data-type name="creation-stamp" class="com.netspective.axiom.schema.column.type.DateTimeColumn">
+        <required>dbms</required>
+        <descr>Date/time record was created</descr>
+        <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
+            <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
+            <define dbms="postgres" xdm:replace-template-expressions="no">timestamp</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
+            <default dbms="oracle">sysdate</default>
+        </sql-ddl>
+        <value-defn>
+            <default dbms="hsqldb">now()</default>
+        </value-defn>
+    </data-type>
+
     <!-- alias for date-time -->
     <data-type name="stamp" type="date-time"/>
 
@@ -149,31 +165,20 @@
     <!-- alias for date-time-range -->
     <data-type name="stamp-range" type="date-time-range"/>
 
-    <data-type name="creation-stamp" type="stamp">
-        <required>dbms</required>
-        <descr>Date/time record was created</descr>
-        <sql-ddl>
-            <default dbms="oracle">sysdate</default>
-        </sql-ddl>
-        <value-defn>
-            <default dbms="hsqldb">now()</default>
-        </value-defn>
-    </data-type>
-
     <!-- ***************************************************************************
          * Auto-generated data-types useful as primary keys                        *
          *************************************************************************** -->
 
-    <data-type name="auto-inc" type="long-integer" class="com.netspective.axiom.schema.column.type.AutoIncColumn">
+    <data-type name="auto-inc" class="com.netspective.axiom.schema.column.type.AutoIncColumn">
         <sql-ddl>
+            <define dbms="ansi" xdm:replace-template-expressions="no">integer</define>
+            <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">integer IDENTITY</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">integer IDENTITY</define>
             <define-ref dbms="mssql" xdm:replace-template-expressions="no">integer</define-ref>
             <define-ref dbms="hsqldb" xdm:replace-template-expressions="no">integer</define-ref>
         </sql-ddl>
-        <presentation>
-            <field type="integer" size="16" min="0"/>
-        </presentation>
+        <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.LongIntegerColumn</foreign-key-referencee-class>
     </data-type>
 
     <data-type name="guid-text" class="com.netspective.axiom.schema.column.type.GuidTextColumn">
@@ -192,6 +197,7 @@
     </data-type>
 
     <data-type name="guid32" type="guid-text" class="com.netspective.axiom.schema.column.type.GuidColumn">
+        <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.GuidTextColumn</foreign-key-referencee-class>
         <presentation>
             <field.guid32/>
         </presentation>
@@ -313,7 +319,9 @@
          * Standard table types and tables                                         *
          *************************************************************************** -->
 
-    <data-type name="enumeration-id" type="integer" class="com.netspective.axiom.schema.column.type.EnumerationIdColumn"/>
+    <data-type name="enumeration-id" type="integer" class="com.netspective.axiom.schema.column.type.EnumerationIdColumn">
+        <foreign-key-referencee-class>com.netspective.axiom.schema.column.type.EnumerationIdRefColumn</foreign-key-referencee-class>
+    </data-type>
 
     <table-type name="Enumeration" class="com.netspective.axiom.schema.table.type.EnumerationTable">
         <xdm:template-param name="capsize" default="96"/>
@@ -323,6 +331,8 @@
         <column name="caption" type="text" size="${params.capsize}" required="yes" descr="The name/text an end-user would see"/>
         <column name="abbrev" type="text" size="${params.abbrevsize}" unique="yes" descr="An abbreviated form of the caption"/>
     </table-type>
+
+    <!-- ************************************************************************** -->
 
     <table name="Lookup_Result_Type" abbrev="LkResTy" type="Enumeration">
         <enumerations>
@@ -338,7 +348,19 @@
         <column name="result" lookupref="Lookup_Result_Type" descr="The type of result after a lookup (the value that should be used for the lookup -- the id or caption or abbreviation)"/>
     </table-type>
 
-    <table-type name="Status" type="Enumeration">
+    <!-- ************************************************************************** -->
+
+    <table-type name="Status"  class="com.netspective.axiom.schema.table.type.EnumerationTable">
+        <xdm:template-param name="capsize" default="96"/>
+        <xdm:template-param name="abbrevsize" default="32"/>
+
+        <!-- we are overriding the "normal" enumeration table and creating our own type because our 'id' column
+             points to a different foreign-key referencee class (this is so that columns that refer to this id aren't
+             shown in the UI since they are designed for 'backend' processing) -->
+        <column name="id" type="enumeration-id" primarykey="yes" descr="The value associated with a single enum" foreign-key-referencee-class="com.netspective.axiom.schema.column.type.RecordStatusIdColumn"/>
+        <column name="caption" type="text" size="${params.capsize}" required="yes" descr="The name/text an end-user would see"/>
+        <column name="abbrev" type="text" size="${params.abbrevsize}" unique="yes" descr="An abbreviated form of the caption"/>
+
         <enumerations>
             <enum id="0" abbrev="I">Inactive</enum>
             <enum id="1" abbrev="A">Active</enum>
@@ -349,6 +371,25 @@
     <table name="Record_Status" abbrev="RecStatus" type="Status">
         <!-- nothing here yet, just a placeholder for later enhancements -->
     </table>
+
+    <!--
+    *********************************************************************
+    ** Versioned tables - a versioned table contains a creation stamp and
+    ** record status code that can uniquely identify any row with or
+    ** without a primary key.
+    *********************************************************************
+    -->
+
+    <table-type name="Versioned">
+        <xdm:template-param name="recordStatusEnumTableName" default="Record_Status"/>
+
+        <column name="record_status_id" lookup-ref="${params.recordStatusEnumTableName}" descr="The status of a row in the table">
+            <sql-ddl>
+                <default dbms="ansi">1</default>
+            </sql-ddl>
+        </column>
+        <column name="cr_stamp" type="creation-stamp"/>
+    </table-type>
 
     <!--
     *********************************************************************
