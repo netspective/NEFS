@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.5 2003-12-18 22:19:15 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.6 2004-07-28 01:37:27 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -147,6 +147,7 @@ public class DataImportDtd
                 first = false;
             out.print(table.getXmlNodeName());
         }
+        out.print(" | " + ELEMNAME_INCLUDE);
         out.println(")*>");
         out.println("");
     }
