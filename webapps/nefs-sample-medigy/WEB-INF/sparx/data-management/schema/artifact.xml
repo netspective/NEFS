@@ -1,89 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	<table name="Artifact_Association_Status" abbrev="ArfAsnSt" type="Status"/>
 
-	<table name="Artifact" abbrev="Artf" type="Default">
-<description>All artifacts that we can manage</description>
-<column name="artifact_id" type="guid32" primarykey="yes" descr="Unique artifact ID"/>
-<column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/>
-<column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/>
-<column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/>
-<column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/>
-<column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/>
-<column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/>
-<column name="source_id" type="text" size="255" indexed="yes" descr="The id associated with the source type"/>
-<column name="source_type_id" lookupref="Artifact_Source_Type" required="yes" indexed="yes" descr="They source of the artifact"/>
-<column name="source_subtype" type="text" size="255" indexed="yes" descr="Any subtype/specification of the artifact (depends upon source_type)"/>
-<column name="source_system" type="text" size="255" indexed="yes" descr="If the artifact is a message, this is the application that sent the message"/>
-<column name="name" type="text" size="1024" required="yes" descr="They name of the artifact"/>
-<column name="description" type="text" size="4000" descr="They description of the artifact"/>
-<column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/>
-<column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/>
-<column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
-<column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/>
-<column name="content_large" type="data-block" descr="They actual content of the artifact"/>
-</table>
+	<table name="Artifact" abbrev="Artf" type="Default"><description>All artifacts that we can manage</description><column name="artifact_id" type="guid32" primarykey="yes" descr="Unique artifact ID"/><column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/><column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/><column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/><column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/><column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/><column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/><column name="source_id" type="text" size="255" indexed="yes" descr="The id associated with the source type"/><column name="source_type_id" lookupref="Artifact_Source_Type" required="yes" indexed="yes" descr="They source of the artifact"/><column name="source_subtype" type="text" size="255" indexed="yes" descr="Any subtype/specification of the artifact (depends upon source_type)"/><column name="source_system" type="text" size="255" indexed="yes" descr="If the artifact is a message, this is the application that sent the message"/><column name="name" type="text" size="1024" required="yes" descr="They name of the artifact"/><column name="description" type="text" size="4000" descr="They description of the artifact"/><column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/><column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/><column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/><column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/><column name="content_large" type="data-block" descr="They actual content of the artifact"/></table>
 
-	<table name="Artifact_State" abbrev="ArtfSt" type="Record_State" xdm:param-recordStateEnum="Record_State">
-<description>The state of all artifacts that we can manage</description>
-<column name="artifact_id" parentref="Artifact.artifact_id" descr="Unique artifact ID"/>
-<column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/>
-<column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/>
-<column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/>
-<column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/>
-<column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/>
-<column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/>
-<column name="source_id" type="text" size="255" indexed="yes" descr="The id associated with the source type"/>
-<column name="source_type_id" lookupref="Artifact_Source_Type" required="yes" indexed="yes" descr="They source of the artifact"/>
-<column name="source_subtype" type="text" size="255" indexed="yes" descr="Any subtype/specification of the artifact (depends upon source_type)"/>
-<column name="source_system" type="text" size="255" indexed="yes" descr="If the artifact is a message, this is the application that sent the message"/>
-<column name="name" type="text" size="1024" required="yes" descr="They name of the artifact"/>
-<column name="description" type="text" size="4000" descr="They description of the artifact"/>
-<column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/>
-<column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/>
-<column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/>
-<column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/>
-<column name="content_large" type="data-block" descr="They actual content of the artifact"/>
-</table>
+	<table name="Artifact_State" abbrev="ArtfSt" type="Record_State" xdm:param-recordStateEnum="Record_State"><description>The state of all artifacts that we can manage</description><column name="artifact_id" parentref="Artifact.artifact_id" descr="Unique artifact ID"/><column name="artifact_id_alias" type="text" size="64" descr="Artifact ID assigned from the source (alias, if any)"/><column name="message_digest" type="text" size="32" descr="128-bit unique message digest (MD5)"/><column name="mime_type" type="text" size="128" descr="The MIME type, if any for this artifact"/><column name="header" type="text" size="4000" descr="Any header/signature that artifact posseses"/><column name="spec_type_id" lookupref="Artifact_Type" required="yes" indexed="yes" descr="They type/specification of the artifact"/><column name="spec_subtype" type="text" size="128" indexed="yes" descr="Any subtype/specification of the artifact (depends upon spec_type -- e.g. it's the message type for a HL7 message)"/><column name="source_id" type="text" size="255" indexed="yes" descr="The id associated with the source type"/><column name="source_type_id" lookupref="Artifact_Source_Type" required="yes" indexed="yes" descr="They source of the artifact"/><column name="source_subtype" type="text" size="255" indexed="yes" descr="Any subtype/specification of the artifact (depends upon source_type)"/><column name="source_system" type="text" size="255" indexed="yes" descr="If the artifact is a message, this is the application that sent the message"/><column name="name" type="text" size="1024" required="yes" descr="They name of the artifact"/><column name="description" type="text" size="4000" descr="They description of the artifact"/><column name="orig_stamp" type="stamp" descr="The date/time artifact was created/originated"/><column name="recv_stamp" type="stamp" descr="The date/time artifact was received"/><column name="content_uri" type="text" size="512" descr="If the artifact is addressable by a URI, this is the URI"/><column name="content_small" type="text" size="4000" descr="They actual content of the artifact (depends on spec as to whether this or _large is used)"/><column name="content_large" type="data-block" descr="They actual content of the artifact"/></table>
 
-	<table name="Artifact_Association" abbrev="ArfAssn" type="Default">
-<description>Associations between artifacts</description>
-<column name="assn_id" type="guid32" primarykey="yes" descr="Unique Association ID"/>
-<column name="assn_status_id" lookupref="Artifact_Association_Status" indexed="yes" descr="Whether or not association is currently active"/>
-<column name="assn_type_id" lookupref="Artifact_Association_Type" indexed="yes" required="yes" descr="Type of association"/>
-<column name="assn_sequence" type="integer" indexed="yes" descr="If there is more than one association, this is the sequence"/>
-<column name="artifact_id" parentref="Artifact.artifact_id" indexed="yes" required="yes" descr="Originating Artifact ID"/>
-<column name="assoc_artifact_id" lookupref="Artifact.artifact_id" indexed="yes" descr="Associated Artifact ID"/>
-<column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom artifact is associated"/>
-<column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom artifact is associated"/>
-<column name="assn_data_a" type="text" size="1024" descr="Any association-specific information"/>
-<column name="assn_data_b" type="text" size="1024" descr="Any association-specific information"/>
-<column name="assn_data_c" type="text" size="1024" descr="Any association-specific information"/>
-</table>
+	<table name="Artifact_Association" abbrev="ArfAssn" type="Default"><description>Associations between artifacts</description><column name="assn_id" type="guid32" primarykey="yes" descr="Unique Association ID"/><column name="assn_status_id" lookupref="Artifact_Association_Status" indexed="yes" descr="Whether or not association is currently active"/><column name="assn_type_id" lookupref="Artifact_Association_Type" indexed="yes" required="yes" descr="Type of association"/><column name="assn_sequence" type="integer" indexed="yes" descr="If there is more than one association, this is the sequence"/><column name="artifact_id" parentref="Artifact.artifact_id" indexed="yes" required="yes" descr="Originating Artifact ID"/><column name="assoc_artifact_id" lookupref="Artifact.artifact_id" indexed="yes" descr="Associated Artifact ID"/><column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom artifact is associated"/><column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom artifact is associated"/><column name="assn_data_a" type="text" size="1024" descr="Any association-specific information"/><column name="assn_data_b" type="text" size="1024" descr="Any association-specific information"/><column name="assn_data_c" type="text" size="1024" descr="Any association-specific information"/></table>
 
 	
 
-	<table name="Artifact_Keyword" abbrev="ArfKeyw" type="Default">
-<description>Keywords that occur for artifacts</description>
-<column name="keyword_id" type="guid32" primarykey="yes" descr="Unique keyword ID"/>
-<column name="artifact_id" parentref="Artifact.artifact_id" required="yes" descr="Unique Artifact ID"/>
-<column name="keyword" type="text" size="512" indexed="yes" descr="Related Artifact ID"/>
-<column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom keyword is stored"/>
-<column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom keyword is stored"/>
-</table>
+	<table name="Artifact_Keyword" abbrev="ArfKeyw" type="Default"><description>Keywords that occur for artifacts</description><column name="keyword_id" type="guid32" primarykey="yes" descr="Unique keyword ID"/><column name="artifact_id" parentref="Artifact.artifact_id" required="yes" descr="Unique Artifact ID"/><column name="keyword" type="text" size="512" indexed="yes" descr="Related Artifact ID"/><column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom keyword is stored"/><column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom keyword is stored"/></table>
 
-	<table name="Artifact_Event" abbrev="ArfEvent" type="Default">
-<description>Events that occur for artifacts</description>
-<column name="event_id" type="guid32" primarykey="yes" descr="Unique Event ID"/>
-<column name="event_type_id" lookupref="Artifact_Event_Type" indexed="yes" required="yes" descr="Type of event"/>
-<column name="event_status" type="text" size="1024" descr="Any status message for this event"/>
-<column name="artifact_id" parentref="Artifact.artifact_id" required="yes" descr="Unique Artifact ID"/>
-<column name="rel_artifact_id" lookupref="Artifact.artifact_id" descr="Related Artifact ID"/>
-<column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom event occurred"/>
-<column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom event occurred"/>
-<column name="event_info" type="text" size="1024" descr="What happened (the event information)"/>
-<column name="event_info_extra" type="text" size="1024" descr="Any other extra event information"/>
-</table>
+	<table name="Artifact_Event" abbrev="ArfEvent" type="Default"><description>Events that occur for artifacts</description><column name="event_id" type="guid32" primarykey="yes" descr="Unique Event ID"/><column name="event_type_id" lookupref="Artifact_Event_Type" indexed="yes" required="yes" descr="Type of event"/><column name="event_status" type="text" size="1024" descr="Any status message for this event"/><column name="artifact_id" parentref="Artifact.artifact_id" required="yes" descr="Unique Artifact ID"/><column name="rel_artifact_id" lookupref="Artifact.artifact_id" descr="Related Artifact ID"/><column name="person_id" lookupref="Person.person_id" indexed="yes" descr="Person for whom event occurred"/><column name="org_id" lookupref="Org.org_id" indexed="yes" descr="Org for whom event occurred"/><column name="event_info" type="text" size="1024" descr="What happened (the event information)"/><column name="event_info_extra" type="text" size="1024" descr="Any other extra event information"/></table>
 
 </xdm:container>

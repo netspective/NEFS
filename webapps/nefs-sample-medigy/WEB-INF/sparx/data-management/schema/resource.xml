@@ -1,32 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table name="Asset" abbrev="Ast" type="Default">
-<description>
+	<table name="Asset" abbrev="Ast" type="Default"><description>
 			This table stores all the basic information about a asset item in an organization.
 			The primary use for this information is to enable scheduling asset time just like
 			provider time is scheduled.
-		</description>
-<column name="asset_id" type="guid32" primarykey="yes" descr="Unique ID for any asset"/>
-<column name="asset_type_id" lookupref="Asset_Type" descr="The type of asset"/>
-<column name="asset_type" type="text" size="256" descr="The type of asset if 'Other' chosen above"/>
-<column name="name" type="text" size="256" required="yes" descr="The name of this asset"/>
-<column name="concurrency" type="integer" required="yes" descr="How many people can use this asset concurrently?  This is &gt;1 for things like a ward or conference room but =1 for things like an x-ray machine.  This field is used mainly to limit the number of Event_Asset records that link to a particular asset for a given time slot"/>
-<column name="location" type="text" size="256" descr="The location of this asset in (in)formal terms"/>
-<column name="serial_num" type="text" size="512" descr="The serial number of this asset (if any)"/>
-</table>
+		</description><column name="asset_id" type="guid32" primarykey="yes" descr="Unique ID for any asset"/><column name="asset_type_id" lookupref="Asset_Type" descr="The type of asset"/><column name="asset_type" type="text" size="256" descr="The type of asset if 'Other' chosen above"/><column name="name" type="text" size="256" required="yes" descr="The name of this asset"/><column name="concurrency" type="integer" required="yes" descr="How many people can use this asset concurrently?  This is &gt;1 for things like a ward or conference room but =1 for things like an x-ray machine.  This field is used mainly to limit the number of Event_Asset records that link to a particular asset for a given time slot"/><column name="location" type="text" size="256" descr="The location of this asset in (in)formal terms"/><column name="serial_num" type="text" size="512" descr="The serial number of this asset (if any)"/></table>
 
-	<table name="Asset_Maint" abbrev="AstMaint" type="Default">
-<description>
+	<table name="Asset_Maint" abbrev="AstMaint" type="Default"><description>
 			This table stores all maintenance records regarding a asset.  This includes all
 			the times it has had scheduled maintenance performed on it, any breakdowns that have
 			occurred etc.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for any record"/>
-<column name="asset_id" parentref="Asset.asset_id" descr="The asset that this record is about"/>
-<column name="scheduled" type="boolean" descr="Whether this was a scheduled maintenance or not"/>
-<column name="breakdown_date" type="date" descr="The date that the asset became unavailable.  This makes sense only for non-scheduled maintenance."/>
-<column name="maintenance_date" type="date" descr="The date that scheduled maintenance was conducted"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for any record"/><column name="asset_id" parentref="Asset.asset_id" descr="The asset that this record is about"/><column name="scheduled" type="boolean" descr="Whether this was a scheduled maintenance or not"/><column name="breakdown_date" type="date" descr="The date that the asset became unavailable.  This makes sense only for non-scheduled maintenance."/><column name="maintenance_date" type="date" descr="The date that scheduled maintenance was conducted"/></table>
 
 </xdm:container>

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dal>
+<?xml version="1.0" encoding="utf-8"?>
+<dal xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<org ID="ORG_">
 		<org-name>Org</org-name>
 		<org-code>ORG</org-code>

@@ -1,12 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<query-defn name="searchClaims">
 		<field name="claim_id" caption="Claim ID" join="Claim" column="claim_id">
-			<presentation>
-<panel>
-<report url="nav-url:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.diag-proc-codes,add,component?claim_id=${0}"/>
-</panel>
-</presentation>
+			<presentation><panel><report url="nav-url:/claim/summary,statement,claimAttribute.profile,-,-,detail,-,claimAttribute.diag-proc-codes,add,component?claim_id=${0}"/></panel></presentation>
 		</field>
 
 		<field name="claim_status_id" caption="Claim Status" join="ClaimStatus" column="id" column-expr="ClaimStatus.caption"/>
@@ -28,8 +24,7 @@
 		<join name="ClaimServiceProvider" table="Person" condition="ClaimServiceProvider.person_id = Claim.service_provider_id"/>
 		<join name="ClaimServiceFacility" table="Org" condition="ClaimServiceFacility.org_id = Claim.service_facility_id"/>
 		
-		<presentation>
-<select-dialog name="searchClaimDialog" heading="Search for Claims">
+		<presentation><select-dialog name="searchClaimDialog"><frame heading="Search for Claims"/>
 			<field.text query-field="claim_id"/>
 			<field.select query-field="claim_status_id" choices="schema-enum:Claim_Status_Type" prepend-blank="yes"/>
 			<field.text query-field="patient_lastName"/>
@@ -53,7 +48,6 @@
 				<condition field="servprov_id" allow-null="no" comparison="equals" value="form:servprov_id" connector="and"/>
 				<condition field="servfac_id" allow-null="no" comparison="equals" value="form:servfac_id" connector="and"/>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 	</query-defn> 
 </xdm:container>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<xdm:include file="attributes/person.xml"/>
 	<xdm:include file="query-defns/person.xml"/>
@@ -100,22 +100,7 @@
 				<param value="request:person_id"/>
 			</params>
 
-			<presentation>
-<panel>
-<frame heading="Personal Profile"/>
-<banner style="horizontal">
-<action caption="Edit" command="redirect,"/>
-</banner>
-<report>
-<column heading="Prefix"/>
-<column heading="First Name"/>
-<column heading="Middle Name"/>
-<column heading="Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Death Date"/>
-</report>
-</panel>
-</presentation>
+			<presentation><panel><frame heading="Personal Profile"/><banner style="horizontal"><action caption="Edit" command="redirect,"/></banner><report><column heading="Prefix"/><column heading="First Name"/><column heading="Middle Name"/><column heading="Last Name"/><column heading="Birth Date"/><column heading="Death Date"/></report></panel></presentation>
 		</query>
 
 		<query name="get-total-person-logins">

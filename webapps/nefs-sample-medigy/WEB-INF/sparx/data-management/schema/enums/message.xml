@@ -1,38 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
-	<table name="Message_Attachment_Type" abbrev="MesgAtchTy" type="Enumeration">
-<description>
+	<table name="Message_Attachment_Type" abbrev="MesgAtchTy" type="Enumeration"><description>
 			The most common types of message attachments
-		</description>
-<enumerations>
-<enum>File</enum>
-<enum>Message</enum>
-</enumerations>
-</table>
+		</description><enumerations><enum>File</enum><enum>Message</enum></enumerations></table>
 
-	<table name="Message_Recipient_Type" abbrev="MesgRecpTy" type="Enumeration">
-<description>
+	<table name="Message_Recipient_Type" abbrev="MesgRecpTy" type="Enumeration"><description>
 			For now this table stores the type of message this is.  Internal to the application
 			or external (e.g. Internet e-mail)
-		</description>
-<enumerations>
-<enum>Application</enum>
-<enum>Internet</enum>
-</enumerations>
-</table>
+		</description><enumerations><enum>Application</enum><enum>Internet</enum></enumerations></table>
 
-	<table name="Message_Reception_Type" abbrev="MesgRcptTy" type="Enumeration">
-<description>
+	<table name="Message_Reception_Type" abbrev="MesgRcptTy" type="Enumeration"><description>
 			The most common types of message recipients
-		</description>
-<enumerations>
-<enum abbrev="To">Direct</enum>
-<enum abbrev="Cc">Carbon-copy</enum>
-<enum abbrev="Bcc">Blind carbon-copy</enum>
-</enumerations>
-</table>
+		</description><enumerations><enum abbrev="To">Direct</enum><enum abbrev="Cc">Carbon-copy</enum><enum abbrev="Bcc">Blind carbon-copy</enum></enumerations></table>
 
 </xdm:container>

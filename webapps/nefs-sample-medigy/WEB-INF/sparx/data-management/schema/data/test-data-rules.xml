@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rules>
+<?xml version="1.0" encoding="utf-8"?>
+<rules xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<org>
         
 	    <number-of-entities>

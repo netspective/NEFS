@@ -1,79 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
-	<table name="Bill_Remittance_Type" abbrev="BillRmtTy" type="Enumeration">
-<enumerations>
-<enum>Paper</enum>
-<enum>Electronic</enum>
-</enumerations>
-</table>
+	<table name="Bill_Remittance_Type" abbrev="BillRmtTy" type="Enumeration"><enumerations><enum>Paper</enum><enum>Electronic</enum></enumerations></table>
 
-	<table name="Bill_Sequence_Type" abbrev="BillSeqTy" type="Enumeration">
-<enumerations>
-<enum>Primary</enum>
-<enum>Secondary</enum>
-<enum>Tertiary</enum>
-<enum>Quarternary</enum>
-<enum>Workers Comp</enum>
-<enum>Terminated</enum>
-<enum>Inactive</enum>
-</enumerations>
-</table>
+	<table name="Bill_Sequence_Type" abbrev="BillSeqTy" type="Enumeration"><enumerations><enum>Primary</enum><enum>Secondary</enum><enum>Tertiary</enum><enum>Quarternary</enum><enum>Workers Comp</enum><enum>Terminated</enum><enum>Inactive</enum></enumerations></table>
 
-	<table name="Ins_Coverage_Type" abbrev="InsCovTy" type="Enumeration">
-<enumerations>
-<enum>Regular Visits</enum>
-<enum>Emergency</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Ins_Coverage_Type" abbrev="InsCovTy" type="Enumeration"><enumerations><enum>Regular Visits</enum><enum>Emergency</enum><enum>Other</enum></enumerations></table>
 
-	<table name="Ins_Product_Type" abbrev="InsPolTy" type="Enumeration">
-<enumerations>
-<enum>Self-Pay</enum>
-<enum>Insurance</enum>
-<enum>HMO(cap)</enum>
-<enum>HMO(non-cap)</enum>
-<enum>PPO</enum>
-<enum>Medicare</enum>
-<enum>Medicaid</enum>
-<enum>Workers Compensation</enum>
-<enum>Third-Party Payer</enum>
-<enum>Champus</enum>
-<enum>ChampVA</enum>
-<enum>FECA Blk Lung</enum>
-<enum>BCBS</enum>
-<enum>MC(managed care choice)</enum>
-<enum>POS(point of service)</enum>
-<enum>Railroad Medicare</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Ins_Product_Type" abbrev="InsPolTy" type="Enumeration"><enumerations><enum>Self-Pay</enum><enum>Insurance</enum><enum>HMO(cap)</enum><enum>HMO(non-cap)</enum><enum>PPO</enum><enum>Medicare</enum><enum>Medicaid</enum><enum>Workers Compensation</enum><enum>Third-Party Payer</enum><enum>Champus</enum><enum>ChampVA</enum><enum>FECA Blk Lung</enum><enum>BCBS</enum><enum>MC(managed care choice)</enum><enum>POS(point of service)</enum><enum>Railroad Medicare</enum><enum>Other</enum></enumerations></table>
 
-	<table name="Insured_Relationship" abbrev="InsRel" type="Enumeration">
-<enumerations>
-<enum>Self</enum>
-<enum>Spouse</enum>
-<enum>Natural/Adopted Child (Insured has Financial Responsibility)</enum>
-<enum>Natural/Adopted Child (Insured does not have Financial Resp.)</enum>
-<enum>Step Child</enum>
-<enum>Foster Child</enum>
-<enum>Ward of the Court</enum>
-<enum>Employee</enum>
-<enum>Unknown/Other</enum>
-<enum>Handicapped Dependent</enum>
-<enum>Organ Donor</enum>
-<enum>Cadaver Donor</enum>
-<enum>Grandchild</enum>
-<enum>Niece/Nephew</enum>
-<enum>Injured Plaintiff</enum>
-<enum>Sponsored Dependent</enum>
-<enum>Minor Dependent of a Minor Dependent</enum>
-<enum>Parent</enum>
-<enum>Grandparent</enum>
-</enumerations>
-</table>
+	<table name="Insured_Relationship" abbrev="InsRel" type="Enumeration"><enumerations><enum>Self</enum><enum>Spouse</enum><enum>Natural/Adopted Child (Insured has Financial Responsibility)</enum><enum>Natural/Adopted Child (Insured does not have Financial Resp.)</enum><enum>Step Child</enum><enum>Foster Child</enum><enum>Ward of the Court</enum><enum>Employee</enum><enum>Unknown/Other</enum><enum>Handicapped Dependent</enum><enum>Organ Donor</enum><enum>Cadaver Donor</enum><enum>Grandchild</enum><enum>Niece/Nephew</enum><enum>Injured Plaintiff</enum><enum>Sponsored Dependent</enum><enum>Minor Dependent of a Minor Dependent</enum><enum>Parent</enum><enum>Grandparent</enum></enumerations></table>
 
 </xdm:container>

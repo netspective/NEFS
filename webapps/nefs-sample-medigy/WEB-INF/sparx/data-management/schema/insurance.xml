@@ -1,62 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<table name="Ins_Plan" abbrev="InsPln" type="Default">
-<description>
+	<table name="Ins_Plan" abbrev="InsPln" type="Default"><description>
 			Store information about a particular insurance plan in this table.  This table does not
 			contain any information about which company this plan belongs to or what is the parent
 			product of this plan.  These data will be stored in relationship tables further down.
 			Note: More information might need to go in here
-		</description>
-<column name="plan_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance plan"/>
-<column name="product_id" parentref="Ins_Product.product_id" descr="The insurance product that this insurance plan is a part of.">
-<presentation>
-<field.select caption="Insurance Product ID" choices="query:insurance.getProductsByOrg" style="popup"/>
-</presentation>
-</column>
-<column name="plan_name" type="text" size="64" descr="Name of the plan">
-<presentation>
-<field.text caption="Plan Name" size="16"/>
-</presentation>
-</column>
-<column name="remit_payer_id" type="text" size="64" descr="The id (if required) for this insurance plan/group for electronic remittance">
-<presentation>
-<field.text caption="Electronic Remittance ID">
+		</description><column name="plan_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance plan"/><column name="product_id" parentref="Ins_Product.product_id" descr="The insurance product that this insurance plan is a part of."><presentation><field.select caption="Insurance Product ID" choices="query:insurance.getProductsByOrg" style="popup"/></presentation></column><column name="plan_name" type="text" size="64" descr="Name of the plan"><presentation><field.text caption="Plan Name" size="16"/></presentation></column><column name="remit_payer_id" type="text" size="64" descr="The id (if required) for this insurance plan/group for electronic remittance"><presentation><field.text caption="Electronic Remittance ID">
 				<conditional action="display" partner="remit_type_id" js-expr="control.options[control.selectedIndex].text == 'Electronic'"/>
-			</field.text>
-</presentation>
-</column>
-<column name="remit_type_id" lookupref="Bill_Remittance_Type" descr="How the bill is transmitted (paper, electronic, etc)">
-<presentation>
-<field.select caption="Remittance Type"/>
-</presentation>
-</column>
-<column name="remit_type" type="text" size="32" descr="How the bill is transmitted - if 'Other' chosen above">
-<presentation>
-<field.text caption="Other Remittance Type" size="16"/>
-</presentation>
-</column>
-<column name="remit_payer_name" type="text" size="256" descr="The name given to the primary remittance id record">
-<presentation>
-<field.text caption="Remittance Payer Name" size="16"/>
-</presentation>
-</column>
-<column name="medigap_id" type="text" size="64" descr="The Medigap number for this insurance product">
-<presentation>
-<field.text caption="Medigap ID"/>
-</presentation>
-</column>
-<column name="initiation_date" type="date" descr="Initiation date for this plan">
-<presentation>
-<field.date caption="Coverage Begin Date" size="12"/>
-</presentation>
-</column>
-<column name="expiration_date" type="date" descr="Expiration date for this plan">
-<presentation>
-<field.date caption="Coverage End Date" size="12"/>
-</presentation>
-</column>
-<presentation>
-<dialog name="insPlanProfileTableDialog" class="app.customdal.TableDialog">
+			</field.text></presentation></column><column name="remit_type_id" lookupref="Bill_Remittance_Type" descr="How the bill is transmitted (paper, electronic, etc)"><presentation><field.select caption="Remittance Type"/></presentation></column><column name="remit_type" type="text" size="32" descr="How the bill is transmitted - if 'Other' chosen above"><presentation><field.text caption="Other Remittance Type" size="16"/></presentation></column><column name="remit_payer_name" type="text" size="256" descr="The name given to the primary remittance id record"><presentation><field.text caption="Remittance Payer Name" size="16"/></presentation></column><column name="medigap_id" type="text" size="64" descr="The Medigap number for this insurance product"><presentation><field.text caption="Medigap ID"/></presentation></column><column name="initiation_date" type="date" descr="Initiation date for this plan"><presentation><field.date caption="Coverage Begin Date" size="12"/></presentation></column><column name="expiration_date" type="date" descr="Expiration date for this plan"><presentation><field.date caption="Coverage End Date" size="12"/></presentation></column><presentation><dialog name="insPlanProfileTableDialog" class="app.customdal.TableDialog">
 			<field.table-column column="cr_sess_id"/>
 			<field.table-column column="cr_stamp"/>
 			<field.table-column column="rec_stat_id"/>
@@ -73,12 +24,9 @@
 			<field.table-column column="medigap_id"/>
 			<field.table-column column="initiation_date"/>
 			<field.table-column column="expiration_date"/>
-		</dialog>
-</presentation>
-</table>
+		</dialog></presentation></table>
 	
-	<table name="Ins_Policy" abbrev="InsPlcy" type="Default">
-<description>
+	<table name="Ins_Policy" abbrev="InsPlcy" type="Default"><description>
 			Store information about a particular insurance policy.  The relationship between
 			insurance products, plans and policies is relatively simple one.  Each insurance
 			company has multiple products.  Each product is implemented as insurance plans
@@ -86,71 +34,15 @@
 			Each plan is instantiated as an insurance policy for a particular individual with
 			any modifications that are needed within the framework of the insurance plan. (e.g.
 			varying deductibles, copays etc).
-		</description>
-<column name="policy_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance policy"/>
-<column name="person_id" lookupref="Person.person_id" descr="The person in whose name this policy is taken out">
-<presentation>
-<field.select caption="Insured Person ID" choices="query:person.get-all-persons" style="popup"/>
-</presentation>
-</column>
-<column name="plan_id" parentref="Ins_Plan.plan_id" descr="The specific plan that is implemented as a policy for this person">
-<presentation>
-<field.select caption="Insurance Plan ID" choices="query:insurance.get-all-plans" style="popup"/>
-</presentation>
-</column>
-<column name="policy_number" type="text" size="32" descr="Policy number (if applicable)">
-<presentation>
-<field.text caption="Policy Number" size="16"/>
-</presentation>
-</column>
-<column name="group_number" type="text" size="32" descr="Group number (if record_type is group)">
-<presentation>
-<field.text caption="Group Number" size="16"/>
-</presentation>
-</column>
-<column name="group_name" type="text" size="32" descr="Group name (if record_type is group)">
-<presentation>
-<field.text caption="Group Name" size="16"/>
-</presentation>
-</column>
-<column name="bill_sequence_id" lookupref="Bill_Sequence_Type" descr="Primary, secondary, or tertiary insurance (if record type is person plan)">
-<presentation>
-<field.select caption="Bill Sequence ID"/>
-</presentation>
-</column>
-<column name="coverage_begin_date" type="date" descr="Date that this group policy was activated">
-<presentation>
-<field.date caption="Coverage Begin Date" size="12"/>
-</presentation>
-</column>
-<column name="coverage_end_date" type="date" descr="Date that this group policy was/will be deactived">
-<presentation>
-<field.date caption="Coverage End Date" size="12"/>
-</presentation>
-</column>
-</table>
+		</description><column name="policy_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance policy"/><column name="person_id" lookupref="Person.person_id" descr="The person in whose name this policy is taken out"><presentation><field.select caption="Insured Person ID" choices="query:person.get-all-persons" style="popup"/></presentation></column><column name="plan_id" parentref="Ins_Plan.plan_id" descr="The specific plan that is implemented as a policy for this person"><presentation><field.select caption="Insurance Plan ID" choices="query:insurance.get-all-plans" style="popup"/></presentation></column><column name="policy_number" type="text" size="32" descr="Policy number (if applicable)"><presentation><field.text caption="Policy Number" size="16"/></presentation></column><column name="group_number" type="text" size="32" descr="Group number (if record_type is group)"><presentation><field.text caption="Group Number" size="16"/></presentation></column><column name="group_name" type="text" size="32" descr="Group name (if record_type is group)"><presentation><field.text caption="Group Name" size="16"/></presentation></column><column name="bill_sequence_id" lookupref="Bill_Sequence_Type" descr="Primary, secondary, or tertiary insurance (if record type is person plan)"><presentation><field.select caption="Bill Sequence ID"/></presentation></column><column name="coverage_begin_date" type="date" descr="Date that this group policy was activated"><presentation><field.date caption="Coverage Begin Date" size="12"/></presentation></column><column name="coverage_end_date" type="date" descr="Date that this group policy was/will be deactived"><presentation><field.date caption="Coverage End Date" size="12"/></presentation></column></table>
 
-	<table name="Ins_Product" abbrev="InsPrd" type="Default">
-<description>
+	<table name="Ins_Product" abbrev="InsPrd" type="Default"><description>
 			Store information about a particular insurance product in this table.  This table does not
 			contain any information about what plans exist under it.  These data will be stored in
 			relationship tables further down.  Note: More information might need to go in here.
-		</description>
-<column name="product_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance product"/>
-<column name="org_id" parentref="Org.org_id" descr="The (insurance) organization that owns this product"/>
-<column name="prd_type_id" lookupref="Ins_Product_Type"/>
-<column name="prd_type" type="text" size="32" descr="The type of product that this record is storing.  This field is used if 'Other' is filled in the field above"/>
-<column name="product_name" type="text" size="64" descr="The name of the product given to this product by the end-user"/>
-<column name="remit_payer_id" type="text" size="64" descr="The id (if required) for this insurance plan/group for electronic remittance"/>
-<column name="remit_type_id" lookupref="Bill_Remittance_Type" descr="How the bill is transmitted (paper, electronic, etc)"/>
-<column name="remit_type" type="text" size="32" descr="How the bill is transmitted - if 'Other' chosen above"/>
-<column name="remit_payer_name" type="text" size="256" descr="The name given to the primary remittance id record"/>
-</table>
+		</description><column name="product_id" type="guid32" primarykey="yes" descr="Unique System ID for each insurance product"/><column name="org_id" parentref="Org.org_id" descr="The (insurance) organization that owns this product"/><column name="prd_type_id" lookupref="Ins_Product_Type"/><column name="prd_type" type="text" size="32" descr="The type of product that this record is storing.  This field is used if 'Other' is filled in the field above"/><column name="product_name" type="text" size="64" descr="The name of the product given to this product by the end-user"/><column name="remit_payer_id" type="text" size="64" descr="The id (if required) for this insurance plan/group for electronic remittance"/><column name="remit_type_id" lookupref="Bill_Remittance_Type" descr="How the bill is transmitted (paper, electronic, etc)"/><column name="remit_type" type="text" size="32" descr="How the bill is transmitted - if 'Other' chosen above"/><column name="remit_payer_name" type="text" size="256" descr="The name given to the primary remittance id record"/></table>
 	
-	<table name="InsPlan_Address" abbrev="InsPlnAddr" type="Physical_Address" xdm:param-parentRef="Ins_Plan.plan_id">
-<description>This table contains the billing address and any other type of physical address corresponding to this insurance plan</description>
-<presentation>
-<dialog name="insPlanAddressTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
+	<table name="InsPlan_Address" abbrev="InsPlnAddr" type="Physical_Address" xdm:param-parentRef="Ins_Plan.plan_id"><description>This table contains the billing address and any other type of physical address corresponding to this insurance plan</description><presentation><dialog name="insPlanAddressTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
 			<field.table-column column="cr_sess_id"/>
 			<field.table-column column="cr_stamp"/>
 			<field.table-column column="rec_stat_id"/>
@@ -171,14 +63,9 @@
 			<field.table-column column="state" hint="The state, if not within the USA/Canada"/>
 			<field.table-column column="zip"/>
 			<field.table-column column="country"/>
-		</dialog>
-</presentation>
-</table>
+		</dialog></presentation></table>
 
-	<table name="InsPlan_Contact" abbrev="InsPlnCont" type="Contact_Method" xdm:param-parentRef="Ins_Plan.plan_id">
-<description>This table contains the billing contact and all other methods of contact corresponding to this insurance plan</description>
-<presentation>
-<dialog name="insPlanContactTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
+	<table name="InsPlan_Contact" abbrev="InsPlnCont" type="Contact_Method" xdm:param-parentRef="Ins_Plan.plan_id"><description>This table contains the billing contact and all other methods of contact corresponding to this insurance plan</description><presentation><dialog name="insPlanContactTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
 			<field.table-column column="cr_sess_id"/>
 			<field.table-column column="cr_stamp"/>
 			<field.table-column column="rec_stat_id"/>
@@ -188,18 +75,13 @@
 			<field.table-column column="method_type"/>
 			<field.table-column column="method_name"/>
 			<field.table-column column="method_value"/>
-		</dialog>
-</presentation>
-</table>
+		</dialog></presentation></table>
 
 	<table name="InsPlan_Coverage" abbrev="InsPlnCov" type="Ins_Coverage" xdm:param-parentRef="Ins_Plan.plan_id"/>
 
 	<table name="InsPolicy_Coverage" abbrev="InsPolCov" type="Ins_Coverage" xdm:param-parentRef="Ins_Policy.policy_id"/>
 
-	<table name="InsProduct_Address" abbrev="InsPrdAddr" type="Physical_Address" xdm:param-parentRef="Ins_Product.product_id">
-<description>This table contains the billing address and any other type of physical address corresponding to this insurance product</description>
-<presentation>
-<dialog name="insuranceProductAddressTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
+	<table name="InsProduct_Address" abbrev="InsPrdAddr" type="Physical_Address" xdm:param-parentRef="Ins_Product.product_id"><description>This table contains the billing address and any other type of physical address corresponding to this insurance product</description><presentation><dialog name="insuranceProductAddressTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
 			<field.table-column column="cr_sess_id"/>
 			<field.table-column column="cr_stamp"/>
 			<field.table-column column="rec_stat_id"/>
@@ -220,14 +102,9 @@
 			<field.table-column column="state" hint="The state, if not within the USA/Canada"/>
 			<field.table-column column="zip"/>
 			<field.table-column column="country"/>
-		</dialog>
-</presentation>
-</table>
+		</dialog></presentation></table>
 	
-	<table name="InsProduct_Contact" abbrev="InsPrdCont" type="Contact_Method" xdm:param-parentRef="Ins_Product.product_id">
-<description>This table contains the billing contact and all other methods of contact corresponding to this insurance product</description>
-<presentation>
-<dialog name="insProductContactTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
+	<table name="InsProduct_Contact" abbrev="InsPrdCont" type="Contact_Method" xdm:param-parentRef="Ins_Product.product_id"><description>This table contains the billing contact and all other methods of contact corresponding to this insurance product</description><presentation><dialog name="insProductContactTableDialog" class="app.customdal.TableDialog" retain-params="parent_id">
 			<field.table-column column="cr_sess_id"/>
 			<field.table-column column="cr_stamp"/>
 			<field.table-column column="rec_stat_id"/>
@@ -237,9 +114,7 @@
 			<field.table-column column="method_type"/>
 			<field.table-column column="method_name"/>
 			<field.table-column column="method_value"/>
-		</dialog>
-</presentation>
-</table>
+		</dialog></presentation></table>
 
 	<table name="InsProduct_Coverage" abbrev="InsPrdCov" type="Ins_Coverage" xdm:param-parentRef="Ins_Product.product_id"/>
 </xdm:container>

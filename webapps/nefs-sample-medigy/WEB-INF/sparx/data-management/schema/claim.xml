@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-	<table name="Claim" abbrev="Clm" type="Default">
-<description>
+	<table name="Claim" abbrev="Clm" type="Default"><description>
 			This table stores links to all the information required to file a claim with an insurance company.
 			It must be remembered that this information will always remain current, therefore the links to that
 			information will always reflect the most recent versions of it.  This is fine as long as the claim
@@ -12,40 +11,16 @@
 			in this table as reflecting valid data for an unsubmitted claim, you cannot do the same for a claim
 			that is already submitted.  To get the data that this table was pointing to *when the claim was
 			submitted*, you need to look at a different table, to be specified later.
-		</description>
-<column name="claim_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="batch_id" type="integer" descr="What batch does this claim belong to?"/>
-<column name="batch_date" type="date" descr="The date associated with this claim"/>
-<column name="visit_type_id" lookupref="Doctor_Visit_Type" descr="The type of visit this claim is associated with"/>
-<column name="claim_status_id" lookupref="Claim_Status_Type" descr="What is the current status of this claim?"/>
-<column name="patient_id" lookupref="Person.person_id" descr="The identity of the patient involved in this claim"/>
-<column name="referral_id" lookupref="Patient_Referral.referral_id" descr="If this claim was a result of a referral, the ID of the corresponding referral goes here"/>
-<column name="service_provider_id" lookupref="Person.person_id" descr="The identity of the physician who was the service provider - the one who actually performed the services in the claim"/>
-<column name="billing_provider_id" lookupref="Person.person_id" descr="The identity of the person who is responsible for billing the insurance company for the services rendered in the claim"/>
-<column name="service_facility_id" lookupref="Org.org_id" descr="Where were these services rendered by the service_provider?"/>
-<column name="billing_facility_id" lookupref="Org.org_id" descr="Where does billing for these services originate from?"/>
-<column name="accident" type="boolean" descr="Was this in relationship to an accident?"/>
-<column name="accident_state_id" lookupref="US_State_Type" descr="What state did this accident occur?"/>
-<column name="accident_state" type="text" size="32" descr="The state in which this accident occurred (if 'Other' was selected above)"/>
-<column name="authorization_number" type="text" size="64" descr="Prior Authorization Number"/>
-</table>
+		</description><column name="claim_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="batch_id" type="integer" descr="What batch does this claim belong to?"/><column name="batch_date" type="date" descr="The date associated with this claim"/><column name="visit_type_id" lookupref="Doctor_Visit_Type" descr="The type of visit this claim is associated with"/><column name="claim_status_id" lookupref="Claim_Status_Type" descr="What is the current status of this claim?"/><column name="patient_id" lookupref="Person.person_id" descr="The identity of the patient involved in this claim"/><column name="referral_id" lookupref="Patient_Referral.referral_id" descr="If this claim was a result of a referral, the ID of the corresponding referral goes here"/><column name="service_provider_id" lookupref="Person.person_id" descr="The identity of the physician who was the service provider - the one who actually performed the services in the claim"/><column name="billing_provider_id" lookupref="Person.person_id" descr="The identity of the person who is responsible for billing the insurance company for the services rendered in the claim"/><column name="service_facility_id" lookupref="Org.org_id" descr="Where were these services rendered by the service_provider?"/><column name="billing_facility_id" lookupref="Org.org_id" descr="Where does billing for these services originate from?"/><column name="accident" type="boolean" descr="Was this in relationship to an accident?"/><column name="accident_state_id" lookupref="US_State_Type" descr="What state did this accident occur?"/><column name="accident_state" type="text" size="32" descr="The state in which this accident occurred (if 'Other' was selected above)"/><column name="authorization_number" type="text" size="64" descr="Prior Authorization Number"/></table>
 	
-	<table name="Claim_Diagnosis" abbrev="ClmDiag" type="Default">
-<description>
+	<table name="Claim_Diagnosis" abbrev="ClmDiag" type="Default"><description>
 			This table stores a diagnosis that is performed by a physician and is being reported on a claim.
 			The physician will have performed a corrective procedure in response to this diagnosis, which
 			procedure will therefore have to be related to this diagnosis.  That relationship, however, will
 			not be created here in the interests of more normalization.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this diagnosis is being reported on"/>
-<column name="diag_code_type_id" lookupref="Claim_Diagnosis_Code_Type" descr="What type of diagnosis code is stored in the diagnosis code field?  E.g. ICD-9, ICD-10"/>
-<column name="diag_code" type="text" size="32" descr="The official diagnosis code to be stored.  This will be included in the HCFA1500 claim form"/>
-<column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the diagnosis code"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this diagnosis is being reported on"/><column name="diag_code_type_id" lookupref="Claim_Diagnosis_Code_Type" descr="What type of diagnosis code is stored in the diagnosis code field?  E.g. ICD-9, ICD-10"/><column name="diag_code" type="text" size="32" descr="The official diagnosis code to be stored.  This will be included in the HCFA1500 claim form"/><column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the diagnosis code"/></table>
 
-	<table name="Claim_DiagProc_Rel" abbrev="ClmDPRel" type="Default">
-<description>
+	<table name="Claim_DiagProc_Rel" abbrev="ClmDPRel" type="Default"><description>
 			&lt;p&gt;This table stores a diagnosis that is part of a claim and the corresponding procedure performed
 			by the physician in response to that diagnosis.  A physician may choose to perform more than one
 			procedure in response to a diagnosis.  In such a case, this table will store two records:  One
@@ -56,15 +31,9 @@
 			is also representable in this table.  In that case, also, this table will store two records:  One
 			with the id of the first diagnosis and the relevant procedure; Another with the id of the second
 			diagnosis and the id of the same procedure.&lt;/p&gt;
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="diagnosis_id" parentref="Claim_Diagnosis.system_id" descr="A physician-performed diagnosis (of a patient's problem) that is reported on this claim"/>
-<column name="procedure_id" parentref="Claim_Procedure.system_id" descr="The physician-performed procedure to take care of the diagnosis shown in the field above"/>
-<column name="comments" type="text" size="256" descr="Any comments on why this procedure was assigned to this diagnosis?"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="diagnosis_id" parentref="Claim_Diagnosis.system_id" descr="A physician-performed diagnosis (of a patient's problem) that is reported on this claim"/><column name="procedure_id" parentref="Claim_Procedure.system_id" descr="The physician-performed procedure to take care of the diagnosis shown in the field above"/><column name="comments" type="text" size="256" descr="Any comments on why this procedure was assigned to this diagnosis?"/></table>
 
-	<table name="Claim_Data_History" abbrev="ClmHist" type="Default">
-<description>
+	<table name="Claim_Data_History" abbrev="ClmHist" type="Default"><description>
 			This table stores a historical account of any and all changes made to a claim.  This includes
 			creation, modification, status changes and deletion.  It also includes changes made to the
 			procedure and diagnosis codes that are an integral part of the claim.
@@ -72,39 +41,18 @@
 			Note: This table depends on an enum which contains all the field names in the main Claim table.
 			If you add a field to the Claim table, make sure to add a corresponding entry to the
 			Claim_Table_Field_Type enum in the enums/claim.xml file.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="claim_id" parentref="Claim.claim_id" descr="Which claim is this historical record for?"/>
-<column name="change_time" type="stamp" descr="When did this change occur?"/>
-<column name="change_type_id" lookupref="Field_Change_Type" descr="What kind of change was it?  Creation, Addition, Modification, Deletion?"/>
-<column name="changed_field_id" lookupref="Claim_Table_Field_Type" descr="Which field in the claim was changed?"/>
-<column name="field_old_value" type="text" size="256" descr="The old value of the field, translated to text"/>
-<column name="field_new_value" type="text" size="256" descr="The new value of the field, translated to text"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="claim_id" parentref="Claim.claim_id" descr="Which claim is this historical record for?"/><column name="change_time" type="stamp" descr="When did this change occur?"/><column name="change_type_id" lookupref="Field_Change_Type" descr="What kind of change was it?  Creation, Addition, Modification, Deletion?"/><column name="changed_field_id" lookupref="Claim_Table_Field_Type" descr="Which field in the claim was changed?"/><column name="field_old_value" type="text" size="256" descr="The old value of the field, translated to text"/><column name="field_new_value" type="text" size="256" descr="The new value of the field, translated to text"/></table>
 
-	<table name="Claim_Procedure" abbrev="ClmProc" type="Default">
-<description>
+	<table name="Claim_Procedure" abbrev="ClmProc" type="Default"><description>
 			This table stores a procedure that is performed by a physician and is being reported on a claim.
 			This procedure will have been performed in response to a diagnosis of a patient's condition and
 			will therefore have to be related to the said diagnosis.  That relationship, however, will not be
 			created here in the interests of more normalization.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this procedure is being reported on"/>
-<column name="proc_code_type_id" lookupref="Claim_Procedure_Code_Type" descr="What type of procedure code is stored in the procedure code field?  E.g. HCPCS, CPT-4, CPT-5"/>
-<column name="proc_code" type="text" size="32" descr="The official procedure code to be stored.  This will be included in the HCFA1500 claim form"/>
-<column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the procedure code"/>
-<column name="date" type="duration" descr="The dates between which this procedure was carried out"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="claim_id" parentref="Claim.claim_id" descr="The id of the claim that this procedure is being reported on"/><column name="proc_code_type_id" lookupref="Claim_Procedure_Code_Type" descr="What type of procedure code is stored in the procedure code field?  E.g. HCPCS, CPT-4, CPT-5"/><column name="proc_code" type="text" size="32" descr="The official procedure code to be stored.  This will be included in the HCFA1500 claim form"/><column name="modifier" type="text" size="32" descr="Any modifiers needed to give additional information about the procedure code"/><column name="date" type="duration" descr="The dates between which this procedure was carried out"/></table>
 
-	<table name="Claim_Data_Archive" abbrev="ClmDataArc" type="Default">
-<description>
+	<table name="Claim_Data_Archive" abbrev="ClmDataArc" type="Default"><description>
 			This table stores a snapshot of all the data that was submitted on a claim.  The data is stored
 			in the X12 XML standard.  More information on this at http://www.x12.org
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="claim_id" parentref="Claim.claim_id" descr="What claim is this data snapshot for?"/>
-<column name="x12_xml_data" type="text" size="2048" descr="Store all data filed with this claim in this field using X12 XML format"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="claim_id" parentref="Claim.claim_id" descr="What claim is this data snapshot for?"/><column name="x12_xml_data" type="text" size="2048" descr="Store all data filed with this claim in this field using X12 XML format"/></table>
 
 </xdm:container>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
@@ -6,21 +6,6 @@
 
 	
 
-	<table name="Month_Of_Year" abbrev="Months" type="Enumeration">
-<enumerations>
-<enum abbrev="Jan">January</enum>
-<enum abbrev="Feb">February</enum>
-<enum abbrev="Mar">March</enum>
-<enum abbrev="Apr">April</enum>
-<enum abbrev="May">May</enum>
-<enum abbrev="Jun">June</enum>
-<enum abbrev="Jul">July</enum>
-<enum abbrev="Aug">August</enum>
-<enum abbrev="Sep">September</enum>
-<enum abbrev="Oct">October</enum>
-<enum abbrev="Nov">November</enum>
-<enum abbrev="Dec">December</enum>
-</enumerations>
-</table>
+	<table name="Month_Of_Year" abbrev="Months" type="Enumeration"><enumerations><enum abbrev="Jan">January</enum><enum abbrev="Feb">February</enum><enum abbrev="Mar">March</enum><enum abbrev="Apr">April</enum><enum abbrev="May">May</enum><enum abbrev="Jun">June</enum><enum abbrev="Jul">July</enum><enum abbrev="Aug">August</enum><enum abbrev="Sep">September</enum><enum abbrev="Oct">October</enum><enum abbrev="Nov">November</enum><enum abbrev="Dec">December</enum></enumerations></table>
 	
 </xdm:container>

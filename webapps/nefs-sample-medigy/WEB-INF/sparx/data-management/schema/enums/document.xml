@@ -1,31 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
-	<table name="Document_Type" abbrev="DocTy" type="Enumeration">
-<description>
+	<table name="Document_Type" abbrev="DocTy" type="Enumeration"><description>
 			Types of documents that the application can manage.
-		</description>
-<enumerations>
-<enum>MIME Document</enum>
-<enum>Internal Message (within Physia system)</enum>
-<enum>E-mail Message</enum>
-<enum>HL7 Message (Originating)</enum>
-<enum>HL7 Message (Translated to XML/MDL)</enum>
-<enum>Fax</enum>
-<enum>Folder/Container</enum>
-</enumerations>
-</table>
+		</description><enumerations><enum>MIME Document</enum><enum>Internal Message (within Physia system)</enum><enum>E-mail Message</enum><enum>HL7 Message (Originating)</enum><enum>HL7 Message (Translated to XML/MDL)</enum><enum>Fax</enum><enum>Folder/Container</enum></enumerations></table>
 
-	<table name="Document_Mime_Type" abbrev="DocMimeTy" type="Enumeration">
-<description>
+	<table name="Document_Mime_Type" abbrev="DocMimeTy" type="Enumeration"><description>
 			The most common mime-types for documents that will be stored by the application
-		</description>
-<enumerations>
-<enum abbrev="text/plain">Plain Text</enum>
-<enum abbrev="text/html">HTML (Web) Pages</enum>
-</enumerations>
-</table>
+		</description><enumerations><enum abbrev="text/plain">Plain Text</enum><enum abbrev="text/html">HTML (Web) Pages</enum></enumerations></table>
 
 </xdm:container>

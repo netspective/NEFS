@@ -1,60 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
-	<table name="Claim_Table_Field_Type" abbrev="ClmTblFldTy" type="Enumeration">
-<enumerations>
-<enum abbrev="claim_id">Claim ID</enum>
-<enum abbrev="invoice_id">Invoice ID</enum>
-<enum abbrev="batch_id">Batch ID</enum>
-<enum abbrev="claim_status_id">Claim Status</enum>
-<enum abbrev="patient_id">Patient</enum>
-<enum abbrev="referral_id">Referral Information</enum>
-<enum abbrev="service_provider_id">Service Provider</enum>
-<enum abbrev="billing_provider_id">Billing Provider</enum>
-<enum abbrev="service_facility_id">Service Facility</enum>
-<enum abbrev="billing_facility_id">Billing Facility</enum>
-</enumerations>
-</table>
+	<table name="Claim_Table_Field_Type" abbrev="ClmTblFldTy" type="Enumeration"><enumerations><enum abbrev="claim_id">Claim ID</enum><enum abbrev="invoice_id">Invoice ID</enum><enum abbrev="batch_id">Batch ID</enum><enum abbrev="claim_status_id">Claim Status</enum><enum abbrev="patient_id">Patient</enum><enum abbrev="referral_id">Referral Information</enum><enum abbrev="service_provider_id">Service Provider</enum><enum abbrev="billing_provider_id">Billing Provider</enum><enum abbrev="service_facility_id">Service Facility</enum><enum abbrev="billing_facility_id">Billing Facility</enum></enumerations></table>
 
-	<table name="Claim_Status_Type" abbrev="ClmStatTy" type="Enumeration">
-<enumerations>
-<enum>Created</enum>
-<enum>Incomplete</enum>
-<enum>Pending</enum>
-<enum>On Hold</enum>
-<enum>Submitted</enum>
-<enum>Transferred</enum>
-<enum>Approved Internal</enum>
-<enum>Rejected Internal</enum>
-<enum>Electronically Transmitted to Carrier</enum>
-<enum>Transmitted to Carrier via Paper</enum>
-<enum>Approved External</enum>
-<enum>Rejected External</enum>
-<enum>Awaiting Insurance Payment</enum>
-<enum>Payments Applied</enum>
-<enum>Appealed</enum>
-<enum>Closed</enum>
-<enum>Void</enum>
-<enum>Paper Claim Printed</enum>
-<enum>Awaiting Client Payment</enum>
-</enumerations>
-</table>
+	<table name="Claim_Status_Type" abbrev="ClmStatTy" type="Enumeration"><enumerations><enum>Created</enum><enum>Incomplete</enum><enum>Pending</enum><enum>On Hold</enum><enum>Submitted</enum><enum>Transferred</enum><enum>Approved Internal</enum><enum>Rejected Internal</enum><enum>Electronically Transmitted to Carrier</enum><enum>Transmitted to Carrier via Paper</enum><enum>Approved External</enum><enum>Rejected External</enum><enum>Awaiting Insurance Payment</enum><enum>Payments Applied</enum><enum>Appealed</enum><enum>Closed</enum><enum>Void</enum><enum>Paper Claim Printed</enum><enum>Awaiting Client Payment</enum></enumerations></table>
 
-	<table name="Claim_Diagnosis_Code_Type" abbrev="ClmDiagCdTy" type="Enumeration">
-<enumerations>
-<enum>ICD-9</enum>
-<enum>ICD-10</enum>
-</enumerations>
-</table>
+	<table name="Claim_Diagnosis_Code_Type" abbrev="ClmDiagCdTy" type="Enumeration"><enumerations><enum>ICD-9</enum><enum>ICD-10</enum></enumerations></table>
 
-	<table name="Claim_Procedure_Code_Type" abbrev="ClmProcCdTy" type="Enumeration">
-<enumerations>
-<enum>HCPCS</enum>
-<enum>CPT-4</enum>
-<enum>CPT-5</enum>
-</enumerations>
-</table>
+	<table name="Claim_Procedure_Code_Type" abbrev="ClmProcCdTy" type="Enumeration"><enumerations><enum>HCPCS</enum><enum>CPT-4</enum><enum>CPT-5</enum></enumerations></table>
 
 </xdm:container>

@@ -1,96 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
 	
 
-	<table name="Action_Type" abbrev="ActTy" type="Enumeration">
-<enumerations>
-<enum>Billing</enum>
-<enum>Clinical</enum>
-<enum>Document</enum>
-<enum>Financial</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Action_Type" abbrev="ActTy" type="Enumeration"><enumerations><enum>Billing</enum><enum>Clinical</enum><enum>Document</enum><enum>Financial</enum><enum>Other</enum></enumerations></table>
 
 	
 
-	<table name="Patient_Comm_Act_Type" abbrev="PatCommActTy" type="Enumeration">
-<enumerations>
-<enum>Telephone</enum>
-<enum>Fax</enum>
-<enum>Page</enum>
-<enum>E-Mail</enum>
-<enum>Delivery</enum>
-</enumerations>
-</table>
+	<table name="Patient_Comm_Act_Type" abbrev="PatCommActTy" type="Enumeration"><enumerations><enum>Telephone</enum><enum>Fax</enum><enum>Page</enum><enum>E-Mail</enum><enum>Delivery</enum></enumerations></table>
 	
-	<table name="Patient_Comm_Status_Type" abbrev="PatCommStTy" type="Enumeration">
-<enumerations>
-<enum>Successful</enum>
-<enum>Voicemail</enum>
-<enum>Left a Message</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Patient_Comm_Status_Type" abbrev="PatCommStTy" type="Enumeration"><enumerations><enum>Successful</enum><enum>Voicemail</enum><enum>Left a Message</enum><enum>Other</enum></enumerations></table>
 
 	
 
-	<table name="Provider_Comm_Act_Type" abbrev="PrvCommActTy" type="Enumeration">
-<enumerations>
-<enum>Telephone</enum>
-<enum>Fax</enum>
-<enum>Page</enum>
-<enum>E-Mail</enum>
-<enum>Delivery</enum>
-<enum>Mail</enum>
-</enumerations>
-</table>
+	<table name="Provider_Comm_Act_Type" abbrev="PrvCommActTy" type="Enumeration"><enumerations><enum>Telephone</enum><enum>Fax</enum><enum>Page</enum><enum>E-Mail</enum><enum>Delivery</enum><enum>Mail</enum></enumerations></table>
 	
-	<table name="Provider_Comm_Status_Type" abbrev="PrvCommStTy" type="Enumeration">
-<enumerations>
-<enum>Successful</enum>
-<enum>Voicemail</enum>
-<enum>Left a Message</enum>
-<enum>Returned Mail</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Provider_Comm_Status_Type" abbrev="PrvCommStTy" type="Enumeration"><enumerations><enum>Successful</enum><enum>Voicemail</enum><enum>Left a Message</enum><enum>Returned Mail</enum><enum>Other</enum></enumerations></table>
 
 	
 
-	<table name="Directive_Act_Type" abbrev="DctvActTy" type="Enumeration">
-<enumerations>
-<enum>Patient Directive</enum>
-<enum>Physician Directive</enum>
-<enum>Other</enum>
-</enumerations>
-</table>
+	<table name="Directive_Act_Type" abbrev="DctvActTy" type="Enumeration"><enumerations><enum>Patient Directive</enum><enum>Physician Directive</enum><enum>Other</enum></enumerations></table>
 	
 	
 
 	
 
-	<table name="Diag_Term_Type" abbrev="DiagTrmTy" type="Enumeration">
-<enumerations>
-<enum>Temporary</enum>
-<enum>Permanent</enum>
-</enumerations>
-</table>
+	<table name="Diag_Term_Type" abbrev="DiagTrmTy" type="Enumeration"><enumerations><enum>Temporary</enum><enum>Permanent</enum></enumerations></table>
 	
 	
 
-	<table name="Proc_Type" abbrev="ProcTy" type="Enumeration">
-<enumerations>
-<enum>Regular</enum>
-<enum>Immunization</enum>
-<enum>Health Maintenance</enum>
-<enum>Outpatient</enum>
-<enum>Inpatient</enum>
-<enum>Surgical</enum>
-</enumerations>
-</table>
+	<table name="Proc_Type" abbrev="ProcTy" type="Enumeration"><enumerations><enum>Regular</enum><enum>Immunization</enum><enum>Health Maintenance</enum><enum>Outpatient</enum><enum>Inpatient</enum><enum>Surgical</enum></enumerations></table>
 	
 </xdm:container>

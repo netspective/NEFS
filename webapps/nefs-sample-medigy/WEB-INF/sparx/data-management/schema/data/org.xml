@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dal>
+<?xml version="1.0" encoding="utf-8"?>
+<dal xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<org org-code="MEDS" org-name="Medspective Inc.">
 		<hcfa-servplace-id>26</hcfa-servplace-id>
 		<rec-stat-id>1</rec-stat-id>

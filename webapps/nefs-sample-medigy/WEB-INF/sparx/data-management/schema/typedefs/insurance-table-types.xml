@@ -1,50 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<table-type name="Ins_Coverage" type="Default">
-<description/>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each payment record"/>
-<column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The insurance product/plan/policy that this information is related to">
-<presentation>
-<field.text required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+	<table-type name="Ins_Coverage" type="Default"><description/><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for each payment record"/><column name="parent_id" parentref="${params.parentRef}" indexed="yes" descr="The insurance product/plan/policy that this information is related to"><presentation><field.text required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
 				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.text>
-</presentation>
-</column>
-<column name="cvg_type_id" lookupref="Ins_Coverage_Type" descr="The type of incident for which these values are being stored.">
-<presentation>
-<field.select caption="Coverage Type"/>
-</presentation>
-</column>
-<column name="cvg_type" type="text" descr="The type of incident for which these values are being stored.  This value is relevant only if cvg_type_id = Other">
-<presentation>
-<field.text caption="Other Coverage Type"/>
-</presentation>
-</column>
-<column name="ind_deduct_amt" type="currency" descr="Individual deductible amount for this type of incidents">
-<presentation>
-<field.currency caption="Individual Deductible"/>
-</presentation>
-</column>
-<column name="fam_deduct_amt" type="currency" descr="Family deductible amount for this type of incidents">
-<presentation>
-<field.currency caption="Family Deductible"/>
-</presentation>
-</column>
-<column name="percent_pmt" type="percentage" descr="Percentage of bill paid (for this type of incidents) by insurance company until annual usage reaches threshold">
-<presentation>
-<field.percentage caption="Percentage Deductible"/>
-</presentation>
-</column>
-<column name="threshold_amt" type="currency" descr="Dollar amount after whcih insurance company pays 100% of the bill for these types of incidents">
-<presentation>
-<field.currency caption="Threshold Amount"/>
-</presentation>
-</column>
-<column name="copay_amt" type="currency" descr="The co-payment a policy holder has to pay for these types of incidents">
-<presentation>
-<field.currency caption="Copay Amount"/>
-</presentation>
-</column>
-</table-type>
+			</field.text></presentation></column><column name="cvg_type_id" lookupref="Ins_Coverage_Type" descr="The type of incident for which these values are being stored."><presentation><field.select caption="Coverage Type"/></presentation></column><column name="cvg_type" type="text" descr="The type of incident for which these values are being stored.  This value is relevant only if cvg_type_id = Other"><presentation><field.text caption="Other Coverage Type"/></presentation></column><column name="ind_deduct_amt" type="currency" descr="Individual deductible amount for this type of incidents"><presentation><field.currency caption="Individual Deductible"/></presentation></column><column name="fam_deduct_amt" type="currency" descr="Family deductible amount for this type of incidents"><presentation><field.currency caption="Family Deductible"/></presentation></column><column name="percent_pmt" type="percentage" descr="Percentage of bill paid (for this type of incidents) by insurance company until annual usage reaches threshold"><presentation><field.percentage caption="Percentage Deductible"/></presentation></column><column name="threshold_amt" type="currency" descr="Dollar amount after whcih insurance company pays 100% of the bill for these types of incidents"><presentation><field.currency caption="Threshold Amount"/></presentation></column><column name="copay_amt" type="currency" descr="The co-payment a policy holder has to pay for these types of incidents"><presentation><field.currency caption="Copay Amount"/></presentation></column></table-type>
 
 </xdm:container>

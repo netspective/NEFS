@@ -1,69 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-	<table-type name="Catalog" type="Default">
-<hierarchy parent="Catalog"/>
-<description>
+	<table-type name="Catalog" type="Default"><hierarchy parent="Catalog"/><description>
 			This is a placeholder table type used to group all
 			catalogs in a hierarchy
-		</description>
-<column name="catalog_id" type="guid32" primarykey="yes" descr="Unique ID for this catalog"/>
-<column name="catalog_name" type="text" size="128" descr="The name of this catalog">
-<presentation>
-<field.text caption="Catalog Name"/>
-</presentation>
-</column>
-<column name="ins_plan_id" lookupref="Ins_Plan.plan_id" descr="The plan that this catalog contains a price map for">
-<presentation>
-<field.text caption="Insurance Plan ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
-</presentation>
-</column>
-</table-type>
+		</description><column name="catalog_id" type="guid32" primarykey="yes" descr="Unique ID for this catalog"/><column name="catalog_name" type="text" size="128" descr="The name of this catalog"><presentation><field.text caption="Catalog Name"/></presentation></column><column name="ins_plan_id" lookupref="Ins_Plan.plan_id" descr="The plan that this catalog contains a price map for"><presentation><field.text caption="Insurance Plan ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/></presentation></column></table-type>
 
-	<table-type name="Catalog_Item" abbrev="CatItm" type="Default">
-<description>
+	<table-type name="Catalog_Item" abbrev="CatItm" type="Default"><description>
 			This table type is used to instantiate a table that
 			will hold catalog items.  This is where you attach
 			a cost to services or products.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this item"/>
-<column name="catalog_id" parentref="${params.parentCatalog}" descr="The ID for the catalog in the table corresponding to the above field">
-<presentation>
-<field.text caption="Catalog ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique ID for this item"/><column name="catalog_id" parentref="${params.parentCatalog}" descr="The ID for the catalog in the table corresponding to the above field"><presentation><field.text caption="Catalog ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit.">
 				<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-			</field.text>
-</presentation>
-</column>
-<column name="item_id" lookupref="${params.catalogItemRef}" descr="The item that this record stores a price map for">
-<presentation>
-<field.text caption="Item ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
-</presentation>
-</column>
-<column name="item" type="text" size="256" descr="The name of the item that this record stores a price map for.  To be used only if 'Other' is stored in the above field">
-<presentation>
-<field.text caption="Item Name"/>
-</presentation>
-</column>
-<column name="cost" type="currency" descr="The cost associated with this item.  The actual cost will consist of multiple fields, such as dispensing amount, default dispensed amount">
-<presentation>
-<field.currency caption="Cost"/>
-</presentation>
-</column>
-</table-type>
+			</field.text></presentation></column><column name="item_id" lookupref="${params.catalogItemRef}" descr="The item that this record stores a price map for"><presentation><field.text caption="Item ID" required="yes" validate-pattern="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/" validate-msg="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/></presentation></column><column name="item" type="text" size="256" descr="The name of the item that this record stores a price map for.  To be used only if 'Other' is stored in the above field"><presentation><field.text caption="Item Name"/></presentation></column><column name="cost" type="currency" descr="The cost associated with this item.  The actual cost will consist of multiple fields, such as dispensing amount, default dispensed amount"><presentation><field.currency caption="Cost"/></presentation></column></table-type>
 
-	<table-type name="Product_Catalog" abbrev="PrdCat" type="Catalog">
-<description>
+	<table-type name="Product_Catalog" abbrev="PrdCat" type="Catalog"><description>
 			This is a placeholder table that will be used to define
 			a product catalog (i.e. a catalog for products sold).
 			This is different from a service catalog which details
 			services rendered.
-		</description>
-</table-type>
+		</description></table-type>
 
-	<table-type name="Service_Catalog" abbrev="SrvCat" type="Catalog">
-<description>
+	<table-type name="Service_Catalog" abbrev="SrvCat" type="Catalog"><description>
 			A bill for services rendered, usually associated with an action.
 			The catalog record will only store information about a catalog.
-		</description>
-</table-type>
+		</description></table-type>
 
 </xdm:container>

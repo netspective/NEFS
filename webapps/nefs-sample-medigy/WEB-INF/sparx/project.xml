@@ -7,7 +7,16 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
-	<xdm:include file="data-management/query.xml"/>
-	<xdm:include file="data-management/schema.xml"/>
+    <!-- C: is escaped as C\: so that it's not treated as a value source -->
+    <register-ant-project id="Convert" file="C\:\Projects\Frameworks\tools\translate\convert-sparx-2.xml">
+        <dialog type="ant-build">
+            <field type="ant-build-property" property="sparx2.framework.home.path"/>
+            <field type="ant-build-property" property="sparx2.app.home.path"/>
+            <field type="ant-build-property" property="sparx7.app.home.path"/>
+        </dialog>
+    </register-ant-project>
+
+	<xdm:include file="data-management/query/statements.xml"/>
+	<xdm:include file="data-management/schema/schema.xml"/>
 
 </project>

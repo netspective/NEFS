@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<xdm:include file="attributes/claim.xml"/>
 	<xdm:include file="components/claim.xml"/>
@@ -37,30 +37,7 @@
 				Claim.billing_provider_id = BillingProvider.person_id and
 				Claim.billing_facility_id = BillingFacility.org_id
 				
-			<presentation>
-<panel>
-<frame heading="All Claims"/>
-<banner style="horizontal">
-<action caption="Add" command="redirect,"/>
-</banner>
-<report>
-<column heading="Claim ID" command="redirect,Claim ID"/>
-<column heading="Invoice ID" command="redirect,Invoice ID"/>
-<column heading="Batch ID"/>
-<column heading="Claim Status"/>
-<column hidden="yes"/>
-<column heading="Patient" command="redirect,Patient"/>
-<column hidden="yes"/>
-<column heading="Service Provider" command="redirect,Service Provider"/>
-<column hidden="yes"/>
-<column heading="Service Facility" command="redirect,Service Facility"/>
-<column hidden="yes"/>
-<column heading="Billing Provider" command="redirect,Billing Provider"/>
-<column hidden="yes"/>
-<column heading="Billing Facility" command="redirect,Billing Facility"/>
-</report>
-</panel>
-</presentation>
+			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="Claim ID" command="redirect,Claim ID"/><column heading="Invoice ID" command="redirect,Invoice ID"/><column heading="Batch ID"/><column heading="Claim Status"/><column hidden="yes"/><column heading="Patient" command="redirect,Patient"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column heading="Billing Provider" command="redirect,Billing Provider"/><column hidden="yes"/><column heading="Billing Facility" command="redirect,Billing Facility"/></report></panel></presentation>
 		</query>
 		
 		<query name="get-claims-by-invoice">
@@ -99,29 +76,7 @@
 				<param value="request:invoice_id"/>
 			</params>
 
-			<presentation>
-<panel>
-<frame heading="All Claims"/>
-<banner style="horizontal">
-<action caption="Add" command="redirect,"/>
-</banner>
-<report>
-<column heading="Claim ID" command="redirect,Claim ID"/>
-<column heading="Batch ID"/>
-<column heading="Claim Status"/>
-<column hidden="yes"/>
-<column heading="Patient" command="redirect,Patient"/>
-<column hidden="yes"/>
-<column heading="Service Provider" command="redirect,Service Provider"/>
-<column hidden="yes"/>
-<column heading="Service Facility" command="redirect,Service Facility"/>
-<column hidden="yes"/>
-<column heading="Billing Provider" command="redirect,Billing Provider"/>
-<column hidden="yes"/>
-<column heading="Billing Facility" command="redirect,Billing Facility"/>
-</report>
-</panel>
-</presentation>
+			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="Claim ID" command="redirect,Claim ID"/><column heading="Batch ID"/><column heading="Claim Status"/><column hidden="yes"/><column heading="Patient" command="redirect,Patient"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column heading="Billing Provider" command="redirect,Billing Provider"/><column hidden="yes"/><column heading="Billing Facility" command="redirect,Billing Facility"/></report></panel></presentation>
 		</query>
 
 		<query name="get-claims-by-patient">
@@ -161,30 +116,7 @@
 				<param value="request:person_id"/>
 			</params>
 
-			<presentation>
-<panel>
-<frame heading="All Claims"/>
-<banner style="horizontal">
-<action caption="Add" command="redirect,"/>
-</banner>
-<report>
-<column heading="Claim ID" command="redirect,Claim ID"/>
-<column heading="Invoice ID" command="redirect,Invoice ID"/>
-<column heading="Batch ID"/>
-<column heading="Claim Status"/>
-<column hidden="yes"/>
-<column heading="Patient" command="redirect,Patient"/>
-<column hidden="yes"/>
-<column heading="Service Provider" command="redirect,Service Provider"/>
-<column hidden="yes"/>
-<column heading="Service Facility" command="redirect,Service Facility"/>
-<column hidden="yes"/>
-<column heading="Billing Provider" command="redirect,Billing Provider"/>
-<column hidden="yes"/>
-<column heading="Billing Facility" command="redirect,Billing Facility"/>
-</report>
-</panel>
-</presentation>
+			<presentation><panel><frame heading="All Claims"/><banner style="horizontal"><action caption="Add" command="redirect,"/></banner><report><column heading="Claim ID" command="redirect,Claim ID"/><column heading="Invoice ID" command="redirect,Invoice ID"/><column heading="Batch ID"/><column heading="Claim Status"/><column hidden="yes"/><column heading="Patient" command="redirect,Patient"/><column hidden="yes"/><column heading="Service Provider" command="redirect,Service Provider"/><column hidden="yes"/><column heading="Service Facility" command="redirect,Service Facility"/><column hidden="yes"/><column heading="Billing Provider" command="redirect,Billing Provider"/><column hidden="yes"/><column heading="Billing Facility" command="redirect,Billing Facility"/></report></panel></presentation>
 		</query>
 		
 	</queries>

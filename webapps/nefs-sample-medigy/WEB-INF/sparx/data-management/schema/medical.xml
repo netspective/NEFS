@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
@@ -9,94 +9,26 @@
 
 	
 	
-	<table name="Org_Medication" abbrev="Med">
-<description>
+	<table name="Org_Medication" abbrev="Med"><description>
 			This table stores information about all the medicines that can be prescribed.  If a medicine does not exist,
 			the user has to create a record for it before using it in, say, the Person_Medication record.
-		</description>
-<column name="med_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="org_id" parentref="Org.org_id" descr="The organization who has defined this medication record.  An org may use only those medications that it has defined"/>
-<column name="med_type_id" lookupref="Medication_Type" descr="What type of medicine is this? Broad classification"/>
-<column name="med_type" type="text" size="64" descr="The type of medicine, if 'Other' chosen above"/>
-<column name="med_name" type="text" size="64" descr="The exact name of the medicine.  This is the commercial name"/>
-<column name="generic_name" type="text" size="64" descr="The generic name for this medicine"/>
-<index name="Org_Medication_unq" columns="org_id,med_id" unique="yes"/>
-</table>
+		</description><column name="med_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="org_id" parentref="Org.org_id" descr="The organization who has defined this medication record.  An org may use only those medications that it has defined"/><column name="med_type_id" lookupref="Medication_Type" descr="What type of medicine is this? Broad classification"/><column name="med_type" type="text" size="64" descr="The type of medicine, if 'Other' chosen above"/><column name="med_name" type="text" size="64" descr="The exact name of the medicine.  This is the commercial name"/><column name="generic_name" type="text" size="64" descr="The generic name for this medicine"/><index name="Org_Medication_unq" columns="org_id,med_id" unique="yes"/></table>
 
-	<table name="Patient_Indication" abbrev="PatIndic" type="Default">
-<description>
+	<table name="Patient_Indication" abbrev="PatIndic" type="Default"><description>
 			Allows an unlimited number of special circumstances to be listed for a person including various types of
 			allergies, advance directives by doctor or patient, as well as any preventive care and adverse reactions to
 			medication, etc.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/>
-<column name="person_id" parentref="Person.person_id" descr="The actual person record for which identifier is being defined"/>
-<column name="indication_type_id" lookupref="Person_Indication_Type" descr="The type of indication that this record is storing"/>
-<column name="indication_type" type="text" size="64" descr="The type of indication, if 'Other' chosen above"/>
-<column name="indication" type="text" size="1024" descr="The actual indication corresponding to this patient and the indication type above"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique System ID for any given row"/><column name="person_id" parentref="Person.person_id" descr="The actual person record for which identifier is being defined"/><column name="indication_type_id" lookupref="Person_Indication_Type" descr="The type of indication that this record is storing"/><column name="indication_type" type="text" size="64" descr="The type of indication, if 'Other' chosen above"/><column name="indication" type="text" size="1024" descr="The actual indication corresponding to this patient and the indication type above"/></table>
 
 	
-	<table name="Patient_Medication" abbrev="PatMed" type="Default">
-<description>
+	<table name="Patient_Medication" abbrev="PatMed" type="Default"><description>
 			Stores patient medication information including past and current medications and prescriptions
 			NOTE: This table needs review and possible normalization.
-		</description>
-<column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/>
-<column name="patient_id" parentref="Person.person_id" required="yes" descr="The ID of the person whose medication information this record is storing"/>
-<column name="record_type" lookupref="Medication_Record_Type" descr="The type of information held in this record"/>
-<column name="med_id" lookupref="Org_Medication.med_id" descr="The name of the medication .  This is a reference to another table.  To use medications here, one must first add the medication into the Medicine table"/>
-<column name="prescriber_id" lookupref="Person.person_id" descr="Physician who prescribed the prescription"/>
-<column name="pharmacy_id" lookupref="Org.org_id" descr="Pharmacy who filled or will be filling the prescription"/>
-<column name="pharmacy_name" type="text" size="256" descr="The name of the pharmacy if it does not already exist in the system and this is a one time use"/>
-<column name="first_dose" type="text" size="64" descr="First dose instructions"/>
-<column name="dose" type="float" descr="Dosage of the medication"/>
-<column name="dose_units" type="text" size="32" descr="Units the dosage is measured in (mg, cc, etc...)"/>
-<column name="sale_units" type="text" size="32" descr="Units the quantity is measured in (mg, cc, etc...)"/>
-<column name="route" type="text" size="32" descr="Route or method the medication is taken through"/>
-<column name="frequency" type="text" size="32" descr="Frequency at which the medication should be taken"/>
-<column name="prn" type="text" size="32" descr="Take as needed for (pain, nausea, etc...)"/>
-<column name="start_date" type="date" descr="Medication start date"/>
-<column name="end_date" type="date" descr="Medication end date"/>
-<column name="ongoing" type="boolean" descr="True if this is an ongoing medication"/>
-<column name="duration" type="integer" descr="How long should the medication be taken"/>
-<column name="duration_units" type="text" size="32" descr="Units the duration is measured in (weeks, months, etc...)"/>
-<column name="quantity" type="float" descr="How many units of the medication per refill"/>
-<column name="num_refills" type="integer" descr="How many times can the get the medication refilled without another visit"/>
-<column name="allow_generic" type="boolean" descr="Allow the use of generic brand medications?"/>
-<column name="allow_substitutions" type="boolean" descr="Allow the use of substitution medications?"/>
-<column name="notes" type="text" size="1024" descr="Notes which won't be printed in a prescription"/>
-<column name="sig" type="text" size="1024" descr="Instructions which will be printed in a prescription"/>
-<column name="status" type="integer" descr="Status of the medication relating to the person"/>
-<column name="label" type="boolean" descr="True if label should include drug name and strength"/>
-<column name="label_language" lookupref="Language_Type" descr="The language label should be printed in for this prescription"/>
-<column name="signed" type="boolean" descr="True if a provider signature is on file"/>
-</table>
+		</description><column name="system_id" type="guid32" primarykey="yes" descr="Unique system ID for any given row"/><column name="patient_id" parentref="Person.person_id" required="yes" descr="The ID of the person whose medication information this record is storing"/><column name="record_type" lookupref="Medication_Record_Type" descr="The type of information held in this record"/><column name="med_id" lookupref="Org_Medication.med_id" descr="The name of the medication .  This is a reference to another table.  To use medications here, one must first add the medication into the Medicine table"/><column name="prescriber_id" lookupref="Person.person_id" descr="Physician who prescribed the prescription"/><column name="pharmacy_id" lookupref="Org.org_id" descr="Pharmacy who filled or will be filling the prescription"/><column name="pharmacy_name" type="text" size="256" descr="The name of the pharmacy if it does not already exist in the system and this is a one time use"/><column name="first_dose" type="text" size="64" descr="First dose instructions"/><column name="dose" type="float" descr="Dosage of the medication"/><column name="dose_units" type="text" size="32" descr="Units the dosage is measured in (mg, cc, etc...)"/><column name="sale_units" type="text" size="32" descr="Units the quantity is measured in (mg, cc, etc...)"/><column name="route" type="text" size="32" descr="Route or method the medication is taken through"/><column name="frequency" type="text" size="32" descr="Frequency at which the medication should be taken"/><column name="prn" type="text" size="32" descr="Take as needed for (pain, nausea, etc...)"/><column name="start_date" type="date" descr="Medication start date"/><column name="end_date" type="date" descr="Medication end date"/><column name="ongoing" type="boolean" descr="True if this is an ongoing medication"/><column name="duration" type="integer" descr="How long should the medication be taken"/><column name="duration_units" type="text" size="32" descr="Units the duration is measured in (weeks, months, etc...)"/><column name="quantity" type="float" descr="How many units of the medication per refill"/><column name="num_refills" type="integer" descr="How many times can the get the medication refilled without another visit"/><column name="allow_generic" type="boolean" descr="Allow the use of generic brand medications?"/><column name="allow_substitutions" type="boolean" descr="Allow the use of substitution medications?"/><column name="notes" type="text" size="1024" descr="Notes which won't be printed in a prescription"/><column name="sig" type="text" size="1024" descr="Instructions which will be printed in a prescription"/><column name="status" type="integer" descr="Status of the medication relating to the person"/><column name="label" type="boolean" descr="True if label should include drug name and strength"/><column name="label_language" lookupref="Language_Type" descr="The language label should be printed in for this prescription"/><column name="signed" type="boolean" descr="True if a provider signature is on file"/></table>
 
 	
 
 	
-	<table name="Patient_Referral" abbrev="PatRef" type="Default">
-<description/>
-<column name="referral_id" type="guid32" primarykey="yes" descr="Unique Referral ID"/>
-<column name="patient_id" parentref="Person.person_id" descr="Who is the patient that is being referred from one doctor to another?"/>
-<column name="referrer_id" parentref="Person.person_id" descr="The physician that is requesting another doctor to take a look at the above patient"/>
-<column name="referee_id" parentref="Person.person_id" descr="The physician that the patient above is being referred to"/>
-<column name="user_id" parentref="Person.person_id" descr="Person who has created this referral or to whom this referral is transferred [[[NOTE: This field does not need to exist since it will be replaced with the process_session data anyway.  Comments?]]]"/>
-<column name="request_date" type="date" descr="When was this patient referred to the referee doctor?"/>
-<column name="referral_urgency" lookupref="Referral_Urgency" descr="Referral Urgency"/>
-<column name="code" type="text" size="60" descr="Usually a CPT code or code for the service/product"/>
-<column name="speciality" type="text" size="512" descr="Speciality of referred Physician"/>
-<column name="referral_type_id" lookupref="Referral_Type" descr="Type of Referral"/>
-<column name="allowed_visits" type="integer" descr="Number of Visits allowed"/>
-<column name="auth_number" type="text" size="64" descr="Authorization Number"/>
-<column name="referral" type="duration"/>
-<column name="comm_type_id" lookupref="Referral_Communication" descr="Method of communication"/>
-<column name="completion_date" type="stamp" descr="Date Of Completion"/>
-<column name="referral_status_id" lookupref="Referral_Status" descr="Status of Referral"/>
-<column name="referral_status_date" type="date" descr="Status of Referral"/>
-<column name="referral_reason" type="text" size="512" descr="Short description for annotating the reason"/>
-<column name="comments" type="text" size="512" descr="Referral comments"/>
-</table>
+	<table name="Patient_Referral" abbrev="PatRef" type="Default"><description/><column name="referral_id" type="guid32" primarykey="yes" descr="Unique Referral ID"/><column name="patient_id" parentref="Person.person_id" descr="Who is the patient that is being referred from one doctor to another?"/><column name="referrer_id" parentref="Person.person_id" descr="The physician that is requesting another doctor to take a look at the above patient"/><column name="referee_id" parentref="Person.person_id" descr="The physician that the patient above is being referred to"/><column name="user_id" parentref="Person.person_id" descr="Person who has created this referral or to whom this referral is transferred [[[NOTE: This field does not need to exist since it will be replaced with the process_session data anyway.  Comments?]]]"/><column name="request_date" type="date" descr="When was this patient referred to the referee doctor?"/><column name="referral_urgency" lookupref="Referral_Urgency" descr="Referral Urgency"/><column name="code" type="text" size="60" descr="Usually a CPT code or code for the service/product"/><column name="speciality" type="text" size="512" descr="Speciality of referred Physician"/><column name="referral_type_id" lookupref="Referral_Type" descr="Type of Referral"/><column name="allowed_visits" type="integer" descr="Number of Visits allowed"/><column name="auth_number" type="text" size="64" descr="Authorization Number"/><column name="referral" type="duration"/><column name="comm_type_id" lookupref="Referral_Communication" descr="Method of communication"/><column name="completion_date" type="stamp" descr="Date Of Completion"/><column name="referral_status_id" lookupref="Referral_Status" descr="Status of Referral"/><column name="referral_status_date" type="date" descr="Status of Referral"/><column name="referral_reason" type="text" size="512" descr="Short description for annotating the reason"/><column name="comments" type="text" size="512" descr="Referral comments"/></table>
 
 </xdm:container>

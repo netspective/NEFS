@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<query-defn name="searchPersons">
 		
@@ -26,8 +26,7 @@
 		<join name="Marital_Status" table="Marital_Status_Type" condition="Marital_Status.id = Person.marital_status_id"/>
 
 	
-	<presentation>
-<select-dialog name="searchPersonDialog" heading="Search for People">
+	<presentation><select-dialog name="searchPersonDialog"><frame heading="Search for People"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -58,24 +57,11 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
-		<presentation>
-<select-dialog name="searchPatientDialog" heading="Search for Patients">
+		<presentation><select-dialog name="searchPatientDialog"><frame heading="Search for Patients"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -105,24 +91,11 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
-		<presentation>
-<select-dialog name="searchPhysicianDialog" heading="Search for Physicians">
+		<presentation><select-dialog name="searchPhysicianDialog"><frame heading="Search for Physicians"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -152,24 +125,11 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
-		<presentation>
-<select-dialog name="searchNurseDialog" heading="Search for Nurses">
+		<presentation><select-dialog name="searchNurseDialog"><frame heading="Search for Nurses"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -201,24 +161,11 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
-		<presentation>
-<select-dialog name="searchStaffDialog" heading="Search for Staff">
+		<presentation><select-dialog name="searchStaffDialog"><frame heading="Search for Staff"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -248,24 +195,11 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
-		<presentation>
-<select-dialog name="searchReferringDoctorDialog" heading="Search for Referring Doctors">
+		<presentation><select-dialog name="searchReferringDoctorDialog"><frame heading="Search for Referring Doctors"/>
 			<field.text query-field="person_id"/>
 			<field.text query-field="name_first"/>
 			<field.text query-field="name_last"/>
@@ -295,21 +229,9 @@
 				<condition field="language" allow-null="no" comparison="equals" value="form:language" connector="and"/>
 				<condition field="marital_status" allow-null="no" comparison="equals" value="form:marital_status" connector="and"/>
 				
-				<presentation>
-<panel>
-<report>
-<column heading="Person ID"/>
-<column heading="First Name" command="redirect,First Name"/>
-<column heading="Last Name" command="redirect,Last Name"/>
-<column heading="Birth Date"/>
-<column heading="Gender"/>
-<column heading="Marital Status"/>
-</report>
-</panel>
-</presentation>
+				<presentation><panel><report><column heading="Person ID"/><column heading="First Name" command="redirect,First Name"/><column heading="Last Name" command="redirect,Last Name"/><column heading="Birth Date"/><column heading="Gender"/><column heading="Marital Status"/></report></panel></presentation>
 			</select>
-		</select-dialog>
-</presentation>
+		</select-dialog></presentation>
 
 	<!--
                     CONVERSION NOTICE:

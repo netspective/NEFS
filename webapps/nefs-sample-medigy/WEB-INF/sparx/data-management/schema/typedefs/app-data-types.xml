@@ -1,20 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
 	
 
-	<data-type name="name" type="text">
-<copytype>text</copytype>
-<validation>
+	<data-type name="name" type="text"><copytype>text</copytype><validation>
 			<rule name="letters-and-spaces-only" type="regex">^[a-zA-Z ]*$</rule>
-		</validation>
-</data-type>
+		</validation></data-type>
 
 	
 
-	<data-type name="action-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="action-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="clinical-action-id" type="action-id"/>
 
@@ -22,37 +17,27 @@
 
 	
 
-	<data-type name="artifact-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="artifact-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="message-id" type="artifact-id"/>
 
 	
 
-	<data-type name="asset-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="asset-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	
 
-	<data-type name="catalog-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="catalog-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
-	<data-type name="product-catalog-id" type="catalog-id">
-<validation>
+	<data-type name="product-catalog-id" type="catalog-id"><validation>
 			<rule name="guid32-format" type="regex" success-message="Success" failure-message="Invalid GUID32 Found.">^[A-Z0-9]{32}$</rule>
-		</validation>
-</data-type>
+		</validation></data-type>
 
 	<data-type name="service-catalog-id" type="catalog-id"/>
 
 	
 
-	<data-type name="claim-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="claim-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="diagnosis-code" type="text"/>
 
@@ -62,19 +47,13 @@
 
 	
 
-	<data-type name="event-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="event-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	
 
-	<data-type name="insurance-product-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="insurance-product-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
-	<data-type name="insurance-plan-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="insurance-plan-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="deductible" type="currency"/>
 
@@ -82,13 +61,9 @@
 
 	
 
-	<data-type name="invoice-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="invoice-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
-	<data-type name="invoice-line-item-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="invoice-line-item-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="product-invoice-id" type="invoice-id"/>
 
@@ -96,9 +71,7 @@
 
 	
 
-	<data-type name="org-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="org-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	<data-type name="tax-id" type="text"/>
 
@@ -122,9 +95,7 @@
 
 	
 
-	<data-type name="person-id" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="person-id" type="guid32"><generate-id>guid32</generate-id></data-type>
 	
 	<data-type name="ssn" type="text"/>
 
@@ -138,37 +109,22 @@
 	
 	
 
-	<data-type name="reference" type="guid32">
-<generate-id>guid32</generate-id>
-</data-type>
+	<data-type name="reference" type="guid32"><generate-id>guid32</generate-id></data-type>
 
 	
 
-	<data-type name="session-id">
-<generate-id>guid32</generate-id>
-<size>36</size>
-<sql-ddl>
-<define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define>
-<define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define>
-</sql-ddl>
-<!--
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-class> is no longer used in Axiom.
+	<data-type name="session-id"><generate-id>guid32</generate-id><size>36</size><sql-ddl><define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define><define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define></sql-ddl>
+                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-class&gt; is no longer used in Axiom.
                 Column triggers, validation, and DAL information must now be placed in Java classes.
-                -->
-<!--
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <validate> is no longer used in Axiom.
+                <java-class package="java.lang"/><!---->
+                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;validate&gt; is no longer used in Axiom.
                 Column triggers, validation, and DAL information must now be placed in Java classes.
-                -->
-<!--
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <validate> is no longer used in Axiom.
+                <validate name="guid32-format-update" type="guid32-format" event="update"/><!---->
+                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;validate&gt; is no longer used in Axiom.
                 Column triggers, validation, and DAL information must now be placed in Java classes.
-                -->
-<presentation>
-<field.guid32>
+                <validate name="guid32-format-delete" type="guid32-format" event="delete"/><!----><presentation><field.guid32>
 			<conditional action="apply-flag" flag="hidden" data-cmd="add"/>
-		</field.guid32>
-</presentation>
-</data-type>
+		</field.guid32></presentation></data-type>
 
 	<data-type name="address_state" type="text"/>
 
@@ -189,19 +145,15 @@
 	<data-type name="past-time" type="time"/>
 
 	<data-type name="creation-stamp" type="stamp">
-<!--
-                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
+                AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
                 Column triggers, validation, and DAL information must now be placed in Java classes.
-                -->
-</data-type>
+                <java-default/><!----></data-type>
 
-	<data-type name="survey">
-<composite>
+	<data-type name="survey"><composite>
 			<column name="${params.name}_id" lookupref="${params.surveyTypeEnum}" descr="The text of the question"/>
 			<column name="${params.name}_value_int" type="integer"/>
 			<column name="${params.name}_value_date" type="date"/>
 			<column name="${params.name}_value_text" type="text"/>
-		</composite>
-</data-type>
+		</composite></data-type>
 
 </xdm:container>
