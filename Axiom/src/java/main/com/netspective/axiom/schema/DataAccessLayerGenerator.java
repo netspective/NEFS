@@ -39,41 +39,58 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.16 2004-03-06 23:00:30 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.17 2004-04-02 04:19:30 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.util.*;
-import java.util.Iterator;
-import java.sql.SQLException;
-import java.net.URL;
-
-import org.inxar.jenesis.*;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.schema.column.BasicColumn;
+import com.netspective.axiom.schema.column.type.AutoIncColumn;
+import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.schema.table.BasicTable;
 import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
-import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
-import com.netspective.axiom.schema.constraint.ParentForeignKey;
-import com.netspective.axiom.schema.column.BasicColumn;
-import com.netspective.axiom.schema.column.type.AutoIncColumn;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.sql.QueryResultSet;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.text.TextUtils;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
 import com.netspective.commons.lang.ResourceLoader;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.Value;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.inxar.jenesis.AbstractMethod;
+import org.inxar.jenesis.Access;
+import org.inxar.jenesis.Block;
+import org.inxar.jenesis.ClassField;
+import org.inxar.jenesis.ClassMethod;
+import org.inxar.jenesis.Comment;
+import org.inxar.jenesis.CompilationUnit;
+import org.inxar.jenesis.Expression;
+import org.inxar.jenesis.Freeform;
+import org.inxar.jenesis.InnerClass;
+import org.inxar.jenesis.Interface;
+import org.inxar.jenesis.PackageClass;
+import org.inxar.jenesis.Type;
+import org.inxar.jenesis.VirtualMachine;
 
 import javax.naming.NamingException;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
 public class DataAccessLayerGenerator
 {
@@ -195,7 +212,7 @@ public class DataAccessLayerGenerator
         rootClassChildrenAssignmentBlock.isFinal(true);
         rootClassChildrenAssignmentBlock.isStatic(true);
         rootClassChildrenAssignmentBlock.isSynchronized(true);
-        rootClassChildrenAssignmentBlock.newStmt(vm.newFree("if(INSTANCE.schema == null) INSTANCE.setSchema(com.netspective.axiom.SqlManager.getThreadDefaultSchema())"));
+        rootClassChildrenAssignmentBlock.newStmt(vm.newFree("if(INSTANCE.schema == null || INSTANCE.schema != com.netspective.axiom.SqlManager.getThreadDefaultSchema()) INSTANCE.setSchema(com.netspective.axiom.SqlManager.getThreadDefaultSchema())"));
         rootClassChildrenAssignmentBlock.newReturn().setExpression(vm.newFree("INSTANCE"));
 
         rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType(dalClassName), "getInstancePrime");
