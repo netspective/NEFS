@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: HtmlPanelAction.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanelAction.java,v 1.2 2003-09-25 04:51:26 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandNotFoundException;
 import com.netspective.commons.command.Commands;
@@ -55,7 +56,7 @@ public class HtmlPanelAction
     private ValueSource icon;
     private ValueSource caption;
     private ValueSource hint;
-    private ValueSource command;
+    private RedirectValueSource redirect;
     private HtmlPanelActions children = new HtmlPanelActions();
 
     public ValueSource getCaption()
@@ -88,26 +89,14 @@ public class HtmlPanelAction
         this.icon = icon;
     }
 
-    public ValueSource getCommand()
+    public RedirectValueSource getRedirect()
     {
-        return command;
+        return redirect;
     }
 
-    public Command getCommand(ValueContext vc) throws CommandNotFoundException
+    public void setRedirect(RedirectValueSource redirect)
     {
-        if(command == null)
-            return null;
-
-        String cmd = command.getTextValue(vc);
-        if(cmd == null)
-            return null;
-
-        return Commands.getInstance().getCommand(cmd);
-    }
-
-    public void setCommand(ValueSource command)
-    {
-        this.command = command;
+        this.redirect = redirect;
     }
 
     public HtmlPanelActions.Style getStyle()
