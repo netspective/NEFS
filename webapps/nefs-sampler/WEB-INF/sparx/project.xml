@@ -52,7 +52,7 @@
         </page>
         <page type="top-level" name="forms-input" caption="Forms Input">
             <summary>
-                This module contains samples that demonstrate how forms and input fields are created in Sparx.
+                This page and its chldren pages contain samples that demonstrate how forms and input fields are created in Sparx.
                 There are many examples that show how quick and easy it is to set up forms to accept input values
                 and automatically validate them.
             </summary>
@@ -60,9 +60,15 @@
             <!-- This page is for demonstrating text fields in a form -->
             <page name="text-fields" caption="Text">
                 <summary>
-                    This page demonstrates how to create and use text fields. More explanation...
+                    The Framework provides different styles of displaying text input fields. One is a simple one line
+                    text input field while another is a multi-line text input field.
                 </summary>
-                <page name="line" caption="Line-oriented" command="dialog,form.input.text-fields"/>
+                <page name="line" caption="Line-oriented" command="dialog,form.input.text-fields">
+                    <summary>
+                         This page contains various sample one line text fields from generic text fields to specialized
+                         fields such as email and 'masked' fields.
+                    </summary>
+                </page>
                 <page name="block" caption="Block-oriented" command="dialog,form.input.memo-and-html-fields"/>
             </page>
             <!-- This page is for demonstrating numeric fields in a form -->
@@ -111,7 +117,24 @@
 
             <page name="advance-input" caption="Advanced">
                 <summary></summary>
-                <page name="perspectives" caption="Perspectives">
+                <page name="client-side-scripts" caption="Client side scripts" command="dialog,form.input.client-side-scripts">
+                    <summary>This page demonstrates the usage of data perspectives for filling dialog fields.</summary>
+                </page>
+                <page name="perspectives" caption="Perspectives" command="dialog,form.input.data-perspective-conditionals">
+                    <summary>This page demonstrates the usage of data perspectives for filling dialog fields.</summary>
+
+                </page>
+                <page name="hidden-fields" caption="Hidden Fields" command="dialog,form.input.hidden-fields">
+                    <summary>This page demonstrates different usages of hidden fields in a dialog. Hidden fields are useful for keeping
+                    track of information that you don't want the user to see. </summary>
+                </page>
+                <page name="command-fields" caption="Command Fields" command="dialog,form.input.command-fields">
+                    <summary>
+                        <![CDATA[
+                        This page demonstrates the usage of a <i>List</i> command to populate a dialog field. Only certain commands
+                        can be used for dialog fields. For information on Commands in general, please consult the User Manual.
+                        ]]>
+                    </summary>
 
                 </page>
 

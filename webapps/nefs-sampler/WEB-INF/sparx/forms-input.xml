@@ -70,7 +70,8 @@
             <field type="phone" name="phone_field1" caption="Phone Field (dash format)" strip-brackets="yes" style="dash" hint="Phone field" default="8001234567"/>
             <field type="phone" name="phone_field2" caption="Phone Field (bracket format)" strip-brackets="yes" style="bracket" hint="Phone field" default="8001234567"/>
             <field type="zip-code" name="zip_field" caption="Zip Field" hint="Zip code field" default="12345"/>
-            <field type="ssn" name="ssn_field" caption="SSN" strip-dashes="yes" default="999999999" hint="Social Security Number field"/>
+            <field type="ssn" name="ssn_field1" caption="SSN" strip-dashes="yes" default="999999999" hint="Social Security Number field (strip-dashes=yes)"/>
+            <field type="ssn" name="ssn_field2" caption="SSN" strip-dashes="no" default="999999999" hint="Social Security Number field (strip-dashes=no)"/>
             <director submit-caption="Submit"/>
         </dialog>
 
@@ -90,8 +91,8 @@
         <dialog type="input-sample" name="boolean-fields">
             <frame heading="Sample Boolean Fields"/>
             <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio"/>
-            <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone"/>
-            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"/>
+            <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone" default="true"/>
+            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo" default="No"/>
             <director submit-caption="Submit"/>
         </dialog>
 
@@ -268,6 +269,8 @@
         </dialog>
 
         <!-- Dialog for testing custom client side javascripts -->
+        <!-- DON'T TEST get-focus and lose-focus at the same time for Mozilla-based browsers.
+             It throws them into an inifinite alert loop -->
         <dialog type="input-sample" name="client-side-scripts">
             <frame heading="Sample Client Side JavaScript"/>
             <client-js href="servlet-context-path:/resources/scripts/test1.js"/>
@@ -278,16 +281,18 @@
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
             </field>
             <field type="integer" name="integer_field" caption="Integer">
-                <!--client-js event="is-valid" type="override" js-expr="return testValid(field, control);"/-->
                 <client-js event="value-changed" type="extends" js-expr="return testNum(field, control);"/>
                 <client-js event="click" type="extends" js-expr="alert('onClick');return true;"/>
-                <!-- DON'T TEST get-focus and lose-focus at the same time for Mozilla-based browsers.
-                     It throws them into an inifinite alert loop -->
                 <!--client-js event="get-focus" type="extends" js-expr="alert('onFocus!');return true;"/-->
                 <client-js event="lose-focus" type="extends" js-expr="alert('onBlur!');return true;"/>
                 <client-js event="key-press" type="extends" js-expr="alert('onKeypress!');"/>
             </field>
             <field type="ssn" name="ssn_field" caption="SSN">
+                <!--
+                    The JS 'override' type replacess the client side default behavior assigned
+                    by the Framework with the expression defined in the 'js-expr'. The 'extends'
+                    appends the custom js-expr value to the Framework's default field behavior.
+                -->
                 <client-js event="is-valid" type="override" js-expr="return true;"/>
                 <client-js event="value-changed" type="override" js-expr="return true;"/>
             </field>
