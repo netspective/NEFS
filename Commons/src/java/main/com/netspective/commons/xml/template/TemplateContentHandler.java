@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateContentHandler.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
+ * $Id: TemplateContentHandler.java,v 1.3 2003-06-30 15:33:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -55,4 +55,9 @@ public interface TemplateContentHandler extends ContentHandler
     public TemplateCatalog getTemplatCatalog();
     public void startTemplateElement(TemplateApplyContext tac, String url, String localName, String qName, Attributes attributes) throws SAXException;
     public void registerTemplateConsumption(Template template);
+
+    public TemplateProducer getDynamicTemplatesProducer();
+    public void addDynamicTemplate(Template template);
+
+    public void executeDynamicTemplates() throws SAXException;
 }

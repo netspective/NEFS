@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.24 2003-06-25 03:16:29 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.25 2003-06-30 15:32:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -121,7 +121,7 @@ public class XmlDataModelSchema
 
     public interface ConstructionFinalizeListener
     {
-        public void finalizeConstruction() throws DataModelException;
+        public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException;
     }
 
     public interface InputSourceTrackerListener
@@ -1289,7 +1289,7 @@ public class XmlDataModelSchema
     public void finalizeElementConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         if(element instanceof ConstructionFinalizeListener)
-            ((ConstructionFinalizeListener) element).finalizeConstruction();
+            ((ConstructionFinalizeListener) element).finalizeConstruction(pc, element, elementName);
     }
 
     /**

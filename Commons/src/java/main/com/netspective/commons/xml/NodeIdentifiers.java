@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NodeIdentifiers.java,v 1.2 2003-03-29 13:00:26 shahid.shah Exp $
+ * $Id: NodeIdentifiers.java,v 1.3 2003-06-30 15:33:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -49,6 +49,7 @@ import com.netspective.commons.xml.template.TemplateProducer;
 public final class NodeIdentifiers
 {
     public static final String GENERIC_TEMPLATES_NAMESPACE_ID = "/generic";
+    public static final String DYNAMIC_TEMPLATES_NAMESPACE_ID = "/dynamic";
     public static final String ATTRNAME_GENERIC_TEMPLATE_NAME = "name";
     public static final String ATTRNAME_GENERIC_TEMPLATE_EXTENDS = "extends";
 
@@ -74,6 +75,7 @@ public final class NodeIdentifiers
     private String containerElementName;
     private String templateReplaceExprsAttrName;
     private TemplateProducer genericTemplateProducer;
+    private TemplateProducer dynamicTemplateProducer;
 
     public NodeIdentifiers(String nameSpace)
     {
@@ -87,6 +89,7 @@ public final class NodeIdentifiers
         templateReplaceExprsAttrName = xmlNameSpacePrefix + "replace-template-expressions";
 
         genericTemplateProducer = new TemplateProducer(GENERIC_TEMPLATES_NAMESPACE_ID, templateElementName, ATTRNAME_GENERIC_TEMPLATE_NAME, ATTRNAME_GENERIC_TEMPLATE_EXTENDS, true, false);
+        dynamicTemplateProducer = new TemplateProducer(DYNAMIC_TEMPLATES_NAMESPACE_ID, templateElementName, ATTRNAME_GENERIC_TEMPLATE_NAME, ATTRNAME_GENERIC_TEMPLATE_EXTENDS, true, false);
     }
 
     public final String getXmlNameSpace()
@@ -127,6 +130,11 @@ public final class NodeIdentifiers
     public final TemplateProducer getGenericTemplateProducer()
     {
         return genericTemplateProducer;
+    }
+
+    public TemplateProducer getDynamicTemplatesProducer()
+    {
+        return dynamicTemplateProducer;
     }
 
     public final String getTemplateReplaceExprsAttrName()

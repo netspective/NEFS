@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmHandler.java,v 1.2 2003-04-23 15:41:52 shahid.shah Exp $
+ * $Id: XdmHandler.java,v 1.3 2003-06-30 15:32:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -328,10 +328,6 @@ public class XdmHandler extends AbstractContentHandler
         }
     }
 
-    public void endDocument() throws SAXException
-    {
-    }
-
     public void endElement(String url, String localName, String qName) throws SAXException
     {
         if(handleDefaultEndElement(url, localName, qName))
@@ -368,9 +364,10 @@ public class XdmHandler extends AbstractContentHandler
         {
             try
             {
-                XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().pop();
+                XdmHandlerNodeStackEntry activeEntry = (XdmHandlerNodeStackEntry) getNodeStack().peek();
                 if (activeEntry != null)
                     activeEntry.getSchema().finalizeElementConstruction(((XdmParseContext) getParseContext()), activeEntry.getInstance(), activeEntry.getElementName());
+                getNodeStack().pop();
             }
             catch (DataModelException e)
             {

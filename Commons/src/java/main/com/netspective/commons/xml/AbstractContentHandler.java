@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.6 2003-06-20 21:09:04 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.7 2003-06-30 15:33:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -47,6 +47,7 @@ package com.netspective.commons.xml;
 import java.util.Stack;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 import java.io.IOException;
 import java.io.File;
 
@@ -63,11 +64,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.Locator;
 
-import com.netspective.commons.xml.template.TemplateContentHandler;
-import com.netspective.commons.xml.template.TemplateCatalog;
-import com.netspective.commons.xml.template.Template;
-import com.netspective.commons.xml.template.TemplateElement;
-import com.netspective.commons.xml.template.TemplateText;
+import com.netspective.commons.xml.template.*;
 import com.netspective.commons.io.Resource;
 
 public abstract class AbstractContentHandler implements TemplateContentHandler
@@ -134,6 +131,16 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public TemplateCatalog getTemplatCatalog()
     {
         return templateCatalog;
+    }
+
+    public TemplateProducer getDynamicTemplatesProducer()
+    {
+        return nodeIdentifiers.getDynamicTemplatesProducer();
+    }
+
+    public void addDynamicTemplate(Template template)
+    {
+        templateCatalog.registerTemplate(nodeIdentifiers.getDynamicTemplatesProducer(), Integer.toString(template.hashCode()), template);
     }
 
     public ContentHandlerNodeStackEntry getActiveNodeEntry()
@@ -328,6 +335,21 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
         sb.append(attributes);
         sb.append("]");
         return sb.toString();
+    }
+
+    public void executeDynamicTemplates() throws SAXException
+    {
+        // see if we have any dynamic templates that we now need to process
+        List dynTemplates = nodeIdentifiers.getDynamicTemplatesProducer().getInstances();
+        if(dynTemplates.size() > 0)
+        {
+            TemplateApplyContext tac = new TemplateApplyContext(this);
+            for(int i = 0; i < dynTemplates.size(); i++)
+            {
+                Template template = (Template) dynTemplates.get(i);
+                template.applySelfAndChildren(tac);
+            }
+        }
     }
 
     public void endDocument() throws SAXException
