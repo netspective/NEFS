@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.4 2003-04-04 16:26:37 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.5 2003-04-04 17:02:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -69,6 +69,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
 
     protected int flags = 0;
     protected Map flagDefnsByName;
+    protected Map flagSetterXmlNodeNames;
     public static final String FLAG_DELIMITER = "|";
 
     public static class FlagDefn
@@ -126,6 +127,8 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         if(flagDefnsByName == null)
         {
             flagDefnsByName = new HashMap();
+            flagSetterXmlNodeNames = new HashMap();
+
             FlagDefn[] flagDefns = getFlagsDefns();
             for(int i = 0; i < flagDefns.length; i++)
             {
@@ -135,14 +138,26 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
 
                 String flagName = flagDefn.getName();
                 String javaId = TextUtils.xmlTextToJavaIdentifier(flagName.toLowerCase(), false);
+                String xmlNodeName = TextUtils.javaIdentifierToXmlNodeName(javaId).toLowerCase();
 
                 flagDefnsByName.put(flagName, flagDefns);
                 flagDefnsByName.put(javaId, flagDefn);
-                flagDefnsByName.put(TextUtils.javaIdentifierToXmlNodeName(javaId).toLowerCase(), flagDefn);
+                flagDefnsByName.put(xmlNodeName, flagDefn);
+
+                if(flagDefn.access == ACCESS_XDM)
+                    flagSetterXmlNodeNames.put(xmlNodeName, flagDefn);
             }
         }
 
         return flagDefnsByName;
+    }
+
+    public Map getFlagSetterXmlNodeNames()
+    {
+        if(flagSetterXmlNodeNames == null)
+            getFlagDefnsByName();
+
+        return flagSetterXmlNodeNames;
     }
 
     public XdmBitmaskedFlagsAttribute()
@@ -217,19 +232,31 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         return (flags & flag) == 0 ? false : true;
     }
 
-    public final void setFlag(long flag)
+    public void setFlag(long flag)
     {
         flags |= flag;
     }
 
-    public final void clearFlag(long flag)
+    public void clearFlag(long flag)
     {
         flags &= ~flag;
     }
 
     public final void updateFlag(long flag, boolean set)
     {
-        if(set) flags |= flag; else flags &= ~flag;
+        if(set) setFlag(flag); else clearFlag(flags);
+    }
+
+    public final boolean updateFlag(String flagName, boolean set)
+    {
+        FlagDefn flagDefn = (FlagDefn) getFlagDefnsByName().get(flagName);
+        if(flagDefn == null)
+            return false;
+        else
+        {
+            updateFlag(flagDefn.getMask(), set);
+            return true;
+        }
     }
 
     public final void copy(XdmBitmaskedFlagsAttribute flags)
@@ -286,17 +313,5 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
 
         return text.toString();
-    }
-
-    public final boolean updateFlag(String flagName, boolean set)
-    {
-        FlagDefn flagDefn = (FlagDefn) getFlagDefnsByName().get(flagName);
-        if(flagDefn == null)
-            return false;
-        else
-        {
-            updateFlag(flagDefn.getMask(), set);
-            return true;
-        }
     }
 }

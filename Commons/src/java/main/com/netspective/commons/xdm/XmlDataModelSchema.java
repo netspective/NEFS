@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.10 2003-04-04 16:26:37 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.11 2003-04-04 17:02:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -367,6 +367,11 @@ public class XmlDataModelSchema
     public Map getAttributeSetters()
     {
         return attributeSetters;
+    }
+
+    public Map getFlagsAttributeAccessors()
+    {
+        return flagsAttributeAccessors;
     }
 
     public Map getAttributeTypes()
