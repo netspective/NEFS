@@ -1179,7 +1179,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                             if(fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
                                 sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted. Please re-open the record you were trying to edit and try it again.");
                             else
-                                fieldState.getField().invalidate(sredc, "The value for field " + fieldState.getField().getName() + " must be unique.  Another record was found with the same value. Please change the value and try again.");
+                                sredc.getValidationContext().addError("The value for field " + fieldState.getField().getCaption().getTextValue(sredc) + " must be unique.  Another record was found with the same value. Please change the value and try again.");
                         }
                         else if(fields.size() > 1)
                         {   //If there are more than one field, then need to construct a list of the field name to show at the top of the dialog
@@ -1189,7 +1189,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                                 DialogField.State fieldState = (DialogField.State) fields.get(k);
                                 if(fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
                                 {
-                                    fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
+                                    fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getCaption().getTextValue(sredc) + " must be unique.  A record was found with the same value.  Please change the value and try again.");
                                     fieldNameList = fieldNameList + (fieldNameList.length() <= 0 ? "" : ", ") + fieldState.getField().getName();
                                 }
                             }
