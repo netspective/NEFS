@@ -52,7 +52,7 @@
             </td>
             <#if activePage.summary?exists>
             <td class="body-summary">
-                ${activePage.summary}
+                ${activePage.summary.getTextValue(vc)}
             </td>
             </#if>
         </tr>
