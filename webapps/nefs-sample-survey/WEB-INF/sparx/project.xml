@@ -13,7 +13,7 @@
     <!-- setup the data access layer Singleton to point to our schema -->
     <listener class="app.Util"/>
 
-    <theme name="slate" default="yes" class="app.AppTheme" inherit-resources-from-themes="common"/>
+    <theme name="survey" default="yes" class="app.AppTheme" inherit-resources-from-themes="slate,common"/>
 
     <login-manager name="app" default="yes">
         <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
