@@ -40,43 +40,61 @@
 			<xdm:include template="patient.insurance-information"/>
             <xdm:include template="patient.responsible-party"/>
             <xdm:include template="person.identification-information"/>
-
+            <director>
+                <next-actions caption="Next Action\:" display-single-action="yes">
+                    <items>
+                        <item>Add another patient</item>
+                        <item>Go to patient's home page</item>
+                    </items>
+                </next-actions>
+            </director>
             <!--listener class="app.form.person.attribute.PatientDialog" /-->
             <on-add-data>
                 <person name_last="field:profile.name_last" name_first="field:profile.name_first" name_middle="field:profile.name_middle"
                     name_suffix="field:profile.name_suffix" ssn="field:demographics.ssn" marital_status_id="field:demographics.marital_status_id"
                     blood_type_id="field:demographics.blood_type_id" gender_id="field:demographics.gender_id" ethnicity_id="field:demographics.ethnicity_id"
-                    language_id="field:demographics.language_id" rec_stat_id="static:Active">
+                    language_id="field:demographics.language_id" rec_stat_id="static:Active" birth_date="field:demographics.birth_date">
+                    
                     <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business"
                         method-value="contact.work_phone"
                         _condition="vc.getFieldStates().getState('contact.work_phone').getValue().hasValue()"/>
                     <person-contact rec-stat-id="static:Active" method-type="static:Email: Business"
                         method-value="contact.email"
                          _condition="vc.getFieldStates().getState('contact.email').getValue().hasValue()"/>
-                    <person-login user_id="field:user_name" password="field:user_name" rec-stat-id="static:Active"
+                    <person-login user_id="field:identification.user_name" password="field:identification.user_name" rec-stat-id="static:Active"
                         login-status="static:Active" quantity="static:100"/>
-                    <person name_last="field:responsible.name_last" name_first="field:responsible.name_first"
-                        gender_id="static:Male" marital_status_id="static:Single"  rec_stat_id="static:Active"
-                        _condition="!vc.getFieldStates().getState('resp_party_id').getValue().hasValue() &amp;&amp; !vc.getFieldStates().getState('responsible.rel_type_id').getValue().getTextValue().equals('Self')">
-                    </person>
-                    <!--
-                        Person relationship insertion is complicated. If RESPONSIBLE party does not exist yet, the REPONSIBLE
-                        PARTY needs to be created as a PERSON also. If the party already exists, then a lookup field
-                        needs to be provided. The lookup field should then provide a search dialog to look for the
-                        RESPONSIBLE PARTY.
-                    -->
-                    <person-relationship rel_entity_id="record-editor-added-row-pk:last" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
-                        rel-descr="field:responsible.rel_descr"
-                        _condition="!vc.getFieldStates().getState('resp_party_id').getValue().hasValue() &amp;&amp; !vc.getFieldStates().getState('responsible.rel_type_id').getValue().getTextValue().equals('Self')"   />
-                    <person-relationship rel_entity_id="field:resp_party_id" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
-                        rel-descr="field:responsible.rel_descr"
-                        _condition="vc.getFieldStates().getState('resp_party_id').getValue().hasValue()"   />
+
+                    <if test="!vc.getFieldStates().getState('responsible.rel_type_id').getValue().getTextValue().equals('0')">
+                        <person-relationship rel_entity_id="field:responsible.exist_party.resp_party_id" rel_type_id="field:responsible.rel_type_id" rec-stat-id="static:Active"
+                            rel-descr="field:responsible.rel_descr"/>
+                    </if>
+
+                    <!--choose>
+                        <when test="!vc.getFieldStates().getState('insured.ins_rel_type_id').getValue().getTextValue().equals('Self') &amp;&amp; !vc.getFieldStates().getState('insured.ins_party_exists').getValue().getBooleanValue()">
+                            <person name_last="field:insured.new_party.name_last" name_first="field:insured.new_party.name_first"
+                                gender_id="static:Male" marital_status_id="static:Single"  rec_stat_id="static:Active"/>
+                            <person-relationship rel_entity_id="record-editor-added-row-pk:last" rel_type_id="field:insured.ins_rel_type_id" rec-stat-id="static:Active"
+                                rel-descr="field:insured.rel_descr"/>
+                        </when>
+                        <when test="!vc.getFieldStates().getState('insured.ins_rel_type_id').getValue().getTextValue().equals('Self') &amp;&amp; vc.getFieldStates().getState('insured.ins_party_exists').getValue().getBooleanValue()">
+                            <person-relationship rel_entity_id="field:insured.exist_party.party_id" rel_type_id="field:insured.ins_rel_type_id" rec-stat-id="static:Active"
+                                rel-descr="field:insured.rel_descr"/>
+                        </when>
+                        <otherwise>
+                        </otherwise>
+                    </choose-->
+                    <!--person-insurance guar-person-id="field:responsible.party_id" guar-rel-id="record-editor-added-row-pk:last"
+                        rec-stat-id="static:Active" policy-id="record-editor-added-row-pk:last"/-->
+
                     <!--person-insurance guar-person-id="field:responsible.party_id" rec-stat-id="static:Active" /-->
                     <person-classification rec-stat-id="static:Active" person-type-id="static:Patient"/>
                     <person-ethnicity _loop-column="ethnicity-id" ethnicity-id="field:demographics.ethnicity_id" rec-stat-id="static:Active"/>
                     <person-language _loop-column="language-id" language-id="field:demographics.language_id" rec-stat-id="static:Active"/>
                 </person>
             </on-add-data>
+            <on-edit-data>
+
+            </on-edit-data>
             <on-delete-data>
                 <person _pk-value="request:person_id" _auto-map="*" />
             </on-delete-data>
