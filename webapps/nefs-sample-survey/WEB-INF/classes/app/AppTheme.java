@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.2 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: AppTheme.java,v 1.3 2003-09-15 13:01:02 shahid.shah Exp $
  */
 
 package app;
@@ -52,7 +52,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 
 public class AppTheme extends BasicTheme
 {
-    protected NavigationSkin constructDefaultNavigationSkin()
+    public NavigationSkin createNavigationSkin()
     {
         return new AppNavigationSkin(this, "default");
     }
