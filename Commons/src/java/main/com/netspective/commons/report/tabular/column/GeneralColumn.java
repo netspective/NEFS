@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.16 2004-08-09 22:20:54 aye.thu Exp $
+ * $Id: GeneralColumn.java,v 1.17 2004-08-10 00:42:53 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -312,7 +312,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         }
 
         if(this.flags.flagIsSet(Flags.ESCAPE_HTML))
-            data = TextUtils.escapeHTML(data);
+            data = TextUtils.getInstance().escapeHTML(data);
 
         return data;
     }
