@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.6 2003-07-12 02:16:40 aye.thu Exp $
+ * $Id: Query.java,v 1.7 2003-08-01 05:54:40 aye.thu Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.netspective.sparx.panel.QueryReportPanel;
+import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.form.sql.QueryDialog;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -103,6 +104,7 @@ public class Query extends com.netspective.axiom.sql.Query
             {
                 defaultPanel = new QueryReportPanel();
                 defaultPanel.setQuery(Query.this);
+                defaultPanel.setFrame(new HtmlPanelFrame());
             }
 
             return defaultPanel;
