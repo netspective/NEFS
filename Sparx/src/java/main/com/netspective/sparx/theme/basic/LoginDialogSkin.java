@@ -39,22 +39,27 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.7 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.8 2004-04-23 04:19:11 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
-import java.io.Writer;
-import java.io.IOException;
-
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.theme.Theme;
+
+import java.io.IOException;
+import java.io.Writer;
 
 public class LoginDialogSkin extends StandardDialogSkin
 {
     private String loginImage = "netspective-keys.gif";
+
+    public LoginDialogSkin()
+    {
+        super();
+    }
 
     public LoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
