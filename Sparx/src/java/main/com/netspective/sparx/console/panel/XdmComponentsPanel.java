@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.3 2003-03-27 22:22:56 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.4 2003-03-28 04:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -119,6 +119,16 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
         protected String systemId;
         protected XdmComponent component;
 
+        public boolean isHierarchical()
+        {
+            return false;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHiearchy()
+        {
+            return null;
+        }
+
         public String getHtml(FileTracker ft)
         {
             StringBuffer src = new StringBuffer();
@@ -144,12 +154,12 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             return src.toString();
         }
 
-        public Object getData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
         {
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(getRow());
+                    return new Integer(getActiveRowNumber());
 
                 case 1:
                     return ConsoleServlet.constructClassRefHtml(component.getClass());
@@ -166,9 +176,9 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             }
         }
 
-        public Object getData(TabularReportValueContext vc, String columnName)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName)
         {
-            throw new TabularReportException("getData(vc, columnName) is not suppored");
+            throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
         }
 
         public boolean next()
@@ -185,7 +195,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
             return false;
         }
 
-        public int getRow()
+        public int getActiveRowNumber()
         {
             return row + 1;
         }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.2 2003-03-27 22:22:56 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -96,9 +96,19 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
         protected Class vsClass;
         protected String[] identifiers;
 
-        public Object getData(TabularReportValueContext vc, String columnName)
+        public boolean isHierarchical()
         {
-            throw new TabularReportException("getData(vc, columnName) is not suppored");
+            return false;
+        }
+
+        public TabularReportDataSource.Hierarchy getActiveHiearchy()
+        {
+            return null;
+        }
+
+        public Object getActiveRowColumnData(TabularReportValueContext vc, String columnName)
+        {
+            throw new TabularReportException("getActiveRowColumnData(vc, columnName) is not suppored");
         }
 
         public boolean next()
@@ -114,7 +124,7 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
             return false;
         }
 
-        public int getRow()
+        public int getActiveRowNumber()
         {
             return row + 1;
         }
@@ -128,7 +138,7 @@ public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPan
         {
         }
 
-        public Object getData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
         {
             switch(columnIndex)
             {

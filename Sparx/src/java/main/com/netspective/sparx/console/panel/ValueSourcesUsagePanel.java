@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesUsagePanel.java,v 1.2 2003-03-27 22:22:56 shahid.shah Exp $
+ * $Id: ValueSourcesUsagePanel.java,v 1.3 2003-03-28 04:10:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -102,12 +102,12 @@ public class ValueSourcesUsagePanel extends AbstractHtmlTabularReportPanel
         {
         }
 
-        public Object getData(TabularReportValueContext vc, int columnIndex)
+        public Object getActiveRowColumnData(TabularReportValueContext vc, int columnIndex)
         {
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(getRow());
+                    return new Integer(getActiveRowNumber());
 
                 case 1:
                     return ConsoleServlet.constructClassRefHtml(vsClass);
