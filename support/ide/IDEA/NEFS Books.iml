@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4" relativePaths="false" type="J2EE_WEB_MODULE">
+  <component name="ModuleRootManager" />
+  <component name="NewModuleRootManager">
+    <output url="file://C:/Projects/Frameworks/webapps/nefs-sample-books/WEB-INF/classes" />
+    <content url="file://C:/Projects/Frameworks/webapps/nefs-sample-books">
+      <sourceFolder url="file://C:/Projects/Frameworks/webapps/nefs-sample-books/WEB-INF/classes" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/webapps/nefs-sample-books/WEB-INF/classes/test" isTestSource="true" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Projects/Frameworks/Sparx/lib/redist/servlet.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Axiom Redistributables" level="project" />
+    <orderEntry type="library" name="Commons Redistributables" level="project" />
+    <orderEntry type="library" name="Sparx Redistributables" level="project" />
+    <orderEntry type="module" module-name="NEFS" />
+    <orderEntryProperties />
+  </component>
+  <component name="WebModuleBuildComponent">
+    <setting name="EXPLODED_URL" value="file://" />
+    <setting name="EXPLODED_ENABLED" value="false" />
+    <setting name="JAR_URL" value="file://" />
+    <setting name="JAR_ENABLED" value="false" />
+    <setting name="SYNC_EXPLODED_DIR" value="false" />
+    <setting name="BUILD_ON_FRAME_DEACTIVATION" value="false" />
+    <setting name="RUN_JASPER_VALIDATION" value="false" />
+  </component>
+  <component name="WebModuleProperties">
+    <deploymentDescriptor name="web.xml" url="file://C:/Projects/Frameworks/webapps/nefs-sampler/WEB-INF/web.xml" version="2.3" />
+    <webroots />
+  </component>
+  <component name="WeblogicWebModuleProperties">
+    <option name="IS_RUN_APPC" value="false" />
+  </component>
+</module>
+
