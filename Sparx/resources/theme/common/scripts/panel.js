@@ -147,6 +147,39 @@ function Browser_getControl_NotSupported(id)
 }
 
 // **************************************************************************
+// Getting URL parameters through Javascript made easier
+// **************************************************************************
+
+location.getParameter = function(sParam)
+{
+    var sKey = sParam + "=";
+
+    var oParams = this.search.substring(1).split("&");
+    for(var i = 0; i < oParams.length; i++)
+        if(oParams[i].indexOf(sKey) == 0)
+            return oParams[i].substring(sKey.length);
+    return null;
+};
+
+location.getParameterMap = function()
+{
+	var oParams = this.search.substring(1).split("&");
+
+	var oMap = { }
+	for(var i = 0; i < oParams.length; i++) {
+		var pair = oParams[i].split("=");
+		oMap[pair[0]] = pair[1];
+	}
+
+	return oMap;
+};
+
+location.getParametersCount = function()
+{
+	return this.search.substring(1).split("&").length;
+};
+
+// **************************************************************************
 // Server side communications manager
 // **************************************************************************
 
@@ -182,114 +215,6 @@ function createXmlHttpRequest()
     return xmlHttp;
 }
 
-function HttpController()
-{
-    this.xmlHttp = createXmlHttpRequest();
-    if(! this.xmlHttp)
-        alert("Unable to create XMLHttpRequest");
-
-    this.sendMessage = HttpController_sendMessage;
-    this.get = HttpController_get;
-    this.sendSessionAttribute = HttpController_sendSessionAttribute;
-    this.sendSetSessionAttribute = HttpController_sendSetSessionAttribute;
-    this.sendAppendSessionAttribute = HttpController_sendAppendSessionAttribute;
-    this.sendRemoveSessionAttribute = HttpController_sendRemoveSessionAttribute;
-
-    this.callAuthenticatedUserClientService = HttpController_callAuthenticatedUserClientService;
-    this.callAuthenticatedUserClientServiceStatusOkCallback = null;
-    this.callAuthenticatedUserClientServiceStatusNotFoundCallback = null;
-    this.callAuthenticatedUserClientServiceOtherStatusCallback = null;
-    return this;
-}
-
-/**
- * Send out a message but don't worry about the message content (only whether a success or failure occurred
- */
-function HttpController_sendMessage(url, setupXmlHttpCallback, statusOkCallback, statusNotFoundCallback, otherStatusCallback)
-{
-    this.xmlHttp.open("HEAD", url, true);
-    if(setupXmlHttpCallback != null) setupXmlHttpCallback(this.xmlHttp);
-    if(statusOkCallback != null)
-    {
-         this.xmlHttp.onreadystatechange = function()
-         {
-            if (this.xmlHttp.readyState==4)
-            {
-                if (this.xmlHttp.status == 200)
-                    statusOkCallback(this);
-                else if (xmlhttp.status == 404)
-                {
-                    if(statusNotFoundCallback != null)
-                        statusNotFoundCallback(this);
-                }
-                else
-                {
-                    if(otherStatusCallback != null)
-                        otherStatusCallback(xmlhttp.status, this);
-                }
-            }
-         }
-    }
-    this.xmlHttp.send(null);
-}
-
-/**
- * Get the contents of a URL -- the callback is sent both the responseText and this object
- */
-function HttpController_get(url, callback)
-{
-    this.xmlHttp.open("GET", url, true);
-    this.xmlHttp.onreadystatechange = function()
-    {
-        if (xmlHttp.readyState==4)
-            callback(this.xmlHttp.responseText, this);
-    }
-    this.xmlHttp.send(null);
-}
-
-function HttpController_sendSessionAttribute(command, varName, varValue)
-{
-    this.sendMessage("?service=HttpController.sendSessionAttribute",
-        function(xmlHttp)
-        {
-            xmlHttp.setRequestHeader("Sparx-Http-Controller", "sendSessionAttribute");
-            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-command", command);
-            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-varName", varName);
-            xmlHttp.setRequestHeader("Sparx-Http-Controller-sendSessionAttribute-varValue", varValue);
-        }
-    );
-}
-
-function HttpController_sendSetSessionAttribute(varName, varValue)
-{
-    this.sendSessionAttribute("set", varName, varValue);
-}
-
-function HttpController_sendAppendSessionAttribute(varName, varValue)
-{
-    this.sendSessionAttribute("append", varName, varValue);
-}
-
-function HttpController_sendRemoveSessionAttribute(varName, varValue)
-{
-    this.sendSessionAttribute("remove", varName, varValue);
-}
-
-function HttpController_callAuthenticatedUserClientService(/** all arguments must be name/value pairs **/)
-{
-    var serviceArgs = arguments;
-    this.sendMessage("?service=HttpController.callAuthenticatedUserClientService",
-        function(xmlHttp)
-        {
-            xmlHttp.setRequestHeader("Sparx-Http-Controller", "callAuthenticatedUserClientService");
-            for(var i = 0; i < serviceArgs.length; i += 2)
-                xmlHttp.setRequestHeader("Sparx-Http-Controller-callAuthenticatedUserClientService-" + serviceArgs[i+0], serviceArgs[i+1]);
-        },
-        this.callAuthenticatedUserClientServiceStatusOkCallback,
-        this.callAuthenticatedUserClientServiceStatusNotFoundCallback,
-        this.callAuthenticatedUserClientServiceOtherStatusCallback
-    );
-}
 /**
  * ----------------------------------------------------------------------------------------------------
  * Special Http service client for invoking the SessionAttribteServiceHandler
@@ -306,6 +231,8 @@ function SessionAttributeServiceClient()
     this.sendSetSessionAttribute = SessionAttributeServiceClient_sendSetSessionAttribute;
     this.sendAppendSessionAttribute = SessionAttributeServiceClient_sendAppendSessionAttribute;
     this.sendRemoveSessionAttribute = SessionAttributeServiceClient_sendRemoveSessionAttribute;
+
+    return this;
 }
 
 function SessionAttributeServiceClient_sendServiceMessage(command, varName, varValue)
@@ -345,17 +272,20 @@ SessionAttributeServiceClient.prototype = new HttpClient;
 function AuthenticatedUserServiceClient()
 {
     this.base = HttpClient;
-    this.base("?service=HttpController.callAuthenticatedUserClientService");
+    this.base("?service=HttpController.callAuthenticatedUserClientService", "*");
     this.messageType = 'HEAD';
     this.sendServiceMessage =  AuthenticatedUserServiceClient_sendServiceMessage;
+    return this;
 }
 
-function AuthenticatedUserServiceClient_sendServiceMessage()
+function AuthenticatedUserServiceClient_sendServiceMessage(/* all parameters are name/value pairs of items to send to AuthenticatedUser */)
 {
     var serviceArgs = arguments;
     this.setupMessage =  function(xmlHttp)
     {
         xmlHttp.setRequestHeader("Sparx-Http-Controller", "callAuthenticatedUserClientService");
+
+        // service accepts name/value pairs as a vararg list (first item is name, second is value, third is name, fourth is value, etc)
         for(var i = 0; i < serviceArgs.length; i += 2)
             xmlHttp.setRequestHeader("Sparx-Http-Controller-callAuthenticatedUserClientService-" + serviceArgs[i+0], serviceArgs[i+1]);
 
@@ -381,7 +311,7 @@ AuthenticatedUserServiceClient.prototype = new HttpClient;
  *     myClient.sendServiceMessage("myService");
  * ----------------------------------------------------------------------------------------------------
  */
-function HttpClient(url)
+function HttpClient(url, retainParams)
 {
     this.url = url || "";
     this.xmlHttp =  createXmlHttpRequest();
@@ -389,6 +319,10 @@ function HttpClient(url)
         alert("Unable to create XMLHttpRequest");
 
     this.callInProgress = false;
+    this.retainParams = retainParams;
+
+    if(this.retainParams != null)
+        this.url = HttpClient_prepareUrlRetainParams(url, retainParams);
 
     this.asyncMessage = true;   // by default, it is an async operation
     this.messageType = 'GET';   // by default, it is a GET message
@@ -401,6 +335,44 @@ function HttpClient(url)
     this.statusOkCallback = null;           // declare this function to handle a http 200 status
     this.statusNotFoundCallback = null;     // declare this function to handle a http 404 error
     this.statusOtherCallback = null;        // declare this function to handle an unexpected http status code
+
+    // some convenience features that will prevent having to write callbacks in common cases
+    this.refreshPageAfterAnyResponse = false;      // set this to true if the page should reload after HTTP client returns a status
+    this.refreshPageAfterSuccessResponse = false;  // set this to true if the page should reload after HTTP client returns a successful status
+    this.alertAfterErrorResponse = false;          // set this to true if the page should show an error message if there's an unsuccesful response
+    this.afterErrorResponseAlertMessage = "A HttpClient error occurred after sending message.";
+
+    return this;
+}
+
+function HttpClient_prepareUrlRetainParams(url, retainParams)
+{
+    if(retainParams == null || retainParams == "")
+        return url;
+
+    if(location.getParametersCount() > 0)
+    {
+        var curPageParams = location.getParameterMap();
+        var newUrl = url.indexOf('?') > -1 ? (url + "&") : (url + "?");
+        if(retainParams == "*")
+        {
+            for(var paramName in curPageParams)
+                newUrl += paramName + "=" + curPageParams[paramName] + "&";
+        }
+        else
+        {
+            var keepParams = typeof(retainParams) == 'array' ? retainParams : retainParams.split(",");
+            for(var i = 0; i < keepParams.length; i++)
+            {
+                var paramName = keepParams[i];
+                if(curParams[paramName] != null)
+                    newUrl += paramName + "=" + curPageParams[paramName] + "&";
+            }
+        }
+        return newUrl;
+    }
+    else
+        return url;
 }
 
 function HttpClient_sendMessage()
@@ -457,13 +429,22 @@ function HttpClient_stateChangeCallback(client)
 {
     if (client.xmlHttp.readyState == 4)
     {
+        if(this.refreshPageAfterAnyResponse)
+            window.location.reload(true);
+
         if (client.xmlHttp.status == 200)
         {
+            if(this.refreshPageAfterSuccessResponse)
+                window.location.reload(true);
+
             if (client.statusOkCallback != null)
                 client.statusOkCallback(client.xmlHttp);
         }
         else if (xmlhttp.status == 404)
         {
+            if(this.alertAfterErrorResponse)
+                alert(this.afterErrorResponseAlertMessage);
+
             if(client.statusNotFoundCallback != null)
                 client.statusNotFoundCallback(client.xmlHttp);
         }
