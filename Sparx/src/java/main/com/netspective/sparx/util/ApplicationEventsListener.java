@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: ApplicationEventsListener.java,v 1.4 2003-09-14 17:04:39 shahid.shah Exp $
+ * $Id: ApplicationEventsListener.java,v 1.5 2003-09-21 00:51:00 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.util;
 
 import java.util.Set;
 import java.util.Iterator;
+import java.util.HashSet;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 
@@ -70,7 +71,7 @@ public class ApplicationEventsListener implements ServletContextListener
     {
         log.trace("Destroying context " + event.getServletContext().getServletContextName());
 
-        Set connContextsWithOpenConnections = AbstractConnectionContext.getConnectionContextsWithOpenConnections();
+        Set connContextsWithOpenConnections = new HashSet(AbstractConnectionContext.getConnectionContextsWithOpenConnections());
         for(Iterator i = connContextsWithOpenConnections.iterator(); i.hasNext(); )
         {
             ConnectionContext cc = (ConnectionContext) i.next();
