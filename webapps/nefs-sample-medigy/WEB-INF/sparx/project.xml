@@ -36,7 +36,7 @@
     </template-processor-type>
     <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
         <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
-        <!--dialog-skin class="app.theme.ModernDialogSkin" name="profile" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/-->
+        <dialog-skin class="app.theme.ModernDialogSkin" name="modern" default="yes" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </theme>
     <!--
        ======================================
@@ -52,7 +52,7 @@
 			<page name="person" caption="Person" >
                 <page name="people" caption="People" command="query-defn,searchPersons,-,searchPersonDialog"/>
                 <page name="patient" caption="Patients" command="query-defn,searchPersons,-,searchPatientDialog" default="yes"/>
-                <page name="physician" caption="Physician/Provnameers" command="query-defn,searchPersons,-,searchPhysicianDialog"/>
+                <page name="physician" caption="Physicians" command="query-defn,searchPersons,-,searchPhysicianDialog"/>
                 <page name="referring-doctor" caption="Reffering Doctors" command="query-defn,searchPersons,-,searchReferringDoctorDialog"/>
                 <page name="nurse" caption="Nurses" command="query-defn,searchPersons,-,searchNurseDialog"/>
                 <page name="staff" caption="Staff Members" command="query-defn,searchPersons,-,searchStaffDialog"/>
@@ -96,7 +96,7 @@
                     </body>
                     </panel>
                 </panels>
-                <page name="patient" caption="Patients" command="dialog,person.patient,add,profile"/>
+                <page name="patient" caption="Patients" command="dialog,person.patient,add"/>
                 <page name="physician" caption="Physician/Providers" command="dialog,person.physician,add"/>
                 <page name="referring-doctor" caption="Referring Doctors" command="dialog,person.referringDoctor,add"/>
                 <page name="nurse" caption="Nurses" command="dialog,person.nurse,add"/>
