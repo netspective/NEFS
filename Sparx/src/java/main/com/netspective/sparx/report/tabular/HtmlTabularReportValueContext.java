@@ -51,34 +51,35 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.7 2003-10-20 16:15:20 shahid.shah Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.8 2004-03-02 07:42:17 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import com.netspective.commons.report.tabular.TabularReportColumnState;
+import com.netspective.commons.report.tabular.TabularReportColumns;
+import com.netspective.commons.report.tabular.TabularReportContextListener;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
+import com.netspective.commons.report.tabular.TabularReportSkin;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
+import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelAction;
+import com.netspective.sparx.panel.HtmlPanelActionStates;
+import com.netspective.sparx.panel.HtmlPanelActions;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
-import com.netspective.commons.report.tabular.TabularReportContextListener;
-import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.sparx.panel.HtmlPanelFrame;
-import com.netspective.sparx.panel.HtmlPanelValueContext;
-import com.netspective.sparx.panel.HtmlPanel;
-import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.commons.report.tabular.TabularReportSkin;
-import com.netspective.commons.report.tabular.TabularReportColumnState;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContext implements TabularReportValueContext, HtmlPanelValueContext
 {
@@ -95,6 +96,7 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private TabularReportSkin skin;
     private int rowCurrent, rowStart, rowEnd;
     private TabularReportDataSourceScrollState scrollState;
+    private HtmlPanelActionStates panelActionStates = new HtmlPanelActionStates(this);
 
     public HtmlTabularReportValueContext(Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
@@ -126,6 +128,19 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
                 calcsCount++;
             states[i] = state;
         }
+
+        // calculate the states for the panel actions if they exist
+        HtmlPanelActions actions = panel.getBanner().getActions();
+        for (int k = 0; k < actions.size(); k++)
+        {
+            HtmlPanelAction.State state = actions.get(k).constructStateInstance(this);
+            panelActionStates.addState(state);
+        }
+    }
+
+    public HtmlPanelActionStates getPanelActionStates()
+    {
+        return panelActionStates;
     }
 
     public DialogContext getSourceDialogContext()
