@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.17 2003-08-22 14:34:07 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.18 2003-08-23 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -64,9 +64,9 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.util.HttpUtils;
-import com.netspective.sparx.util.MultiWebResourceLocator;
-import com.netspective.sparx.util.WebResourceLocator;
-import com.netspective.sparx.util.InheritableFileWebResourceLocator;
+import com.netspective.commons.io.MultipleUriAddressableFileLocators;
+import com.netspective.commons.io.UriAddressableFileLocator;
+import com.netspective.commons.io.UriAddressableInheritableFileResource;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
@@ -95,7 +95,7 @@ public class NavigationControllerServlet extends HttpServlet
     private Theme theme;
     private NavigationTree navigationTree;
     private RuntimeEnvironmentFlags runtimeEnvironmentFlags;
-    private WebResourceLocator resourceLocator;
+    private UriAddressableFileLocator resourceLocator;
     private boolean cacheComponents;
 
     public void init(ServletConfig servletConfig) throws ServletException
@@ -143,17 +143,24 @@ public class NavigationControllerServlet extends HttpServlet
         ServletContext servletContext = servletConfig.getServletContext();
         try
         {
+            String sparxUrl = "/sparx";
+
+            List webAppLocations = new ArrayList();
+            webAppLocations.add("/resources/sparx"); // this allows each app to override any sparx resource
+            webAppLocations.add(sparxUrl);           // these are the actual sparx resources
+
             List locators = new ArrayList();
-            File sparxOverrides = new File(servletConfig.getServletContext().getRealPath("/resources/sparx"));
-            if(sparxOverrides.exists() && sparxOverrides.isDirectory())
-                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/resources/sparx", sparxOverrides, isCacheComponents()));
-            File sparxMain = new File(servletConfig.getServletContext().getRealPath("/sparx"));
-            if(sparxMain.exists() && sparxMain.isDirectory())
-                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/sparx", sparxMain, isCacheComponents()));
+            for(int i = 0; i < webAppLocations.size(); i++)
+            {
+                String webAppRelativePath = (String) webAppLocations.get(i);
+                File webAppPhysicalDir = new File(servletContext.getRealPath(webAppRelativePath));
+                if(webAppPhysicalDir.exists() && webAppPhysicalDir.isDirectory())
+                    locators.add(new UriAddressableInheritableFileResource(servletContext.getServletContextName() + sparxUrl, webAppPhysicalDir, isCacheComponents()));
+            }
 
             FileFind.FileFindResults ffResults = FileFind.findInClasspath("Sparx/resources", FileFind.FINDINPATHFLAG_DEFAULT);
             if(ffResults.isFileFound() && ffResults.getFoundFile().isDirectory())
-                locators.add(new InheritableFileWebResourceLocator(servletContext.getServletContextName() + "/sparx", ffResults.getFoundFile(), isCacheComponents()));
+                locators.add(new UriAddressableInheritableFileResource(servletContext.getServletContextName() + sparxUrl, ffResults.getFoundFile(), isCacheComponents()));
 
             if(log.isDebugEnabled())
             {
@@ -164,7 +171,7 @@ public class NavigationControllerServlet extends HttpServlet
             if(locators.size() == 0)
                 System.err.println("Unable to register any web resource locators (/resources/sparx and /sparx were not found).");
 
-            resourceLocator = new MultiWebResourceLocator((WebResourceLocator[]) locators.toArray(new WebResourceLocator[locators.size()]), isCacheComponents());
+            resourceLocator = new MultipleUriAddressableFileLocators((UriAddressableFileLocator[]) locators.toArray(new UriAddressableFileLocator[locators.size()]), isCacheComponents());
         }
         catch (IOException e)
         {

@@ -39,31 +39,27 @@
  */
 
 /**
- * $Id: Theme.java,v 1.13 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: Theme.java,v 1.14 2003-08-23 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
 
 import java.util.Map;
-import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
 import com.netspective.sparx.theme.basic.LoginDialogSkin;
-import com.netspective.sparx.util.WebResourceLocator;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.io.InheritableFileResources;
+import com.netspective.commons.io.UriAddressableFileLocator;
 
 public interface Theme
 {
     public String getName();
 
-    public WebResourceLocator getResourceLocator();
+    public UriAddressableFileLocator getResourceLocator();
 
-    public void setWebResourceLocator(WebResourceLocator locator);
+    public void setWebResourceLocator(UriAddressableFileLocator locator);
 
     public String getResourceUrl(String relativeUrl);
 

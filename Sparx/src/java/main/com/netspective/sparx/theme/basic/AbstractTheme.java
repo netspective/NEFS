@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.16 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.17 2003-08-23 16:05:57 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -58,8 +58,8 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.panel.HtmlPanelSkin;
 import com.netspective.sparx.form.DialogSkin;
-import com.netspective.sparx.util.WebResourceLocator;
-import com.netspective.sparx.util.WebResource;
+import com.netspective.commons.io.UriAddressableFileLocator;
+import com.netspective.commons.io.UriAddressableFile;
 import com.netspective.commons.text.TextUtils;
 
 public class AbstractTheme implements Theme
@@ -67,7 +67,7 @@ public class AbstractTheme implements Theme
     private static final Log log = LogFactory.getLog(AbstractTheme.class);
 
     private String name;
-    private WebResourceLocator resourceLocator;
+    private UriAddressableFileLocator resourceLocator;
     private boolean defaultTheme;
     private Map navigationSkins = new TreeMap();
     private Map tabularReportSkins = new TreeMap();
@@ -88,12 +88,12 @@ public class AbstractTheme implements Theme
         templatePanelSkin = constructTabbedPanelSkin();
     }
 
-    public WebResourceLocator getResourceLocator()
+    public UriAddressableFileLocator getResourceLocator()
     {
         return resourceLocator;
     }
 
-    public void setWebResourceLocator(WebResourceLocator locator)
+    public void setWebResourceLocator(UriAddressableFileLocator locator)
     {
         this.resourceLocator = locator;
     }
@@ -120,13 +120,13 @@ public class AbstractTheme implements Theme
 
         try
         {
-            WebResource resource = resourceLocator.findWebResource(themeRelativeUrl);
+            UriAddressableFile resource = resourceLocator.findUriAddressableFile(themeRelativeUrl);
             if(resource != null)
                 return resource.getUrl();
 
             for(int i = 0; i < inheritResourcesFromThemes.length; i++)
             {
-                resource = resourceLocator.findWebResource(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
+                resource = resourceLocator.findUriAddressableFile(getResourceUrlWithThemePrefix(inheritResourcesFromThemes[i], relativeUrl));
                 if(resource != null)
                     return resource.getUrl();
             }
