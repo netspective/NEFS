@@ -251,7 +251,7 @@
 </#macro>
 
 
-<#macro reportTable width="100%" headings=[] data=[] columnAttrs=[] headingAttrs=[]>
+<#macro reportTable width="100%" headings=[] data=[] columnAttrs=[] headingAttrs=[] dataMayContainsHtmlCellAttrs="yes">
     <table class="report" border="0" cellspacing="2" cellpadding="0" width="${width}">
     <#if data?size = 0>
     <#nested>
@@ -282,9 +282,10 @@
         <#list data as row>
             <tr>
             <#list row as column>
+                <#assign isHtmlCellAttrs = dataMayContainsHtmlCellAttrs="yes" && column?is_sequence />
                 <td class="report-column-${classSuffix}" ${_columnAttrs[column_index]}
-                    <#if column?is_sequence>${column[0]}</#if> >
-                    <#if column?is_sequence>
+                    <#if isHtmlCellAttrs>${column[0]}</#if>  >
+                    <#if isHtmlCellAttrs>
                         ${column[1]}
                     <#else>
                         ${column}
@@ -300,4 +301,37 @@
         </#list>
     </#if>
     </table>
+</#macro>
+
+<#macro inspectObject object heading="Object Inspector">
+    <#assign schema = getXmlDataModelSchema(object.class.name)/>
+    <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
+    <#assign childElements = schema.getNestedElementsDetail()/>
+
+    <#assign attribs = []/>
+    <#list settableAttributesDetail as attrDetail>
+        <#if attrDetail.attrName = 'class'>
+            <#assign attribs = attribs + [
+                        [attrDetail.attrName, getClassReference(object.class.name), getClassReference(attrDetail.attrType.name)]
+                        ]/>
+        <#else>
+            <#assign accessor = attrDetail.accessor?default('-')/>
+            <#if accessor != '-'>
+                <#assign attrValue = attrDetail.getAccessorValue(object, 'NULL')?html/>
+            <#else>
+                <#assign attrValue = '<i><font color=red>no accessor available</font></i>'/>
+            </#if>
+            <#assign attribs = attribs + [
+                        [attrDetail.attrName, attrValue, getClassReference(attrDetail.attrType.name)]
+                        ]/>
+         </#if>
+    </#list>
+
+    <@panel heading="${heading}">
+        <@reportTable
+                headings = ["Property", "Value", "Type"]
+                data=attribs
+                dataMayContainsHtmlCellAttrs="no"
+                />
+    </@panel>
 </#macro>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.26 2003-07-09 16:51:07 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.27 2003-07-09 17:42:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -606,6 +606,17 @@ public class XmlDataModelSchema
         public AttributeAccessor getAccessor()
         {
             return (AttributeAccessor) attributeAccessors.get(attrName);
+        }
+
+        public String getAccessorValue(Object parent, String valueIfNull) throws DataModelException, IllegalAccessException, InvocationTargetException
+        {
+            AttributeAccessor accessor = getAccessor();
+            if(accessor == null)
+                return valueIfNull;
+            Object value = accessor.get(null, parent);
+            if(value == null)
+                return valueIfNull;
+            return value.toString();
         }
 
         public boolean isRequired()
