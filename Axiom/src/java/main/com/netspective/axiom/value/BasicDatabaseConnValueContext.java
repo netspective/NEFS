@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDatabaseConnValueContext.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: BasicDatabaseConnValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -52,8 +52,11 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.commons.value.DefaultValueContext;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.ConnectionProvider;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.connection.JndiConnectionProvider;
 import com.netspective.axiom.connection.AutoCommitConnectionContext;
 import com.netspective.axiom.connection.TransactionConnectionContext;
@@ -98,5 +101,20 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
     public String translateDataSourceId(String dataSourceId)
     {
         return dataSourceId;
+    }
+
+    public AccessControlListsManager getAccessControlListsManager()
+    {
+        return getSqlManager();
+    }
+
+    public ConfigurationsManager getConfigurationsManager()
+    {
+        return getSqlManager();
+    }
+
+    public SqlManager getSqlManager()
+    {
+        return null;
     }
 }

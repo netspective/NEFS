@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicyValueContext.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: DatabasePolicyValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -49,6 +49,7 @@ import javax.naming.NamingException;
 
 import com.netspective.commons.value.ValueContext;
 import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.SqlManager;
 
 public interface DatabasePolicyValueContext extends ValueContext
 {
@@ -56,4 +57,9 @@ public interface DatabasePolicyValueContext extends ValueContext
      * Get the database policy associated with this value context
      */
     public DatabasePolicy getDatabasePolicy() throws NamingException, SQLException;
+
+    /**
+     * Retrieves the default SQL manager
+     */
+    public SqlManager getSqlManager();
 }

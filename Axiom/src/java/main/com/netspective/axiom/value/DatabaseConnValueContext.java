@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabaseConnValueContext.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: DatabaseConnValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -50,6 +50,7 @@ import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.ConnectionProvider;
+import com.netspective.axiom.SqlManager;
 import com.netspective.commons.value.ValueContext;
 
 public interface DatabaseConnValueContext extends ValueContext
@@ -92,4 +93,9 @@ public interface DatabaseConnValueContext extends ValueContext
      * @param provider
      */
     public void setConnectionProvider(ConnectionProvider provider);
+
+    /**
+     * Retrieves the default SQL manager
+     */
+    public SqlManager getSqlManager();
 }

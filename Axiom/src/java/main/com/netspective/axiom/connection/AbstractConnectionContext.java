@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.2 2003-03-15 21:39:38 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.3 2003-03-16 21:22:05 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -55,7 +55,10 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.acl.AccessControlListsManager;
+import com.netspective.commons.config.ConfigurationsManager;
 
 public abstract class AbstractConnectionContext implements ConnectionContext
 {
@@ -134,9 +137,24 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         }
     }
 
-    /***************************************************************/
-    /* --- delegate all other calls to the parent value context -- */
-    /***************************************************************/
+    /*-------------------------------------------------------------
+     delegate all other calls to the parent value context
+     --------------------------------------------------------------*/
+
+    public AccessControlListsManager getAccessControlListsManager()
+    {
+        return dbvc.getAccessControlListsManager();
+    }
+
+    public ConfigurationsManager getConfigurationsManager()
+    {
+        return dbvc.getConfigurationsManager();
+    }
+
+    public SqlManager getSqlManager()
+    {
+        return dbvc.getSqlManager();
+    }
 
     public Object getAttribute(String attributeId)
     {
@@ -155,7 +173,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
 
     public boolean withinACE()
     {
-        return false;
+        return dbvc.withinACE();
     }
 
     public boolean isAntBuildEnvironment()

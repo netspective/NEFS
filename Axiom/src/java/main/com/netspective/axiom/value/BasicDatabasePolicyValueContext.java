@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDatabasePolicyValueContext.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: BasicDatabasePolicyValueContext.java,v 1.2 2003-03-16 21:22:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.value;
@@ -47,6 +47,7 @@ package com.netspective.axiom.value;
 import com.netspective.commons.value.DefaultValueContext;
 import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.DatabasePolicies;
+import com.netspective.axiom.SqlManager;
 
 public class BasicDatabasePolicyValueContext extends DefaultValueContext implements DatabasePolicyValueContext
 {
@@ -65,5 +66,10 @@ public class BasicDatabasePolicyValueContext extends DefaultValueContext impleme
     public DatabasePolicy getDatabasePolicy()
     {
         return databasePolicy;
+    }
+
+    public SqlManager getSqlManager()
+    {
+        return null;
     }
 }
