@@ -76,7 +76,7 @@
 			<column name="name" type="text" size="64" descr="Name of the book"/>
             <column name="author" type="text" size="64" descr="Name of the author(s)"/>
 			<column name="genre" lookup-ref="Book_Type"/>
-			<column name="isbn" type="text" size="10" descr="The 10 digit ISBN number"/>
+			<column name="isbn" type="text" size="10" unique="yes" descr="The 10 digit ISBN number"/>
 		</table>
 
 		<table name="Book_Type" abbrev="bkT" type="Enumeration">

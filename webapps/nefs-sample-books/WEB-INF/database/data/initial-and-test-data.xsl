@@ -27,6 +27,7 @@
             <xsl:attribute name="name">Book <xsl:value-of select="$x"/></xsl:attribute>
             <xsl:attribute name="author">Author <xsl:value-of select="$x"/></xsl:attribute>
             <xsl:attribute name="genre">Science Fiction</xsl:attribute>
+            <xsl:attribute name="isbn">ISBN <xsl:value-of select="$x"/></xsl:attribute>
         </book-info>
 
         <xsl:if test="$x > 1">

@@ -7,11 +7,11 @@
 <dal>
     <book-info
         id="test-001" name="Book 001"
-        author="Smith, James R." genre="Science Fiction"/>
+        author="Smith, James R." genre="Science Fiction" isbn="test001"/>
 
     <book-info
         id="test-002" name="Book 002"
-        author="Jones, Rober. J." genre="Mystery"/>
+        author="Jones, Rober. J." genre="Mystery" isbn="test002"/>
 
     <generate-book-info-records count="100"/>
 </dal>
