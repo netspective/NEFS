@@ -81,7 +81,7 @@
             </td>
             </table>
         <#else>
-            No active tree found for ${activeTreeName}
+            No active tree found for '${activeTreeName}'.
         </#if>
     <#else>
         Please choose a navigation tree first.
