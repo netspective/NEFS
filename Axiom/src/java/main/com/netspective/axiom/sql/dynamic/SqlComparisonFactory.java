@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.5 2004-07-29 17:07:15 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.6 2004-07-30 02:41:19 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -119,21 +119,26 @@ public class SqlComparisonFactory
         }
     }
 
-    public static SqlComparison getComparison(String name)
+    public static String getDynamicComparisonValueSourceSpec(String name)
     {
         if(name.startsWith(DynamicComparison.DYNAMIC_ID))
         {
             String[] items = TextUtils.split(name, ",", true);
             if(items.length == 2)
-            {
-                SqlComparison dynamicComparison =
-                        new DynamicComparison("private",
-                                              ValueSources.getInstance().getValueSource(items[1], ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION));
-                return dynamicComparison;
-            }
+                return items[1];
             else
-                return (SqlComparison) comparisonsMap.get(name);
+                return null;
         }
+        else
+            return null;
+    }
+
+    public static SqlComparison getComparison(String name)
+    {
+        String dynamicIdValueSource = getDynamicComparisonValueSourceSpec(name);
+        if(dynamicIdValueSource != null)
+            return new DynamicComparison("private",
+                                         ValueSources.getInstance().getValueSource(dynamicIdValueSource, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION));
         else
             return (SqlComparison) comparisonsMap.get(name);
     }

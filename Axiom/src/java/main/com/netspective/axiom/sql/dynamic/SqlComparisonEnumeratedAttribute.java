@@ -39,17 +39,83 @@
  */
 
 /**
- * $Id: SqlComparisonEnumeratedAttribute.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: SqlComparisonEnumeratedAttribute.java,v 1.2 2004-07-30 02:41:19 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
 
+import com.netspective.axiom.sql.dynamic.comparison.DynamicComparison;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.exception.InvalidXdmEnumeratedAttributeValueException;
 
 public class SqlComparisonEnumeratedAttribute extends XdmEnumeratedAttribute
 {
+    private boolean dynamic;
+    private String dynamicIdValueSourceSpec;
+    private String[] values;
+
+    public SqlComparisonEnumeratedAttribute()
+    {
+        setValues();
+    }
+
+    public SqlComparisonEnumeratedAttribute(int valueIndex)
+    {
+        super(valueIndex);
+        setValues();
+    }
+
+    public boolean isDynamic()
+    {
+        return dynamic;
+    }
+
+    public String getDynamicIdValueSourceSpec()
+    {
+        return dynamicIdValueSourceSpec;
+    }
+
+    protected void setValues()
+    {
+        String[] staticIds = SqlComparisonFactory.getComparisonIdentifiers();
+        values = new String[staticIds.length + 1];
+        for(int i = 0; i< staticIds.length; i++)
+            values[i] = staticIds[i];
+        values[staticIds.length] = DynamicComparison.DYNAMIC_ID;
+    }
+
     public String[] getValues()
     {
-        return SqlComparisonFactory.getComparisonIdentifiers();
+        return values;
+    }
+
+    public void setValue(String value) throws InvalidXdmEnumeratedAttributeValueException
+    {
+        dynamicIdValueSourceSpec = SqlComparisonFactory.getDynamicComparisonValueSourceSpec(value);
+        if(dynamicIdValueSourceSpec != null)
+        {
+            dynamic = true;
+            super.setValue(DynamicComparison.DYNAMIC_ID);
+        }
+        else
+            super.setValue(value);
+    }
+
+    public int getValueIndex(String value)
+    {
+        String dynamicIdValueSourceSpec = SqlComparisonFactory.getDynamicComparisonValueSourceSpec(value);
+        if(dynamicIdValueSourceSpec != null)
+            return super.getValueIndex(DynamicComparison.DYNAMIC_ID);
+        else
+            return super.getValueIndex(value);
+    }
+
+    public boolean containsValue(String value)
+    {
+        String dynamicIdValueSourceSpec = SqlComparisonFactory.getDynamicComparisonValueSourceSpec(value);
+        if(dynamicIdValueSourceSpec != null)
+            return super.containsValue(DynamicComparison.DYNAMIC_ID);
+        else
+            return super.containsValue(value);
     }
 }
