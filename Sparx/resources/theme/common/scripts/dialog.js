@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.4 2004-02-25 22:43:43 shahid.shah Exp $
+ * $Id: dialog.js,v 1.5 2004-04-21 04:01:12 aye.thu Exp $
  */
 
  /**
@@ -467,7 +467,8 @@ function DialogField_evaluateConditionals(dialog)
 	var control = this.getControl(dialog);
 	if(control == null)
 	{
-		alert("Unable to find control '"+this.controlId+"' in DialogField.evaluateConditionals()");
+	    // TODO: Need to add this back in later
+		//alert("Unable to find control '"+this.controlId+"' in DialogField.evaluateConditionals()");
 		return;
 	}
 
@@ -658,7 +659,7 @@ function DialogField_getFieldAreaElem_IE4(dialog)
  */
 function DialogField_getFieldAreaElem_Dom(dialog)
 {
-	var fieldAreaId = FIELDROW_PREFIX + this.name;
+	var fieldAreaId = FIELDROW_PREFIX + this.qualifiedName;
 	var fieldAreaElem = getControl_Dom(dialog, fieldAreaId);
 	if(fieldAreaElem == null || (typeof fieldAreaElem == "undefined"))
 	{
