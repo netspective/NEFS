@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.3 2004-03-03 16:01:32 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.4 2004-03-03 22:11:22 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -112,13 +112,15 @@ public class PanelEditor extends AbstractPanel
     public static final int MANAGE_RECORDS_DISPLAY_MODE = 5;    /* managing records mode (report only but different from default) */
 
     /* the display mode is passed to the panel using this attribute in the navigation context */
-    public static final String DISPLAY_MODE_CONTEXT_ATTRIBUTE = "record-editor-mode";
+    public static final String DISPLAY_MODE_CONTEXT_ATTRIBUTE = "panel-editor-mode";
     /* default skin to use to display query report panel */
     public static final String DEFAULT_EDITOR_SKIN = "panel-editor";
     /* default name assigned to the query defined in the panel editor */
     public static final String DEFAULT_QUERY_NAME = "panel-editor-query";
     /* default name assigned to the dialog defined in the panel editor */
     public static final String DEFAULT_DIALOG_NAME = "panel-editor-dialog";
+    /* the primary key of the record that is to be edited/deleted is passed to the dialog context using this attribute name */
+    public static final String POPULATE_KEY_CONTEXT_ATTRIBUTE = "panel-editor-key";
 
     /* associated project */
     private Project project;
@@ -643,6 +645,7 @@ public class PanelEditor extends AbstractPanel
         {
             // record action was defined so we need to display the requested display mode
             DialogContext dc = dialog.createContext(nc, theme.getDefaultDialogSkin());
+            dc.setAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE, nc.getAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE));
             dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
 
             dialog.prepareContext(dc);
