@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.5 2003-05-17 17:51:29 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.6 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -102,6 +102,11 @@ public class SelectField extends TextField
 
         public Flags()
         {
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
         }
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.2 2003-05-31 17:17:42 shahid.shah Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -96,6 +96,12 @@ public class DataSourceNavigatorButtonsField extends DialogField
         public Flags()
         {
             super();
+            setFlag(UNAVAILABLE);
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
             setFlag(UNAVAILABLE);
         }
     }

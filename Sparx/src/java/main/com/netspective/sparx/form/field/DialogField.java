@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.22 2003-06-25 15:12:32 aye.thu Exp $
+ * $Id: DialogField.java,v 1.23 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -166,13 +166,13 @@ public class DialogField implements TemplateConsumer
         public static final int CREATE_ADJACENT_AREA_HIDDEN = SUBMIT_ONBLUR * 2;
         public static final int START_CUSTOM = CREATE_ADJACENT_AREA_HIDDEN * 2; // all DialogField "children" will use this
 
-        private DialogField.State state = null;
+        private State state = null;
 
         public Flags()
         {
         }
 
-        public Flags(DialogField.State dfs)
+        public Flags(State dfs)
         {
             state = dfs;
         }
@@ -264,7 +264,7 @@ public class DialogField implements TemplateConsumer
     {
         private DialogFieldValue value = constructValueInstance();
         private String adjacentAreaValue;
-        private Flags stateFlags = null;
+        private Flags stateFlags = createFlags(this);
         private DialogContext dialogContext;
 
         public class BasicStateValue extends GenericValue implements DialogFieldValue
@@ -320,7 +320,6 @@ public class DialogField implements TemplateConsumer
 
         public State(DialogContext dc)
         {
-            stateFlags = createFlags(this);
             this.dialogContext = dc;
             // why do this here also?
             stateFlags.copy(getFlags());
@@ -392,22 +391,6 @@ public class DialogField implements TemplateConsumer
             return stateFlags;
         }
 
-        /**
-         * Set the flags for the field's state and its children
-         * @param flag
-         */
-        public void setStateFlags(long flag)
-        {
-            getStateFlags().setFlag(flag);
-            if (children != null)
-            {
-                DialogContext.DialogFieldStates fieldStates = dialogContext.getFieldStates();
-                for (int i=0; i < children.size(); i++)
-                {
-                    fieldStates.getState(children.get(i)).setStateFlags(flag);
-                }
-            }
-        }
 
         public DialogField getField()
         {
@@ -539,7 +522,7 @@ public class DialogField implements TemplateConsumer
      * @param state
      * @return
      */
-    public Flags createFlags(DialogField.State state)
+    public Flags createFlags(State state)
     {
         return new Flags(state);
     }

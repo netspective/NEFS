@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: SeparatorField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: SeparatorField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -82,6 +82,12 @@ public class SeparatorField extends DialogField
 
         public Flags()
         {
+            setFlag(RULE);
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
             setFlag(RULE);
         }
 

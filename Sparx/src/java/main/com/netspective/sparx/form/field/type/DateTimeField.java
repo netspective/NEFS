@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.4 2003-06-19 03:24:37 aye.thu Exp $
+ * $Id: DateTimeField.java,v 1.5 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -107,6 +107,12 @@ public class DateTimeField extends TextField
 
         public Flags()
         {
+            setFlag(POPUP_CALENDAR);
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
             setFlag(POPUP_CALENDAR);
         }
 

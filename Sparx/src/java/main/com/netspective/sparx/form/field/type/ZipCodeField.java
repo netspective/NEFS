@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ZipCodeField.java,v 1.1 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: ZipCodeField.java,v 1.2 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -49,7 +49,7 @@ import com.netspective.sparx.form.field.DialogField;
 public class ZipCodeField extends TextField
 {
     public static final String VALIDATE_PATTERN = "^([\\d]{5})([-][\\d]{4})?$";
-    public static final String DISPLAY_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1-$2/g";
+    public static final String DISPLAY_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1$2/g";
     public static final String SUBMIT_SUBSTITUTION_PATTERN = "s/" + VALIDATE_PATTERN + "/$1$2/g";
 
     public static final Flags.FlagDefn[] ZIP_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 1];
@@ -67,6 +67,12 @@ public class ZipCodeField extends TextField
 
         public Flags()
         {
+            setFlag(STRIP_DASHES);
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
             setFlag(STRIP_DASHES);
         }
 

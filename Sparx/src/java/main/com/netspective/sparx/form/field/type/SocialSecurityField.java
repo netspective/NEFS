@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.2 2003-05-15 21:34:46 shahid.shah Exp $
+ * $Id: SocialSecurityField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -67,6 +67,12 @@ public class SocialSecurityField extends TextField
 
         public Flags()
         {
+            setFlag(STRIP_DASHES);
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
             setFlag(STRIP_DASHES);
         }
 

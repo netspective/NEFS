@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DurationField.java,v 1.2 2003-06-09 06:54:35 aye.thu Exp $
+ * $Id: DurationField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -72,6 +72,11 @@ public class DurationField extends DialogField
     {
         public Flags()
         {
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
         }
 
         public void flagsChanged()

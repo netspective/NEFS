@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.6 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.7 2003-06-25 22:10:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -83,6 +83,11 @@ public class DirectorNextActionsSelectField extends SelectField
 
         public Flags()
         {
+        }
+
+        public Flags(State dfs)
+        {
+            super(dfs);
         }
 
         public FlagDefn[] getFlagsDefns()
