@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BooleanField.java,v 1.5 2003-10-21 15:02:26 shahid.shah Exp $
+ * $Id: BooleanField.java,v 1.6 2004-02-16 15:40:04 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -306,7 +306,7 @@ public class BooleanField extends DialogField
                 else
                 {
                     writer.write(
-                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (value == 0 ? "" : "checked ") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
+                        "<nobr><input type='radio' name='" + id + "' id='" + id + "0' value='0' " + (value == 0 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "0'>" + falseTextStr + "</label></nobr> " +
                         "<nobr><input type='radio' name='" + id + "' id='" + id + "1' value='1' " + (value == 1 ? "checked " : "") + defaultControlAttrs + "> <label for='" + id + "1'>" + trueTextStr + "</label></nobr>");
                 }
                 break;
