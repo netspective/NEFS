@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlSyntaxHighlightPanel.java,v 1.6 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: HtmlSyntaxHighlightPanel.java,v 1.7 2003-10-07 18:16:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -139,6 +139,7 @@ public class HtmlSyntaxHighlightPanel extends AbstractPanel
                     "htm",
                     "html",
                     "xml",
+                    "ftl",
                     "jsp",
                     "xsl",
                 }
