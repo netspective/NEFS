@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RecordStatusIdColumn.java,v 1.1 2003-07-19 00:37:06 shahid.shah Exp $
+ * $Id: RecordStatusIdColumn.java,v 1.2 2003-10-17 15:58:03 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -56,7 +56,7 @@ public class RecordStatusIdColumn extends EnumerationIdRefColumn
         super(table);
     }
 
-    public void addTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
+    public void addSchemaRecordEditorDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
     {
         // there is nothing to add since record status should be "invisible" and defaults to "active"
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.14 2003-07-19 00:35:47 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.15 2003-10-17 15:58:03 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -54,6 +54,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ForeignKey;
@@ -784,7 +785,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    protected void addEnumerationTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
+    protected void addEnumerationSchemaRecordEditorDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
     {
         ForeignKey fKey = getForeignKey();
         EnumerationTable enumTable = (EnumerationTable) fKey.getReferencedColumns().getFirst().getTable();
@@ -797,14 +798,14 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         });
     }
 
-    public void addTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
+    public void addSchemaRecordEditorDialogTemplates(TemplateElement dialogTemplate, Map jexlVars)
     {
         jexlVars.put("column", this);
 
         ForeignKey fKey = getForeignKey();
         if(fKey != null && fKey.getReferencedColumns().getFirst().getTable() instanceof EnumerationTable)
         {
-            addEnumerationTableDialogTemplates(dialogTemplate, jexlVars);
+            addEnumerationSchemaRecordEditorDialogTemplates(dialogTemplate, jexlVars);
             return;
         }
 
@@ -814,11 +815,31 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
             // get only the last template because if there was inheritace of a data-type we want the "final" one
             Template columnPresentationTemplate = (Template) columnPresentationTemplates.getInstances().get(columnPresentationTemplates.getInstances().size() - 1);
             List copyColumnPresTmplChildren = columnPresentationTemplate.getChildren();
-            for(int cc = 0; cc < copyColumnPresTmplChildren.size(); cc++)
+            for(int i = 0; i < copyColumnPresTmplChildren.size(); i++)
             {
-                TemplateNode colTmplChildNode = (TemplateNode) copyColumnPresTmplChildren.get(cc);
+                TemplateNode colTmplChildNode = (TemplateNode) copyColumnPresTmplChildren.get(i);
                 if(colTmplChildNode instanceof TemplateElement)
-                    dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) colTmplChildNode, jexlVars, true);
+                {
+                    TemplateElement elem = dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) colTmplChildNode, jexlVars, true);
+                    if(elem.getElementName().equals("field"))
+                    {
+                        boolean changedAttrs = false;
+                        AttributesImpl attrs = new AttributesImpl(elem.getAttributes());
+                        if(isPrimaryKey() && (attrs.getIndex("primary-key") == -1 && attrs.getIndex("primarykey") == -1))
+                        {
+                            attrs.addAttribute(null, null, "primary-key", "CDATA", "yes");
+                            changedAttrs = true;
+                        }
+
+                        if(isRequiredByApp() && attrs.getIndex("required") == -1)
+                        {
+                            attrs.addAttribute(null, null, "required", "CDATA", "yes");
+                            changedAttrs = true;
+                        }
+                        if(changedAttrs)
+                            elem.setAttributes(attrs);
+                    }
+                }
                 else if(colTmplChildNode instanceof TemplateText)
                     dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) colTmplChildNode).getText()));
                 else

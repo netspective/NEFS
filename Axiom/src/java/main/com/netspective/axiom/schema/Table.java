@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Table.java,v 1.8 2003-08-31 03:08:23 shahid.shah Exp $
+ * $Id: Table.java,v 1.9 2003-10-17 15:58:03 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -383,5 +383,5 @@ public interface Table extends QueriesNameSpace
 
     public TemplateProducer getPresentation();
 
-    public void addTableDialogTemplates(Template dialogsPackageTemplate);
+    public void addSchemaRecordEditorDialogTemplates(Template dialogsPackageTemplate);
 }

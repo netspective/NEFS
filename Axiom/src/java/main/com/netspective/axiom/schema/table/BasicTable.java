@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTable.java,v 1.16 2003-08-31 03:08:24 shahid.shah Exp $
+ * $Id: BasicTable.java,v 1.17 2003-10-17 15:58:03 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -921,9 +921,12 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    protected void copyTableDialogTemplate(Template dialogsPackageTemplate, TemplateElement elem, Map jexlVars)
+    protected void copySchemaRecordEditorDialogTemplate(Template dialogsPackageTemplate, TemplateElement elem, Map jexlVars)
     {
         TemplateElement dialogTemplate = dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, false);
+
+        boolean foundAnyDataElement = false;
+
         List copyChildren = elem.getChildren();
         for(int i = 0; i < copyChildren.size(); i++)
         {
@@ -931,7 +934,8 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             if(dialogChildNode instanceof TemplateElement)
             {
                 TemplateElement dialogChildElem = (TemplateElement) dialogChildNode;
-                if(dialogChildElem.getElementName().equals("data-type-presentation"))
+                final String elementName = dialogChildElem.getElementName();
+                if(elementName.equals("data-type-presentation"))
                 {
                     String colsFilterRegEx = dialogChildElem.getAttributes().getValue("columns");
                     if(colsFilterRegEx == null || colsFilterRegEx.length() == 0 || colsFilterRegEx.equals("*"))
@@ -940,7 +944,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                         for(int c = 0; c < columns.size(); c++)
                         {
                             Column column = columns.get(c);
-                            column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                            column.addSchemaRecordEditorDialogTemplates(dialogTemplate, jexlVars);
                         }
                     }
                     else
@@ -950,21 +954,41 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
                         {
                             Column column = columns.get(c);
                             ValidationUtils.matchRegexp(column.getName(), colsFilterRegEx);
-                            column.addTableDialogTemplates(dialogTemplate, jexlVars);
+                            column.addSchemaRecordEditorDialogTemplates(dialogTemplate, jexlVars);
                         }
                     }
                 }
                 else
+                {
+                    if(elementName.equals("on-add-data") || elementName.equals("on-edit-data") || elementName.equals("on-delete-data"))
+                        foundAnyDataElement = true;
                     dialogTemplate.addCopyOfChildAndReplaceExpressions((TemplateElement) dialogChildNode, jexlVars, true);
+                }
             }
             else if(dialogChildNode instanceof TemplateText)
                 dialogTemplate.addChild(new TemplateText(dialogTemplate, ((TemplateText) dialogChildNode).getText()));
             else
                 throw new RuntimeException("This should never happen.");
         }
+
+        // if no meta data editor is provided, add defaults -- if any of the on-add/edit/delete-data templates are found
+        // it means the user wants full control so we will leave it to them to implement
+        if(! foundAnyDataElement)
+        {
+            TemplateElement addDataTemplateElement = dialogTemplate.addChild("on-add-data", null);
+            addDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{ { "_auto-map", "*" } });
+
+            TemplateElement editDataTemplateElement = dialogTemplate.addChild("on-edit-data", null);
+            editDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{
+                { "_pk-value", "request:" + getPrimaryKeyColumns().getSole().getXmlNodeName() },
+                { "_auto-map", "*" } });
+
+            TemplateElement deleteDataTemplateElement = dialogTemplate.addChild("on-delete-data", null);
+            deleteDataTemplateElement.addChild(getSchema().getName() + "." + getXmlNodeName(), new String[][]{ { "_pk-value", "request:" + getPrimaryKeyColumns().getSole().getXmlNodeName() } });
+        }
     }
 
-    public void addTableDialogTemplates(Template dialogsPackageTemplate)
+    public void addSchemaRecordEditorDialogTemplates(Template dialogsPackageTemplate)
     {
         TemplateProducer tablePresentation = getPresentation();
         List instances = tablePresentation.getInstances();
@@ -985,7 +1009,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             {
                 TemplateElement elem = (TemplateElement) presentationTmplChildNode;
                 if(elem.getElementName().equals("dialog"))
-                    copyTableDialogTemplate(dialogsPackageTemplate, elem, jexlVars);
+                    copySchemaRecordEditorDialogTemplate(dialogsPackageTemplate, elem, jexlVars);
                 else
                     dialogsPackageTemplate.addCopyOfChildAndReplaceExpressions(elem, jexlVars, true);
             }

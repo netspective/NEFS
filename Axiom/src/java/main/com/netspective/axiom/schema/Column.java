@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Column.java,v 1.6 2003-08-28 00:40:27 shahid.shah Exp $
+ * $Id: Column.java,v 1.7 2003-10-17 15:58:02 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -342,5 +342,5 @@ public interface Column
      * @param dialogTemplate The table dialog template
      * @param jexlVars Replacement variables for interpolating template variable replacements
      */
-    public void addTableDialogTemplates(TemplateElement dialogTemplate, Map jexlVars);
+    public void addSchemaRecordEditorDialogTemplates(TemplateElement dialogTemplate, Map jexlVars);
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.12 2003-10-12 18:08:15 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.13 2003-10-17 15:58:02 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -184,7 +184,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
             for(int i = 0; i < tables.size(); i++)
             {
                 Table table = tables.get(i);
-                table.addTableDialogTemplates(dialogsPackage);
+                table.addSchemaRecordEditorDialogTemplates(dialogsPackage);
             }
 
             handler.addDynamicTemplate(dialogsPackage);
