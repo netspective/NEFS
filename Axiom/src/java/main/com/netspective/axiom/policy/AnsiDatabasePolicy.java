@@ -695,6 +695,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 ((ColumnInsertListener) column).beforeInsert(cc, flags, value, columnValues);
                 colListeners[i] = (ColumnInsertListener) column;
                 haveColListeners = true;
+                bindValue = value.getValueForSqlBindParam(); // in case the listener changed the column value
             }
 
             if(!isFirstColumn)
