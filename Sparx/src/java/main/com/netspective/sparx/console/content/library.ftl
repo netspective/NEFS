@@ -520,7 +520,7 @@
                 <td class="report-column-${classSuffix}" ${_columnAttrs[column_index]}
                     <#if isHtmlCellAttrs>${column[0]}</#if>  >
                     <#if isHtmlCellAttrs>
-                        ${column[1]}
+                        ${column[1]?default('UNKNOWN')}
                     <#else>
                         ${column}
                     </#if>
