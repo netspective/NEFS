@@ -51,12 +51,13 @@
  */
 
 /**
- * $Id: TextField.java,v 1.13 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: TextField.java,v 1.14 2003-06-09 15:37:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.validate.rule.TextValueValidationRule;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
@@ -75,6 +76,7 @@ import java.io.Writer;
 
 public class TextField extends DialogField
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(TextField.class);
     public static Perl5Util perlUtil = new Perl5Util();
 

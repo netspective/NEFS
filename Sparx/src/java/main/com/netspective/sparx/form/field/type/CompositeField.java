@@ -39,16 +39,18 @@
  */
 
 /**
- * $Id: CompositeField.java,v 1.2 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: CompositeField.java,v 1.3 2003-06-09 15:37:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.form.Dialog;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class CompositeField extends DialogField
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     public CompositeField()
     {
     }

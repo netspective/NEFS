@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: GridField.java,v 1.4 2003-05-13 19:52:03 shahid.shah Exp $
+ * $Id: GridField.java,v 1.5 2003-06-09 15:37:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -63,9 +63,11 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class GridField extends DialogField
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private ValueSource captions;
 
     public GridField()
