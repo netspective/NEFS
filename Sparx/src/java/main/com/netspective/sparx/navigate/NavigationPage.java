@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.36 2003-08-28 02:12:45 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.37 2003-08-30 00:24:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -452,7 +452,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
      * Return the "next" path (the one immediately following this one). This method will try to obtain the parent node
      * of the given NavigationPath and find itself in the parent's list (its siblings).
      */
-    public NavigationPage getNextPath(boolean checkChildren)
+    protected NavigationPage getNextPath(boolean checkChildren)
     {
         NavigationPage parent = (NavigationPage) getParent();
         NavigationPage nextPath = checkChildren ? getFirstFocusableChild() : null;
