@@ -42,6 +42,7 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -163,6 +164,23 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         }
     }
 
+    public void commitAndClose(boolean throwRuntimeException)
+    {
+        try
+        {
+            commitAndClose();
+        }
+        catch(SQLException e)
+        {
+            if(throwRuntimeException)
+                throw new NestableRuntimeException(e);
+            else
+            {
+                log.error("Unable to commit and close", e);
+            }
+        }
+    }
+
     public void rollbackAndClose() throws SQLException
     {
         if(connection != null)
@@ -174,6 +192,23 @@ public abstract class AbstractConnectionContext implements ConnectionContext
             finally
             {
                 close();
+            }
+        }
+    }
+
+    public void rollbackAndClose(boolean throwRuntimeException)
+    {
+        try
+        {
+            rollbackAndClose();
+        }
+        catch(SQLException e)
+        {
+            if(throwRuntimeException)
+                throw new NestableRuntimeException(e);
+            else
+            {
+                log.error("Unable to commit and close", e);
             }
         }
     }

@@ -63,6 +63,17 @@ public interface DatabaseConnValueContext extends ValueContext
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException;
 
     /**
+     * Obtains a connection (with appropriate pooling) for the given dataSourceId. The returnConnection method should
+     * be called when the connection is no longer needed. This method is the same as getConnection() but it does not
+     * throw exceptions unless request. If an error occurs, it will return NULL if throwRuntimeException is set to
+     * false and a nestable runtime exception if throwRuntimeException is true.
+     *
+     * @param dataSourceId the data source identifier to use -- it is passed through the translateDataSourceId() method before use
+     * @param transaction  true if this will be the start of a transaction (multiple SQL statements) or false for auto-commit
+     */
+    public ConnectionContext getConnection(String dataSourceId, boolean transaction, boolean throwRuntimeException);
+
+    /**
      * Returns a connection to the pool for the given dataSourceId. If the connection was retrieved for transaction
      * processing (shared connection across multiple SQL statements) then it is the responsiblity of the caller to
      * call rollback() or commit() before returning the connection.

@@ -36,6 +36,7 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -70,6 +71,35 @@ public class BasicDatabaseConnValueContext extends DefaultValueContext implement
 
         return result;
     }
+
+    public ConnectionContext getConnection(String dataSourceId, boolean transaction, boolean throwRuntimeException)
+    {
+        try
+        {
+            return getConnection(dataSourceId, transaction);
+        }
+        catch(NamingException e)
+        {
+            if(throwRuntimeException)
+                throw new NestableRuntimeException(e);
+            else
+            {
+                log.error("Error getting connection", e);
+                return null;
+            }
+        }
+        catch(SQLException e)
+        {
+            if(throwRuntimeException)
+                throw new NestableRuntimeException(e);
+            else
+            {
+                log.error("Error getting connection", e);
+                return null;
+            }
+        }
+    }
+
 
     public ConnectionProvider getConnectionProvider()
     {

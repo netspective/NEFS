@@ -82,7 +82,11 @@ public interface ConnectionContext extends DatabasePolicyValueContext
 
     public void commitAndClose() throws SQLException;
 
+    public void commitAndClose(boolean throwRuntimeException);
+
     public void rollbackAndClose() throws SQLException;
+
+    public void rollbackAndClose(boolean throwRuntimeException);
 
     /**
      * When a connection is created, an exception for that connection not being closed is created and stored
