@@ -1,5 +1,3 @@
-package com.netspective.axiom.policy;
-
 /*
  * Copyright (c) 2000-2003 Netspective Communications LLC. All rights reserved.
  *
@@ -37,12 +35,18 @@ package com.netspective.axiom.policy;
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Erich K. Oliphant
+ * @author Shahid N. Shah
  */
+
+/**
+ * $Id: CacheDatabasePolicy.java,v 1.3 2003-12-06 17:23:16 shahid.shah Exp $
+ */
+package com.netspective.axiom.policy;
 
 public class CacheDatabasePolicy extends AnsiDatabasePolicy
 {
-     public static final String DBMSID_CACHE_SQL = "Cache";
+    public static final String DBMSID_CACHE_SQL = "Cache";
+
     public String getDbmsIdentifier()
     {
         return DBMSID_CACHE_SQL;
@@ -50,6 +54,6 @@ public class CacheDatabasePolicy extends AnsiDatabasePolicy
 
     public String[] getDbmsIdentifiers()
     {
-        return new String[] { getDbmsIdentifier(), "Cache" };
+        return new String[]{getDbmsIdentifier(), "Cache"};
     }
 }
