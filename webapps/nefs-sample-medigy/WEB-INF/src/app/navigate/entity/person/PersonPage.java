@@ -39,31 +39,31 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.1 2004-02-27 01:48:14 shahid.shah Exp $
+ * $Id: PersonPage.java,v 1.2 2004-03-05 01:04:43 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
 
-import java.sql.SQLException;
-
+import app.navigate.entity.EntityPage;
+import app.navigate.entity.EntityRedirectorPage;
+import com.netspective.axiom.ConnectionContext;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.panel.PanelEditor;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.source.AbstractValueSource;
-
-import app.navigate.entity.EntityPage;
-import app.navigate.entity.EntityRedirectorPage;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 
 public abstract class PersonPage extends EntityPage implements PersonSubtypePage
 {
@@ -166,5 +166,17 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
 
         ((PersonPageState) nc.getActiveState()).setActivePerson(activePerson);
         return true;
+    }
+
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl)
+    {
+        HttpServletRequest request = dc.getHttpRequest();
+        String peName = (String) request.getAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE);
+        if (peName != null)
+        {
+            String nextMode = (String) request.getAttribute(PanelEditor.PREV_MODE_CONTEXT_ATTRIBUTE);
+            return PanelEditor.generatePanelEditorActionUrl(dc.getNavigationContext(), peName, nextMode, null, null);
+        }
+        return super.getDialogNextActionUrl(dc, defaultUrl);
     }
 }
