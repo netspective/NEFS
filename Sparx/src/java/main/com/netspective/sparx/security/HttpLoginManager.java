@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.4 2003-08-14 19:15:43 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.5 2003-08-17 00:16:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -47,6 +47,7 @@ package com.netspective.sparx.security;
 import java.util.BitSet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -256,9 +257,14 @@ public class HttpLoginManager
     {
     }
 
+    public AuthenticatedUser getAuthenticatedUser(HttpSession session)
+    {
+        return (AuthenticatedUser) session.getAttribute(getAuthenticatedUserSessionAttrName());
+    }
+
     public AuthenticatedUser getAuthenticatedUser(HttpServletRequest request)
     {
-        return (AuthenticatedUser) request.getSession(true).getAttribute(getAuthenticatedUserSessionAttrName());
+        return getAuthenticatedUser(request.getSession(true));
     }
 
     public AuthenticatedUser getAuthenticatedUser(HttpServletValueContext vc)
@@ -347,6 +353,7 @@ public class HttpLoginManager
 
     protected void registerLogin(HttpServletValueContext hsvc, AuthenticatedUser user)
     {
+        user.registerLogin();
         activeUsers.add(user);
 
         HttpServletRequest req = hsvc.getHttpRequest();
@@ -405,6 +412,7 @@ public class HttpLoginManager
 
     protected void registerLogout(HttpServletValueContext hsvc, AuthenticatedUser user)
     {
+        user.registerLogout();
         activeUsers.remove(user);
 
         if(user != null && log.isInfoEnabled())
