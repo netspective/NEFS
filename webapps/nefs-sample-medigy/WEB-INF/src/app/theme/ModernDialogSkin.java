@@ -85,7 +85,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.3 2004-03-03 08:25:09 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.4 2004-03-04 05:17:59 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -928,18 +928,13 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void appendCompositeFieldHtml(DialogContext dc, DialogField field, StringBuffer fieldsHtml, StringBuffer fieldsJSDefn, List fieldErrorMsgs) throws IOException
     {
         // if the composite field is hidden, then all the children must be hidden too
-        if(field.isInputHidden(dc))
-        {
-            StringWriter writer = new StringWriter();
-            renderCompositeControlsHtml(writer, dc, field);
-            fieldsHtml.append(writer);
-            // even if the field is hidden, you still need to register it in JS
-            if (field.getName() != null)
-			    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
-            return;
-        }
-        String caption = generateFieldCaption(field, dc);
+        StringWriter writer = new StringWriter();
+        renderCompositeControlsHtml(writer, dc, field);
 
+        String captionHtml = generateFieldCaption(field, dc);
+        fieldsHtml.append(generateFieldBlock(field, captionHtml, writer.getBuffer().toString(), null, null));
+        if (field.getName() != null)
+		    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
     }
 
     /**
