@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.38 2003-10-11 14:39:52 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.39 2003-10-16 12:48:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -1131,8 +1131,9 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 	public String getHiddenControlHtml(DialogContext dc)
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
-		String value = state.getValue().getTextValue();
-		return "<input type='hidden' id=\"" + getHtmlFormControlId() + "\" name='" + getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
+		String value = state.getValue() != null ? state.getValue().getTextValue() : null;
+		return "<input type='hidden' id=\"" + getHtmlFormControlId() + "\" name='" +
+                getHtmlFormControlId() + "' value=\"" + (value != null ? TextUtils.escapeHTML(value) : "") + "\">";
 	}
 
 	public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
