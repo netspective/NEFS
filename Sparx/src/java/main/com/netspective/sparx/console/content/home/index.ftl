@@ -33,8 +33,8 @@
                           ["Operating System (${statics['java.lang.System'].getProperty('os.name')})", statics["java.lang.System"].getProperty("os.version")],
                           ["Application Server${appServerName}", appServerVersion],
                           ["Sparx Application Platform (Netspective)", statics["com.netspective.sparx.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()],
-                          ["Axiom Persistence Framework (Netspective)", statics["com.netspective.axiom.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()],
-                          ["Commons Utility Library (Netspective)", statics["com.netspective.commons.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()]
+                          ["Axiom Relational Data Service (Netspective)", statics["com.netspective.axiom.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()],
+                          ["Commons Core Library (Netspective)", statics["com.netspective.commons.ProductRelease"].PRODUCT_RELEASE.getVersionAndBuild()]
                           ]/>
             </@panel>
         </td>
