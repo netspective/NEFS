@@ -10,6 +10,9 @@
     <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
     <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
 
+    <!-- setup the data access layer Singleton to point to our schema -->
+    <listener class="app.Util"/>
+
     <theme name="slate" default="yes" class="app.AppTheme" inherit-resources-from-themes="common">
         <report-skin class="com.netspective.sparx.theme.basic.RecordViewerReportSkin" name="record-viewer"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output" />
@@ -18,6 +21,23 @@
         <report-skin class="com.netspective.sparx.theme.basic.HtmlSingleRowReportPanelSkin" name="detail"
             panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
     </theme>
+
+    <login-manager name="app" default="yes" authenticated-user-class="app.AuthenticatedRespondent">
+
+        <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
+            <password-query>
+                <!-- in our case the user id (pin) and password are the same so the SQL is a bit funny -->
+                select pin from Respondent where pin = ?
+            </password-query>
+        </login-authenticator>
+
+        <login-dialog retain-params="*">
+            <frame heading="Welcome to the Marsh Survey"/>
+
+            <field name="user-id" type="text" caption="PIN" required="yes" persist="yes" initial-focus="yes"/>
+            <field name="password" type="text" caption="Password" mask-entry="yes" required="yes"/>
+        </login-dialog>
+    </login-manager>
 
     <navigation-tree name="app" default="yes">
         <page name="introduction" caption="Introduction" default="yes">
