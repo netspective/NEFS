@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.1 2003-03-13 18:25:38 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.2 2003-03-13 22:37:43 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -222,9 +222,9 @@ public class SqlManager implements MetricsProducer
 
         public SqlManagerIdentifierConstantsGenerator(String root, String queries, String queryDefns, String schemas)
         {
+            this.rootPackage = root;
             this.queryPackage = queries;
             this.queryDefnPackage = queryDefns;
-            this.rootPackage = root;
             this.schemaPackage = schemas;
         }
 
