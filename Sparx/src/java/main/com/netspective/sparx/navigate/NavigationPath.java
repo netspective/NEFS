@@ -51,25 +51,25 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.15 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.16 2004-07-18 16:24:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Iterator;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
 
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import com.netspective.sparx.navigate.listener.NavigationPathFinalizeContentsListener;
 import com.netspective.sparx.navigate.listener.NavigationPathListener;
 import com.netspective.sparx.navigate.listener.NavigationPathListenerPlaceholder;
-import com.netspective.sparx.navigate.listener.NavigationPathFinalizeContentsListener;
 import com.netspective.sparx.navigate.listener.NavigationPathMakeStateChangesListener;
 
 public class NavigationPath
@@ -99,6 +99,7 @@ public class NavigationPath
     }
 
     private Log log = LogFactory.getLog(NavigationPath.class);
+    private Log securityLog;
     private NavigationTree owner;
     private NavigationPath parent;
     private NavigationPathFlags flags;
@@ -127,6 +128,11 @@ public class NavigationPath
     public Log getLog()
     {
         return log;
+    }
+
+    public Log getSecurityLog()
+    {
+        return securityLog;
     }
 
     public Object getAttribute(String attributeId)
@@ -191,7 +197,9 @@ public class NavigationPath
         for (int i = 0; i < finalizeContentsListeners.size(); i++)
             ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this);
 
-        log = LogFactory.getLog(getClass().getName() + "." + (getOwner().getName() + getQualifiedName()).replace('/', '.'));
+        final String logName = getClass().getName() + "." + (getOwner().getName() + getQualifiedName()).replace('/', '.');
+        log = LogFactory.getLog(logName);
+        securityLog = LogFactory.getLog("security." + logName);
     }
 
     public void makeStateChanges(NavigationContext nc)

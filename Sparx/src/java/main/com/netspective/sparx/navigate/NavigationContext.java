@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.28 2004-07-15 23:23:28 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.29 2004-07-18 16:24:10 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -78,6 +78,8 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private boolean activePageValid;
     private boolean redirectRequired;
     private boolean missingRequiredReqParams;
+    private boolean missingRequiredPermissions;
+    private String[] missingRequiredPermissionsValue;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
     private String pageTitle;
@@ -143,6 +145,22 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public boolean isMissingRequiredReqParams()
     {
         return missingRequiredReqParams;
+    }
+
+    public void setMissingRequiredPermissions(String[] permissions)
+    {
+        this.missingRequiredPermissionsValue = permissions;
+        this.missingRequiredPermissions = true;
+    }
+
+    public boolean isMissingRequiredPermissions()
+    {
+        return missingRequiredPermissions;
+    }
+
+    public String[] getMissingRequiredPermissionsValue()
+    {
+        return missingRequiredPermissionsValue;
     }
 
     public NavigationErrorPage getErrorPage()

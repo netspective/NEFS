@@ -71,10 +71,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.exception.NestableException;
 
+import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Commands;
 import com.netspective.commons.io.InputSourceLocator;
+import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueContext;
@@ -106,7 +108,7 @@ import com.netspective.sparx.value.HttpServletValueContext;
 /**
  * Main class for handling the navigation page XML tag, &lt;page&gt;.
  *
- * @version $Id: NavigationPage.java,v 1.69 2004-07-16 01:57:56 shahid.shah Exp $
+ * @version $Id: NavigationPage.java,v 1.70 2004-07-18 16:24:10 shahid.shah Exp $
  */
 public class NavigationPage extends NavigationPath implements TemplateConsumer, XmlDataModelSchema.InputSourceLocatorListener, DialogNextActionProvider
 {
@@ -295,6 +297,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private ValueSource description;
     private ValueSource retainParams;
     private ValueSource assignStateParams;
+    private String[] permissions;
     private List requireRequestParams = new ArrayList();
     private ValueSource redirect;
     private String redirectTarget;
@@ -303,6 +306,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private HtmlLayoutPanel bodyPanel;
     private TemplateProcessor bodyTemplate;
     private TemplateProcessor missingParamsBodyTemplate;
+    private TemplateProcessor missingPermissionsBodyTemplate;
     private ValueSource baseAttributes;
     private Command bodyCommand;
     private ValueSource bodyCommandExpr;
@@ -638,11 +642,28 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return requireRequestParams;
     }
 
+    public String[] getPermissions()
+    {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions)
+    {
+        this.permissions = TextUtils.split(permissions, ",", true);
+
+        NavigationConditionalApplyFlag ncaf = new NavigationConditionalApplyFlag(this);
+        Flags flags = new Flags();
+        flags.setFlag(Flags.HIDDEN);
+        ncaf.setFlags(flags);
+        ncaf.setLackPermissions(permissions);
+        addConditional(ncaf);
+    }
+
     /* -------------------------------------------------------------------------------------------------------------*/
 
     /**
      * Checks to see if the current page is valid or not. Currently, the validity of a page is only determined
-     * by required request parameters.
+     * by required request parameters and permissions.
      *
      * @param nc current navigation context
      *
@@ -662,6 +683,31 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
                     nc.setMissingRequiredReqParam(name);
                     return false;
                 }
+            }
+        }
+
+        if(permissions != null)
+        {
+            AuthenticatedUser user = nc.getAuthenticatedUser();
+            if(user == null)
+            {
+                nc.setMissingRequiredPermissions(permissions);
+                return false;
+            }
+
+            try
+            {
+                if(! user.hasAnyPermission(nc.getAccessControlListsManager(), permissions))
+                {
+                    nc.setMissingRequiredPermissions(permissions);
+                    return false;
+                }
+            }
+            catch (PermissionNotFoundException e)
+            {
+                getLog().error(e);
+                nc.setMissingRequiredPermissions(permissions);
+                return false;
             }
         }
 
@@ -1313,6 +1359,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         return missingParamsBodyTemplate;
     }
 
+    public TemplateProcessor createMissingPermissionsBody()
+    {
+        return new com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor();
+    }
+
+    public void addMissingPermissionsBody(TemplateProcessor templateProcessor)
+    {
+        missingPermissionsBodyTemplate = templateProcessor;
+    }
+
+    public TemplateProcessor getMissingPermissionsBody()
+    {
+        return missingPermissionsBodyTemplate;
+    }
+
     public boolean canHandlePage(NavigationContext nc)
     {
         return true;
@@ -1627,11 +1688,24 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         if (flags.flagIsSet(Flags.HANDLE_HEADER))
             handlePageHeader(writer, nc);
 
-        TemplateProcessor templateProcessor = getMissingParamsBody();
-        if (templateProcessor != null)
-            templateProcessor.process(writer, nc, null);
-        else
-            writer.write("This page is missing some required parameters.");
+        if(nc.isMissingRequiredReqParams())
+        {
+            TemplateProcessor templateProcessor = getMissingParamsBody();
+            if (templateProcessor != null)
+                templateProcessor.process(writer, nc, null);
+            else
+                writer.write("This page is missing some required parameters.");
+        }
+
+        if(nc.isMissingRequiredPermissions())
+        {
+            TemplateProcessor templateProcessor = getMissingPermissionsBody();
+            if (templateProcessor != null)
+                templateProcessor.process(writer, nc, null);
+            else
+                writer.write("You do not have permissions to view this page.");
+            getSecurityLog().error(new NavigationPageSecurityAccessViolationException(nc));
+        }
 
         if (flags.flagIsSet(Flags.HANDLE_FOOTER))
             handlePageFooter(writer, nc);
