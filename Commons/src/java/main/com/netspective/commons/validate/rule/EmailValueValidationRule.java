@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EmailValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
+ * $Id: EmailValueValidationRule.java,v 1.3 2004-03-23 16:13:18 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -51,7 +51,7 @@ import com.netspective.commons.value.ValueSource;
 
 public class EmailValueValidationRule extends BasicValidationRule
 {
-    private String invalidEmailAddrMessage = "{0} contains an invalid e-mail address: '{1}'.";
+    private String invalidEmailAddrMessage = "{0} contains an invalid e-mail address: {1}.";
 
     public EmailValueValidationRule()
     {
@@ -75,7 +75,7 @@ public class EmailValueValidationRule extends BasicValidationRule
     public boolean isValid(ValidationContext vc, Value value)
     {
         String emailAddress = value.getTextValue();
-        if(emailAddress != null && !ValidationUtils.isEmail(emailAddress))
+        if(emailAddress != null && emailAddress.length() > 0 && !ValidationUtils.isEmail(emailAddress))
         {
             vc.addValidationError(value, getInvalidEmailAddrMessage(), new Object[] { getValueCaption(vc), emailAddress });
             return false;
