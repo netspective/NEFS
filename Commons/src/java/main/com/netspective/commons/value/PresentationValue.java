@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.3 2003-07-05 19:19:44 shahid.shah Exp $
+ * $Id: PresentationValue.java,v 1.4 2003-07-29 20:31:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -52,6 +52,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.netspective.commons.value.exception.ValueException;
+import org.w3c.dom.Element;
 
 public class PresentationValue implements Value
 {
@@ -283,5 +284,15 @@ public class PresentationValue implements Value
     public void setValueFromSqlResultSet(ResultSet rs, int rowNum, int colIndex) throws SQLException, ValueException
     {
         value.setValueFromSqlResultSet(rs, rowNum, colIndex);
+    }
+
+    public void importFromXml(Element parent)
+    {
+        value.importFromXml(parent);
+    }
+
+    public void exportToXml(Element parent)
+    {
+        value.exportToXml(parent);
     }
 }

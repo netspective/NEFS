@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.3 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: Value.java,v 1.4 2003-07-29 20:31:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -49,6 +49,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.netspective.commons.value.exception.ValueException;
+import org.w3c.dom.Element;
 
 public interface Value
 {
@@ -154,5 +155,9 @@ public interface Value
      * Get the contents of this value as a list
      */
     public List getListValue();
+
+    public void importFromXml(Element parent);
+
+    public void exportToXml(Element parent);
 
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.6 2003-07-05 19:19:44 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.7 2003-07-29 20:31:08 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -51,6 +51,9 @@ import java.util.ArrayList;
 
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.exception.ValueException;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Document;
 
 public abstract class AbstractValue implements Value
 {
@@ -323,38 +326,37 @@ public abstract class AbstractValue implements Value
         return true;
     }
 
-    /*
-     TODO:
-    public void importFromXml(Element fieldElem)
+    public void importFromXml(Element parent)
     {
-        String valueType = fieldElem.getAttribute("value-type");
+        String valueType = parent.getAttribute("value-type");
         if(valueType.equals("strings"))
         {
-            NodeList valuesNodesList = fieldElem.getElementsByTagName("values");
+            NodeList valuesNodesList = parent.getElementsByTagName("values");
             if(valuesNodesList.getLength() > 0)
             {
                 NodeList valueNodesList = ((Element) valuesNodesList.item(0)).getElementsByTagName("value");
                 int valuesCount = valueNodesList.getLength();
                 if(valuesCount > 0)
                 {
-                    values = new String[valuesCount];
+                    String[] values = new String[valuesCount];
                     for(int i = 0; i < valuesCount; i++)
                     {
                         Element valueElem = (Element) valueNodesList.item(i);
                         if(valueElem.getChildNodes().getLength() > 0)
                             values[i] = valueElem.getFirstChild().getNodeValue();
                     }
+                    setValue(values);
                 }
             }
         }
         else
         {
-            NodeList valueList = fieldElem.getElementsByTagName("value");
+            NodeList valueList = parent.getElementsByTagName("value");
             if(valueList.getLength() > 0)
             {
                 Element valueElem = (Element) valueList.item(0);
                 if(valueElem.getChildNodes().getLength() > 0)
-                    value = valueElem.getFirstChild().getNodeValue();
+                    setTextValue(valueElem.getFirstChild().getNodeValue());
             }
         }
     }
@@ -362,29 +364,29 @@ public abstract class AbstractValue implements Value
     public void exportToXml(Element parent)
     {
         Document doc = parent.getOwnerDocument();
-        Element fieldElem = doc.createElement("field");
-        fieldElem.setAttribute("name", field.getQualifiedName());
-        if(values != null)
+        if(isListValue())
         {
-            fieldElem.setAttribute("value-type", "strings");
+            parent.setAttribute("value-type", "strings");
             Element valuesElem = doc.createElement("values");
+            String[] values = getTextValues();
             for(int i = 0; i < values.length; i++)
             {
                 Element valueElem = doc.createElement("value");
                 valueElem.appendChild(doc.createTextNode(values[i]));
                 valuesElem.appendChild(valueElem);
             }
-            fieldElem.appendChild(valuesElem);
-            parent.appendChild(fieldElem);
+            parent.appendChild(valuesElem);
         }
-        else if(value != null && value.length() > 0)
+        else
         {
-            fieldElem.setAttribute("value-type", "string");
-            Element valueElem = doc.createElement("value");
-            valueElem.appendChild(doc.createTextNode(value));
-            fieldElem.appendChild(valueElem);
-            parent.appendChild(fieldElem);
+            String value = getTextValue();
+            if(value != null && value.length() > 0)
+            {
+                parent.setAttribute("value-type", "string");
+                Element valueElem = doc.createElement("value");
+                valueElem.appendChild(doc.createTextNode(value));
+                parent.appendChild(valueElem);
+            }
         }
     }
-   */
 }
