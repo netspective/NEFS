@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.65 2004-08-03 22:46:45 aye.thu Exp $
+ * $Id: Dialog.java,v 1.66 2004-08-03 23:00:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -167,6 +167,7 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     public static final String PARAMNAME_PEND_DATA = ".pend_data";
     public static final String PARAMNAME_CANCEL_DATA = ".cancel_data";
     public static final String PARAMNAME_RESET_CONTEXT = ".reset_context";
+    public static final String PARAMNAME_VALIDATE_TRIGGER_FIELD = ".validate_trigger_field";
 
     /**
      * Converts dialog name to uppercase for use as MapKey
@@ -498,6 +499,16 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_DIALOG_STATE_ID;
     }
 
+    /**
+     * Gets the name of the hidden input field used to keep track of the name of the dialog field that triggered
+     * the submission of the form so that the field can be validated immediately.
+     *
+     * @return
+     */
+    public String getDialogValidateTriggerFieldParamName()
+    {
+        return PARAMNAME_DIALOGPREFIX + htmlFormName + PARAMNAME_VALIDATE_TRIGGER_FIELD;
+    }
 
     public String getResetContextParamName()
     {
@@ -1474,6 +1485,22 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
         }
 
         return validateFieldsCount > 0 ? true : false;
+    }
+
+    /**
+     * Checks to see if the dialog submission was triggered for validation of a single field.
+     *
+     * @param   dc    current dialog context
+     * @return  NULL if the dialog doesn't allow the event or if the triggering field name is empty
+     * @see     #getDialogValidateTriggerFieldParamName()
+     */
+    public String checkFieldValidationTrigger(DialogContext dc)
+    {
+        // check to see which field initiated the submission
+        String validateFieldName = dc.getHttpRequest().getParameter(getDialogValidateTriggerFieldParamName());
+        if (validateFieldName != null && validateFieldName.length() > 0)
+           return validateFieldName;
+        return null;
     }
 
     /**

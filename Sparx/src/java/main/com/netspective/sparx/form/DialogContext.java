@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.39 2004-07-15 23:23:28 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.40 2004-08-03 23:02:02 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -779,6 +779,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         String pageCmd = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
         if (pageCmd != null)
             hiddens.append("<input type='hidden' name='" + AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME + "' value='" + pageCmd + "'>\n");
+
+        // this hidden field should be filled in by the 'triggering' form field before submission of the form
+        hiddens.append("<input type=\"hidden\" name=\"" + dialog.getDialogValidateTriggerFieldParamName() +"\" value=\"\"/>");
 
         String redirectUrlParamValue = (state.isInitialEntry()
                 ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName())
