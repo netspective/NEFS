@@ -88,7 +88,8 @@
             </page>
         </page>
 
-        <page name="console" caption="Console" redirect="console"/>
+        <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
+        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler/sample-apps"/>
     </navigation-tree>
 
 <!--

@@ -33,7 +33,7 @@
         </page>
         <page name="search" caption="Search Books" command="query-defn,books,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
-        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
+        <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler/sample-apps"/>
     </navigation-tree>
 
 <!--
