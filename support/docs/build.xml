@@ -3,27 +3,34 @@
 <project default="chunked">
 
     <target name="setup-project-properties">
+
+        <property name="nefs.home" value="${basedir}/../.."/>
+        <property name="commons.lib.redist.dir" value="${nefs.home}/Commons/lib/redist"/>
+
         <property name="project.home" value="${basedir}"/>
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.redist.dir" value="${project.lib.dir}/redist"/>
 
-	<property name="manual.id" value="nef-manual"/>
-	<property name="manual.file-name" value="${manual.id}.xml"/>
-	<property name="manual.path" value="${project.home}/${manual.id}"/>
-	<property name="manual.file" value="${manual.path}/${manual.file-name}"/>
-	<property name="manual.resources.dir" value="${manual.path}/resources"/>
+        <property name="manual.id" value="nef-manual"/>
+        <property name="manual.file-name" value="${manual.id}.xml"/>
+        <property name="manual.path" value="${project.home}/${manual.id}"/>
+        <property name="manual.file" value="${manual.path}/${manual.file-name}"/>
+        <property name="manual.resources.dir" value="${manual.path}/resources"/>
 
-	<property name="manual.html.path" value="${project.home}/../../webapps/nefs-sampler/${manual.id}"/>
+        <property name="manual.html.path" value="${project.home}/../../webapps/nefs-sampler/${manual.id}"/>
 
-	<property name="docbook-xsl.version" value="1.62.4"/>
-	<property name="docbook-xsl-redist.home" value="${project.lib.redist.dir}/docbook-xsl-${docbook-xsl.version}"/>
-	<property name="docbook-xsl.home" value="${project.lib.dir}/docbook-xsl"/>
+        <property name="docbook-xsl.version" value="1.62.4"/>
+        <property name="docbook-xsl-redist.home" value="${project.lib.redist.dir}/docbook-xsl-${docbook-xsl.version}"/>
+        <property name="docbook-xsl.home" value="${project.lib.dir}/docbook-xsl"/>
 
         <path id="project.class.path">
             <fileset dir="${project.lib.redist.dir}">
                 <include name="**/*.jar"/>
             </fileset>
-        </path>        
+            <fileset dir="${commons.lib.redist.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
     </target>
 
     <target name="chunked" depends="setup-project-properties">
@@ -32,20 +39,30 @@
     	<mkdir dir="${manual.html.path}/resources"/>
     	<copy todir="${manual.html.path}/resources">
 	    <fileset dir="${manual.resources.dir}"/>
-  	</copy>    	
+  	</copy>
     	<copy todir="${manual.html.path}/images">
 	    <fileset dir="${docbook-xsl-redist.home}/images"/>
   	</copy>
 
     <echo message="Creating chunked HTML output in ${manual.html.path}"/>
+    <xslt basedir="${manual.path}"
+          destdir="${manual.html.path}"
+          style="${docbook-xsl.home}/html/netspective-chunk.xsl"
+          force="yes" processor="trax" classpathref="project.class.path">
+
+        <include name="${manual.file-name}"/>
+
+    </xslt>
+        <!--
 	<java classname="com.icl.saxon.StyleSheet"
-		      fork="yes" 
+		      fork="yes"
 		      dir="${manual.html.path}"
 		      failonerror="true">
 		    <classpath refid="project.class.path" />
-	  
-	     <arg line="${manual.file} ${docbook-xsl.home}/html/netspective-chunk.xsl" /> 
+
+	     <arg line="${manual.file} ${docbook-xsl.home}/html/netspective-chunk.xsl" />
     	</java>
+        -->
     </target>
-    
+
 </project>
