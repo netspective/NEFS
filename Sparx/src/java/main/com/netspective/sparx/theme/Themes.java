@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Themes.java,v 1.2 2003-03-24 13:28:01 shahid.shah Exp $
+ * $Id: Themes.java,v 1.3 2003-07-11 23:30:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme;
@@ -75,7 +75,7 @@ public class Themes
     {
         themesByName.put(theme.getName(), theme);
         if(log.isTraceEnabled())
-            log.trace("Registered value source "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
+            log.trace("Registered theme "+ theme.getClass().getName() +" as '"+ theme.getName() +"'.");
 
         if(theme.isDefault())
         {
