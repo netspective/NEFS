@@ -47,6 +47,7 @@ import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.table.type.EnumeratedValuesListTable;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.commons.text.TextUtils;
 
 /**
@@ -66,6 +67,7 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
     private String enumeratedIdsListMemberTableName;
     private int thisTablePrimaryKeyColumnIndex;
     private EnumeratedValuesListTable enumeratedIdsListMemberTable;
+    private EnumerationTable listMemberTableValueColEnumerationTable;
     private EnumerationTableRows listMemberTableValueColEnumerationRows;
     private int listMemberTableParentIdColIndex;
     private int listMemberTableValueIndexColIndex;
@@ -128,7 +130,7 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
            listMemberTableValueColIndex == Columns.COLUMN_INDEX_NOT_FOUND)
             throw new RuntimeException("Unable to find all required columns in " + getQualifiedName() + " column's helper table " + getEnumeratedIdsListMemberTableName() + ".");
 
-        EnumerationTable listMemberTableValueColEnumerationTable = (EnumerationTable) enumeratedIdsListMemberTable.getColumns().get(listMemberTableValueColIndex).getForeignKey().getReferencedColumns().getFirst().getTable();
+        listMemberTableValueColEnumerationTable = (EnumerationTable) enumeratedIdsListMemberTable.getColumns().get(listMemberTableValueColIndex).getForeignKey().getReferencedColumns().getFirst().getTable();
         listMemberTableValueColEnumerationRows = listMemberTableValueColEnumerationTable.getEnums();
     }
 
@@ -196,7 +198,13 @@ public class EnumeratedValuesListColumn extends TextColumn implements DatabasePo
 
         // in case the values are passed in as enumeration captions or abbrevs convert them to their IDs instead
         for(int i = 0; i < values.length; i++)
-            values[i] = listMemberTableValueColEnumerationRows.getByIdOrCaptionOrAbbrev(values[i]).getIdAsInteger().toString();
+        {
+            final EnumerationTableRow row = listMemberTableValueColEnumerationRows.getByIdOrCaptionOrAbbrev(values[i]);
+            if(row != null)
+                values[i] = row.getIdAsInteger().toString();
+            else
+                throw new RuntimeException("Unable to find enumeration '"+ values[i] +"' in table "+ listMemberTableValueColEnumerationTable.getName()  +". Valid values are " + listMemberTableValueColEnumerationRows.getValidValues());
+        }
 
         columnValue.setTextValue(TextUtils.getInstance().join(values, ","));
     }
