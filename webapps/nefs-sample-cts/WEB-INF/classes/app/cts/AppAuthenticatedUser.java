@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.6 2003-10-26 08:06:15 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.7 2003-10-31 08:31:33 aye.thu Exp $
  */
 
 package app.cts;
@@ -177,6 +177,16 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser implements Navi
     public String getPersonId()
     {
         return  (String)getAttribute("person_id");
+    }
+
+    public String getLastName()
+    {
+        return  (String)getAttribute("name_last");
+    }
+
+    public String getCompleteName()
+    {
+        return (String) getAttribute("complete_name");
     }
 
 }
