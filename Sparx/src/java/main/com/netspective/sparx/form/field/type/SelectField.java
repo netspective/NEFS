@@ -472,22 +472,22 @@ public class SelectField extends TextField
         }
 
         return
-                "<TABLE CELLSPACING=0 CELLPADDING=1 ALIGN=left BORDER=0>\n" +
+                "<TABLE CELLSPACING=0 CELLPADDING=1 ALIGN=left BORDER=0 class='dialog-field-select-multi-dual'>\n" +
                 "<TR>\n" +
-                "<TD ALIGN=left><FONT " + fieldAreaFontAttrs + ">" + multiDualCaptionLeft.getTextValue(dc) + "</FONT></TD><TD></TD>\n" +
-                "<TD ALIGN=left><FONT " + fieldAreaFontAttrs + ">" + multiDualCaptionRight.getTextValue(dc) + "</FONT></TD>\n" +
+                "<TD ALIGN=left class='dialog-field-select-multi-dual-caption'><FONT " + fieldAreaFontAttrs + ">" + multiDualCaptionLeft.getTextValue(dc) + "</FONT></TD><TD></TD>\n" +
+                "<TD ALIGN=left class='dialog-field-select-multi-dual-caption'><FONT " + fieldAreaFontAttrs + ">" + multiDualCaptionRight.getTextValue(dc) + "</FONT></TD>\n" +
                 "</TR>\n" +
                 "<TR>\n" +
-                "<TD ALIGN=left VALIGN=top>\n" +
+                "<TD ALIGN=left VALIGN=top class='dialog-field-select-multi-dual-control-all'>\n" +
                 "	<SELECT class='dialog_control' ondblclick=\"MoveSelectItems('" + dialogName + "', '" + name + "_From', '" + id + "', " + sorted + ")\" NAME='" + name + "_From' SIZE='" + size + "' MULTIPLE STYLE=\"width: " + width + "\">\n" +
                 "	" + selectOptions + "\n" +
                 "	</SELECT>\n" +
                 "</TD>\n" +
-                "<TD ALIGN=center VALIGN=middle>\n" +
+                "<TD ALIGN=center VALIGN=middle class='dialog-field-select-multi-dual-actions'>\n" +
                 "	&nbsp;<INPUT TYPE=button NAME=\"" + name + "_addBtn\" onClick=\"MoveSelectItems('" + dialogName + "', '" + name + "_From', '" + id + "', " + sorted + ")\" VALUE=\" > \">&nbsp;<BR CLEAR=both>\n" +
                 "	&nbsp;<INPUT TYPE=button NAME=\"" + name + "_removeBtn\" onClick=\"MoveSelectItems('" + dialogName + "', '" + id + "', '" + name + "_From', " + sorted + ")\" VALUE=\" < \">&nbsp;\n" +
                 "</TD>\n" +
-                "<TD ALIGN=left VALIGN=top>\n" +
+                "<TD ALIGN=left VALIGN=top class='dialog-field-select-multi-dual-control-selected'>\n" +
                 "	<SELECT class='dialog_control' ondblclick=\"MoveSelectItems('" + dialogName + "', '" + id + "', '" + name + "_From', " + sorted + ")\" NAME='" + id + "' SIZE='" + size + "' MULTIPLE STYLE=\"width: " + width + "\" " + dc.getSkin().getDefaultControlAttrs() + ">\n" +
                 "	" + selectOptionsSelected + "\n" +
                 "	</SELECT>\n" +
