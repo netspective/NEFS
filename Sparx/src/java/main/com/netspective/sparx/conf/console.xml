@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.110 2003-10-28 13:05:44 shahid.shah Exp $
+  * $Id: console.xml,v 1.111 2003-11-05 11:55:21 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -116,6 +116,18 @@
                 <page name="inspector" caption="Page Inspector" heading="Navigation Page Inspector">
                     <body config="console" source="console-page-content:../inspector.ftl"/>
                 </page>
+                <page name="page-types" caption="Page Types">
+                    <body config="console" source="console-page-content:../page-types.ftl"/>
+                </page>
+                <page name="panel-types" caption="Panel Types">
+                    <body config="console" source="console-page-content:../panel-types.ftl"/>
+                </page>
+                <page name="page-body-handlers" caption="Body Handlers" heading="Page Body Handlers">
+                    <body config="console" source="console-page-content:../page-body-handlers.ftl"/>
+                </page>
+                <page name="page-conditionals" caption="Conditionals" heading="Page Conditional Actions">
+                    <body config="console" source="console-page-content:../page-conditional-actions.ftl"/>
+                </page>
 	        </page>
 
 	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
@@ -131,22 +143,16 @@
                 <page name="dialog-types" caption="Dialog Types">
                     <body config="console" source="console-page-content:../dialog-types.ftl"/>
                 </page>
-                <page name="field-types" caption="Field Types">
-                    <body config="console" source="console-page-content:../field-types.ftl"/>
-                </page>
                 <page name="dialog-execute-handlers" caption="Exec Handlers">
                     <body config="console" source="console-page-content:../exec-handlers.ftl"/>
                 </page>
+                <page name="field-types" caption="Field Types">
+                    <body config="console" source="console-page-content:../field-types.ftl"/>
+                </page>
+                <page name="field-conditionals" caption="Conditionals" heading="Field Conditional Actions">
+                    <body config="console" source="console-page-content:../field-conditional-actions.ftl"/>
+                </page>
 	        </page>
-
-            <page name="panels" caption="Panels">
-                <page name="catalog" caption="Catalog" heading="Panel Types Catalog" retain-params="type-name">
-                    <body config="console" source="console-page-content:../catalog.ftl"/>
-                </page>
-                <page name="documentation" caption="Documentation" heading="Panel Type Documentation" retain-params="type-name">
-                    <body config="console" source="console-page-content:../documentation.ftl"/>
-                </page>
-            </page>
 
             <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage">
                 <body config="console" source="console-page-content:catalog.ftl"/>
