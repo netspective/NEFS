@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.12 2004-08-08 22:53:32 shahid.shah Exp $
+ * $Id: AuthenticatedUser.java,v 1.13 2004-08-14 19:55:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -49,6 +49,7 @@ import java.util.BitSet;
 
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.PermissionNotFoundException;
+import com.netspective.commons.attr.Attributes;
 
 public interface AuthenticatedUser extends Principal
 {
@@ -66,17 +67,11 @@ public interface AuthenticatedUser extends Principal
 
     public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;
 
-    public Object getAttribute(String attrName);
-
-    public void setAttribute(String attrName, Object attrValue);
-
-    public void removeAttribute(String attrName);
-
     public String getEncryptedPassword();
 
     public boolean isRemembered();
 
-    public EntityPreferences getPreferences();
+    public Attributes getPreferences();
 
     public AuthenticatedOrganizations getOrganizations();
 }
