@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+    <!--
+       ======================================
+       Application theme setting
+       ======================================
+    -->
+    <default-theme>sampler</default-theme>
+
+    <!--
+       ===================================================================
+       This is the navigation tree structure defined for the application.
+       ===================================================================
+    -->
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home">
+            <body>
+                <![CDATA[
+                <div style="font-size: 12px; padding: 5px">
+                Welcome to the Home page of the Netspective Enterprise Framework (NEF) Sampler application. The purpose of this application is to
+                give you an idea of how simple and easy it is to built J2EE web applications using the powerful building blocks provided
+                by the Framework. These building blocks provide simplicity but as you learn more about them, you will see that
+                flexibility and extensibility are also a part of their attributes.
+
+                <p>
+                <#include "console/content/library.ftl"/>
+
+                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
+                <ul>
+                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
+                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
+                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
+                </ul>
+                </div>
+                ]]>
+            </body>
+        </page>
+        <page name="forms" caption="Forms">
+                <body>
+                    <![CDATA[
+                    <div style="width: 450px;  padding: 5px; font: 12px normal Arial">
+                    This section contains brief information about how <b>forms</b> are created and handled in NEF.
+                    There are several examples that demonstrate how quick and easy it is to set up forms to accept input values
+                    for web applications.
+                    <br/>
+                    <br/>
+                    On a side note the terms <i>dialog</i> and <i>form</i> will be used
+                    interchangeably in this section. The examples below contain forms that have various types of
+                    built-in fields available for immediate use:
+
+                    <ul>
+                        <li> <a href="">Text Fields</a>: A form containing different types of text fields
+                        </li>
+                        <li> <a href="">Memo and Html Fields</a>: This form  additional text-based fields </li>
+                        <li> <a href="">Numeric Fields</a>: Form containing various types of numeric fields
+                        such as integers, floats, and phone numbers.
+                    </ul>
+                    </div>
+                    ]]>
+                </body>
+            <!-- This page is for demonstrating text fields in a form -->
+            <page name="text-fields" caption="Text">
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.text-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body source="text-fields-form.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+            <!-- This page is for demonstrating numeric fields in a form -->
+            <page name="numeric-fields" caption="Numbers">
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.numeric-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body source="numeric-fields-form.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+            <!-- This page is for demonstrating boolean fields in a form -->
+            <page name="boolean-fields" caption="Boolean">
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.boolean-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body source="boolean-fields-form.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+
+            <!-- This page is for demonstrating selection fields in a form -->
+            <page name="select-fields" caption="Selection">
+                <panels style="vertical">
+                    <panel type="command" command="dialog,test.select-fields"/>
+                    <panel type="template">
+                        <frame heading="Xml Configuration"/>
+                        <body source="select-fields-form.ftl"/>
+                    </panel>
+                </panels>
+            </page>
+
+
+        </page>
+
+        <page name="navigation" caption="Navigation"></page>
+
+        <!--
+        ====================================
+        This page is for your test cases!
+        ====================================
+        -->
+        <page name="play" caption="Play!">
+            <body>
+                <![CDATA[
+                <#include "console/content/library.ftl"/>
+                <div style="font-size: 14px; padding: 5px">
+                This page is reserved for you! Edit the NEFS <@projectFile/> file to begin declaring your
+                application components (and have fun!).
+
+                </div>
+                ]]>
+            </body>
+        </page>
+    </navigation-tree>
+
+    <!--
+       ========================================================================
+       This is a dialog package for contain simple and basic forms to demonstrate
+       the basic configuration and handling of a dialog.
+       ========================================================================
+    -->
+    <dialogs package="hello">
+        <dialog name="form1">
+            <frame heading="Hello World Form 1"/>
+            <field type="text" name="first_name" caption="First Name" required="yes"/>
+            <field type="text" name="last_name" caption="Last Name" required="yes"/>
+
+            <on-execute handler="template">
+                <![CDATA[
+                Welcome to NEFS, ${vc.fieldStates.getState("first_name").value.textValue}
+                ${vc.fieldStates.getState("last_name").value.textValue}.
+                <p>Form1 demonstrated how you can take two
+                pieces of data and execute an arbritrary <a href="http://www.freemarker.org">FreeMarker</a> template embedded in the project.xml file.
+                ]]>
+            </on-execute>
+        </dialog>
+
+        <dialog name="form2" loop="no">
+            <frame heading="Hello World Form 2"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="date" name="birth_date" caption="Birth Date" required="yes" popup-calendar="yes"/>
+
+            <on-execute handler="template">
+                <source>form2.ftl</source>  <!-- source is relative to the app root -->
+            </on-execute>
+        </dialog>
+
+        <dialog name="form3" class="app.Form3Dialog">
+            <frame heading="Hello World Form 3"/>
+            <field type="text" name="full_name" caption="Full Name" required="yes"/>
+            <field type="integer" name="age" caption="Age" required="yes" min="1" max="150"/>
+            <!-- since this one is attached to a class, the class is responsible for the output (see WEB-INF/classes/app/Form3Dialog.java) -->
+        </dialog>
+    </dialogs>
+
+    <!--
+       ==============================================================================
+       This dialog package contains various dialogs for demonstrating NEFS built-in
+       fields and their respective funtionalities.
+       ==============================================================================
+    -->
+    <dialogs package="test">
+        <dialog name="text-fields" retain-params="*" hide-hints-until-focus="yes" redirect-after-execute="false">
+            <frame heading="Test Text Fields"/>
+            <field name="text_field_required" type="text" caption="Text Required" required="yes"
+                                              hint="This text field is always required"/>
+            <field name="text_field_hidden" type="text" hidden="yes" default="request:id"/>
+            <field name="static_field1" type="static" caption="Static 1" default="request:id" hint="Request attribute 'id' value"/>
+            <field name="static_field2" type="static" caption="Static 2 " default="Static Field's Value"/>
+            <field name="text_field_conditionally_required" type="text" caption="Text Required"
+                hint="Text field is required only when req param 'abc' has value"
+                default="conditional Required Text" required="no">
+                <conditional action="apply-flags" flags="required" has-value="request:abc"/>
+            </field>
+            <field name="text_field" type="text" caption="Text" hint="Text field optional (max-length=5, uppercase=yes)" max-length="5" uppercase="yes"/>
+            <field name="email_field" type="e-mail" caption="Email" hint="Email field"/>
+            <field name="masked_field" type="text" caption="Masked Field" mask-entry="yes" hint="e.g password"/>
+        </dialog>
+        <dialog name="memo-and-html-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Memo and HTML Fields"/>
+            <field type="memo" name="memo_field_01" caption="Memo Field" default="A fox jumped over the fence" max-length="10"
+                hint="Max length is 5 characters"/>
+            <field name="html" type="html" caption="HTML Template Field">
+                <body>
+                    <![CDATA[
+                    <div class='textbox'>
+                    This is a FreeMarker template inside a dialog (1 + 1 = ${1 + 1}) that looks like a normal field.
+                    </div>]]>
+                </body>
+            </field>
+            <field name="html2" type="html">
+                <body>
+                    <![CDATA[
+                    <div class='textbox' style='border:1px solid black; margin: 4px; padding: 6px'>
+                    This is another FreeMarker template inside a dialog (1 + 1 = ${1 + 1}) taking over the entire row.
+                    With custom CSS and HTML.
+                    </div>]]>
+                </body>
+            </field>
+            <director submit-caption="Submit" style="acknowledge"/>
+        </dialog>
+
+        <dialog name="numeric-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Numeric Fields"/>
+            <field type="integer" name="integer_field" caption="Integer Field" hint="Integer field" persist="yes"/>
+            <field type="float" name="float_field" caption="Float Field" hint="Float field"/>
+            <field type="currency" name="currency_field1" caption="Currency" decimals-required="2" default="123.45"
+                negative-pos="after-symbol" hint="Currency field (US) with negative sign after the symbol"/>
+            <field type="currency" name="currency_field2" caption="Currency" decimals-required="2" default="123.45"
+                negative-pos="before-symbol" hint="Currency field (US) with negative sign before the symbol"/>
+            <field type="phone" name="phone_field1" caption="Phone Field (dash format)" strip-brackets="yes" style="dash" hint="Phone field" default="8001234567"/>
+            <field type="phone" name="phone_field2" caption="Phone Field (bracket format)" strip-brackets="yes" style="bracket" hint="Phone field" default="8001234567"/>
+            <field type="zip-code" name="zip_field" caption="Zip Field" hint="Zip code field" default="12345"/>
+            <field type="ssn" name="ssn_field" caption="SSN" strip-dashes="yes" default="999999999" hint="Social Security Number field"/>
+            <director submit-caption="Submit"/>
+        </dialog>
+        <dialog name="date-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Date/Time Fields"/>
+            <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today" hint="Format is MM/dd/yyyy"/>
+            <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"
+                default="today" hint="Format is MM-dd-yyyy"/>
+            <field type="date" name="date_field_nonstrict" caption="Date (Non-Strict Year)" client-calendar-format="MM/dd/yyyy"
+                strict-year="no" default="today+1" hint="Format is MM/dd/yyyy"/>
+            <field type="time" name="time_field" caption="Time" strict-time="no" initial-focus="yes" default="now" hint="Format is HH\:mm"/>
+            <field type="date-time" name="datetime_field" caption="Date and Time" format="MM-dd-yyyy HH:mm" client-calendar-format="MM-dd-yyyy"
+                default="today" hint="Format is MM-dd-yyyy"/>
+            <director submit-caption="Submit"/>
+        </dialog>
+
+        <dialog name="boolean-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Boolean Fields"/>
+            <field type="boolean" name="bool_field_radio" caption="Boolean Field (Radio)" style="radio"/>
+            <field type="boolean" name="bool_field_alone" caption="Boolean Field (Alone)" style="check-alone"/>
+            <field type="boolean" name="bool_field_combo" caption="Boolean Field (Combo)" style="combo"/>
+            <director submit-caption="Submit"/>
+        </dialog>
+
+        <!-- The text-list value source accepts a process instruction [] which can contain two
+                 characters: second one is used for value assignment and first one is for choice item
+                 seperation. For example, [;=] indicates that the ';' is used to separate the choice items
+                 while the '=' is used for value assignment.
+        -->
+        <dialog name="select-fields" retain-params="*" redirect-after-execute="false">
+            <frame heading="Test Select Fields"/>
+            <field type="separator" heading="Select Fields"/>
+            <field type="select" name="sel_field_combo" caption="Select Field (Combo)" style="combo"
+                choices="text-list:Choice 1=A'S;Choice 2=B;Choice 3=C" persist="true"
+                default="A'S" hidden="no" prepend-blank="yes" append-blank="yes"/>
+
+            <field type="select" name="sel_field_combo_xml_items" caption="Select Field (Combo with XML Items)" style="combo"
+                persist="true" default="A'S" hidden="no" prepend-blank="yes" append-blank="yes">
+                <items>
+                    <item value="A" caption="Choice 1 (in XML Item)"/>
+                    <item value="B" caption="Choice 2 (in XML Item)"/>
+                    <item value="C" caption="Choice 3 (in XML Item)"/>
+                    <item value="D" caption="Choice 4 (in XML Item)"/>
+                    <item value="E" caption="Choice 5 (in XML Item)"/>
+                </items>
+            </field>
+
+            <field type="select" name="sel_field_radio" caption="Select Field (Radio)" style="radio" required="no"
+                choices="text-list:[;!]Choice 1!A;Choice 2!B;Choice 3!C"/>
+            <field type="select" name="sel_field_list" caption="Select Field (List)" style="list" size="5" default="B"
+                hidden="no" choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+            <field type="select" name="sel_field_multilist" caption="Select Field (MultiList)" style="multilist" size="5"
+                default="text-list:A,B"
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+            <field type="select" name="sel_field_multicheck" caption="Select Field (MultiCheck)" style="multicheck" required="yes"
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" default="text-list:A,C"/>
+            <field type="select" name="sel_field_multidual" caption="Select Field (MultiDual)" style="multidual" required="yes"
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" default="text-list:A" persist="true"
+                multi-dual-caption-left="Left Caption" multi-dual-caption-right="Right Caption" multi-dual-width="100"/>
+            <director submit-caption="Submit"/>
+            <field type="select" name="sel_field_popup" caption="Select Field (Popup)" style="popup"
+                choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
+        </dialog>
+    </dialogs>
+</project>
