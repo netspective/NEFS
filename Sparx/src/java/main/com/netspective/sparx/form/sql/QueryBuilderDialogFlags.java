@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialogFlags.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: QueryBuilderDialogFlags.java,v 1.2 2003-07-01 05:57:24 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -69,6 +69,11 @@ public class QueryBuilderDialogFlags extends DialogFlags
     public QueryBuilderDialogFlags()
     {
         setFlag(ALLOW_DEBUG | READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA | ALWAYS_SHOW_DSNAV);
+    }
+
+    public FlagDefn[] getFlagsDefns()
+    {
+        return QBD_FLAG_DEFNS;
     }
 }
 
