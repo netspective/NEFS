@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.59 2004-03-19 14:19:15 zahara.khan Exp $
+ * $Id: Dialog.java,v 1.60 2004-03-20 13:51:42 zahara.khan Exp $
  */
 
 package com.netspective.sparx.form;
@@ -560,9 +560,10 @@ public class Dialog extends AbstractPanel implements HtmlInputPanel, TemplateCon
     }
 
     /**
-     * Sets the retained request parameters.
+     * Sets the request parameters to be retained for use in multiple invocation
+     * of the dialog during more than one request/response cycle.
      *
-     * @param value the retained request parameter names.  Pass asterist (*) as
+     * @param value names of request parameters to be retained.  Pass asterist (*) as
      *              the value to retain all request parameters
      */
     public void setRetainParams(String value)
