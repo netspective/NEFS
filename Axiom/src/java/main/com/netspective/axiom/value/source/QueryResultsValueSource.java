@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryResultsValueSource.java,v 1.6 2003-06-20 05:13:46 aye.thu Exp $
+ * $Id: QueryResultsValueSource.java,v 1.7 2003-08-15 05:49:38 aye.thu Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -164,7 +164,19 @@ public class QueryResultsValueSource extends AbstractValueSource
             setDataSourceId(ValueSources.getInstance().getValueSourceOrStatic(params.substring(dataSrcIdDelim+1)));
         }
         else
+        {
+            int querySrcIdDelim = params.lastIndexOf('/');
+            if (querySrcIdDelim != -1)
+            {
+                sourceId = ValueSources.getInstance().getValueSourceOrStatic(params.substring(0, querySrcIdDelim));
+                queryId = params.substring(querySrcIdDelim + 1);
+            }
+            else
+            {
+                queryId = params;
+            }
             dataSourceId = null;
+        }
     }
 
     public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
@@ -307,7 +319,7 @@ public class QueryResultsValueSource extends AbstractValueSource
         try
         {
             ResultSet rs = qrs.getResultSet();
-            switch(resultStyle)
+            switch(style)
             {
                 case RESULTSTYLE_SINGLECOLUMN_OBJECT:
                     if(rs.next())
@@ -416,7 +428,6 @@ public class QueryResultsValueSource extends AbstractValueSource
                 }
             }
         }
-
         return value;
     }
 
