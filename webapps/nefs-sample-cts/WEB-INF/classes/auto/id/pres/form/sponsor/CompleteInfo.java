@@ -7,7 +7,6 @@ public interface CompleteInfo
 {
     static public final String ADDRESS_NAME = "address_name";
     static public final String CITYSTATEZIP = "cityStateZip";
-    static public final String COUNTRY = "country";
     static public final String EMAIL = "email";
     static public final String LINE1 = "line1";
     static public final String LINE2 = "line2";
@@ -16,6 +15,5 @@ public interface CompleteInfo
     static public final String ORG_NAME = "org_name";
     static public final String PRIMARY = "primary";
     static public final String STUDY_ID = "study_id";
-    static public final String TIME_ZONE = "time_zone";
     static public final String WEBSITE = "website";
 }

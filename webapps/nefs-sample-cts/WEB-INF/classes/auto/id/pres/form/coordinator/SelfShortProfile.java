@@ -3,7 +3,7 @@
 
 package auto.id.pres.form.coordinator;
 
-public interface ShortProfile
+public interface SelfShortProfile
 {
     static public final String BIRTH_DATE = "birth_date";
     static public final String ETHNICITY_ID = "ethnicity_id";

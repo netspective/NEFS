@@ -5,6 +5,8 @@ package auto.id.pres.form;
 
 public interface Site
 {
+    static public final String ADDRESS_INFO = "site.address-info";
     static public final String COMPLETE_INFO = "site.complete-info";
     static public final String CONTACT_INFO = "site.contact-info";
+    static public final String SHORT_INFO = "site.short-info";
 }

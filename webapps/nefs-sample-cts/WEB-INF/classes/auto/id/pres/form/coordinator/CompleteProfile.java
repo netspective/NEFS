@@ -5,7 +5,7 @@ package auto.id.pres.form.coordinator;
 
 public interface CompleteProfile
 {
-    static public final String DATE_OF_BIRTH = "date_of_birth";
+    static public final String BIRTH_DATE = "birth_date";
     static public final String EMAIL = "email";
     static public final String ETHNICITY_ID = "ethnicity_id";
     static public final String GENDER_ID = "gender_id";

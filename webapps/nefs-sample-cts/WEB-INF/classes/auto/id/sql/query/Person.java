@@ -6,6 +6,7 @@ package auto.id.sql.query;
 public interface Person
 {
     static public final String AUTHENTICATED_USER_INFO = "person.authenticated-user-info";
+    static public final String COORDINATOR_SELF_INFO = "person.coordinator-self-info";
     static public final String GET_ACTIVE_STUDY_AS_SUBJECT = "person.get-active-study-as-subject";
     static public final String GET_CONTACT_INFO_BY_PERSON_ID = "person.get-contact-info-by-person-id";
     static public final String GET_PROFILE_BY_PERSON_ID = "person.get-profile-by-person-id";

@@ -8,10 +8,11 @@ public interface Org
     static public final String GET_EMPLOYEE_CONTACT_INFO_BY_ORG_AND_PERSON_ID = "org.get-employee-contact-info-by-org-and-person-id";
     static public final String GET_EMPLOYEE_PROFILE_BY_ORG_AND_PERSON_ID = "org.get-employee-profile-by-org-and-person-id";
     static public final String GET_EMPLOYEES_BY_ORG_ID = "org.get-employees-by-org-id";
-    static public final String GET_ORG_ADDRESSES_BY_ID = "org.get-org-addresses-by-id";
     static public final String GET_ORG_CONTACTS_BY_ID = "org.get-org-contacts-by-id";
     static public final String GET_ORG_TYPES_BY_ORG_ID = "org.get-org-types-by-org-id";
+    static public final String GET_SITE_ADDRESSES_BY_ID = "org.get-site-addresses-by-id";
     static public final String GET_SITE_INFO_BY_ID = "org.get-site-info-by-id";
+    static public final String GET_SPONSOR_ADDRESSES_BY_ID = "org.get-sponsor-addresses-by-id";
     static public final String GET_SPONSOR_INFO_BY_ID = "org.get-sponsor-info-by-id";
     static public final String GET_TRIALS_BY_ORG_ID = "org.get-trials-by-org-id";
 }
