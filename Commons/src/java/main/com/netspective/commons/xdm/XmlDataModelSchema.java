@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.33 2003-10-07 01:35:32 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.34 2003-10-07 19:08:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -939,6 +939,19 @@ public class XmlDataModelSchema
             else if (name.startsWith("get") && args.length == 0)
             {
                 String[] propNames = getPropertyNames(name, "get");
+                for(int pn = 0; pn < propNames.length; pn++)
+                {
+                    if(propNames[pn].length() == 0)
+                        continue;
+
+                    AttributeAccessor aa = createAttributeAccessor(m, propNames[pn], returnType);
+                    if (aa != null)
+                        attributeAccessors.put(propNames[pn], aa);
+                }
+            }
+            else if (name.startsWith("is") && args.length == 0)
+            {
+                String[] propNames = getPropertyNames(name, "is");
                 for(int pn = 0; pn < propNames.length; pn++)
                 {
                     if(propNames[pn].length() == 0)
