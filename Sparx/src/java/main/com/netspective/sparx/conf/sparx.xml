@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.79 2004-03-23 05:23:27 aye.thu Exp $
+  * $Id: sparx.xml,v 1.80 2004-03-23 16:14:17 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -85,16 +85,14 @@
 
     <dialog-field-type name="e-mail" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
-            <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
-                  reg-expr="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]{2,4}$/"
-                  invalid-reg-ex-message="Email must be in xxx@xxxx.xxx format."/>
+            <rule class="com.netspective.commons.validate.rule.EmailValueValidationRule"/>
         </validation>
     </dialog-field-type>
 
     <dialog-field-type name="guid32" class="com.netspective.sparx.form.field.type.TextField">
         <validation>
             <rule class="com.netspective.commons.validate.rule.TextValueValidationRule"
-                  reg-expr="/^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$/"
+                  reg-expr="^[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}$"
                   invalid-reg-ex-message="Please ensure that this field contains a valid GUID32.&lt;br&gt;The format of a GUID32 is xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx where x is an uppercase letter or digit."/>
         </validation>
     </dialog-field-type>
