@@ -47,14 +47,13 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.DialogFieldFlags;
-import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.form.field.type.BooleanField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDestinations;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
@@ -71,11 +70,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
-
 /**
- * $Id: QuerySelectDialog.java,v 1.7 2003-08-31 22:51:51 shahid.shah Exp $
+ * $Id: QuerySelectDialog.java,v 1.8 2003-09-14 05:35:38 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -317,7 +313,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
         if(destination instanceof HtmlTabularReportBrowserDestination)
         {
             HtmlTabularReportBrowserDestination browserDest = (HtmlTabularReportBrowserDestination) destination;
-            HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
             /*

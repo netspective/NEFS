@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.11 2003-08-31 22:51:51 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.12 2003-09-14 05:35:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -59,10 +59,6 @@ package com.netspective.sparx.form.sql;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
-
-import org.apache.commons.lang.exception.NestableRuntimeException;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogFlags;
@@ -78,7 +74,7 @@ import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.form.field.type.BooleanField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.panel.QueryReportPanel;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelects;
@@ -102,6 +98,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportDestination;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDestinations;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportFileDestination;
 import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
@@ -241,7 +238,7 @@ public class QueryBuilderDialog extends Dialog
 
     public void addOutputDestinationFields()
     {
-        DialogField output = new DialogField();
+        CompositeField output = new CompositeField();
         output.setName("output");
         output.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(output);
@@ -546,7 +543,7 @@ public class QueryBuilderDialog extends Dialog
         if(destination instanceof HtmlTabularReportBrowserDestination)
         {
             HtmlTabularReportBrowserDestination browserDest = (HtmlTabularReportBrowserDestination) destination;
-            HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
             /*
@@ -717,7 +714,7 @@ public class QueryBuilderDialog extends Dialog
         {
             execute(writer, dc);
 
-            HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
 
             if(scrollState != null)

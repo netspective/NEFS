@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.8 2003-09-02 05:38:54 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.9 2003-09-14 05:35:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -65,8 +65,8 @@ import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.console.panel.data.sql.QueryDetailPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.sql.Query;
@@ -340,7 +340,7 @@ public class QueryDialog extends Dialog
         QueryDialogContext qdc = (QueryDialogContext)dc;
         if (qdc.getRowsPerPage() > 0)
         {
-            HtmlTabularReportDataSourceScrollStates scrollStatesManager = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollStates scrollStatesManager = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollStateById = scrollStatesManager.getScrollStateByDialogTransactionId(dc);
             /*
                 If the state is not found, then we have not executed at all yet;

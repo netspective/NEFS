@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.21 2003-09-07 19:38:36 aye.thu Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.22 2003-09-14 05:36:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -56,8 +56,8 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
@@ -153,7 +153,7 @@ public abstract class AbstractHtmlTabularReportPanel extends AbstractPanel imple
         if(isScrollable())
         {
             // TODO: Need to add handling of selection of report rows
-            HtmlTabularReportDataSourceScrollStates scrollStates = HtmlTabularReportDataSourceScrollStates.getInstance();
+            HtmlTabularReportDataSourceScrollStates scrollStates = dc.getProject().getScrollStates();
             HtmlTabularReportDataSourceScrollState scrollState = scrollStates.getScrollStateByDialogTransactionId(dc);
             HtmlTabularReportValueContext vc = null;
 

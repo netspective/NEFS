@@ -51,14 +51,13 @@
  */
 
 /**
- * $Id: IntegerField.java,v 1.4 2003-09-11 04:28:52 aye.thu Exp $
+ * $Id: IntegerField.java,v 1.5 2003-09-14 05:35:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.type.TextField;
-import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.commons.value.exception.ValueException;

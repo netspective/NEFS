@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.7 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.8 2003-09-14 05:35:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -65,7 +65,7 @@ import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.sql.QueryDialogContext;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceSessionScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
@@ -145,7 +145,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
         }
 
         String attrs = dc.getSkin().getDefaultControlAttrs();
-        TabularReportDataSourceScrollState scrollState = HtmlTabularReportDataSourceScrollStates.getInstance().getScrollStateByDialogTransactionId(dc);
+        TabularReportDataSourceScrollState scrollState = dc.getProject().getScrollStates().getScrollStateByDialogTransactionId(dc);
         if(scrollState == null)
         {
             writer.write("<input type='submit' class=\"dialog-button\" name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
