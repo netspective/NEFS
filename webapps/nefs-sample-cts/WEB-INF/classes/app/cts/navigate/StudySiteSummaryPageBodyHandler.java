@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StudySiteSummaryPageBodyHandler.java,v 1.1 2003-10-26 08:06:15 aye.thu Exp $
+ * $Id: StudySiteSummaryPageBodyHandler.java,v 1.2 2003-10-31 08:33:02 aye.thu Exp $
  */
 package app.cts.navigate;
 
@@ -117,7 +117,11 @@ public class StudySiteSummaryPageBodyHandler extends NavigationPageBodyDefaultHa
         writer.write("\t<option value=\""+ page.getUrl(nc) + "\"></option>\n");
         for (int i=0; studyList != null && i < studyList.length; i++)
         {
-            String url = page.getUrl(nc) + "?study_id=" + studyList[i][0];
+            String url = "";
+            if (page.getUrl(nc).indexOf("?") != -1)
+                url = page.getUrl(nc) + "&study_id=" + studyList[i][0];
+            else
+                url = page.getUrl(nc) + "?study_id=" + studyList[i][0];
             if (studyId != null && studyId.equals(studyList[i][0].toString()))
                 writer.write("\t<option value=\"" + url + "\" selected>" + studyList[i][1] + "</option>\n");
             else

@@ -51,13 +51,14 @@
  */
 
 /**
- * $Id: StudyPeoplePageBodyHandler.java,v 1.1 2003-10-26 08:06:15 aye.thu Exp $
+ * $Id: StudyRelatedPageBodyHandler.java,v 1.1 2003-10-31 08:33:02 aye.thu Exp $
  */
 package app.cts.navigate;
 
 import com.netspective.sparx.navigate.handler.NavigationPageBodyDefaultHandler;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPath;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.ConnectionContext;
@@ -66,13 +67,26 @@ import javax.servlet.ServletException;
 import java.io.Writer;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import app.cts.AppAuthenticatedUser;
 
-public class StudyPeoplePageBodyHandler extends NavigationPageBodyDefaultHandler
+/**
+ * Class for handling all pages that are children of the main selected clinical trial page.
+ * This will be used to return to the main page and to keep track of current page's location
+ * relative to the main trial/study page.
+ */
+public class StudyRelatedPageBodyHandler extends NavigationPageBodyDefaultHandler
 {
     public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
     {
+        List parentList = nc.getActivePage().getAncestorsList();
+        for (int i=0; i < parentList.size(); i++)
+        {
+            NavigationPage path = (NavigationPage) parentList.get(i);
+            System.out.println(path.getCaption() + " " + path.getUrl(nc));
+        }
+        /*
         SqlManager sqlManager = nc.getSqlManager();
         String studyId = nc.getHttpRequest().getParameter("study_id");
         AppAuthenticatedUser user = (AppAuthenticatedUser)nc.getAuthenticatedUser();
@@ -143,7 +157,7 @@ public class StudyPeoplePageBodyHandler extends NavigationPageBodyDefaultHandler
         {
             page.getBodyPanel().render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
-
+        */
     }
 
 }
