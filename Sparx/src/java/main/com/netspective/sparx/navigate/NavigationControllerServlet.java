@@ -807,7 +807,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         final String queryString = nc.getHttpRequest().getQueryString();
         final String rootUrl = nc.getRootUrl() + (queryString != null && queryString.length() > 0 ? ("?" + queryString) : "");
-        log.error("Redirecting to the ROOT URL "+ rootUrl +": no active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree? For example <page name=\"foo\" default=\"yes\"/>?");
+        log.warn("Redirecting to the ROOT URL "+ rootUrl +": no active page located in NavigationTree '" + getNavigationTree().getName() + "' for '" + nc.getActivePathFindResults().getSearchedForPath() + "' -- did you set a default page in the tree? For example <page name=\"foo\" default=\"yes\"/>? This could also be a timeout event in the case of a user-based multiple navigation-tree application.");
         nc.getHttpResponse().sendRedirect(rootUrl);
     }
 
