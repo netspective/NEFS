@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TestUtils.java,v 1.5 2003-06-13 04:43:12 roque.hernandez Exp $
+ * $Id: TestUtils.java,v 1.6 2003-07-08 02:29:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -147,7 +147,7 @@ public class TestUtils {
       task.setTaskName("generate-ddl");
       task.setSchema("db");
       task.setDdl("*");
-      task.setXdmFile(new File(rootPath + "/" + schemaFilename));
+      task.setProjectFile(new File(rootPath + "/" + schemaFilename));
       task.setDestDir(new File(rootPath + ddlPath));
 
       target.addTask(task);
@@ -193,7 +193,7 @@ public class TestUtils {
         return;
 
       task.setImport(new File(rootPath + "/" + dataImportFile));
-      task.setGenImportDtd(new File(rootPath + dataImportDtdFile));
+      task.setDtdFile(new File(rootPath + dataImportDtdFile));
       task.generateImportDtd(manager);
 
       task.setDriver("org.hsqldb.jdbcDriver");

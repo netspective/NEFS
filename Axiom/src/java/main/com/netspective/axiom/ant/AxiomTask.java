@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AxiomTask.java,v 1.4 2003-05-23 02:18:01 shahid.shah Exp $
+ * $Id: AxiomTask.java,v 1.5 2003-07-08 02:29:16 shahid.shah Exp $
  */
 
 package com.netspective.axiom.ant;
@@ -76,7 +76,6 @@ public class AxiomTask extends XdmComponentTask
 {
     public static final String DEFAULTCLASSNAME_DAL = "DataAccessLayer";
 
-    private File destDir;
     private String schemaName;
     private String dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
     private String fileExtn;
@@ -94,7 +93,6 @@ public class AxiomTask extends XdmComponentTask
     public void init() throws BuildException
     {
         super.init();
-        destDir = null;
         schemaName = null;
         dbPolicyIdMatchRegEx = DatabasePolicies.DBPOLICYIDMATCH_ALL;
         fileExtn = null;
@@ -112,6 +110,16 @@ public class AxiomTask extends XdmComponentTask
     public void setupActionHandlers()
     {
         super.setupActionHandlers();
+
+        addActionHandler(
+                new ActionHandler()
+                {
+                    public String getName() { return "get-default-schema-name"; }
+                    public void execute() throws BuildException
+                    {
+                        getDefaultSchemaName(getSqlManager());
+                    }
+                });
 
         addActionHandler(
                 new ActionHandler()
@@ -203,11 +211,6 @@ public class AxiomTask extends XdmComponentTask
 
     /* ----- reusable attributes and methods ------------------------------------------------------------------------*/
 
-    public void setDestDir(File destDir)
-    {
-        this.destDir = destDir;
-    }
-
     public String getFileExtn(String defaultExtn)
     {
         return fileExtn == null ? defaultExtn : null;
@@ -216,6 +219,13 @@ public class AxiomTask extends XdmComponentTask
     public void setFileExtn(String fileExtn)
     {
         this.fileExtn = fileExtn;
+    }
+
+    public void getDefaultSchemaName(SqlManager sqlManager) throws BuildException
+    {
+        Schema schema = getSchema(sqlManager);
+        String propertyName = getProperty();
+        project.setProperty(propertyName != null ? propertyName : "sparx.default.schema.name", schema.getName());
     }
 
     public Schema getSchema(SqlManager sqlManager) throws BuildException
@@ -280,9 +290,9 @@ public class AxiomTask extends XdmComponentTask
         this.importFile = importFile;
     }
 
-    public void setGenImportDtd(File importFile)
+    public void setDtdFile(File dtdFile)
     {
-        this.dtdFile = importFile;
+        this.dtdFile = dtdFile;
     }
 
     public void generateImportDtd(SqlManager sqlManager) throws BuildException
@@ -297,6 +307,7 @@ public class AxiomTask extends XdmComponentTask
         {
             throw new BuildException(e);
         }
+        log("Created XML import data dtd "+ dtdFile +" for schema '"+ schema.getName() +"'.");
     }
 
     public void importData(SqlManager sqlManager) throws BuildException
@@ -343,7 +354,7 @@ public class AxiomTask extends XdmComponentTask
         List errors = pc.getErrors();
         if(pc.getErrors().size() > 0)
         {
-            System.out.println("Import errors:");
+            log("Import errors:");
             for(int i = 0; i < errors.size(); i++)
             {
                 Object error = errors.get(i);
@@ -368,7 +379,7 @@ public class AxiomTask extends XdmComponentTask
 
     /* ----- GraphViz ERD attributes and methods --------------------------------------------------------------------*/
 
-    public void setGraphVizErd(File file)
+    public void setGraphVizDot(File file)
     {
         graphVizErdFile = file;
     }
@@ -378,12 +389,16 @@ public class AxiomTask extends XdmComponentTask
         Schema schema = getSchema(sqlManager);
         try
         {
-            schema.generateGraphVizErd(new FileWriter(graphVizErdFile));
+            FileWriter file = new FileWriter(graphVizErdFile);
+            schema.generateGraphVizErd(file);
+            file.close();
+            file = null;
         }
         catch (IOException e)
         {
             throw new BuildException(e);
         }
+        log("Created GraphViz digraph " + graphVizErdFile);
     }
 
     /* ----- reverse-engineer specific attributes and methods -------------------------------------------------------*/
@@ -461,10 +476,10 @@ public class AxiomTask extends XdmComponentTask
 
     public void generateDdlFiles(SqlManager sqlManager)
     {
-        if(destDir == null)
+        if(getDestDir() == null)
             throw new BuildException("No destDir attribute provide for destination of DDL files.");
 
-        destDir.mkdirs();
+        getDestDir().mkdirs();
 
         DatabasePolicy[] policies = DatabasePolicies.getInstance().getMatchingPolices(dbPolicyIdMatchRegEx);
         if(policies.length == 0)
@@ -476,7 +491,7 @@ public class AxiomTask extends XdmComponentTask
             DatabasePolicy policy = policies[i];
             DatabasePolicyValueContext vc = new BasicDatabasePolicyValueContext(policy);
 
-            File ddlFile = new File(destDir, schema.getName() + "-" + policy.getDbmsIdentifier() + getFileExtn(".sql"));
+            File ddlFile = new File(getDestDir(), schema.getName() + "-" + policy.getDbmsIdentifier() + getFileExtn(".sql"));
             try
             {
                 policy.generateSqlDdl(ddlFile, vc, schema, createDdlDropSql);
@@ -509,19 +524,20 @@ public class AxiomTask extends XdmComponentTask
         if(dalClassNameWithoutPackage == null)
             throw new BuildException("No dalClass attribute provided for DAL root class.");
 
-        if(destDir == null)
+        if(getDestDir() == null)
             throw new BuildException("No destDir attribute provided for destination of DAL files.");
-        destDir.mkdirs();
+        getDestDir().mkdirs();
 
         Schema schema = getSchema(sqlManager);
         try
         {
-            schema.generateDataAccessLayer(destDir, dalRootPackage, dalClassNameWithoutPackage);
+            schema.generateDataAccessLayer(getDestDir(), dalRootPackage, dalClassNameWithoutPackage);
         }
         catch (IOException e)
         {
             throw new BuildException(e);
         }
+        log("Created DAL package '"+ dalRootPackage +"' for schema '"+ schema.getName() +"' in " + getDestDir());
     }
 
     /* ----- Utility methods ----------------------------------------------------------------------------------------*/

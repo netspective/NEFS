@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentTask.java,v 1.1 2003-05-18 22:25:40 shahid.shah Exp $
+ * $Id: XdmComponentTask.java,v 1.2 2003-07-08 02:29:33 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -67,23 +67,25 @@ public abstract class XdmComponentTask extends Task
 
     private Map actionHandlers;
     private ActionHandler actionHandler;
-    private File xdmFile;
+    private File projectFile;
+    private File destDir;
+    private String property;
     private Resource xdmResource;
     private boolean metrics = false;
     private boolean debug = false;
     private boolean executeHandled = false;
-    private File genIdConstantsRootPath;
     private String genIdConstantsRootPkgAndClass;
 
     public void init() throws BuildException
     {
         actionHandler = null;
-        xdmFile = null;
+        projectFile = null;
+        destDir = null;
+        property = null;
         xdmResource = null;
         debug = false;
         metrics = false;
         executeHandled = false;
-        genIdConstantsRootPath = null;
         genIdConstantsRootPkgAndClass = null;
     }
 
@@ -117,6 +119,26 @@ public abstract class XdmComponentTask extends Task
         return executeHandled;
     }
 
+    public String getProperty()
+    {
+        return property;
+    }
+
+    public void setProperty(String property)
+    {
+        this.property = property;
+    }
+
+    public File getDestDir()
+    {
+        return destDir;
+    }
+
+    public void setDestDir(File destDir)
+    {
+        this.destDir = destDir;
+    }
+
     public boolean isMetrics()
     {
         return metrics;
@@ -142,14 +164,9 @@ public abstract class XdmComponentTask extends Task
         this.xdmResource = new Resource(this.getClass(), xdmResource);
     }
 
-    public void setXdmFile(File xdmFile)
+    public void setProjectFile(File projectFile)
     {
-        this.xdmFile = xdmFile;
-    }
-
-    public void setIdConstantsDir(File genIdConstantsRootPath)
-    {
-        this.genIdConstantsRootPath = genIdConstantsRootPath;
+        this.projectFile = projectFile;
     }
 
     public void setIdConstantsClass(String genIdConstantsRootPkgAndClass)
@@ -159,15 +176,15 @@ public abstract class XdmComponentTask extends Task
 
     public boolean generateIdentifierConstants(XdmComponent component) throws BuildException
     {
-        if(genIdConstantsRootPath != null || genIdConstantsRootPkgAndClass != null)
+        if(getDestDir() != null || genIdConstantsRootPkgAndClass != null)
         {
-            if(genIdConstantsRootPath == null || genIdConstantsRootPkgAndClass == null)
+            if(getDestDir() == null || genIdConstantsRootPkgAndClass == null)
                 throw new BuildException("idConstantsFile and idConstantsClass are both required to generate Identifier Constants.");
 
             try
             {
-                component.generateIdentifiersConstants(genIdConstantsRootPath, genIdConstantsRootPkgAndClass);
-                log("Generated '"+ genIdConstantsRootPkgAndClass +"' in " + genIdConstantsRootPath.getAbsolutePath());
+                component.generateIdentifiersConstants(getDestDir(), genIdConstantsRootPkgAndClass);
+                log("Created ID constants package '"+ genIdConstantsRootPkgAndClass +"' in " + getDestDir().getAbsolutePath());
             }
             catch (IOException e)
             {
@@ -183,16 +200,16 @@ public abstract class XdmComponentTask extends Task
 
     protected XdmComponent getComponent(Class componentClass) throws BuildException
     {
-        if(xdmFile == null && xdmResource == null)
-            throw new BuildException("No resource or file attributes supplied.");
+        if(projectFile == null && xdmResource == null)
+            throw new BuildException("No project resource or file attributes supplied (projectFile).");
 
         XdmComponent component = null;
         int flags = XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
 
         try
         {
-            if(xdmFile != null)
-                component = XdmComponentFactory.get(componentClass, xdmFile, flags);
+            if(projectFile != null)
+                component = XdmComponentFactory.get(componentClass, projectFile, flags);
             else if(xdmResource != null)
                 component = XdmComponentFactory.get(componentClass, xdmResource, flags);
         }
