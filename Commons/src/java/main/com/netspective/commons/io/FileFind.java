@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FileFind.java,v 1.3 2003-03-23 16:42:41 shahbaz.javeed Exp $
+ * $Id: FileFind.java,v 1.4 2003-03-25 17:49:01 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.io;
@@ -377,6 +377,8 @@ public class FileFind
 								searchCandidates.addAll(dynamicallyUpdatedCandidates);
 								dynamicallyUpdatedCandidates.clear();
 								candidate = searchCandidates.listIterator();
+
+								if (! candidate.hasNext()) continue;
 							}
 
 			                File theCandidate = (File) candidate.next();
