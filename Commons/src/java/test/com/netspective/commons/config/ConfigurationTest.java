@@ -39,12 +39,18 @@
  */
 
 /**
- * $Id: ConfigurationTest.java,v 1.4 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: ConfigurationTest.java,v 1.5 2003-03-19 08:13:52 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.config;
 
 import java.io.StringReader;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
@@ -53,90 +59,188 @@ import org.xml.sax.InputSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XmlDataModelDtd;
 import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.DefaultValueContext;
 
 public class ConfigurationTest extends TestCase
 {
-    public static String TEST_CONFIGURATION_XML =
-            "<component>\n" +
-            "    <configuration>"+
-            "        <property name=\"test00\" value=\"test00-value\"/>"+
-            "        <property name=\"test01\" value=\"test01-value\"/>"+
-            "        <property name=\"test02\" value=\"${test00}.${test01}\"/>"+
-            "        <property name=\"test03\" value=\"${test01}.${static:abc}\"/>"+
-            "        <property name=\"test04\" value=\"${test03}.more\"/>"+
-            "        <property name=\"test05\">"+
-            "            <property name=\"test05.00\" value=\"test05.00-value\"/>"+
-            "            <property name=\"test05.01\" value=\"${test05.00}\"/>"+
-            "            <property name=\"test05.02\" value=\"${test05.01}\"/>"+
-            "        </property>"+
-            "        <property name=\"test06\">${test04}.even.more</property>"+
-            "        <test-07>custom property tag with value in PCDATA: ${test02}</test-07>"+
-            "    </configuration>"+
-
-            "    <configuration name=\"not-default\">"+
-            "        <property name=\"testND00\" value=\"testND00-value\"/>"+
-            "        <property name=\"testND01\" value=\"testND01-value\"/>"+
-            "        <property name=\"testND02\" value=\"${testND00}.${testND01}\"/>"+
-            "        <property name=\"testND03\" value=\"${testND01}.${static:abc}\"/>"+
-            "        <property name=\"testND04\" value=\"${/default/test03}.more\"/>"+
-            "        <property name=\"testND05\">"+
-            "            <property name=\"testND05.00\" value=\"testND05.00-value\"/>"+
-            "            <property name=\"testND05.01\" value=\"${testND05.00}\"/>"+
-            "            <property name=\"testND05.02\" value=\"${testND05.01}\"/>"+
-            "        </property>"+
-            "        <property name=\"testND06\" value=\"${testND04}.even.more\"/>"+
-            "    </configuration>"+
-            "</component>";
+	public static String RESOURCE_NAME_ONE = "ConfigurationTest-One.xml";
 
     public InputSource getInputSource(String xmlSource)
     {
         return new InputSource(new StringReader(xmlSource));
     }
 
-    public void testDefaultPropertiesValues() throws DataModelException
+    public void testDefaultPropertiesValues() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
     {
-        ConfigurationsComponent component = new ConfigurationsComponent();
-        assertNotNull(component);
+	    ConfigurationsComponent component =
+	            (ConfigurationsComponent) XdmComponentFactory.get(
+	                    ConfigurationsComponent.class,
+	                    new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
-        XmlDataModelSchema.getSchema(ConfigurationsComponent.class);
-        XdmParseContext pc = XdmParseContext.parse(component, TEST_CONFIGURATION_XML);
+		ConfigurationsManager configManager = component.getItems();
+        assertNotNull("Configuration Manager is null", configManager);
 
-        if(pc.getErrors().size() != 0)
-            System.out.println(pc.getErrors());
-
-        assertTrue(pc.getErrors().size() == 0);
+	    Configurations configs = configManager.getConfigurations();
+	    int expectedNumConfigs = 2;
+	    int numConfigs = configs.size();
+	    assertEquals("Expected # Configurations: 1, Found: " + numConfigs, expectedNumConfigs, numConfigs);
 
         Configuration defaultConfig = component.getItems().getDefaultConfiguration();
         assertNotNull(defaultConfig);
 
-        //defaultConfig.dumpProperties();
+		Set availableConfigs = configs.getConfigurationNames();
+	    Set expectedConfigs = new HashSet();
+	    expectedConfigs.add("DEFAULT");
+	    expectedConfigs.add("NOT-DEFAULT");
+	    assertEquals("Expected Configs: " + expectedConfigs + ", Found: " + availableConfigs, expectedConfigs, availableConfigs);
 
+	    Map defaultProperties = defaultConfig.getAllProperties();
+
+	    Property test00Property = (Property) defaultProperties.get("test00");
         assertEquals("test00-value", defaultConfig.getTextValue(null, "test00"));
-        assertEquals("test01-value", defaultConfig.getTextValue(null, "test01"));
-        assertEquals("test00-value.test01-value", defaultConfig.getTextValue(null, "test02"));
-        assertEquals("test01-value.abc", defaultConfig.getTextValue(null, "test03"));
-        assertEquals("test01-value.abc.more", defaultConfig.getTextValue(null, "test04"));
+        assertEquals("test00-value", defaultConfig.getTextValue(null, "test00", null));
+        assertEquals("test00-value", defaultConfig.getExpression("test00"));
+        assertNotNull(defaultConfig.getTextValue(null, "test00", null));
+	    assertEquals(test00Property, defaultConfig.getProperty("test00"));
 
-        assertEquals(defaultConfig.getProperty("test05").getChildrenList().size(), 3);
-        assertEquals("test05.00-value", defaultConfig.getTextValue(null, "test05.00"));
+	    Property test01Property = (Property) defaultProperties.get("test01");
+        assertEquals("test01-value", defaultConfig.getTextValue(null, "test01"));
+        assertEquals("test01-value", defaultConfig.getTextValue(null, "test01", null));
+        assertEquals("test01-value", defaultConfig.getExpression("test01"));
+        assertNotNull(defaultConfig.getTextValue(null, "test01", null));
+	    assertEquals(test01Property, defaultConfig.getProperty("test01"));
+
+		Property test02Property = (Property) defaultProperties.get("test02");
+	    assertTrue(defaultConfig.getProperty("test02").isDynamic());
+	    assertEquals("${test00}.${test01}", test02Property.getValue());
+	    assertEquals("${test00}.${test01}", defaultConfig.getExpression("test02"));
+	    assertEquals("test00-value.test01-value", defaultConfig.getTextValue(null, "test02"));
+	    assertEquals("test00-value.test01-value", defaultConfig.getTextValue(null, "test02", null));
+	    assertNotNull(defaultConfig.getTextValue(null, "test02", null));
+	    assertEquals(test02Property, defaultConfig.getProperty("test02"));
+
+	    Property test03Property = (Property) defaultProperties.get("test03");
+        assertTrue(defaultConfig.getProperty("test03").isDynamic());
+	    assertEquals("${test01}.${static:abc}", test03Property.getValue());
+	    assertEquals("${test01}.${static:abc}", defaultConfig.getExpression("test03"));
+	    assertEquals("test01-value.abc", defaultConfig.getTextValue(null, "test03"));
+	    assertEquals(test03Property, defaultConfig.getProperty("test03"));
+
+	    Property test04Property = (Property) defaultProperties.get("test04");
+	    assertTrue(defaultConfig.getProperty("test04").isDynamic());
+	    assertEquals("${test03}.more", test04Property.getValue());
+	    assertEquals("${test03}.more", defaultConfig.getExpression("test04"));
+        assertEquals("test01-value.abc.more", defaultConfig.getTextValue(null, "test04"));
+	    assertEquals(test04Property, defaultConfig.getProperty("test04"));
+
+		Property test05Property = (Property) defaultProperties.get("test05");
+	    Map test05Children = test05Property.getChildrenMap();
+        assertEquals(3, test05Property.getChildrenList().size());
+
+		Property test0500Property = (Property) test05Children.get("test05.00");
+	    Property expected0500Property = (Property) test05Property.getProperty("test05.00");
+	    assertEquals("test05.00-value", test0500Property.getValue(null));
+	    assertEquals(expected0500Property, test0500Property);
+
         assertEquals("test05.00-value", defaultConfig.getTextValue(null, "test05.01"));
         assertEquals("test01-value.abc.more.even.more", defaultConfig.getTextValue(null, "test06"));
         assertEquals("custom property tag with value in PCDATA: test00-value.test01-value", defaultConfig.getTextValue(null, "test-07"));
+
     }
 
-    public void testNonDefaultPropertiesValues() throws DataModelException
+    public void testDefaultPropertiesErrorValues() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
     {
-        ConfigurationsComponent component = new ConfigurationsComponent();
-        assertNotNull(component);
+	    ConfigurationsComponent component =
+	            (ConfigurationsComponent) XdmComponentFactory.get(
+	                    ConfigurationsComponent.class,
+	                    new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
-        XmlDataModelSchema.getSchema(ConfigurationsComponent.class);
-        XdmParseContext pc = XdmParseContext.parse(component, TEST_CONFIGURATION_XML);
+		ConfigurationsManager configManager = component.getItems();
+        assertNotNull("Configuration Manager is null", configManager);
 
-        if(pc.getErrors().size() != 0)
-            System.out.println(pc.getErrors());
+	    Configurations configs = configManager.getConfigurations();
+	    int expectedNumConfigs = 2;
+	    int numConfigs = configs.size();
+	    assertEquals("Expected # Configurations: 1, Found: " + numConfigs, expectedNumConfigs, numConfigs);
 
-        assertTrue(pc.getErrors().size() == 0);
+        Configuration defaultConfig = component.getItems().getDefaultConfiguration();
+        assertNotNull(defaultConfig);
+
+	    Configuration nonExistantConfigOne = configManager.getConfiguration("blah-blah");
+	    Configuration nonExistantConfigTwo = configs.getConfiguration("blah-blah");
+	    assertNull("Non Existant Configuration returns non-null value", nonExistantConfigOne);
+	    assertNull("Non Existant Configuration returns non-null value", nonExistantConfigTwo);
+
+		Set availableConfigs = configs.getConfigurationNames();
+	    Set expectedConfigs = new HashSet();
+	    expectedConfigs.add("DEFAULT");
+	    expectedConfigs.add("NOT-DEFAULT");
+	    assertEquals("Expected Configs: " + expectedConfigs + ", Found: " + availableConfigs, expectedConfigs, availableConfigs);
+
+	    Map defaultProperties = defaultConfig.getAllProperties();
+
+	    final String test00DefaultValue = "test00-here-be-dragons";
+	    final String test01DefaultValue = "test01-pinky-and-the-brain";
+	    final String test02DefaultValue = "test02-tom-and-jerry-were-here";
+	    assertEquals(test00DefaultValue, defaultConfig.getTextValue(null, "test00-non-existant-property", test00DefaultValue));
+	    assertEquals(test01DefaultValue, defaultConfig.getTextValue(null, "test01-non-existant-property", test01DefaultValue));
+	    assertEquals(test02DefaultValue, defaultConfig.getTextValue(null, "test02-non-existant-property", test02DefaultValue));
+
+        boolean exceptionThrown = true;
+	    String propertyValue = null;
+	    final String errorTestDefaultValue = "play-more-neverwinter-nights";
+
+	    try
+	    {
+		    propertyValue = defaultConfig.getTextValue(null, "test00-non-existant-property");
+		    exceptionThrown = false;
+	    } catch (PropertyNotFoundException e) {
+		    assertTrue(exceptionThrown);
+		    assertNull(propertyValue);
+		    propertyValue = null;
+	    }
+
+	    assertTrue(exceptionThrown);
+	    propertyValue = null;
+
+	    try {
+		    propertyValue = defaultConfig.getTextValue(null, "test00-non-existant-property", errorTestDefaultValue);
+		    exceptionThrown = false;
+	    } catch (PropertyNotFoundException e) {
+		    assertTrue(exceptionThrown);
+		    assertEquals(errorTestDefaultValue, propertyValue);
+		    propertyValue = null;
+	    }
+
+	    assertFalse(exceptionThrown);
+	    exceptionThrown = true;
+	    propertyValue = null;
+
+	    try {
+		    propertyValue = defaultConfig.getExpression("test00-non-existant-property");
+		    exceptionThrown = false;
+	    } catch (PropertyNotFoundException e) {
+		    assertTrue(exceptionThrown);
+		    assertNull(propertyValue);
+		    propertyValue = null;
+	    }
+
+	    assertTrue(exceptionThrown);
+    }
+
+    public void testNonDefaultPropertiesValues() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
+    {
+	    ConfigurationsComponent component =
+	            (ConfigurationsComponent) XdmComponentFactory.get(
+	                    ConfigurationsComponent.class,
+	                    new Resource(ConfigurationTest.class, RESOURCE_NAME_ONE),
+	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
         Configuration notDefaultConfig = component.getItems().getConfigurations().getConfiguration("not-default");
         assertNotNull(notDefaultConfig);

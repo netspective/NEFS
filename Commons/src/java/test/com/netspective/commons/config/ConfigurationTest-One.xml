@@ -1,0 +1,30 @@
+<component>
+	<configuration>
+		<property name="test00" value="test00-value"/>
+		<property name="test01" value="test01-value"/>
+		<property name="test02" value="${test00}.${test01}"/>
+		<property name="test03" value="${test01}.${static:abc}"/>
+		<property name="test04" value="${test03}.more"/>
+		<property name="test05" value="testing-parent-value">
+			<property name="test05.00" value="test05.00-value"/>
+			<property name="test05.01" value="${test05.00}"/>
+			<property name="test05.02" value="${test05.01}"/>
+		</property>
+		<property name="test06">${test04}.even.more</property>
+		<test-07>custom property tag with value in PCDATA: ${test02}</test-07>
+	</configuration>
+
+	<configuration name="not-default">
+		<property name="testND00" value="testND00-value"/>
+		<property name="testND01" value="testND01-value"/>
+		<property name="testND02" value="${testND00}.${testND01}"/>
+		<property name="testND03" value="${testND01}.${static:abc}"/>
+		<property name="testND04" value="${/default/test03}.more"/>
+		<property name="testND05">
+			<property name="testND05.00" value="testND05.00-value"/>
+			<property name="testND05.01" value="${testND05.00}"/>
+			<property name="testND05.02" value="${testND05.01}"/>
+		</property>
+		<property name="testND06" value="${testND04}.even.more"/>
+	</configuration>
+</component>
