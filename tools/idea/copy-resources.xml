@@ -1,5 +1,5 @@
 
-<project>
+<project default="clear-classes-and-resources">
 
     <property name="frameworks-root-dir" value="c:/Projects/Frameworks"/>
     <property name="classes-dest-dir" value="${frameworks-root-dir}/tools/idea/classes"/>
