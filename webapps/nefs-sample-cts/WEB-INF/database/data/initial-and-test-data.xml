@@ -9,7 +9,7 @@
 		<org-classification rec-stat-id="Active" org-type-id="Insurance"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
-		<org-industry rec-stat-id="Active" industry-type-id="Healthcare" rec-stat-id="Active" industry-type-id="Healthcare"/>
+		<org-industry rec-stat-id="Active" industry-type-id="Healthcare" industry-type-id="Healthcare"/>
 	</org>
 	<!-- 2 -->
     <org ID="ORG 2" org-name="Acme Clinical Trial Company" org-code="ADC" org-abbrev="ACME CTC" rec-stat-id="Active" time-zone="EST" employees="100">
