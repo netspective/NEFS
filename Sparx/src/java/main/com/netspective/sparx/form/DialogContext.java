@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.16 2003-07-29 21:11:05 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.17 2003-08-06 05:21:46 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -72,7 +72,7 @@ import java.util.HashMap;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
+import java.net.URLDecoder;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -180,6 +180,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         public DialogFieldStates()
         {
+        }
+
+        public void addState(DialogField.State state)
+        {
+            statesByQualifiedName.put(state.getField().getQualifiedName(), state);
         }
 
         public DialogField.State getState(DialogField field)
@@ -305,6 +310,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     private int panelRenderFlags;
     private DialogFieldStates fieldStates = new DialogFieldStates();
+    private DialogFieldStates initialFieldStates = new DialogFieldStates();
     private DialogValidationContext validationContext = new DialogValidationContext(this);
     private boolean resetContext;
     private String transactionId;
@@ -321,6 +327,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private String[] retainReqParams;
     private boolean redirectDisabled;
     private Row lastRowManipulated;
+    private String initialContextXml;
 
     public DialogContext()
     {
@@ -386,6 +393,20 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             runSequence = 1;
             execSequence = 0;
             this.resetContext = true;
+        }
+        String initialContextValues = request.getParameter(dialog.getInitialContextParamName());
+        if (initialContextValues != null && initialContextValues.length() > 0)
+        {
+            initialContextXml = URLDecoder.decode(initialContextValues);
+
+            try
+            {
+                createInitialStateFields();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
 
         String dataCmdStr = null;
@@ -681,6 +702,49 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         serialize.invoke(serializer, new Object[]{doc});
 
         return os.toString();
+    }
+
+    /**
+     * Creates a map of initial field states
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    public void createInitialStateFields() throws ParserConfigurationException, SAXException, IOException
+    {
+        String initialContextValues = getRequest().getParameter(dialog.getInitialContextParamName());
+        if (initialContextValues == null)
+            return ;
+
+        initialContextXml = URLDecoder.decode(initialContextValues);
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+
+        InputStream is = new java.io.ByteArrayInputStream(initialContextXml.getBytes());
+        Document doc = builder.parse(is);
+        NodeList dcList = doc.getDocumentElement().getElementsByTagName("dialog-context");
+        if(dcList.getLength() > 0)
+        {
+            Element dcElem = (Element) dcList.item(0);
+            NodeList children = dcElem.getChildNodes();
+            for(int n = 0; n < children.getLength(); n++)
+            {
+                Node node = children.item(n);
+                if(node.getNodeName().equals("field"))
+                {
+                    Element fieldElem = (Element) node;
+                    String fieldName = fieldElem.getAttribute("name");
+                    DialogField field = this.getDialog().getFields().getByName(fieldName);
+                    if (field != null)
+                    {
+                        DialogField.State state = field.constructStateInstance(this);
+                        state.importFromXml(fieldElem);
+                        initialFieldStates.addState(state);
+                    }
+                }
+            }
+        }
     }
 
     /**
