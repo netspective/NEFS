@@ -39,12 +39,18 @@
  */
 
 /**
- * $Id: XdmProduct.java,v 1.1 2004-07-18 13:48:08 shahid.shah Exp $
+ * $Id: XdmProduct.java,v 1.2 2004-07-28 04:13:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
 
 import java.util.Date;
+import java.util.Calendar;
+import java.util.Locale;
+import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.netspective.commons.Product;
 
@@ -53,6 +59,7 @@ public class XdmProduct implements Product
     private String productName = "Unspecified";
     private String productId = "??";
 
+    private Class buildLogClass;
     private int releaseNumber = 0;
     private int versionMajor = 0;
     private int versionMinor = 0;
@@ -92,6 +99,31 @@ public class XdmProduct implements Product
     public final int getBuildNumber()
     {
         return buildNumber;
+    }
+
+    public Class getBuildLogClass()
+    {
+        return buildLogClass;
+    }
+
+    public void setBuildLogClass(Class buildLogClass) throws IllegalAccessException, InstantiationException, NoSuchFieldException
+    {
+        this.buildLogClass = buildLogClass;
+
+        Object o = buildLogClass.newInstance();
+        Field buildNumber = buildLogClass.getField("BUILD_NUMBER");
+        Field buildDate = buildLogClass.getField("BUILD_DATE");
+        setBuildNumber(buildNumber.getInt(o));
+
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+        try
+        {
+            setBuildDate(dateFormat.parse(buildDate.get(o).toString()));
+        }
+        catch (ParseException e)
+        {
+            throw new RuntimeException("Unable to parse build date '" + buildDate.get(o) + "' using format '"+ dateFormat +"'");
+        }
     }
 
     public final String getBuildFilePrefix(boolean includeBuildNumber)
