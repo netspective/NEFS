@@ -19,6 +19,20 @@ Setup instructions:
         <ant dir="../../Sparx/conf"/>
     </target>
 
+    <target name="commons">
+        <echo message="Building Netspective Commons..."/>
+        <ant dir="../../Commons/conf"/>
+    </target>
+    <target name="axiom">
+        <echo message="Building Netspective Axiom..."/>
+        <ant dir="../../Axiom/conf"/>
+    </target>
+    <target name="sparx">
+        <echo message="Building Netspective Sparx..."/>
+        <ant dir="../../Sparx/conf"/>
+    </target>
+
+
     <target name="docs">
         <echo message="Building Netspective Commons..."/>
         <ant dir="../../Commons/conf" target="javadoc-html"/>
