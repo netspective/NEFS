@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.2 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -55,6 +55,7 @@ import javax.servlet.ServletException;
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 
 import com.netspective.sparx.console.ConsoleServletPage;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.report.tabular.BasicTabularReport;
 import com.netspective.commons.report.tabular.TabularReport;
@@ -163,7 +164,7 @@ public class XdmComponentsPanel extends AbstractHtmlTabularReportPanel
                     return new Integer(getRow());
 
                 case 1:
-                    return component.getClass().getName();
+                    return ConsoleServlet.constructClassRefHtml(component.getClass());
 
                 case 2:
                     InputSourceTracker ist = component.getInputSource();

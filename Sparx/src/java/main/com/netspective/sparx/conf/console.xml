@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- *****************************************************************************************
+     * Sparx standard configuration file (designed to be included in other Sparx XDM files). *
+     ***************************************************************************************** -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
+        <page name="home" caption="Home" default="yes" sub-heading="trying something here">
+            <panels>
+                <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+            </panels>
+        </page>
+        <page name="application" caption="Application">
+	        <page name="metrics" caption="Metrics"/>
+	        <page name="configuration" caption="Configuration Properties"/>
+	        <page name="access-control" caption="Access Control"/>
+	        <page name="xdm" caption="XDM Components">
+                <panels>
+                    <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+                </panels>
+            </page>
+	        <page name="value-source" caption="Value Sources">
+                <panels>
+                    <panel class="com.netspective.sparx.console.panel.ValueSourcesDocumentationPanel"/>
+                    <panel class="com.netspective.sparx.console.panel.ValueSourcesUsagePanel"/>
+                </panels>
+            </page>
+        </page>
+        <page name="presentation" caption="Presentation">
+	        <page name="navigation" caption="Navigation">
+				<page name="navigation" caption="Navigation"/>
+				<page name="dialogs" caption="Dialogs"/>
+	        </page>
+	        <page name="dialog" caption="Dialogs">
+				<page name="catalog" caption="Catalog"/>
+				<page name="test" caption="Unit Test"/>
+		        <page name="fields" caption="Fields"/>
+	        </page>
+	        <page name="theme" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage"/>
+        </page>
+        <page name="data-management" caption="Data Management">
+	        <page name="query" caption="Static Queries">
+				<page name="catalog" caption="Catalog"/>
+				<page name="test" caption="Unit Test"/>
+	        </page>
+	        <page name="dynamic-query" caption="Dynamic Queries">
+				<page name="catalog" caption="Catalog"/>
+				<page name="test" caption="Unit Test"/>
+		        <page name="sql-comparisons" caption="SQL Comparisons"/>
+	        </page>
+	        <page name="schema" caption="Schemas">
+				<page name="catalog" caption="Catalog"/>
+				<page name="reverse-engineer" caption="Reverse Engineer"/>
+	        </page>
+	        <page name="data-source" caption="Data Sources"/>
+        </page>
+        <page name="documents" caption="Documents"/>
+    </navigation-tree>
+
+</xdm:container>

@@ -39,20 +39,30 @@
  */
 
 /**
- * $Id: HtmlPanel.java,v 1.3 2003-03-26 00:35:32 shahid.shah Exp $
+ * $Id: BasicHtmlPanels.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import java.io.IOException;
-import java.io.Writer;
+import java.util.List;
+import java.util.ArrayList;
 
-import com.netspective.sparx.navigate.NavigationContext;
-
-public interface HtmlPanel
+public class BasicHtmlPanels implements HtmlPanels
 {
-    public HtmlPanels getChildren();
+    private List panels = new ArrayList();
 
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException;
-    public void render(Writer writer, NavigationContext nc) throws IOException;
+    public void add(HtmlPanel panel)
+    {
+        panels.add(panel);
+    }
+
+    public HtmlPanel get(int i)
+    {
+        return (HtmlPanel) panels.get(i);
+    }
+
+    public int size()
+    {
+        return panels.size();
+    }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.1 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.2 2003-03-26 00:35:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -59,9 +59,15 @@ import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.lang.ClassPath;
 
 public class ConsoleServlet extends HttpServlet
 {
+    public static String constructClassRefHtml(Class cls)
+    {
+        return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + cls.getName() + "</span>";
+    }
+
     protected ApplicationManager getPresentationManager() throws ServletException
     {
         try

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.3 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,6 +59,7 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.value.HttpServletValueContext;
+import com.netspective.sparx.panel.HtmlLayoutPanel;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -74,8 +75,9 @@ public class NavigationPage extends NavigationPath
     static public final long NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS = NAVGPAGEFLAG_HIDDEN * 2;
     static public final long NAVGPAGEFLAG_STARTCUSTOM = NAVGPAGEFLAG_HAS_CONDITIONAL_ACTIONS * 2;
 
-    static public final String THIS_NAV_ID_REPLACE_EXPR = "{NAV_ID}";
-    static public final String PARENT_NAV_ID_REPLACE_EXPR = "{PARENT_NAV_ID}";
+    //TODO: still need to implement this old Sparx feature
+    static private final String THIS_NAV_ID_REPLACE_EXPR = "{NAV_ID}";
+    static private final String PARENT_NAV_ID_REPLACE_EXPR = "{PARENT_NAV_ID}";
 
     private ValueSource caption;
     private ValueSource title;
@@ -83,6 +85,7 @@ public class NavigationPage extends NavigationPath
     private ValueSource subHeading;
     private ValueSource url;
     private ValueSource retainParams;
+    private HtmlLayoutPanel panel;
 
     /* --- XDM Callbacks --------------------------------------------------------------------------------------------*/
 
@@ -369,6 +372,12 @@ public class NavigationPage extends NavigationPath
 
     /* -------------------------------------------------------------------------------------------------------------*/
 
+    public HtmlLayoutPanel createPanels()
+    {
+        panel = new HtmlLayoutPanel();
+        return panel;
+    }
+
     public boolean requireLogin(NavigationContext nc)
     {
         return true;
@@ -408,7 +417,10 @@ public class NavigationPage extends NavigationPath
         //{
             handlePageMetaData(writer, nc);
             handlePageHeader(writer, nc);
-            //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
+        //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
+            if(panel != null)
+                panel.render(writer, nc);
+            else
                 handlePageBody(writer, nc);
             handlePageFooter(writer, nc);
         //}

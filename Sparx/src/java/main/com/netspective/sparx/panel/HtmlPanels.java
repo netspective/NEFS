@@ -39,26 +39,14 @@
  */
 
 /**
- * $Id: ValueSourcesPage.java,v 1.2 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlPanels.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.page;
+package com.netspective.sparx.panel;
 
-import java.io.Writer;
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.console.panel.ValueSourcesPanel;
-import com.netspective.sparx.navigate.NavigationContext;
-
-public class ValueSourcesPage extends ConsoleServletPage
+public interface HtmlPanels
 {
-    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
-    {
-        ValueSourcesPanel.getDocumentationPanel().render(writer, nc);
-        writer.write("<p>");
-        ValueSourcesPanel.getUsagePanel().render(writer, nc);
-    }
+    public void add(HtmlPanel panel);
+    public HtmlPanel get(int i);
+    public int size();
 }

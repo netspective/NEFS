@@ -39,24 +39,47 @@
  */
 
 /**
- * $Id: XdmComponentsPage.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.page;
+package com.netspective.sparx.panel;
 
 import java.io.Writer;
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-
-import com.netspective.sparx.console.ConsoleServletPage;
-import com.netspective.sparx.console.panel.XdmComponentsPanel;
 import com.netspective.sparx.navigate.NavigationContext;
 
-public class XdmComponentsPage extends ConsoleServletPage
+public class HtmlLayoutPanel implements HtmlPanel
 {
-    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
+    private HtmlPanels children = new BasicHtmlPanels();
+
+    public void addPanel(HtmlPanel panel)
     {
-        XdmComponentsPanel.getInstance().render(writer, nc);
+        children.add(panel);
+    }
+
+    public HtmlPanels getChildren()
+    {
+        return children;
+    }
+
+    public void render(Writer writer, NavigationContext nc) throws IOException
+    {
+        for(int i = 0; i < children.size(); i++)
+        {
+            if(i > 0)
+                writer.write("<p>");
+            children.get(i).render(writer, nc);
+        }
+    }
+
+    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
+    {
+        for(int i = 0; i < children.size(); i++)
+        {
+            if(i > 0)
+                writer.write("<p>");
+            children.get(i).render(writer, nc, skin);
+        }
     }
 }

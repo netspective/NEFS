@@ -39,124 +39,60 @@
  */
 
 /**
- * $Id: ValueSourcesPanel.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.1 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
 
-import java.io.Writer;
-import java.io.IOException;
 import java.util.Set;
 import java.util.Iterator;
-import java.util.Map;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
-
+import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.commons.report.tabular.TabularReportFrame;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportException;
-import com.netspective.commons.report.tabular.TabularReportFrame;
-import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.report.tabular.column.NumericColumn;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSourceDocumentation;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
 
-public class ValueSourcesPanel
+public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPanel
 {
-    private static ValueSourceDocumentationPanel documentationPanel;
-    private static ValueSourceUsagePanel usagePanel;
-
-    public static ValueSourceDocumentationPanel getDocumentationPanel()
+    public static final TabularReport documentationReport = new BasicTabularReport();
+    static
     {
-        if(documentationPanel == null)
-            documentationPanel = (ValueSourceDocumentationPanel) DiscoverSingleton.find(ValueSourceDocumentationPanel.class, ValueSourceDocumentationPanel.class.getName());
-        return documentationPanel;
+        GeneralColumn identifiers = new GeneralColumn();
+        identifiers.setHeading(new StaticValueSource("Identifier(s)"));
+        identifiers.setColIndex(0);
+        identifiers.setWordWrap(false);
+
+        GeneralColumn doc = new GeneralColumn();
+        doc.setHeading(new StaticValueSource("Documentation"));
+        doc.setColIndex(1);
+
+        documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
+        documentationReport.getFrame().setFlag(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE);
+        documentationReport.initialize(new TabularReportColumn[] {
+                identifiers,
+                doc,
+            });
     }
 
-    public static ValueSourceUsagePanel getUsagePanel()
+    public TabularReportDataSource createDataSource(NavigationContext nc)
     {
-        if(usagePanel == null)
-            usagePanel = (ValueSourceUsagePanel) DiscoverSingleton.find(ValueSourceUsagePanel.class, ValueSourceUsagePanel.class.getName());
-        return usagePanel;
+        return new DocumentationReportDataSource();
     }
 
-    public static class ValueSourceDocumentationPanel extends AbstractHtmlTabularReportPanel
+    public TabularReport getReport()
     {
-        public static final TabularReport documentationReport = new BasicTabularReport();
-        static
-        {
-            GeneralColumn identifiers = new GeneralColumn();
-            identifiers.setHeading(new StaticValueSource("Identifier(s)"));
-            identifiers.setColIndex(0);
-            identifiers.setWordWrap(false);
-
-            GeneralColumn doc = new GeneralColumn();
-            doc.setHeading(new StaticValueSource("Documentation"));
-            doc.setColIndex(1);
-
-            documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
-            documentationReport.getFrame().setFlag(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE);
-            documentationReport.initialize(new TabularReportColumn[] {
-                    identifiers,
-                    doc,
-                });
-        }
-
-        public TabularReportDataSource createDataSource(NavigationContext nc)
-        {
-            return new DocumentationReportDataSource();
-        }
-
-        public TabularReport getReport()
-        {
-            return documentationReport;
-        }
-    }
-
-    public static class ValueSourceUsagePanel extends AbstractHtmlTabularReportPanel
-    {
-        public static final TabularReport usageReport = new BasicTabularReport();
-
-        static
-        {
-            NumericColumn index = new NumericColumn();
-            index.setColIndex(0);
-
-            GeneralColumn vsClass = new GeneralColumn();
-            vsClass.setHeading(new StaticValueSource("Value Source"));
-            vsClass.setColIndex(1);
-            vsClass.setWordWrap(false);
-
-            NumericColumn usage = new NumericColumn();
-            usage.setHeading(new StaticValueSource("Usage"));
-            usage.setColIndex(2);
-            usage.setCalc("sum");
-
-            usageReport.getFrame().setHeading(new StaticValueSource("Value Sources Usage"));
-            usageReport.initialize(new TabularReportColumn[] {
-                    index,
-                    vsClass,
-                    usage,
-                });
-        }
-
-        public TabularReportDataSource createDataSource(NavigationContext nc)
-        {
-            return new UsageReportDataSource();
-        }
-
-        public TabularReport getReport()
-        {
-            return usageReport;
-        }
+        return documentationReport;
     }
 
     public static abstract class ReportDataSource implements TabularReportDataSource
@@ -212,10 +148,10 @@ public class ValueSourcesPanel
                     if(doc != null)
                     {
                         String usage = (identifiers.length > 1 ? "<i>id</i>" : identifiers[0]) + ":" + doc.getUsageHtml();
-                        return "<font color=green>" + usage + "</font><br>" + doc.getDescription() + "<br><font color=#999999>" + vsClass.getName() + "</font>";
+                        return "<font color=green>" + usage + "</font><br>" + doc.getDescription() + "<br><font color=#999999>" + ConsoleServlet.constructClassRefHtml(vsClass) + "</font>";
                     }
                     else
-                        return "No documentation available in " + vsClass.getName() + ".";
+                        return "No documentation available in " + ConsoleServlet.constructClassRefHtml(vsClass) + ".";
 
                 default:
                     return "Invalid column: " + columnIndex;
@@ -230,40 +166,5 @@ public class ValueSourcesPanel
             doc = factory.getValueSourceDocumentation(vsClass);
             return true;
         }
-    }
-
-    public static class UsageReportDataSource extends ReportDataSource
-    {
-        protected Map srcInstancesMap  = ValueSources.getInstance().getValueSourceInstancesMap();
-
-        public UsageReportDataSource()
-        {
-        }
-
-        public Object getData(TabularReportValueContext vc, int columnIndex)
-        {
-            switch(columnIndex)
-            {
-                case 0:
-                    return new Integer(getRow());
-
-                case 1:
-                    return vsClass.getName();
-
-                case 2:
-                    int count = 0;
-                    for(Iterator i = srcInstancesMap.values().iterator(); i.hasNext(); )
-                    {
-                        ValueSource instance = (ValueSource) i.next();
-                        if(instance.getClass() == vsClass)
-                            count++;
-                    }
-                    return new Integer(count);
-
-                default:
-                    return "Invalid column: " + columnIndex;
-            }
-        }
-
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.2 2003-03-24 13:28:02 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.3 2003-03-26 00:35:32 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -60,7 +60,6 @@ import com.netspective.sparx.ApplicationManager;
 import com.netspective.sparx.ApplicationManagerComponent;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
-import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.config.ConfigurationsManager;
@@ -71,8 +70,8 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
                                       implements ServletValueContext, HttpServletValueContext,
                                                  DatabaseServletValueContext, DatabaseHttpServletValueContext
 {
-    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT = "runtime-env";
-    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE = "runtime-env-mode";
+    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT = "netspective-runtime-environment";
+    public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE = "netspective-runtime-environment-mode";
 
     private ServletContext context;
     private Servlet servlet;
@@ -134,33 +133,33 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public boolean isInMaintenanceMode()
     {
-        return "maintenance".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE));
+        return "maintenance".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT_MODE));
     }
 
     public boolean isDemonstrationEnvironment()
     {
-        return "demo".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+        return "demonstration".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isDevelopmentEnvironment()
     {
         String runtimeEnv = context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT);
-        return runtimeEnv == null || "development".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+        return runtimeEnv == null || "development".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isProductionEnvironment()
     {
-        return "production".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+        return "production".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isTestEnvironment()
     {
-        return "test".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+        return "testing".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isTrainingEnvironment()
     {
-        return "training".equals(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
+        return "training".equalsIgnoreCase(context.getInitParameter(INITPARAMNAME_RUNTIME_ENVIRONMENT));
     }
 
     public boolean isPopup()
