@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.29 2003-08-01 21:28:45 aye.thu Exp $
+ * $Id: DialogField.java,v 1.30 2003-08-08 01:57:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -68,7 +68,6 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Document;
 
 import com.netspective.sparx.form.DialogContext;
