@@ -11,9 +11,9 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-11 12:49:00 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-11 13:44:59 $)</releaseinfo>
 
-    <releaseinfo>This version is in DRAFT until March 31, 2004 when it's
+    <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
     being added regularly.</releaseinfo>
 
@@ -6903,7 +6903,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
       <para>To set up your database, you need to have a database connection
       (data source) pointing towards your database. This is accomplished by
       using the <sgmltag>connection-provider</sgmltag> tag in the Project File
-      (<filename>project.xml</filename>). </para>
+      (<filename>project.xml</filename>).</para>
 
       <para><example>
           <title>Setting up the Data Source for Books Application</title>
@@ -6955,7 +6955,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
           <callout arearefs="declare-conn-provider-tags-eg-3">
             <para>The <sgmltag>driver-class</sgmltag> tag is used to provide
-            the driver to be used for the specified database. </para>
+            the driver to be used for the specified database.</para>
           </callout>
 
           <callout arearefs="declare-conn-provider-tags-eg-4">
