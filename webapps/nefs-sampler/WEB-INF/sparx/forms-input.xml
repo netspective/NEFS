@@ -207,7 +207,7 @@
             </composite>
         </dialog>
 
-        <dialog type="input-sample" name="conditional-fields" retain-params="id">
+        <dialog type="input-sample" name="conditional-fields">
             <frame heading="Sample Conditionals"/>
             <field type="html">
                 <body>
@@ -218,7 +218,10 @@
 
                     Now that you're familiar with how they work in this example, you can see that<br>
                     <i>conditional</i> fields are fields whose state depends upon the state of other<br>
-                    entities (in this case, other fields called <i>partner</i> fields).
+                    entities (in this case, other fields called <i>partner</i> fields).<br><br>
+                    A special case is the cond_text_field which needs is set to be required (from the client side)<br>
+                    but whould be not required if it's hidden. Since cond_text_field is a conditional the client side will<br>
+                    take care of not doing the required check but the server side requires a few lines of Java.<br>
                     </div>
                     <hr/>
                     ]]>
@@ -226,15 +229,16 @@
             </field>
             <field type="select" name="sel_field_list" caption="Select Field (Combo)" style="combo" size="5"
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C" prepend-blank="yes" hint="Partner field is hidden. Select 'Choice 2' to see it."/>
-            <field type="text" name="static_field" caption="Partner Field" default="Here I am!" hint="Partner field of Select Field (Combo)">
+            <field type="text" name="cond_text_field" required="yes" caption="Partner Field" default="Here I am!" hint="Partner field of Select Field (Combo)">
                 <conditional action="display" partner-field-name="sel_field_list" expression="control.selectedIndex == 2"/>
+                <conditional action="apply-flags" clear="yes" flags="required" is-true="java:!vc.getDialogState().isInitialEntry() &amp;&amp; !vc.fieldStates.getFieldState('sel_field_list').value.textValue.equals('B')"/>
             </field>
             <field type="boolean" name="checkbox_field" caption="Checkbox" style="check-alone" hint="Click me to see my hidden static field."/>
             <field type="static" caption="Static Field" name="static_field2" default="Checkbox checked!">
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
             </field>
-            <field type="text" name="text_field" caption="Text Field" hint="This field is only required when a request parameter named 'id' is available">
-                <conditional action="apply-flags" flags="required" has-value="request:id"/>
+            <field type="text" name="text_field" caption="Text Field" hint="This field is only required when a request parameter named 'blah' is available">
+                <conditional action="apply-flags" flags="required" has-value="request:blah"/>
             </field>
         </dialog>
 
