@@ -39,21 +39,22 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.11 2003-10-26 19:07:44 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.12 2004-04-12 22:36:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.exception.ValueException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Document;
+
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.exception.ValueException;
 
 public abstract class AbstractValue implements Value
 {
@@ -122,6 +123,18 @@ public abstract class AbstractValue implements Value
             default:
                 return null;
         }
+    }
+
+    public boolean getBooleanValue()
+    {
+        Object result = getValue();
+        if(result instanceof Boolean)
+            return ((Boolean) result).booleanValue();
+
+        if(result != null)
+            return TextUtils.toBoolean(result.toString());
+
+        return false;
     }
 
     public int getIntValue()

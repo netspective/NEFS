@@ -39,20 +39,21 @@
  */
 
 /**
- * $Id: PresentationValue.java,v 1.7 2004-02-11 21:11:04 aye.thu Exp $
+ * $Id: PresentationValue.java,v 1.8 2004-04-12 22:36:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.w3c.dom.Element;
 
 import com.netspective.commons.value.exception.ValueException;
-import org.w3c.dom.Element;
 
 public class PresentationValue implements Value
 {
@@ -200,6 +201,11 @@ public class PresentationValue implements Value
     public double getDoubleValue()
     {
         return value.getDoubleValue();
+    }
+
+    public boolean getBooleanValue()
+    {
+        return value.getBooleanValue();
     }
 
     public int getIntValue()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Value.java,v 1.6 2003-10-20 04:13:03 aye.thu Exp $
+ * $Id: Value.java,v 1.7 2004-04-12 22:36:07 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -48,8 +48,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.netspective.commons.value.exception.ValueException;
 import org.w3c.dom.Element;
+
+import com.netspective.commons.value.exception.ValueException;
 
 public interface Value
 {
@@ -101,6 +102,11 @@ public interface Value
      * Returns the value as text.
      */
     public String getTextValue();
+
+    /**
+     * Returns the value as a boolean
+     */
+    public boolean getBooleanValue();
 
     /**
      * Returns the value as an integer.
