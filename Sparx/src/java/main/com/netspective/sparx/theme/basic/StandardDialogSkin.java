@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.24 2003-09-14 05:33:00 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.25 2003-10-19 16:56:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -869,10 +869,8 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             includeJSList[i] = jsFileObj.getHref().getTextValue(dc);
         }
 
-        Theme theme = getTheme();
         if(includePreStyleSheets != null)
             writer.write(includePreStyleSheets);
-        writer.write("<link rel='stylesheet' href='" + theme.getResourceUrl("/css/dialog.css") + "'>\n");
         if(includePostStyleSheets != null)
             writer.write(includePostStyleSheets);
         if(prependPreScript != null)
