@@ -5,7 +5,6 @@
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Need to move error messages that occur in XDM parsing into Console too (instead of just stdout)
-* Need to add support for <client-js href="create-app-url:/resources/scripts/eimo.js"/> within <dialog> tag (used to be there in Sparx 2.3)
 * Need to add support for table dialogs (from Sparx 2.3)
 * Need to fix NPE when the first element of a NavigationTree path is not found (e.g. try http://xxx/console/home -- which does not exist)
 * Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
@@ -67,7 +66,7 @@ BUGS
 	at com.netspective.commons.value.PresentationValue.getTextValue(PresentationValue.java:219)
 	at com.netspective.commons.value.PresentationValue.getItems(PresentationValue.java:180)
 	at com.netspective.sparx.form.field.type.SelectField.renderControlHtml(SelectField.java:509)
-2. style="popup" doesn't  show the popup icon.
+2. style="popup" doesn't  show the popup icon. EASY FIX: The popup icon is missing in the theme folder! Do we have a new pretty icon??!!
 3. When choices attribute is set to a query that doesn't exist, an exception is thrown on the screen and the dialog isn't drawn.
 	java.lang.NullPointerException
 	at com.netspective.axiom.sql.Query.translateNameForMapKey(Query.java:168)
@@ -76,28 +75,11 @@ BUGS
 	at com.netspective.axiom.value.source.QueryResultsValueSource.getPresentationValue(QueryResultsValueSource.java:464)
 	at com.netspective.commons.value.source.AbstractValueSource.getPresentationItem(AbstractValueSource.java:100)
 	at com.netspective.sparx.form.field.type.SelectField.populateValue(SelectField.java:396)
+This problem was  made more 'user-friendly':
+    java.lang.RuntimeException: Unable to locate Query 'null' in SQL Manager
+but this still throws a RTE so the question is do we want to catch this and not show it on the screen or make the value
+source return an empty string???
 
-
-* DateTimeField: The default values are being displayed in the wrong format. For time type, it is still considering it a date type.
-
-* Conditionals: Error.
-java.lang.NullPointerException
-	at com.netspective.sparx.form.field.DialogField.finalizeContents(DialogField.java:794)
-	at com.netspective.sparx.form.Dialog.finalizeContents(Dialog.java:502)
-	at com.netspective.sparx.form.Dialog.createContext(Dialog.java:601)
-	at com.netspective.sparx.command.DialogCommand.handleCommand(DialogCommand.java:229)
-	at com.netspective.sparx.command.ValueSourceCommand.handleCommand(ValueSourceCommand.java:128)
-
-* client-js:
-1. Adding <client-js> to throws NPE
-	java.lang.NullPointerException
-        	at com.netspective.sparx.form.field.DialogField.addClientJs(DialogField.java:509)
-
-* Value source error:
-1. When using database related value sources (e.g query, query-col) and the SQL is not defined an exception is thrown:
-java.lang.AbstractMethodError: com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.createDataSource(Lcom/netspective/sparx/navigate/NavigationContext;)Lcom/netspective/commons/report/tabular/TabularReportDataSource;
-	at com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.render(AbstractHtmlTabularReportPanel.java:114)
-	at com.netspective.sparx.panel.HtmlLayoutPanel.render(HtmlLayoutPanel.java:196)
 
 
 
