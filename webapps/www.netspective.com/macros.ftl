@@ -31,7 +31,7 @@
             <td width=151 valign=bottom><img src="${resourcesPath}/images/products/frameworks/spacer-border-left.gif"/><table width=100% border="0" cellspacing="0" cellpadding="0">
                     <tr><td class="site-area-name">${activePage.primaryAncestor.getCaption(vc)}</td></tr>
                 </table></td>
-            <td width=443 class="tag-line" valign=bottom><p align=right>${activePage.tagLine}</p></td>
+            <td width=443 class="tag-line" valign=bottom><p align=right>${activePage.getHeading(vc)}</p></td>
         </tr>
     </table>
 
