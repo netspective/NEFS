@@ -39,15 +39,15 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.3 2003-03-16 21:39:28 shahid.shah Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.4 2003-04-06 23:49:58 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
 
 import java.io.IOException;
-import java.io.File;
 import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 import javax.naming.NamingException;
 
@@ -64,38 +64,129 @@ import com.netspective.commons.value.Value;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.SqlManagerComponent;
-import com.netspective.axiom.TestUtils;
-import com.netspective.axiom.ConnectionContext;
+import com.netspective.axiom.sql.collection.QueriesCollection;
+import com.netspective.axiom.sql.collection.QueriesPackage;
+import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
+import com.netspective.axiom.*;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 
 public class SqlManagerQueryTest extends TestCase
 {
     public static final String RESOURCE_NAME = "SqlManagerQueryTest.xml";
+	protected SqlManagerComponent component = null;
+	protected SqlManager manager = null;
 
-    public void testComponent() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
+	protected void setUp () throws Exception {
+		super.setUp();
+
+		component =
+		        (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SqlManagerQueryTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+		assertNotNull(component);
+
+		component.printErrorsAndWarnings();
+		assertEquals(0, component.getErrors().size());
+
+		manager = component.getManager();
+		assertEquals(3, manager.getQueries().size());
+		assertEquals(1, manager.getQueryDefns().size());
+	}
+
+	public void testQueriesObject()
+	{
+        QueriesCollection queries = (QueriesCollection) manager.getQueries();
+
+		String[] expectedQueryNames = new String[] { "test.statement-0", "test.statement-1", "statement-2" };
+		Set queryNames = queries.getNames();
+		assertEquals(expectedQueryNames.length, queryNames.size());
+
+		for (int i = 0; i < queries.size(); i ++)
+		{
+			Query q = queries.get(i);
+			assertEquals("statement-" + i, q.getName());
+			assertEquals(expectedQueryNames[i], q.getQualifiedName());
+			assertTrue(queryNames.contains(expectedQueryNames[i].toUpperCase()));
+		}
+
+		String[] expectedNsNames = new String[] { "test" };
+		Set nsNames = queries.getNameSpaceNames();
+		assertEquals(expectedNsNames.length, nsNames.size());
+
+		for (int i = 0; i < expectedNsNames.length; i ++)
+			assertTrue(nsNames.contains(expectedNsNames[i]));
+	}
+
+	public void testQueryNameSpaceObjects()
+	{
+		Query testStatement = manager.getQuery("test.statement-0");
+		assertNotNull(testStatement);
+		assertNull(testStatement.getParams());
+
+		QueriesPackage qPackage = (QueriesPackage) testStatement.getNameSpace();
+        Queries queries = qPackage.getContainer();
+
+		assertSame(manager.getQueries(), queries);
+	}
+
+	public void testQueryDefinitionsObject()
+	{
+        QueryDefinitionsCollection queryDefns = (QueryDefinitionsCollection) manager.getQueryDefns();
+
+		String[] expectedQueryDefnNames = new String[] { "query-defn-1" };
+		Set queryDefnNames = queryDefns.getNames();
+		assertEquals(expectedQueryDefnNames.length, queryDefnNames.size());
+
+		for (int i = 0; i < expectedQueryDefnNames.length; i ++)
+			assertEquals(expectedQueryDefnNames[i], queryDefns.get(i).getName());
+	}
+
+    public void testStmt0Validity() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
     {
-        SqlManagerComponent component =
-                (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SqlManagerQueryTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
-        assertNotNull(component);
+        Query testStatement = manager.getQuery("test.statement-0");
+        assertNotNull(testStatement);
+        assertNull(testStatement.getParams());
 
-        component.printErrorsAndWarnings();
-        assertEquals(0, component.getErrors().size());
+	    DbmsSqlTexts dbmsSqlTexts = testStatement.getSqlTexts();
+		String[] expectedDbmsIds = new String[] { "ansi", "oracle" };
+	    Set availableDbmsIds = dbmsSqlTexts.getAvailableDbmsIds();
 
-        SqlManager manager = component.getManager();
-        assertEquals(3, manager.getQueries().size());
+	    for (int i = 0; i < expectedDbmsIds.length; i ++)
+	        assertTrue(availableDbmsIds.contains(expectedDbmsIds[i]));
 
-        Query testStatement0 = manager.getQuery("test.statement-0");
-        assertNotNull(testStatement0);
-        assertNull(testStatement0.getParams());
+	    assertEquals("", dbmsSqlTexts.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql().trim());
 
+	    String sqlStatement = dbmsSqlTexts.getByDbmsId("oracle").getSql().trim();
+	    String[] sqlWords = TextUtils.split(sqlStatement, " \t\n", true);
+	    sqlStatement = TextUtils.join(sqlWords, " ", true);
+	    assertEquals("select * from test where column_a = 1 and column_b = 2 and column_c = 'this'", sqlStatement);
+    }
+
+    public void testStmt1Validity() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
+    {
         Query testStatement1 = manager.getQuery("test.statement-1");
         assertNotNull(testStatement1);
         assertNotNull(testStatement1.getParams());
         assertEquals(2, testStatement1.getParams().size());
 
+	    DbmsSqlTexts dbmsSqlTextsTwo = testStatement1.getSqlTexts();
+	    assertNull(dbmsSqlTextsTwo.getByDbmsId("oracle"));
+	    assertNotNull(dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT));
+
+	    String sqlStatement1 = dbmsSqlTextsTwo.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql();
+	    String[] sqlWords1 = TextUtils.split(sqlStatement1, " \t\n", true);
+	    sqlStatement1 = TextUtils.join(sqlWords1, " ", true);
+	    assertEquals("select * from test where column_a = ? and column_b in (${param-list:1}) and column_c = 'this'", sqlStatement1);
+
+	    QueryParameters testParams1 = testStatement1.getParams();
+        QueryParameter stmt1ColumnAParam = (QueryParameter) testParams1.get(0);
+	    QueryParameter stmt1ColumnBParam = (QueryParameter) testParams1.get(1);
+
+	    assertEquals("column_a", stmt1ColumnAParam.getName());
+	    assertEquals("column_b", stmt1ColumnBParam.getName());
+    }
+
+    public void testStmt2Validity() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
+    {
         Query statement2 = manager.getQuery("statement-2");
         assertNotNull(statement2);
         assertNotNull(statement2.getParams());
@@ -117,14 +208,51 @@ public class SqlManagerQueryTest extends TestCase
         dbvc.setConnectionProvider(TestUtils.connProvider);
         ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
 
+/*
         System.out.println(TextUtils.getUnindentedText(testStatement1.getSqlText(cc)));
         System.out.println(qds1.getQualifiedName());
         System.out.println(qds1.getSqlText(cc));
         System.out.println(component.getMetrics());
+*/
 
         ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-        Value value = vs.getValue(dbvc);
-        System.out.println(value.getListValue());
+//        Value value = vs.getValue(dbvc);
+//        System.out.println(value.getListValue());
+
+        String dtd = new XmlDataModelDtd().getDtd(component);
+        assertTrue(dtd != null);
+
+        //System.out.println(dtd);
+    }
+
+    public void testQueryDefnValidity() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
+    {
+        QueryDefinition qd1 = manager.getQueryDefinition("query-defn-1");
+        assertNotNull(qd1);
+
+        assertEquals(5, qd1.getFields().size());
+        assertEquals(5, qd1.getJoins().size());
+        assertEquals(1, qd1.getSelects().size());
+
+        QueryDefnSelect qds1 = qd1.getSelects().get("query-select-1");
+        assertNotNull(qds1);
+
+        System.out.println(TestUtils.connProvider.getDataSourceInfo(TestUtils.DATASRCID_DEFAULT).getConnUrl());
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.connProvider);
+        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+
+/*
+        System.out.println(TextUtils.getUnindentedText(testStatement1.getSqlText(cc)));
+        System.out.println(qds1.getQualifiedName());
+        System.out.println(qds1.getSqlText(cc));
+        System.out.println(component.getMetrics());
+*/
+
+        ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
+//        Value value = vs.getValue(dbvc);
+//        System.out.println(value.getListValue());
 
         String dtd = new XmlDataModelDtd().getDtd(component);
         assertTrue(dtd != null);
