@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-11 13:44:59 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-18 03:32:16 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -4024,6 +4024,31 @@
       <section>
         <title>Executing Ant Scripts From the Command Line</title>
 
+        <procedure>
+          <step>
+            <para>Make sure the JAVA_HOME environment variable is set to point
+            to the JDK folder.</para>
+          </step>
+
+          <step>
+            <para>Make sure the ANT_HOME environment variable is set to point
+            to the Ant folder.</para>
+          </step>
+
+          <step>
+            <para>Open command prompt or terminal window.</para>
+          </step>
+
+          <step>
+            <para>cd to the directory where your build.xml script
+            resides.</para>
+          </step>
+
+          <step>
+            <para>On Win32 type build and on UNIX type sh build.sh</para>
+          </step>
+        </procedure>
+
         <para>TODO: documentation coming soon...</para>
       </section>
 
@@ -7084,11 +7109,30 @@ public class Test1  extends com.netspective.sparx.form.Dialog
         <para>Now, the same steps with Axiom for the data management and Sparx
         for the presentation layer would become:</para>
 
-        <orderedlist>
-          <listitem>
-            <para>TODO: documentation coming soon...</para>
-          </listitem>
-        </orderedlist>
+        <procedure>
+          <step>
+            <para>Define a static query in XML</para>
+          </step>
+
+          <step>
+            <para>Create a connection-provider and data-source(s) as described
+            above in section 1</para>
+          </step>
+
+          <step>
+            <para>If needed define the data-src and/or presentation for the
+            query </para>
+          </step>
+
+          <step>
+            <para>Unit test query from console</para>
+          </step>
+
+          <step>
+            <para>Use the query from where you need it (ex. command, value
+            source, JSP, POJO)</para>
+          </step>
+        </procedure>
       </section>
 
       <section id="Creating-Query">
