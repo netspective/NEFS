@@ -44,7 +44,9 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
@@ -59,6 +61,8 @@ public class TextUtils
         return INSTANCE;
     }
 
+    public static final Map JAVA_RESERVED_WORD_TRANSLATION_MAP = new HashMap();
+
     public static final String[] BOOLEAN_CHOICES = new String[]
     {
         "yes", "no",
@@ -66,6 +70,61 @@ public class TextUtils
         "on", "off",
         "1", "0"
     };
+
+    static
+    {
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("abstract", "_abstract");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("boolean", "_boolean");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("break", "_break");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("byte", "_byte");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("case", "_case");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("catch", "_catch");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("char", "_char");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("class", "_class");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("const", "_const");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("continue", "_continue");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("default", "_default");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("do", "_do");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("double", "_double");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("else", "_else");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("extends", "_extends");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("false", "_false");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("final", "_final");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("finally", "_finally");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("float", "_float");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("for", "_for");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("goto", "_goto");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("if", "_if");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("implements", "_implements");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("import", "_import");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("instanceof", "_instanceof");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("int", "_int");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("interface", "_interface");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("long", "_long");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("native", "_native");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("new", "_new");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("null", "_null");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("package", "_package");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("private", "_private");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("protected", "_protected");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("public", "_public");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("return", "_return");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("short", "_short");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("static", "_static");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("strictfp", "_strictfp");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("super", "_super");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("switch", "_switch");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("synchronized", "_synchronized");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("this", "_this");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("throw", "_throw");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("throws", "_throws");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("transient", "_transient");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("true", "_true");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("try", "_try");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("void", "_void");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("volatile", "_volatile");
+        JAVA_RESERVED_WORD_TRANSLATION_MAP.put("while", "_while");
+    }
 
     /**
      * Return the name of the given cls that is different from the relativeTo class. Basically, this chops off the
@@ -372,6 +431,10 @@ public class TextUtils
     {
         if(xml == null || xml.length() == 0)
             return xml;
+
+        String translated = (String) JAVA_RESERVED_WORD_TRANSLATION_MAP.get(xml.toString().toLowerCase());
+        if(translated != null)
+            xml = translated;
 
         StringBuffer identifier = new StringBuffer();
         char ch = xml.charAt(0);
