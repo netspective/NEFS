@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.26 2003-09-13 23:03:40 shahid.shah Exp $
+ * $Id: Project.java,v 1.27 2003-09-14 05:34:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -72,6 +72,8 @@ import com.netspective.sparx.console.ConsoleManager;
 import com.netspective.sparx.console.ConsoleNavigationTree;
 import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceSessionScrollStates;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
@@ -192,6 +194,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
     private Themes themes = new Themes();
     private ValueSource defaultDataSource;
+    private HtmlTabularReportDataSourceScrollStates scrollStates = new HtmlTabularReportDataSourceSessionScrollStates();
 
     public Project()
     {
@@ -346,6 +349,16 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public TabularReport createTabularReport()
     {
         return new BasicHtmlTabularReport();
+    }
+
+    public HtmlTabularReportDataSourceScrollStates getScrollStates()
+    {
+        return scrollStates;
+    }
+
+    public void addScrollStates(HtmlTabularReportDataSourceScrollStates scrollStates)
+    {
+        this.scrollStates = scrollStates;
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
