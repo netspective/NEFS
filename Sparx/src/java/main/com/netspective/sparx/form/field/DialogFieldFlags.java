@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogFieldFlags.java,v 1.3 2003-09-11 04:23:12 aye.thu Exp $
+ * $Id: DialogFieldFlags.java,v 1.4 2003-10-29 13:29:13 shahid.shah Exp $
  */
 package com.netspective.sparx.form.field;
 
@@ -65,7 +65,8 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     // all these values are also defined in dialog.js (make sure they are always in sync)
     public static final int REQUIRED = 1;
     public static final int PRIMARY_KEY = REQUIRED * 2;
-    public static final int UNAVAILABLE = PRIMARY_KEY * 2;
+    public static final int PRIMARY_KEY_GENERATED = PRIMARY_KEY * 2;
+    public static final int UNAVAILABLE = PRIMARY_KEY_GENERATED * 2;
     public static final int READ_ONLY = UNAVAILABLE * 2;
     public static final int INITIAL_FOCUS = READ_ONLY * 2;
     public static final int PERSIST = INITIAL_FOCUS * 2;
@@ -90,6 +91,7 @@ public class DialogFieldFlags extends XdmBitmaskedFlagsAttribute
     {
         new FlagDefn(DialogFieldFlags.ACCESS_XDM, "REQUIRED", DialogFieldFlags.REQUIRED),
         new FlagDefn(DialogFieldFlags.ACCESS_XDM, "PRIMARY_KEY", DialogFieldFlags.PRIMARY_KEY),
+        new FlagDefn(DialogFieldFlags.ACCESS_XDM, "PRIMARY_KEY_GENERATED", DialogFieldFlags.PRIMARY_KEY_GENERATED),
         new FlagDefn(DialogFieldFlags.ACCESS_XDM, "UNAVAILABLE", DialogFieldFlags.UNAVAILABLE),
         new FlagDefn(DialogFieldFlags.ACCESS_XDM, "READ_ONLY", DialogFieldFlags.READ_ONLY),
         new FlagDefn(DialogFieldFlags.ACCESS_XDM, "INITIAL_FOCUS", DialogFieldFlags.INITIAL_FOCUS),

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: dialog.js,v 1.1 2003-08-22 14:29:40 shahid.shah Exp $
+ * $Id: dialog.js,v 1.2 2003-10-29 13:29:13 shahid.shah Exp $
  */
 
  /**
@@ -260,7 +260,8 @@ function setActiveDialog(dialog)
 
 var FLDFLAG_REQUIRED                           = 1;
 var FLDFLAG_PRIMARYKEY                         = FLDFLAG_REQUIRED * 2;
-var FLDFLAG_INVISIBLE                          = FLDFLAG_PRIMARYKEY * 2;
+var FLDFLAG_PRIMARYKEY_GENERATED               = FLDFLAG_PRIMARYKEY * 2;
+var FLDFLAG_INVISIBLE                          = FLDFLAG_PRIMARYKEY_GENERATED * 2;
 var FLDFLAG_READONLY                           = FLDFLAG_INVISIBLE * 2;
 var FLDFLAG_INITIAL_FOCUS                      = FLDFLAG_READONLY * 2;
 var FLDFLAG_PERSIST                            = FLDFLAG_INITIAL_FOCUS * 2;

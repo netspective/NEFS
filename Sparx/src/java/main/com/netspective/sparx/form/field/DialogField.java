@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.43 2003-10-26 19:08:26 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.44 2003-10-29 13:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -222,16 +222,22 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
 
             switch((int) dc.getPerspectives().getFlags())
             {
+                case DialogPerspectives.ADD:
+                    // when in "add" mode, auto generated primary keys should not be on the form
+                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY_GENERATED))
+                        stateFlags.setFlag(DialogFieldFlags.UNAVAILABLE);
+                    break;
+
                 case DialogPerspectives.EDIT:
                     // when in "edit" mode, the primary key should be read-only
-                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY))
+                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY | DialogFieldFlags.PRIMARY_KEY_GENERATED))
                         stateFlags.setFlag(DialogFieldFlags.READ_ONLY);
                     break;
 
                 case DialogPerspectives.CONFIRM:
                 case DialogPerspectives.DELETE:
                 case DialogPerspectives.PRINT:
-                    // when in "delete" mode, all the fields should be read-only
+                    // when any of these modes, all the fields should be read-only
                     stateFlags.setFlag(DialogFieldFlags.READ_ONLY);
                     break;
             }
