@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.20 2003-08-22 14:34:08 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.21 2003-08-29 14:27:45 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -561,7 +561,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
         String imageUrl = popup.getImageSrc().getTextValue(dc);
         if(imageUrl == null)
-            imageUrl = getTheme().getResourceUrl("/images/popup.gif");
+            imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
 
         return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "'></a>&nbsp;";
 
