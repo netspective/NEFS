@@ -144,7 +144,7 @@ public abstract class TestCase extends junit.framework.TestCase
         final File dotDestFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".dot");
         final File diagramFile = new File(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".png");
         final GraphvizDiagramGenerator diagrammer = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
-        final HibernateDiagramGeneratorFilter filter = new HibernateDiagramFilter();
+        final HibernateDiagramGeneratorFilter filter = new HibernateDiagramFilter(true);
         final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(hibernateConfiguration, diagrammer, filter);
         hdg.generate();
         diagrammer.generateDOTSource(dotDestFile);

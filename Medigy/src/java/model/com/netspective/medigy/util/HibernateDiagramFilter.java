@@ -1,6 +1,8 @@
 package com.netspective.medigy.util;
 
 import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -20,11 +22,25 @@ import com.netspective.medigy.model.session.Session;
 
 public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 {
+    private Set commonColumns = new HashSet();
+    private boolean hideCommonColumns;
     private final HibernateDiagramTableNodeGenerator tableDataNodeGenerator = new HibernateDiagramReferenceTableNodeGenerator("enum");
     private final HibernateDiagramTableNodeGenerator tableStructureNodeGenerator = new HibernateDiagramTableStructureNodeGenerator("app");
 
-    public HibernateDiagramFilter()
+    public HibernateDiagramFilter(boolean hideCommonColumns)
     {
+        this.hideCommonColumns = hideCommonColumns;
+        commonColumns.add("version");
+        commonColumns.add("create_timestamp");
+        commonColumns.add("update_timestamp");
+        commonColumns.add("record_status");
+        commonColumns.add("create_session_id");
+        commonColumns.add("update_session_id");
+    }
+
+    public Set getCommonColumns()
+    {
+        return commonColumns;
     }
 
     public void formatForeignKeyEdge(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, final GraphvizDiagramEdge edge)
@@ -63,15 +79,14 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public boolean includeColumnInDiagram(final HibernateDiagramGenerator generator, final Column column)
     {
-        return true;
+        if(!hideCommonColumns)
+            return true;
+
+        return ! commonColumns.contains(column.getName());
     }
 
     public boolean includeForeignKeyEdgeInDiagram(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
-        // too many pointers to this table will make the diagram unreadable.
-        if(Session.class.isAssignableFrom(generator.getClassForTable(foreignKey.getReferencedTable()).getMappedClass()))
-            return false;
-
         return true;
     }
 }

@@ -176,10 +176,19 @@ public class HibernateDiagramGenerator
             final Table table = (Table) pclass.getTable();
             if(includedTables.contains(table))
             {
+                FOREIGN_KEY:
                 for(final Iterator fKeys = table.getForeignKeyIterator(); fKeys.hasNext(); )
                 {
                     final ForeignKey foreignKey = (ForeignKey) fKeys.next();
-                    if(filter.includeForeignKeyEdgeInDiagram(this, foreignKey) && includedTables.contains(foreignKey.getReferencedTable()))
+                    for(Iterator fKeyCols = foreignKey.getColumnIterator(); fKeyCols.hasNext(); )
+                    {
+                        final Column fKeyCol = (Column) fKeyCols.next();
+                        if(! filter.includeColumnInDiagram(this, fKeyCol))
+                            continue FOREIGN_KEY;
+                    }
+
+                    if(filter.includeForeignKeyEdgeInDiagram(this, foreignKey) &&
+                       includedTables.contains(foreignKey.getReferencedTable()))
                     {
                         final HibernateDiagramTableNodeGenerator sourceTableNodeGenerator = filter.getTableNodeGenerator(this, pclass);
                         final HibernateDiagramTableNodeGenerator refTableNodeGenerator = filter.getTableNodeGenerator(this, getClassForTable(foreignKey.getReferencedTable()));
