@@ -82,7 +82,7 @@ import java.util.Map;
 
 /**
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.1 2004-07-08 02:42:53 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.2 2004-08-03 23:11:04 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -94,6 +94,8 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
     /* flag indicating whether or not to display all the field errors at the top of the dialog */
     private boolean summarizeErrors;
+
+    private String dialogTableStyleClass = null;
 
     /* CSS class name for the block representing the field (this includes the caption and the input) */
     private String fieldBlockStyleClass = null;
@@ -188,6 +190,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      */
     protected void initializeStyles()
     {
+        dialogTableStyleClass = "dialog";
         fieldCaptionStyleClass = "dialog-field-caption";
         fieldCaptionRequiredStyleClass = "dialog-field-caption-required";
         fieldBlockStyleClass = "dialog-field-block";
@@ -215,6 +218,16 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         gridRowCaptionStyleClass = "dialog-field-grid-row-caption";
         gridTableStyleClass = "dialog-field-grid-table";
         captionSuffix = "";
+    }
+
+    public String getDialogTableStyleClass()
+    {
+        return dialogTableStyleClass;
+    }
+
+    public void setDialogTableStyleClass(String dialogTableStyleClass)
+    {
+        this.dialogTableStyleClass = dialogTableStyleClass;
     }
 
     /**
@@ -1123,10 +1136,10 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if ((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
             renderFrameBegin(writer, dc);
-            writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table class=\"" + getDialogTableStyleClass() +"\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
-            writer.write("    <table id=\"" + dc.getPanel().getPanelIdentifier() + "_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table id=\"" + dc.getPanel().getPanelIdentifier() + "_content\" class=\"" + getDialogTableStyleClass() + "\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
         List fieldErrorMsgs = new ArrayList();
         List dlgErrorMsgs = dc.getValidationContext().getValidationErrorsForScope(ValidationContext.VALIDATIONSCOPE_ENTIRE_CONTEXT);
@@ -1674,47 +1687,70 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      */
     public String generatePopupHtml(DialogContext dc, DialogField field)
     {
-        DialogFieldPopup popup = field.getPopup();
-        if (popup == null)
+       DialogFieldPopup[] popup = field.getPopups();
+
+        if (popup == null || popup.length == 0)
             return null;
-        // generate the Javascript definition for the popup field
-        String expression = "new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
-                "', '" + popup.getAction().getTextValueOrBlank(dc) + "', '" + popup.getWindowClass() + "', " + popup.isCloseAfterSelect() +
-                ", " + popup.isAllowMulti();
-        // get the dialog fields that the popup is supposed to fill in
-        String[] fillFields = popup.getFill();
 
-        StringBuffer expr = new StringBuffer(expression);
-        expr.append(", new Array(");
-        for (int i = 0; i < fillFields.length; i++)
+        StringBuffer html = new StringBuffer();
+        StringBuffer expression = null;
+        for (int i=0; i < popup.length; i++)
         {
-            expr.append("'" + fillFields[i] + (i < fillFields.length - 1 ? "', " : "'"));
-        }
-        expr.append(")");
-        expression = expr.toString();
+            expression = new StringBuffer("new DialogFieldPopup('" + dc.getDialog().getHtmlFormName() + "', '" + field.getQualifiedName() +
+                "', '" + popup[i].getAction().getTextValueOrBlank(dc) + "', '" + popup[i].getWindowClass() + "', " + popup[i].isCloseAfterSelect() +
+                ", " + popup[i].isAllowMulti() + ", ");
 
-        String[] extractFields = popup.getExtract();
-        // append the list of extract fields if they exist
-        if (extractFields != null && extractFields.length > 0)
-        {
-            StringBuffer buf = new StringBuffer(expression);
-            buf.append(", new Array(");
-            for (int i = 0; i < extractFields.length; i++)
+            StringBuffer tmpBuffer = new StringBuffer();
+            String[] fillFields = popup[i].getFill();
+            if (fillFields != null && fillFields.length > 0)
             {
-                buf.append("'" + extractFields[i] + (i < extractFields.length - 1 ? "', " : "'"));
+                tmpBuffer.append("new Array(");
+                for (int k = 0; k < fillFields.length; k++)
+                    tmpBuffer.append("'" + fillFields[k] + (k < fillFields.length - 1 ? "', " : "'"));
+                tmpBuffer.append(")");
             }
-            buf.append(")");
-            expression = buf.toString();
+            else
+                tmpBuffer.append("null");
+            expression.append(tmpBuffer.toString() + ", ");
+
+            tmpBuffer = new StringBuffer();
+            String[] extractFields = popup[i].getExtract();
+            // append the list of extract fields if they exist
+            if (extractFields != null && extractFields.length > 0)
+            {
+                tmpBuffer.append("new Array(");
+                for (int k = 0; k < extractFields.length; k++)
+                {
+                    tmpBuffer.append("'" + extractFields[k] + (k < extractFields.length - 1 ? "', " : "'"));
+                }
+                tmpBuffer.append(")");
+            }
+            else
+                tmpBuffer.append("null");
+            expression.append(tmpBuffer.toString() + ", ");
+
+            // append evaluation script
+            if (popup[i].getPreActionScript() != null)
+                expression.append("'" + popup[i].getPreActionScript() +  "'");
+            else
+                expression.append("null");
+            expression.append(")");
+
+            if (popup[i].getStyle().getValueIndex() == DialogFieldPopup.Style.TEXT)
+            {
+                html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +
+                    ";return false;\">"+  popup[i].getStyleText().getTextValue(dc) + "</a>&nbsp;");
+            }
+            else
+            {
+                String imageUrl = popup[i].getImageSrc().getTextValue(dc);
+                if (imageUrl == null)
+                    imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
+                html.append("&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression +
+                    ";return false;\"><img border='0' src='" + imageUrl + "' alt='pop-up'></a>&nbsp;");
+            }
         }
-        expression += ")";
-
-        // get the image for the popup
-        String imageUrl = popup.getImageSrc().getTextValue(dc);
-        if (imageUrl == null)
-            imageUrl = getTheme().getResourceUrl("/images/panel/input/content-popup.gif");
-
-        return "&nbsp;<a href='' style='cursor:hand;' onclick=\"javascript:" + expression + ";return false;\"><img border='0' src='" + imageUrl + "'></a>&nbsp;";
-
+        return html.toString();
     }
 
     /**
