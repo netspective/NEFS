@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.29 2003-10-22 19:04:13 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.30 2003-10-24 03:27:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -612,7 +612,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
                         {
                             // we want to redirect back to the home page of the navigation tree so that the proper tree
                             // will be picked up by the createContext() method
-                            nc.getHttpResponse().sendRedirect(userTree.getHomePage().getUrl(nc));
+                            ncUser.redirectToUserTree(nc);
                             return;
                         }
                     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerAuthenticatedUser.java,v 1.2 2003-10-22 19:06:19 shahid.shah Exp $
+ * $Id: NavigationControllerAuthenticatedUser.java,v 1.3 2003-10-24 03:27:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -68,4 +68,13 @@ public interface NavigationControllerAuthenticatedUser
      *         assigned by the NavigationController should be used.
      */
     public NavigationTree getUserSpecificNavigationTree(NavigationControllerServlet ncServlet, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
+
+    /**
+     * This method is called from a navigation controller if a user has recently logged in and needs to redirect to the
+     * proper tree. Since the old (invalid) NavigationContext is available, it is passed and may be used to redirect a
+     * user to the proper location. Once this method is called, all other processing for the current request stops. The
+     * usual job for this method is to call nc.getHttpResponse().sendRedirect(something);
+     * @param nc The NavigationContext which led to the invalid tree being used
+     */
+    public void redirectToUserTree(NavigationContext nc);
 }
