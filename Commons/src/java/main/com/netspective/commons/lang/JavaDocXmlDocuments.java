@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JavaDocXmlDocuments.java,v 1.1 2003-06-14 22:17:06 shahid.shah Exp $
+ * $Id: JavaDocXmlDocuments.java,v 1.2 2003-06-15 20:30:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -55,6 +55,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.discovery.tools.DiscoverSingleton;
@@ -72,14 +73,26 @@ public class JavaDocXmlDocuments
 
     private Map javaDocsByClass = new HashMap();
 
+    /**
+     * Return the DOM document that represents the output from JavaDoc for the given class. The XML file is located
+     * using Java resource loading mechanism using the following search order:
+     * <ol>
+     *      <li>Looks for fully qualified name (FQN) of class plus ".xml" (x.y.z.xml)
+     *      <li>Looks for java-doc-xml/x.y.z.xml
+     *      <li>Looks for resources/java-doc-xml/x.y.z.xml
+     * </ol>
+     * @param cls
+     * @return The DOM document for the given class or null if x.y.z.xml resource could not be located.
+     * @throws IOException
+     */
     public Document getClassJavaDoc(Class cls) throws IOException
     {
         Document javaDoc = (Document) javaDocsByClass.get(cls);
         if(javaDoc != null)
             return javaDoc;
 
-        String javaDocXmlFileName = ("java-doc-xml/" + cls.getName() + ".xml").replace('$', '.');
-        URL javaDocUrl = ResourceLoader.getResource(javaDocXmlFileName);
+        String javaDocXmlFileName = (cls.getName() + ".xml").replace('$', '.');
+        URL javaDocUrl = ResourceLoader.getResource(new String[] { javaDocXmlFileName, "java-doc-xml/" + javaDocXmlFileName, "resources/java-doc-xml/" + javaDocXmlFileName });
         if(javaDocUrl != null)
         {
             InputStream is = javaDocUrl.openStream();
@@ -104,6 +117,34 @@ public class JavaDocXmlDocuments
         }
 
         return javaDoc;
+    }
+
+    public String getClassOrInterfaceDescription(Class cls)
+    {
+        try
+        {
+            Document javaDoc = getClassJavaDoc(cls);
+            if(javaDoc == null)
+                return "JavaDoc XML not found for " + cls;
+
+            String result = "";
+
+            Node descrLeadNode = XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "/*/description/lead");
+            Node descrDetailNode = XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "/*/description/detail");
+
+            if(descrLeadNode != null)
+                result += descrLeadNode.getFirstChild().getNodeValue();
+
+            if(descrDetailNode != null)
+                result += descrDetailNode.getFirstChild().getNodeValue();
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            log.error("Error retrieving description for " + cls, e);
+            return e.getMessage();
+        }
     }
 
     public String getMethodDescription(Class cls, String methodName)
@@ -132,7 +173,17 @@ public class JavaDocXmlDocuments
                 return result;
             }
             else
-                return "JavaDoc for method " + methodName + " not found using " + mutatorDocNodeXPathExpr;
+            {
+                Element superClassDocElem = (Element) XPathAPI.selectSingleNode(javaDoc.getDocumentElement(), "//superclass");
+                if(superClassDocElem != null)
+                {
+                    String superClassName = superClassDocElem.getAttribute("inPackage") + "." +
+                                            superClassDocElem.getAttribute("name");
+                    return getMethodDescription(Class.forName(superClassName), methodName);
+                }
+                else
+                    return "JavaDoc for method " + methodName + " not found using " + mutatorDocNodeXPathExpr;
+            }
         }
         catch (Exception e)
         {

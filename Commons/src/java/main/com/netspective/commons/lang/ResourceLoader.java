@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ResourceLoader.java,v 1.1 2003-06-14 22:17:06 shahid.shah Exp $
+ * $Id: ResourceLoader.java,v 1.2 2003-06-15 20:30:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -98,5 +98,23 @@ public class ResourceLoader
         // loader which the parent of the system class loader. Hence the
         // code below.
         return ClassLoader.getSystemResource(resource);
+    }
+
+    /**
+     * Find the first resource in the list and return the URL to it.
+     * @param resources The list of different resource names to try
+     * @return The URL for the first resource found or NULL if resource could not be located
+     */
+    public static URL getResource(String[] resources)
+    {
+        for(int i = 0; i < resources.length; i++)
+        {
+            String resource = resources[i];
+            URL result = getResource(resource);
+            if(result != null)
+                return result;
+        }
+
+        return null;
     }
 }

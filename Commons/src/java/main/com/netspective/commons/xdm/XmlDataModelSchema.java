@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.16 2003-06-14 22:17:06 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.17 2003-06-15 20:30:47 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -134,6 +134,8 @@ public class XmlDataModelSchema
         private Map aliases = new HashMap();
         private Set ignoreNestedElements = new HashSet();
         private Set ignoreAttributes = new HashSet();
+        private Set requiredAttributes = new HashSet();
+        private Set requiredNestedElements = new HashSet();
 
         public Options()
         {
@@ -147,6 +149,8 @@ public class XmlDataModelSchema
             aliases.putAll(copy.aliases);
             ignoreNestedElements.addAll(copy.ignoreNestedElements);
             ignoreAttributes.addAll(copy.ignoreAttributes);
+            requiredAttributes.addAll(copy.requiredAttributes);
+            requiredNestedElements.addAll(copy.requiredNestedElements);
         }
 
         public void setPropertyNames(PropertyNames propertyNames)
@@ -187,6 +191,16 @@ public class XmlDataModelSchema
             return ignoreNestedElements;
         }
 
+        public Set getRequiredAttributes()
+        {
+            return requiredAttributes;
+        }
+
+        public Set getRequiredNestedElements()
+        {
+            return requiredNestedElements;
+        }
+
         public boolean isIgnorePcData()
         {
             return ignorePcData;
@@ -220,6 +234,32 @@ public class XmlDataModelSchema
         {
             for(int i = 0; i < ignoreElementsList.length; i++)
                 ignoreNestedElements.add(ignoreElementsList[i]);
+            return this;
+        }
+
+        public Options setRequiredAttributes(Set requiredAttributes)
+        {
+            this.requiredAttributes = requiredAttributes;
+            return this;
+        }
+
+        public Options setRequiredNestedElements(Set requiredNestedElements)
+        {
+            this.requiredNestedElements = requiredNestedElements;
+            return this;
+        }
+
+        public Options addRequiredAttributes(String[] requiredAttributesList)
+        {
+            for(int i = 0; i < requiredAttributesList.length; i++)
+                requiredAttributes.add(requiredAttributesList[i]);
+            return this;
+        }
+
+        public Options addRequiredNestedElements(String[] requiredElementsList)
+        {
+            for(int i = 0; i < requiredElementsList.length; i++)
+                requiredNestedElements.add(requiredElementsList[i]);
             return this;
         }
 
@@ -378,6 +418,15 @@ public class XmlDataModelSchema
         return propertyNames;
     }
 
+    /**
+     * Gets the description of the bean represented by this Schema by using the runtime JavaDoc XML resources.
+     * @return The description of the class provided in the JavaDoc XML
+     */
+    public String getDescription()
+    {
+        return JavaDocXmlDocuments.getInstance().getClassOrInterfaceDescription(getBean());
+    }
+
     public class AttributeDetail
     {
         private String attrName;
@@ -385,11 +434,13 @@ public class XmlDataModelSchema
         private String primaryFlagsAttrName;
         private XdmBitmaskedFlagsAttribute flags;
         private XdmBitmaskedFlagsAttribute.FlagDefn flagAlias;
+        private boolean required;
 
         public AttributeDetail(String name) throws DataModelException
         {
             this.attrName = name;
             this.attrType = getAttributeType(name);
+            this.required = getOptions().getRequiredAttributes().contains(name);
         }
 
         public AttributeDetail(String name, XdmBitmaskedFlagsAttribute flags)
@@ -397,6 +448,7 @@ public class XmlDataModelSchema
             this.attrName = name;
             this.attrType = flags.getClass();
             this.flags = flags;
+            this.required = getOptions().getRequiredAttributes().contains(name);
         }
 
         public AttributeDetail(String name, String primaryFlagsAttrName, XdmBitmaskedFlagsAttribute flags, XdmBitmaskedFlagsAttribute.FlagDefn flagAlias)
@@ -406,11 +458,20 @@ public class XmlDataModelSchema
             this.primaryFlagsAttrName = primaryFlagsAttrName;
             this.flags = flags;
             this.flagAlias = flagAlias;
+            this.required = getOptions().getRequiredAttributes().contains(name);
+        }
+
+        public boolean isRequired()
+        {
+            return required;
         }
 
         public String getDescription()
         {
-            return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
+            if(isFlagAlias())
+                return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(primaryFlagsAttrName, true));
+            else
+                return JavaDocXmlDocuments.getInstance().getMethodDescription(getBean(), "set"+ TextUtils.xmlTextToJavaIdentifier(attrName, true));
         }
 
         public boolean isFlagsPrimary()
@@ -520,13 +581,16 @@ public class XmlDataModelSchema
             else
                 bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
 
-            flagSetterPrimaries.put(attrName, bfa);
-            Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
-            for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+            if(bfa != null)
             {
-                String xmlNodeName = (String) xmliter.next();
-                if(! childPropertyNames.containsKey(xmlNodeName))
-                    flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+                flagSetterPrimaries.put(attrName, bfa);
+                Map xmlNodeNames = bfa.getFlagSetterXmlNodeNames();
+                for(Iterator xmliter = xmlNodeNames.keySet().iterator(); xmliter.hasNext(); )
+                {
+                    String xmlNodeName = (String) xmliter.next();
+                    if(! childPropertyNames.containsKey(xmlNodeName))
+                        flagSetterAliases.put(xmlNodeName, new Object[] { attrName, bfa, xmlNodeNames.get(xmlNodeName) });
+                }
             }
         }
 
