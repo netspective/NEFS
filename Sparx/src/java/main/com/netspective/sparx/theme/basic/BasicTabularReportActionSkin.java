@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabularReportActionSkin.java,v 1.2 2004-06-23 15:13:50 aye.thu Exp $
+ * $Id: BasicTabularReportActionSkin.java,v 1.3 2004-06-23 15:20:17 aye.thu Exp $
  */
 package com.netspective.sparx.theme.basic;
 
@@ -68,7 +68,6 @@ import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.HtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.BasicSelectActionHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
@@ -83,7 +82,7 @@ import com.netspective.sparx.navigate.NavigationContext;
  * when at least one of the checkboxes are checked, the button action will be submitted. The value
  * associated with the checkbox is only the value of the first column of the report. Once the report is
  * "submitted", the selected checkboxes can be retrieved using the
- * {@link HtmlReportActions#getSelectedItems(com.netspective.sparx.navigate.NavigationContext) HtmlReportActions.getSelectedItems}
+ * {@link #getSelectedItems(com.netspective.sparx.navigate.NavigationContext) getSelectedItems}
  * method.
  *
  *
@@ -102,7 +101,7 @@ public class BasicTabularReportActionSkin extends BasicHtmlTabularReportPanelSki
 
     public void render(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        BasicSelectActionHtmlTabularReport report = (BasicSelectActionHtmlTabularReport) rc.getReport();
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport) rc.getReport();
         HtmlReportActions actions = report.getActions();
         StringBuffer reportActionHtml = new StringBuffer();
         if (actions != null)
