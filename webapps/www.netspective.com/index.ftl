@@ -33,7 +33,7 @@
                             </tr>
 
                             <tr>
-                                <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="#"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
+                                <td><a onmouseover="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact-over.gif');return true" onmouseout="changeImages( /*CMP*/'home_31',/*URL*/'${resourcesPath}/images/home/fact.gif');return true" href="${resourcesPath}/nefs-fact-sheet.pdf"><img name="home_31" src="${resourcesPath}/images/home/fact.gif" width="116" height="22" border="0" alt=""></a></td>
                             </tr>
                         </tbody></table></td>
                     <td>
