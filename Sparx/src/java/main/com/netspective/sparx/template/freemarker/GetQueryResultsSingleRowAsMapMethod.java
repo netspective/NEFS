@@ -53,6 +53,12 @@ import freemarker.template.TemplateModelException;
 public class GetQueryResultsSingleRowAsMapMethod implements TemplateMethodModel
 {
     private static final Log log = LogFactory.getLog(GetQueryResultsSingleRowAsMapMethod.class);
+    private final boolean useLabelAsKey;
+
+    public GetQueryResultsSingleRowAsMapMethod(boolean useLabelAsKey)
+    {
+        this.useLabelAsKey = useLabelAsKey;
+    }
 
     public Object exec(List args) throws TemplateModelException
     {
@@ -92,7 +98,7 @@ public class GetQueryResultsSingleRowAsMapMethod implements TemplateMethodModel
             QueryResultSet qrs = query.execute(vc, params, false);
             if(qrs != null)
             {
-                map = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet());
+                map = ResultSetUtils.getInstance().getResultSetSingleRowAsMap(qrs.getResultSet(), useLabelAsKey);
                 qrs.close(true);
             }
             if(map == null)

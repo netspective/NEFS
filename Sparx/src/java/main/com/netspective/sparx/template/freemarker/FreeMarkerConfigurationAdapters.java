@@ -119,8 +119,10 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
         configuration.setSharedVariable("getQueryResultSet", new GetQueryResultSetMethod());
         configuration.setSharedVariable("getQueryResultsAsMatrix", new GetQueryResultsAsMatrixMethod());
-        configuration.setSharedVariable("getQueryResultsAsMapArray", new GetQueryResultsAsMapArrayMethod());
-        configuration.setSharedVariable("getQueryResultsSingleRowAsMap", new GetQueryResultsSingleRowAsMapMethod());
+        configuration.setSharedVariable("getQueryResultsAsMapArray", new GetQueryResultsAsMapArrayMethod(false));
+        configuration.setSharedVariable("getQueryResultsAsMapArrayWithLabelAsKey", new GetQueryResultsAsMapArrayMethod(true));
+        configuration.setSharedVariable("getQueryResultsSingleRowAsMap", new GetQueryResultsSingleRowAsMapMethod(false));
+        configuration.setSharedVariable("getQueryResultsSingleRowAsMapWithLabelAsKey", new GetQueryResultsSingleRowAsMapMethod(true));
         configuration.setSharedVariable("getFileContentsSyntaxHighlighted", new GetFileContentsSyntaxHighlightedMethod());
         configuration.setSharedVariable("panel", new PanelTransform());
         configuration.setSharedVariable("command", new CommandTransform());

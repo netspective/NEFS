@@ -53,6 +53,13 @@ public class GetQueryResultsAsMapArrayMethod implements TemplateMethodModel
 {
     private static final Log log = LogFactory.getLog(GetQueryResultsAsMapArrayMethod.class);
 
+    private final boolean useLabelAsKey;
+
+    public GetQueryResultsAsMapArrayMethod(boolean useLabelAsKey)
+    {
+        this.useLabelAsKey = useLabelAsKey;
+    }
+
     public Object exec(List args) throws TemplateModelException
     {
         if(args.size() < 1)
@@ -91,7 +98,7 @@ public class GetQueryResultsAsMapArrayMethod implements TemplateMethodModel
             QueryResultSet qrs = query.execute(vc, params, false);
             if(qrs != null)
             {
-                mapArray = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet());
+                mapArray = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), useLabelAsKey);
                 qrs.close(true);
             }
             if(mapArray == null)
