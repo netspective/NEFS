@@ -27,7 +27,8 @@
         <echo message="Default Schema is '${app.database.schema.default-name}'"/>
     </target>
 
-    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants.">
+    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the Classes home/app/id directory first before generating identifiers.">
+        <delete dir="${app.WEB-INF.classes.path}/app/id"/>
         <sparx action="generate-id-constants"
                projectFile="${sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
