@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.24 2003-08-31 02:01:16 aye.thu Exp $
+ * $Id: NavigationControllerServlet.java,v 1.25 2003-08-31 15:57:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -84,7 +84,6 @@ import com.netspective.commons.io.MultipleUriAddressableFileLocators;
 import com.netspective.commons.io.UriAddressableFileLocator;
 import com.netspective.commons.io.UriAddressableInheritableFileResource;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.HttpLoginManagers;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -117,7 +116,6 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private Properties executionProperties;
     private long initializationCount;
     private boolean initCountWritten;
-    private boolean handleCommandOnly;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
