@@ -4,7 +4,7 @@
   <component name="NewModuleRootManager">
     <output url="file://C:/Projects/Frameworks/webapps/nefs-sample-medigy/WEB-INF/classes" />
     <content url="file://C:/Projects/Frameworks/webapps/nefs-sample-medigy">
-      <sourceFolder url="file://C:/Projects/Frameworks/webapps/nefs-sample-medigy/WEB-INF/classes" isTestSource="false" />
+      <sourceFolder url="file://C:/Projects/Frameworks/webapps/nefs-sample-medigy/WEB-INF/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -21,6 +21,15 @@
     <orderEntry type="library" name="Axiom Redistributables" level="project" />
     <orderEntry type="library" name="Commons Redistributables" level="project" />
     <orderEntry type="library" name="Sparx Redistributables" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Projects/Frameworks/webapps/nefs-sample-medigy/WEB-INF/lib/nefs-sample-medigy-auto.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
   <component name="WebModuleBuildComponent">
     <setting name="EXPLODED_URL" value="file://" />
@@ -65,6 +74,14 @@
         </key>
         <value predicate="higherLibrary" level="project" libraryName="Sparx Redistributables" />
       </pairs>
+      <pairs>
+        <key>
+          <option name="value" value="6" />
+        </key>
+        <value predicate="moduleLibrary">
+          <url>jar://C:/Projects/Frameworks/webapps/nefs-sample-medigy/WEB-INF/lib/nefs-sample-medigy-auto.jar!/</url>
+        </value>
+      </pairs>
     </orderEntriesWatcher>
     <order-entry-info>
       <info>
@@ -106,6 +123,15 @@
       <info>
         <key>
           <option name="value" value="4" />
+        </key>
+        <value>
+          <setting name="copy" value="false" />
+          <setting name="URI" value="" />
+        </value>
+      </info>
+      <info>
+        <key>
+          <option name="value" value="6" />
         </key>
         <value>
           <setting name="copy" value="false" />

@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4" relativePaths="true">
   <component name="AntConfiguration">
-    <buildFile url="file://$PROJECT_DIR$/../../../tools/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/../../docs/build.xml">
       <useEmacsModeOutput value="true" />
       <maximumHeapSize value="128" />
       <useCustomJdk value="false" />
       <useJavaw value="false" />
       <includeProjectClasspath value="false" />
+      <includeParser value="true" />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../../webapps/nefs-sample-medigy/WEB-INF/sparx/conf/ant-build-project.xml">
+      <useEmacsModeOutput value="true" />
+      <maximumHeapSize value="128" />
+      <useCustomJdk value="false" />
+      <useJavaw value="false" />
+      <includeProjectClasspath value="true" />
       <includeParser value="true" />
     </buildFile>
   </component>
@@ -99,14 +107,16 @@
     <option name="ADDITIONAL_OPTIONS_STRING" value="" />
   </component>
   <component name="Monitor.Log4jWindowPlugin">
-    <option name="tree.default.font.size" value="8" />
     <option name="table.default.font.family" value="Lucida Sans Typewriter" />
+    <option name="tree.default.font.size" value="8" />
     <option name="tree.default.font.family" value="Tahoma" />
     <option name="table.default.font.size" value="10" />
   </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NEFS.iml" filepath="$PROJECT_DIR$/NEFS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NEFS Medigy.iml" filepath="$PROJECT_DIR$/NEFS Medigy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NEFS PetStore.iml" filepath="$PROJECT_DIR$/NEFS PetStore.iml" />
       <module fileurl="file://$PROJECT_DIR$/NEFS Sampler.iml" filepath="$PROJECT_DIR$/NEFS Sampler.iml" />
     </modules>
   </component>

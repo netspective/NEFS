@@ -2,9 +2,9 @@
 <module version="4" relativePaths="false" type="J2EE_WEB_MODULE">
   <component name="ModuleRootManager" />
   <component name="NewModuleRootManager">
-    <output url="file://$MODULE_DIR$/WEB-INF/classes" />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/WEB-INF/classes" isTestSource="false" />
+    <output url="file://C:/Projects/Frameworks/webapps/nefs-sample-petstore/WEB-INF/classes" />
+    <content url="file://C:/Projects/Frameworks/webapps/nefs-sample-petstore">
+      <sourceFolder url="file://C:/Projects/Frameworks/webapps/nefs-sample-petstore/WEB-INF/classes" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
