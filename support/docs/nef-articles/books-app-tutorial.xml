@@ -176,9 +176,84 @@
   </section>
 
   <section>
-    <title>Dissecting the project.xml of Starter Application</title>
+    <title>Dissecting the project.xml</title>
 
-    <para>TODO: Description of include files.</para>
+    <para><example>
+        <title>Project File of Starter Application</title>
+
+        <programlisting>&lt;?xml version="1.0"?&gt; 
+
+&lt;<emphasis>project xmlns:xdm</emphasis>="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt; <co
+            id="declare-prj-file-tags-eg-1" />
+
+    &lt;xdm:include resource="com/netspective/commons/conf/commons.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-2" />
+    &lt;xdm:include resource="com/netspective/axiom/conf/axiom.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-3" />
+    &lt;xdm:include resource="com/netspective/sparx/conf/sparx.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-4" />
+    &lt;xdm:include resource="com/netspective/sparx/conf/console.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-5" />
+
+    &lt;!-- Your application tags go here. --&gt; <co
+            id="declare-prj-file-tags-eg-6" />
+
+    &lt;xdm:include file="your/own/file.xml"/&gt; <co
+            id="declare-prj-file-tags-eg-7" />
+
+    &lt;!-- Your other application tags go here. --&gt;
+&lt;/project&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-prj-file-tags-eg-1">
+            <para>The root tag is called <sgmltag>project</sgmltag> and should
+            use the provided xdm namespace.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-2">
+            <para>Include the Netspective Commons default component
+            declarations. It uses the resource attribute so it will be located
+            by searching the classpath and will usually find the file in the
+            JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-3">
+            <para>Include the Netspective Axiom default component declarations
+            and factory registrations. It uses the resource attribute so it
+            will be located by searching the classpath and will usually find
+            the file in the JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-4">
+            <para>Include the Netspective Sparx default component declarations
+            and factory registrations. It uses the resource attribute so it
+            will be located by searching the classpath and will usually find
+            the file in the JAR file and directly read it from there.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-5">
+            <para>Include the Netspective Enterprise Console servlet
+            declarations and application components. If you are turning off
+            the Console in your applications you may leave this line
+            out.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-6">
+            <para>This is the location where your component declarations will
+            be done. Unless otherwise specified, all the components are
+            declared right under the <sgmltag>project</sgmltag> tag.</para>
+          </callout>
+
+          <callout arearefs="declare-prj-file-tags-eg-7">
+            <para>This line demonstrates how you can include your own XML
+            files using the file attribute. In this example, because the file
+            is not absolute it will be treated as relative to the calling
+            file. The <sgmltag>xdm:include</sgmltag> tag may be included
+            anywhere in the file and simply takes items from the included file
+            and places them into the calling file while parsing.</para>
+          </callout>
+        </calloutlist>
+      </example></para>
   </section>
 
   <section>
@@ -200,20 +275,21 @@
           <programlisting>&lt;project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt;
 ...
 
-&lt;<emphasis>connection-provider</emphasis> <emphasis>class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider"</emphasis>&gt; <co
+&lt;<emphasis>connection-provider</emphasis> <emphasis>
+                 class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider"</emphasis>&gt; <co
               id="declare-conn-provider-tags-eg-1" />
 
-    &lt;<emphasis>data-source</emphasis> name="<emphasis>jdbc/default</emphasis>"&gt; <co
+ &lt;<emphasis>data-source</emphasis> name="<emphasis>jdbc/default</emphasis>"&gt; <co
               id="declare-conn-provider-tags-eg-2" />
-        &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
+  &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
               id="declare-conn-provider-tags-eg-3" />
-        &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt; <co
+  &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt; <co
               id="declare-conn-provider-tags-eg-4" />
-        &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
+  &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
               id="declare-conn-provider-tags-eg-5" />
-        &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
+  &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
               id="declare-conn-provider-tags-eg-6" />
-    &lt;/data-source&gt;
+ &lt;/data-source&gt;
 
 &lt;/connection-provider&gt;</programlisting>
         </example><calloutlist>
@@ -250,9 +326,25 @@
           </callout>
 
           <callout arearefs="declare-conn-provider-tags-eg-4">
-            <para>The <sgmltag>url</sgmltag> tag is used to specify the
-            location where your database is stored. (TODO: More
-            explanation)</para>
+            <para>The url is the JDBC URL used to connect to the database. The
+            JDBC driver uses it to point to a specific database on a specific
+            server. The URL has three parts which are separated by a colon
+            "<literal>:</literal>". The first part is always
+            "<literal>jdbc</literal>" and the second part is usually the name
+            of the driver. In the example code, <literal>hsqldb</literal> is
+            the name of the driver that is used to connect to your
+            <productname>HypersonicSQL</productname> database. The third part
+            is the name of the database.</para>
+
+            <para>It is important to note the
+            <sgmltag>servlet-context-path</sgmltag> value source. Value
+            sources allow dynamic data to be included in XML without creating
+            a programming language inside XML. In the example code, the
+            <sgmltag>servlet-context-path</sgmltag> value source creates the
+            database named '<literal>db</literal>' in <filename
+            class="directory">WEB-INF</filename>/<filename
+            class="directory">database</filename>/<filename
+            class="directory">instance</filename> folder.</para>
           </callout>
 
           <callout arearefs="declare-conn-provider-tags-eg-5">
@@ -268,11 +360,11 @@
             user has no password.</para>
           </callout>
         </calloutlist><note>
-          <para>Please see the User's Manual or review tag documentation in
-          the Console to get further details on the each tag.</para>
+          <para>Please see the NEF User's Manual or review Tag Documentation
+          in the Console to get further details on the each tag.</para>
         </note></para>
 
-      <para>The above sample code creates a data source for the Books
+      <para>The above sample code declares a data source for the Books
       Application database.</para>
 
       <section>
@@ -280,7 +372,7 @@
 
         <para>You may test the data source by using <guimenu>Data
         Management</guimenu> | <guisubmenu>Data Sources</guisubmenu> section
-        in the Console of your Books Application. </para>
+        in the Console of your Books Application.</para>
 
         <para><screenshot>
             <graphic fileref="./resources/images/screen-console-datasource.gif" />
@@ -331,7 +423,8 @@
 
   &lt;<emphasis>table</emphasis> name="Book_Info" abbrev="bkI" <emphasis>type="Presentation"</emphasis>&gt; <co
             id="declare-schema-tags-eg-3" />
-   &lt;<emphasis>column</emphasis> name="id" type="text" size="10" <emphasis>primary-key="yes"</emphasis> descr="Unique ID for every book in the database"/&gt; <co
+   &lt;<emphasis>column</emphasis> name="id" type="text" size="10" <emphasis>primary-key="yes"</emphasis> 
+                     descr="Unique ID for every book in the database"/&gt; <co
             id="declare-schema-tags-eg-4" />
    &lt;column name="name" type="text" size="64" descr="Name of the book"/&gt;
    &lt;column name="author" type="text" size="64" descr="Name of the author(s)"/&gt;
@@ -393,10 +486,7 @@
             <sgmltag>descr</sgmltag>(iption) attributes associated with it. To
             specify a field as the primary key of the table, set the
             <sgmltag>primary-key</sgmltag> attribute's value to
-            '<literal>yes</literal>'. <note>
-                <para>Please note that only a single primary key column per
-                table is supported.</para>
-              </note></para>
+            '<literal>yes</literal>'.</para>
           </callout>
 
           <callout arearefs="declare-schema-tags-eg-5">
@@ -431,11 +521,12 @@
           </callout>
 
           <callout arearefs="declare-schema-tags-eg-7">
-            <para>The second <sgmltag>table</sgmltag> tag block is defining
-            the Book Type table. This table is defined as an
-            <sgmltag>Enumeration</sgmltag>. An <sgmltag>Enumeration</sgmltag>
-            is a special type of table that is generated by Sparx. It consists
-            of the following three fields per record:</para>
+            <para>The second <sgmltag>table</sgmltag> tag block is used to
+            define the <literal>Book Type</literal> table. This table is
+            defined as an <sgmltag>Enumeration</sgmltag>. An
+            <sgmltag>Enumeration</sgmltag> is a special type of table that is
+            generated by Sparx. It consists of the following three fields per
+            record:</para>
 
             <itemizedlist>
               <listitem>
@@ -488,7 +579,7 @@
 
         <para>You may view the newly defined schema by using <guimenu>Data
         Management</guimenu> | <guisubmenu>Schemas</guisubmenu> section in the
-        Console of your Books Application. </para>
+        Console of your Books Application.</para>
 
         <para><screenshot>
             <graphic fileref="./resources/images/screen-console-schemas.gif" />
@@ -498,7 +589,7 @@
         should list a total of 4 tables, of which the most important to you
         are the ones you explicitly created: <literal>Book_Info</literal> and
         <literal>Book_Type</literal>. Click on the Book_Info table to see more
-        details about it. </para>
+        details about it.</para>
 
         <para><screenshot>
             <graphic fileref="./resources/images/screen-console-tabledoc.gif" />
@@ -509,7 +600,7 @@
         For each field in the table, you can see its name, data type, actual
         SQL data type it was created as, whether it is a field referencing
         other fields (e.g. genre field in the Book _Info table) abd the
-        index(es) defined on this table.</para>
+        index(es) deined on this table.</para>
 
         <para>You can view the details for the Book_Info and other tables in
         the same manner.</para>
@@ -517,27 +608,322 @@
     </section>
 
     <section>
-      <title>Generating the Data Definition Language (DDL)</title>
+      <title>Generating Data Definition Language (DDL)</title>
 
-      <para></para>
+      <para>The DDL representation of your schema consists of the actual
+      commands that you need to issue to a database to create the tables you
+      specified in the schema and to populate them with any static data (such
+      as the one stored in enumeration tables) if necessary. These commands
+      are DBMS-specific.</para>
+
+      <section>
+        <title>Using the Ant Build in Console</title>
+
+        <para>To create the HSQL database and its DDL, you can use the
+        <guimenu>Project</guimenu> |<guisubmenu> Ant Build</guisubmenu>
+        section in the Console. In order to create the HSQL database, you must
+        run the "<literal>create-database-hsqldb</literal>" target.</para>
+
+        <para><graphic
+        fileref="./resources/images/screen-console-ant-build.gif" /></para>
+
+        <para>This erases the existing default datasource (Hypersonic
+        database), generates the SQL DDL for the default schema, loads the SQL
+        DDL (effectively creating the Hypersonic SQL database) and finally
+        loads the 'starter' from XML files using Sparx import from XML
+        feature.</para>
+
+        <para>TODO: Insert image of DDL and DB creation msgs displayed in
+        Console (after resolution of issue with test data xml)</para>
+
+        <note>
+          <para>Please note that this target should be executed anytime the
+          default schema is modified.</para>
+        </note>
+
+        <para>With this final step completed, you should be ready to add,
+        update, delete and query data from the database using the Sparx
+        Library. To do that, however, you need a user interface that will
+        allow you to manipulate data as well as query what is stored in the
+        database.</para>
+      </section>
+
+      <section>
+        <title>Automating the HSQL Database Generation</title>
+
+        <para>You may also edit the <filename>web.xml</filename> file to
+        automatically create the database each time the servlet is run for the
+        first time. to do this, you need to add a
+        <sgmltag>--init-first-time-using-ant</sgmltag> servlet option in the
+        Sparx navigation controller using the following steps:</para>
+
+        <procedure>
+          <step>
+            <para>Open the APP_ROOT/WEB-INF/web.xml file and look for the
+            following Code:</para>
+
+            <programlisting>&lt;servlet&gt;
+ &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
+ &lt;servlet-class&gt;com.netspective.sparx.navigate.NavigationControllerServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;</programlisting>
+          </step>
+
+          <step>
+            <para>Add the <sgmltag>init-param</sgmltag> tag to the above block
+            of code. The resulting code will look like this:</para>
+
+            <programlisting>&lt;servlet&gt; 
+ &lt;servlet-name&gt;SparxNavigationController&lt;/servlet-name&gt;
+ &lt;servlet-class&gt;com.netspective.sparx.navigate.NavigationControllerServlet&lt;/servlet-class&gt;
+ &lt;init-param&gt; 
+  &lt;param-name&gt;com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS&lt;/param-name&gt;
+  &lt;param-value&gt;
+  --init-first-time-using-ant=/WEB-INF/sparx/conf/ant-build-project.xml:create-database-hsqldb 
+  &lt;/param-value&gt;
+ &lt;/init-param&gt;
+&lt;/servlet&gt;</programlisting>
+          </step>
+        </procedure>
+
+        <para>The above approach works because when the navigation controller
+        runs, it creates a file called
+        <replaceable>APP_ROOT</replaceable>/<filename
+        class="directory">WEB-INF</filename>/<filename
+        class="directory">sparx</filename>/<filename
+        class="directory">conf</filename>/<filename>execution.properties</filename>.
+        This properties file contains the execution count of the servlet. If
+        the execution count is less than one, the Ant file
+        (<filename>ant-build-project.xml</filename>) and the target you
+        requested (create-database-hsqldb) will be run.</para>
+
+        <note>
+          <para>This is the best method to create databases because it
+          automatically creates the database the very first time the servlet
+          is run. And, if you ever want the database recreated, you can simply
+          erase the <filename>execution.properties</filename> file.</para>
+        </note>
+      </section>
+
+      <section>
+        <title>Populating the HSQL Database with Test Data</title>
+
+        <para>TODO: describe WEB-INF/database/initial-and-test-data.xml and
+        initial-and-test-data.xsl files</para>
+      </section>
+
+      <section>
+        <title>DDL and HSQL Database Files</title>
+
+        <para>The DDL generation process creates the <filename
+        class="directory">WEB-INF</filename>/<filename
+        class="directory">database</filename> folder. This folder contains
+        further sub-folders: <filename class="directory">defn</filename> and
+        <filename class="directory">instance</filename>.</para>
+
+        <variablelist>
+          <varlistentry>
+            <term>defn</term>
+
+            <listitem>
+              <para>This folder contains the SQL files containing
+              DBMS-specific database creation scripts.</para>
+            </listitem>
+          </varlistentry>
+
+          <varlistentry>
+            <term>instance</term>
+
+            <listitem>
+              <para>This folder contains the HSQL database files:
+              <filename>db.properties</filename>,
+              <filename>db.script</filename>, <filename>db.data</filename> and
+              <filename>db.backup</filename>.</para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </section>
+
+      <section>
+        <title>Unit Testing the HSQL Database</title>
+
+        <para>You may test the newly created HSQL database through
+        <guimenu>Data Management</guimenu> | <guisubmenu>Data
+        Sources</guisubmenu> | <guimenuitem>SQL Explorer</guimenuitem> option
+        in the Console. Enter a SQL query for the <literal>Book_Info</literal>
+        table in the SQL Editor and execute the query by clicking the
+        <command>OK </command>button.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-sql-explorer.gif" />
+        </screenshot>
+
+        <para>TODO: result of unit test (after the error is resolved at my
+        end)</para>
+      </section>
     </section>
 
     <section>
-      <title>Generating the Data Access Layer</title>
+      <title>Creating the Data Management Layer</title>
 
-      <para></para>
-    </section>
+      <para>The Books Application uses two types of queries for data
+      management:</para>
 
-    <section>
-      <title>Generating the SQL</title>
+      <variablelist>
+        <varlistentry>
+          <term>Static SQL</term>
 
-      <para></para>
-    </section>
+          <listitem>
+            <para>A static SQL statement is merely an encapsulation of a
+            regular SQL statement within the XML definition required by Sparx
+            to interpret it. Once defined, a single or multiple SQL statements
+            may be used in reports, dialogs (forms), Servlets, templates, or
+            JSP-pages. All the static SQL statements with the bind parameters
+            are declared in the Books Application Project File.</para>
+          </listitem>
+        </varlistentry>
 
-    <section>
-      <title>Unit Testing the SQL</title>
+        <varlistentry>
+          <term>Dynamic SQL (Query Definition)</term>
 
-      <para></para>
+          <listitem>
+            <para>One of Axiom's powerful features is to generate dynamic SQL
+            statements based upon user input. The dynamic SQL generator can
+            also generate different output formats such as pageable HTML
+            reports with configurable rows per page or comma separated value
+            (CSV) reports. The main component of the dynamic queries is the
+            query definition dialog which is used to define bind parameters of
+            the dynamic SQL statement. Thus, the dynamic query generator can
+            be thought of as a combination of Dialog and Static Query
+            features.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+
+      <note>
+        <para>All the static and dynamic SQL statements are declared in the
+        Books Application Project File
+        (<filename>project.xml</filename>)</para>
+      </note>
+
+      <section>
+        <title>Declaring a Static Query</title>
+
+        <para>The Books Application uses a simple join query to get
+        information about all the books and their genres. Following is the xml
+        declaration that performs this task:</para>
+
+        <example>
+          <title>Declaring a Static Query</title>
+
+          <programlisting>&lt;queries package="books"&gt; <co
+              id="declare-static-sql-tags-eg-1" />
+
+ &lt;query name="get-all-books"&gt; <co id="declare-static-sql-tags-eg-2" />
+  select id, name, author, book_type.caption, isbn <co
+              id="declare-static-sql-tags-eg-3" />
+         from book_info, book_type
+         where genre = book_type.id
+ &lt;/query&gt;
+
+&lt;/queries&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-static-sql-tags-eg-1">
+              <para>All the static in Axiom must belong to a statement package
+              represented by <sgmltag>queries</sgmltag> XML tag. The statement
+              package is identified by its name (<literal>books</literal> in
+              the above example)</para>
+            </callout>
+
+            <callout arearefs="declare-static-sql-tags-eg-2">
+              <para>A static query is defined (with or without bind
+              parameters) by using the <sgmltag>query</sgmltag> tag. Each
+              query is identified by its name
+              (<literal>get-all-books</literal> in the above example)</para>
+
+              <para>TODO: Awaiting response to my query.</para>
+            </callout>
+
+            <callout arearefs="declare-static-sql-tags-eg-3">
+              <para>The static SQL (with or without bind parameters) is
+              declared under the query tag. The query in this example declares
+              a join on the <literal>Book_Type</literal> and
+              <literal>Book_Info</literal> tables using the
+              <literal>genre</literal> (from <literal>Book_Info</literal>) and
+              <literal>id</literal> (from <literal>Book_Type</literal>)
+              fields.</para>
+            </callout>
+          </calloutlist>
+        </example>
+      </section>
+
+      <section>
+        <title>Presenting the Results of a Static Query</title>
+
+        <example>
+          <title>Presenting the Results of a Static Query</title>
+
+          <programlisting>&lt;queries package="books"&gt; 
+
+ &lt;query name="get-all-books"&gt; 
+  select id, name, author, book_type.caption, isbn 
+         from book_info, book_type
+         where genre = book_type.id
+
+  &lt;presentation&gt; <co id="declare-pres-tags-eg-1" />
+    &lt;panel name="main" height="300"&gt; <co id="declare-pres-tags-eg-2" />
+        &lt;frame heading="static:All available books"/&gt; <co
+              id="declare-pres-tags-eg-3" />
+        &lt;report&gt; <co id="declare-pres-tags-eg-4" />
+                &lt;actions&gt; <co id="declare-pres-tags-eg-5" />
+                    &lt;action type="add" caption="Add Book" redirect="page-id:/add"/&gt; <co
+              id="declare-static-sql-tags-eg-6" />
+                    &lt;action type="edit" redirect="page-id:/edit?id=${0}"/&gt; <co
+              id="declare-static-sql-tags-eg-7" />
+                    &lt;action type="delete" redirect="page-id:/delete?id=${0}"/&gt; <co
+              id="declare-static-sql-tags-eg-8" />
+                &lt;/actions&gt;
+                &lt;column heading="ID" format="plain" redirect="page-id:/edit?id=${0}"/&gt; <co
+              id="declare-static-sql-tags-eg-9" />
+                &lt;column heading="Name" /&gt;
+                &lt;column heading="Author"/&gt;
+                &lt;column heading="Genre"/&gt;
+                &lt;column heading="ISBN"/&gt;
+        &lt;/report&gt;
+    &lt;/panel&gt;
+  &lt;/presentation&gt;
+ &lt;/query&gt;
+
+&lt;/queries&gt;</programlisting>
+
+          <para></para>
+        </example>
+      </section>
+
+      <section>
+        <title>Unit Testing a Static SQL</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Declaring a Dynamic Query (Query Definition)</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Presenting the Results of a Dynamic Query (Query
+        Definition)</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Unit Testing a Query Definition</title>
+
+        <para></para>
+      </section>
     </section>
   </section>
 
