@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesTest.java,v 1.7 2003-12-03 00:33:00 shahid.shah Exp $
+ * $Id: ValueSourcesTest.java,v 1.8 2004-04-28 16:51:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -213,7 +213,7 @@ public class ValueSourcesTest extends TestCase
 			"static", "text", "string",
 			"text-list", "strings",
 			"system-property", "java-expr", "java",
-            "redirect"
+            "redirect", "script"
 		};
 
         assertEquals(expectedClassesMapKeySet.length, srcClassesMapKeySet.size());
