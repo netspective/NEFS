@@ -39,24 +39,59 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.3 2003-09-14 05:39:58 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceSessionScrollStates.java,v 1.1 2003-09-14 05:39:58 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
 
+import javax.servlet.http.HttpSession;
+
+import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.value.HttpServletValueContext;
-import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState;
 
-public interface HtmlTabularReportDataSourceScrollStates
+/**
+ * An implementation of HtmlTabularReportDataSourceScrollStates that stores the scroll states in the user's HTTP
+ * session.
+ */
+public class HtmlTabularReportDataSourceSessionScrollStates implements HtmlTabularReportDataSourceScrollStates
 {
-    public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc);
+    private static final String SESSATTRNAME_ACTIVE_SCROLL_STATE = "active-scroll-state";
 
-    public HtmlTabularReportDataSourceScrollState getActiveScrollState(HttpServletValueContext vc);
+    public HtmlTabularReportDataSourceSessionScrollStates()
+    {
+    }
 
-    public void setActiveScrollState(DialogContext dc, TabularReportDataSourceScrollState state);
+    public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc)
+    {
+        return (HtmlTabularReportDataSourceScrollState) dc.getHttpRequest().getSession().getAttribute(dc.getTransactionId());
+    }
 
-    public void removeActiveState(HttpServletValueContext vc, TabularReportDataSourceScrollState state);
+    public HtmlTabularReportDataSourceScrollState getActiveScrollState(HttpServletValueContext vc)
+    {
+        return (HtmlTabularReportDataSourceScrollState) vc.getHttpRequest().getSession().getAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE);
+    }
 
-    public void removeActiveState(HttpServletValueContext vc);
+    public void setActiveScrollState(DialogContext dc, TabularReportDataSourceScrollState state)
+    {
+        HttpSession session = dc.getHttpRequest().getSession();
+        session.setAttribute(state.getIdentifier(), state);
+        session.setAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE, state);
+    }
+
+    public void removeActiveState(HttpServletValueContext vc, TabularReportDataSourceScrollState state)
+    {
+        HttpSession session = vc.getHttpRequest().getSession();
+        session.removeAttribute(state.getIdentifier());
+        session.removeAttribute(SESSATTRNAME_ACTIVE_SCROLL_STATE);
+
+        state.close();
+    }
+
+    public void removeActiveState(HttpServletValueContext vc)
+    {
+        TabularReportDataSourceScrollState state = getActiveScrollState(vc);
+        if(state != null)
+            removeActiveState(vc, state);
+    }
 }
