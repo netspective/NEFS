@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.23 2004-07-25 21:11:29 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.24 2004-07-28 22:06:34 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -313,6 +313,7 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     private int indexInRow = -1;
     private SqlDataDefns sqlDataDefn = new SqlDataDefns(this);
     private ValueDefns valueDefn = new ValueDefns(this);
+    private JdbcTypeDefns jdbcDefn = new JdbcTypeDefns(this);
     private String descr;
     private ForeignKey foreignKey;
     private String sequenceName;
@@ -646,6 +647,23 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
     }
 
     public void addValueDefn(ValueDefns valueDefns)
+    {
+        // do nothing -- we have the instance already created, but the XML data model will call this anyway
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public JdbcTypeDefns getJdbcType()
+    {
+        return jdbcDefn;
+    }
+    
+    public JdbcTypeDefns createJdbcType()
+    {
+        return jdbcDefn;
+    }
+
+    public void addJdbcType(JdbcTypeDefns jdbcTypeDefns)
     {
         // do nothing -- we have the instance already created, but the XML data model will call this anyway
     }
