@@ -39,76 +39,56 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.type.CommunicationEventPurposeType;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
+import javax.ejb.OneToOne;
 import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
+import javax.ejb.Column;
+import javax.ejb.Entity;
 import javax.ejb.Table;
-import javax.ejb.OneToMany;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-@Table(name = "Comm_Event")
-public class CommunicationEvent extends AbstractDateDurationEntity
+@Table(name = "Comm_Event_Purpose")        
+public class CommunicationEventPurpose
 {
-    private Long eventId;
-    private String notes;
-    private PartyRelationship partyRelationship;
-    private Set<CommunicationEventPurpose> eventPurposes = new HashSet<CommunicationEventPurpose>();
+    private String description;
+    private CommunicationEvent communicationEvent;
+    private CommunicationEventPurposeType type;
 
-    public CommunicationEvent()
+    @Column(length = 256)
+    public String getDescription()
     {
+        return description;
     }
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getEventId()
+    public void setDescription(final String description)
     {
-        return this.eventId;
+        this.description = description;
     }
 
-    protected void setEventId(final Long id)
-    {
-        this.eventId = id;
-    }
-
-    @Column(length = 1000)
-    public String getNotes()
-    {
-        return notes;
-    }
-
-    protected void setNotes(final String notes)
-    {
-        this.notes = notes;
-    }
-
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id")
-    public PartyRelationship getPartyRelationship()
-    {
-        return partyRelationship;
-    }
-
-    protected void setPartyRelationship(final PartyRelationship partyRelationship)
-    {
-        this.partyRelationship = partyRelationship;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "comm_event_id")
-    public Set<CommunicationEventPurpose> getEventPurposes()
+    public CommunicationEvent getCommunicationEvent()
     {
-        return eventPurposes;
+        return communicationEvent;
     }
 
-    public void setEventPurposes(final Set<CommunicationEventPurpose> eventPurposes)
+    public void setCommunicationEvent(CommunicationEvent communicationEvent)
     {
-        this.eventPurposes = eventPurposes;
+        this.communicationEvent = communicationEvent;
     }
+
+    @OneToOne
+    @JoinColumn(name = "comm_event_purpose_type_id")
+    public CommunicationEventPurposeType getType()
+    {
+        return type;
+    }
+
+    public void setType(final CommunicationEventPurposeType type)
+    {
+        this.type = type;
+    }
+
 }
