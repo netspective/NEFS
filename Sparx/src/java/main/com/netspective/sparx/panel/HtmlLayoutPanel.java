@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.23 2004-02-25 04:47:31 aye.thu Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.24 2004-03-16 05:49:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -283,15 +283,11 @@ public class HtmlLayoutPanel implements HtmlPanel
                     column++;
                     if (column == 1)
                     {
-                        columnOne.write("<div>");
                         children.get(i).render(columnOne, nc, theme, flags);
-                        columnOne.write("</div>");
                     }
                     else if (column == 2)
                     {
-                        columnTwo.write("<div>");
                         children.get(i).render(columnTwo, nc, theme, flags);
-                        columnTwo.write("</div>");
                         column = 0;
                     }
                 }
