@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.14 2004-06-24 04:29:10 jeremy.d.hulick Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.15 2004-06-24 04:31:13 jeremy.d.hulick Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -228,7 +228,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     public void setHasPermissions(String permissions)
     {
-        this.hasPermissions = TextUtils.split(permissions, ",", true); //permissions;
+        this.hasPermissions = TextUtils.split(permissions, ",", true);
     }
 
     public String[] getLackPermissions()
@@ -238,7 +238,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
 
     public void setLackPermissions(String lackPermissions)
     {
-            this.lackPermissions = TextUtils.split(lackPermissions, ",", true); //lackPermissions;
+            this.lackPermissions = TextUtils.split(lackPermissions, ",", true); 
     }
 
     public void applyFlags(DialogContext dc)
