@@ -54,10 +54,12 @@ import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicy;
 import com.netspective.axiom.schema.BasicSchema;
 import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Index;
+import com.netspective.axiom.schema.IndexColumns;
 import com.netspective.axiom.schema.Indexes;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
 import com.netspective.axiom.schema.PrimaryKeyColumns;
@@ -729,6 +731,67 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         for(int i = 0; i < triggers.length; i++)
             triggers[i].afterTableRowDelete(cc, row);
+    }
+
+    /**
+     * Given a row full of data, either insert the record if no duplicates are found or update it if a duplicate
+     * record is found.
+     *
+     * @param cc  The connection context
+     * @param row The row with data to insert or update
+     */
+    public void insertOrUpdateIfDuplicateRowFound(ConnectionContext cc, Row row) throws NamingException, SQLException
+    {
+        final ColumnValues columnValues = row.getColumnValues();
+
+        // if a record exists with the same primary key, do an immediate update and leave
+        if(getAccessorByPrimaryKeyEquality().recordsExist(cc, row.getPrimaryKeyValues().getValuesForSqlBindParams()))
+        {
+            update(cc, row);
+            return;
+        }
+
+        // now look to see if there are any rows with the same values as a unique index somewhere in the table; if so,
+        // replace the existing row's data with this row using the primary key of the duplicate row that was found
+
+        Indexes indexes = getIndexes();
+        for(int j = 0; j < indexes.size(); j++)
+        {
+            Index index = indexes.get(j);
+            if(!index.isUnique())
+                continue;
+
+            IndexColumns indexColumns = index.getColumns();
+            Object[] params = new Object[indexColumns.size()];
+            for(int k = 0; k < indexColumns.size(); k++)
+            {
+                //Iterate through all of the columns in the index
+                Column indexColumn = indexColumns.get(k);
+                ColumnValue columnValue = columnValues.getByColumnIndex(indexColumn.getIndexInRow());
+                params[k] = columnValue.getValueForSqlBindParam();
+            }
+
+            QueryDefnSelect indexAccessor;
+            indexAccessor = getAccessorByIndexEquality(index);
+            QueryResultSet qrs = indexAccessor.execute(cc, params, false);
+            ResultSet rs = qrs.getResultSet();
+            if(rs.next())
+            {
+                Row duplicateRow = createRow();
+                duplicateRow.getColumnValues().populateValues(rs, 0);
+
+                // we want to use the same PK value as the duplicate row but we want to keep our own data
+                final PrimaryKeyColumnValues dupRowPKColVals = duplicateRow.getPrimaryKeyValues();
+                for(int k = 0; k < dupRowPKColVals.size(); k++)
+                    columnValues.getByColumnIndex(k).setValue((ColumnValue) dupRowPKColVals.getByColumnIndex(k));
+
+                update(cc, row);
+                return;
+            }
+        }
+
+        // no duplicate rows found, inserting a new recod instead
+        insert(cc, row);
     }
 
     public void addTrigger(TableRowTrigger trigger)
