@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.32 2003-08-31 15:29:14 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.33 2003-09-13 23:06:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -82,6 +82,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     static public final String HEADING_ACTION_IMAGE = "action-icon";
 
     private int sidebarWidth = 125;
+    private boolean showAuthenticatedUser = true;
 
     public ConsoleNavigationSkin(Theme theme, String name)
     {
@@ -96,6 +97,16 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public void setSidebarWidth(int sidebarWidth)
     {
         this.sidebarWidth = sidebarWidth;
+    }
+
+    public boolean isShowAuthenticatedUser()
+    {
+        return showAuthenticatedUser;
+    }
+
+    public void setShowAuthenticatedUser(boolean showAuthenticatedUser)
+    {
+        this.showAuthenticatedUser = showAuthenticatedUser;
     }
 
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
@@ -228,7 +239,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     {
         writer.write("<body leftmargin=\"0\" marginheight=\"0\" marginwidth=\"0\" topmargin=\"0\" onload=\"initializeBody()\">\n");
 
-        renderAuthenticatedUser(writer, nc);
+        if(isShowAuthenticatedUser())
+            renderAuthenticatedUser(writer, nc);
+
         Theme theme = getTheme();
 
         writer.write("<!-- Master Header Begins -->\n");
