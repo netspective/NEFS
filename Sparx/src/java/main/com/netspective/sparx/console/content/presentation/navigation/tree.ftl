@@ -12,7 +12,7 @@
         </#if>
         <img src="${vc.activeTheme.getResourceUrl('/images/files/file-type-default.gif')}"/>
         <#if activePage.name = ''>
-            <i>root</i>
+            <a href="${vc.consoleUrl}/presentation/navigation/inspector/${activePage.owner.name}">${activePage.owner.name}</a>
         <#else>
             <a href="${vc.consoleUrl}/presentation/navigation/inspector${activePage.qualifiedNameIncludingTreeId}">${activePage.name}</a>
         </#if>
