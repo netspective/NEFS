@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDialog.java,v 1.6 2003-08-01 05:44:13 aye.thu Exp $
+ * $Id: QueryDialog.java,v 1.7 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -58,6 +58,7 @@ import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.DialogFlags;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.type.IntegerField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
@@ -147,7 +148,7 @@ public class QueryDialog extends Dialog
     {
         DialogField field = new IntegerField();
         field.setName(REPORT_ACTION_FIELD_NAME);
-        field.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        field.getFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         addField(field);
     }
 
@@ -159,8 +160,8 @@ public class QueryDialog extends Dialog
         ReportSelectedItemsField selectedItemsField = new ReportSelectedItemsField();
         selectedItemsField.setName("selected_item_list");
         selectedItemsField.setSize(5);
-        selectedItemsField.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-        selectedItemsField.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        selectedItemsField.getFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+        selectedItemsField.getFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
         addField(selectedItemsField);
     }
 
@@ -199,7 +200,7 @@ public class QueryDialog extends Dialog
         field.setCaption(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_CAPTION));
         field.setDefault(new StaticValueSource(DEFAULT_ROWS_PER_PAGE_FIELD_VALUE));
         // by default, hide the field
-        field.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+        field.getFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         addField(field);
     }
 
@@ -208,7 +209,7 @@ public class QueryDialog extends Dialog
      */
     public void showRowsPerPageField()
     {
-        getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getFlags().clearFlag(DialogField.Flags.INPUT_HIDDEN);
+        getFields().getByQualifiedName(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getFlags().clearFlag(DialogFieldFlags.INPUT_HIDDEN);
     }
 
     /**
@@ -395,26 +396,26 @@ public class QueryDialog extends Dialog
             {
                 DialogField field = fields.get(i);
                 field.makeStateChanges(dc, stage);
-                states.getState(field).getStateFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+                states.getState(field).getStateFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
             }
 
             // Hide the dialog director(OK/Cancel)
-            states.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             // display the Navigation buttons
             if (qdc.getRowsPerPage() > 0)
             {
-                states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+                states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             }
         }
         else
         {
-            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             // if the dialog isnt in execute mode, do not display the result navigation buttons
             if (qdc.getRowsPerPage() > 0)
             {
-                states.getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
-                states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+                states.getState(DEFAULT_ROWS_PER_PAGE_FIELD_NAME).getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
+                states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             }
         }
     }

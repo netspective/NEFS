@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.22 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.23 2003-08-31 02:01:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -80,6 +80,7 @@ import com.netspective.sparx.form.DialogIncludeJavascriptFile;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
@@ -343,8 +344,8 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     field.renderControlHtml(writer, dc);
                 else
                 {
-                    DialogField.Flags flags = field.getFlags();
-                    if(flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE))
+                    DialogFieldFlags flags = field.getFlags();
+                    if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
                         writer.write("<br>");
                     boolean showCaption = field.showCaptionAsChild();
                     if(showCaption)
@@ -360,7 +361,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                     field.renderControlHtml(writer, dc);
                     writer.write("&nbsp;");
                     if(showCaption) writer.write("</nobr>");
-                    if(flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_AFTER))
+                    if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_AFTER))
                         writer.write("<br>");
                 }
             }
@@ -375,7 +376,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(popupHtml != null)
             controlHtml.write(popupHtml);
 
-        if(field.getFlags().flagIsSet(DialogField.Flags.CREATE_ADJACENT_AREA))
+        if(field.getFlags().flagIsSet(DialogFieldFlags.CREATE_ADJACENT_AREA))
         {
             String adjValue = dc.getFieldStates().getState(field).getAdjacentAreaValue();
             controlHtml.write("&nbsp;<span id='" + field.getQualifiedName() + "_adjacent'>"+ (adjValue != null ? adjValue : "") +"</span>");
@@ -613,9 +614,9 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             controlHtml.write(popupHtml);
 
         DialogField.State state = dc.getFieldStates().getState(field);
-        DialogField.Flags stateFlags = state.getStateFlags();
+        DialogFieldFlags stateFlags = state.getStateFlags();
 
-        if(stateFlags.flagIsSet(DialogField.Flags.CREATE_ADJACENT_AREA))
+        if(stateFlags.flagIsSet(DialogFieldFlags.CREATE_ADJACENT_AREA))
         {
             String adjValue = state.getAdjacentAreaValue();
             controlHtml.write("&nbsp;<span id='" + field.getQualifiedName() + "_adjacent'>"+ (adjValue != null ? adjValue : "") +"</span>");
@@ -808,11 +809,11 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 if(!field.isAvailable(dc))
                     continue;
 
-                DialogField.Flags flags = field.getFlags();
-                if(flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE))
+                DialogFieldFlags flags = field.getFlags();
+                if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
                     activeColumn++;
                 appendFieldHtml(dc, field, layoutColsFieldsHtml[activeColumn], fieldsJSDefn, fieldErrorMsgs);
-                if(flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_AFTER))
+                if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_AFTER))
                     activeColumn++;
             }
 
@@ -985,7 +986,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void renderSeparatorHtml(Writer writer, DialogContext dc, SeparatorField field) throws IOException
     {
         String heading = field.getHeading().getTextValue(dc);
-        DialogField.Flags flags = field.getFlags();
+        DialogFieldFlags flags = field.getFlags();
 
         if(heading != null)
         {
@@ -999,14 +1000,14 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             if(flags.flagIsSet(SeparatorField.Flags.RULE))
                 sep += separatorHtml;
 
-            if(flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE))
+            if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
                 writer.write(sep);
             else
                 writer.write("<br>" + sep);
         }
         else
         {
-            if(! flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE))
+            if(! flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
                 writer.write(flags.flagIsSet(SeparatorField.Flags.RULE) ? "<br>" : "");
         }
     }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.9 2003-08-22 14:34:07 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.10 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -69,10 +69,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.type.TextField;
 import com.netspective.sparx.form.field.DialogFieldValue;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
@@ -262,7 +262,7 @@ public class DateTimeField extends TextField
         return DateTimeFieldState.DateTimeFieldValue.class;
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }

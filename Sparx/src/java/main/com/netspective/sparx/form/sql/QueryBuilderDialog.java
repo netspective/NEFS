@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.9 2003-08-17 00:24:55 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.10 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -69,6 +69,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay;
 import com.netspective.sparx.form.field.type.SelectField;
 import com.netspective.sparx.form.field.type.TextField;
@@ -177,7 +178,7 @@ public class QueryBuilderDialog extends Dialog
                 return false;
 
             State condState = dc.getFieldStates().getState(this);
-            if(condState.getStateFlags().flagIsSet(Flags.UNAVAILABLE))
+            if(condState.getStateFlags().flagIsSet(DialogFieldFlags.UNAVAILABLE))
                 return false;
 
             State valueState = dc.getFieldStates().getState(valueText);
@@ -203,8 +204,8 @@ public class QueryBuilderDialog extends Dialog
         ReportSelectedItemsField selectedItemsField = new ReportSelectedItemsField();
         selectedItemsField.setName("selected_item_list");
         selectedItemsField.setSize(5);
-        selectedItemsField.getFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-        selectedItemsField.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        selectedItemsField.getFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+        selectedItemsField.getFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
         addField(selectedItemsField);
     }
 
@@ -216,7 +217,7 @@ public class QueryBuilderDialog extends Dialog
 
         DialogField hiddenName = new DialogField();
         hiddenName.setName(QBDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME);
-        hiddenName.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        hiddenName.getFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
         addField(hiddenName);
 
         SeparatorField separator = new SeparatorField();
@@ -243,7 +244,7 @@ public class QueryBuilderDialog extends Dialog
     {
         DialogField output = new DialogField();
         output.setName("output");
-        output.getFlags().setFlag(DialogField.Flags.SHOW_CAPTION_AS_CHILD);
+        output.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(output);
 
         SelectField outputStyle = new SelectField();
@@ -308,7 +309,7 @@ public class QueryBuilderDialog extends Dialog
 
         DialogField options = new DialogField();
         options.setName("options");
-        options.getFlags().setFlag(DialogField.Flags.SHOW_CAPTION_AS_CHILD);
+        options.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(options);
 
         if(predefinedSels != null)
@@ -388,28 +389,28 @@ public class QueryBuilderDialog extends Dialog
 
         if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
         {
-            states.getState("conditions_separator").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("results_separator").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("options").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("display_fields").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("sort_fields").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState("conditions_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("results_separator").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("options").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("display_fields").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("sort_fields").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
 
-            int flag = dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogField.Flags.UNAVAILABLE : DialogField.Flags.READ_ONLY;
+            int flag = dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
             for(int i = 0; i < maxConditions; i++)
             {
                 // this will also set the flags of all children fields
                 states.getState("condition_" + i).getStateFlags().setFlag(flag);
             }
-            states.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
         }
         else
         {
             if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
-                states.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+                states.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            states.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         }
     }
 

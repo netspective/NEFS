@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.9 2003-08-30 16:41:28 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.10 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -47,6 +47,7 @@ package com.netspective.sparx.form.schema;
 import com.netspective.sparx.form.*;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.axiom.schema.*;
 import com.netspective.axiom.ConnectionContext;
@@ -175,7 +176,7 @@ public class TableDialog extends Dialog
             DialogField field = fields.get(i);
             if(pkColName.equals(field.getName()))
             {
-                field.getFlags().setFlag(DialogField.Flags.PRIMARY_KEY);
+                field.getFlags().setFlag(DialogFieldFlags.PRIMARY_KEY);
                 break;
             }
         }

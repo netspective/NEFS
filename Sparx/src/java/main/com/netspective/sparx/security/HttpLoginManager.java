@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.10 2003-08-30 13:07:15 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.11 2003-08-31 02:01:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.security;
@@ -517,6 +517,10 @@ public class HttpLoginManager
 
         Theme theme = nc.getActiveTheme();
         LoginDialog loginDialog = getLoginDialog();
+        if (loginDialog == null)
+            System.out.println("loginDialog = null");
+        else if (theme == null)
+            System.out.println("theme = null");
         LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
 
         if(ldc.hasRememberedValues(this))

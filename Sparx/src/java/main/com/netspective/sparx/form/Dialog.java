@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.30 2003-08-30 16:41:28 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.31 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -69,6 +69,7 @@ import org.apache.tools.ant.Main;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.SeparatorField;
@@ -597,7 +598,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
             if(field.requiresMultiPartEncoding())
                 dialogFlags.setFlag(DialogFlags.ENCTYPE_MULTIPART_FORMDATA);
 
-            if(field.getFlags().flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE | DialogField.Flags.COLUMN_BREAK_AFTER))
+            if(field.getFlags().flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE | DialogFieldFlags.COLUMN_BREAK_AFTER))
                 layoutColumnsCount++;
         }
         dialogFlags.setFlag(DialogFlags.CONTENTS_FINALIZED);

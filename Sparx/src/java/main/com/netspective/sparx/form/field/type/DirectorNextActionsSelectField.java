@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DirectorNextActionsSelectField.java,v 1.7 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: DirectorNextActionsSelectField.java,v 1.8 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -63,6 +63,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 
 public class DirectorNextActionsSelectField extends SelectField
 {
@@ -104,7 +105,7 @@ public class DirectorNextActionsSelectField extends SelectField
         getFlags().setFlag(Flags.PERSIST);
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }

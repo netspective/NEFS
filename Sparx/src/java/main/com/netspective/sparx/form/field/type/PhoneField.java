@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: PhoneField.java,v 1.2 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: PhoneField.java,v 1.3 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
 public class PhoneField extends TextField
@@ -127,7 +127,7 @@ public class PhoneField extends TextField
         return style;
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }

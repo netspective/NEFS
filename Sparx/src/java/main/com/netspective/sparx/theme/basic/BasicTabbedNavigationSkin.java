@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.25 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.26 2003-08-31 02:01:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -134,6 +134,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
         writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
+        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/popup.js") + "\" language=\"JavaScript1.2\"></script>\n");
 
         writer.write("</head>\n");
     }

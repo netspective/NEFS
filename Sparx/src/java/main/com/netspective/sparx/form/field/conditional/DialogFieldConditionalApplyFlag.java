@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.11 2003-08-24 20:07:51 shahid.shah Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.12 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -65,6 +65,7 @@ import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.console.ConsoleServlet;
@@ -74,7 +75,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     private static final Log log = LogFactory.getLog(DialogFieldConditionalApplyFlag.class);
 
     private boolean clear;
-    private DialogField.Flags flags;
+    private DialogFieldFlags flags;
     private DialogPerspectives perspective = new DialogPerspectives();
     private String[] hasPermissions;
     private String[] lackPermissions;
@@ -99,17 +100,17 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         flags = value.createFlags();
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return flags;
     }
 
-    public DialogField.Flags getFlags()
+    public DialogFieldFlags getFlags()
     {
         return flags;
     }
 
-    public void setFlags(DialogField.Flags flags)
+    public void setFlags(DialogFieldFlags flags)
     {
         this.flags = flags;
     }

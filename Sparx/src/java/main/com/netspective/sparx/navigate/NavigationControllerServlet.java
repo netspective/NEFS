@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.23 2003-08-28 13:52:42 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.24 2003-08-31 02:01:16 aye.thu Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -100,6 +100,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
+    public static final String REQPARAMNAME_COMMAND_ONLY = "command-only";
 
     private NavigationControllerServletOptions servletOptions;
     private String projectSourceFileName;
@@ -116,6 +117,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private Properties executionProperties;
     private long initializationCount;
     private boolean initCountWritten;
+    private boolean handleCommandOnly;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {

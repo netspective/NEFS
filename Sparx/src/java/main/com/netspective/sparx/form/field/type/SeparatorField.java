@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: SeparatorField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: SeparatorField.java,v 1.4 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -60,25 +60,25 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public class SeparatorField extends DialogField
 {
-    public static final TextField.Flags.FlagDefn[] SEPARATOR_FIELD_FLAG_DEFNS = new TextField.Flags.FlagDefn[DialogField.FLAG_DEFNS.length + 1];
+    public static final TextField.Flags.FlagDefn[] SEPARATOR_FIELD_FLAG_DEFNS = new TextField.Flags.FlagDefn[DialogFieldFlags.FLAG_DEFNS.length + 1];
     static
     {
-        for(int i = 0; i < DialogField.FLAG_DEFNS.length; i++)
-            SEPARATOR_FIELD_FLAG_DEFNS[i] = DialogField.FLAG_DEFNS[i];
-        SEPARATOR_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(TextField.Flags.ACCESS_XDM, "RULE", Flags.RULE);
+        for(int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
+            SEPARATOR_FIELD_FLAG_DEFNS[i] = DialogFieldFlags.FLAG_DEFNS[i];
+        SEPARATOR_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(TextField.Flags.ACCESS_XDM, "RULE", Flags.RULE);
     }
 
-    public class Flags extends DialogField.Flags
+    public class Flags extends DialogFieldFlags
     {
-        public static final int RULE = DialogField.Flags.START_CUSTOM;
+        public static final int RULE = DialogFieldFlags.START_CUSTOM;
 
         public Flags()
         {

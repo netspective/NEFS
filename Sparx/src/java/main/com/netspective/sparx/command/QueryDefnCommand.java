@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryDefnCommand.java,v 1.3 2003-07-03 22:35:16 aye.thu Exp $
+ * $Id: QueryDefnCommand.java,v 1.4 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -253,7 +253,7 @@ public class QueryDefnCommand extends AbstractHttpServletCommand
     public QueryBuilderDialog createQueryDefnDialog(Writer writer, SqlManager sqlManager, Theme theme) throws IOException
     {
         // get the registered query definition
-        com.netspective.sparx.sql.QueryDefinition queryDefn = (QueryDefinition) sqlManager.getQueryDefinition(queryDefnName, true);
+        com.netspective.sparx.sql.QueryDefinition queryDefn = (com.netspective.sparx.sql.QueryDefinition) sqlManager.getQueryDefinition(queryDefnName, true);
         if(queryDefn == null)
         {
             writer.write("Query definition " + queryDefnName + " not found.");

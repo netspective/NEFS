@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.8 2003-08-28 03:33:18 aye.thu Exp $
+ * $Id: SelectField.java,v 1.9 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -68,12 +68,11 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValue;
-import com.netspective.sparx.form.field.type.TextField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.PresentationValue;
-import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.source.StaticValueSource;
 
 public class SelectField extends TextField
@@ -261,7 +260,7 @@ public class SelectField extends TextField
         setSize(8);
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }

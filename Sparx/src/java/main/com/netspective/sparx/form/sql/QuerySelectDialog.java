@@ -46,6 +46,7 @@ import com.netspective.sparx.form.DialogLoopStyle;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.type.ReportSelectedItemsField;
 import com.netspective.sparx.form.field.type.DataSourceNavigatorButtonsField;
 import com.netspective.sparx.form.field.type.BooleanField;
@@ -73,7 +74,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.5 2003-08-17 00:24:55 shahid.shah Exp $
+ * $Id: QuerySelectDialog.java,v 1.6 2003-08-31 02:01:15 aye.thu Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -110,7 +111,7 @@ public class QuerySelectDialog extends QueryBuilderDialog
     {
         DialogField options = new DialogField();
         options.setName("options");
-        options.getFlags().setFlag(DialogField.Flags.SHOW_CAPTION_AS_CHILD);
+        options.getFlags().setFlag(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
         addField(options);
 
         if(getDialogFlags().flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
@@ -127,12 +128,12 @@ public class QuerySelectDialog extends QueryBuilderDialog
     {
         DialogField hiddenName = new DialogField();
         hiddenName.setName(QSDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME);
-        hiddenName.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        hiddenName.getFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
         addField(hiddenName);
 
         hiddenName = new DialogField();
         hiddenName.setName(QSDIALOG_DIALOG_NAME_PASSTHRU_FIELDNAME);
-        hiddenName.getFlags().setFlag(DialogField.Flags.INPUT_HIDDEN);
+        hiddenName.getFlags().setFlag(DialogFieldFlags.INPUT_HIDDEN);
         addField(hiddenName);
 
     }
@@ -175,26 +176,26 @@ public class QuerySelectDialog extends QueryBuilderDialog
         if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
         {
             int flag =
-                    dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogField.Flags.UNAVAILABLE : DialogField.Flags.READ_ONLY;
+                    dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogFieldFlags.UNAVAILABLE : DialogFieldFlags.READ_ONLY;
             for(int i = 0; i < fields.size(); i++)
             {
                 fieldStates.getState(fields.get(i)).getStateFlags().setFlag(flag);
             }
-            fieldStates.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
             if(dFlags.flagIsSet(QueryBuilderDialogFlags.ALLOW_DEBUG))
-                fieldStates.getState("options").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+                fieldStates.getState("options").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
 
-            fieldStates.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
-            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.READ_ONLY);
-            fieldStates.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            fieldStates.getState(getDirector()).getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
+            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.READ_ONLY);
+            fieldStates.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
         }
         else
         {
-            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
+            fieldStates.getState("selected_item_list").getStateFlags().clearFlag(DialogFieldFlags.UNAVAILABLE);
             if(dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_OUTPUT_DESTS))
-                fieldStates.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            fieldStates.getState("ds_nav_buttons").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+                fieldStates.getState("output").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
+            fieldStates.getState("ds_nav_buttons").getStateFlags().setFlag(DialogFieldFlags.UNAVAILABLE);
         }
 
     }

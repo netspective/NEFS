@@ -39,12 +39,12 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.3 2003-06-25 22:10:12 aye.thu Exp $
+ * $Id: SocialSecurityField.java,v 1.4 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
-import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 
 public class SocialSecurityField extends TextField
 {
@@ -90,7 +90,7 @@ public class SocialSecurityField extends TextField
         setDisplayPattern(DISPLAY_SUBSTITUTION_PATTERN);
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.32 2003-08-27 15:21:14 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.33 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -115,158 +115,18 @@ public class DialogField implements TemplateConsumer
         }
     }
 
-    public static final Flags.FlagDefn[] FLAG_DEFNS = new Flags.FlagDefn[]
-    {
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "REQUIRED", Flags.REQUIRED),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "PRIMARY_KEY", Flags.PRIMARY_KEY),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "UNAVAILABLE", Flags.UNAVAILABLE),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "READ_ONLY", Flags.READ_ONLY),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "INITIAL_FOCUS", Flags.INITIAL_FOCUS),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "PERSIST", Flags.PERSIST),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "CREATE_ADJACENT_AREA", Flags.CREATE_ADJACENT_AREA),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "SHOW_CAPTION_AS_CHILD", Flags.SHOW_CAPTION_AS_CHILD),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.INPUT_HIDDEN),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_DATA", Flags.HAS_CONDITIONAL_DATA),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "COLUMN_BREAK_BEFORE", Flags.COLUMN_BREAK_BEFORE),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "COLUMN_BREAK_AFTER", Flags.COLUMN_BREAK_AFTER),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "BROWSER_READONLY", Flags.BROWSER_READONLY),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "IDENTIFIER", Flags.IDENTIFIER),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "READONLY_HIDDEN_UNLESS_HAS_DATA", Flags.READONLY_HIDDEN_UNLESS_HAS_DATA),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "READONLY_UNAVAILABLE_UNLESS_HAS_DATA", Flags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "DOUBLE_ENTRY", Flags.DOUBLE_ENTRY),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "SCANNABLE", Flags.SCANNABLE),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "AUTO_BLUR", Flags.AUTO_BLUR),
-        new Flags.FlagDefn(Flags.ACCESS_PRIVATE, "SUBMIT_ONBLUR", Flags.SUBMIT_ONBLUR),
-        new Flags.FlagDefn(Flags.ACCESS_XDM, "CREATE_ADJACENT_AREA_HIDDEN", Flags.CREATE_ADJACENT_AREA_HIDDEN),
-    };
+    // This is the default flags to be carried to child fields. User-defined fields can use the set() method to replace this
+    // with the flags of their own for now.
+    public static final int[] CHILD_CARRY_FLAGS =
+            new int[] { DialogFieldFlags.REQUIRED, DialogFieldFlags.UNAVAILABLE, DialogFieldFlags.READ_ONLY,
+                        DialogFieldFlags.PERSIST, DialogFieldFlags.CREATE_ADJACENT_AREA, DialogFieldFlags.SHOW_CAPTION_AS_CHILD };
 
-    public static final int[] CHILD_CARRY_FLAGS = new int[] { Flags.REQUIRED, Flags.UNAVAILABLE, Flags.READ_ONLY, Flags.PERSIST, Flags.CREATE_ADJACENT_AREA, Flags.SHOW_CAPTION_AS_CHILD };
-
-    public class Flags extends XdmBitmaskedFlagsAttribute
-    {
-        // all these values are also defined in dialog.js (make sure they are always in sync)
-        public static final int REQUIRED = 1;
-        public static final int PRIMARY_KEY = REQUIRED * 2;
-        public static final int UNAVAILABLE = PRIMARY_KEY * 2;
-        public static final int READ_ONLY = UNAVAILABLE * 2;
-        public static final int INITIAL_FOCUS = READ_ONLY * 2;
-        public static final int PERSIST = INITIAL_FOCUS * 2;
-        public static final int CREATE_ADJACENT_AREA = PERSIST * 2;
-        public static final int SHOW_CAPTION_AS_CHILD = CREATE_ADJACENT_AREA * 2;
-        public static final int INPUT_HIDDEN = SHOW_CAPTION_AS_CHILD * 2;
-        public static final int HAS_CONDITIONAL_DATA = INPUT_HIDDEN * 2;
-        public static final int COLUMN_BREAK_BEFORE = HAS_CONDITIONAL_DATA * 2;
-        public static final int COLUMN_BREAK_AFTER = COLUMN_BREAK_BEFORE * 2;
-        public static final int BROWSER_READONLY = COLUMN_BREAK_AFTER * 2;
-        public static final int IDENTIFIER = BROWSER_READONLY * 2;
-        public static final int READONLY_HIDDEN_UNLESS_HAS_DATA = IDENTIFIER * 2;
-        public static final int READONLY_UNAVAILABLE_UNLESS_HAS_DATA = READONLY_HIDDEN_UNLESS_HAS_DATA * 2;
-        public static final int DOUBLE_ENTRY = READONLY_UNAVAILABLE_UNLESS_HAS_DATA * 2;
-        public static final int SCANNABLE = DOUBLE_ENTRY * 2;
-        public static final int AUTO_BLUR = SCANNABLE * 2;
-        public static final int SUBMIT_ONBLUR = AUTO_BLUR * 2;
-        public static final int CREATE_ADJACENT_AREA_HIDDEN = SUBMIT_ONBLUR * 2;
-        public static final int START_CUSTOM = CREATE_ADJACENT_AREA_HIDDEN * 2; // all DialogField "children" will use this
-
-        private State state = null;
-
-        public Flags()
-        {
-        }
-
-        public Flags(State dfs)
-        {
-            state = dfs;
-        }
-
-        public FlagDefn[] getFlagsDefns()
-        {
-            return FLAG_DEFNS;
-        }
-
-        /**
-         * Clears a flag
-         * @param flag
-         */
-        public void clearFlag(long flag)
-        {
-            super.clearFlag(flag);
-            if (children != null)
-            {
-                // check to see if the flag should be carried to the children
-                if (carryFlag(flag))
-                {
-                    // check to see if the flag object is related to the state or the field itself
-                    if (state != null)
-                    {
-                        DialogContext.DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
-                        for (int i=0; i < children.size(); i++)
-                        {
-                            fieldStates.getState(children.get(i)).getStateFlags().clearFlag(flag);
-                        }
-                    }
-                    else
-                    {
-                        children.clearFlags(flag);
-                    }
-                }
-            }
-        }
-
-        /**
-         * Sets a flag
-         * @param flag
-         */
-        public void setFlag(long flag)
-        {
-            super.setFlag(flag);
-            if (children != null)
-            {
-                // check to see if the flag should be carried to the children
-                if (carryFlag(flag))
-                {
-                    // check to see if the flag object is related to the state or the field itself
-                    if (state != null)
-                    {
-                        DialogContext.DialogFieldStates fieldStates = state.getDialogContext().getFieldStates();
-                        for (int i=0; i < children.size(); i++)
-                        {
-                            fieldStates.getState(children.get(i)).getStateFlags().setFlag(flag);
-                        }
-                    }
-                    else
-                    {
-                        children.setFlags(flag);
-                    }
-                }
-            }
-        }
-
-        /**
-         * Checks to see if the flag should be carried to children fields
-         * @param flag
-         * @return
-         */
-        public boolean carryFlag(long flag)
-        {
-            boolean carryFlag = false;
-            for (int i = 0; i < CHILD_CARRY_FLAGS.length; i++)
-            {
-                if (flag == CHILD_CARRY_FLAGS[i])
-                {
-                    carryFlag = true;
-                    break;
-                }
-            }
-            return carryFlag;
-        }
-    }
 
     public class State
     {
         private DialogFieldValue value = constructValueInstance();
         private String adjacentAreaValue;
-        private Flags stateFlags = createFlags(this);
+        private DialogFieldFlags stateFlags = new DialogFieldFlags(this);
         private DialogContext dialogContext;
 
         public class BasicStateValue extends GenericValue implements DialogFieldValue
@@ -325,7 +185,7 @@ public class DialogField implements TemplateConsumer
             this.dialogContext = dc;
             stateFlags.copy(getFlags());
 
-            if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(Flags.PERSIST))
+            if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(DialogFieldFlags.PERSIST))
             {
                 Cookie[] cookies = dc.getHttpRequest().getCookies();
                 if(cookies != null)
@@ -343,15 +203,15 @@ public class DialogField implements TemplateConsumer
             {
                 case DialogPerspectives.EDIT:
                     // when in "edit" mode, the primary key should be read-only
-                    if(stateFlags.flagIsSet(Flags.PRIMARY_KEY))
-                        stateFlags.setFlag(Flags.READ_ONLY);
+                    if(stateFlags.flagIsSet(DialogFieldFlags.PRIMARY_KEY))
+                        stateFlags.setFlag(DialogFieldFlags.READ_ONLY);
                     break;
 
                 case DialogPerspectives.CONFIRM:
                 case DialogPerspectives.DELETE:
                 case DialogPerspectives.PRINT:
                     // when in "delete" mode, all the fields should be read-only
-                    stateFlags.setFlag(Flags.READ_ONLY);
+                    stateFlags.setFlag(DialogFieldFlags.READ_ONLY);
                     break;
             }
         }
@@ -386,7 +246,7 @@ public class DialogField implements TemplateConsumer
             this.adjacentAreaValue = adjacentAreaValue;
         }
 
-        public Flags getStateFlags()
+        public DialogFieldFlags getStateFlags()
         {
             return stateFlags;
         }
@@ -398,7 +258,7 @@ public class DialogField implements TemplateConsumer
 
         public void persistValue()
         {
-            if(stateFlags.flagIsSet(Flags.PERSIST) && value.hasValue())
+            if(stateFlags.flagIsSet(DialogFieldFlags.PERSIST) && value.hasValue())
             {
                 Cookie cookie = new Cookie(getCookieName(), URLEncoder.encode(value.getTextValue()));
                 cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
@@ -475,7 +335,7 @@ public class DialogField implements TemplateConsumer
 	private DialogFieldConditionalActions conditionalActions = new DialogFieldConditionalActions();
 	private DialogFieldConditionalActions dependentConditions = new DialogFieldConditionalActions();
 	private List clientJavascripts = new ArrayList();
-	private Flags flags = createFlags();
+	private DialogFieldFlags flags = createFlags();
 	private DialogFieldPopup popup;
     private DialogFieldScanEntry scanEntry;
     private DialogFieldAutoBlur autoBlur;
@@ -483,9 +343,21 @@ public class DialogField implements TemplateConsumer
     private DialogFieldValidations validationRules = constructValidationRules();
     private String requiredFieldMissingMessage = "{0} is required.";
     private String accessKey;
+    private int[] childCarryFlags = CHILD_CARRY_FLAGS;
 
     public DialogField()
     {
+        setFlags(new DialogFieldFlags());
+    }
+
+    public int[] getChildCarryFlags()
+    {
+        return childCarryFlags;
+    }
+
+    public void setChildCarryFlags(int[] childCarryFlags)
+    {
+        this.childCarryFlags = childCarryFlags;
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -552,9 +424,9 @@ public class DialogField implements TemplateConsumer
      * Create flags for the field object
      * @return
      */
-    public Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
-        return new Flags();
+        return new DialogFieldFlags();
     }
 
     /**
@@ -562,20 +434,47 @@ public class DialogField implements TemplateConsumer
      * @param state
      * @return
      */
-    public Flags createFlags(State state)
+    public DialogFieldFlags createFlags(State state)
     {
-        return new Flags(state);
+        return new DialogFieldFlags(state);
     }
 
-    public Flags getFlags()
+    public DialogFieldFlags getFlags()
     {
         return flags;
     }
 
-    public void setFlags(Flags flags)
+    /**
+     * Sets the flags for the dialog field
+     * @param flags
+     */
+    public void setFlags(DialogFieldFlags flags)
     {
         this.flags.copy(flags);
+        this.flags.setField(this);
     }
+
+    /**
+     * Checks to see if the flag should be carried to children fields
+     * @param flag
+     * @return
+     */
+    public boolean carryFlag(long flag)
+    {
+        boolean carryFlag = false;
+
+        int[] childCarryFlags = getChildCarryFlags();
+        for (int i = 0; i < childCarryFlags.length; i++)
+        {
+            if (flag == childCarryFlags[i])
+            {
+                carryFlag = true;
+                break;
+            }
+        }
+        return carryFlag;
+    }
+
 
 	/**
 	 * Checks to see if the field requires multi-part endcoding
@@ -606,7 +505,7 @@ public class DialogField implements TemplateConsumer
     public void addConditional(DialogFieldConditionalAction action)
     {
         conditionalActions.addAction(action);
-        flags.setFlag(Flags.HAS_CONDITIONAL_DATA); // in case JavaScript needs it
+        flags.setFlag(DialogFieldFlags.HAS_CONDITIONAL_DATA); // in case JavaScript needs it
     }
 
     public DialogFieldConditionalAction createConditional()
@@ -659,19 +558,19 @@ public class DialogField implements TemplateConsumer
 
     public void addAutoBlur(DialogFieldAutoBlur autoBlur)
     {
-        flags.setFlag(Flags.AUTO_BLUR);
+        flags.setFlag(DialogFieldFlags.AUTO_BLUR);
         this.autoBlur = autoBlur;
     }
 
     public void addSubmitOnBlur(DialogFieldSubmitOnBlur submitOnBlur)
     {
-        flags.setFlag(Flags.SUBMIT_ONBLUR);
+        flags.setFlag(DialogFieldFlags.SUBMIT_ONBLUR);
         this.submitOnBlur = submitOnBlur;
     }
 
     public void addScanEntry(DialogFieldScanEntry scanEntry)
     {
-        flags.setFlag(Flags.SCANNABLE);
+        flags.setFlag(DialogFieldFlags.SCANNABLE);
         this.scanEntry = scanEntry;
     }
 
@@ -969,7 +868,7 @@ public class DialogField implements TemplateConsumer
 			}
 		}
 
-		if (flags.flagIsSet(Flags.DOUBLE_ENTRY))
+		if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
 			this.setupDoubleEntry();
 	}
 
@@ -1002,7 +901,7 @@ public class DialogField implements TemplateConsumer
 	 */
 	public boolean isRequired(DialogContext dc)
 	{
-    	if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.REQUIRED))
+    	if (dc.getFieldStates().getState(this).getStateFlags().flagIsSet(DialogFieldFlags.REQUIRED))
             return true;
 
 		if (children != null)
@@ -1051,13 +950,13 @@ public class DialogField implements TemplateConsumer
         }
 
         DialogField.State state = dc.getFieldStates().getState(this);
-        DialogField.Flags stateFlags = state.getStateFlags();
+        DialogFieldFlags stateFlags = state.getStateFlags();
 
-        if (stateFlags.flagIsSet(Flags.UNAVAILABLE))
+        if (stateFlags.flagIsSet(DialogFieldFlags.UNAVAILABLE))
             return false;
 
-        if (children == null && stateFlags.flagIsSet(Flags.READ_ONLY) &&
-            (stateFlags.flagIsSet(Flags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA) ||
+        if (children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
+            (stateFlags.flagIsSet(DialogFieldFlags.READONLY_UNAVAILABLE_UNLESS_HAS_DATA) ||
             dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_UNAVAILABLE_UNLESS_HAVE_DATA)))
         {
             Object value = state.getValue().getValue();
@@ -1070,47 +969,47 @@ public class DialogField implements TemplateConsumer
 	public boolean isReadOnly(DialogContext dc)
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
-        return state.getStateFlags().flagIsSet(Flags.READ_ONLY);
+        return state.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY);
 	}
 
 	public boolean isBrowserReadOnly(DialogContext dc)
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
-        return state.getStateFlags().flagIsSet(Flags.BROWSER_READONLY);
+        return state.getStateFlags().flagIsSet(DialogFieldFlags.BROWSER_READONLY);
 	}
 
 	public boolean isInputHiddenFlagSet(DialogContext dc)
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
-        return state.getStateFlags().flagIsSet(Flags.INPUT_HIDDEN);
+        return state.getStateFlags().flagIsSet(DialogFieldFlags.INPUT_HIDDEN);
 	}
 
 	public boolean isInputHidden(DialogContext dc)
 	{
         DialogField.State state = dc.getFieldStates().getState(this);
-        DialogField.Flags stateFlags = state.getStateFlags();
+        DialogFieldFlags stateFlags = state.getStateFlags();
 
-        if (stateFlags.flagIsSet(Flags.INPUT_HIDDEN))
+        if (stateFlags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN))
             return true;
 
-        if (children == null && stateFlags.flagIsSet(Flags.READ_ONLY) &&
-            (stateFlags.flagIsSet(Flags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
+        if (children == null && stateFlags.flagIsSet(DialogFieldFlags.READ_ONLY) &&
+            (stateFlags.flagIsSet(DialogFieldFlags.READONLY_HIDDEN_UNLESS_HAS_DATA) ||
             dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.READONLY_FIELDS_HIDDEN_UNLESS_HAVE_DATA)))
         {
             return ! state.hasRequiredValue();
         }
         else
-            return flags.flagIsSet(Flags.INPUT_HIDDEN);
+            return flags.flagIsSet(DialogFieldFlags.INPUT_HIDDEN);
 	}
 
 	public boolean persistValue()
 	{
-		return flags.flagIsSet(Flags.PERSIST);
+		return flags.flagIsSet(DialogFieldFlags.PERSIST);
 	}
 
 	public boolean showCaptionAsChild()
 	{
-        return flags.flagIsSet(Flags.SHOW_CAPTION_AS_CHILD);
+        return flags.flagIsSet(DialogFieldFlags.SHOW_CAPTION_AS_CHILD);
 	}
 
 	public String getHiddenControlHtml(DialogContext dc)
@@ -1136,7 +1035,7 @@ public class DialogField implements TemplateConsumer
 
 	public boolean needsValidation(DialogContext dc)
 	{
-		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA) || validationRules.size() > 0)
+		if (flags.flagIsSet(DialogFieldFlags.HAS_CONDITIONAL_DATA) || validationRules.size() > 0)
 			return true;
 
 		if (children == null)
@@ -1363,19 +1262,19 @@ public class DialogField implements TemplateConsumer
         else
             sb.append("field.readonly = 'no';\n");
 
-        if(flags.flagIsSet(Flags.IDENTIFIER))
+        if(flags.flagIsSet(DialogFieldFlags.IDENTIFIER))
             sb.append("field.identifier = 'yes';\n");
         else
             sb.append("field.identifier = 'no';\n");
 
-		if (flags.flagIsSet(Flags.DOUBLE_ENTRY))
+		if (flags.flagIsSet(DialogFieldFlags.DOUBLE_ENTRY))
 		{
 			sb.append("field.doubleEntry = 'yes';\n");
 			sb.append("field.firstEntryValue = '';\n");
 			sb.append("field.successfulEntry = true;\n");
 		}
 
-		if (flags.flagIsSet(Flags.SCANNABLE))
+		if (flags.flagIsSet(DialogFieldFlags.SCANNABLE))
 		{
 			sb.append("field.scannable = 'yes';\n");
 			sb.append("field.scanStartCode = '" + scanEntry.getStartCode() + "';\n");
@@ -1389,7 +1288,7 @@ public class DialogField implements TemplateConsumer
 				sb.append("field.scanFieldCustomScript = '';\n");
 		}
 
-		if (flags.flagIsSet(Flags.AUTO_BLUR))
+		if (flags.flagIsSet(DialogFieldFlags.AUTO_BLUR))
 		{
 			sb.append("field.autoBlur = 'yes';\n");
 			sb.append("field.autoBlurLength = " + autoBlur.getLength() + ";\n");
@@ -1397,7 +1296,7 @@ public class DialogField implements TemplateConsumer
 			sb.append("field.numCharsEntered = 0;\n");
 		}
 
-		if (flags.flagIsSet(Flags.SUBMIT_ONBLUR))
+		if (flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
 		{
 			sb.append("field.submitOnBlur = true;\n");
 			sb.append("field.submitOnBlurPartnerField ='" + submitOnBlur.getPartner() + "';\n");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.17 2003-08-01 21:29:17 aye.thu Exp $
+ * $Id: TextField.java,v 1.18 2003-08-31 02:01:15 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -64,6 +64,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
 import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 
 import org.apache.oro.text.perl.MalformedPerl5PatternException;
 import org.apache.oro.text.perl.Perl5Util;
@@ -79,20 +80,20 @@ public class TextField extends DialogField
     private static final Log log = LogFactory.getLog(TextField.class);
     public static Perl5Util perlUtil = new Perl5Util();
 
-    public static final Flags.FlagDefn[] TEXT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[DialogField.FLAG_DEFNS.length + 4];
+    public static final Flags.FlagDefn[] TEXT_FIELD_FLAG_DEFNS = new Flags.FlagDefn[DialogFieldFlags.FLAG_DEFNS.length + 4];
     static
     {
-        for(int i = 0; i < DialogField.FLAG_DEFNS.length; i++)
-            TEXT_FIELD_FLAG_DEFNS[i] = DialogField.FLAG_DEFNS[i];
-        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "MASK_ENTRY", Flags.MASK_ENTRY);
-        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "UPPERCASE", Flags.UPPERCASE);
-        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "LOWERCASE", Flags.LOWERCASE);
-        TEXT_FIELD_FLAG_DEFNS[DialogField.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "TRIM", Flags.TRIM);
+        for(int i = 0; i < DialogFieldFlags.FLAG_DEFNS.length; i++)
+            TEXT_FIELD_FLAG_DEFNS[i] = DialogFieldFlags.FLAG_DEFNS[i];
+        TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "MASK_ENTRY", Flags.MASK_ENTRY);
+        TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "UPPERCASE", Flags.UPPERCASE);
+        TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "LOWERCASE", Flags.LOWERCASE);
+        TEXT_FIELD_FLAG_DEFNS[DialogFieldFlags.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "TRIM", Flags.TRIM);
     }
 
-    public class Flags extends DialogField.Flags
+    public class Flags extends DialogFieldFlags
     {
-        public static final int MASK_ENTRY = DialogField.Flags.START_CUSTOM;
+        public static final int MASK_ENTRY = DialogFieldFlags.START_CUSTOM;
         public static final int UPPERCASE = MASK_ENTRY * 2;
         public static final int LOWERCASE = UPPERCASE * 2;
         public static final int TRIM = LOWERCASE * 2;
@@ -227,12 +228,12 @@ public class TextField extends DialogField
         }
     }
 
-    public DialogField.Flags createFlags()
+    public DialogFieldFlags createFlags()
     {
         return new Flags();
     }
 
-    public DialogField.Flags createFlags(State state)
+    public DialogFieldFlags createFlags(State state)
     {
         return new Flags(state);
     }
@@ -345,7 +346,7 @@ public class TextField extends DialogField
         }
 
         DialogField.State state = dc.getFieldStates().getState(this);
-        Flags stateFlags = (Flags) state.getStateFlags();
+        DialogFieldFlags stateFlags =  state.getStateFlags();
         String textValue = state.getValue().getTextValue();
 
         if(textValue == null)
@@ -388,7 +389,7 @@ public class TextField extends DialogField
     {
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
 
-        Flags flags = (Flags) getFlags();
+        DialogFieldFlags flags =  getFlags();
 
         if(flags.flagIsSet(Flags.UPPERCASE))
             buf.append("field.uppercase = 'yes';\n");
