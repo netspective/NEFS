@@ -3,7 +3,7 @@
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
 <!ENTITY __nef-assumptions__drd5vrj0 SYSTEM "../nef-reusable-content/nef-assumptions.xml">
 <!ENTITY __nef-sampler-setup__drd8289e SYSTEM "../nef-reusable-content/nef-sampler-setup.xml">
-<!ENTITY __sparx-nav-tree-overview__drq9ifdi SYSTEM "sparx-nav-tree-overview.xml">
+<!ENTITY __sparx-nav-tree-overview__drqcz0rd SYSTEM "../nef-reusable-content/sparx-nav-tree-overview.xml">
 ]>
 <article>
   <title>NEFS Sampler Tutorial</title>
@@ -194,7 +194,7 @@
     </screenshot>
   </section>
 
-  &__sparx-nav-tree-overview__drq9ifdi;
+  &__sparx-nav-tree-overview__drqcz0rd;
 
   <section>
     <title>NEFS Sampler Main Components</title>
