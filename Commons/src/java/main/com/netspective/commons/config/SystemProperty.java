@@ -39,19 +39,31 @@
  */
 
 /**
- * $Id: SystemProperty.java,v 1.2 2003-06-30 15:31:22 shahid.shah Exp $
+ * $Id: SystemProperty.java,v 1.3 2003-08-17 00:04:03 shahid.shah Exp $
  */
 
 package com.netspective.commons.config;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.io.Resource;
 
 public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeListener
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setPcDataHandlerMethodName("appendPropertyValueText");
     private Property property;
+    private File file;
+    private String resource;
+    private Class resourceRelativeToClass = SystemProperty.class;
 
     public SystemProperty()
     {
@@ -83,6 +95,36 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
         property.appendPropertyValueText(text);
     }
 
+    public File getFile()
+    {
+        return file;
+    }
+
+    public void setFile(File file)
+    {
+        this.file = file;
+    }
+
+    public String getResource()
+    {
+        return resource;
+    }
+
+    public void setResource(String resource)
+    {
+        this.resource = resource;
+    }
+
+    public Class getResourceRelativeToClass()
+    {
+        return resourceRelativeToClass;
+    }
+
+    public void setResourceRelativeToClass(Class resourceRelativeToClass)
+    {
+        this.resourceRelativeToClass = resourceRelativeToClass;
+    }
+
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         register();
@@ -90,6 +132,38 @@ public class SystemProperty implements XmlDataModelSchema.ConstructionFinalizeLi
 
     public void register()
     {
-        System.setProperty(property.getName(), property.getValue(null));
+        if(file != null)
+        {
+            Properties properties = new Properties();
+            try
+            {
+                InputStream is = new FileInputStream(file);
+                properties.load(is);
+                is.close();
+            }
+            catch (IOException e)
+            {
+                throw new NestableRuntimeException(e);
+            }
+            System.setProperties(properties);
+        }
+        else if(resource != null)
+        {
+            Resource res = new Resource(resourceRelativeToClass, resource);
+            Properties properties = new Properties();
+            try
+            {
+                InputStream is = res.getResourceAsStream();
+                properties.load(is);
+                is.close();
+            }
+            catch (IOException e)
+            {
+                throw new NestableRuntimeException(e);
+            }
+            System.setProperties(properties);
+        }
+        else
+            System.setProperty(property.getName(), property.getValue(null));
     }
 }
