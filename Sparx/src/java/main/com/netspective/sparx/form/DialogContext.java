@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.30 2003-11-13 17:29:07 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.31 2003-11-13 21:15:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -511,9 +511,16 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         ServletRequest request = getRequest();
         DialogFlags dialogFlags = dialog.getDialogFlags();
 
-        String ignoreVal = request.getParameter(dialog.getPendDataParamName());
-        if(ignoreVal != null && !ignoreVal.equals("no"))
-            validationContext.setValidationStage(DialogValidationContext.VALSTAGE_IGNORE);
+        boolean ignoreValidation = false;
+        if(dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_PENDING_DATA))
+        {
+            String ignoreValidationOption = request.getParameter(dialog.getPendDataParamName());
+            if(ignoreValidationOption != null && !ignoreValidationOption.equals("no"))
+            {
+                ignoreValidation = true;
+                validationContext.setValidationStage(DialogValidationContext.VALSTAGE_IGNORE);
+            }
+        }
 
         boolean autoExec = false;
         if(! dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
@@ -527,7 +534,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 autoExec = true;
         }
 
-        if(autoExec || request.getParameter(dialog.getSubmitDataParamName()) != null)
+        if(autoExec || request.getParameter(dialog.getSubmitDataParamName()) != null || ignoreValidation)
         {
             if(! dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
             {
