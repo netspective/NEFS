@@ -55,7 +55,9 @@ import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 public class SendMail
 {
@@ -116,6 +118,7 @@ public class SendMail
         }
     }
 
+    private String propertyNamesPrefix = "SparxMail.";
     private ValueSource host = LOCAL_HOST;
     private Headers headers;
     private ValueSource from;
@@ -128,6 +131,52 @@ public class SendMail
 
     public SendMail()
     {
+    }
+
+    public String getPropertyNamesPrefix()
+    {
+        return propertyNamesPrefix;
+    }
+
+    public void setPropertyNamesPrefix(String propertyNamesPrefix)
+    {
+        this.propertyNamesPrefix = propertyNamesPrefix;
+    }
+
+    public void setProperties(Properties props)
+    {
+        final ValueSources valueSources = ValueSources.getInstance();
+        String property = props.getProperty(propertyNamesPrefix + "from");
+        if(property != null)
+            setFrom(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "to");
+        if(property != null)
+            setTo(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "replyTo");
+        if(property != null)
+            setReplyTo(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "cc");
+        if(property != null)
+            setCc(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "bcc");
+        if(property != null)
+            setBcc(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "subject");
+        if(property != null)
+            setSubject(valueSources.getValueSourceOrStatic(property));
+
+        property = props.getProperty(propertyNamesPrefix + "body");
+        if(property != null)
+        {
+            final FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
+            templateProcessor.addTemplateContent(property);
+            addBody(templateProcessor);
+        }
     }
 
     public ValueSource getBcc()
