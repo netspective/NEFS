@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: StoredProcedures.java,v 1.1 2003-10-29 23:00:12 aye.thu Exp $
+ * $Id: StoredProcedures.java,v 1.2 2003-11-19 05:27:31 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
+import com.netspective.commons.metric.MetricsProducer;
+
 import java.util.Set;
 
-public interface StoredProcedures
+public interface StoredProcedures extends MetricsProducer
 {
     public void add(StoredProcedure query);
     public StoredProcedure get(int i);

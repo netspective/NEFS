@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Dialogs.java,v 1.3 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: Dialogs.java,v 1.4 2003-11-19 05:24:00 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -52,8 +52,12 @@ import java.util.TreeSet;
 import java.util.TreeMap;
 
 import com.netspective.sparx.Project;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.AverageMetric;
 
-public class Dialogs
+public class Dialogs implements MetricsProducer
 {
     private Project project;
     private List dialogs = new ArrayList();
@@ -108,6 +112,28 @@ public class Dialogs
     public int size()
     {
         return dialogs.size();
+    }
+
+    /**
+     * Generates various metrics associated with the dialogs
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric tpMetric = parent.addCountMetric("Total Packages");
+        tpMetric.setSum(nameSpaceNames.size());
+        CountMetric tdMetric = parent.addCountMetric("Total Dialogs");
+        tdMetric.setSum(dialogs.size());
+
+        AverageMetric avgFieldCountMetric = parent.addAverageMetric("Avg Fields Per Dialog");
+        CountMetric fieldCountMetric = parent.addCountMetric("Total Fields");
+
+        for (int i=0; i < dialogs.size(); i++)
+        {
+            int fCount = ((Dialog)dialogs.get(i)).getFields().size();
+            fieldCountMetric.incrementCount(fCount);
+            avgFieldCountMetric.incrementAverage(fCount);
+        }
     }
 
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.18 2003-11-08 16:25:54 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.19 2003-11-19 05:26:30 aye.thu Exp $
  */
 
 package com.netspective.axiom;
@@ -56,6 +56,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.MetricsGroup;
 import com.netspective.commons.product.NetspectiveComponent;
 import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
@@ -353,14 +354,18 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
-
+    /**
+     * Produces metrics associated with database related entities such as static queries and stored procedures
+     * @param parent
+     */
     public void produceMetrics(Metric parent)
     {
-        parent.addValueMetric("Static Queries", Integer.toString(queries.size()));
-        parent.addValueMetric("Stored Procedures", Integer.toString(storedProcedures.size()));
-        parent.addValueMetric("Dynamic Queries (Query Definitions)", Integer.toString(queryDefns.size()));
-        parent.addValueMetric("Schemas", Integer.toString(schemas.size()));
-        parent.addValueMetric("Database Policies", Integer.toString(DatabasePolicies.getInstance().size()));
+        MetricsGroup databaseGroup = parent.addGroupMetric("Database");
+        getQueries().produceMetrics(databaseGroup);
+        getQueryDefns().produceMetrics(databaseGroup);
+        getStoredProcedures().produceMetrics(databaseGroup);
+        databaseGroup.addValueMetric("Schemas", Integer.toString(schemas.size()));
+        databaseGroup.addValueMetric("Database Policies", Integer.toString(DatabasePolicies.getInstance().size()));
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

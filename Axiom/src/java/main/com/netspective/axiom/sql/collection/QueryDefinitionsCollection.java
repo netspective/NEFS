@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefinitionsCollection.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefinitionsCollection.java,v 1.2 2003-11-19 05:27:31 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -52,6 +52,8 @@ import java.util.Set;
 
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
 
 public class QueryDefinitionsCollection implements QueryDefinitions
 {
@@ -86,5 +88,25 @@ public class QueryDefinitionsCollection implements QueryDefinitions
     public int size()
     {
         return queryDefns.size();
+    }
+
+    /**
+     * Generates various metrics about query definitions defined in the project
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric qdMetric = parent.addCountMetric("Total Query Definitions");
+        qdMetric.setSum(queryDefns.size());
+        CountMetric qdfMetric = qdMetric.addCountMetric("Query Definition Fields");
+        CountMetric qdjMetric = qdMetric.addCountMetric("Query Definition Joins");
+
+        for (int i=0; i < queryDefns.size(); i++)
+        {
+            int qdFieldsCount = ((QueryDefinition) queryDefns.get(i)).getFields().size();
+            int qdJoinsCount = ((QueryDefinition) queryDefns.get(i)).getJoins().size();
+            qdfMetric.incrementCount(qdFieldsCount);
+            qdjMetric.incrementCount(qdJoinsCount);
+        }
     }
 }

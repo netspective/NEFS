@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Queries.java,v 1.2 2003-04-06 03:57:12 shahid.shah Exp $
+ * $Id: Queries.java,v 1.3 2003-11-19 05:27:31 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -47,8 +47,9 @@ package com.netspective.axiom.sql;
 import java.util.Set;
 
 import com.netspective.axiom.sql.Query;
+import com.netspective.commons.metric.MetricsProducer;
 
-public interface Queries
+public interface Queries extends MetricsProducer
 {
     public void add(Query query);
     public Query get(int i);

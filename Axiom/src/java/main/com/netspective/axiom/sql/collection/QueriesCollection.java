@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueriesCollection.java,v 1.4 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: QueriesCollection.java,v 1.5 2003-11-19 05:27:31 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -54,6 +54,10 @@ import java.util.HashSet;
 import com.netspective.axiom.sql.Queries;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.SqlManager;
+import com.netspective.commons.metric.MetricsProducer;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.AverageMetric;
 
 public class QueriesCollection implements Queries
 {
@@ -109,5 +113,18 @@ public class QueriesCollection implements Queries
     public int size()
     {
         return queries.size();
+    }
+
+    /**
+     * Generates various metrics about queries
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric tpMetric = parent.addCountMetric("Total Query Packages");
+        tpMetric.setSum(nameSpaceNames.size());
+        CountMetric tdMetric = parent.addCountMetric("Total Queries");
+        tdMetric.setSum(queries.size());
+
     }
 }

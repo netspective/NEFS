@@ -39,14 +39,16 @@
  */
 
 /**
- * $Id: QueryDefinitions.java,v 1.1 2003-03-13 18:25:43 shahid.shah Exp $
+ * $Id: QueryDefinitions.java,v 1.2 2003-11-19 05:27:31 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
 
+import com.netspective.commons.metric.MetricsProducer;
+
 import java.util.Set;
 
-public interface QueryDefinitions
+public interface QueryDefinitions extends MetricsProducer
 {
     public void add(QueryDefinition queryDefn);
     public QueryDefinition get(int i);

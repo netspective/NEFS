@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProjectComponent.java,v 1.5 2003-08-24 18:40:58 shahid.shah Exp $
+ * $Id: ProjectComponent.java,v 1.6 2003-11-19 05:22:41 aye.thu Exp $
  */
 
 package com.netspective.sparx;

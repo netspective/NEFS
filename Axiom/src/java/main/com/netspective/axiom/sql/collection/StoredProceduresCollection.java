@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProceduresCollection.java,v 1.3 2003-11-18 03:38:27 aye.thu Exp $
+ * $Id: StoredProceduresCollection.java,v 1.4 2003-11-19 05:27:31 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.collection;
@@ -47,6 +47,9 @@ package com.netspective.axiom.sql.collection;
 import com.netspective.axiom.sql.StoredProcedures;
 import com.netspective.axiom.sql.StoredProcedure;
 import com.netspective.axiom.SqlManager;
+import com.netspective.commons.metric.Metric;
+import com.netspective.commons.metric.CountMetric;
+import com.netspective.commons.metric.AverageMetric;
 
 import java.util.*;
 
@@ -106,5 +109,24 @@ public class StoredProceduresCollection implements StoredProcedures
     public int size()
     {
         return storedProcs.size();
+    }
+
+    /**
+     * Generates various metrics associated with stored procedures
+     * @param parent
+     */
+    public void produceMetrics(Metric parent)
+    {
+        CountMetric qdMetric = parent.addCountMetric("Total Stored Procedures");
+        qdMetric.setSum(storedProcs.size());
+        AverageMetric avgFieldCountMetric = qdMetric.addAverageMetric("Avg Parameters Per Stored Procedure");
+        CountMetric fieldCountMetric = qdMetric.addCountMetric("Total Parameters");
+
+        for (int i=0; i < storedProcs.size(); i++)
+        {
+            int paramCount = ((StoredProcedure)storedProcs.get(i)).getParams().size();
+            avgFieldCountMetric.incrementAverage(paramCount);
+            fieldCountMetric.incrementCount(paramCount);
+        }
     }
 }
