@@ -6,7 +6,7 @@
    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
 
 
-   <schema name="db">
+   <schema name="local">
 
       <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
@@ -75,7 +75,7 @@
          <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
          <column name="guid_text_column" type="guid-text" descr="Guid Text Column"/>
          <column name="guid32_column" type="guid32" descr="Guid32 Column"/>
-         <!-- column name="text_set_column" type="text-set" descr="Text Set Column"/ -->
+
          <!-- column name="enum_set_column" type="enum-set" descr="Enum Set Column"/ -->
          <column name="currency_column" type="currency" descr="Currency Column"/>
          <column name="percentage_column" type="percentage" descr="Percentage Column"/>
@@ -104,5 +104,73 @@
          <column name="column_b" type="text" size="32" descr="Column B - for use in unit test SqlManagerQueryTest"/>
          <column name="column_c" type="text" size="32" descr="Column C - for use in unit test SqlManagerQueryTest"/>
       </table>
+
+       <table name="Test_Three" abbrev="Tst3" type="Default">
+         <description>
+            This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
+         </description>
+         <column name="auto_inc_column" type="auto-inc" descr="Auto Inc Column"/>
+         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+
+      </table>
    </schema>
+
+    <schema name="db">
+
+      <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+
+
+        <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+                 <data-type name="creation-stamp" type="stamp">
+                    <!--
+                                    AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
+                                    Column triggers, validation, and DAL information must now be placed in Java classes.
+                                    -->
+                 </data-type>
+
+                  <table name="Record_Status" abbrev="RecStatus" type="Status"/>
+
+                 <table-type name="Default">
+                    <xdm:template-param name="recordStatusEnum" default="Record_Status"/>
+                    <column name="cr_stamp" type="creation-stamp" required="dbms" descr="Date/time record was created">
+                       <sql-ddl>
+                          <default dbms="oracle">sysdate</default>
+                       </sql-ddl>
+                       <value-defn>
+                          <default dbms="hsqldb">curdate()</default>
+                       </value-defn>
+                       <presentation>
+                          <field.text hidden="yes" visible="no" size="36"/>
+                       </presentation>
+                    </column>
+                    <!-- <column name="cr_sess_id" lookupref="Person_Session.session_id" descr="The session used to create a record.  The Person_Session table will contain all information relevant to the session including the person_id and org_id of the user to whom the session belongs">
+                       <presentation>
+                          <field.text hidden="yes" size="36"/>
+                       </presentation>
+                    </column> -->
+                    <column name="rec_stat_id" lookupref="${params.recordStatusEnum}" required="yes" descr="The status of a row in the table">
+                       <!--
+                       AXIOM CONVERSION NOTICE: XIF SchemaDoc tag <java-default> is no longer used in Axiom.
+                       Column triggers, validation, and DAL information must now be placed in Java classes.
+                       -->
+                       <presentation>
+                          <field.select hidden="yes"/>
+                       </presentation>
+                    </column>
+                 </table-type>
+              </xdm:container>
+
+
+        <table name="Test_Three" abbrev="Tst3" type="Default">
+         <description>
+            This is a sample table that is used in the SqlManagerQueryTest Unit Test.  Do not discard.
+         </description>
+         <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+         <column name="text_set_column" type="text-set" descr="Text Set Column"/>
+         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+      </table>
+
+    </schema>
 </component>

@@ -39,16 +39,19 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.3 2003-06-13 04:46:51 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.4 2003-06-15 05:54:56 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.sql.SQLException;
-import java.sql.Types;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.Set;
 import java.util.Map;
+import java.util.Date;
+import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.naming.NamingException;
 
@@ -61,10 +64,14 @@ import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.axiom.sql.*;
+import com.netspective.axiom.sql.dynamic.QueryDefnCondition;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.*;
 import com.netspective.axiom.schema.column.type.*;
+import com.netspective.axiom.schema.dal.db.model.TestThree;
+import com.netspective.axiom.schema.dal.db.DataAccessLayer;
 import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
@@ -77,9 +84,9 @@ public class SchemaColumnsTest extends TestCase
     public static final String RESOURCE_NAME = "test-data-schema.xml";
     protected SqlManagerComponent component = null;
     protected SqlManager manager = null;
-    protected String[] queryNames = new String[]{"statement-0", "statement-1", "bad-statement", "statement-2"};
-    protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "statement-2"};
     protected Schema schema = null;
+
+    protected Schema populatedSchema = null;
 
     protected void setUp() throws Exception
     {
@@ -89,13 +96,17 @@ public class SchemaColumnsTest extends TestCase
                 (SqlManagerComponent) XdmComponentFactory.get(SqlManagerComponent.class, new Resource(SchemaColumnsTest.class, RESOURCE_NAME), XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
         assertNotNull(component);
 
-        schema = component.getManager().getSchema("db");
+        schema = component.getManager().getSchema("local");
         assertNotNull(schema);
 
+        populatedSchema = component.getManager().getSchema("db");
+        assertNotNull(populatedSchema);
+
         TestUtils.getConnProvider(this.getClass().getPackage().getName(), false, false);
+        TestUtils.getConnProvider(this.getClass().getPackage().getName(), true, true);
     }
 
-    public void test1()
+    public void testBooleanColumn()
     {
 
 
@@ -248,8 +259,109 @@ public class SchemaColumnsTest extends TestCase
         {
             //This is good
         }
-
-
     }
+
+    public void testDateColumn()
+    {
+        Table table = schema.getTables().getByName("SchemaTest");
+        Row row = table.createRow();
+        DateColumn.DateColumnValue colValue = (DateColumn.DateColumnValue) row.getColumnValues().getByName("date_column");
+
+        assertEquals(colValue.getValueHolderClass(), Date.class);
+        assertEquals(colValue.getBindParamValueHolderClass(), java.sql.Date.class);
+
+        Date dateVal = null;
+        try
+        {
+            SimpleDateFormat myFormat = (SimpleDateFormat)DateFormat.getInstance();
+            dateVal = myFormat.parse("01/01/2003 0:0 AM, PDT");
+            //myFormat.applyPattern("MMM d, yyyy");
+            //dateVal = myFormat.parse("Jan 1, 2003");
+            //M/d/yy h:mm a  --  MMM d, yyyy
+        }
+        catch (ParseException e)
+        {
+            fail(); // This should never happen because is depends on the hardcoded string just above.
+        }
+        DateColumn col = (DateColumn)colValue.getColumn();
+        DateFormat colFormat = col.getDateFormat();
+        assertNotNull(colFormat);
+
+        colValue.setTextValue("Jan 1, 2003");
+        assertEquals(colValue.getValue(), dateVal);
+
+        assertEquals(colValue.getTextValue(), "Jan 1, 2003");
+
+        DateFormat format = DateFormat.getInstance();
+        col.setDateFormat(format);
+        assertSame(format, col.getDateFormat());
+
+        try
+        {
+            colValue.setTextValue("abc");
+            fail();
+        }
+        catch (ValueException e)
+        {
+            //This is good
+        }
+    }
+
+    public void testGuidColumn(){
+        Table table = schema.getTables().getByName("SchemaTest");
+        GuidColumn col = (GuidColumn) table.getColumns().getByName("guid32_column");
+        assertEquals(col.getForeignKeyReferenceeClass(), GuidTextColumn.class);
+    }
+
+    public void testAutoIncColumn(){
+        Table table = schema.getTables().getByName("SchemaTest");
+        AutoIncColumn col = (AutoIncColumn) table.getColumns().getByName("auto_inc_column");
+        assertEquals(col.getForeignKeyReferenceeClass(), LongIntegerColumn.class);
+    }
+
+    public void testTextSetColumn() throws NamingException, SQLException {
+        Table table = populatedSchema.getTables().getByName("Test_Three");
+        TextSetColumn col = (TextSetColumn) table.getColumns().getByName("text_set_column");
+        TextColumn colA = (TextColumn) table.getColumns().getByName("column_a");
+
+        assertEquals(col.getDelimiter(), ",");
+        col.setDelimiter("|");
+        assertEquals(col.getDelimiter(), "|");
+        assertEquals(col.isTrim(), true);
+        col.setTrim(false);
+        assertEquals(col.isTrim(), false);
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+	    dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+        //Asser the data inserted
+        table.getAccessorByColumnEquality(colA);
+        QueryDefnSelect query = table.getAccessorByColumnEquality(colA);
+        QueryResultSet resultSet = query.execute(dbvc,this.getClass().getPackage().getName(),new Object[]{"def"});
+        ResultSet result = resultSet.getResultSet();
+        Row row = table.createRow();
+        ColumnValues values = row.getColumnValues();
+
+        if (result.next())
+            values.populateValues(result, 0);
+
+        assertEquals(values.getByName("column_a").getTextValue(),"def");
+        assertEquals(values.getByName("text_set_column").getTextValue(),"e,f,g,h");
+
+
+        //TODO: Figure out why when we try to update we get a SQL Exception
+        //values.getByName("rec_stat_id").setTextValue("0");
+        //values.getByName("text_set_column").setTextValue("a,b,c,d");
+        //System.out.println("row: " + row.getColumnValues());
+        //table.update(cc, row);
+
+        table.delete(cc, row);
+        result = query.execute(dbvc,this.getClass().getPackage().getName(),new Object[]{"def"}).getResultSet();
+        assertTrue(!result.next());
+    }
+
+
 
 }
