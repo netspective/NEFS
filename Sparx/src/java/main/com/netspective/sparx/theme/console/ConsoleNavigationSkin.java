@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.24 2003-08-19 16:39:40 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.25 2003-08-19 18:04:01 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -211,7 +211,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("			<tr>\n");
             writer.write("				<td class=\"error-alert-anchor\"><img class=\"error-alert-anchor\" src=\"" + themeImagesPath +
                     "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-            writer.write("				<td nowrap><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></td>\n");
+            writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\"><span class=\"error-alert-heading\">&nbsp;Errors&nbsp;</span></a></td>\n");
             writer.write("				<td nowrap><a class=\"error-alert\" href=\"" + nc.getServletRootUrl() + "/project/input-source#errors\">&nbsp;&nbsp;" +
                     errorsCount +"</a></td>\n");
             writer.write("			</tr>\n");
