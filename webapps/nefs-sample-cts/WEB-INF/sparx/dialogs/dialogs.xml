@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <xdm:include file="org.xml"/>
-    <xdm:include file="person.xml"/>
-    <xdm:include file="study.xml"/>
 
     <!--
         This is the template for contact information for persons (subjects, coordinators), organizations(sites, sponsors),
@@ -26,6 +23,11 @@
         <field type="text" name="method_value" caption="Contact Information" required="yes"
             hint="Enter the contact number, email address or other information here."/>
     </xdm:template>
+
+    <xdm:include file="org.xml"/>
+    <xdm:include file="person.xml"/>
+    <xdm:include file="study.xml"/>
+
 
     <dialogs package="subject">
         <dialog name="login_info" >
