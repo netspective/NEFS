@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JavaExpressionText.java,v 1.1 2003-03-13 18:33:11 shahid.shah Exp $
+ * $Id: JavaExpressionText.java,v 1.2 2003-03-20 05:37:09 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.text;
@@ -63,11 +63,14 @@ public class JavaExpressionText extends ExpressionText
 
     public JavaExpressionText()
     {
+	    super();
+	    jexlContext = JexlHelper.createContext();
     }
 
     public JavaExpressionText(String staticExpr)
     {
         super(staticExpr);
+	    jexlContext = JexlHelper.createContext();
     }
 
     public JavaExpressionText(String staticExpr, Map vars)
