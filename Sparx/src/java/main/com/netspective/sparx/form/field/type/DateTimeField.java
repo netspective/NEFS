@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.13 2003-10-01 15:23:08 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.14 2003-10-15 22:13:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -516,7 +516,7 @@ public class DateTimeField extends TextField
             Theme theme = dc.getSkin().getTheme();
             writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/calendar.js") + "'></script>\n");
             writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/lang/calendar-en.js") + "'></script>\n");
-            writer.write("<script src='" + theme.getResourceUrl("/calendar-0.9.2/scripts/calendar-helper.js") + "'></script>\n");
+            writer.write("<script src='" + theme.getResourceUrl("/scripts/calendar-helper.js") + "'></script>\n");
 
             writer.write(
                     "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
