@@ -44,6 +44,7 @@ import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRow;
+import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.value.GenericValue;
 import com.netspective.commons.value.PresentationValue;
@@ -53,6 +54,7 @@ import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.text.TextUtils;
 
 public class SchemaEnumerationsValueSource extends AbstractValueSource
 {
@@ -171,11 +173,16 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
+        final EnumerationTable enumerationTable = getEnumerationTable(vc);
         if(getEnumCaption() == null)
-            return getEnumerationTable(vc).getEnums().getEnumerationsValue();
+            return enumerationTable.getEnums().getEnumerationsValue();
         else
         {
-            EnumerationTableRow enumRow = getEnumerationTable(vc).getEnums().getByIdOrCaptionOrAbbrev(getEnumCaption());
+            final EnumerationTableRows enums = enumerationTable.getEnums();
+            EnumerationTableRow enumRow = enums.getByIdOrCaptionOrAbbrev(getEnumCaption());
+            if(enumRow == null)
+                throw new RuntimeException("There is no '" + getEnumCaption() + "' enum in table " + enumerationTable.getName() + " of schema " + enumerationTable.getSchema().getName() + ". " +
+                                           "Available: " + TextUtils.getInstance().join(enums.getValidValues(), ", "));
             return new GenericValue(enumRow.getIdAsInteger());
         }
     }
