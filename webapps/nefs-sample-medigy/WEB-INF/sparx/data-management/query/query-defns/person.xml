@@ -62,8 +62,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
@@ -109,8 +109,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
@@ -153,8 +153,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Gender"/>
                             </report>
                         </panel>
@@ -201,8 +201,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
@@ -250,8 +250,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
@@ -299,8 +299,8 @@
                             <frame heading="Search Results"/>
                             <report>
                                 <column heading="Person ID"/>
-                                <column heading="First Name" redirect="redirect,First Name"/>
-                                <column heading="Last Name" redirect="redirect,Last Name"/>
+                                <column heading="First Name" redirect="page-id:/person/summary?person_id=${0}"/>
+                                <column heading="Last Name" redirect="page-id:/person/summary?person_id=${0}"/>
                                 <column heading="Birth Date"/>
                                 <column heading="Gender"/>
                                 <column heading="Marital Status"/>
