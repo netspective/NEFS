@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiDatabasePolicy.java,v 1.17 2004-06-11 11:40:11 shahid.shah Exp $
+ * $Id: AnsiDatabasePolicy.java,v 1.18 2004-07-11 02:14:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -91,10 +91,18 @@ public class AnsiDatabasePolicy implements DatabasePolicy
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(AnsiDatabasePolicy.class);
 
+    private String name;
+    private String[] aliases;
     private SqlDdlFormats ddlFormats = createDdlFormats();
     private SqlDdlGenerator ddlGenerator = createDdlGenerator();
     private boolean prefixTableNamesWithSchemaName = false;
     private boolean placeBindComments = false;
+
+    public AnsiDatabasePolicy()
+    {
+        setName(DatabasePolicies.DBMSID_DEFAULT);
+        setAliases(DatabasePolicies.DBMSID_DEFAULT);
+    }
 
     /* --------------------------------------------------------------------------------------------------------------*/
 
@@ -150,14 +158,42 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         return true;
     }
 
+    /**
+     * Sets the unique ID and creates a single alias for this policy. Should be called before setting aliases since
+     * once a name is set, a single aliase is created automatically.
+     * @param name
+     */
+    public void setName(String name)
+    {
+        this.name = name.toLowerCase();
+        setAliases(this.name);
+    }
+
+    public void setAliases(String aliases)
+    {
+        this.aliases = TextUtils.split(aliases, ",", true);
+
+        Set aliasesSet = new HashSet();
+        for(int i = 0; i < this.aliases.length; i++)
+        {
+            String alias = this.aliases[i].toLowerCase();
+            aliasesSet.add(alias);
+        }
+
+        if(! aliasesSet.contains(getDbmsIdentifier()))
+            aliasesSet.add(getDbmsIdentifier());
+
+        this.aliases = (String[]) aliasesSet.toArray(new String[aliasesSet.size()]);
+    }
+
     public String getDbmsIdentifier()
     {
-        return DatabasePolicies.DBMSID_DEFAULT;
+        return name;
     }
 
     public String[] getDbmsIdentifiers()
     {
-        return new String[]{getDbmsIdentifier()};
+        return aliases;
     }
 
     public Object executeAndGetSingleValue(ConnectionContext cc, String sql) throws SQLException

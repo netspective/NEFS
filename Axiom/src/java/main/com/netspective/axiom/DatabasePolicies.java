@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DatabasePolicies.java,v 1.3 2004-04-28 16:55:04 shahid.shah Exp $
+ * $Id: DatabasePolicies.java,v 1.4 2004-07-11 02:14:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -58,6 +58,7 @@ import com.netspective.axiom.policy.MySqlDatabasePolicy;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
 import com.netspective.axiom.policy.SqlServerDatabasePolicy;
+import com.netspective.axiom.policy.AccessDatabasePolicy;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.validate.ValidationUtils;
 import org.apache.commons.logging.Log;
@@ -98,6 +99,7 @@ public class DatabasePolicies
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(OracleDatabasePolicy.class, OracleDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(PostgreSqlDatabasePolicy.class, PostgreSqlDatabasePolicy.class.getName()));
         registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(SqlServerDatabasePolicy.class, SqlServerDatabasePolicy.class.getName()));
+        registerDatabasePolicy((DatabasePolicy) DiscoverSingleton.find(AccessDatabasePolicy.class, AccessDatabasePolicy.class.getName()));
     }
 
     public void registerDatabasePolicy(DatabasePolicy policy)
@@ -106,10 +108,10 @@ public class DatabasePolicies
 
         for(int i = 0; i < dbmsIdentifiers.length; i++)
         {
-            String dbmsIdentifier = dbmsIdentifiers[i];
+            String dbmsIdentifier = dbmsIdentifiers[i].toLowerCase();
             if(log.isDebugEnabled() && policiesById.containsKey(dbmsIdentifier))
             {
-                DatabasePolicy existingPolicy = (DatabasePolicy) policiesById.get(dbmsIdentifier);
+                DatabasePolicy existingPolicy = getDatabasePolicy(dbmsIdentifier);
                 log.debug("Replacing existing policy id '' class "+ existingPolicy.getClass().getName() +" with " + policy.getClass().getName());
             }
 
@@ -126,7 +128,7 @@ public class DatabasePolicies
 
     public DatabasePolicy getDatabasePolicy(String dbmsIdentifier)
     {
-        return (DatabasePolicy) policiesById.get(dbmsIdentifier);
+        return (DatabasePolicy) policiesById.get(dbmsIdentifier.toLowerCase());
     }
 
     public DatabasePolicy getDatabasePolicy(Connection conn) throws SQLException

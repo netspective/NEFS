@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: OracleDatabasePolicy.java,v 1.2 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: OracleDatabasePolicy.java,v 1.3 2004-07-11 02:14:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -54,16 +54,10 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 public class OracleDatabasePolicy extends AnsiDatabasePolicy
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_ORACLE = "oracle";
 
-    public String getDbmsIdentifier()
+    public OracleDatabasePolicy()
     {
-        return DBMSID_ORACLE;
-    }
-
-    public String[] getDbmsIdentifiers()
-    {
-        return new String[] { getDbmsIdentifier(), "Oracle" };
+        setName("oracle");
     }
 
     public SqlDdlFormats createDdlFormats()

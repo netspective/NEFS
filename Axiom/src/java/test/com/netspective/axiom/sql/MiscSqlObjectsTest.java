@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MiscSqlObjectsTest.java,v 1.7 2003-11-08 18:29:29 shahid.shah Exp $
+ * $Id: MiscSqlObjectsTest.java,v 1.8 2004-07-11 02:14:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -228,7 +228,7 @@ public class MiscSqlObjectsTest extends TestCase
     public void testDatabasePolicies()
     {
         DatabasePolicies dbPolicies = new DatabasePolicies();
-        assertEquals(6, dbPolicies.size());
+        assertEquals(7, dbPolicies.size());
 
         DatabasePolicy[] selectedDbPolicies = dbPolicies.getMatchingPolices("/o/");
         Set selectedDbPolicyNames = new HashSet(3);
@@ -247,6 +247,7 @@ public class MiscSqlObjectsTest extends TestCase
         expectedPolicyNames.add("hsqldb");
         expectedPolicyNames.add("oracle");
         expectedPolicyNames.add("mssql");
+        expectedPolicyNames.add("access");
         assertEquals(expectedPolicyNames.size(), policySet.size());
         for (Iterator iter = policySet.iterator(); iter.hasNext();)
             assertTrue(expectedPolicyNames.contains(((DatabasePolicy) iter.next()).getDbmsIdentifier()));

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CacheDatabasePolicy.java,v 1.4 2004-03-26 02:15:37 shahid.shah Exp $
+ * $Id: CacheDatabasePolicy.java,v 1.5 2004-07-11 02:14:04 shahid.shah Exp $
  */
 package com.netspective.axiom.policy;
 
@@ -48,15 +48,9 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 public class CacheDatabasePolicy extends AnsiDatabasePolicy
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_CACHE_SQL = "Cache";
 
-    public String getDbmsIdentifier()
+    public CacheDatabasePolicy()
     {
-        return DBMSID_CACHE_SQL;
-    }
-
-    public String[] getDbmsIdentifiers()
-    {
-        return new String[]{getDbmsIdentifier(), "Cache"};
+        setName("Cache");
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessDatabasePolicy.java,v 1.2 2004-06-05 04:15:16 jeremy.d.hulick Exp $
+ * $Id: AccessDatabasePolicy.java,v 1.3 2004-07-11 02:14:04 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -53,16 +53,11 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 public class AccessDatabasePolicy extends AnsiDatabasePolicy
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    public static final String DBMSID_ACCESS_SQL = "ACCESS";
 
-    public String getDbmsIdentifier()
+    public AccessDatabasePolicy()
     {
-        return DBMSID_ACCESS_SQL;
-    }
-
-    public String[] getDbmsIdentifiers()
-    {
-        return new String[] { getDbmsIdentifier(), "Access Database Engine" };
+        setName("ACCESS");
+        setAliases("Access Database Engine");
     }
 
     public boolean retainAutoIncColInInsertDml()
