@@ -146,6 +146,14 @@
             </library>
 
             <library>
+                <name>Sun Microsystems Java JTA API</name>
+                <version>1.0.1</version>
+                <class-path>jta.jar</class-path>
+                <source home-uri="http://java.sun.com"
+                        license="Sun Microsystems"/>
+            </library>
+
+            <library>
                 <name>Sun Microsystems JavaDoc to XML Library</name>
                 <version>1.0</version>
                 <class-path>XmlDoclet.jar</class-path>
