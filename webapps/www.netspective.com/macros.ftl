@@ -115,7 +115,11 @@
           'descr' : "The Library sample builds upon the Books example by allowing books to be
                      defined and checked out/checked in. This sample demonstrates entity relationships and looks more like a
                      real-world application than the Books sample because it has more
-                     elaborate functionality."
+                     elaborate functionality.",
+          'tutorialUrl' : resourcesPath + '/support/docs/nef-articles/nefs-sample-library-tutorial.html',
+          'tutorialPDF' : resourcesPath + '/nefs-sample-library-tutorial.pdf',
+          'tutorialName' : 'Library Sample App Tutorial',
+          'tutorialDescr' : 'Provides step by step instructions for how to build the Library sample application using NEFS.'
         },
 
         { 'id': "nefs-sample-petstore", 'name': "Petstore", 'allowTryOnline': true, 'allowDownload': true,
