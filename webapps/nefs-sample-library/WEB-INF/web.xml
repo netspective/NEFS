@@ -35,7 +35,7 @@
 	<!-- Setup runtime environment -->
 	<context-param>
 	  <param-name>com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS</param-name>
-	  <param-value>DEVELOPMENT</param-value>
+	  <param-value>DEVELOPMENT | FRAMEWORK_DEVELOPMENT</param-value>
 	  <!-- the parameter for the environment flags may be combined using
 	       the following vaues:
 	       * DEVELOPMENT
@@ -44,6 +44,7 @@
 	       * DEMONSTRATION
 	       * PRODUCTION
 	       * UNDERGOING_MAINTENANCE
+	       * FRAMEWORK_DEVELOPMENT
 
 	       e.g. "PRODUCTION | UNDERGOING_MAINTENANCE" is valid
 	    -->

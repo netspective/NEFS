@@ -83,4 +83,16 @@
 	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
 	********************************************************************** -->
 
+    <queries package="library">
+
+        <query name="get-all-books">
+            select * from book_info
+        </query>
+
+        <query name="get-all-book-types">
+            select * from book_type
+        </query>
+
+    </queries>
+
 </component>

@@ -51,7 +51,7 @@
 			</composite>
 			-->
 			<director>
-				<next-actions caption="Next Action:" choices="text-list:a=x" display-single-action="yes"/>
+				<next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
 			</director>
 		</dialog>
 	</dialogs>

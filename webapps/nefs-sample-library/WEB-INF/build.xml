@@ -26,7 +26,7 @@
         <property name="app.id-constants.classes.package" value="app.id"/>
 
         <property name="jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-        <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/library"/>
+        <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/${app.database.schema.name}"/>
         <property name="jdbc.userid" value="sa"/>
         <property name="jdbc.password" value=""/>
 
@@ -58,9 +58,11 @@
         <sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password="" src="${app.database.schema.ddl.loader.file}"/>
     </target>
 
-    <target name="import-data" depends="create-database">
-        <sparx action="generate-import-data-dtd" xdmFile="${sparx.conf.file}" genImportDtd="${app.database.data.path}/import-data.dtd" />
+    <target name="generate-import-data-dtd" depends="init">
+        <sparx action="generate-import-data-dtd" xdmFile="${sparx.conf.file}" genImportDtd="${app.database.data.path}/${app.database.schema.name}.dtd"/>
+    </target>
 
+    <target name="import-data" depends="create-database">
         <sparx action="import-data" import="${app.database.data.path}/initial-and-test-data.xml" xdmFile="${sparx.conf.file}"
                driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password="" />
     </target>
