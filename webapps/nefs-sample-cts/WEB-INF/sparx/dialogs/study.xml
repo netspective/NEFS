@@ -43,16 +43,13 @@
             <field type="date" name="irb_approval_date" caption="Approval Date"    format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
             <field type="date" name="irb_expiration_date" caption="Expiration Date" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"/>
 
-            <!-- declare the classes that are handling the dialog -->
+            <on-add-data>
+                <study _auto-map="*" />
+            </on-add-data>
             <on-edit-data>
-                <study study_name="study_name" study_code="study_code" study_descr="study_descr" study_status="study_status"
-                    study_stage="study_stage" study_type="study_type" start_date="start_date"
-                    target_end_date="target_end_date" actual_end_date="actual_end_date"
-                    irb_name="irb_name" irb_number="irb_number" irb_approval_date="irb_approval_date"
-                    irb_expiration_date="irb_expiration_date"
+                <study _auto-map="*"
                     _pk-value="request:study_id" />
             </on-edit-data>
-            <!--listener class="app.cts.form.study.StudyDialogInitialPopulateListener"/-->
         </dialog>
 
 

@@ -10,7 +10,7 @@
     </xdm:template>
     <xdm:template name="non-subject-demographics">
         <field type="separator" heading="Demographic Information"/>
-        <field type="date" caption="Date of Birth" name="date_of_birth" size="12"/>
+        <field type="date" caption="Date of Birth" name="birth_date" size="12"/>
         <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11"/>
         <field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes" required="yes"/>
         <field type="select" caption="Ethnicity" name="ethnicity_id" choices="schema-enum:Ethnicity_Type"
@@ -62,28 +62,26 @@
             <field type="separator" heading="Login Information" />
             <xdm:include template="login-info"/>
             <on-add-data>
-                <person name_first="name_first" name_middle="name_middle" name_last="name_last"
-                    name_suffix="name_suffix" gender_id="gender_id" ethnicity_id="ethnicity_id"
-                    language_id="language_id" ssn="ssn" rec_stat_id="static:Active">
+                <person _auto-map="*" rec_stat_id="static:Active">
                     <personstudy-relationship rel-entity-id="request:study_id" rec-stat-id="static:Active" rel-type-id="static:Coordinator"/>
                     <person-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method-value="work_phone"
                         _condition="vc.getFieldStates().getState('work_phone').getValue().hasValue()"/>
                     <person-contact rec-stat-id="static:Active" method-type="static:Email: Business" method-value="email"
                          _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
-                    <person-login user_id="user_id" password="password1" rec-stat-id="static:Active"
+                    <person-login user_id="user_id" password="field:password1" rec-stat-id="static:Active"
                         quantity="static:100"/>
                 </person>
             </on-add-data>
-
+            <on-delete-data>
+                <person _pk-value="request:person_id" _auto-map="*" />
+            </on-delete-data>
         </dialog>
         <dialog name="short-profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <frame heading="create-dialog-perspective-heading:Coordinator"/>
             <xdm:include template="person-profile"/>
             <xdm:include template="non-subject-demographics"/>
             <on-edit-data>
-                <person _pk-value="request:person_id" name_last="name_last" name_first="name_first"
-                    name_suffix="name_suffix" name_middle="name_middle" ssn="ssn" gender_id="gender_id"
-                    ethnicity_id="ethnicity_id" language_id="language_id">
+                <person _pk-value="request:person_id" _auto-map="*">
                 </person>
             </on-edit-data>
             <on-delete-data>
@@ -92,6 +90,37 @@
                     ethnicity_id="ethnicity_id" language_id="language_id">
                 </person>
             </on-delete-data>
+        </dialog>
+        <dialog name="self-short-profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Coordinator"/>
+            <xdm:include template="person-profile"/>
+            <xdm:include template="non-subject-demographics"/>
+            <on-edit-data>
+                <person _pk-value="request:person_id" _auto-map="*">
+                </person>
+            </on-edit-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" name_last="name_last" name_first="name_first"
+                    name_suffix="name_suffix" name_middle="name_middle" ssn="ssn" gender_id="gender_id"
+                    ethnicity_id="ethnicity_id" language_id="language_id">
+                </person>
+            </on-delete-data>
+        </dialog>
+         <dialog name="contact-info"   class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <xdm:include template="contact-info"/>
+            <field type="text" name="person_id" caption="Person ID" hidden="yes" default="request:person_id"/>
+            <on-add-data>
+                <person-contact rec-stat-id="static:Active" method-type="field:contactType.method_type" method_type_id="field:contactType.method_type"
+                     method-value="field:method_value" parent_id="field:person_id"/>
+            </on-add-data>
+             <on-edit-data>
+                 <person-contact _pk-value="request:id"  rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="field:contactType.method_type"
+                     method-value="method_value" parent_id="person_id"/>
+             </on-edit-data>
+             <on-delete-data>
+                 <person-contact _pk-value="request:id"  rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="field:contactType.method_type"
+                     method-value="method_value" parent_id="person_id"/>
+             </on-delete-data>
         </dialog>
     </dialogs>
 
@@ -119,17 +148,11 @@
             <xdm:include template="person-profile"/>
             <xdm:include template="subject-demographics"/>
             <on-edit-data>
-                <person _pk-value="request:person_id" name_last="name_last" name_first="name_first"
-                    name_suffix="name_suffix" name_middle="name_middle" ssn="ssn" gender_id="gender_id"
-                    ethnicity_id="ethnicity_id" language_id="language_id" blood_type_id="blood_type_id"
-                    marital_status_id="marital_status_id">
+                <person _pk-value="request:person_id" _auto-map="*">
                 </person>
             </on-edit-data>
             <on-delete-data>
-                <person _pk-value="request:person_id" name_last="name_last" name_first="name_first"
-                    name_suffix="name_suffix" name_middle="name_middle" ssn="ssn" gender_id="gender_id"
-                    ethnicity_id="ethnicity_id" language_id="language_id" blood_type_id="blood_type_id"
-                    marital_status_id="marital_status_id">
+                <person _pk-value="request:person_id" _auto-map="*">
                 </person>
             </on-delete-data>
         </dialog>
@@ -177,9 +200,9 @@
             <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
             <field type="text" mask-entry="yes" caption="New Password" name="new_password1" required="yes"/>
             <field type="text" mask-entry="yes" caption="Verify New Password" name="new_password2" required="yes"/>
-            <!--on-execute class="app.cts.form.person.PasswordDialogHandler"/>
+            <!--on-execute class="app.cts.form.person.PasswordDialogHandler"/-->
             <listener class="app.cts.form.person.PasswordDialogHandler"/>
-            <next-action-provider class="app.cts.form.person.PasswordDialogHandler"/-->
+            <!--next-action-provider class="app.cts.form.person.PasswordDialogHandler"/-->
         </dialog>
 
         <dialog name="contact-info" retain-params="*" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">

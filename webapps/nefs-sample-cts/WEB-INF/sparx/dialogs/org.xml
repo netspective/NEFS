@@ -6,27 +6,25 @@
     -->
     <xdm:template name="org-address" >
         <field type="separator" heading="Address Information"/>
-        <field type="text" name="address_name" hidden="no" caption="Address Name" default="Mailing Address"/>
-        <field type="text" name="line1" caption="Address 1" required="no" size="64" />
+        <field type="text" name="address_name" hidden="no" caption="Address Name" required="yes" default="Mailing Address"/>
+        <field type="text" name="line1" caption="Address 1"  size="64" required="yes" />
         <field type="text" name="line2" caption="Address 2" size="64" />
         <field type="composite" name="cityStateZip" caption="*">
-            <field type="text" name="city" caption="City" required="yes" size="16" />
+            <field type="text" name="city" caption="City" required="yes" size="16" required="yes" />
             <field type="select" name="state" caption="State" choices="schema-enum:db.US_State_Type"
                  required="yes"/>
-            <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" />
+            <field type="zip-code" name="zip" caption="Zip Code" max-length="5" size="7" required="yes" />
         </field>
-        <field type="text" name="country" caption="Country" size="16" />
-        <field type="text" name="time_zone" caption="Time Zone"/>
-
-        <field type="separator" heading="Contact Information"/>
-        <field type="composite"  name="primary" caption="*">
-            <field type="phone"  name="phone" caption="Telephone"/>
-            <field type="phone" name="fax" caption="Fax"/>
-        </field>
-        <field type="e-mail" name="email" caption="E-Mail"/>
-        <field type="text" name="website" caption="Web Site"/>
     </xdm:template>
-
+    <xdm:template name="default-org-contacts">
+       <field type="separator" heading="Contact Information"/>
+       <field type="composite"  name="primary" caption="*">
+           <field type="phone"  name="phone" caption="Telephone"/>
+           <field type="phone" name="fax" caption="Fax"/>
+       </field>
+       <field type="e-mail" name="email" caption="E-Mail"/>
+       <field type="text" name="website" caption="Web Site"/>
+   </xdm:template>
     <!--
         This is a template for basic Organization information which can be included in dialogs
         e.g <xdm:include template="org-profile"/>
@@ -49,30 +47,71 @@
             <frame heading="create-dialog-perspective-heading:Site"/>
             <xdm:include template="org-profile"/>
             <xdm:include template="org-address"/>
+            <xdm:include template="default-org-contacts"/>
             <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
             <on-add-data>
-                <org org_name="org_name" org_code="org_code" org_abbrev="org_abbrev" rec-stat-id="static:Active">
+                <org org_name="field:org_name" org_code="field:org_code" org_abbrev="field:org_abbrev" rec-stat-id="static:Active">
                     <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Site"/>
-                    <org-address address_name="address_name" line1="line1" line2="line2" zip="cityStateZip.zip"
-                        city="cityStateZip.city" state_id="cityStateZip.state" rec-stat-id="static:Active" />
-                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="primary.phone"
+                    <org-address address_name="field:address_name" line1="field:line1" line2="field:line2" zip="field:cityStateZip.zip"
+                        city="field:cityStateZip.city" state_id="field:cityStateZip.state" rec-stat-id="static:Active" />
+                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="field:primary.phone"
                         _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="primary.fax"
+                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="field:primary.fax"
                         _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="email"
+                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="field:email"
                         _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
                 </org>
                 <studyorg-relationship parent_id="field:study_id" rel_type_id="static:Site" rel-type="static:Site"
                     rel-entity-id="java:vc.getAddedRowPrimaryKeyValue(0).getIntValue()" rec_stat_id="static:Active" />
             </on-add-data>
         </dialog>
+        <dialog name="short-info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Site"/>
+            <xdm:include template="org-profile"/>
+            <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
+            <on-edit-data>
+                <org _pk-value="request:org_id" _auto-map="*" rec-stat-id="static:Active">
+                </org>
+            </on-edit-data>
+            <on-delete-data>
+                <org _pk-value="request:org_id" _auto-map="*" rec-stat-id="static:Active">
+                </org>
+                <!--studyorg-relationship parent_id="request:study_id" rel-entity-id="request:org_id"/-->
+            </on-delete-data>
+        </dialog>
         <dialog name="contact-info"   class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <xdm:include template="contact-info"/>
             <field type="text" name="org_id" caption="Site ID" hidden="yes" default="request:org_id"/>
             <on-add-data>
                 <org-contact rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="contactType.method_type"
-                     method-value="method_value" parent_id="field:org_id"/>
+                     method-value="field:method_value" parent_id="org_id"/>
             </on-add-data>
+            <on-edit-data>
+                <org-contact rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="contactType.method_type"
+                     method-value="method_value" parent_id="org_id" _pk-value="request:id" />
+            </on-edit-data>
+            <on-delete-data>
+                <org-contact rec-stat-id="static:Active" method-type="contactType.method_type" method_type_id="contactType.method_type"
+                     method-value="method_value" parent_id="org_id" _pk-value="request:id" />
+            </on-delete-data>            
+        </dialog>
+        <dialog name="address-info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <xdm:include template="org-address"/>
+            <field type="text" name="org_id" caption="Site ID" hidden="yes" default="request:org_id"/>
+            <on-add-data>
+                <org-address _auto-map="*"   zip="cityStateZip.zip"
+                    city="cityStateZip.city" state_id="cityStateZip.state" rec-stat-id="static:Active"
+                    parent-id="org_id"/>
+            </on-add-data>
+            <on-edit-data>
+                <org-address _auto-map="*" zip="cityStateZip.zip" city="cityStateZip.city" state_id="cityStateZip.state" rec-stat-id="static:Active"
+                    _pk-value="request:id" parent-id="org_id"/>
+            </on-edit-data>
+            <on-delete-data>
+                <org-address _auto-map="*"  zip="cityStateZip.zip"
+                    city="cityStateZip.city" state_id="cityStateZip.state" rec-stat-id="static:Active"
+                     _pk-value="request:id" parent-id="org_id"/>
+            </on-delete-data>
         </dialog>
     </dialogs>
 
@@ -87,18 +126,19 @@
             <frame heading="create-dialog-perspective-heading:Sponsor"/>
 			<xdm:include template="org-profile"/>
             <xdm:include template="org-address"/>
+            <xdm:include template="default-org-contacts"/>
             <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
             <on-add-data>
-                <org org_name="org_name" org_code="org_code" org_abbrev="org_abbrev" rec-stat-id="static:Active">
+                <org _auto-map="*" rec-stat-id="static:Active">
                     <org-classification rec-stat-id="static:Active" org_type="static:Trial Sponsor" org-type-id="static:Trial Sponsor"/>
-                    <org-address address_name="address_name" line1="line1" line2="line2" city="cityStateZip.city"
-                        state_id="cityStateZip.state"   address_type_id="static:Primary"
-                        zip="cityStateZip.zip" rec-stat-id="static:Active" />
-                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="primary.phone"
+                    <org-address address_name="field:address_name" line1="field:line1" line2="field:line2" city="field:cityStateZip.city"
+                        state_id="field:cityStateZip.state"   address_type_id="static:Primary"
+                        zip="field:cityStateZip.zip" rec-stat-id="static:Active" />
+                    <org-contact rec-stat-id="static:Active" method-type="static:Telephone: Business" method_type_id="static:Telephone: Business" method-value="field:primary.phone"
                         _condition="vc.getFieldStates().getState('primary.phone').getValue().hasValue()"/>
-                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="primary.fax"
+                    <org-contact rec-stat-id="static:Active" method-type="static:Fax: Business" method_type_id="static:Fax: Business" method-value="field:primary.fax"
                         _condition="vc.getFieldStates().getState('primary.fax').getValue().hasValue()"/>
-                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="email"
+                    <org-contact rec-stat-id="static:Active" method-type="static:Email: Business" method_type_id="static:Email: Business" method-value="field:email"
                         _condition="vc.getFieldStates().getState('email').getValue().hasValue()"/>
                 </org>
                 <studyorg-relationship parent_id="field:study_id" rel_type_id="static:Sponsor" rel-type="static:Sponsor"
@@ -108,12 +148,20 @@
         <!--
            This is the dialog for editing basic sponsor information and deleting the sponsor
         -->
-        <dialog name="profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
-            <frame heading="create-dialog-perspective-heading:Sponsor Profile"/>
-			<xdm:include template="org-profile"/>
+        <dialog name="short-info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Site"/>
+            <xdm:include template="org-profile"/>
+            <field type="text" name="study_id" caption="Trial ID" default="request:study_id" hidden="yes"/>
             <on-edit-data>
-                <org  _primary-key-value="request:org_id" _auto-map="*"/>
+                <org _pk-value="request:org_id" _auto-map="org_code,org_name,org_abbrev"
+                    rec-stat-id="static:Active">
+                </org>
             </on-edit-data>
+            <on-delete-data>
+                <org _pk-value="request:org_id" _auto-map="*" rec-stat-id="static:Active">
+                </org>
+                <!--studyorg-relationship parent_id="request:study_id" rel-entity-id="request:org_id"/-->
+            </on-delete-data>
         </dialog>
         <!--
             This is the dialog for creating/editing/deleting additional addresses for an existing sponsor
@@ -121,7 +169,7 @@
         <dialog name="address" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
             <xdm:include template="org-address"/>
             <on-add-data>
-                <org-address _auto_map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
+                <org-address _auto-map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
             </on-add-data>
         </dialog>
         <!--
