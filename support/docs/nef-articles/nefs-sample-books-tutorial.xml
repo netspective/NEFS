@@ -181,10 +181,8 @@
               id="declare-conn-provider-tags-eg-2" />
   &lt;<emphasis>driver-class</emphasis>&gt;org.hsqldb.jdbcDriver&lt;/driver-class&gt; <co
               id="declare-conn-provider-tags-eg-3" />
-  &lt;<emphasis>url</emphasis>&gt;
-  vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db} <co
+  &lt;<emphasis>url</emphasis>&gt;vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}&lt;/url&gt; <co
               id="declare-conn-provider-tags-eg-4" />
-  &lt;/url&gt; 
   &lt;<emphasis>user</emphasis>&gt;sa&lt;/user&gt; <co
               id="declare-conn-provider-tags-eg-5" />
   &lt;<emphasis>password</emphasis>&gt;&lt;/password&gt; <co
@@ -2041,14 +2039,109 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
   </section>
 
   <section>
-    <title>Console Application</title>
-
-    <para>TODO: Link to Console's Tour. Documentation coming soon...</para>
-  </section>
-
-  <section>
     <title>Moving to Another Database</title>
 
-    <para>TODO: Documentation coming soon...</para>
+    <para>Because NEFS Axiom supports multiple databases right out of the box,
+    when you generate the SQL DDL from either <guimenu>Console</guimenu> |
+    <guisubmenu>Project</guisubmenu> | <guimenuitem>Ant Build</guimenuitem>,
+    or from an automated run of the Ant Build, file you will have the
+    following files (assuming you have &lt;schema name="db"&gt; in your
+    project.xml):</para>
+
+    <para><varname>APP_ROOT</varname><filename
+    class="directory">/WEB-INF</filename>/<filename
+    class="directory">database</filename>/<filename
+    class="directory">defn</filename></para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>db-ansi.sql (general ANSI DDL)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-erd.dot (GraphViz ERD diagram file)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-hsqldb.sql (HSQLDB DDL)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-mssql.sql (MS SQL Server DDL)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-mysql.sql (MySQL DDL)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-oracle.sql (ORACLE DDL)</para>
+        </listitem>
+
+        <listitem>
+          <para>db-postgres.sql (PostgreSQL DDL)</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>Each database SQL file (for DDL and for DML) uses its own database
+    policy class. The database policy is responsible for taking the
+    db-independent <sgmltag>project</sgmltag>, <sgmltag>schema</sgmltag>,
+    <sgmltag>table</sgmltag>, <sgmltag>column</sgmltag>, etc. tags and
+    converting them into database-specific DDL and DML calls.</para>
+
+    <para>If you want to manually take a DDL file and construct your database
+    then all you need to do is:</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>use the generated SQL file and use your database's SQL import
+          method to create the database. </para>
+        </listitem>
+
+        <listitem>
+          <para>change the <sgmltag>data-source</sgmltag> in the project.xml
+          file's <sgmltag>connection-provider</sgmltag> tag</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>If you want to automatically create a database within the Ant file
+    the same way the create-database-hsqldb target works, you should add the
+    following target to the <varname>APP_ROOT</varname>/<filename
+    class="directory">WEB-INF</filename>/<filename
+    class="directory">sparx</filename>/<filename
+    class="directory">conf</filename>/<filename>ant-build-projet.xml</filename>
+    file:</para>
+
+    <para><example>
+        <title>Moving to Another Database</title>
+
+        <programlisting>&lt;target name="create-database-XXXXX" depends=".init" description="..."&gt;
+  &lt;property name="jdbc.driver" value="XXXX.jdbcDriver"/&gt;
+  &lt;property name="jdbc.url" value="jdbc:whatever"/&gt;
+  &lt;property name="jdbc.userid" value="xxxxx"/&gt;
+  &lt;property name="jdbc.password" value="xxxxx"/&gt;
+
+  &lt;!-- run some initialization script that will create a user/db/etc --&gt;
+  &lt;sql src="init-XXXX.sql"
+     driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password=""/&gt;
+
+  &lt;!-- generate only the your XXXX DDL file --&gt;
+  &lt;sparx action="generate-ddl" projectFile="${app.sparx.project.file}" 
+         destDir="${app.database.defn.path}" 
+         ddl="/^mssql/"/&gt; &lt;!-- use oracle, mssql, mysql, postres, ansi --&gt;
+  &lt;property name="app.database.schema.ddl.loader.file"
+     value="${app.database.defn.path}/${app.database.default-schema-name}-mssql.sql"/&gt;
+
+  &lt;!-- load the DDL into the database --&gt;
+  &lt;sql src="${app.database.schema.ddl.loader.file}"
+       driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password=""/&gt;
+
+  &lt;!-- import the "starter" data into the database (assuming you have any) --&gt;
+  &lt;sparx action="import-data"
+         projectFile="${app.sparx.project.file}"
+         import="${app.database.home}/data/initial-and-test-data.xml"
+         driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.userid}" password="" /&gt;
+&lt;/target&gt;</programlisting>
+      </example></para>
   </section>
 </article>
