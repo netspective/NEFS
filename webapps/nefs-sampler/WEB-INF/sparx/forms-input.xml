@@ -237,8 +237,8 @@
             <field type="static" caption="Static Field" name="static_field2" default="Checkbox checked!">
                 <conditional action="display" partner-field-name="checkbox_field" expression="control.checked == true"/>
             </field>
-            <field type="text" name="text_field" caption="Text Field" hint="This field is only required when a request parameter named 'blah' is available">
-                <conditional action="apply-flags" flags="required" has-value="request:blah"/>
+            <field type="text" name="text_field" caption="Text Field" hint="This field is only required when a request parameter named 'id' is available">
+                <conditional action="apply-flags" flags="required" has-value="request:id"/>
             </field>
         </dialog>
 
