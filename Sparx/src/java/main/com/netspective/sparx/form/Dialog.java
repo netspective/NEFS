@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.38 2003-11-05 04:34:40 aye.thu Exp $
+ * $Id: Dialog.java,v 1.39 2003-11-07 17:43:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -77,6 +77,7 @@ import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
 import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
 import com.netspective.sparx.form.handler.DialogNextActionProvider;
+import com.netspective.sparx.form.handler.DialogExecuteHandlerTemplateConsumer;
 import com.netspective.sparx.form.listener.DialogPopulateForSubmitListener;
 import com.netspective.sparx.form.listener.DialogStateListener;
 import com.netspective.sparx.form.listener.DialogInitialPopulateForSubmitListener;
@@ -99,6 +100,7 @@ import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.io.InputSourceLocator;
 
 /**
@@ -123,11 +125,17 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     private static DialogTypeTemplateConsumerDefn dialogTypeConsumer = new DialogTypeTemplateConsumerDefn();
     private static int dialogNumber = 0;
 
+    static
+    {
+        TemplateCatalog.registerConsumerDefnForClass(dialogTypeConsumer, Dialog.class, true, true);
+        TemplateCatalog.registerConsumerDefnForClass(DialogExecuteHandlerTemplateConsumer.INSTANCE, DialogExecuteHandler.class, true, true);
+    }
+
     protected static class DialogTypeTemplateConsumerDefn extends TemplateConsumerDefn
     {
         public DialogTypeTemplateConsumerDefn()
         {
-            super(null, ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
+            super(Dialog.class.getName(), ATTRNAME_TYPE, ATTRNAMES_SET_BEFORE_CONSUMING);
         }
 
         public String getNameSpaceId()
@@ -196,6 +204,7 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     private List clientJavascripts = new ArrayList();
     private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
     private DialogNextActionProvider nextActionProvider;
+    private boolean redirectAfterExecute = true;
 
     private boolean haveInitialPopulateForDisplayListeners;
     private boolean haveInitialPopulateForSubmitListeners;
@@ -369,6 +378,16 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     public void setLoopSeparator(String loopSeparator)
     {
         loop.setLoopSeparator(loopSeparator);
+    }
+
+    public boolean isRedirectAfterExecute()
+    {
+        return redirectAfterExecute;
+    }
+
+    public void setRedirectAfterExecute(boolean redirectAfterExecute)
+    {
+        this.redirectAfterExecute = redirectAfterExecute;
     }
 
     /**

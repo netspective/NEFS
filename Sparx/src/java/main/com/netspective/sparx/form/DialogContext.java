@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.26 2003-10-17 15:59:07 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.27 2003-11-07 17:43:08 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -74,7 +74,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import javax.servlet.ServletRequest;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.DocumentBuilder;
@@ -90,7 +89,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
-import com.netspective.sparx.value.ServletValueContext;
 import com.netspective.sparx.value.source.DialogFieldValueSource;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.field.DialogField;
@@ -105,13 +103,8 @@ import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFie
 import com.netspective.sparx.console.panel.presentation.HttpRequestParametersPanel;
 import com.netspective.sparx.command.AbstractHttpServletCommand;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.axiom.schema.Row;
-import com.netspective.axiom.schema.Column;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryResultSet;
 
 /**
  * A dialog context functions as the controller of the dialog, tracking and managing field state and field data.
@@ -339,6 +332,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private boolean redirectDisabled;
     private String initialContextXml;
     private boolean cancelButtonPressed;
+    private boolean redirectAfterExecute;
 
     public DialogContext()
     {
@@ -364,6 +358,16 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         this.panelRenderFlags = panelRenderFlags;
     }
 
+    public boolean isRedirectAfterExecute()
+    {
+        return redirectAfterExecute;
+    }
+
+    public void setRedirectAfterExecute(boolean redirectAfterExecute)
+    {
+        this.redirectAfterExecute = redirectAfterExecute;
+    }
+
     /**
      * Initializes the dialog context object. Called by the <code>Dialog</code> after creating the context.
      *
@@ -383,6 +387,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         dialog = aDialog;
         skin = aSkin == null ? nc.getActiveTheme().getDefaultDialogSkin() : aSkin;
+        redirectAfterExecute = aDialog.isRedirectAfterExecute();
 
         activeMode = DIALOGMODE_UNKNOWN;
         nextMode = DIALOGMODE_UNKNOWN;
@@ -521,6 +526,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
     public void performDefaultRedirect(Writer writer, String redirect) throws IOException
     {
+        if(! redirectAfterExecute)
+            return;
+
         ServletRequest request = getRequest();
         String redirectToUrl = redirect != null ? redirect : request.getParameter(DEFAULT_REDIRECT_PARAM_NAME);
         if(redirectToUrl == null)
