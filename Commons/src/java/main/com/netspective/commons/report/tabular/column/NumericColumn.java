@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: NumericColumn.java,v 1.4 2003-04-06 03:57:44 shahid.shah Exp $
+ * $Id: NumericColumn.java,v 1.5 2003-10-26 03:47:27 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -92,9 +92,16 @@ public class NumericColumn extends GeneralColumn
         long value = 0;
         if(oData != null)
         {
-            value = ((Number) oData).longValue();
-            NumberFormat fmt = (NumberFormat) getFormatter();
-            data = fmt == null ? Long.toString(value) : fmt.format(value);
+            if (oData instanceof Boolean)
+            {
+                data = ((Boolean) oData).toString();
+            }
+            else
+            {
+                value = ((Number) oData).longValue();
+                NumberFormat fmt = (NumberFormat) getFormatter();
+                data = fmt == null ? Long.toString(value) : fmt.format(value);
+            }
         }
 
         if((flags & TabularReportColumn.GETDATAFLAG_DO_CALC) != 0)
