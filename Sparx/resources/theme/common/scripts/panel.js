@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: panel.js,v 1.2 2003-11-19 02:20:43 shahid.shah Exp $
+ * $Id: panel.js,v 1.3 2003-11-19 14:29:23 shahid.shah Exp $
  */
 
 // **************************************************************************
@@ -334,7 +334,7 @@ function Panels_initialize()
     }
 
     // check to make sure at least one item is tabbed (if none are open, open the first one)
-    if(totalMinimized == this.byIndex.length)
+    if(this.byIndex.length > 0 && totalMinimized == this.byIndex.length)
         this.byIndex[0].toggleExpandCollapse()
 }
 
