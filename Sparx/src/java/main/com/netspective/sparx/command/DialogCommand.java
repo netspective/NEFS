@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.7 2003-06-12 14:36:08 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.8 2003-06-27 18:42:05 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -66,6 +66,7 @@ import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.panel.HtmlPanel;
 
 import java.util.StringTokenizer;
 import java.io.IOException;
@@ -246,7 +247,7 @@ public class DialogCommand extends AbstractHttpServletCommand
         if(unitTest || (debugFlags != null && debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA)))
             dc.setRedirectDisabled(true);
 
-        dialog.render(writer, nc, nc.getActiveTheme(), 0);
+        dialog.render(writer, nc, nc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
     }
 
     public static class SkinParameter extends CommandDocumentation.Parameter

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelTransform.java,v 1.1 2003-06-25 03:15:21 shahid.shah Exp $
+ * $Id: PanelTransform.java,v 1.2 2003-06-27 18:41:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -133,7 +133,7 @@ public class PanelTransform implements TemplateTransformModel
             }
 
             HttpServletValueContext vc = (HttpServletValueContext) model.getWrappedObject();
-            panel.render(out, vc.getNavigationContext(), vc.getActiveTheme(), 0);
+            panel.render(out, vc.getNavigationContext(), vc.getActiveTheme(), HtmlPanel.RENDERFLAGS_DEFAULT);
         }
 
         public void flush() throws IOException
