@@ -51,25 +51,31 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.44 2004-03-21 19:15:53 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.45 2004-04-21 22:29:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.sparx.ProjectComponent;
-import com.netspective.sparx.navigate.*;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.navigate.NavigationPath;
+import com.netspective.sparx.navigate.NavigationPathFlags;
+import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.sparx.navigate.NavigationTree;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.util.HttpUtils;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
 
 public class ConsoleNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -429,12 +435,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
         renderPageMenusLevelThree(writer, nc);
 
-        writer.write("      <td align=\"left\" valign=\"top\" width=\"12\" height=\"100%\"></td>");
-        writer.write("      <td align=\"left\" valign=\"top\">");
-        writer.write("          <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
-        writer.write("              <tr>");
-        writer.write("                  <td align=\"left\" valign=\"top\">");
-        writer.write("                  <div align=\"left\" style=\"padding-top: 6\">");
+        writer.write("      <td align=\"left\" valign=\"top\" width=\"12\" height=\"100%\"></td>\n");
+        writer.write("      <td align=\"left\" valign=\"top\">\n");
+        writer.write("          <div class=\"page-body-content\">\n");
     }
 
     /**
@@ -527,12 +530,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if (flags.flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
             return;
 
-        writer.write("            </td>");
-        writer.write("          </tr>");
-        writer.write("	    </table>");
-        writer.write("		</td>");
-        writer.write("	</tr>");
-        writer.write("</table>");
+        writer.write("	        </div>\n");
+        writer.write("		</td>\n");
+        writer.write("	</tr>\n");
+        writer.write("</table>\n");
         writer.write("</body>");
     }
 
