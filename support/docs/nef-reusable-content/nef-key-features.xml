@@ -171,11 +171,10 @@
         <term>WEB-INF/sparx/conf</term>
 
         <listitem>
-          <para>This directory contains contains sample
-          <filename>web.xml</filename> configuration files for different
-          application servers like WebLogic, WebSphere, Resin and Tomcat. It
-          also contains Ant build files for compiling your application's
-          classes.</para>
+          <para>This directory contains sample <filename>web.xml</filename>
+          configuration files for different application servers like WebLogic,
+          WebSphere, Resin and Tomcat. It also contains Ant build files for
+          compiling your application's classes.</para>
         </listitem>
       </varlistentry>
     </variablelist></para>
