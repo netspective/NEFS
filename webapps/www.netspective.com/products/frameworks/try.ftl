@@ -3,8 +3,8 @@ The quickest way to evaluate the NEF is to view all the documentation online and
 versions of the sample applications. Since all you need is a web browser, you can start learning about NEF immediately.
 <p>
 <ul>
-    <li>View the "<a href="http://sampler.netspective.com/nefs-sampler/documentation/getting-started" target="sampler.netspective.com">Getting Started</a>" document
-    <li>Visit <a href="http://sampler.netspective.com" target="sampler.netspective.com">http://sampler.netspective.com</a>
+    <li>View the "<a href="${vc.rootUrl}/sampler/documentation/getting-started" target="sampler">Getting Started</a>" document
+    <li>Visit <a href="${vc.rootUrl}/sampler" target="sampler">the Sampler site</a>
 </ul>
 
 <h1>Try it on your own workstation</h1>
@@ -14,8 +14,8 @@ server. You'll need to download and install a Java Developer's Kit (JDK), an app
 sample applications on your own server.
 <p>
 <ul>
-    <li>View the "<a href="http://sampler.netspective.com/nefs-sampler/documentation/getting-started" target="sampler.netspective.com">Getting Started</a>" document
-    <li>Download the <a href="http://sampler.netspective.com/nefs-sampler/sample-apps" target="sampler.netspective.com">sample applications</a>
+    <li>View the "<a href="${vc.rootUrl}/sampler/documentation/getting-started" target="sampler">Getting Started</a>" document
+    <li>Download the <a href="${vc.rootUrl}/sampler/sample-apps" target="sampler">sample applications</a>
 </ul>
 
 <b>Note</b>:

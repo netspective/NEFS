@@ -4,7 +4,7 @@
 *****************************************************
 ** CAUCHO RESIN WEB-INF/web.xml CONFIGURATION FILE **
 *****************************************************
-$Id: web.xml,v 1.2 2003-12-01 22:19:33 shahid.shah Exp $
+$Id: web.xml,v 1.3 2003-12-03 00:40:43 shahid.shah Exp $
 -->
 
 <web-app>
@@ -35,8 +35,17 @@ $Id: web.xml,v 1.2 2003-12-01 22:19:33 shahid.shah Exp $
     *******************************************************************************************************************
     -->
     <servlet>
-        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-name>MainNavigationController</servlet-name>
         <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SamplerNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--navigation-tree=sampler --theme=sampler</param-value>
+        </init-param>
     </servlet>
 
     <servlet>
@@ -73,10 +82,14 @@ $Id: web.xml,v 1.2 2003-12-01 22:19:33 shahid.shah Exp $
     *******************************************************************************************************************
     -->
     <servlet-mapping>
-        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-name>MainNavigationController</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>SamplerNavigationController</servlet-name>
+        <url-pattern>/sampler/*</url-pattern>
+    </servlet-mapping>
 
     <!--
     *******************************************************************************************************************

@@ -11,9 +11,9 @@
         <property name="nefs.webapps.home" value="${basedir}"/>
         <property name="nefs.starter.empty-app.name" value="nefs-starter-empty"/>
         <property name="nefs.starter.empty-app.home" value="${nefs.webapps.home}/${nefs.starter.empty-app.name}"/>
-        <property name="nefs.sampler-app.name" value="nefs-sampler"/>
-        <property name="nefs.sampler-app.home" value="${nefs.webapps.home}/${nefs.sampler-app.name}"/>
-        <property name="nefs.sampler-app.downloads.path" value="${nefs.sampler-app.home}/downloads"/>
+        <property name="www.app.name" value="www.netspective.com"/>
+        <property name="www.app.home" value="${nefs.webapps.home}/${www.app.name}"/>
+        <property name="www.app.downloads.path" value="${www.app.home}/resources/downloads"/>
         <property name="nefs.app.execution-properties.file" value="WEB-INF/sparx/conf/execution.properties"/>
         <property name="nefs.war.staging.path" value="${nefs.webapps.home}/temp/war-staging"/>
 
@@ -37,15 +37,15 @@
         <echo message="nefs.webapps.home = ${nefs.webapps.home}"/>
         <echo message="nefs.starter.empty-app.name = ${nefs.starter.empty-app.name}"/>
         <echo message="nefs.starter.empty-app.home = ${nefs.starter.empty-app.home}"/>
-        <echo message="nefs.sampler-app.name = ${nefs.sampler-app.name}"/>
-        <echo message="nefs.sampler-app.home = ${nefs.sampler-app.home}"/>
-        <echo message="nefs.sampler-app.downloads.path = ${nefs.sampler-app.downloads.path}"/>
+        <echo message="www.app.name = ${www.app.name}"/>
+        <echo message="www.app.home = ${www.app.home}"/>
+        <echo message="www.app.downloads.path = ${www.app.downloads.path}"/>
     </target>
 
     <!-- ********************************************************************************************************** -->
 
     <target name=".nefs.war-specific-app.init" depends="nefs.init">
-        <property name="specific.test-app-war-file" value="${nefs.sampler-app.downloads.path}/${param.test-app-id}.war"/>
+        <property name="specific.test-app-war-file" value="${www.app.downloads.path}/${param.test-app-id}.war"/>
         <property name="specific.test-app-path" value="${nefs.webapps.home}/${param.test-app-id}"/>
         <property name="specific.test-app-staging-path" value="${nefs.war.staging.path}/webapps/${param.test-app-id}"/>
 
@@ -89,7 +89,7 @@
     </target>
 
     <target name="nefs.war-specific-app" depends=".nefs.war-specific-app.init,.nefs.war-specific-app.compile" description="Create a J2EE WAR file for a given app.">
-        <mkdir dir="${nefs.sampler-app.downloads.path}"/>
+        <mkdir dir="${www.app.downloads.path}"/>
         <war warfile="${specific.test-app-war-file}"
              basedir="${specific.test-app-staging-path}"
              webxml="${specific.test-app-staging-path}/WEB-INF/sparx/conf/${param.web-xml-file}"
@@ -127,10 +127,6 @@
             <param name="param.web-xml-file" value="${web-xml-file}"/>
         </antcall>
         <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-sampler"/>
-            <param name="param.web-xml-file" value="${web-xml-file}"/>
-        </antcall>
-        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-survey"/>
             <param name="param.web-xml-file" value="${web-xml-file}"/>
         </antcall>
@@ -140,6 +136,10 @@
         </antcall>
         <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cts"/>
+            <param name="param.web-xml-file" value="${web-xml-file}"/>
+        </antcall>
+        <antcall target="nefs.war-specific-app" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="www.netspective.com"/>
             <param name="param.web-xml-file" value="${web-xml-file}"/>
         </antcall>
     </target>
@@ -190,9 +190,6 @@
             <param name="param.test-app-id" value="nefs-sample-medigy"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-sampler"/>
-        </antcall>
-        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-starter-empty"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
@@ -203,6 +200,9 @@
         </antcall>
         <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cts"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-ITE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="www.netspective.com"/>
         </antcall>
     </target>
 
@@ -243,9 +243,6 @@
             <param name="param.test-app-id" value="nefs-sample-medigy"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
-            <param name="param.test-app-id" value="nefs-sampler"/>
-        </antcall>
-        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-starter-empty"/>
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
@@ -256,6 +253,9 @@
         </antcall>
         <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
             <param name="param.test-app-id" value="nefs-sample-cts"/>
+        </antcall>
+        <antcall target="nefs.prepare-specific-app-SDE-resources-and-web-app-libs" inheritall="yes" inheritrefs="yes">
+            <param name="param.test-app-id" value="www.netspective.com"/>
         </antcall>
     </target>
 
@@ -293,9 +293,6 @@
         <copy todir="${nefs.webapps.home}/nefs-sample-medigy" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
-        <copy todir="${nefs.webapps.home}/nefs-sampler" overwrite="${force}">
-            <fileset refid="standard-items"/>
-        </copy>
         <copy todir="${nefs.webapps.home}/nefs-sample-survey" overwrite="${force}">
             <fileset refid="standard-items"/>
         </copy>
@@ -317,11 +314,11 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/resin-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-resin-3.0" depends="nefs.init" description="Performs tasks necessary to setup applications for use under Caucho Resin 3.0 app server">
@@ -332,11 +329,11 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/resin-3.0-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-tomcat" depends="nefs.init" description="Performs tasks necessary to setup applications for use under Jakarta Tomcat app server">
@@ -347,11 +344,11 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/tomcat-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-weblogic" depends="nefs.init" description="Performs tasks necessary to setup applications for use under BEA WebLogic app server">
@@ -362,11 +359,11 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/weblogic-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-websphere" depends="nefs.init" description="Performs tasks necessary to setup applications for use under IBM WebSphere app server">
@@ -377,11 +374,11 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/websphere-web.xml" overwrite="${force}"/>
     </target>
 
     <target name="sparx.setup-all-apps-for-other" depends="nefs.init" description="Performs tasks necessary to setup applications for use under any other app server mentioned before">
@@ -392,10 +389,10 @@
         <copy tofile="${nefs.webapps.home}/nefs-sample-books/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-books/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-library/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-library/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-medigy/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
-        <copy tofile="${nefs.webapps.home}/nefs-sampler/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sampler/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-starter-empty/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-survey/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-test-bed/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-test-bed/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
         <copy tofile="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/web.xml" file="${nefs.webapps.home}/nefs-sample-cts/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
+        <copy tofile="${nefs.webapps.home}/www.netspective.com/WEB-INF/web.xml" file="${nefs.webapps.home}/www.netspective.com/WEB-INF/sparx/conf/generic-web.xml" overwrite="${force}"/>
     </target>
 </project>

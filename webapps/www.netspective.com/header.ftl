@@ -14,7 +14,7 @@
 
 <meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
 <meta content="j2ee pattern,j2ee application server,j2ee architecture,java application developer,xml rpc,xml programmer,xml basics,xml parsers,xp programming,eai software,eai architecture,uddi what" name="keywords">
-<link type="text/css" href="${resourcesPath}/stylesheet.css" rel="stylesheet">
+<link type="text/css" href="${resourcesPath}/main.css" rel="stylesheet">
 <csscriptdict></csscriptdict>
 <script type="text/javascript"><!--
 
@@ -101,7 +101,7 @@ function preloadImages() {
 										<table cellpadding="0" cellspacing="0" border="0">
 											<tbody><tr>
 												<td><a href="${servletPath}/products/frameworks/buy"><img border="0" alt="" height="16" width="365" src="${resourcesPath}/images/header/ad-line.gif"></a></td>
-												<td><a href="${servletPath}/products/frameworks/try" onmouseout="changeImages( /*CMP*/'home_6',/*URL*/'${resourcesPath}/images/header/developers.gif');return true" onmouseover="changeImages( /*CMP*/'home_6',/*URL*/'${resourcesPath}/images/header/developers-over.gif');return true"><img alt="" border="0" height="16" width="64" src="${resourcesPath}/images/header/developers.gif" name="home_6"></a></td>
+												<td><a href="${vc.rootUrl}/sampler" target="sampler" onmouseout="changeImages( /*CMP*/'home_6',/*URL*/'${resourcesPath}/images/header/developers.gif');return true" onmouseover="changeImages( /*CMP*/'home_6',/*URL*/'${resourcesPath}/images/header/developers-over.gif');return true"><img alt="" border="0" height="16" width="64" src="${resourcesPath}/images/header/developers.gif" name="home_6"></a></td>
 											</tr>
 										</tbody></table>
 									</td>
