@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Netspective.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
+ * $Id: Netspective.java,v 1.2 2003-08-17 00:04:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.product;
@@ -52,9 +52,12 @@ import java.util.TreeMap;
 import java.util.Iterator;
 
 import com.netspective.commons.Product;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class Netspective
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private List productInfos = new ArrayList();
     private Map productInfoById = new HashMap();
 

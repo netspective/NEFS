@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ProductDependencies.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
+ * $Id: ProductDependencies.java,v 1.2 2003-08-17 00:04:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.product;
@@ -47,8 +47,12 @@ package com.netspective.commons.product;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.netspective.commons.xdm.XmlDataModelSchema;
+
 public class ProductDependencies
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private ProductInfo owner;
     private List products = new ArrayList();
     private List libraries = new ArrayList();

@@ -39,13 +39,17 @@
  */
 
 /**
- * $Id: ProductInfo.java,v 1.1 2003-08-15 01:48:53 shahid.shah Exp $
+ * $Id: ProductInfo.java,v 1.2 2003-08-17 00:04:49 shahid.shah Exp $
  */
 
 package com.netspective.commons.product;
 
+import com.netspective.commons.xdm.XmlDataModelSchema;
+
 public class ProductInfo
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     private String id;
     private String version;
     private ProductDependencies dependencies = new ProductDependencies();
