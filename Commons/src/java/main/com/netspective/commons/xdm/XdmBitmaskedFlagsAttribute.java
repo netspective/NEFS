@@ -39,10 +39,18 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.3 2003-04-03 14:07:25 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.4 2003-04-04 16:26:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedBitmaskedFlagsAttributeValueException;
@@ -52,20 +60,38 @@ import com.netspective.commons.text.TextUtils;
 /**
  * Helper class for attributes that can take multiple flags from a set of a flags.
  */
-public abstract class XdmBitmaskedFlagsAttribute
+public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
 {
+    private static final Log log = LogFactory.getLog(XdmBitmaskedFlagsAttribute.class);
+
+    public static final int ACCESS_XDM = 1;      // available via XML
+    public static final int ACCESS_PRIVATE = 2;  // available only to Java
+
     protected int flags = 0;
+    protected Map flagDefnsByName;
     public static final String FLAG_DELIMITER = "|";
 
     public static class FlagDefn
     {
+        private int access;
         private String name;
         private int mask;
 
-        public FlagDefn(String name, int mask)
+        public FlagDefn(int access, String name, int mask)
         {
+            this.access = access;
             this.name = name;
             this.mask = mask;
+        }
+
+        public int getAccess()
+        {
+            return access;
+        }
+
+        public void setAccess(int access)
+        {
+            this.access = access;
         }
 
         public int getMask()
@@ -95,8 +121,45 @@ public abstract class XdmBitmaskedFlagsAttribute
      */
     public abstract FlagDefn[] getFlagsDefns();
 
+    public Map getFlagDefnsByName()
+    {
+        if(flagDefnsByName == null)
+        {
+            flagDefnsByName = new HashMap();
+            FlagDefn[] flagDefns = getFlagsDefns();
+            for(int i = 0; i < flagDefns.length; i++)
+            {
+                FlagDefn flagDefn = flagDefns[i];
+                if(flagDefns == null)
+                    throw new RuntimeException("Flags "+ i +" in " + this.getClass().getName() + " is null");
+
+                String flagName = flagDefn.getName();
+                String javaId = TextUtils.xmlTextToJavaIdentifier(flagName.toLowerCase(), false);
+
+                flagDefnsByName.put(flagName, flagDefns);
+                flagDefnsByName.put(javaId, flagDefn);
+                flagDefnsByName.put(TextUtils.javaIdentifierToXmlNodeName(javaId).toLowerCase(), flagDefn);
+            }
+        }
+
+        return flagDefnsByName;
+    }
+
     public XdmBitmaskedFlagsAttribute()
     {
+    }
+
+    public XdmBitmaskedFlagsAttribute cloneFlags()
+    {
+        try
+        {
+            return (XdmBitmaskedFlagsAttribute) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            log.error(e);
+            return null;
+        }
     }
 
     public XdmBitmaskedFlagsAttribute(int flags)
@@ -182,10 +245,29 @@ public abstract class XdmBitmaskedFlagsAttribute
     public String[] getFlagNames()
     {
         FlagDefn[] flagDefns = getFlagsDefns();
+        if(flagDefns == null)
+            return new String[] { this.getClass().getName() + ".getFlagsDefns() is NULL" };
+
         String[] result = new String[flagDefns.length];
         for(int i = 0; i < flagDefns.length; i++)
-            result[i] = flagDefns[i].name;
+            result[i] = flagDefns[i] != null ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()["+i +"] is NULL");
         return result;
+    }
+
+    public String[] getFlagNamesWithXdmAccess()
+    {
+        FlagDefn[] flagDefns = getFlagsDefns();
+        if(flagDefns == null)
+            return new String[] { this.getClass().getName() + ".getFlagsDefns() is NULL" };
+
+        List result = new ArrayList();
+        for(int i = 0; i < flagDefns.length; i++)
+        {
+            if(flagDefns[i] != null && flagDefns[i].getAccess() != ACCESS_XDM)
+                continue;
+            result.add(flagDefns[i] != null ? flagDefns[i].getName() : (this.getClass().getName() + ".getFlagsDefns()["+i +"] is NULL"));
+        }
+        return (String[]) result.toArray(new String[result.size()]);
     }
 
     public String getFlagsText()
@@ -199,10 +281,22 @@ public abstract class XdmBitmaskedFlagsAttribute
             {
                 if(text.length() > 0)
                     text.append(" " + FLAG_DELIMITER + " ");
-                text.append(flagDefns[i].name);
+                text.append(flagDefns[i].getName());
             }
         }
 
         return text.toString();
+    }
+
+    public final boolean updateFlag(String flagName, boolean set)
+    {
+        FlagDefn flagDefn = (FlagDefn) getFlagDefnsByName().get(flagName);
+        if(flagDefn == null)
+            return false;
+        else
+        {
+            updateFlag(flagDefn.getMask(), set);
+            return true;
+        }
     }
 }

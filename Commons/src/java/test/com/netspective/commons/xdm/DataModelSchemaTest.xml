@@ -35,10 +35,14 @@
             <integer>12</integer>
         </nested11>
 
+        <!-- if the following example, bit-three="on", bit-ten="on" is the same as saying bit-mask="BIT_THREE | BIT_TEN" -->
         <nested11 class="com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test"
                   text="CustomTestText12"
                   integer="122"
-                  bit-mask="BIT_THREE | BIT_FIVE | BIT_EIGHT | BIT_TEN"/>
+                  bit-mask="BIT_THREE | BIT_FIVE | BIT_EIGHT"
+                  bit-three="on"
+                  bit-ten="on"
+                  />
     </nested1>
 
     <!-- this element has been registered as an 'ignore' element so test to make sure it is ignored -->

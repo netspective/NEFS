@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.9 2003-04-04 12:54:45 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.10 2003-04-04 16:26:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -286,6 +286,16 @@ public class XmlDataModelSchema
     private Map attributeSetters;
 
     /**
+     * holds the classes that can manage bitmasked flags
+     */
+    private Map attributeAccessors;
+
+    /**
+     * holds the classes that can manage bitmasked flags
+     */
+    private Map flagsAttributeAccessors;
+
+    /**
      * Holds the types of nested elements that could be created.
      */
     private Map nestedTypes;
@@ -419,6 +429,8 @@ public class XmlDataModelSchema
         propertyNames = new HashMap();
         attributeTypes = new HashMap();
         attributeSetters = new HashMap();
+        attributeAccessors = new HashMap();
+        flagsAttributeAccessors = new HashMap();
         nestedTypes = new HashMap();
         nestedCreators = new HashMap();
         nestedAltClassNameCreators = new HashMap();
@@ -444,6 +456,19 @@ public class XmlDataModelSchema
                     && java.lang.String.class.equals(args[0]))
             {
                 addText = methods[i];
+            }
+            else if (name.startsWith("get") && args.length == 0)
+            {
+                String[] propNames = getPropertyNames(name, "get");
+                for(int pn = 0; pn < propNames.length; pn++)
+                {
+                    if(propNames[pn].length() == 0)
+                        continue;
+
+                    AttributeAccessor aa = createAttributeAccessor(m, propNames[pn], returnType);
+                    if (aa != null)
+                        attributeAccessors.put(propNames[pn], aa);
+                }
             }
             else if (name.startsWith("set")
                     && java.lang.Void.TYPE.equals(returnType)
@@ -583,6 +608,28 @@ public class XmlDataModelSchema
         AttributeSetter as = (AttributeSetter) attributeSetters.get(attributeName);
         if (as == null && (withinCustom || ! hasCustom))
         {
+            for(Iterator i = flagsAttributeAccessors.entrySet().iterator(); i.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) i.next();
+                AttributeAccessor accessor = (AttributeAccessor) entry.getValue();
+                Object returnVal = null;
+                try
+                {
+                    returnVal = accessor.get(pc, element);
+                }
+                catch (Exception e)
+                {
+                    throw new DataModelException(pc, e);
+                }
+
+                if(returnVal instanceof XdmBitmaskedFlagsAttribute)
+                {
+                    XdmBitmaskedFlagsAttribute bfa = (XdmBitmaskedFlagsAttribute) returnVal;
+                    if(bfa.updateFlag(attributeName, TextUtils.toBoolean(value)))
+                        return;
+                }
+            }
+
             UnsupportedAttributeException e = new UnsupportedAttributeException(pc, element, attributeName);
             pc.addError(e);
             if(pc.isThrowErrorException())
@@ -861,6 +908,27 @@ public class XmlDataModelSchema
     public Map getNestedElements()
     {
         return nestedTypes;
+    }
+
+    /**
+     * Create a proper implementation of AttributeAccessor for the given
+     * attribute type.
+     */
+    private AttributeAccessor createAttributeAccessor(final Method m, final String attrName, final Class arg)
+    {
+        AttributeAccessor result = new AttributeAccessor()
+        {
+            public Object get(XdmParseContext pc, Object parent)
+                    throws InvocationTargetException, IllegalAccessException
+            {
+                return m.invoke(parent, null);
+            }
+        };
+
+        if (XdmBitmaskedFlagsAttribute.class.isAssignableFrom(arg))
+            flagsAttributeAccessors.put(attrName, result);
+
+        return result;
     }
 
     /**
@@ -1237,6 +1305,13 @@ public class XmlDataModelSchema
     public interface AttributeSetter
     {
         public void set(XdmParseContext pc, Object parent, String value)
+                throws InvocationTargetException, IllegalAccessException,
+                DataModelException;
+    }
+
+    public interface AttributeAccessor
+    {
+        public Object get(XdmParseContext pc, Object parent)
                 throws InvocationTargetException, IllegalAccessException,
                 DataModelException;
     }

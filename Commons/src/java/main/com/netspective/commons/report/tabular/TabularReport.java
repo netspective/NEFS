@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.3 2003-04-02 22:53:23 shahid.shah Exp $
+ * $Id: TabularReport.java,v 1.4 2003-04-04 16:26:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -69,9 +69,9 @@ public interface TabularReport extends Report
 
         public static final FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
-            new FlagDefn("HAS_PLACE_HOLDERS", HAS_PLACE_HOLDERS),
-            new FlagDefn("FIRST_DATA_ROW_HAS_HEADINGS", FIRST_DATA_ROW_HAS_HEADINGS),
-            new FlagDefn("HIDE_HEADING", HIDE_HEADING),
+            new FlagDefn(ACCESS_PRIVATE, "HAS_PLACE_HOLDERS", HAS_PLACE_HOLDERS),
+            new FlagDefn(ACCESS_XDM, "FIRST_DATA_ROW_HAS_HEADINGS", FIRST_DATA_ROW_HAS_HEADINGS),
+            new FlagDefn(ACCESS_XDM, "HIDE_HEADING", HIDE_HEADING),
         };
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
