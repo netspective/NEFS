@@ -37,11 +37,44 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.netspective.sparx.navigate.NavigationContext;
 
+/**
+ * Interface for client service handler classes that will handle incoming HTTP request calls. This is not for handling navigation pages
+ * but used to invoke "background" service invocations.
+ *
+ *
+ */
 public interface ClientServiceRequestHandler
 {
+    /**
+     * Gets the unique identifier for this client service handler
+     *
+     * @return
+     */
     public String getClientServiceRequestIdentifier();
 
+    /**
+     * Checks to see if a navigation context object is needed for successful invocation of the service
+     *
+     * @return  True if navigation context is required
+     */
     public boolean isNavigationContextRequiredForClientService();
 
+    /**
+     * Handles the client service request
+     *
+     * @param nc                    current navigation context
+     * @param httpServletRequest    http servlet request
+     * @param httpServletResponse   http servlet response
+     * @throws ClientServiceRequestHandlerException
+     */
     public void handleClientServiceRequest(NavigationContext nc, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ClientServiceRequestHandlerException;
+
+    /**
+     * Checks to see if requesting party is allowed invoke the service. For example, the requesting party's
+     * roles and capabilities can be checked to make sure they are allowed to execute the service.
+     *
+     * @param nc    current navigation context
+     * @return      True if the handler
+     */
+    public boolean isAllowedToServiceClient(NavigationContext nc);
 }

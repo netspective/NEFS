@@ -72,4 +72,9 @@ public class AuthenticatedUserDelegatedServiceHandler implements ClientServiceRe
         else
             log.error("Attempting to call AuthenticatedUserDelegatedServiceHandler.handleClientServiceRequest but AuthenticatedUser does not implement " + ClientServiceRequestHandler.class + " interface");
     }
+
+    public boolean isAllowedToServiceClient(NavigationContext nc)
+    {
+        return true;  
+    }
 }

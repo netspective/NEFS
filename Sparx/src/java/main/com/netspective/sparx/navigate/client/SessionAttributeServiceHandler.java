@@ -107,4 +107,9 @@ public class SessionAttributeServiceHandler implements ClientServiceRequestHandl
                 session.removeAttribute(varName);
         }
     }
+
+    public boolean isAllowedToServiceClient(NavigationContext nc)
+    {
+        return true;  
+    }
 }
