@@ -218,6 +218,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     public SearchExpression getSearchExpression(final NavigationContext nc)
     {
         final ServletRequest request = nc.getRequest();
+        final String searchWithinResultFormFieldValue = request.getParameter(searchWithinSearchResultsFormFieldName);
         final Query advancedQuery = getAdvancedSearchQuery(nc);
         final String exprText = advancedQuery != null
                                 ? advancedQuery.toString() : request.getParameter(getExpressionFormFieldName());
@@ -267,7 +268,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
 
             public boolean isSearchWithinPreviousResults()
             {
-                return request.getParameter(searchWithinSearchResultsFormFieldName) != null;
+                return searchWithinResultFormFieldValue != null;
             }
 
             public boolean isAdvancedQuery()
