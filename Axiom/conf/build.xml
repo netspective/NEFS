@@ -51,6 +51,7 @@ Setup instructions:
         <path id="project.class.path">
             <fileset dir="${commons.lib.dir}">
                 <include name="**/*.jar"/>
+                <exclude name="netspective-commons-*.jar"/>
             </fileset>
             <fileset dir="${project.lib.redist.dir}">
                 <include name="**/*.jar"/>
