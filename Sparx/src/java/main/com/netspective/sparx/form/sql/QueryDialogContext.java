@@ -47,45 +47,12 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: QueryDialogContext.java,v 1.1 2003-07-31 00:24:55 aye.thu Exp $
+ * $Id: QueryDialogContext.java,v 1.2 2003-08-01 05:45:08 aye.thu Exp $
  */
 public class QueryDialogContext extends DialogContext
 {
     private int rowsPerPage = 0;
-    private String reportPanelName;
-    private String reportSkinName;
-    private String queryName;
     private QueryReportPanel reportPanel;
-
-    public String getQueryName()
-    {
-        return queryName;
-    }
-
-    public void setQueryName(String queryName)
-    {
-        this.queryName = queryName;
-    }
-
-    public String getReportSkinName()
-    {
-        return reportSkinName;
-    }
-
-    public void setReportSkinName(String reportSkinName)
-    {
-        this.reportSkinName = reportSkinName;
-    }
-
-    public String getReportPanelName()
-    {
-        return reportPanelName;
-    }
-
-    public void setReportPanelName(String reportPanel)
-    {
-        this.reportPanelName = reportPanel;
-    }
 
     public int getRowsPerPage()
     {
@@ -104,13 +71,12 @@ public class QueryDialogContext extends DialogContext
         if (rowsPerPage > 0)
             sb.append("<input type='hidden' name='" + qDialog.getRowsPerPageParamName() + "' value='" + rowsPerPage + "'>\n");
 
-        if (reportPanelName != null)
-            sb.append("<input type='hidden' name='" + qDialog.getReportPanelParamName() + "' value='" + reportPanelName + "'>\n");
-        if (reportSkinName != null)
-            sb.append("<input type='hidden' name='" + qDialog.getReportPanelParamName() + "' value='" + reportSkinName + "'>\n");
-        if (queryName != null)
-            sb.append("<input type='hidden' name='" + qDialog.getReportPanelParamName() + "' value='" + queryName + "'>\n");
         return (super.getStateHiddens() + sb.toString());
+    }
+
+    public void setReportPanel(QueryReportPanel reportPanel)
+    {
+        this.reportPanel = reportPanel;
     }
 
     /**
@@ -119,36 +85,7 @@ public class QueryDialogContext extends DialogContext
      */
     public QueryReportPanel getReportPanel()
     {
-        if (reportPanel == null)
-        {
-            reportPanel = getQueryReportPanel();
-        }
         return reportPanel;
     }
 
-    /**
-     * Gets the query report panel from the dialog's query object based on the report name
-     * @return
-     */
-    private QueryReportPanel getQueryReportPanel()
-    {
-        QueryReportPanel result = null;
-        Query query = ((QueryDialog)getDialog()).getQuery();
-
-        if (reportPanelName != null)
-            result = query.getPresentation().getPanel(reportPanelName);
-
-        if (result == null)
-            result = query.getPresentation().getDefaultPanel();
-
-        if (reportSkinName != null)
-            result.setReportSkin(reportSkinName);
-        if (rowsPerPage > 0)
-        {
-            result.setScrollRowsPerPage(rowsPerPage);
-            result.setScrollable(true);
-        }
-
-        return result;
-    }
 }
