@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY __nef-assumptions__drd5vrj0 SYSTEM "../nef-reusable-content/nef-assumptions.xml">
+<!ENTITY __nef-sampler-setup__drd8289e SYSTEM "../nef-reusable-content/nef-sampler-setup.xml">
+]>
+<article>
+  <title>NEFS Sampler Tutorial</title>
+
+  <section>
+    <title>Objectives</title>
+
+    <para>Welcome to the NEFS Sampler Tutorial (Tour)! This tutorial aims at
+    giving you a tour of the NEFS Sampler. It facilitates your learning by
+    reducing the learning time through quick familiarization with various
+    Sampler sections. You don't have to worry about learning the use of
+    Sampler. Instead, you can concentrate on the core concepts being
+    highlighted by the Sampler sections.</para>
+
+    <section>
+      <title>Learning Objectives Checklist</title>
+
+      <para>At the end of this tutorial, you should be able to
+      understand:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>the objectives of NEFS Sampler</para>
+        </listitem>
+
+        <listitem>
+          <para>how to set up the NEFS Sampler at your application
+          server</para>
+        </listitem>
+
+        <listitem>
+          <para>how to view the XDM code within NEFS Sampler</para>
+        </listitem>
+
+        <listitem>
+          <para>purpose of NEFS Sampler sections</para>
+        </listitem>
+
+        <listitem>
+          <para>usage of NEFS Sampler sections</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+
+  &__nef-assumptions__drd5vrj0;
+
+  <section>
+    <title>Starting the NEFS Sampler</title>
+
+    <para>There are two ways of exploring the NEFS Sampler:</para>
+
+    <section>
+      <title>Trying the NEFS Sampler Application Online</title>
+
+      <para>You may test the Sampler Application online at <ulink
+      url="http://www.netspective.com/corp/products/frameworks/try">http://www.netspective.com/corp/products/frameworks/try</ulink>
+      All you need is a web browser and you can start using the NEF Sampler
+      immediately.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-sampler-test-online.gif" />
+      </screenshot>
+    </section>
+
+    &__nef-sampler-setup__drd8289e;
+  </section>
+
+  <section>
+    <title>NEFS Sampler Objectives</title>
+
+    <para>As the name suggests, the purpose of NEFS Sampler Application is to
+    give you an idea of how easy it is to build J2EE web applications using
+    the powerful building blocks provided by our Java Frameworks. The NEFS
+    Sampler uses an interactive mode thus making it easy to understand and use
+    the samples. It includes various examples of creating forms and input
+    fields, performing a variety of different data validations and executing
+    forms to provide end-user functionality.</para>
+
+    <para>Although you start with simple NEFS usage examples, as you learn
+    more about Sparx and Axiom you will see that flexibility and extensibility
+    are also a part of their attributes.</para>
+  </section>
+
+  <section>
+    <title>Viewing the XDM Code</title>
+
+    <para>The eXtensible Markup Language (XML) plays an important role in
+    NEF's ease of use, extensibility, and code generation. NEF declarations
+    are performed using XML -- all dialogs, fields, validation rules, some
+    conditional processing, all SQL statements, dynamic queries, configuration
+    files, database schemas, and many other resources are stored in XML files
+    that are re-usable across applications.</para>
+
+    <para><acronym>XDM</acronym> is an acronym for "XML Data Model" and is
+    designed to help Java programmers construct and configure Java objects
+    using XML files without worrying about parsing and error checking. The
+    <filename class="directory">APP_ROOT</filename>/<filename
+    class="directory">WEB-INF</filename>/<filename
+    class="directory">sparx</filename>/<filename>project.xml</filename> file
+    uses XDM to declare all project components.</para>
+
+    <para></para>
+
+    <para>In the Sampler app if you see the <guiicon>XML</guiicon> icon along
+    with a <emphasis>View Page XDM Code</emphasis> link, at the bottom of the
+    page, you can view the Netspective Xml Data Model (XDM) source code for
+    various objects on the page. This helps you view the XML code and see it
+    working on the same page.</para>
+
+    <screenshot>
+      <graphic fileref="./resources/images/screen-sampler-XDM-link.gif" />
+    </screenshot>
+
+    <para>The <guiicon>XML</guiicon> icon also appears under various panels
+    (like forms/dialogs) to see their code as well.</para>
+
+    <screenshot>
+      <graphic fileref="./resources/images/screen-sampler-view-panel-XDM.gif" />
+    </screenshot>
+
+    <para>Clicking on the <emphasis>View Page XDM Code</emphasis> link to see
+    the XML code (as shown below): [TODO: Put image with the callouts]</para>
+
+    <screenshot>
+      <graphic fileref="./resources/images/screen-sampler-show-XDM.gif" />
+    </screenshot>
+
+    <orderedlist>
+      <listitem>
+        <para>The link to Hide the currently visible XDM code. Clicking on
+        this link hides the currently visible XDM code.</para>
+      </listitem>
+
+      <listitem>
+        <para>Location of the currently open XDM code in the application's
+        project file (<filename class="directory">WEB-INF</filename>/<filename
+        class="directory">sparx</filename>/<filename>project.xml</filename>).
+        Clicking on this link takes you to the <guimenu>Project</guimenu> |
+        <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
+        Console, with Sampler app project file being displayed in browse
+        mode.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-sampler-view-prj-file.gif" />
+        </screenshot>
+      </listitem>
+
+      <listitem>
+        <para>Java class file being instantiated for this page. Clicking on
+        this link takes you to the <guimenu>Project</guimenu> |
+        <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
+        Console, with the selected java file
+        (<classname>AppPage.java</classname> in this case) being displayed in
+        browse mode.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-sampler-view-java.gif" />
+        </screenshot>
+      </listitem>
+
+      <listitem>
+        <para>XDM code (from the Sampler app project file) corresponding to
+        the currently opened page.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+
+  <section>
+    <title>Viewing Project Folder and Files</title>
+
+    <para>At the end of the Sampler App Home page, there is a link for browing
+    through all the source directories and files of the Sampler App.</para>
+
+    <screenshot>
+      <graphic fileref="./resources/images/screen-sampler-prj-folder-link.gif" />
+    </screenshot>
+
+    <para>When you click on the <emphasis>browse</emphasis> link, it takes you
+    to the <guimenu>Project</guimenu> | <guisubmenu>Project Files</guisubmenu>
+    section of Sampler app Console, displaying all the source folders and
+    files for the Sampler app.</para>
+
+    <screenshot>
+      <graphic fileref="./resources/images/screen-sampler-prj-folder.gif" />
+    </screenshot>
+  </section>
+
+  <section>
+    <title>NEFS Sampler Main Components</title>
+
+    <para>The NEFS Sampler groups the samples into following logical
+    sections:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Home</para>
+      </listitem>
+
+      <listitem>
+        <para>Forms Input</para>
+      </listitem>
+
+      <listitem>
+        <para>Forms Execution</para>
+      </listitem>
+
+      <listitem>
+        <para>Access Control</para>
+      </listitem>
+
+      <listitem>
+        <para>Play</para>
+      </listitem>
+
+      <listitem>
+        <para>Sitemap</para>
+      </listitem>
+
+      <listitem>
+        <para>Console</para>
+      </listitem>
+
+      <listitem>
+        <para>Sample Apps Home</para>
+      </listitem>
+    </itemizedlist>
+
+    <section>
+      <title>Home</title>
+
+      <para>This is the Welcome page for the Sampler. It outlines the
+      objectives of the Sampler and also contains a list of links pointing to
+      the logical sections of the Sampler. You may access the Sampler sections
+      by these links or the tabs provided the top of the page.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-sampler-app-home.gif" />
+      </screenshot>
+    </section>
+
+    <section>
+      <title>Forms Input</title>
+
+      <para>This page and its chldren pages contain samples that demonstrate
+      how forms and input fields are created in Sparx. There are many examples
+      that show how quick and easy it is to set up forms to accept input
+      values and automatically validate them. The examples contained in this
+      section are further divided into sub-categories. The Forms Input page
+      contains a list of links to its children pages containing the
+      categorized example pages. Links to these children pages are also
+      provided through a submenu bar under the Forms Input tab.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-sampler-form-inputs-main.gif" />
+      </screenshot>
+
+      <section>
+        <title>Text</title>
+
+        <para>The Framework provides different styles of displaying text input
+        fields. One is a simple one line text input field while another is a
+        multi-line text input field.</para>
+
+        <para>The Line-based text input examples are included under
+        <guimenuitem>Line-oriented</guimenuitem> submenu.</para>
+
+        <figure>
+          <title>Sample Page for Line-oriented Text Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-line.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>The sample text fields on this page show the usage of static
+        text fields, input text fields (text boxes), <type>email</type> fields
+        and masked fields for password entry. You can also see how to
+        associate hints with a particular text input field. The example also
+        implements field validation. Click on the <command>OK</command> button
+        to see how field validation messages are displayed.</para>
+
+        <figure>
+          <title>Field Validation Messages</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-text-block.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>At times you need multi-line fields (e.g. text area) for your
+        text input. The <guimenuitem>Block-oriented</guimenuitem> submenu
+        contains examples highlighting the block based text input. <figure>
+            <title>Sample Page for Block-oriented Text Fields</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-sampler-text-block.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>This page shows the usage of <type>memo</type> and template
+        fields using custom <acronym>CSS</acronym> and
+        <acronym>HTML</acronym>. This sample page also incorporates error
+        messages using message boxes (as shown in the above image).</para>
+      </section>
+
+      <section>
+        <title>Numbers</title>
+
+        <para>This page demonstrates the usage of various types of numeric
+        fields that are available: float, integer, currency, phone, and zip
+        code. Each type have their own validation rules and formatting
+        patterns.</para>
+
+        <figure>
+          <title>Sample Page for Numeric Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-numbers.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Boolean</title>
+
+        <para>This page demonstrates usage of boolean fields which are fields
+        that can only have a value that is either true or false. There are
+        several display styles available for boolean fields: radio,
+        check-alone, popup, and combo.</para>
+
+        <figure>
+          <title>Sample Page for Boolean Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-boolean.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Selection</title>
+
+        <para>This page demonstrates how to create and use fields that allow
+        selection of values. There are several styles available: list,
+        multidual, multilist, combo, radio, and multicheck. You can also see
+        the implementation for <type>popup</type> based select field.</para>
+
+        <figure>
+          <title>Sample Page for Select Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-select.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Conditional Select</title>
+
+        <para>This page demonstrates how to create and use fields that allow
+        selection of values and auto submit forms that will do other data
+        population from the server side (for conditional values).</para>
+
+        <figure>
+          <title>Sample Page for Conditional Select Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-conditional-select.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Grids</title>
+
+        <para>This page demonstrates how to create and use grid and composite
+        fields. A composite field can be described as a logical field that
+        contains several children fields. Usually, a grid field will have
+        multiple composite fields which act as rows.</para>
+
+        <figure>
+          <title>Sample Page for Grid and CompositeFields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-grids.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Conditionals</title>
+
+        <para>This page demonstrates how flags and values can be applied to a
+        dialog field based on conditionals defined for that field. Conditional
+        fields are fields whose state depends upon the state of other entities
+        (in this case, other fields called <emphasis>partner</emphasis>
+        fields).</para>
+
+        <figure>
+          <title>Sample Page for Conditional Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-conditional.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Popups</title>
+
+        <para>This page demonstrates how to create and use popup fields. Sparx
+        provides a feature to display a popup dialog box when a popup icon is
+        clicked and values from a selection in the popup can be returned to
+        the main window. Popup fields are visually identifiable by their
+        special magnifying glass icon beside them.</para>
+
+        <figure>
+          <title>Sample Page for Popup Fields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-popups.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Date/Time</title>
+
+        <para>This page demonstrates how to create and use date/time fields.
+        There are several versions of date/time fields that are available:
+        time, date, date and time, and duration.</para>
+
+        <figure>
+          <title>Sample Page for Date/TimeFields</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-sampler-date-time.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </section>
+
+      <section>
+        <title>Advanced</title>
+
+        <para>This page and its children pages are for demonstrating more
+        advanced usage of the built-in features of the dialog fields.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Forms Execution</title>
+
+      <para></para>
+
+      <section>
+        <title>Director</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Templates</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Handlers</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Inheritance</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Delegation</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Access Control</title>
+
+      <para></para>
+
+      <section>
+        <title>Change Role</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Test 1</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Test 2</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Test 3</title>
+
+        <para></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Play</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Sitemap</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Console</title>
+
+      <para>Like every other NEFS application, the Sampler also has a Console.
+      This Console can be accessed through the Console section. You will see
+      the application Console login screen.</para>
+
+      <para><screenshot>
+          <graphic fileref="./resources/images/screen-console-login.gif" />
+        </screenshot></para>
+
+      <para>The Console's default User Id is <literal>'console</literal>' and
+      the default Password is <literal>'console'</literal>(each without
+      quotes). Unless otherwise specified, that is the User Id and Password
+      combination you should use if the Console prompts you to login. Please
+      refer to the <emphasis>Enterprise Console Tour</emphasis> for more
+      details about the Console.</para>
+    </section>
+
+    <section>
+      <title>Sample Apps Home</title>
+
+      <para>This section takes you to the Sample Apps Home page on the
+      netspective web site.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-samples-page.gif" />
+      </screenshot>
+    </section>
+  </section>
+
+  <section>
+    <title>Conclusion</title>
+
+    <para></para>
+  </section>
+</article>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
 "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+<!ENTITY __nef-assumptions__drd5ufsf SYSTEM "../nef-reusable-content/nef-assumptions.xml">
 <!ENTITY __nef-starter-app-setup__dr4w0y2f SYSTEM "../nef-reusable-content/nef-starter-app-setup.xml">
 <!ENTITY __nef-key-features__dr4qnp41 SYSTEM "../nef-reusable-content/nef-key-features.xml">
 <!ENTITY __nef-project-file__dr4s5f91 SYSTEM "../nef-reusable-content/nef-project-file.xml">
@@ -56,30 +57,7 @@
     </section>
   </section>
 
-  <section>
-    <title>Assumptions</title>
-
-    <para>For the purpose of this tutorial, we will be assuming that you
-    installed the following:</para>
-
-    <itemizedlist>
-      <listitem>
-        <para>Java Developer Kit (JDK) 1.2, 1.3 or 1.4</para>
-      </listitem>
-
-      <listitem>
-        <para>A Servlet Container (application server) supporting the Servlet
-        2.2 or higher specification</para>
-      </listitem>
-    </itemizedlist>
-
-    <para>We assume that you are using the default port
-    <literal>8080</literal> for your web server. If you chose different values
-    for the installation path andthe port number, you should substitute the
-    paths and the URLs in our example with your values as needed. This
-    tutorial also assumes your familiarity with XML, SQL, Java, Servlets and
-    JDBC.</para>
-  </section>
+  &__nef-assumptions__drd5ufsf;
 
   &__nef-starter-app-setup__dr4w0y2f;
 
@@ -1861,7 +1839,7 @@ public class Util implements DialogNextActionProvider <co id="util-class-eg-3" /
 
         <para>To compile the Util.java, go to <guimenu>Project</guimenu> |
         <guisubmenu>Ant Build</guisubmenu> section in Console and execute the
-        <sgmltag>Compile</sgmltag> target. </para>
+        <sgmltag>Compile</sgmltag> target.</para>
 
         <screenshot>
           <graphic fileref="./resources/images/screen-console-build-compile.gif" />
