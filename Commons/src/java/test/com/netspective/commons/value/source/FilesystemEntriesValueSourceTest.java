@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FilesystemEntriesValueSourceTest.java,v 1.4 2003-05-13 22:12:57 shahbaz.javeed Exp $
+ * $Id: FilesystemEntriesValueSourceTest.java,v 1.5 2003-11-08 18:30:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.value.source;
@@ -58,17 +58,25 @@ public class FilesystemEntriesValueSourceTest extends TestCase
 {
     public void testGetValue()
     {
-        // in 'c\\:\\' the first \\ is to escape ':' because otherwise c: will be regarded as its own value source
-        // because the rootPath in FileSystemEntriesValueSource is a ValueSource, not a string
-        String rootPath = "c\\:\\";
-	    String unescapedRootPath = "c:\\";
+        File[] roots = File.listRoots();
+        assertNotNull(roots);
+        assertTrue(roots.length > 0);
+
+        String rootPath = null;
+        for(int i = 0; i < roots.length; i++)
+        {
+            rootPath = roots[0].getAbsolutePath();
+            if(new File(rootPath).exists())
+                break;
+        }
+        assertTrue(new File(rootPath).exists());
 
         ValueSource vs = ValueSources.getInstance().getValueSource("filesystem-entries:" + rootPath, ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
 	    FilesystemEntriesValueSource fsVS = new FilesystemEntriesValueSource();
 	    fsVS.setRootPath(rootPath);
         Value value = vs.getValue(null);
 
-	    assertEquals(unescapedRootPath, fsVS.getRootPath().getTextValue(null));
+	    assertEquals(rootPath, fsVS.getRootPath().getTextValue(null));
 		// Verify the presence of the default filter...
 	    assertEquals("/.*/", fsVS.getFilter());
 	    assertTrue(0 < vs.getTextValues(null).length);

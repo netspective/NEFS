@@ -6,7 +6,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 
 /**
- * $Id: ResourceTest.java,v 1.1 2003-03-25 08:02:48 shahbaz.javeed Exp $
+ * $Id: ResourceTest.java,v 1.2 2003-11-08 18:30:45 shahid.shah Exp $
  */
 public class ResourceTest extends TestCase
 {
@@ -29,8 +29,9 @@ public class ResourceTest extends TestCase
 
 		// Build the resource name by changing all \ to / (if needed) and prepending a 'file:/' to the result...
 		String fileOneFQN = rsrcFileOne.getCanonicalPath();
-		fileOneFQN = fileOneFQN.replace('\\', '/');
-		assertEquals("file:/" + fileOneFQN, rsrcOne.getResource().toString());
+        if(File.separatorChar == '\\')
+		    fileOneFQN = "/" + fileOneFQN.replace('\\', '/');
+		assertEquals("file:" + fileOneFQN, rsrcOne.getResource().toString());
 
 		Resource rsrcTwo = new Resource(this.getClass().getClassLoader(), fileTwo);
 		assertFalse(rsrcTwo.isPhysicalFile());
@@ -50,8 +51,9 @@ public class ResourceTest extends TestCase
 
 		// Build the resource name by changing all \ to / (if needed) and prepending a 'file:/' to the result...
 		String fileTwoFQN = rsrcFileTwo.getCanonicalPath();
-		fileTwoFQN = fileTwoFQN.replace('\\', '/');
-		assertEquals("file:/" + fileTwoFQN, rsrcTwo.getResource().toString());
+        if(File.separatorChar == '\\')
+		    fileTwoFQN = "/" + fileOneFQN.replace('\\', '/');
+		assertEquals("file:" + fileTwoFQN, rsrcTwo.getResource().toString());
 
 		InputStream is = rsrcTwo.getResourceAsStream();
 		// 0 byte file...
