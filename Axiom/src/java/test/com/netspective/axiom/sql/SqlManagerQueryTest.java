@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.9 2003-06-11 02:42:21 roque.hernandez Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.10 2003-07-19 00:40:33 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -605,7 +605,7 @@ public class SqlManagerQueryTest extends TestCase
         dbvc.setDefaultDataSource(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE);
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
 
-        System.out.println("\nDataSrc: " + stmtOne.getDataSrc());
+        //System.out.println("\nDataSrc: " + stmtOne.getDataSrc());
         assertNull(stmtOne.getDataSrc());
         stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + this.getClass().getPackage().getName(), ValueSources.VSNOTFOUNDHANDLER_NULL));
         assertEquals(this.getClass().getPackage().getName(), stmtOne.getDataSrc().getTextValue(dbvc));

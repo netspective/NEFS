@@ -28,7 +28,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.5 2003-06-11 02:42:21 roque.hernandez Exp $
+ * $Id: DynamicSqlTest.java,v 1.6 2003-07-19 00:40:27 shahid.shah Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -643,7 +643,7 @@ public class DynamicSqlTest extends TestCase
         String sqlOne = select.getSqlText(cc);
         sqlOne = TextUtils.join(TextUtils.split(sqlOne, " \r\t\f\n", true), " ");
 
-		System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
+		//System.out.println("\n" + sqlOne + "\n" + expectedSqlOne);
 
         assertEquals(expectedSqlOne, sqlOne);
 
