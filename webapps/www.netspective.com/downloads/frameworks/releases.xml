@@ -2,6 +2,30 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.0.19"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                <![CDATA[
+                Modified the default dialog skin to only display the hint of a field if the corresponding
+                input is displayed.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
+        <product name="Commons" version="7.0.7"/>
+        <change-log>
+            <summary>Minor bug fixed</summary>
+            <change-log-entry>
+                <![CDATA[
+                Modified PresentationValue so that it returns an empty list of items when the text value
+                is null or is an empty string.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
         <product name="Sparx" version="7.0.18"/>
         <change-log>
             <summary>Minor enhancements</summary>
