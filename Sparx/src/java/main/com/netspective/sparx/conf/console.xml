@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.103 2003-10-12 18:10:07 shahid.shah Exp $
+  * $Id: console.xml,v 1.104 2003-10-12 20:01:14 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -130,6 +130,9 @@
                 </page>
                 <page name="inspector" caption="Inspector" heading="Dialog Inspector" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../inspector.ftl"/>
+                </page>
+                <page name="dialog-types" caption="Dialog Types">
+                    <body config="console" source="console-page-content:../dialog-types.ftl"/>
                 </page>
                 <page name="field-types" caption="Field Types" redirect="../../manual/presentation/dialogs/controls"/>
                 <page name="dialog-execute-handlers" caption="Exec Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
