@@ -3,7 +3,7 @@
 ** programmers.                                                             **
 ******************************************************************************
 
-$Id: README.TXT,v 1.8 2003-09-07 18:09:02 shahid.shah Exp $
+$Id: README.TXT,v 1.9 2003-09-15 01:41:57 shahid.shah Exp $
 
 Standard IDE and App Server
 ------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ Note: All defaults assume development work is being done on a Win32 platform
       OS X, Linux, or UNIX use $HOME/projects/Frameworks as NEFS_HOME.
 
 Note: There is a default resin configuration file called
-      NEFS_HOME/webapps/nefs-resin-sde.conf available for your use. This
+      NEFS_HOME/webapps/nefs-resin-sde-ide.conf available for your use. This
       configuration file points to port 8099 as the webserver and
       NEFS_HOME/webapps as the default war-dir so that it "auto-registers"
       all the web apps automatically.
@@ -62,8 +62,12 @@ Steps for all builds (each time code is updated)
 1. Open IDEA using NEFS_HOME/tools/idea/Netspective Frameworks.ipr project
    file.
 2. Compile full project (will put classes in NEFS_HOME/tools/idea/classes)
-3. Start Resin using NEFS_HOME/webapps/nefs-resin-sde.conf configuration file
-   and point to http://localhost:8099/ to view the NEFS Web Apps home page.
+3. Start Resin using NEFS_HOME/webapps/nefs-resin-sde-ide.conf configuration 
+   file and point to http://localhost:8099/ to view the NEFS Web Apps home 
+   page.
+
    Resin is started on Windows from the command line using
-   RESIN_HOME/bin/httpd -conf NEFS_HOME/webapps/nefs-resin-sde.conf or on UNIX
-   using RESIN_HOME/bin/httpd.sh -conf NEFS_HOME/webapps/nefs-resin-sde.
+   RESIN_HOME/bin/httpd -conf NEFS_HOME/webapps/nefs-resin-sde-ide.conf or
+
+   Resin is started on UNIX/OS X from the command line using
+   RESIN_HOME/bin/httpd.sh -conf NEFS_HOME/webapps/nefs-resin-sde-ide.conf
