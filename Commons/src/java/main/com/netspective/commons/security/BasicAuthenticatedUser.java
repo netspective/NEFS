@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.3 2003-03-20 14:55:34 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.4 2003-03-20 20:42:04 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.security;
@@ -155,20 +155,23 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
     }
 
+    //TODO: public void addRoles(AccessControlListsManager aclsManager, String[] roles) - to add roles
+
     public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
     {
         if(userRoles == null || userPermissions == null)
             return;
 
-        // clear all the permissions that the roles may have granted earlier
+        // Check to make sure all roles are valid ...
         for(int i = 0; i < roles.length; i++)
         {
-            String roleName = roles[i];
-            Permission role = aclsManager.getPermission(roleName);
+            Permission role = aclsManager.getPermission(roles[i]);
             if(role == null)
-                throw new RuntimeException("Role '" + roleName + "' does not exist in ACL.");
-            userPermissions.andNot(role.getChildPermissions());
+                throw new RuntimeException("Role '" + roles[i] + "' does not exist in ACL.");
         }
+
+	    // Clear all permissions until the shakeup is complete...
+	    userPermissions.clear();
 
         if(roles == userRoles)
         {
@@ -196,10 +199,18 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
                 if(!removingRole)
                     keepRoles.add(checkRole);
             }
+
             if(keepRoles.size() > 0)
                 userRoles = (String[]) keepRoles.toArray(new String[keepRoles.size()]);
             else
                 userRoles = null;
+
+			// Recalculate all the permissions for the roles left after the shakeup
+			for (int i = 0; i < userRoles.length; i ++)
+			{
+				Permission role = aclsManager.getPermission(userRoles[i]);
+				userPermissions.or(role.getChildPermissions());
+			}
         }
     }
 
