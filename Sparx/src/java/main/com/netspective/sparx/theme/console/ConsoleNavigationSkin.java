@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.37 2003-10-24 03:28:48 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.38 2003-10-27 18:41:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -562,16 +562,16 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                         buffer.append("                <td class=\"menu-level-1-active-start\" valign=\"bottom\" nowrap>" +
                                 "<span class=\"menu-level-1\">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>");
                         buffer.append("                    <td class=\"menu-level-1-table-active\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1-active\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1-active\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
                     }
                     else
                     {
                         buffer.append("                <td class=\"menu-level-1-table-start\" valign=\"bottom\" nowrap>" +
                                 "<span class=\"menu-level-1\">&nbsp;&nbsp;&nbsp;</span></td>");
                         buffer.append("                    <td class=\"menu-level-1-table\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;</a></td>\n");
                     }
                 }
                 else
@@ -579,12 +579,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     if (tabElement.isInActivePath(nc))
                     {
                         buffer.append("                    <td class=\"menu-level-1-table-active-end\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1-active\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1-active\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
 
                         buffer.append("                    <td class=\"menu-level-1-table-active\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1-active\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1-active\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
                     }
                     else
                     {
@@ -592,8 +592,8 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                                 "&nbsp;&nbsp;&nbsp;</span></td>\n");
 
                         buffer.append("                    <td class=\"menu-level-1-table\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;&nbsp;</a></td>\n");
                     }
                 }
             }
@@ -640,18 +640,18 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 if (tabElement.isInActivePath(nc))
                 {
                     writer.append("                    <td class=\"menu-level-2-table-active-end\" valign=\"bottom\" nowrap>");
-                    writer.append("<a class=\"menu-level-2-active\"" +
-                            " href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;</a></td>\n");
+                    writer.append("<a class=\"menu-level-2-active\" " +
+                            tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;</a></td>\n");
 
                     writer.append("                    <td class=\"menu-level-2-table-active\" valign=\"bottom\" nowrap>");
-                    writer.append("<a class=\"menu-level-2-active\"" +
-                            " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
+                    writer.append("<a class=\"menu-level-2-active\" " +
+                            tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
                 }
                 else
                 {
                     writer.append("<td nowrap align=\"center\" " + (i != size - 1 ? "class=\"menu-level-2-separator\"" : "") + ">");
-                    writer.append("<a class=\"menu-level-2" +
-                            "\" href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
+                    writer.append("<a class=\"menu-level-2\" " +
+                            tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
             }
         }
@@ -696,12 +696,12 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     writer.append("      		<table width=\"" + sidebarWidth + "\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" >\n");
                     writer.append("     		 <tr>\n");
                     writer.append("                    <td class=\"menu-level-3-table-active-end\" valign=\"bottom\" nowrap>");
-                    writer.append("<a class=\"menu-level-3-active\"" +
-                            " href=\"" + sideBarElement.getUrl(nc) + "\"></a></td>\n");
+                    writer.append("<a class=\"menu-level-3-active\" " +
+                            sideBarElement.constructAnchorAttributes(nc) + "></a></td>\n");
 
                     writer.append("                    <td class=\"menu-level-3-table-active\" valign=\"bottom\" nowrap>");
-                    writer.append("<a class=\"menu-level-3-active\"" +
-                            " href=\"" + sideBarElement.getUrl(nc) + "\">" + sideBarElement.getCaption(nc) + "&nbsp;</a></td>\n");
+                    writer.append("<a class=\"menu-level-3-active\" " +
+                            sideBarElement.constructAnchorAttributes(nc) + ">" + sideBarElement.getCaption(nc) + "&nbsp;</a></td>\n");
                     writer.append("      		</tr>\n");
                     writer.append("      		</table>\n");
                     writer.append("     	</td>\n");
@@ -711,7 +711,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 {
                     writer.append("      <tr>\n");
                     writer.append("          <td class=\"menu-level-3-table\" align=\"left\" valign=\"middle\">" +
-                            "<a class=\"menu-level-3\" href=\"" + sideBarElement.getUrl(nc) + "\"><nobr>" +
+                            "<a class=\"menu-level-3\" " + sideBarElement.constructAnchorAttributes(nc) + "><nobr>" +
                             sideBarElement.getCaption(nc) + "</nobr></a></td>\n");
                     writer.append("      </tr>\n");
                 }

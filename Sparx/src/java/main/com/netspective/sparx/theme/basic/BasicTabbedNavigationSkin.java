@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.32 2003-10-22 18:58:02 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.33 2003-10-27 18:41:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -599,16 +599,16 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                         buffer.append("                <td class=\"menu-level-1-active-start\" valign=\"bottom\" nowrap>" +
                                 "<span class=\"menu-level-1\">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>");
                         buffer.append("                    <td class=\"menu-level-1-table-active\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1-active\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1-active\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
                     }
                     else
                     {
                         buffer.append("                <td class=\"menu-level-1-table-start\" valign=\"bottom\" nowrap>" +
                                 "<span class=\"menu-level-1\">&nbsp;&nbsp;&nbsp;</span></td>");
                         buffer.append("                    <td class=\"menu-level-1-table\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
                     }
                 }
                 else
@@ -619,8 +619,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                                 "&nbsp;&nbsp;&nbsp;&nbsp;</span></td>\n");
 
                         buffer.append("                    <td class=\"menu-level-1-table-active\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1-active\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1-active\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
                     }
                     else
                     {
@@ -628,8 +628,8 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                                 "&nbsp;&nbsp;&nbsp;</span></td>\n");
 
                         buffer.append("                    <td class=\"menu-level-1-table\" valign=\"bottom\" nowrap>");
-                        buffer.append("<a class=\"menu-level-1\"" +
-                                " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
+                        buffer.append("<a class=\"menu-level-1\" " +
+                                tabElement.constructAnchorAttributes(nc) + ">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
                     }
                 }
             }
@@ -676,14 +676,14 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 if (tabElement.isInActivePath(nc))
                 {
                     writer.append("<td nowrap align=\"center\" class=\"menu-level-2-active\">");
-                    writer.append("<a class=\"menu-level-2-active\" href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;" +
+                    writer.append("<a class=\"menu-level-2-active\" " + tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;" +
                             tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
                 else
                 {
                     writer.append("<td nowrap align=\"center\" " + (i != size - 1 ? "class=\"menu-level-2-separator\"" : "") + ">");
-                    writer.append("<a class=\"menu-level-2" +
-                            "\" href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
+                    writer.append("<a class=\"menu-level-2\" " +
+                            tabElement.constructAnchorAttributes(nc) + ">&nbsp;&nbsp;" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
             }
         }
@@ -726,7 +726,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 {
                     writer.append("      <tr>\n");
                     writer.append("          <td class=\"menu-level-3-table-active\" align=\"left\" valign=\"middle\">" +
-                            "<a class=\"menu-level-3-active\" href=\"" + sideBarElement.getUrl(nc) + "\">" +
+                            "<a class=\"menu-level-3-active\" " + sideBarElement.constructAnchorAttributes(nc) + ">" +
                             "<nobr>" + sideBarElement.getCaption(nc) + "</nobr></a></td>\n");
                     writer.append("      </tr>\n");
                 }
@@ -734,7 +734,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 {
                     writer.append("      <tr>\n");
                     writer.append("          <td class=\"menu-level-3-table\" align=\"left\" valign=\"middle\">" +
-                            "<a class=\"menu-level-3\" href=\"" + sideBarElement.getUrl(nc) + "\"><nobr>" +
+                            "<a class=\"menu-level-3\" " + sideBarElement.constructAnchorAttributes(nc) + "><nobr>" +
                             sideBarElement.getCaption(nc) + "</nobr></a></td>\n");
                     writer.append("      </tr>\n");
                 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.43 2003-10-24 03:26:37 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.44 2003-10-27 18:41:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -67,7 +67,6 @@ import com.netspective.commons.command.Commands;
 import com.netspective.commons.command.CommandException;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.text.Transform;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanel;
@@ -219,6 +218,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     private ValueSource assignStateParams;
     private List requireRequestParams = new ArrayList();
     private ValueSource redirect;
+    private String redirectTarget;
     private ValueSource forward;
     private ValueSource include;
     private HtmlLayoutPanel bodyPanel;
@@ -550,6 +550,21 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
         this.redirect = redirect;
     }
 
+    public String getRedirectTarget()
+    {
+        return redirectTarget;
+    }
+
+    public void setRedirectTarget(String redirectTarget)
+    {
+        this.redirectTarget = redirectTarget;
+    }
+
+    public void setTarget(String redirectTarget)
+    {
+        setRedirectTarget(redirectTarget);
+    }
+
     public ValueSource getForward()
     {
         return forward;
@@ -625,6 +640,15 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
             result = HttpUtils.appendParams(vc.getHttpRequest(), result, retainParamsVS.getTextValue(vc));
 
         return result;
+    }
+
+    public String constructAnchorAttributes(HttpServletValueContext vc)
+    {
+        StringBuffer sb = new StringBuffer("HREF=\"" + getUrl(vc) + "\"");
+        String target = getRedirectTarget();
+        if(target != null)
+            sb.append("TARGET=\""+ target  +"\"");
+        return sb.toString();
     }
 
     public ValueSource getAssignStateParams()
