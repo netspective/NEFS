@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AbstractTabularReport.java,v 1.6 2003-08-20 04:01:02 shahid.shah Exp $
+ * $Id: AbstractTabularReport.java,v 1.7 2003-08-20 18:59:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -150,7 +150,7 @@ public class AbstractTabularReport implements TabularReport, XmlDataModelSchema.
     {
         // if a record add caption/url was provided but no banner was created, go ahead and generate a banner automatically
         // banners are automatically hidden by record-viewer and shown by record-editor skins
-        //TODO: fix this
+        //TODO: move this into Sparx (record editor skin)
 /*
         if(frame != null && banner == null)
         {
