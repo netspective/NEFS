@@ -296,7 +296,7 @@ Setup instructions:
         <delete dir="${project.build.dir}"/>
     </target>
 
-    <target name="all" depends="init,compile-main,jar"/>
+    <target name="all" depends="init,compile-main,javadoc-xml,jar"/>
 
     <target name="clover-compile-main" depends="init-clover,init,compile-main,jar"/>
 	<target name="clover-compile-test" depends="clover-compile-main">
