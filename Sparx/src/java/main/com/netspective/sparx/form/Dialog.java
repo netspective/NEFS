@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.37 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.38 2003-11-05 04:34:40 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -280,6 +280,10 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return log;
     }
 
+    /**
+     * Gets the name of the dialog
+     * @return
+     */
     public String getName()
     {
         return name;
@@ -295,6 +299,11 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return nameSpace != null ? nameSpace.getNameSpaceId() + "." + name : name;
     }
 
+    /**
+     * Sets the name of the dialog. The name may only contain upper or lowercase letters, numbers, and underscores.
+     * There should no punctuation characters or spaces and the name should be a valid JavaScript name.
+     * @param name
+     */
     public void setName(String name)
     {
         this.name = name;
@@ -501,6 +510,12 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             retainRequestParams = TextUtils.split(value, ",", true);
     }
 
+    /**
+     * Gets the URL for the next action of the dialog after execution
+     * @param dc
+     * @param defaultUrl
+     * @return URL string
+     */
     public String getNextActionUrl(DialogContext dc, String defaultUrl)
     {
         if(nextActionProvider != null)
@@ -516,16 +531,28 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         return result;
     }
 
+    /**
+     * Gets the dialog director object
+     * @return
+     */
     public DialogDirector getDirector()
     {
         return director;
     }
 
+    /**
+     * Creates and returns the dialog director. Used mainly for XDM dialog creation.
+     * @return
+     */
     public DialogDirector createDirector()
     {
         return new DialogDirector();
     }
 
+    /**
+     * Sets the director for this dialog
+     * @param value
+     */
     public void addDirector(DialogDirector value)
     {
         director = value;
@@ -551,16 +578,28 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         clientJavascripts.add(clientJsFile);
     }
 
+    /**
+     * Gets the package namespace to which this dialog belongs to
+     * @return
+     */
     public DialogsPackage getNameSpace()
     {
         return nameSpace;
     }
 
+    /**
+     * Sets the package namespace for this dialog
+     * @param nameSpace
+     */
     public void setNameSpace(DialogsPackage nameSpace)
     {
         this.nameSpace = nameSpace;
     }
 
+    /**
+     * Creates a new DialogField object and returns it. Used mainly by XDM to create a dialog field.
+     * @return a new dialog field object
+     */
     public DialogField createField()
     {
         return new DialogField();
@@ -577,16 +616,28 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         field.setOwner(this);
     }
 
+    /**
+     * Creates a new composite field and returns it. This is used mainly by XDM to instantiate a composite field.
+     * @return
+     */
     public CompositeField createComposite()
     {
         return new CompositeField();
     }
 
+    /**
+     * Adds a composite field to the dialog
+     * @param field CompositeField object
+     */
     public void addComposite(CompositeField field)
     {
         addField(field);
     }
 
+    /**
+     * Creates a new separator field. This is used mainly by XDM to instantiate a separator field.
+     * @return
+     */
     public SeparatorField createSeparator()
     {
         return new SeparatorField();
@@ -597,6 +648,10 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         addField(field);
     }
 
+    /**
+     * Creates a new grid field. This is used mainly by XDM to instantiate a grid field.
+     * @return
+     */
     public GridField createGrid()
     {
         return new GridField();
@@ -607,6 +662,10 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         addField(field);
     }
 
+    /**
+     * Calls the <code>finalizeContents</code> for each field belonging to the dialog and also calculates the layout
+     * of the dialog fields.
+     */
     public void finalizeContents()
     {
         fields.finalizeContents();
@@ -618,6 +677,13 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         }
     }
 
+    /**
+     * Called at the end of  XDM processing to create the Dialog object. Currently calls <code>finalizeContents</code>.
+     * @param pc   The XDM parsing context
+     * @param element The XML element for the dialog object
+     * @param elementName The name of the element
+     * @throws DataModelException
+     */
     public void finalizeConstruction(XdmParseContext pc, Object element, String elementName) throws DataModelException
     {
         finalizeContents();
@@ -723,17 +789,31 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         }
     }
 
+    /**
+     * Creates a new <code>DialogExecuteDefaultHandler</code> object. This is used mainly by XDM to instantiate a
+     * DialogExecuteHandler object.
+     * @return
+     */
     public DialogExecuteHandler createOnExecute()
     {
         return new DialogExecuteDefaultHandler();
     }
 
+    /**
+     * Adds a new <code>DialogExecuteHandler</code> object to the list of execute handlers. These listeners that implement
+     * the <code>DialogExecuteHandler</code> interface will be called at execution time to process custome dialog execute actions.
+     * @param handler  execution handler object
+     */
     public void addOnExecute(DialogExecuteHandler handler)
     {
         executeHandlers.add(handler);
         addListener(handler); // see if there are any other interfaces implemented by this handler
     }
 
+    /**
+     * Gets all the dialog execute handlers
+     * @return
+     */
     public DialogExecuteHandlers getExecuteHandlers()
     {
         return executeHandlers;
@@ -754,31 +834,62 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         else
             dc.renderDebugPanels(writer);
 
-        dc.setExecuteStageHandled(true);
+        handlePostExecute(writer, dc);
     }
 
+    /**
+     * Gets the next action provider of the dialog. The next action represents the action to be performed after dialog execution.
+     * @return
+     */
     public DialogNextActionProvider getNextActionProvider()
     {
         return nextActionProvider;
     }
 
+    /**
+     * Sets the next action provider  for the dialog
+     * @param nextActionProvider
+     */
     public void addNextActionProvider(DialogNextActionProvider nextActionProvider)
     {
         this.nextActionProvider = nextActionProvider;
     }
 
+    /**
+     * Handles any post execution actions. Currently, it sets a flag to indicate that the execution has been handled
+     * and then performs a URL redirection.
+     * @param writer        Writer object related to the response buffer
+     * @param dc            current dialog context
+     * @throws IOException
+     */
     public void handlePostExecute(Writer writer, DialogContext dc) throws IOException
     {
         dc.setExecuteStageHandled(true);
         dc.performDefaultRedirect(writer, null);
     }
 
+    /**
+     * Handles any post execution actions. Currently, it sets a flag to indicate that the execution has been handled
+     * and then performs a URL redirection.
+     * @param writer    Writer object related to the response buffer
+     * @param dc        current dialog context
+     * @param redirect  the URL to redirect to
+     * @throws IOException
+     */
     public void handlePostExecute(Writer writer, DialogContext dc, String redirect) throws IOException
     {
         dc.setExecuteStageHandled(true);
         dc.performDefaultRedirect(writer, redirect);
     }
 
+    /**
+     * Logs the exeception and writes it to the Writer
+     * @param writer    Writer object related to the response buffer
+     * @param dc        current dialog context
+     * @param message   custom exception message
+     * @param e         the exception object
+     * @throws IOException
+     */
     public void handlePostExecuteException(Writer writer, DialogContext dc, String message, Exception e) throws IOException
     {
         dc.setExecuteStageHandled(true);
@@ -789,10 +900,10 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
     }
 
     /**
-     * Create a dialog context for this dialog
+     * Create a dialog context for this dialog. If a custome dialog context class is defined, the custom class will be
+     * instantiated, else a default <code>DialogContext</code> object will be returned.
      *
      * @param skin      dialog skin
-     *
      * @return DialogContext
      */
     public DialogContext createContext(NavigationContext nc, DialogSkin skin)
@@ -880,11 +991,15 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         }
     }
 
+    /**
+     */
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
         render(writer, dc.getNavigationContext(), theme, flags);
     }
 
+    /**
+     */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
         DialogContext dc = createContext(nc, theme.getDefaultDialogSkin());
@@ -899,6 +1014,13 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
         }
     }
 
+    /**
+     * Generates a custom java bean class file representing the context of the dialog.
+     *
+     * @param destDir   the destibation directory to write the bean class
+     * @param pkgPrefix the package to which the bean class belongs to
+     * @return the bean class file
+     */
     public File generateDialogContextBean(File destDir, String pkgPrefix) throws IOException
     {
         StringBuffer importsCode = new StringBuffer();
@@ -1070,6 +1192,25 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             listeners.add(listener);
     }
 
+    /**
+     * Adds a listener for the dialog.  Listeners are used to define custom actions for different stages that the dialog goes through.
+     * There are several listener interfaces available for a dialog:
+     *  <ul>
+     *      <li>DialogInitialPopulateForDisplayListener: processed during initial population of the dialog and the format type is set to display mode </li>
+     *      <li>DialogInitialPopulateForSubmitListener: processed during initial population of the dialog  and the format type is set to submit mode </li>
+     *      <li>DialogInitialPopulateListener</li>
+     *      <li>DialogPopulateForDisplayListener: processed during subsequent population of the diialog and the format type is set to display mode</li>
+     *      <li>DialogPopulateForSubmitListener: porcessed during subsequent population of the dialog and the format type is set to submit mode</li>
+     *      <li>DialogPopulateListener</li>
+     *      <li>DialogStateAfterValidationListener</li>
+     *      <li>DialogStateBeforeValidationListener</li>
+     *      <li>DialogStateListener</li>
+     *      <li>DialogValidateListener</li>
+     *      <li>DialogExecuteHandler: </li>
+     * </ul>
+     * Implementing listeners classes can be registered to the dialog using the <code>&lt;listener&gt;</code> tag.
+     * @param listener
+     */
     public void addListener(DialogListener listener)
     {
         if(listener instanceof DialogInitialPopulateForDisplayListener)
@@ -1136,51 +1277,91 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
             executeHandlers.add((DialogExecuteHandler) listener);
     }
 
+    /**
+     * Gets a list of all the initial dialog population listeners for display mode
+     * @return
+     */
     public List getInitialPopulateForDisplayListeners()
     {
         return initialPopulateForDisplayListeners;
     }
 
+    /**
+     * Gets a list of all the initial dialog population for submit mode
+     * @return
+     */
     public List getInitialPopulateForSubmitListeners()
     {
         return initialPopulateForSubmitListeners;
     }
 
+    /**
+     * Gets all the initial population listeners
+     * @return
+     */
     public List getInitialPopulateListeners()
     {
         return initialPopulateListeners;
     }
 
+    /**
+     * Gets all the subsequent population listeners for display mode
+     * @return
+     */
     public List getPopulateForDisplayListeners()
     {
         return populateForDisplayListeners;
     }
 
+    /**
+     * Gets all the subsequent population listeners for submit mode
+     * @return
+     */
     public List getPopulateForSubmitListeners()
     {
         return populateForSubmitListeners;
     }
 
+    /**
+     * Gets all the dialog population listeners
+     * @return
+     */
     public List getPopulateListeners()
     {
         return populateListeners;
     }
 
+    /**
+     * Gets all the listeners for the dialog after validation stage
+     * @return
+     */
     public List getStateAfterValidationListeners()
     {
         return stateAfterValidationListeners;
     }
 
+    /**
+     * Gets all the listeners for the dialog before validation stage
+     * @return
+     */
     public List getStateBeforeValidationListeners()
     {
         return stateBeforeValidationListeners;
     }
 
+    /**
+     * Gets all the dialog state listeners
+     * @return
+     */
     public List getStateListeners()
     {
         return stateListeners;
     }
 
+    /**
+     * Gets all the dialog validation listeners
+     * @return
+     */
     public List getValidationListeners()
     {
         return validationListeners;
