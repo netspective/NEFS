@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <table name="Person" abbrev="Per" type="Default" class="com.netspective.axiom.dal.table.PersonTable">
+    <table name="Person" abbrev="Per" type="Default" class="app.schema.table.PersonTable">
         <description>Any person (client, staff member, etc.)</description>
         <column name="person_id" primarykey="yes" type="guid32" descr="Auto-generated Unique ID for a person within the entire system">
             <presentation>

@@ -21,6 +21,8 @@
     <classpath id='c:\Projects\Frameworks\Commons\src\java\main' compile='false'/>
     <classpath id='c:\Projects\Frameworks\Axiom\src\java\main' compile='false'/>
     <classpath id='c:\Projects\Frameworks\Sparx\src\java\main' compile='false'/>
+    <!-- needed to find java-doc-xml/* files -->
+    <classpath id='c:\Projects\Frameworks\Sparx'/>
 
 	<path-mapping url-pattern='/sparx/*' real-path='c:\Projects\Frameworks\Sparx\resources'/>
 
@@ -29,10 +31,17 @@
     * Setup application's execution environment.                        *
     *********************************************************************
     -->
+
+    <!-- Setup Sparx components project root file -->
+    <context-param>
+      <param-name>com.netspective.sparx.PROJECT_FILE_NAME</param-name>
+      <param-value>/WEB-INF/sparx/project.xml</param-value>
+    </context-param>
+
 	<!-- Setup runtime environment -->
 	<context-param>
 	  <param-name>com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS</param-name>
-	  <param-value>DEVELOPMENT</param-value>
+	  <param-value>DEVELOPMENT | FRAMEWORK_DEVELOPMENT</param-value>
 	  <!-- the parameter for the environment flags may be combined using
 	       the following vaues:
 	       * DEVELOPMENT
@@ -41,10 +50,26 @@
 	       * DEMONSTRATION
 	       * PRODUCTION
 	       * UNDERGOING_MAINTENANCE
+	       * FRAMEWORK_DEVELOPMENT
 
 	       e.g. "PRODUCTION | UNDERGOING_MAINTENANCE" is valid
 	    -->
 	</context-param>
+
+    <!--
+    *********************************************************************
+    * Setup application front-controller servlet                        *
+    *********************************************************************
+    -->
+	<servlet>
+		<servlet-name>NavigationController</servlet-name>
+		<servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>NavigationController</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
 
     <!--
     *********************************************************************
@@ -56,11 +81,6 @@
 		<servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
 	</servlet>
 
-    <!--
-    *********************************************************************
-    * Setup Netspective Administration Console servlet mapping          *
-    *********************************************************************
-    -->
 	<servlet-mapping>
 		<servlet-name>NetspectiveConsole</servlet-name>
 		<url-pattern>/console/*</url-pattern>
