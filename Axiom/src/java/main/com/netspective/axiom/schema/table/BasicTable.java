@@ -950,26 +950,33 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             QueryResultSet qrs = null;
             try
             {
-                qrs = indexAccessor.execute(cc, params, false);
-            }
-            catch(SQLException e)
-            {
-                log.error("Error while checking for columns " + index.getColumns().getOnlyNames(",") + " in unique index " + index.getName(), e);
-                continue;
-            }
-            ResultSet rs = qrs.getResultSet();
-            if(rs.next())
-            {
-                Row duplicateRow = createRow();
-                duplicateRow.getColumnValues().populateValues(rs, 0);
+                try
+                {
+                    qrs = indexAccessor.execute(cc, params, false);
+                }
+                catch(SQLException e)
+                {
+                    log.error("Error while checking for columns " + index.getColumns().getOnlyNames(",") + " in unique index " + index.getName(), e);
+                    continue;
+                }
+                ResultSet rs = qrs.getResultSet();
+                if(rs.next())
+                {
+                    Row duplicateRow = createRow();
+                    duplicateRow.getColumnValues().populateValues(rs, 0);
 
-                // we want to use the same PK value as the duplicate row but we want to keep our own data
-                final PrimaryKeyColumnValues dupRowPKColVals = duplicateRow.getPrimaryKeyValues();
-                for(int k = 0; k < dupRowPKColVals.size(); k++)
-                    columnValues.getByColumnIndex(k).setValue((ColumnValue) dupRowPKColVals.getByColumnIndex(k));
+                    // we want to use the same PK value as the duplicate row but we want to keep our own data
+                    final PrimaryKeyColumnValues dupRowPKColVals = duplicateRow.getPrimaryKeyValues();
+                    for(int k = 0; k < dupRowPKColVals.size(); k++)
+                        columnValues.getByColumnIndex(k).setValue((ColumnValue) dupRowPKColVals.getByColumnIndex(k));
 
-                update(cc, row);
-                return;
+                    update(cc, row);
+                    return;
+                }
+            }
+            finally
+            {
+                if(qrs != null) qrs.close(true);
             }
         }
 
