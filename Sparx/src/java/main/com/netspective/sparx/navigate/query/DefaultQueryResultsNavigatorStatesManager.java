@@ -70,7 +70,6 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
             }
         }
 
-        System.out.println("query results retrieved: " + key + " " + state);
         return state;
     }
 
@@ -78,7 +77,6 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
     {
         final String key = state.getQueryResultsNavigatorPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         states.put(key, state);
-        System.out.println("query results saved: " + key + " " + state);
     }
 
     public void timeOut(QueryResultsNavigatorState state)
@@ -93,6 +91,5 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
             log.error(e);
         }
         states.values().remove(state);
-        System.out.println("query results timing out: " + state);
     }
 }

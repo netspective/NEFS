@@ -54,7 +54,6 @@ public class DefaultFullTextSearchResultsManager implements FullTextSearchResult
     {
         final String key = ftsPage.getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         final FullTextSearchResults results = (FullTextSearchResults) searchResults.get(key);
-        System.out.println("search results retrieved: " + key + " " + results);
         return results;
     }
 
@@ -62,13 +61,11 @@ public class DefaultFullTextSearchResultsManager implements FullTextSearchResult
     {
         final String key = results.getSearchPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         searchResults.put(key, results);
-        System.out.println("search results saved: " + key + " " + results);
     }
 
     public void timeOut(final FullTextSearchResults results)
     {
         // find the value and remove it
         searchResults.values().remove(results);
-        System.out.println("search results timing out: " + results);
     }
 }
