@@ -72,11 +72,17 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
                                          final ForeignKey partOfForeignKey,
                                          final String indent) throws SQLException, NamingException
     {
-        final String extraAttrs = partOfPrimaryKey != null
-                ? " BGCOLOR=\"gray90\""
-                :
-                (partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey)
-                ? (" BGCOLOR=\"beige\"") : "");
+        String extraAttrs = "";
+        if(partOfPrimaryKey != null)
+        {
+            if(partOfForeignKey != null)
+                extraAttrs = " BGCOLOR=\"lightcyan\"";
+            else
+                extraAttrs = " BGCOLOR=\"gray90\"";
+        }
+        else if(partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey))
+            extraAttrs = " BGCOLOR=\"beige\"";
+
         final StringBuffer result = new StringBuffer(indent + "<TR>\n");
         result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\"" + extraAttrs + ">" + column.getName() + "</TD>\n");
 
@@ -119,7 +125,7 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
     {
         final Table table = pclass.getTable();
         final StringBuffer primaryKeyRows = new StringBuffer();
-        final StringBuffer parentKeyRows = new StringBuffer();
+        final StringBuffer childKeyRows = new StringBuffer();
         final StringBuffer columnRows = new StringBuffer();
 
         final PrimaryKey primaryKeyColumns = table.getPrimaryKey();
@@ -134,24 +140,23 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             {
                 try
                 {
-                    if (primaryKeyColumns.containsColumn(column))
-                        primaryKeyRows.append(getColumnDefinitionRow(generator, filter, column, primaryKeyColumns, null, indent) + "\n");
-                    //else if(parentRefColumns.contains(column))
-                    //    parentKeyRows.append(getColumnDefinitionRow(generator, column, false, indent) + "\n");
-                    else
+                    ForeignKey partOfForeignKey = null;
+                    for (Iterator fkIterator = table.getForeignKeyIterator(); fkIterator.hasNext();)
                     {
-                        ForeignKey partOfForeignKey = null;
-                        for (Iterator fkIterator = table.getForeignKeyIterator(); fkIterator.hasNext();)
+                        final ForeignKey fKey = (ForeignKey) fkIterator.next();
+                        if (fKey.containsColumn(column))
                         {
-                            final ForeignKey fKey = (ForeignKey) fkIterator.next();
-                            if (fKey.containsColumn(column))
-                            {
-                                partOfForeignKey = fKey;
-                                break;
-                            }
+                            partOfForeignKey = fKey;
+                            break;
                         }
-                        columnRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
                     }
+
+                    if (primaryKeyColumns.containsColumn(column))
+                        primaryKeyRows.append(getColumnDefinitionRow(generator, filter, column, primaryKeyColumns, partOfForeignKey, indent) + "\n");
+                    else if(partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey))
+                        childKeyRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
+                    else
+                        columnRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
                 }
                 catch (SQLException e)
                 {
@@ -174,8 +179,8 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\" " + filter.getTableNameCellHtmlAttributes(generator, pclass) + ">" + table.getName() + "</TD></TR>\n");
         if (primaryKeyRows.length() > 0)
             tableNodeLabel.append(primaryKeyRows);
-        if (parentKeyRows.length() > 0)
-            tableNodeLabel.append(parentKeyRows);
+        if (childKeyRows.length() > 0)
+            tableNodeLabel.append(childKeyRows);
         tableNodeLabel.append(columnRows);
         if (hidden > 0)
             tableNodeLabel.append("        <TR><TD COLSPAN=\"" + colSpan + "\">(" + hidden + " columns not shown)</TD></TR>\n");
