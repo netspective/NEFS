@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: DialogValidationContext.java,v 1.1 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogValidationContext.java,v 1.2 2003-11-12 12:48:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
 
 import com.netspective.commons.validate.BasicValidationContext;
 import com.netspective.commons.value.ValueContext;
+import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.form.field.DialogField;
 
 public class DialogValidationContext extends BasicValidationContext
 {
@@ -103,6 +105,19 @@ public class DialogValidationContext extends BasicValidationContext
     public void setValidationStage(int value)
     {
         validationStage = value;
+    }
+
+    public void addError(Object key, String message)
+    {
+        DialogFieldValue dfValue = (DialogFieldValue) key;
+        DialogField parent = dfValue.getField().getParent();
+        if(parent != null)
+        {
+            DialogContext dc = getDialogContext();
+            super.addError(dc.getFieldStates().getState(parent).getValue(), message);
+        }
+        else
+            super.addError(key, message);
     }
 }
 
