@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.10 2003-06-25 03:15:21 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.11 2003-06-26 14:33:56 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -79,7 +79,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     private boolean defaultPanel;
     protected String panelClassNamePrefix;
     protected String panelResourcesPrefix;
-    protected String contentDivClass = "textbox";
+    protected String contentDivClass = "";
     protected Flags flags;
 
     public BasicHtmlPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
