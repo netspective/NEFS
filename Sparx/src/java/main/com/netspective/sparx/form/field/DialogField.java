@@ -1632,12 +1632,15 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         if(flags.flagIsSet(DialogFieldFlags.SUBMIT_ONBLUR))
         {
             sb.append("field.submitOnBlur = true;\n");
-            if(submitOnBlur.getPartner() != null)
-                sb.append("field.submitOnBlurPartnerField = '" + submitOnBlur.getPartner() + "';\n");
-            if(submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
-                sb.append("field.submitOnBlurCustomScript = new Function(\"field\", \"control\", \"" + submitOnBlur.getCustomScript() + "\");\n");
-            else
-                sb.append("field.submitOnBlurCustomScript = '';\n");
+            if (submitOnBlur != null)
+            {
+                if (submitOnBlur.getPartner() != null)
+                    sb.append("field.submitOnBlurPartnerField = '" + submitOnBlur.getPartner() + "';\n");
+                if (submitOnBlur.getCustomScript() != null && submitOnBlur.getCustomScript().length() > 0)
+                    sb.append("field.submitOnBlurCustomScript = new Function(\"field\", \"control\", \"" + submitOnBlur.getCustomScript() + "\");\n");
+                else
+                    sb.append("field.submitOnBlurCustomScript = '';\n");
+            }
         }
 
         if(encryption != null)
