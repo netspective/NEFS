@@ -65,12 +65,12 @@
             <role name="subject">
                 <grant permission="/acl/app/org/site/view"/>
                 <grant permission="/acl/app/org/sponsor/view"/>
-                <grant permission="/acl/app/org/study/view"/>
+                <grant permission="/acl/app/study/view"/>
             </role>
             <role name="physician">
                 <grant permission="/acl/app/org/site/view"/>
                 <grant permission="/acl/app/org/sponsor/view"/>
-                <grant permission="/acl/app/org/study/view"/>
+                <grant permission="/acl/app/study/view"/>
             </role>
         </role>
     </access-control-list>
@@ -78,8 +78,8 @@
 
     <!-- setup the data access layer Singleton to point to our schema -->
     <listener class="app.cts.Util"/>
-    <theme name="console" default="yes" class="com.netspective.sparx.theme.console.ConsoleTheme"
-        inherit-resources-from-themes="common"/>
+    <!--theme name="console" default="yes" class="com.netspective.sparx.theme.console.ConsoleTheme"
+        inherit-resources-from-themes="common"/-->
 
     <login-manager name="app" default="yes">
         <login-authenticator class="com.netspective.sparx.security.authenticator.DatabaseLoginAuthenticator">
@@ -110,7 +110,7 @@
     </navigation-tree>
 
     <!-- This is the navigation tree for subjects associated with the clinical trial -->
-    <navigation-tree name="subject" default="no" >
+    <navigation-tree name="patient" default="no" >
         <page name="home" caption="Home" heading="Welcome to Netspective CTMS" title="Netspective Clinical Trial Management System" default="yes">
             <panels>
                 <panel  type="html" view="all" width="400">
@@ -127,15 +127,19 @@
                 </panel>
             </panels>
             <page name="account" caption="My Account" heading="My Account" title="CTMS">
-                <page name="profile" caption="Profile" heading="Personal Profile" title="CTMS">
+                <page name="profile" caption="Profile" heading="Personal Profile" title="CTMS"
+                    command="query,person.self-info,-,-,-,detail-compressed">
                     <page name="edit" caption="Edit profile" heading="Edit your personal profile" title="CTMS"/>
                 </page>
-                <page name="contacts" caption="Contact Information" heading="Contact Information" title="CTMS">
-                    <page name="add" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"/>
+                <page name="contacts" caption="Contact Information" heading="Contact Information" title="CTMS"
+                    command="query,person.self-contact-info,-,-,-,record-viewer-compressed">
+                    <page name="add" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"
+                        command="dialog,person.contact-info,add"/>
                     <page name="edit" caption="Edit contact entry" heading="Edit contact entry" title="CTMS"/>
                     <page name="delete" caption="Delete contact entry" heading="Delete contact entry" title="CTMS"/>
                 </page>
-                <page name="password" caption="Change Password" heading="Change Password" title="CTMS"/>
+                <page name="password" caption="Change Password" heading="Change Password" title="CTMS"
+                    command="dialog,person.self-login-info,edit"/>
             </page>
         </page>
         <page name="trial" caption="My Clinical Trial" heading="My Clinical Trial" title="CTMS">
@@ -173,11 +177,25 @@
                     </panels>
                 </page>
             </page>
-            <page name="documents" caption="Documents" heading="Documents" title="CTMS"/>
+            <page name="documents" caption="Documents" heading="Documents" title="CTMS">
+                <panels>
+                    <panel  type="html" view="all" width="400">
+                        <frame heading="Welcome message"/>
+                        <body>
+                            <![CDATA[
+                            <div align="left" style="padding:10">
+                                In this section, you can view all the documents associated with the clinical trial
+                                you are currently involved in.
+                            </div>
+                            ]]>
+                        </body>
+                    </panel>
+                </panels>
+            </page>
         </page>
     </navigation-tree>
 
-    <navigation-tree name="staff" default="no" >
+    <navigation-tree name="coordinator" default="no" >
         <page caption="Home" name="home" heading="Welcome to CTS" title="CTS - Clinical Trial Management System" default="yes">
             <!--page caption="Summary" name="summary" heading="authenticated-user:complete_sortable_name" title="Welcome to CTS" -->
                 <panels>

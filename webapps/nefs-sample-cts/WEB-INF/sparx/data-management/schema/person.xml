@@ -149,18 +149,6 @@
                 </field>
             </presentation>
         </column>
-        <!--<presentation>
-            <dialog name="personClassificationTableDialog" retain-params="person_id,person_id">
-                <field.table-column column="cr_sess_id"/>
-                <field.table-column column="cr_stamp"/>
-                <field.table-column column="rec_stat_id"/>
-                <field.table-column column="system_id"/>
-                <field.table-column column="person_id"/>
-                <field.table-column column="org_id"/>
-                <field.table-column column="person_type_id"/>
-                <field.table-column column="person_type"/>
-            </dialog>
-        </presentation>-->
     </table>
     <table name="Person_Contact" abbrev="PerCont" type="Contact_Method" xdm:param-parentRef="Person.person_id">
         <description>

@@ -27,7 +27,26 @@
 
 	<table name="Name_Prefix_Type" abbrev="NmPreTy" type="Enumeration"><enumerations><enum>Mr.</enum><enum>Ms.</enum><enum>Mrs.</enum></enumerations></table>
 
-	<table name="Person_Type" abbrev="PerTy" type="Enumeration"><enumerations><enum>Patient</enum><enum>Physician</enum><enum>Physician Extender (direct billing)</enum><enum>Other Clinical Service Provider (direct billing)</enum><enum>Other Clinical Service Provider (alternate billing)</enum><enum>LVN/LPN</enum><enum>RN</enum><enum>Other Nurse</enum><enum>Staff</enum><enum>Other</enum></enumerations></table>
+	<table name="Person_Type" abbrev="PerTy" type="Enumeration">
+        <enumerations>
+            <enum>Principal Investigator</enum>
+            <enum abbrev="CPM">Clinical Program Manager</enum>
+            <enum abbrev="CCRA">Certified Clinician Research Associate</enum>
+            <enum abbrev="CCRC">Certified Clinical Research Coordinator</enum>
+            <enum abbrev="CCRP">Certified Clinical Research Professional</enum>
+
+            <enum>Patient</enum>
+            <enum>Physician</enum>
+            <enum>Physician Extender (direct billing)</enum>
+            <enum>Other Clinical Service Provider (direct billing)</enum>
+            <enum>Other Clinical Service Provider (alternate billing)</enum>
+            <enum>LVN/LPN</enum>
+            <enum>RN</enum>
+            <enum>Other Nurse</enum>
+            <enum>Staff</enum>
+            <enum>Other</enum>
+        </enumerations>
+    </table>
 
 	<table name="Person_Indication_Type" abbrev="PerIndTy" type="Enumeration"><description>
 			This table stores all the types of clinical information about a person.

@@ -36,5 +36,45 @@
                     parent-id="authenticated-user:person_id" rec-stat-id="Active"/>
             </on-add-data>
         </dialog>
+
+        <dialog name="self-login-info" >
+            <frame heading="Login Information"/>
+            <field type="text" caption="Login ID" name="login_id" default="authenticated-user:user-id" read-only="yes" required="yes"/>
+            <field type="text" mask-entry="yes" caption="Old Password" name="old_password"  required="yes"/>
+            <field type="text" mask-entry="yes" caption="New Password" name="new_password1" required="yes"/>
+            <field type="text" mask-entry="yes" caption="Verify New Password" name="new_password2" required="yes"/>
+            <on-execute class="app.cts.form.person.PasswordDialogHandler"/>
+            <listener class="app.cts.form.person.PasswordDialogHandler"/>
+        </dialog>
+
+        <dialog name="contact-info" retain-params="*" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+			<frame heading="create-dialog-perspective-heading:Contact"/>
+			<field type="text" name="id" caption="ID" read-only="yes" default="request:id">
+				<conditional action="apply-flags" flags="unavailable" perspective="add"/>
+			</field>
+			<field type="composite" name="contactType" caption="Contact Type" >
+				<conditional action="apply-flags" flags="read_only" perspective="edit"/>
+				<field type="select" name="method_type" caption="Contact Type" choices="schema-enum:Contact_Method_Type" required="yes">
+
+				</field>
+				<field type="text" name="method_name" caption="Other Contact Type">
+					<conditional action="display" partner-field-name="contactType.method_type" expression="control.options[control.selectedIndex].text == 'Other'"/>
+				</field>
+			</field>
+			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
+            <on-add-data>
+                <person-contact parent_id="request:person_id" method-value="method_value" method-type="contactType.method_type"/>
+            </on-add-data>
+            <!--director>
+                <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
+                <next-actions>
+
+                    <choices>
+                        <choice value="simple-expr:${servlet-context-uri:/index.jsp}">Return to home</choice>
+                        <choice value="simple-expr:${servlet-context-uri:/person/contact.jsp}?person_id=${session:user_person_id}&amp;data_cmd=add">Create another subject</choice>
+                    </choices>
+                </next-actions>
+            </director-->
+		</dialog>
     </dialogs>
 </xdm:container>

@@ -6,12 +6,14 @@
                 person.person_id "person-id",
                 person.name_last "last-name",
                 person.name_first "first-name",
-                person.complete_sortable_name "full-name"
+                person.complete_sortable_name "full-name",
+                person_classification.person_type
             from
-                person, person_login
+                person, person_login, person_classification
             where
                 person_login.user_id = ?   and
-                person_login.person_id = person.person_id
+                person_login.person_id = person.person_id  and
+                person_classification.person_id = person.person_id
 
             <params>
                 <param value="authenticated-user:person_id"/>
@@ -147,7 +149,7 @@
                 <panel>
                     <frame heading="static:Contact Information"/>
                     <banner style="horizontal">
-                        <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:/home/contact_info/add}?person_id=${authenticated-user:person_id}"/>
+                        <action caption="Add new contact" hint="Add" redirect="vs-expr:${page-id:patient,/home/account/contacts/add}?person_id=${authenticated-user:person_id}"/>
                     </banner>
                     <report>
                         <actions>
