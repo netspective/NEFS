@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtilsTest.java,v 1.1 2003-03-19 08:17:03 shahbaz.javeed Exp $
+ * $Id: TextUtilsTest.java,v 1.2 2003-03-27 22:11:06 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -52,7 +52,7 @@ public class TextUtilsTest extends TestCase
     {
 /*
         String relativeClassNameCommonPackage = TextUtils.getRelativeClassName(this.getClass(), ExpressionText.class);
-		assertEquals("TextUtils", relativeClassNameCommonPackage);
+		assertEquals("ExpressionText", relativeClassNameCommonPackage);
 
 	    String relativeClassNameJavaStandardClass = TextUtils.getRelativeClassName(this.getClass(), java.lang.String.class);
 	    assertEquals("java.lang.String", relativeClassNameJavaStandardClass);
