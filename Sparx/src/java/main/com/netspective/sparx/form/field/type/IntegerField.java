@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: IntegerField.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: IntegerField.java,v 1.4 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -114,15 +114,11 @@ public class IntegerField extends TextField
             }
         }
 
-        public IntegerFieldState(DialogContext dc)
+        public IntegerFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
 
-        public DialogFieldValue constructValueInstance()
-        {
-            return new IntegerFieldValue();
-        }
     }
 
     private IntegerValueValidationRule integerValidationRule;
@@ -135,7 +131,7 @@ public class IntegerField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new IntegerFieldState(dc);
+        return new IntegerFieldState(dc, this);
     }
 
     public Class getStateClass()

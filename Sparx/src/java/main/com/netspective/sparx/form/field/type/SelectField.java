@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.10 2003-09-07 19:36:03 aye.thu Exp $
+ * $Id: SelectField.java,v 1.11 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -216,9 +216,9 @@ public class SelectField extends TextField
             }
         }
 
-        public SelectFieldState(DialogContext dc)
+        public SelectFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
 
         public DialogFieldValue constructValueInstance()
@@ -298,7 +298,7 @@ public class SelectField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new SelectFieldState(dc);
+        return new SelectFieldState(dc, this);
     }
 
     public Class getStateClass()

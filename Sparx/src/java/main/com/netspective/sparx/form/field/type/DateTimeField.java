@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.11 2003-09-09 05:28:47 aye.thu Exp $
+ * $Id: DateTimeField.java,v 1.12 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -233,14 +233,9 @@ public class DateTimeField extends TextField
             }
         }
 
-        public DateTimeFieldState(DialogContext dc)
+        public DateTimeFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
-        }
-
-        public DialogFieldFlags constructFlagInstance()
-        {
-            return new Flags(this);
+            super(dc, field);
         }
 
         public DialogFieldValue constructValueInstance()
@@ -262,7 +257,7 @@ public class DateTimeField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new DateTimeFieldState(dc);
+        return new DateTimeFieldState(dc, this);
     }
 
     public Class getStateClass()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ZipCodeField.java,v 1.4 2003-09-09 05:29:09 aye.thu Exp $
+ * $Id: ZipCodeField.java,v 1.5 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -86,15 +86,16 @@ public class ZipCodeField extends TextField
 
     public class ZipCodeFieldState extends TextFieldState
     {
-        public ZipCodeFieldState(DialogContext dc)
+        public ZipCodeFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
 
         public DialogFieldFlags constructFlagInstance()
         {
             return new Flags(this);
         }
+
     }
 
     public ZipCodeField()
@@ -107,7 +108,7 @@ public class ZipCodeField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new ZipCodeFieldState(dc);
+        return new ZipCodeFieldState(dc, this);
     }
 
     public Class getStateClass()

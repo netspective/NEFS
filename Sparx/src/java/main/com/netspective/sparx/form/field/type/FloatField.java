@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: FloatField.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: FloatField.java,v 1.4 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -114,9 +114,9 @@ public class FloatField extends TextField
             }
         }
 
-        public FloatFieldState(DialogContext dc)
+        public FloatFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
 
         public DialogFieldValue constructValueInstance()
@@ -135,7 +135,7 @@ public class FloatField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new FloatFieldState(dc);
+        return new FloatFieldState(dc, this);
     }
 
     public Class getStateClass()

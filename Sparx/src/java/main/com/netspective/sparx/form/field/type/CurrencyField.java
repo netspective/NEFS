@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: CurrencyField.java,v 1.6 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: CurrencyField.java,v 1.7 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -148,9 +148,9 @@ public class CurrencyField extends TextField
             }
         }
 
-        public CurrencyFieldState(DialogContext dc)
+        public CurrencyFieldState(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
 
         public DialogFieldValue constructValueInstance()
@@ -175,7 +175,7 @@ public class CurrencyField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new CurrencyFieldState(dc);
+        return new CurrencyFieldState(dc, this);
     }
 
     public Class getStateClass()

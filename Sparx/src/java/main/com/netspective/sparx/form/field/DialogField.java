@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.35 2003-09-09 05:23:27 aye.thu Exp $
+ * $Id: DialogField.java,v 1.36 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -129,6 +129,7 @@ public class DialogField implements TemplateConsumer
         private String adjacentAreaValue;
         private DialogFieldFlags stateFlags;
         private DialogContext dialogContext;
+        private DialogField field;
 
         public class BasicStateValue extends GenericValue implements DialogFieldValue
         {
@@ -181,9 +182,17 @@ public class DialogField implements TemplateConsumer
             }
         }
 
-        public State(DialogContext dc)
+        /**
+         * Creates the dialog field state object with the associated context and default flag objects
+         *
+         * @param dc
+         */
+        public State(DialogContext dc, DialogField field)
         {
             this.dialogContext = dc;
+            this.field = field;
+            this.stateFlags = field.createFlags();
+            this.stateFlags.setState(this);
             initialize(dc);
         }
 
@@ -192,10 +201,8 @@ public class DialogField implements TemplateConsumer
          * on dialog perspectives. Also sets the state value based on cookies if the 'persist' flag is set.
          * @param dc
          */
-        public void initialize(DialogContext dc)
+        private void initialize(DialogContext dc)
         {
-            // create a new flags instance
-            stateFlags = constructFlagInstance();
             stateFlags.copy(getFlags());
 
             if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(DialogFieldFlags.PERSIST))
@@ -236,16 +243,6 @@ public class DialogField implements TemplateConsumer
         public DialogFieldValue constructValueInstance()
         {
             return new BasicStateValue();
-        }
-
-        /**
-         * Constructs a flag object for the state. Extending classes that have their own Flag class
-         * <b>MUST</b> overwrite this method to create the flag object
-         * @return
-         */
-        public DialogFieldFlags constructFlagInstance()
-        {
-            return new DialogFieldFlags(this);
         }
 
         /**
@@ -312,9 +309,13 @@ public class DialogField implements TemplateConsumer
             return stateFlags;
         }
 
-        public DialogField getField()
+        /**
+         * Returns the dialog field object to which this state belongs to.
+         * @return
+         */
+        public final DialogField getField()
         {
-            return DialogField.this;
+            return field;
         }
 
         /**
@@ -464,7 +465,7 @@ public class DialogField implements TemplateConsumer
 
     public State constructStateInstance(DialogContext dc)
     {
-        return new State(dc);
+        return new State(dc, this);
     }
 
     public Class getStateClass()

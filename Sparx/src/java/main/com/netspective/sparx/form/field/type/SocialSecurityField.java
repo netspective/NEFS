@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SocialSecurityField.java,v 1.5 2003-09-09 05:29:09 aye.thu Exp $
+ * $Id: SocialSecurityField.java,v 1.6 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -86,14 +86,9 @@ public class SocialSecurityField extends TextField
 
     public class State extends TextField.State
     {
-        public State(DialogContext dc)
+        public State(DialogContext dc, DialogField field)
         {
-            super(dc);
-        }
-
-        public DialogFieldFlags constructFlagInstance()
-        {
-            return new Flags(this);
+            super(dc, field);
         }
 
     }
@@ -108,7 +103,7 @@ public class SocialSecurityField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new State(dc);
+        return new State(dc, this);
     }
 
     public Class getStateClass()

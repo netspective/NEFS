@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PhoneField.java,v 1.4 2003-09-09 05:29:09 aye.thu Exp $
+ * $Id: PhoneField.java,v 1.5 2003-09-11 04:28:52 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -95,16 +95,10 @@ public class PhoneField extends TextField
 
     public class State extends TextField.State
     {
-        public State(DialogContext dc)
+        public State(DialogContext dc, DialogField field)
         {
-            super(dc);
+            super(dc, field);
         }
-
-        public DialogFieldFlags constructFlagInstance()
-        {
-            return new Flags(this);
-        }
-
     }
 
     public static class Style extends XdmEnumeratedAttribute
@@ -139,7 +133,7 @@ public class PhoneField extends TextField
 
     public DialogField.State constructStateInstance(DialogContext dc)
     {
-        return new PhoneField.State(dc);
+        return new PhoneField.State(dc, this);
     }
 
     public Class getStateClass()
