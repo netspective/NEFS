@@ -74,6 +74,12 @@ public abstract class AccessControlledServiceHandler implements ClientServiceReq
      */
     public boolean isAllowedToServiceClient(NavigationContext nc)
     {
+        if (getPermissions() == null)
+        {
+            // no permissions have been defined for the service handler so allow anyone  access
+            return true;
+        }
+
         AuthenticatedUser authenticatedUser = nc.getAuthenticatedUser();
         if (authenticatedUser != null)
         {
