@@ -5,6 +5,7 @@
 <!ENTITY __nef-key-features__dr4qnp41 SYSTEM "../nef-reusable-content/nef-key-features.xml">
 <!ENTITY __nef-project-file__dr4s5f91 SYSTEM "../nef-reusable-content/nef-project-file.xml">
 <!ENTITY __web-file__dr4thoqz SYSTEM "../nef-reusable-content/web-file.xml">
+<!ENTITY __nef-project-file-tags-descr__drcg7alc SYSTEM "../nef-reusable-content/nef-project-file-tags-descr.xml">
 ]>
 <article>
   <title>Books Application Tutorial</title>
@@ -175,86 +176,7 @@
     the Books Application.</para>
   </section>
 
-  <section>
-    <title>Dissecting the project.xml</title>
-
-    <para><example>
-        <title>Project File of Starter Application</title>
-
-        <programlisting>&lt;?xml version="1.0"?&gt; 
-
-&lt;<emphasis>project xmlns:xdm</emphasis>="http://www.netspective.org/Framework/Commons/XMLDataModel"&gt; <co
-            id="declare-prj-file-tags-eg-1" />
-
-    &lt;xdm:include resource="com/netspective/commons/conf/commons.xml"/&gt; <co
-            id="declare-prj-file-tags-eg-2" />
-    &lt;xdm:include resource="com/netspective/axiom/conf/axiom.xml"/&gt; <co
-            id="declare-prj-file-tags-eg-3" />
-    &lt;xdm:include resource="com/netspective/sparx/conf/sparx.xml"/&gt; <co
-            id="declare-prj-file-tags-eg-4" />
-    &lt;xdm:include resource="com/netspective/sparx/conf/console.xml"/&gt; <co
-            id="declare-prj-file-tags-eg-5" />
-
-    &lt;!-- Your application tags go here. --&gt; <co
-            id="declare-prj-file-tags-eg-6" />
-
-    &lt;xdm:include file="your/own/file.xml"/&gt; <co
-            id="declare-prj-file-tags-eg-7" />
-
-    &lt;!-- Your other application tags go here. --&gt;
-&lt;/project&gt;</programlisting>
-
-        <calloutlist>
-          <callout arearefs="declare-prj-file-tags-eg-1">
-            <para>The root tag is called <sgmltag>project</sgmltag> and should
-            use the provided xdm namespace.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-2">
-            <para>Include the Netspective Commons default component
-            declarations. It uses the resource attribute so it will be located
-            by searching the classpath and will usually find the file in the
-            JAR file and directly read it from there.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-3">
-            <para>Include the Netspective Axiom default component declarations
-            and factory registrations. It uses the resource attribute so it
-            will be located by searching the classpath and will usually find
-            the file in the JAR file and directly read it from there.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-4">
-            <para>Include the Netspective Sparx default component declarations
-            and factory registrations. It uses the resource attribute so it
-            will be located by searching the classpath and will usually find
-            the file in the JAR file and directly read it from there.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-5">
-            <para>Include the Netspective Enterprise Console servlet
-            declarations and application components. If you are turning off
-            the Console in your applications you may leave this line
-            out.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-6">
-            <para>This is the location where your component declarations will
-            be done. Unless otherwise specified, all the components are
-            declared right under the <sgmltag>project</sgmltag> tag.</para>
-          </callout>
-
-          <callout arearefs="declare-prj-file-tags-eg-7">
-            <para>This line demonstrates how you can include your own XML
-            files using the file attribute. In this example, because the file
-            is not absolute it will be treated as relative to the calling
-            file. The <sgmltag>xdm:include</sgmltag> tag may be included
-            anywhere in the file and simply takes items from the included file
-            and places them into the calling file while parsing.</para>
-          </callout>
-        </calloutlist>
-      </example></para>
-  </section>
+  &__nef-project-file-tags-descr__drcg7alc;
 
   <section>
     <title>Creating the Data Layer</title>
@@ -709,8 +631,192 @@
       <section>
         <title>Populating the HSQL Database with Test Data</title>
 
-        <para>TODO: describe WEB-INF/database/initial-and-test-data.xml and
-        initial-and-test-data.xsl files</para>
+        <para>You will need some test data to be stored in the Books
+        Application database. This will provide you with some initial data to
+        test your application with. You can load this test data using the
+        <filename class="directory">WEB-INF</filename>/<filename
+        class="directory">database</filename>/<filename
+        class="directory">data</filename>/<filename>initial-and-test-data.xml</filename>
+        and <filename>initial-and-test-data.xsl</filename> files.</para>
+
+        <important>
+          <para>The <filename>initial-and-test-data.xml</filename> file is
+          necessary to create the HSQL database.</para>
+        </important>
+
+        <example>
+          <title>Loading Initial Test Data into Book_Info Table</title>
+
+          <programlisting>&lt;<emphasis>!DOCTYPE dal SYSTEM "../defn/db-import.dtd"</emphasis>&gt; <co
+              id="declare-test-db-xml-eg-1" />
+
+&lt;<emphasis>dal</emphasis>&gt; <co id="declare-test-db-xml-eg-2" />
+    &lt;<emphasis>book-info</emphasis> <co id="declare-test-db-xml-eg-3" />
+        id="test-001" name="Book 001"
+        author="Smith, James R." genre="Science Fiction" isbn="test001"/&gt;
+
+    &lt;book-info
+        id="test-002" name="Book 002"
+        author="Jones, Rober. J." genre="Mystery" isbn="test002"/&gt;
+
+&lt;/dal&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-test-db-xml-eg-1">
+              <para>The db-import.dtd is the DTD that is automatically created
+              (by the Ant Build) based on the schema that is provided by the
+              <sgmltag>schema</sgmltag> tag. The DTD is always called
+              <replaceable>dbname</replaceable>-import.dtd, where
+              <replaceable>dbname</replaceable> is the name specified in the
+              <sgmltag>schema</sgmltag> tag.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xml-eg-2">
+              <para>The root tag for the initial-and-test-data.xml is
+              <sgmltag>dal. </sgmltag></para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xml-eg-3">
+              <para>The root dal tag may contain one or more tags named as
+              <replaceable>table-name
+              </replaceable>(<literal>book-info</literal> in this case). Note
+              that the underscore "<symbol>_</symbol>" in the original table
+              name "<literal>book_info</literal>" (specified by
+              <sgmltag>schema</sgmltag> tag in the project file) is replaced
+              with a hyphen "<symbol>-</symbol>". The table field names become
+              the attributes for the table-name tag (<sgmltag>id</sgmltag>,
+              <sgmltag>name</sgmltag>, <sgmltag>author</sgmltag>,
+              <sgmltag>genre</sgmltag> and <sgmltag>isbn</sgmltag> in this
+              case). The values you provide for these fields are stored in the
+              corresponding hsql table.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <para>You may optionally use XSL to automate the creation of a large
+        number of test data.</para>
+
+        <example>
+          <title>Using XSL to Generate Test Data</title>
+
+          <programlisting>&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+                xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer"&gt; <co
+              id="declare-test-db-xsl-eg-1" />
+
+    &lt;xsl:output method="xml" indent="yes"/&gt; <co
+              id="declare-test-db-xsl-eg-2" />
+
+    &lt;xsl:template match="*"&gt; <co id="declare-test-db-xsl-eg-3" />
+        &lt;xsl:copy&gt;
+            &lt;xsl:copy-of select="attribute::*[. != '']"/&gt;
+            &lt;xsl:apply-templates/&gt;
+        &lt;/xsl:copy&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template match="generate-book-info-records"&gt; <co
+              id="declare-test-db-xsl-eg-4" />
+        &lt;xsl:call-template name="iterate-one"&gt; 
+            &lt;xsl:with-param name="x"&gt;&lt;xsl:value-of select="@count"/&gt;&lt;/xsl:with-param&gt; 
+        &lt;/xsl:call-template&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;xsl:template name="iterate-one"&gt; <co id="declare-test-db-xsl-eg-5" />
+        &lt;xsl:param name="x"/&gt; 
+
+        &lt;book-info&gt; <co id="declare-test-db-xsl-eg-6" />
+            &lt;xsl:attribute name="id"&gt;BOOK_&lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt; 
+            &lt;xsl:attribute name="name"&gt;Book &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+            &lt;xsl:attribute name="author"&gt;Author &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+            &lt;xsl:attribute name="genre"&gt;Science Fiction&lt;/xsl:attribute&gt;
+            &lt;xsl:attribute name="isbn"&gt;ISBN &lt;xsl:value-of select="$x"/&gt;&lt;/xsl:attribute&gt;
+        &lt;/book-info&gt;
+
+        &lt;xsl:if test="$x &gt; 1"&gt; <co id="declare-test-db-xsl-eg-7" />
+            &lt;xsl:call-template name="iterate-one"&gt;
+                &lt;xsl:with-param name="x" select="$x - 1"/&gt;
+            &lt;/xsl:call-template&gt;
+        &lt;/xsl:if&gt;
+    &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="declare-test-db-xsl-eg-1">
+              <para>Defining the Axiom Data Access Layer namespace prefix
+              <sgmltag>dal</sgmltag>.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-2">
+              <para>Defines the output of the XSL (XML in this case).</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-3">
+              <para>Defines the default template.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-4">
+              <para>The template that you will use in your XML file. This
+              template receives, through the parameter
+              <varname>count</varname>, the number of records to be added. It
+              calls another custom template named "iterate-one". The value of
+              <varname>count</varname> parameter is also sent to the called
+              template.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-5">
+              <para>This is the iterate-one template which is called by the
+              generate-info-records template. It generates the values for all
+              the fields of Book_Info table.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-6">
+              <para>The book-info XML records are generated using the value of
+              parameter <varname>x</varname>, which changes on every iteration
+              of the iterate-one template.</para>
+            </callout>
+
+            <callout arearefs="declare-test-db-xsl-eg-7">
+              <para>This tag is responsible for recursively calling the
+              iterate-one template. It checks the value of the parameter
+              <varname>x</varname> and, if it is greater than 1, decreases it
+              by one to call the iterate-one template with this new
+              value.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <para>This XSL can be incorporated in your XML file using the
+        following code:</para>
+
+        <example>
+          <title>Incorporating XSL in the Test Data XSL</title>
+
+          <programlisting>&lt;?transform --xslt initial-and-test-data.xsl?&gt; <co
+              id="incorporate-xsl-eg-1" />
+&lt;!DOCTYPE dal SYSTEM "../defn/db-import.dtd"&gt;
+&lt;dal&gt;
+    &lt;generate-book-info-records count="100"/&gt; <co
+              id="incorporate-xsl-eg-2" />
+&lt;/dal&gt;</programlisting>
+
+          <calloutlist>
+            <callout arearefs="incorporate-xsl-eg-1">
+              <para>The xdm-transform processing instruction tells Sparx to
+              filter special tags through the XSLT before processing.</para>
+            </callout>
+
+            <callout arearefs="incorporate-xsl-eg-2">
+              <para>Calling the the template from XSL to generate 100 test
+              records for Book_Info table.</para>
+            </callout>
+          </calloutlist>
+        </example>
+
+        <note>
+          <para>The XSL is optional. It is merely a way of automating the
+          creation of lots of test data. You can manually create the XML and
+          leave out the XSL.</para>
+        </note>
       </section>
 
       <section>
@@ -1330,8 +1436,8 @@
         </screenshot>
 
         <para>Click on the <guimenuitem>Unit Test</guimenuitem> option in the
-        left menu bar. [TODO: When the Dynamic Query Unit Test option is
-        available]</para>
+        left menu bar. [TODO: Documentation to be made available when the
+        Dynamic Query Unit Test option is functional]</para>
       </section>
     </section>
   </section>
@@ -1693,16 +1799,191 @@
     </section>
 
     <section>
+      <title>Custom-Handling of Dialog's Next Action</title>
+
+      <para>You may implement the Sparx
+      <interfacename>DialogNextActionProvider</interfacename> interface to
+      customize what happens after your Books Application's dialogs (forms)
+      are submitted. In this example, you will try to send the dialogs (forms)
+      back to the Books Application Home page. Following is the java class
+      (<classname>Util.java</classname>) that provides this functionality.
+      This java file will be saved in the <filename
+      class="directory">WEB-INF</filename>/<filename
+      class="directory">classes</filename>/<filename
+      class="directory">app</filename> folder along with its class
+      file.</para>
+
+      <example>
+        <title>Class for Custom-Handling of Dialog's Next Action</title>
+
+        <programlisting>package app; <co id="util-class-eg-1" />
+
+import com.netspective.sparx.form.handler.DialogNextActionProvider; <co
+            id="util-class-eg-2" />
+import com.netspective.sparx.form.DialogContext;
+
+public class Util implements DialogNextActionProvider <co id="util-class-eg-3" />
+{
+    public String getDialogNextActionUrl(DialogContext dc, String defaultUrl) <co
+            id="util-class-eg-4" />
+    {
+        return dc.getServletRootUrl(); <co id="util-class-eg-5" />
+    }
+}</programlisting>
+
+        <calloutlist>
+          <callout arearefs="util-class-eg-1">
+            <para>Defines the package for this class (<filename
+            class="directory">app</filename> in this case)</para>
+          </callout>
+
+          <callout arearefs="util-class-eg-2">
+            <para>Importing the required classes</para>
+          </callout>
+
+          <callout arearefs="util-class-eg-3">
+            <para>The class <classname>Util</classname> Implements the Sparx
+            <interfacename>DialogNextActionProvider</interfacename>
+            interface.</para>
+          </callout>
+
+          <callout arearefs="util-class-eg-4">
+            <para>Implementing the method that gets the URL for the dialog's
+            next action.</para>
+          </callout>
+
+          <callout arearefs="util-class-eg-5">
+            <para>Returns the root URL of the current dialog context. The URL
+            in this case will be the one for the Books Application Home
+            page.</para>
+          </callout>
+        </calloutlist>
+
+        <para>To compile the Util.java, go to <guimenu>Project</guimenu> |
+        <guisubmenu>Ant Build</guisubmenu> section in Console and execute the
+        <sgmltag>Compile</sgmltag> target. </para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-build-compile.gif" />
+        </screenshot>
+
+        <para>The <filename>Util.java</filename> file is compiled and a
+        compile message is displayed.</para>
+
+        <screenshot>
+          <graphic fileref="./resources/images/screen-console-build-compile-msg.gif" />
+        </screenshot>
+
+        <para>You can define the custom class, for handling the next action of
+        your dialogs (forms), using the following XML declaration:</para>
+      </example>
+
+      <example>
+        <title>Declaring Custom-Class for Dialog's Next Action
+        Provider</title>
+
+        <programlisting>&lt;navigation-tree&gt;
+   &lt;dialog-next-action-provider class="app.Util"/&gt; <co
+            id="declare-util-class-eg-1" />
+&lt;/navigation-tree&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="declare-util-class-eg-1">
+            <para>Declaring custom class (<filename
+            class="directory">app</filename>.<classname>Util</classname> in
+            this case) for custom-handling of dialog's next action. The class
+            name is fully qualified.</para>
+          </callout>
+        </calloutlist>
+      </example>
+    </section>
+
+    <section>
       <title>Testing the Books Application</title>
 
       <para>Congratulations! The Books Application is complete. Now you should
-      open up your browser window and go to the Library’s main page . You
-      should see a list of all the books that are already a part of the
-      database. Try adding a few more, editing some and deleting a few. Also
-      try searching for books by genre or name or any other field for that
-      matter.</para>
+      open up your browser window and go to the Book Application’s main page
+      using the URL:
+      http://<replaceable>host</replaceable>:<replaceable>port</replaceable>/<replaceable>appName</replaceable>.
+      Assuming you are using localhost and port <literal>8080</literal> for
+      your Resin server and <literal>nefs-sample-books</literal> as your
+      application's name, the URL for Books Application Home Page becomes:
+      <ulink
+      url="http://localhost:8080/nefs-sample-books">http://localhost:8080/nefs-sample-books</ulink></para>
 
-      <para>TODO: Images of all the UI dialogs</para>
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-home.gif" />
+      </screenshot>
+
+      <para>The Home page lists all the books available in your Books
+      Application database along with the Edit and Delete buttons. Try adding
+      a new book from the Add Book section.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-add.gif" />
+      </screenshot>
+
+      <para>Enter the book information and click the <command>OK</command>
+      button. You can see the newly added book in the list available on the
+      Home page.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-new-list.gif" />
+      </screenshot>
+
+      <para>Try editing the record of the book. Select the book from the list
+      by clicking on its name. The Edit Book page is displayed containing the
+      selected book's information.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-edit.gif" />
+      </screenshot>
+
+      <para>Try searching for books by genre or name, or any other field for
+      that matter, by using the Search Books page.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-search.gif" />
+      </screenshot>
+
+      <para>The result of the search is displayed in tabular form.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-search-result.gif" />
+      </screenshot>
+
+      <para>You may see the SQL statement corrsponding to a search criteria by
+      clicking on the View Generated SQL check box on the Search Books page.
+      The SQL statement is displayed along with the bind parameters and their
+      values.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-search-qry.gif" />
+      </screenshot>
+
+      <para>Go to Home page and select the book to delete. The Delet Book page
+      is displayed containing the selected book's information. Click on the
+      Delete button to delete the selected book's record.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-delete.gif" />
+      </screenshot>
+
+      <para>You may access the Books Application Console through the Console
+      page. Use '<literal>console</literal>' and '<literal>console</literal>'
+      (without quotes) for Console's <varname>User Id</varname> and
+      <varname>Password</varname>.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-app-console.gif" />
+      </screenshot>
+
+      <para>Try the Sample Apps Home page to see the NEFS Sample Apps Home
+      Page loaded from the netspective web site.</para>
+
+      <screenshot>
+        <graphic fileref="./resources/images/screen-books-samples-page.gif" />
+      </screenshot>
     </section>
 
     <section>
@@ -1720,12 +2001,12 @@
   <section>
     <title>Console Application</title>
 
-    <para></para>
+    <para>TODO: Link to Console's Tour. Documentation coming soon...</para>
   </section>
 
   <section>
     <title>Moving to Another Database</title>
 
-    <para></para>
+    <para>TODO: Documentation coming soon...</para>
   </section>
 </article>
