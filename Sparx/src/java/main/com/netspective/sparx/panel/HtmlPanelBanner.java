@@ -51,15 +51,13 @@
  */
 
 /**
- * $Id: HtmlPanelBanner.java,v 1.5 2004-01-20 22:45:56 shahid.shah Exp $
+ * $Id: HtmlPanelBanner.java,v 1.6 2004-03-02 07:38:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.sparx.panel.HtmlPanelAction;
-import com.netspective.sparx.panel.HtmlPanelActions;
 
 public class HtmlPanelBanner
 {
@@ -95,6 +93,11 @@ public class HtmlPanelBanner
     public HtmlPanelActions getActions()
     {
         return actions;
+    }
+
+    public void setActions(HtmlPanelActions actions)
+    {
+        this.actions = actions;
     }
 
     public HtmlPanelAction createAction()
