@@ -38,10 +38,10 @@
             </permission>
             <permission name="study">
                 <permission name="view"/>
-                    <permission name="create"/>
-                    <permission name="update"/>
-                    <permission name="delete"/>
-                </permission>
+                <permission name="create"/>
+                <permission name="update"/>
+                <permission name="delete"/>
+            </permission>
             <permission name="person">
                 <permission name="subject">
                     <permission name="view"/>
@@ -79,7 +79,7 @@
 
 
     <!-- setup the data access layer Singleton to point to our schema -->
-    <!--listener class="app.cts.Util"/-->
+    <listener class="app.cts.Util"/>
     <!--theme name="console" default="yes" class="com.netspective.sparx.theme.console.ConsoleTheme"
         inherit-resources-from-themes="common"/-->
 
@@ -169,14 +169,14 @@
                      require-request-param="org_id">
                     <panels>
                         <panel type="command" command="query,org.get-sponsor-info-by-id,-,-,-,detail-compressed"/>
-                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,report-compressed" />
+                        <panel type="command" command="query,org.get-sponsor-addresses-by-id,-,-,-,report-compressed" />
                     </panels>
                 </page>
                 <page name="site" caption="Site Info" heading="Clincial Trial Site Information" title="CTMS" hidden="yes"
                     require-request-param="org_id">
                     <panels style="two-columns">
                         <panel type="command" command="query,org.get-site-info-by-id,-,-,-,detail-compressed" />
-                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
+                        <panel type="command" command="query,org.get-site-addresses-by-id,-,-,-,record-editor-compressed" />
                     </panels>
                 </page>
             </page>
@@ -204,13 +204,19 @@
     <navigation-tree name="coordinator" default="no" >
         <page name="home" caption="Home" heading="Welcome to Netspective CTMS" title="Netspective Clinical Trial Management System" default="yes">
             <panels>
-                <panel  type="html" view="all" width="400">
+                <panel  type="html" view="all" width="450">
                     <frame heading="Welcome message"/>
                     <body>
                         <![CDATA[
                         <div align="left" style="padding:10">
-                            Welcome to the Netspective Clinical Trial Management System. This is your personal home page
+                            <b>${vc.authenticatedUser.lastName} </b>: Welcome to the Netspective Clinical Trial Management System. This is your personal home page
                             and here you view messages/announcements concerning the clinical trial you are involved with.
+                            <p/>
+                            <ul>
+                            <li> Click on the <b>My Clinical Trials</b> link to view more information about the
+                            trials you are currently involved with.</li>
+                            <li> Click on the <b>My Account</b> to view and make modifications about your user account
+                            and contact information.</li>
 
                         </div>
                         ]]>
@@ -218,19 +224,21 @@
                 </panel>
             </panels>
 
-            <page name="trial" caption="My Clinical Trials" heading="Trial Information" title="Netspective CTMS" >
+            <page name="trial" caption="My Clinical Trials" heading="Trial Information" title="Netspective CTMS">
                 <panels>
                     <panels style="two-columns">
                         <panel type="command" command="query,study.get-study-info-by-id,-,-,-,detail-2col-compressed" />
                         <panel type="command" command="query,study.get-sponsors-by-study-id,-,-,-,record-manager-compressed" />
                         <panel type="command" command="query,study.get-sites-by-study-id,-,-,-,record-manager-compressed" />
                         <panel type="command" command="query,study.get-subjects-by-study-id,-,-,-,record-manager-compressed" />
-                        <panel type="command" command="query,study.get-personnel-by-study-id,-,-,-,record-editor-compressed" />
+                        <panel type="command" command="query,study.get-personnel-by-study-id,-,-,-,record-manager-compressed" />
                     </panels>
                 </panels>
                 <body-handler class="app.cts.navigate.StudySiteSummaryPageBodyHandler"/>
-
-                <page name="coordinator" caption="Trial Coordinator Information" heading="Trial Coordinator Information" hidden="yes">
+                <page name="update" caption="Update Trial Information" heading="Update Trial Information" title="CTMS"
+                    command="dialog,study.profile,edit" hidden="yes"/>
+                <page name="coordinator" caption="Trial Coordinator Information" heading="Trial Coordinator Information"
+                    hidden="yes" require-request-params="study_id,person_id" retain-params="study_id">
                     <panels>
                         <panel type="html" width="400">
                             <frame heading="Description"/>
@@ -245,6 +253,7 @@
                         <panel type="command" command="query,person.get-profile-by-person-id,-,-,-,detail-compressed"/>
                         <panel type="command" command="query,person.get-contact-info-by-person-id,-,-,-,record-manager-compressed" width="400"/>
                     </panels>
+                    <!--body-handler class="app.cts.navigate.StudyRelatedPageBodyHandler"/-->
                     <page name="add" caption="Add new coordinator" heading="Add new coordinator" require-request-param="study_id"
                         command="dialog,coordinator.complete-profile,add" retain-params="study_id"/>
                      <page name="edit" caption="Edit profile" heading="Edit profile" require-request-param="study_id"
@@ -252,13 +261,13 @@
                     <page name="delete" caption="Delete coordinator" heading="Delete coordinator" require-request-params="study_id,person_id"
                         command="dialog,coordinator.short-profile,delete" retain-params="study_id,person_id"/>
                     <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"
-                        command="dialog,person.contact-info,add" retain-params="study_id,person_id"/>
+                        command="dialog,coordinator.contact-info,add" retain-params="study_id,person_id"/>
                     <page name="edit_contact" caption="Edit contact entry" heading="Edit contact entry" title="CTMS"
-                        command="dialog,person.contact-info,edit" retain-params="study_id,person_id,id"/>
+                        command="dialog,coordinator.contact-info,edit" retain-params="study_id,person_id,id" require-request-params="person_id,id"/>
                     <page name="delete_contact" caption="Delete contact entry" heading="Delete contact entry" title="CTMS"
-                        command="dialog,person.contact-info,delete" retain-params="study_id,person_id,id"/>
+                        command="dialog,coordinator.contact-info,delete" retain-params="study_id,person_id,id" require-request-params="person_id,id"/>
                 </page>
-                <page name="subject" caption="Trial Coordinator Information" heading="Trial Coordinator Information"
+                <page name="subject" caption="Trial Subject Information" heading="Trial Subject Information"
                     require-request-params="study_id,person_id" hidden="yes">
                     <panels>
                         <panel type="html" width="400">
@@ -289,26 +298,57 @@
                     hidden="yes" >
                      <panels style="two-columns">
                         <panel type="command" command="query,org.get-sponsor-info-by-id,-,-,-,detail-compressed" />
-                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-editor-compressed" />
+                        <panel type="command" command="query,org.get-sponsor-addresses-by-id,-,-,-,record-manager-compressed" />
+                        <panel type="command" command="query,org.get-org-contacts-by-id,-,sponsor-report,-,record-manager-compressed" />
                     </panels>
                     <page name="add" caption="Add" heading="Add a new Sponsor" title="CTMS - Add Sponsor"
                         command="dialog,sponsor.complete-info,add" hidden="yes"/>
+                    <page name="edit" caption="Edit Sponsor Information" heading="Edit clinical trial sponsor information" title="Netspective - CTMS"
+                        command="dialog,sponsor.short-info,edit" hidden="yes"/>
+                    <page name="delete" caption="Delete Sponsor" heading="Delete clinical trial sponsor" title="Netspective - CTMS"
+                        command="dialog,sponsor.short-info,delete" hidden="yes"/>
 
                     <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="Netspective - CTMS"
                         command="dialog,sponsor.contact-info,add"/>
+                    <page name="edit_contact" caption="Edit contact entry" heading="Edit contact entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.contact-info,edit"/>
+                    <page name="delete_contact" caption="Delete contact entry" heading="Delete contact entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.contact-info,delete"/>
+
+                    <page name="add_address" caption="Add new address entry" heading="Add a new contact entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.address-info,add"/>
+                    <page name="edit_address" caption="Edit address entry" heading="Edit address entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.address-info,edit"/>
+                    <page name="delete_address" caption="Delete address entry" heading="Delete address entry" title="Netspective - CTMS"
+                        command="dialog,sponsor.address-info,delete"/>
                 </page>
                 <page name="site" caption="Site Information"  heading="Site Information" retain-params="study_id,org_id"
                      require-request-params="study_id,org_id" hidden="yes">
                     <panels style="two-columns">
                         <panel type="command" command="query,org.get-site-info-by-id,-,-,-,detail-compressed" />
-                        <panel type="command" command="query,org.get-org-addresses-by-id,-,-,-,record-manager-compressed" />
+                        <panel type="command" command="query,org.get-site-addresses-by-id,-,-,-,record-manager-compressed" />
                         <panel type="command" command="query,org.get-org-contacts-by-id,-,-,-,record-manager-compressed" />
                     </panels>
                     <page name="add" caption="Add Site" heading="Create a new clinical trial site" title="Create a new clinical trial site"
                         command="dialog,site.complete-info,add" hidden="yes"/>
+                    <page name="update" caption="Update Site Information" heading="Update clinical trial site information" title="Netspective - CTMS"
+                        command="dialog,site.short-info,edit" hidden="yes"/>
+                    <page name="delete" caption="Delete Site" heading="Delete clinical trial site" title="Netspective - CTMS"
+                        command="dialog,site.short-info,delete" hidden="yes"/>
 
                     <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="Netspective - CTMS"
                         command="dialog,site.contact-info,add"/>
+                    <page name="edit_contact" caption="Edit contact entry" heading="Edit contact entry" title="Netspective - CTMS"
+                        command="dialog,site.contact-info,edit"/>
+                    <page name="delete_contact" caption="Delete contact entry" heading="Delete contact entry" title="Netspective - CTMS"
+                        command="dialog,site.contact-info,delete"/>
+
+                    <page name="add_address" caption="Add new address entry" heading="Add a new contact entry" title="Netspective - CTMS"
+                        command="dialog,site.address-info,add"/>
+                    <page name="edit_address" caption="Edit address entry" heading="Edit address entry" title="Netspective - CTMS"
+                        command="dialog,site.address-info,edit"/>
+                    <page name="delete_address" caption="Delete address entry" heading="Delete address entry" title="Netspective - CTMS"
+                        command="dialog,site.address-info,delete"/>
                 </page>
             </page>
 
@@ -325,11 +365,11 @@
                         ]]>
                         </body>
                     </panel>
-                    <panel type="command" command="query,person.self-info,-,-,-,detail-compressed"/>
-                    <panel type="command" command="query,person.self-contact-info,-,-,-,record-manager-compressed" width="400"/>
+                    <panel type="command" command="query,person.coordinator-self-info,-,-,-,detail-compressed"/>
+                    <panel type="command" command="query,person.self-contact-info,-,coordinator-report,-,record-manager-compressed" width="400"/>
                 </panels>
                 <page name="edit" caption="Edit profile" heading="Edit your personal profile"
-                        command="dialog,person.self-short-profile,edit" />
+                        command="dialog,coordinator.self-short-profile,edit" />
 
                 <page name="add_contact" caption="Add new contact entry" heading="Add a new contact entry" title="CTMS"
                         command="dialog,person.contact-info,add" hidden="yes"/>
@@ -337,7 +377,7 @@
                     command="dialog,person.contact-info,edit" hidden="yes"/>
                 <page name="delete_contact" caption="Delete contact entry" heading="Delete contact entry" title="CTMS"
                     command="dialog,person.contact-info,delete" hidden="yes"/>
-                <page name="password" caption="Change Password" heading="Change Password" title="CTMS"
+                <page name="change_password" caption="Change Password" heading="Change Password" title="CTMS"
                     command="dialog,person.self-login-info,edit"/>
             </page>
         </page>

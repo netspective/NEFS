@@ -138,6 +138,40 @@
                 </panel>
             </presentation>
         </query>
+        <query name="coordinator-self-info">
+            select
+                person.person_id "person-id",
+                person.name_last "last-name",
+                person.name_first "first-name",
+                person.name_middle "middle-initial",
+                person.ssn,
+                person.birth_date
+            from
+                person
+            where
+                person.person_id = ?
+
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:User Information"/>
+                    <banner style="horizontal">
+                        <action  caption="Edit Info" redirect="vs-expr:${page-id:coordinator,/home/account/edit}?person_id=${authenticated-user:person_id}"/>
+                        <action  caption="Change Password" redirect="vs-expr:${page-id:coordinator,/home/account/change_password}?person_id=${authenticated-user:person_id}"/>
+                    </banner>
+                    <report >
+                        <column heading="ID" align="left"/>
+                        <column heading="Last Name" />
+                        <column heading="First Name" />
+                        <column heading="Middle Initial" />
+                        <column heading="SSN" />
+                        <column heading="DOB" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
         <query name="get-profile-by-person-id">
             select
                 person.person_id "person-id",
@@ -156,11 +190,10 @@
             <presentation>
                 <panel>
                     <frame heading="static:Personal Profile"/>
-                    <banner style="horizontal">
-                        <action  caption="Edit Info" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/edit}?study_id=${request:study_id}&amp;person_id=${request:person_id}"/>
-                        <!--action  caption="Change Password" redirect="vs-expr:${page-id:/home/person_info/change_password}?person_id=${authenticated-user:person_id}"/-->
-                    </banner>
-                    <report >
+                    <report>
+                        <actions>
+                            <action type="edit" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/edit}?study_id=${request:study_id}&amp;person_id=${request:person_id}"/>
+                        </actions>
                         <column heading="ID" align="left"/>
                         <column heading="Last Name" />
                         <column heading="First Name" />
@@ -193,6 +226,16 @@
                             <action type="add" caption="Add Contact" redirect="vs-expr:${page-id:/home/account/add_contact}?person_id=${authenticated-user:person_id}"/>
                             <action type="edit" redirect="vs-expr:${page-id:/home/account/edit_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
                             <action type="delete" redirect="vs-expr:${page-id:/home/account/delete_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
+                        </actions>
+                        <column heading="ID" hidden="yes"/>
+                        <column heading="Type" align="left"/>
+                        <column heading="Value" />
+                    </report>
+                    <report name="coordinator-report">
+                        <actions>
+                            <action type="add" caption="Add Contact" redirect="vs-expr:${page-id:coordinator,/home/account/add_contact}?person_id=${authenticated-user:person_id}"/>
+                            <action type="edit" redirect="vs-expr:${page-id:coordinator,/home/account/edit_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/> <!-- set to _ep.id=^{0} for encrypted parameter -->
+                            <action type="delete" redirect="vs-expr:${page-id:coordinator,/home/account/delete_contact}?person_id=${authenticated-user:person_id}&amp;id=${0}"/>
                         </actions>
                         <column heading="ID" hidden="yes"/>
                         <column heading="Type" align="left"/>

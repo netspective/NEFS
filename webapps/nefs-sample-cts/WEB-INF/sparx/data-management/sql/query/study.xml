@@ -75,7 +75,7 @@
                 <panel>
                     <frame heading="static:Clinical Trial Information"/>
                     <banner style="horizontal">
-                        <action caption="Edit Trial Information" hint="Edit" redirect="vs-expr:${page-id:coordinator,/trial/update}?study_id=${request:study_id}"/>
+                        <action caption="Edit Trial Information" hint="Edit" redirect="vs-expr:${page-id:coordinator,/home/trial/update}?study_id=${request:study_id}"/>
                     </banner>
                     <report>
                         <column heading="ID"/>
@@ -149,9 +149,11 @@
                     <report>
                         <actions>
                             <action type="add" caption="Add new sponsor" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor/add}?study_id=${request:study_id}"/>
+                            <action type="edit" caption="Edit sponsor" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor/edit}?study_id=${request:study_id}&amp;org_id=${0}"/>
+                            <action type="delete" caption="Delete sponsor" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor/delete}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         </actions>
                         <column heading="ID"/>
-                        <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/trial/summary/sponsor}?study_id=${request:study_id}&amp;org_id=${0}"/>
+                        <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/home/trial/sponsor}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         <column heading="Code" />
                         <column heading="Abbrev" />
                         <column heading="Employees" />
@@ -179,7 +181,7 @@
                     <frame heading="static:Trial Sites"/>
                     <report>
                         <column heading="ID"/>
-                        <column heading="Name" align="left" redirect="page-id:/trial/summary/site?org_id=${0}"/>
+                        <column heading="Name" align="left" redirect="page-id:patient,/trial/summary/site?org_id=${0}"/>
                         <column heading="Code" />
                         <column heading="Abbrev" />
                     </report>
@@ -207,9 +209,17 @@
                     <report>
                         <actions>
                             <action type="add" caption="Add Site" redirect="vs-expr:${page-id:coordinator,/home/trial/site/add}?study_id=${request:study_id}"/>
+                            <action type="edit" caption="Edit Site" redirect="vs-expr:${page-id:coordinator,/home/trial/site/edit}?study_id=${request:study_id}&amp;org_id=${0}"/>
+                            <action type="delete" caption="Delete Site" redirect="vs-expr:${page-id:coordinator,/home/trial/site/delete}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         </actions>
                         <column heading="ID"/>
                         <column heading="Name" align="left" redirect="vs-expr:${page-id:coordinator,/home/trial/site}?study_id=${request:study_id}&amp;org_id=${0}"/>
+                        <column heading="Code" />
+                        <column heading="Abbrev" />
+                    </report>
+                    <report name="subject-view">
+                        <column heading="ID"/>
+                        <column heading="Name" align="left" redirect="vs-expr:${page-id:patient,/home/trial/site}?study_id=${request:study_id}&amp;org_id=${0}"/>
                         <column heading="Code" />
                         <column heading="Abbrev" />
                     </report>
@@ -255,7 +265,6 @@
                 person.name_last "last-name",
                 person.name_first "first-name",
                 spr.rel_type
-
             from
                 personstudy_relationship spr, person
             where
@@ -268,18 +277,14 @@
             <presentation>
                 <panel>
                     <frame heading="static:Trial Coordinators"/>
-                    <banner style="vertical">
-                        <action caption="Add new coordinator"
-                            redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/add}?study_id=${request:study_id}"/>
-                    </banner>
                     <report >
                         <actions>
-                            <action type="add" caption="Add Coordinator" redirect="/contact/edit?id=${0}"/>
+                            <action type="add" caption="Add Coordinator" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/add}?study_id=${request:study_id}"/>
                             <action type="edit" caption="Edit" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/edit}?study_id=${request:study_id}&amp;person_id=${0}"/>
                             <action type="delete" caption="Delete" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator/delete}?study_id=${request:study_id}&amp;person_id=${0}"/>
                         </actions>
                         <column heading="ID" align="left"/>
-                        <column heading="Last Name" redirect="page-id:/home/person?person_id=${0}"/>
+                        <column heading="Last Name" redirect="vs-expr:${page-id:coordinator,/home/trial/coordinator}?study_id=${request:study_id}&amp;person_id=${0}"/>
                         <column heading="First Name" />
                         <column heading="Relationship" />
                     </report>
