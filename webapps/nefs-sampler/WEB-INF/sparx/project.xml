@@ -20,9 +20,10 @@
        ===================================================================
     -->
     <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home">
+        <page class="app.AppPage" name="home" default="yes" caption="Home">
             <body>
                 <![CDATA[
+                <#include "*/macros.ftl"/>
                 <div style="font-size: 12px; padding: 5px">
                 Welcome to the Home page of the Netspective Enterprise Framework (NEF) Sampler application. The purpose of this application is to
                 give you an idea of how simple and easy it is to built J2EE web applications using the powerful building blocks provided
@@ -30,7 +31,6 @@
                 flexibility and extensibility are also a part of their attributes.
 
                 <p>
-                <#include "console/content/library.ftl"/>
 
                 <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
                 <ul>
@@ -42,31 +42,35 @@
                 ]]>
             </body>
         </page>
-        <page name="forms" caption="Forms">
-                <body>
-                    <![CDATA[
-                    <div style="width: 450px;  padding: 5px; font: 12px normal Arial">
-                    This section contains brief information about how <b>forms</b> are created and handled in NEF.
-                    There are several examples that demonstrate how quick and easy it is to set up forms to accept input values
-                    for web applications.
-                    <br/>
-                    <br/>
-                    On a side note the terms <i>dialog</i> and <i>form</i> will be used
-                    interchangeably in this section. The examples below contain forms that have various types of
-                    built-in fields available for immediate use:
-
-                    <ul>
-                        <li> <a href="">Text Fields</a>: A form containing different types of text fields
-                        </li>
-                        <li> <a href="">Memo and Html Fields</a>: This form  additional text-based fields </li>
-                        <li> <a href="">Numeric Fields</a>: Form containing various types of numeric fields
-                        such as integers, floats, and phone numbers.
-                    </ul>
-                    </div>
-                    ]]>
-                </body>
+        <page class="app.AppPage" name="forms" caption="Forms">
+            <summary>
+                <![CDATA[
+                This section contains brief information about how <b>forms</b> are created and handled in NEF.
+                There are several examples that demonstrate how quick and easy it is to set up forms to accept input values
+                for web applications.
+                ]]>
+            </summary>
+            <body>
+                <![CDATA[
+                <#include "*/macros.ftl"/>
+                <div class="textbox">
+                ${vc.navigationContext.activePage.summary}
+                <br/>
+                <br/>
+                On a side note the terms <i>dialog</i> and <i>form</i> will be used
+                interchangeably in this section. The examples below contain forms that have various types of
+                built-in fields available for immediate use:
+                <p/>
+                Contents:
+                <@pageChildren/>
+                </div>
+                ]]>
+            </body>
             <!-- This page is for demonstrating text fields in a form -->
             <page name="text-fields" caption="Text">
+                <summary>
+                    This page demonstrates how to create and use text fields. More explanation...
+                </summary>
                 <panels style="vertical">
                     <panel type="command" command="dialog,test.text-fields"/>
                     <panel type="template">
@@ -77,6 +81,9 @@
             </page>
             <!-- This page is for demonstrating numeric fields in a form -->
             <page name="numeric-fields" caption="Numbers">
+                <summary>
+                    This page demonstrates how to create and use numeric fields. More explanation...
+                </summary>
                 <panels style="vertical">
                     <panel type="command" command="dialog,test.numeric-fields"/>
                     <panel type="template">
@@ -87,6 +94,9 @@
             </page>
             <!-- This page is for demonstrating boolean fields in a form -->
             <page name="boolean-fields" caption="Boolean">
+                <summary>
+                    This page demonstrates how to create and use boolean fields. More explanation...
+                </summary>
                 <panels style="vertical">
                     <panel type="command" command="dialog,test.boolean-fields"/>
                     <panel type="template">
@@ -98,6 +108,9 @@
 
             <!-- This page is for demonstrating selection fields in a form -->
             <page name="select-fields" caption="Selection">
+                <summary>
+                    This page demonstrates how to create and use select fields. More explanation...
+                </summary>
                 <panels style="vertical">
                     <panel type="command" command="dialog,test.select-fields"/>
                     <panel type="template">
@@ -110,24 +123,28 @@
 
         </page>
 
-        <page name="navigation" caption="Navigation"></page>
+        <page class="app.AppPage" name="navigation" caption="Navigation"></page>
 
         <!--
         ====================================
         This page is for your test cases!
         ====================================
         -->
-        <page name="play" caption="Play!">
+        <page class="app.AppPage" name="play" caption="Play!">
             <body>
                 <![CDATA[
-                <#include "console/content/library.ftl"/>
-                <div style="font-size: 14px; padding: 5px">
+                <#include "*/macros.ftl"/>
+                <div class="textbox">
                 This page is reserved for you! Edit the NEFS <@projectFile/> file to begin declaring your
                 application components (and have fun!).
 
                 </div>
                 ]]>
             </body>
+        </page>
+
+        <page class="app.AppPage" name="sitemap" caption="Sitemap">
+            <body source="sitemap.ftl"/>
         </page>
     </navigation-tree>
 
