@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.31 2003-08-24 18:36:20 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.32 2003-09-07 20:37:24 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -69,6 +69,7 @@ import com.netspective.commons.xdm.XdmParseContext;
 import com.netspective.commons.io.InputSourceTracker;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.command.Command;
 import com.netspective.commons.command.Commands;
@@ -1591,6 +1592,35 @@ public class XmlDataModelSchema
                 {
                     // resolve relative paths through DataModel
                     m.invoke(parent, new File[]{pc.resolveFile(value)});
+                }
+            };
+        }
+        else if (RedirectValueSource.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException
+                {
+                    ValueSource vs = ValueSources.getInstance().getValueSourceOrStatic(value);
+                    if(vs == null)
+                    {
+                        // better to throw an error here since if there are objects which are based on null/non-null
+                        // value of the value source, it is easier to debug
+                        pc.addError("Unable to find ValueSource '"+ value +"' to wrap in RedirectValueSource at " + pc.getLocator().getSystemId() +
+                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                    }
+                    try
+                    {
+                        RedirectValueSource redirectValueSource = (RedirectValueSource) arg.newInstance();
+                        redirectValueSource.setValueSource(vs);
+                        m.invoke(parent, new RedirectValueSource[]{ redirectValueSource });
+                    }
+                    catch (InstantiationException e)
+                    {
+                        pc.addError("Unable to create RedirectValueSource for '"+ value +"' at " + pc.getLocator().getSystemId() +
+                                " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
+                    }
                 }
             };
         }
