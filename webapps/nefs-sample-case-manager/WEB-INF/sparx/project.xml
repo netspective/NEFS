@@ -63,7 +63,7 @@
             <description>Describes the source of a case such as a project, product, or other area</description>
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The source's auto-generated id (internal identifier)"/>
             <column name="source_id" unique="yes" type="text" size="64" descr="The source's name or other identifier"/>
-            <column name="source_type" lookup-ref="Case_Source_Type" descr="The type of case source"/>
+            <column name="source_type" lookup-ref="Case_Source_Type" required="yes" descr="The type of case source"/>
             <column name="parent" selfref="Case_Source.system_id" descr="The source's parent if this source is a sub-product or sub-project of another source"/>
             <column name="caption" type="text" required="yes" size="200" descr="The source's brief caption"/>
 
