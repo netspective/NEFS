@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.36 2003-11-05 11:54:19 shahid.shah Exp $
+ * $Id: Project.java,v 1.37 2003-11-08 16:30:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -202,6 +202,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(FIELD_CONDITIONAL_ACTIONS);
         templateProducers.add(PAGE_CONDITIONAL_ACTIONS);
+
+        // since we're subclassing these items, tell XDM about it so that auto documentation works on subclasses items instead of parent class items
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("query", com.netspective.sparx.sql.Query.class);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("queries", com.netspective.sparx.sql.QueriesPackage.class);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("stored-procedure", com.netspective.sparx.sql.StoredProcedure.class);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("stored-procedures", com.netspective.sparx.sql.StoredProceduresPackage.class);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("tabular-report", com.netspective.sparx.report.tabular.HtmlTabularReport.class);
+        XML_DATA_MODEL_SCHEMA_OPTIONS.addSubclassedItemClass("query-defn", com.netspective.sparx.sql.QueryDefinition.class);
     }
 
     private List lifecycleListeners = new ArrayList();
@@ -294,7 +302,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         return activeNameSpace;
     }
 
-    public com.netspective.axiom.sql.Query createQuery()
+    public com.netspective.axiom.sql.Query constructQuery() // not called "create" because we don't want XDM to create tag at this level but we still need the method available
     {
         return new com.netspective.sparx.sql.Query(this);
     }
@@ -303,11 +311,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     {
         activeSPNameSpace = new StoredProceduresPackage(this, getStoredProcedures());
         return activeSPNameSpace;
-    }
-
-    public com.netspective.axiom.sql.StoredProcedure createStoredProcedure()
-    {
-        return new com.netspective.sparx.sql.StoredProcedure(this);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
