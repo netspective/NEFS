@@ -39,41 +39,16 @@
  */
 
 /**
- * $Id: AuthenticatedUser.java,v 1.5 2003-03-20 23:48:16 shahid.shah Exp $
+ * $Id: AuthenticatedOrgUser.java,v 1.1 2003-03-20 23:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-import java.security.Principal;
-import java.util.BitSet;
-
-import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.acl.RoleNotFoundException;
-
-public interface AuthenticatedUser extends Principal
+public interface AuthenticatedOrgUser extends AuthenticatedUser
 {
-    public String getUserName();
-    public void setUserName(String userName);
+    public String getUserOrgName();
+    public void setUserOrgName(String userOrgName);
 
-    public String getUserId();
-    public void setUserId(String userId);
-
-    public BitSet getUserPermissions();
-
-    public String[] getUserRoleNames();
-
-    public void setPermissions(AccessControlListsManager aclsManager, String[] permissions) throws PermissionNotFoundException;
-
-    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws RoleNotFoundException;
-
-    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException;
-
-    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException;
-
-    public Object getAttribute(String attrName);
-
-    public void setAttribute(String attrName, Object attrValue);
-
-    public void removeAttribute(String attrName);
+    public String getUserOrgId();
+    public void setUserOrgId(String userOrgId);
 }

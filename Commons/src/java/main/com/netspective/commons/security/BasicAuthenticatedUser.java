@@ -39,16 +39,14 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.6 2003-03-20 22:38:15 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.7 2003-03-20 23:48:16 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
@@ -56,7 +54,7 @@ import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
 
-public class BasicAuthenticatedUser implements AuthenticatedUser
+public class BasicAuthenticatedUser implements AuthenticatedUser, AuthenticatedOrgUser
 {
     private String userName;
     private String userId;
