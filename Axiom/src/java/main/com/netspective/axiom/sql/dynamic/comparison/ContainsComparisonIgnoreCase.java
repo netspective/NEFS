@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ContainsComparisonIgnoreCase.java,v 1.1 2003-03-13 18:25:44 shahid.shah Exp $
+ * $Id: ContainsComparisonIgnoreCase.java,v 1.2 2004-01-12 19:34:55 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic.comparison;
@@ -66,7 +66,7 @@ public class ContainsComparisonIgnoreCase extends BinaryOpComparison
         if(bindExpression != null && bindExpression.length() > 0)
             retString = "UPPER(" + cond.getField().getWhereExpr() + ") like UPPER(" + bindExpression + ")";
         else
-            retString = cond.getField().getWhereExpr() + " like ?";
+            retString = "UPPER(" + cond.getField().getWhereExpr() + ") like UPPER(?)";
         return retString;
     }
 }
