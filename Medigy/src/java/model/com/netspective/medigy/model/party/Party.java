@@ -42,6 +42,10 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.party.FacilityType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Entity;
@@ -67,7 +71,13 @@ public abstract class Party extends AbstractTopLevelEntity
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
     private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
+
+    // All the custom reference entity types
     private Set<PartyIdentifierType> partyIdentifierTypes = new HashSet<PartyIdentifierType>();
+    private Set<PartyRoleType> partyRoleTypes = new HashSet<PartyRoleType>();
+    private Set<FacilityType> facilityTypes = new HashSet<FacilityType>();
+    private Set<PartyRelationshipType> partyRelationshipTypes = new HashSet<PartyRelationshipType>();
+    private Set<CommunicationEventPurposeType> communicationEventPurposeTypes = new HashSet<CommunicationEventPurposeType>();
 
     public Party()
     {
@@ -147,5 +157,53 @@ public abstract class Party extends AbstractTopLevelEntity
     public void setPartyIdentifierTypes(final Set<PartyIdentifierType> partyIdentifierTypes)
     {
         this.partyIdentifierTypes = partyIdentifierTypes;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyRoleType> getPartyRoleTypes()
+    {
+        return partyRoleTypes;
+    }
+
+    public void setPartyRoleTypes(final Set<PartyRoleType> partyRoleTypes)
+    {
+        this.partyRoleTypes = partyRoleTypes;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<FacilityType> getFacilityTypes()
+    {
+        return facilityTypes;
+    }
+
+    public void setFacilityTypes(final Set<FacilityType> facilityTypes)
+    {
+        this.facilityTypes = facilityTypes;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyRelationshipType> getPartyRelationshipTypes()
+    {
+        return partyRelationshipTypes;
+    }
+
+    public void setPartyRelationshipTypes(final Set<PartyRelationshipType> partyRelationshipTypes)
+    {
+        this.partyRelationshipTypes = partyRelationshipTypes;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")  
+    public Set<CommunicationEventPurposeType> getCommunicationEventPurposeTypes()
+    {
+        return communicationEventPurposeTypes;
+    }
+
+    public void setCommunicationEventPurposeTypes(Set<CommunicationEventPurposeType> communicationEventPurposeTypes)
+    {
+        this.communicationEventPurposeTypes = communicationEventPurposeTypes;
     }
 }
