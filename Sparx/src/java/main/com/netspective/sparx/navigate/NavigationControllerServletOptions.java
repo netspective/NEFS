@@ -213,6 +213,11 @@ public class NavigationControllerServletOptions
                                  .withDescription("The identifier of the default data source.")
                                  .create('d'));
 
+        servletOptions.addOption(OptionBuilder.withLongOpt("connection-provider-name")
+                                 .hasArg().withArgName("id")
+                                 .withDescription("The name of the connection provider in the project.xml that should be used for obtaining connections.")
+                                 .create('D'));
+
         servletOptions.addOption(OptionBuilder.withLongOpt("page-cache-max-size")
                                  .hasArg().withArgName("size")
                                  .withDescription("The maximum number of pages to cache (for pages that allow caching)")
@@ -312,6 +317,11 @@ public class NavigationControllerServletOptions
     public String getDefaultDataSourceId(String defaultDataSourceId)
     {
         return commandLine.getOptionValue('d', defaultDataSourceId);
+    }
+
+    public String getDefaultConnectionProviderName(String defaultConnectionProviderName)
+    {
+        return commandLine.getOptionValue('D', defaultConnectionProviderName);
     }
 
     public Properties setProperties(Properties properties, String propNamesPrefix, boolean setNulls)

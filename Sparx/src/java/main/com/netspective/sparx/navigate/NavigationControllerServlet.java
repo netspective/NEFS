@@ -631,6 +631,10 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         {
             project = getProjectComponent().getProject();
             clientServiceRequestHandlers.putAll(project.getClientServiceRequestHandlers());
+
+            String connProviderName = servletOptions.getDefaultConnectionProviderName(null);
+            if(connProviderName != null)
+                project.setDefaultConnectionProviderName(connProviderName);
         }
         return project;
     }
