@@ -6,51 +6,6 @@
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 
-    <data-type name="system-id" type="auto-inc">
-        <name>system_id</name>
-        <primary-key>yes</primary-key>
-        <descr>Unique system-generated value that identifies a paticular row in this table.</descr>
-    </data-type>
-
-    <data-type name="application-id" type="text">
-        <name>application_id</name>
-        <size>64</size>
-    </data-type>
-
-    <table-type name="Identifiable">
-        <column type="system-id"/>
-    </table-type>
-
-    <table-type name="Creator_Tracker">
-        <column name="person_id" lookup-ref="Person.system_id" descr="The user that created the record">
-            <presentation>
-                <field name="${column.name}" type="text" hidden="yes" default="authenticated-user:user-id"/>
-            </presentation>
-        </column>
-    </table-type>
-
-    <table-type name="Session_Tracker">
-        <column name="session_id" lookup-ref="Person_Login_Session.system_id" descr="The session that created the record">
-            <presentation>
-                <field name="${column.name}" type="text" hidden="yes" default="authenticated-user:person-login-session-id"/>
-            </presentation>
-        </column>
-    </table-type>
-
-    <table-type name="Person_Registration" type="Identifiable">
-        <description>
-            Stores the registration information for a Person. This set of columns stores the minimal set of information
-            for a person that is required to "register" a person in the system.
-        </description>
-        <column name="name_first" type="text" required="yes" size="96" descr="User's first name"/>
-        <column name="name_middle" type="text" size="96" descr="User's middle name"/>
-        <column name="name_last" type="text" required="yes" size="96" descr="User's last name"/>
-
-        <accessor name="person-lookup">
-            <display fields="system_id, person_id, name_first, name_last"/>
-        </accessor>
-    </table-type>
-
     <table-type name="User" type="Identifiable,Versioned">
         <description>
             Stores the login records for each person (when a person is a "user" of an application as opposed
@@ -59,9 +14,9 @@
             or creating multiple login records without affecting a person's registation record
             (primary key or public identifier).
         </description>
-        <column type="application-id" descr="The application into which the person_id may login"/>
+        <column name="allows_apps" type="application-id" descr="The application into which the person_id may login"/>
         <column name="person_id" parent-ref="Person.system_id" indexed="yes" descr="The person for whom login information is specified"/>
-        <column name="user_id" type="text" size="32" unique="yes" descr="The login ID for the person in this system"/>
+        <column name="user_name" type="text" size="32" unique="yes" descr="The login user name for the person in "/>
         <column name="password" type="text" size="16" descr="The login password"/>
         <column name="quantity" type="integer" descr="The number of times login is allowed from different sessions"/>
         <column name="expires" type="stamp" descr="The date/time that the login record expires"/>
@@ -76,7 +31,7 @@
             An active session of a user connected to a particular application.
         </description>
         <column name="user_id" parent-ref="User.system_id" required="yes" indexed="yes" descr="The user that this session belongs to"/>
-        <column type="application-id" descr="The application that created session"/>
+        <column name="application" type="text" size="255" descr="The application which created the session"/>
         <column name="session_id" type="text" size="128" descr="Any application-specific session ID (such as a web SESSION_ID or other unique identifier)"/>
         <column name="remote_host" type="text" size="128" descr="Remote host information that should be stored for security purposes"/>
         <column name="remote_addr" type="text" size="32" required="yes" descr="Remote address information that should be kept for security purposes"/>
