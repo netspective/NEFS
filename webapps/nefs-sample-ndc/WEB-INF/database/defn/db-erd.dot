@@ -1,0 +1,10 @@
+digraph db
+{
+    firms;
+    listings;
+    drugclas;
+    formulat;
+    packages;
+    routes;
+
+}

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % boolean "(true | false | on | off | yes | no)">
+<!ENTITY % enum_table_without_enums "CDATA">
+<!ENTITY % elements "dal">
+
+<!ELEMENT dal (firms | listings | drugclas | formulat | packages | routes)*>
+
+<!ELEMENT firms (firm-seq-no | lblcode | firm-name | addr-header | street | po-box | foreign-addr | city | state | province | zip | country-name | dal:include)*>
+<!ATTLIST firms
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          firm-seq-no CDATA #IMPLIED
+          lblcode CDATA #IMPLIED
+          firm-name CDATA #IMPLIED
+          addr-header CDATA #IMPLIED
+          street CDATA #IMPLIED
+          po-box CDATA #IMPLIED
+          foreign-addr CDATA #IMPLIED
+          city CDATA #IMPLIED
+          state CDATA #IMPLIED
+          province CDATA #IMPLIED
+          zip CDATA #IMPLIED
+          country-name CDATA #IMPLIED>
+
+<!ELEMENT listings (listing-seq-no | lblcode | prodcode | strength | unit | rx-otc | dosage-form | firm-seq-no | tradename | dal:include)*>
+<!ATTLIST listings
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          listing-seq-no CDATA #IMPLIED
+          lblcode CDATA #IMPLIED
+          prodcode CDATA #IMPLIED
+          strength CDATA #IMPLIED
+          unit CDATA #IMPLIED
+          rx-otc CDATA #IMPLIED
+          dosage-form CDATA #IMPLIED
+          firm-seq-no CDATA #IMPLIED
+          tradename CDATA #IMPLIED>
+
+<!ELEMENT drugclas (id | listing-seq-no | product-class-no | drug-classification | dal:include)*>
+<!ATTLIST drugclas
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          id CDATA #IMPLIED
+          listing-seq-no CDATA #IMPLIED
+          product-class-no CDATA #IMPLIED
+          drug-classification CDATA #IMPLIED>
+
+<!ELEMENT formulat (id | listing-seq-no | strength | unit | ingredient-name | dal:include)*>
+<!ATTLIST formulat
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          id CDATA #IMPLIED
+          listing-seq-no CDATA #IMPLIED
+          strength CDATA #IMPLIED
+          unit CDATA #IMPLIED
+          ingredient-name CDATA #IMPLIED>
+
+<!ELEMENT packages (id | listing-seq-no | pkgcode | packsize | packtype | dal:include)*>
+<!ATTLIST packages
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          id CDATA #IMPLIED
+          listing-seq-no CDATA #IMPLIED
+          pkgcode CDATA #IMPLIED
+          packsize CDATA #IMPLIED
+          packtype CDATA #IMPLIED>
+
+<!ELEMENT routes (id | listing-seq-no | route-code | route-name | dal:include)*>
+<!ATTLIST routes
+          ID CDATA #IMPLIED
+          IDREF CDATA #IMPLIED
+          id CDATA #IMPLIED
+          listing-seq-no CDATA #IMPLIED
+          route-code CDATA #IMPLIED
+          route-name CDATA #IMPLIED>
+
+<!ELEMENT addr-header (#PCDATA)>
+<!ATTLIST addr-header IDREF CDATA #IMPLIED>
+
+<!ELEMENT city (#PCDATA)>
+<!ATTLIST city IDREF CDATA #IMPLIED>
+
+<!ELEMENT country-name (#PCDATA)>
+<!ATTLIST country-name IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include (#PCDATA)>
+<!ATTLIST dal:include IDREF CDATA #IMPLIED>
+
+<!ELEMENT dosage-form (#PCDATA)>
+<!ATTLIST dosage-form IDREF CDATA #IMPLIED>
+
+<!ELEMENT drug-classification (#PCDATA)>
+<!ATTLIST drug-classification IDREF CDATA #IMPLIED>
+
+<!ELEMENT firm-name (#PCDATA)>
+<!ATTLIST firm-name IDREF CDATA #IMPLIED>
+
+<!ELEMENT firm-seq-no (#PCDATA)>
+<!ATTLIST firm-seq-no IDREF CDATA #IMPLIED>
+
+<!ELEMENT foreign-addr (#PCDATA)>
+<!ATTLIST foreign-addr IDREF CDATA #IMPLIED>
+
+<!ELEMENT id (#PCDATA)>
+<!ATTLIST id IDREF CDATA #IMPLIED>
+
+<!ELEMENT ingredient-name (#PCDATA)>
+<!ATTLIST ingredient-name IDREF CDATA #IMPLIED>
+
+<!ELEMENT lblcode (#PCDATA)>
+<!ATTLIST lblcode IDREF CDATA #IMPLIED>
+
+<!ELEMENT listing-seq-no (#PCDATA)>
+<!ATTLIST listing-seq-no IDREF CDATA #IMPLIED>
+
+<!ELEMENT packsize (#PCDATA)>
+<!ATTLIST packsize IDREF CDATA #IMPLIED>
+
+<!ELEMENT packtype (#PCDATA)>
+<!ATTLIST packtype IDREF CDATA #IMPLIED>
+
+<!ELEMENT pkgcode (#PCDATA)>
+<!ATTLIST pkgcode IDREF CDATA #IMPLIED>
+
+<!ELEMENT po-box (#PCDATA)>
+<!ATTLIST po-box IDREF CDATA #IMPLIED>
+
+<!ELEMENT prodcode (#PCDATA)>
+<!ATTLIST prodcode IDREF CDATA #IMPLIED>
+
+<!ELEMENT product-class-no (#PCDATA)>
+<!ATTLIST product-class-no IDREF CDATA #IMPLIED>
+
+<!ELEMENT province (#PCDATA)>
+<!ATTLIST province IDREF CDATA #IMPLIED>
+
+<!ELEMENT route-code (#PCDATA)>
+<!ATTLIST route-code IDREF CDATA #IMPLIED>
+
+<!ELEMENT route-name (#PCDATA)>
+<!ATTLIST route-name IDREF CDATA #IMPLIED>
+
+<!ELEMENT rx-otc (#PCDATA)>
+<!ATTLIST rx-otc IDREF CDATA #IMPLIED>
+
+<!ELEMENT state (#PCDATA)>
+<!ATTLIST state IDREF CDATA #IMPLIED>
+
+<!ELEMENT street (#PCDATA)>
+<!ATTLIST street IDREF CDATA #IMPLIED>
+
+<!ELEMENT strength (#PCDATA)>
+<!ATTLIST strength IDREF CDATA #IMPLIED>
+
+<!ELEMENT tradename (#PCDATA)>
+<!ATTLIST tradename IDREF CDATA #IMPLIED>
+
+<!ELEMENT unit (#PCDATA)>
+<!ATTLIST unit IDREF CDATA #IMPLIED>
+
+<!ELEMENT zip (#PCDATA)>
+<!ATTLIST zip IDREF CDATA #IMPLIED>
+
+<!ELEMENT dal:include EMPTY>
+<!ATTLIST dal:include
+          file CDATA #IMPLIED
+          template CDATA #IMPLIED
+          resource CDATA #IMPLIED
+          relative-to CDATA #IMPLIED>

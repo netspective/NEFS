@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<project xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+    <navigation-tree name="app" default="yes">
+        <page name="home" default="yes" caption="Home">
+            <body>
+                Welcome to the Home page for the Sparx starter app.
+                <![CDATA[<p>
+                <#include "console/content/library.ftl"/>
+
+                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
+                <ul>
+                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
+                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
+                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
+                </ul>
+                ]]>
+            </body>
+        </page>
+    </navigation-tree>
+
+    <!--
+    *******************************************************************************************************************
+    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
+    ** ============================================================================================================= **
+    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
+    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
+    ** <project>                                                                                                     **
+    **     <default-data-source>jdbc/other</default-data-source>						                             **
+    **														                                                         **
+    ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
+    ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
+    *******************************************************************************************************************
+    -->
+
+    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
+
+        <data-source name="jdbc/default">
+            <driver-class>org.hsqldb.jdbcDriver</driver-class>
+            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
+            <user>sa</user>
+            <password></password>
+        </data-source>
+
+    </connection-provider>
+
+    <!--
+    **********************************************************************
+    ** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+    ********************************************************************** -->
+
+    <schema name="db">
+	<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+	<table name="firms" abbrev="frm" type="Presentation">
+	    <column name="firm_seq_no" type="integer" size="10" primary-key="yes" descr="FDA Assigned Unique ID for Each Drug Manufacturer"/>
+	    <column name="lblcode" type="text" size="6" descr="Manufacturer Part of NCD Code"/>
+            <column name="firm_name" type="text" size="65" descr="Name of Firm"/>
+            <column name="addr_header" type="text" size="65" descr="Optional Address Line"/>
+            <column name="street" type="text" size="40" descr="Street Portion of Address"/>
+            <column name="po_box" type="text" size="9" descr="PO Box If Appropriate"/>
+            <column name="foreign_addr" type="text" size="40" descr="Address Information Specific to Foreign Country"/>
+            <column name="city" type="text" size="30" descr="City"/>
+            <column name="state" type="text" size="2" descr="2 Digit Postal Code for State"/>
+            <column name="province" type="text" size="30" descr="Province Name (Canada)"/>
+            <column name="zip" type="text" size="9" descr="ZIP Code both Foreign and Domestic"/>
+            <column name="country_name" type="text" size="40" descr="Name of Country"/>
+	</table>
+	<table name="listings" abbrev="lst" type="Presentation">
+            <column name="listing_seq_no" type="text" size="10" primary-key="yes" descr="FDA Assigned ID Number for Each Drug Product"/>
+            <column name="lblcode" type="text" size="6" descr="Labeler code portion (1st Segment) of NDC Code"/>
+            <column name="prodcode" type="text" size="4" descr="Product Code Assigned by Firm (2nd Segment) of NDC Code"/>
+            <column name="strength" type="text" size="10" descr="Potency of the Active Ingredient(s)"/>
+            <column name="unit" type="text" size="10" descr="Unit of Measure for Strength"/>
+            <column name="rx_otc" type="text" size="1" descr="R/O for RX or OTC"/>
+            <column name="dosage_form" type="text" size="25" descr="Dosage Form for the Produce"/>
+            <column name="firm_seq_no" lookup-ref="firms"/>
+            <column name="tradename" type="text" size="100" indexed="yes" descr="Name of Product as it Appears on Labeling"/>
+	</table>
+	<table name="drugclas" abbrev="dgc" type="Presentation">
+            <column name="ID" type="integer" size="9" primary-key="yes" descr="Primary Key"/>
+            <column name="listing_seq_no" lookup-ref="listings"/>
+            <column name="product_class_no" type="text" size="4" descr="Coded Drug Classification"/>
+            <column name="drug_classification" type="text" size="52" indexed="yes" descr="Description of Drug Classification"/>
+	</table>
+	<table name="formulat" abbrev="frm" type="Presentation">
+            <column name="ID" type="integer" size="9" primary-key="yes" descr="Primary Key"/>
+            <column name="listing_seq_no" lookup-ref="listings"/>
+            <column name="strength" type="text" size="10" descr="Potency of Active Ingredient"/>
+	    <column name="unit" type="text" size="5" descr="Unit of Measure for Potency"/>
+            <column name="ingredient_name" type="text" size="105" indexed="yes" descr="Active Ingredient Name"/>
+        </table>
+	<table name="packages" abbrev="pkg" type="Presentation">
+            <column name="ID" type="integer" size="9" primary-key="yes" descr="Primary Key"/>
+            <column name="listing_seq_no" lookup-ref="listings"/>
+            <column name="pkgcode" type="text" size="2" descr="Package Portion of NCD Code"/>
+            <column name="packsize" type="text" size="25" descr="Unit or Number of Units in a Package"/>
+            <column name="packtype" type="text" size="28" descr="Package type ie box, bottle, vial ---"/>
+	</table>
+	<table name="routes" abbrev="rts" type="Presentation">
+            <column name="ID" type="integer" size="9" primary-key="yes" descr="Primary Key"/>
+            <column name="listing_seq_no" lookup-ref="listings"/>
+            <column name="route_code" type="text" size="3" descr="Code for this Route of Administration"/>
+            <column name="route_name" type="text" size="28" descr="Text Description of Route"/>
+	</table>
+    </schema>
+
+
+
+</project>

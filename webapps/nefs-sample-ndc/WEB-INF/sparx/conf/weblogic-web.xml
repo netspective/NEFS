@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<!--
+*****************************************************
+** BEA WEBLOGIC WEB-INF/web.xml CONFIGURATION FILE **
+*****************************************************
+$Id: weblogic-web.xml,v 1.1 2004-03-17 16:17:43 shahid.shah Exp $
+-->
+
+<web-app>
+
+    <!--
+    *******************************************************************************************************************
+    ** SERVLET CONTEXT LISTENERS CONFIGURATION (initialize and cleanup resources required by Sparx)                  **
+    *******************************************************************************************************************
+    -->
+    <listener>
+        <listener-class>com.netspective.sparx.util.ApplicationEventsListener</listener-class>
+    </listener>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** APPLICATION FRONT-CONTROLLER CONFIGURATION                                                                    **
+    ** ============================================================================================================= **
+    ** 1) The SparxNavigationController servlet handles all the requests (it's the default servlet)                  **
+    ** 2) Anything under the /sparx URL is assumed to be a Sparx resource or asset so it's forwarded to the normal   **
+    **    app-server static file servlet.                                                                            **
+    ** 3) Anything under the /resources URL is assumed to be an application resource or asset so it's also forwared  **
+    **    to the normal app-server static file servlet.                                                              **
+    ** ============================================================================================================= **
+    ** NOTE: if you will be using the NavigationPage forward or include attributes (<page ... forward=''> or <page   **
+    **       include=''>) then you will need to ensure that those pages get handled by the appropriate app server    **
+    **       servlets so you may need additional servlet-mappings for the forwarded or included resources.           **
+    *******************************************************************************************************************
+    -->
+    <servlet>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <servlet-class>com.netspective.sparx.navigate.NavigationControllerServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
+        <servlet-class>weblogic.servlet.FileServlet</servlet-class>
+    </servlet>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** NETSPECTIVE APPLICATION ADMINISTRATION CONSOLE CONFIGURATION                                                  **
+    ** ============================================================================================================= **
+    ** If you wish to disable the Console completely, just remove the <servlet> and <servlet-mapping> configuration  **
+    ** elements for the NetspectiveConsole servlet.                                                                  **
+    *******************************************************************************************************************
+    -->
+    <servlet>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <servlet-class>com.netspective.sparx.console.ConsoleServlet</servlet-class>
+        <init-param>
+            <param-name>com.netspective.sparx.navigate.CONTROLLER_SERVLET_OPTIONS</param-name>
+            <param-value>--login-manager=console</param-value>
+        </init-param>
+        <init-param>
+            <param-name>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</param-name>
+            <param-value>--user-id=console --encrypted-password=NCbHq1WqkpfDY</param-value> <!-- run "java com.netspective.commons.security.Crypt NC <password>" to generate encrypted password -->
+        </init-param>
+    </servlet>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** MAPPING OF DEFAULT SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>SparxNavigationController</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** MAPPING OF CONSOLE SERVLET									             **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>NetspectiveConsole</servlet-name>
+        <url-pattern>/console/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!--
+    *******************************************************************************************************************
+    ** MAPPING OF EXCEPTION TO DEFAULT SERVLET									     **
+    ** ============================================================================================================= **
+    ** These mappings represent folders in the application that contain resources that must be served by the         **
+    ** server's as such.  If more resources are added for a specific application more exceptions must be added       **
+    ** unless they reside in one of these folders.								     **
+    *******************************************************************************************************************
+    -->
+    <servlet-mapping>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
+        <url-pattern>/sparx/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AppServerStaticFileServlet</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>
