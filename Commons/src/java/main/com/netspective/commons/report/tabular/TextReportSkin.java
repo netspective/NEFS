@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextReportSkin.java,v 1.3 2003-04-03 14:07:25 shahid.shah Exp $
+ * $Id: TextReportSkin.java,v 1.4 2003-04-04 17:14:23 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -166,19 +166,16 @@ public class TextReportSkin implements TabularReportSkin
 
         int dataColsCount = columns.size();
         int lastDataCol = dataColsCount - 1;
-        boolean hiearchical = ds.isHierarchical();
+        boolean hierarchical = ds.isHierarchical();
 
-        boolean isOddRow = false;
         while(ds.next())
         {
-            isOddRow = ! isOddRow;
-
             int hiearchyCol = 0;
             int activeLevel = 0;
 
-            if(hiearchical)
+            if(hierarchical)
             {
-                TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHiearchy();
+                TabularReportDataSource.Hierarchy activeHierarchy = ds.getActiveHierarchy();
                 hiearchyCol = activeHierarchy.getColumn();
                 activeLevel = activeHierarchy.getLevel();
             }
@@ -198,7 +195,7 @@ public class TextReportSkin implements TabularReportSkin
                         state.getOutputFormat() :
                         column.getFormattedData(rc, ds, TabularReportColumn.GETDATAFLAG_DO_CALC);
 
-                if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
+                if(hierarchical && (hiearchyCol == i) && activeLevel > 0)
                 {
                     for(int sp = 0; sp < activeLevel; sp++)
                         data = " " + data;

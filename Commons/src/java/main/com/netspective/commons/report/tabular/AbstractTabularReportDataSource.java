@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTabularReportDataSource.java,v 1.1 2003-03-31 20:16:25 shahid.shah Exp $
+ * $Id: AbstractTabularReportDataSource.java,v 1.2 2003-04-04 17:14:23 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -71,7 +71,7 @@ public abstract class AbstractTabularReportDataSource implements TabularReportDa
         return false;
     }
 
-    public TabularReportDataSource.Hierarchy getActiveHiearchy()
+    public TabularReportDataSource.Hierarchy getActiveHierarchy()
     {
         return null;
     }
