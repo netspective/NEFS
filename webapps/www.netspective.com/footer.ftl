@@ -7,5 +7,5 @@
         <td><img alt="" height="17" width="443" src="${resourcesPath}/images/footer/rule-bottom.gif" name="home_48"></td>
     </tr>
 </tbody></table>
-<span class="disclaimer">©2003 Netspective LLC. All rights reserved.</span></div>
+<div class="disclaimer">©1997-2004 Netspective Communications LLC. All rights reserved.</div>
 </body></html>

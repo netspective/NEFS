@@ -135,15 +135,23 @@
                 <page name="console" caption="Console" heading="Netspective Enterprise Console (NEC)">
                     <body source="products/frameworks/console/index.ftl"/>
                 </page>
+
+                <page name="try" caption="Try" heading="Try Us Out for Free">
+                    <summary>
+                        If you like what you've seen so far, grab an evaluation copy and give NEFS a spin on your
+                        own workstation. You've got nothing to lose except tedious Java code.
+                    </summary>
+                    <body source="products/frameworks/try.ftl"/>
+                </page>
+
+                <page name="buy" caption="Buy" heading="NEFS is Very Affordable">
+                    <summary>
+                        Simple license provisions, complete source code, and a very affordable price let you buy
+                        our Frameworks with confidence.
+                    </summary>
+                    <body source="products/frameworks/buy.ftl"/>
+                </page>
             </page>
-        </page>
-
-        <page class="app.AppPage" name="downloads" caption="Downloads">
-            <body source="index.ftl"/>
-        </page>
-
-        <page class="app.AppPage" name="buy" caption="Buy">
-            <body source="index.ftl"/>
         </page>
 
         <page class="app.AppPage" name="services" caption="Services">

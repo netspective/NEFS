@@ -45,19 +45,20 @@
 
     <table width="600" border="0" cellspacing="0" cellpadding="0" class="body-content">
         <tr>
-            <td valign="top" class="page-nav">
+            <td valign="top" class="page-nav" rowspan=2>
                 <@primaryAncestorChildren/>
             </td>
+            <td class="body-summary">
+                ${activePage.summary?default('')}
+            </td>
+        </tr>
+        <tr>
             <td valign="top" class="body-content">
-                <#if activePage.summary?exists>
-                <div class="body-summary">${activePage.summary}</div>
-                <p>
-                </#if>
+            <div class="body-content">
 </#macro>
 
 <#macro pageBodyEnd>
-
-                <p>&nbsp;
+            </div>
             </td>
         </tr>
    </table>
