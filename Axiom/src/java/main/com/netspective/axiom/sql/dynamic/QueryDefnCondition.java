@@ -32,12 +32,20 @@
  */
 package com.netspective.axiom.sql.dynamic;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
 import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.script.BeanScript;
+import com.netspective.commons.script.Script;
+import com.netspective.commons.script.ScriptContext;
+import com.netspective.commons.script.ScriptException;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
  * Class representing the selection criteria for a dynamic query (query definition).
@@ -46,10 +54,12 @@ import com.netspective.commons.value.ValueSource;
  */
 public class QueryDefnCondition
 {
-    static public final int CONNECT_AND = 0;
-    static public final int CONNECT_OR = 1;
-    static public final String[] CONNECTOR_TOKENS = new String[]{"and", "or"};
-    static public final String[] CONNECTOR_SQL = new String[]{" and ", " or "};
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+    public static final int CONNECT_AND = 0;
+    public static final int CONNECT_OR = 1;
+    public static final String[] CONNECTOR_TOKENS = new String[]{"and", "or"};
+    public static final String[] CONNECTOR_SQL = new String[]{" and ", " or "};
 
     private QueryDefinition owner;
     private QueryDefnCondition parentCondition;
@@ -59,6 +69,7 @@ public class QueryDefnCondition
     private int connector = CONNECT_AND;
     private boolean removeIfValueNull;
     private boolean removeIfValueNullChildren;
+    private Script script;
     private boolean joinOnly = true; // use only the join condition from the field (changed to false if comparison is provided)
     private String bindExpr;
     private QueryDefnConditions nestedConditions;
@@ -260,6 +271,37 @@ public class QueryDefnCondition
      */
     public boolean useCondition(QueryDefnSelectStmtGenerator stmtGen, ValueContext vc, QueryDefnConditions usedConditions) throws QueryDefinitionException
     {
+        if(script != null)
+        {
+            Object scriptResult = null;
+            try
+            {
+                ValueSource vs = getValue();
+                if(vs != null)
+                {
+                    Value value = vs.getValue(vc);
+                    if(value == null)
+                        return false;
+
+                    ScriptContext sc = vc.getScriptContext(script);
+                    scriptResult = script.callFunction(sc, null, "useCondition", new Object[]{this, vc, value});
+                }
+            }
+            catch(ScriptException e)
+            {
+                throw new QueryDefinitionException(getOwner(), e);
+            }
+
+            boolean useCondition = true;
+            if(scriptResult instanceof Boolean)
+                useCondition = ((Boolean) scriptResult).booleanValue();
+            else if(scriptResult != null)
+                useCondition = TextUtils.getInstance().toBoolean(scriptResult.toString(), false);
+
+            if(! useCondition)
+                return false;
+        }
+
         // if we don't allow nulls, always use the condition
         if(!removeIfValueNull)
             return true;
@@ -302,5 +344,20 @@ public class QueryDefnCondition
             return false;
 
         }
+    }
+
+    public Script getScript()
+    {
+        return script;
+    }
+
+    public Script createScript()
+    {
+        return new BeanScript();
+    }
+
+    public void addScript(Script conditionScript)
+    {
+        this.script = conditionScript;
     }
 }
