@@ -313,7 +313,7 @@
         <table name="Current_Environment" type="Presentation">
             <column name="pin" type="integer" primary-key="yes" descr="The respondent's public identifier (PIN).">
                 <presentation>
-                    <field type="integer" name="${column.name}" caption="PIN" default="session:respondent-pin" hidden="yes"/>
+                    <field type="integer" name="${column.name}" caption="PIN" default="authenticated-user:user-id" hidden="yes"/>
                 </presentation>
             </column>
 
@@ -394,8 +394,8 @@
                         schemaName="${table.getSchema().getName()}"
                         tableName="${table.getName()}"
                         allow-insert-if-edit-pk-not-found="yes"
-                        primary-key-value-for-edit-or-delete="session:respondent-pin">
-                    <frame heading="create-dialog-perspective-heading:My General Information"/>
+                        primary-key-value-for-edit-or-delete="authenticated-user:user-id">
+                    <frame heading="create-dialog-perspective-heading:Risk Management Environment"/>
                     <data-type-presentation columns="*"/>
                 </dialog>
             </presentation>

@@ -23,8 +23,8 @@
         </folding>
       </source-position-entry>
       <source-position-entry url="file://$PROJECT_DIR$/../../database/data/initial-and-test-data.xml" line="3" column="26" vertical-scroll-proportion="0.054333765" horizontal-scroll-proportion="0.15449916" />
-      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="212" column="0" vertical-scroll-proportion="-0.38292366" horizontal-scroll-proportion="0.0" />
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/vo/VisitedPage.java" line="21" column="17" vertical-scroll-proportion="0.38033634" horizontal-scroll-proportion="0.101018675" />
+      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="397" column="70" vertical-scroll-proportion="0.51617074" horizontal-scroll-proportion="0.41595924" />
     </history>
     <open-files>
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/AppNavigationSkin.java" line="201" column="58" vertical-scroll-proportion="0.4954722" horizontal-scroll-proportion="0.34465197">
@@ -41,8 +41,8 @@
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RiskResponseTable.java" line="340" column="141" vertical-scroll-proportion="0.35058215" horizontal-scroll-proportion="0.83786076" />
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/RespondentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/dao/CurrentEnvironmentTable.java" line="19" column="19" vertical-scroll-proportion="0.07244502" horizontal-scroll-proportion="0.11290322" />
-      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="212" column="0" vertical-scroll-proportion="-0.38292366" horizontal-scroll-proportion="0.0" />
-      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/vo/VisitedPage.java" line="21" column="17" vertical-scroll-proportion="0.38033634" horizontal-scroll-proportion="0.101018675" selected="true" />
+      <source-position-entry url="file://$PROJECT_DIR$/../project.xml" line="397" column="70" vertical-scroll-proportion="0.51617074" horizontal-scroll-proportion="0.41595924" selected="true" />
+      <source-position-entry url="file://$PROJECT_DIR$/../../classes/auto/dal/db/vo/VisitedPage.java" line="21" column="17" vertical-scroll-proportion="0.38033634" horizontal-scroll-proportion="0.101018675" />
       <source-position-entry url="file://$PROJECT_DIR$/../../classes/app/Util.java" line="44" column="26" vertical-scroll-proportion="0.5653299" horizontal-scroll-proportion="0.15449916" />
       <source-position-entry url="file://$PROJECT_DIR$/../../database/data/initial-and-test-data.xml" line="3" column="26" vertical-scroll-proportion="0.054333765" horizontal-scroll-proportion="0.15449916" />
     </open-files>
