@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogDetailPanel.java,v 1.3 2003-05-10 16:50:00 shahid.shah Exp $
+ * $Id: DialogDetailPanel.java,v 1.4 2003-05-14 15:55:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -126,6 +126,7 @@ public abstract class DialogDetailPanel extends AbstractHtmlTabularReportPanel
         {
             List result = new ArrayList();
             result.add(createAttribute("Name", dialog.getQualifiedName()));
+            result.add(createAttribute("Html Form Name", dialog.getHtmlFormName()));
             result.add(createAttribute("Dialog Class", rc.getSkin().constructClassRef(dialog.getClass())));
             result.add(createAttribute("Dialog Context Class", rc.getSkin().constructClassRef(dialog.getDcClass())));
             result.add(createAttribute("Dialog Director Class", rc.getSkin().constructClassRef(dialog.getDirector().getClass())));
