@@ -1,3 +1,4 @@
+* Take a look at http://www.softwareplanner.com to see what kinds of features from there can be added to Console, Beacon
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Ugrade to FreeMarker 2.3 (has numerous new features that will be useful)
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
