@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildTargetsValueSource.java,v 1.1 2003-06-21 23:41:32 shahid.shah Exp $
+ * $Id: AntBuildTargetsValueSource.java,v 1.2 2003-06-22 00:27:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -65,6 +65,7 @@ import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
+import com.netspective.sparx.console.form.AntBuildDialog;
 
 public class AntBuildTargetsValueSource extends AbstractValueSource
 {
@@ -109,11 +110,7 @@ public class AntBuildTargetsValueSource extends AbstractValueSource
             return result;
         }
 
-        Project project = new Project();
-        project.init();
-
-        File buildFile = new File(projectFile.getParentFile(), projectFile.getName());
-        ProjectHelper.configureProject(project, buildFile);
+        Project project = AntBuildDialog.getConfiguredProject(projectFile);
 
         String defaultTargetName = project.getDefaultTarget();
         Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
@@ -157,11 +154,7 @@ public class AntBuildTargetsValueSource extends AbstractValueSource
             };
         }
 
-        Project project = new Project();
-        project.init();
-
-        File buildFile = new File(projectFile.getParentFile(), projectFile.getName());
-        ProjectHelper.configureProject(project, buildFile);
+        Project project = AntBuildDialog.getConfiguredProject(projectFile);
 
         final Set sortedTargetNames = new TreeSet(project.getTargets().keySet());
         return new AbstractValue()

@@ -39,67 +39,31 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.2 2003-06-22 00:27:28 shahid.shah Exp $
+ * $Id: AntBuildProjectMethod.java,v 1.1 2003-06-22 00:27:28 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.form;
+package com.netspective.sparx.template.freemarker;
 
-import java.io.Writer;
-import java.io.IOException;
+import java.util.List;
 import java.io.File;
-import java.io.PrintStream;
-import java.io.ByteArrayOutputStream;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.ProjectHelper;
-import org.apache.tools.ant.BuildLogger;
-import org.apache.tools.ant.NoBannerLogger;
-import org.apache.tools.ant.Main;
 
-import com.netspective.sparx.console.form.ConsoleDialog;
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.commons.value.Value;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+import freemarker.ext.beans.BeansWrapper;
 
-public class AntBuildDialog extends ConsoleDialog
+import com.netspective.sparx.console.form.AntBuildDialog;
+
+public class AntBuildProjectMethod implements TemplateMethodModel
 {
-    private static final Log log = LogFactory.getLog(AntBuildDialog.class);
-
-    public static Project getConfiguredProject(File buildFile)
+    public TemplateModel exec(List args) throws TemplateModelException
     {
-        Project project = new Project();
-        project.init();
-        ProjectHelper.configureProject(project, buildFile);
-        project.setUserProperty("ant.file", buildFile.getAbsolutePath());
-        project.setUserProperty("ant.version", Main.getAntVersion());
-        return project;
-    }
+        if (args.size() != 1)
+            throw new TemplateModelException("Wrong arguments: expecting name of ant build project file.");
 
-    public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
-    {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-
-        Value projectValue = states.getState("project").getValue();
-        Value targetValue = states.getState("target").getValue();
-        File projectFile = new File(projectValue.getTextValue());
-
-        Project project = getConfiguredProject(projectFile);
-
-        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-        PrintStream pstream = new PrintStream(ostream);
-
-        BuildLogger logger = new NoBannerLogger();
-        logger.setMessageOutputLevel(Project.MSG_INFO);
-        logger.setOutputPrintStream(pstream);
-        logger.setErrorPrintStream(pstream);
-
-        project.addBuildListener(logger);
-        project.executeTarget(targetValue.getTextValue());
-
-        writer.write("<div class='textbox'>Ant "+ Main.getAntVersion() +"<p><pre>");
-        writer.write(ostream.toString());
-        writer.write("</pre>");
+        Project project = AntBuildDialog.getConfiguredProject(new File((String) args.get(0)));
+        return BeansWrapper.getDefaultInstance().wrap(project);
     }
 }
