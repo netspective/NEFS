@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.39 2003-11-08 16:28:31 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.40 2003-11-11 19:40:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -509,6 +509,41 @@ public class XmlDataModelSchema
             return required;
         }
 
+        public boolean isInherited()
+        {
+            NestedStorer storer = (NestedStorer) nestedStorers.get(elemName);
+            if(storer != null)
+                return storer.isInherited();
+            else
+            {
+                NestedCreator creator = (NestedCreator) nestedCreators.get(elemName);
+                if(creator != null)
+                    return creator.isInherited();
+                else
+                    return false;
+            }
+        }
+
+        public Class getDeclaringClass()
+        {
+            if(isTemplateProducer())
+                return XmlDataModelSchema.this.bean;
+
+            NestedStorer storer = (NestedStorer) nestedStorers.get(elemName);
+            NestedCreator creator = (NestedCreator) nestedCreators.get(elemName);
+
+            if((storer != null && storer.isInherited()) && (creator != null && creator.isInherited()))
+                return creator.getDeclaringClass();
+
+            if((storer != null && storer.isInherited()) && (creator != null && ! creator.isInherited()))
+                return creator.getDeclaringClass();
+
+            if((storer != null && ! storer.isInherited()) && (creator != null && creator.isInherited()))
+                return storer.getDeclaringClass();
+
+            return creator != null ? creator.getDeclaringClass() : (storer != null ? storer.getDeclaringClass() : XmlDataModelSchema.this.bean);
+        }
+
         public boolean isTemplateProducer()
         {
             return templateProducer != null;
@@ -665,6 +700,30 @@ public class XmlDataModelSchema
             return required;
         }
 
+        public boolean isInherited()
+        {
+            if(attrName.equals(ATTRNAME_CLASS))
+                return true;
+
+            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null ? primaryFlagsAttrName : attrName);
+            if(setter != null)
+                return setter.isInherited();
+            else
+                return false;
+        }
+
+        public Class getDeclaringClass()
+        {
+            if(attrName.equals(ATTRNAME_CLASS))
+                return Object.class;
+
+            AttributeSetter setter = (AttributeSetter) attributeSetters.get(primaryFlagsAttrName != null ? primaryFlagsAttrName : attrName);
+            if(setter != null)
+                return setter.getDeclaringClass();
+            else
+                return XmlDataModelSchema.this.bean;
+        }
+
         public MethodJavaDoc getJavaDoc()
         {
             if(isFlagAlias())
@@ -790,8 +849,15 @@ public class XmlDataModelSchema
                 }
                 catch (Exception e)
                 {
-                    log.error(e);
-                    bfa = null;
+                    try
+                    {
+                        bfa = (XdmBitmaskedFlagsAttribute) attrType.newInstance();
+                    }
+                    catch(Exception e1)
+                    {
+                        log.error(e1);
+                        bfa = null;
+                    }
                 }
             }
             else
@@ -1039,6 +1105,16 @@ public class XmlDataModelSchema
                         {
                             return m.invoke(parent, new Object[]{});
                         }
+
+                        public boolean isInherited()
+                        {
+                            return ! m.getDeclaringClass().equals(bean);
+                        }
+
+                        public Class getDeclaringClass()
+                        {
+                            return m.getDeclaringClass();
+                        }
                     });
                 }
             }
@@ -1062,6 +1138,16 @@ public class XmlDataModelSchema
                         public Object create(Object parent, Class cls) throws InvocationTargetException, IllegalAccessException
                         {
                             return m.invoke(parent, new Object[]{ cls });
+                        }
+
+                        public boolean isInherited()
+                        {
+                            return ! m.getDeclaringClass().equals(bean);
+                        }
+
+                        public Class getDeclaringClass()
+                        {
+                            return m.getDeclaringClass();
                         }
                     });
                 }
@@ -1100,6 +1186,16 @@ public class XmlDataModelSchema
                                 {
                                     return c.newInstance(new Object[]{ cls });
                                 }
+
+                                public boolean isInherited()
+                                {
+                                    return ! m.getDeclaringClass().equals(bean);
+                                }
+
+                                public Class getDeclaringClass()
+                                {
+                                    return m.getDeclaringClass();
+                                }
                             });
                         }
                     }
@@ -1128,6 +1224,16 @@ public class XmlDataModelSchema
                                 throws InvocationTargetException, IllegalAccessException, InstantiationException
                         {
                             m.invoke(parent, new Object[]{child});
+                        }
+
+                        public boolean isInherited()
+                        {
+                            return ! m.getDeclaringClass().equals(bean);
+                        }
+
+                        public Class getDeclaringClass()
+                        {
+                            return m.getDeclaringClass();
                         }
                     });
                 }
@@ -1523,6 +1629,16 @@ public class XmlDataModelSchema
             {
                 return m.invoke(parent, null);
             }
+
+            public boolean isInherited()
+            {
+                return ! m.getDeclaringClass().equals(bean);
+            }
+
+            public Class getDeclaringClass()
+            {
+                return m.getDeclaringClass();
+            }
         };
 
         if (XdmBitmaskedFlagsAttribute.class.isAssignableFrom(arg))
@@ -1547,6 +1663,16 @@ public class XmlDataModelSchema
                 {
                     m.invoke(parent, new String[]{value});
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
 
             // now for the primitive types, use their wrappers
@@ -1561,6 +1687,16 @@ public class XmlDataModelSchema
                 {
                     m.invoke(parent, new Character[]{new Character(value.charAt(0))});
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (java.lang.Byte.TYPE.equals(arg))
@@ -1571,6 +1707,16 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     m.invoke(parent, new Byte[]{new Byte(value)});
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1583,6 +1729,16 @@ public class XmlDataModelSchema
                 {
                     m.invoke(parent, new Short[]{new Short(value)});
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (java.lang.Integer.TYPE.equals(arg))
@@ -1593,6 +1749,16 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     m.invoke(parent, new Integer[]{new Integer(value)});
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1605,6 +1771,16 @@ public class XmlDataModelSchema
                 {
                     m.invoke(parent, new Long[]{new Long(value)});
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (java.lang.Float.TYPE.equals(arg))
@@ -1616,6 +1792,16 @@ public class XmlDataModelSchema
                 {
                     m.invoke(parent, new Float[]{new Float(value)});
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (java.lang.Double.TYPE.equals(arg))
@@ -1626,6 +1812,16 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     m.invoke(parent, new Double[]{new Double(value)});
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1639,6 +1835,16 @@ public class XmlDataModelSchema
                         throws InvocationTargetException, IllegalAccessException
                 {
                     m.invoke(parent, new Boolean[]{new Boolean(TextUtils.toBoolean(value))});
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1662,6 +1868,16 @@ public class XmlDataModelSchema
                             throw dme;
                     }
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (java.io.File.class.equals(arg))
@@ -1673,6 +1889,16 @@ public class XmlDataModelSchema
                 {
                     // resolve relative paths through DataModel
                     m.invoke(parent, new File[]{pc.resolveFile(value)});
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1703,6 +1929,16 @@ public class XmlDataModelSchema
                                 " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else if (ValueSource.class.equals(arg))
@@ -1721,6 +1957,16 @@ public class XmlDataModelSchema
                                 " line "+ pc.getLocator().getLineNumber() + ". Valid value sources are: " + TextUtils.join(ValueSources.getInstance().getAllValueSourceIdentifiers(), ", "));
                     }
                     m.invoke(parent, new ValueSource[]{ vs });
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1741,6 +1987,16 @@ public class XmlDataModelSchema
                         if(pc.isThrowErrorException())
                             throw new DataModelException(pc, e);
                     }
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1763,6 +2019,16 @@ public class XmlDataModelSchema
                         if(pc.isThrowErrorException())
                             throw new DataModelException(pc, ie);
                     }
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1790,6 +2056,16 @@ public class XmlDataModelSchema
                         if(pc.isThrowErrorException())
                             throw new DataModelException(pc, ie);
                     }
+                }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
                 }
             };
         }
@@ -1819,6 +2095,16 @@ public class XmlDataModelSchema
                             throw new DataModelException(pc, "Too many items in Locale constructor.");
                     }
                 }
+
+                public boolean isInherited()
+                {
+                    return ! m.getDeclaringClass().equals(bean);
+                }
+
+                public Class getDeclaringClass()
+                {
+                    return m.getDeclaringClass();
+                }
             };
         }
         else
@@ -1844,8 +2130,17 @@ public class XmlDataModelSchema
                                 throw new DataModelException(pc, ie);
                         }
                     }
-                };
 
+                    public boolean isInherited()
+                    {
+                        return ! m.getDeclaringClass().equals(bean);
+                    }
+
+                    public Class getDeclaringClass()
+                    {
+                        return m.getDeclaringClass();
+                    }
+                };
             }
             catch (NoSuchMethodException nme)
             {
@@ -1961,18 +2256,24 @@ public class XmlDataModelSchema
     {
         public Object create(Object parent)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+        public boolean isInherited();
+        public Class getDeclaringClass();
     }
 
     public interface NestedAltClassCreator
     {
         public Object create(Object parent, Class cls)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+        public boolean isInherited();
+        public Class getDeclaringClass();
     }
 
     public interface NestedStorer
     {
         public void store(Object parent, Object child)
                 throws InvocationTargetException, IllegalAccessException, InstantiationException;
+        public boolean isInherited();
+        public Class getDeclaringClass();
     }
 
     public interface AttributeSetter
@@ -1980,6 +2281,8 @@ public class XmlDataModelSchema
         public void set(XdmParseContext pc, Object parent, String value)
                 throws InvocationTargetException, IllegalAccessException,
                 DataModelException;
+        public boolean isInherited();
+        public Class getDeclaringClass();
     }
 
     public interface AttributeAccessor
@@ -1987,5 +2290,7 @@ public class XmlDataModelSchema
         public Object get(XdmParseContext pc, Object parent)
                 throws InvocationTargetException, IllegalAccessException,
                 DataModelException;
+        public boolean isInherited();
+        public Class getDeclaringClass();
     }
 }
