@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StoredProcedureParameter.java,v 1.3 2003-10-31 23:39:25 aye.thu Exp $
+ * $Id: StoredProcedureParameter.java,v 1.4 2003-11-03 06:41:32 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -183,6 +183,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
     public void apply(StoredProcedureParameters.ValueApplyContext vac, ConnectionContext cc, CallableStatement stmt) throws SQLException
     {
         int paramNum = vac.getNextParamNum();
+
         Value sv = value.getValue(cc);
         if (getType().getValueIndex() == Type.IN || getType().getValueIndex() == Type.IN_OUT)
         {
@@ -222,8 +223,7 @@ public class StoredProcedureParameter implements XmlDataModelSchema.Construction
         if (getType().getValueIndex() == StoredProcedureParameter.Type.IN)
             return;
 
-        int index = 0;
-        Object result = null;
+        int index = this.getIndex();
         switch (sqlType)
         {
             case Types.VARCHAR:
