@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaEnumerationsValueSource.java,v 1.1 2003-05-17 17:50:38 shahid.shah Exp $
+ * $Id: SchemaEnumerationsValueSource.java,v 1.2 2003-08-28 03:32:15 aye.thu Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -142,19 +142,28 @@ public class SchemaEnumerationsValueSource extends AbstractValueSource
     {
         DatabaseConnValueContext dcvc = (DatabaseConnValueContext) vc;
         Schemas schemas = dcvc.getSqlManager().getSchemas();
-        if(schemas.size() == 0)
-            throw new RuntimeException("No schemas available in SQL Manager.");
+        Table table = null;
+        try
+        {
+            if(schemas.size() == 0)
+                throw new RuntimeException("No schemas available in SQL Manager.");
 
-        Schema schema = schemaName == null ? schemas.get(0) : schemas.getByNameOrXmlNodeName(schemaName);
-        if(schema == null)
-            throw new RuntimeException("Schema '"+ schemaName +"' not found.");
+            Schema schema = schemaName == null ? schemas.get(0) : schemas.getByNameOrXmlNodeName(schemaName);
+            if(schema == null)
+                throw new RuntimeException("Schema '"+ schemaName +"' not found.");
 
-        Table table = schema.getTables().getByNameOrXmlNodeName(tableName);
-        if(table == null)
-            throw new RuntimeException("Table '"+ tableName +"' not found in schema '"+ schemaName +"'");
+            table = schema.getTables().getByNameOrXmlNodeName(tableName);
+            if(table == null)
+                throw new RuntimeException("Table '"+ tableName +"' not found in schema '"+ schemaName +"'");
 
-        if(! (table instanceof EnumerationTable))
-            throw new RuntimeException("Table '"+ tableName +"' in schema '"+ schemaName +"' is not an enumeration table.");
+            if(! (table instanceof EnumerationTable))
+                throw new RuntimeException("Table '"+ tableName +"' in schema '"+ schemaName +"' is not an enumeration table.");
+        }
+        catch (Exception e)
+        {
+            log.error("Failed to get enumeration table.", e);
+            throw new NestableRuntimeException(e);
+        }
 
         return (EnumerationTable) table;
     }
