@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.85 2003-08-14 17:59:18 shahid.shah Exp $
+  * $Id: console.xml,v 1.86 2003-08-14 19:15:43 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -235,10 +235,10 @@
 
     <login-manager name="console">
         <login-authenticator class="com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator"/>
-        <authenticated-user-session-attr-name>nefs-console-authenticated-user-01</authenticated-user-session-attr-name>
+        <authenticated-user-session-attr-name>nefs-console-authenticated-user-02</authenticated-user-session-attr-name>
         <allow-remember-user-id>yes</allow-remember-user-id>
-        <remember-user-id-cookie-name>nefs-console-user-id-01</remember-user-id-cookie-name>
-        <remember-password-cookie-name>nefs-console-password-01</remember-password-cookie-name>
+        <remember-user-id-cookie-name>nefs-console-user-id-02</remember-user-id-cookie-name>
+        <remember-password-cookie-name>nefs-console-password-02</remember-password-cookie-name>
 
         <login-dialog retain-params="*">
             <frame heading="Netspective Enterprise Console Login" hide-heading="true"/> <!-- we hid the heading because the skin renders the heading within the dialog -->

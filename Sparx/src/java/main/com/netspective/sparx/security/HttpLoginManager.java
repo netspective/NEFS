@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.3 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.4 2003-08-14 19:15:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -96,6 +96,7 @@ public class HttpLoginManager
     private boolean allowRememberUserId;
     private String rememberUserIdCookieName = DEFAULT_REMEMBER_USER_ID_COOKIE_NAME;
     private String rememberPasswordCookieName = DEFAULT_REMEMBER_PASSWORD_COOKIE_NAME;
+    private ValueSource rememberPasswordCookiePath = null;
     private Class authenticatedUserClass = BasicAuthenticatedUser.class;
     private AuthenticatedUsers activeUsers = new AuthenticatedUsers();
     private int rememberUserIdCookieMaxAge = 60 * 60 * 24 * 365; // 1 year
@@ -190,6 +191,24 @@ public class HttpLoginManager
     public void setRememberUserIdCookieMaxAge(int rememberUserIdCookieMaxAge)
     {
         this.rememberUserIdCookieMaxAge = rememberUserIdCookieMaxAge;
+    }
+
+    public ValueSource getRememberPasswordCookiePath()
+    {
+        return rememberPasswordCookiePath;
+    }
+
+    public String getRememberPasswordCookiePath(HttpServletValueContext vc)
+    {
+        if(rememberPasswordCookiePath == null)
+            return vc.getHttpServlet().getServletContext().getServletContextName();
+        else
+            return rememberPasswordCookiePath.getTextValue(vc);
+    }
+
+    public void setRememberPasswordCookiePath(ValueSource rememberPasswordCookiePath)
+    {
+        this.rememberPasswordCookiePath = rememberPasswordCookiePath;
     }
 
     public ValueSource getInvalidUserMessage()
@@ -289,12 +308,12 @@ public class HttpLoginManager
         if(isAllowRememberUserId() && rememberUserId)
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), user.getUserId());
-            cookie.setPath("/");
+            cookie.setPath(getRememberPasswordCookiePath(vc));
             cookie.setMaxAge(getRememberUserIdCookieMaxAge());
             vc.getHttpResponse().addCookie(cookie);
             cookie = new Cookie(getRememberPasswordCookieName(), user.getEncryptedPassword());
             cookie.setMaxAge(getRememberUserIdCookieMaxAge());
-            cookie.setPath("/");
+            cookie.setPath(getRememberPasswordCookiePath(vc));
             vc.getHttpResponse().addCookie(cookie);
         }
 
@@ -308,11 +327,11 @@ public class HttpLoginManager
         if(isAllowRememberUserId())
         {
             Cookie cookie = new Cookie(getRememberUserIdCookieName(), "");
-            cookie.setPath("/");
+            cookie.setPath(getRememberPasswordCookiePath(vc));
             cookie.setMaxAge(-1);
             vc.getHttpResponse().addCookie(cookie);
             cookie = new Cookie(getRememberPasswordCookieName(), "");
-            cookie.setPath("/");
+            cookie.setPath(getRememberPasswordCookiePath(vc));
             cookie.setMaxAge(-1);
             vc.getHttpResponse().addCookie(cookie);
         }
