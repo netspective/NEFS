@@ -63,6 +63,10 @@
                 <@showSelfDescendants activePage=currentPage/>
             </table>
 
+            <#if activePageId = '' || activePageId = '/'>
+                <p>
+                <@inspectObject object=activeTree heading="${activeTree.name} Inspector"/>
+            </#if>
         <#else>
             No active tree found for '${activeTreeName}'.
         </#if>
