@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: LoginDialogSkin.java,v 1.2 2003-08-10 00:34:32 shahid.shah Exp $
+ * $Id: LoginDialogSkin.java,v 1.3 2003-08-10 17:11:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -49,6 +49,7 @@ import java.io.IOException;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.value.ValueSource;
 
 public class LoginDialogSkin extends StandardDialogSkin
@@ -75,7 +76,7 @@ public class LoginDialogSkin extends StandardDialogSkin
         String themeImagesRootUrl = dc.getNavigationContext().getThemeImagesRootUrl(dc.getActiveTheme());
         ValueSource heading = dc.getDialog().getFrame().getHeading();
 
-        writer.write("        <table width=\"50%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+        writer.write("        <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("            <tr>");
         writer.write("                <td class=\"panel-input-content\">");
         writer.write("                    <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
@@ -129,6 +130,7 @@ public class LoginDialogSkin extends StandardDialogSkin
      */
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
+        dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_NOFRAME);
         writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p><center>");
         super.renderHtml(writer, dc);
         writer.write("</center>");
