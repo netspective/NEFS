@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntegerValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
+ * $Id: IntegerValueValidationRule.java,v 1.3 2004-03-17 17:14:51 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -52,8 +52,10 @@ import com.netspective.commons.value.ValueSource;
 public class IntegerValueValidationRule extends BasicValidationRule
 {
     private String invalidRangeMessage = "{0} must be between {1} and {2}.";
+    private String invalidMultipleMessage = "{0} must be a multiple of {1}.";
     private int min = Integer.MIN_VALUE;
     private int max = Integer.MAX_VALUE;
+    private int multipleOf = 0;
 
     public IntegerValueValidationRule()
     {
@@ -85,6 +87,16 @@ public class IntegerValueValidationRule extends BasicValidationRule
         this.max = max;
     }
 
+    public int getMultipleOf()
+    {
+        return multipleOf;
+    }
+
+    public void setMultipleOf(int multipleOf)
+    {
+        this.multipleOf = multipleOf;
+    }
+
     public String getInvalidRangeMessage()
     {
         return invalidRangeMessage;
@@ -93,6 +105,16 @@ public class IntegerValueValidationRule extends BasicValidationRule
     public void setInvalidRangeMessage(String invalidRangeMessage)
     {
         this.invalidRangeMessage = invalidRangeMessage;
+    }
+
+    public String getInvalidMultipleMessage()
+    {
+        return invalidMultipleMessage;
+    }
+
+    public void setInvalidMultipleMessage(String invalidMultipleMessage)
+    {
+        this.invalidMultipleMessage = invalidMultipleMessage;
     }
 
     public boolean isValid(ValidationContext vc, Value value)
@@ -105,6 +127,13 @@ public class IntegerValueValidationRule extends BasicValidationRule
         {
             vc.addValidationError(value, getInvalidRangeMessage(),
                                 new Object[] { getValueCaption(vc), new Integer(min), new Integer(max) });
+            return false;
+        }
+
+        if (intValue != null && ! ValidationUtils.isMultipleOf(intValue.intValue(), multipleOf))
+        {
+            vc.addValidationError(value, getInvalidMultipleMessage(),
+                                new Object[] { getValueCaption(vc), new Integer(multipleOf) });
             return false;
         }
 
