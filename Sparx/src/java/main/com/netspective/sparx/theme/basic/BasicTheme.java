@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.7 2003-10-21 16:54:33 shahid.shah Exp $
+ * $Id: BasicTheme.java,v 1.8 2003-11-24 18:10:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -70,6 +70,10 @@ public class BasicTheme extends AbstractTheme
         // these are dialog skins that make the dialog look like a single row report skin (detail)
         addDialogSkin(new DialogAsReportSkin(this, "report", "panel-output", "panel/output", true));
         addDialogSkin(new DialogAsReportSkin(this, "report-compressed", "panel-output", "panel/output", false));
+
+        addPanelSkin(new BasicHtmlPanelSkin(this, "tabbed-compressed", "panel-output", "panel/output", false));
+        addPanelSkin(new BasicHtmlPanelSkin(this, "tabbed-full", "panel-output", "panel/output", true));
+
     }
 
     public NavigationSkin createNavigationSkin()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelTransform.java,v 1.5 2003-11-16 15:18:03 shahid.shah Exp $
+ * $Id: PanelTransform.java,v 1.6 2003-11-24 18:10:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -86,6 +86,7 @@ public class PanelTransform implements TemplateTransformModel
         private Writer out;
         private HtmlPanel panel;
         private HttpServletValueContext vc;
+        private String panelSkinName;
         private HtmlPanelSkin tabbedPanelSkin;
         private HtmlPanelValueContext pvc;
 
@@ -96,6 +97,9 @@ public class PanelTransform implements TemplateTransformModel
                 Object heading = args.get("heading");
                 if(heading != null)
                     getFrame().setHeading(new StaticValueSource(heading.toString()));
+                Object skin = args.get("skin");
+                if(skin != null)
+                    panelSkinName = skin.toString();
             }
 
             public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
@@ -126,7 +130,7 @@ public class PanelTransform implements TemplateTransformModel
 
             vc = (HttpServletValueContext) model.getWrappedObject();
             pvc = new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
-            tabbedPanelSkin = vc.getActiveTheme().getTabbedPanelSkin();
+            tabbedPanelSkin = panelSkinName == null ? vc.getActiveTheme().getTabbedPanelSkin() : (HtmlPanelSkin) vc.getActiveTheme().getPanelSkins().get(panelSkinName);
             try
             {
                 tabbedPanelSkin.renderPanelRegistration(out, pvc);
