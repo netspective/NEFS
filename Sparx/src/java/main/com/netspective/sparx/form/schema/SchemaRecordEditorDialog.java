@@ -39,31 +39,53 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.18 2004-01-15 13:50:16 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.19 2004-03-03 23:33:51 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
-import com.netspective.axiom.schema.*;
+import com.netspective.axiom.schema.Column;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Columns;
+import com.netspective.axiom.schema.ForeignKey;
+import com.netspective.axiom.schema.Index;
+import com.netspective.axiom.schema.IndexColumns;
+import com.netspective.axiom.schema.Indexes;
+import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.value.source.SqlExpressionValueSource;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.xml.template.*;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.xml.template.TemplateNode;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducers;
 import com.netspective.sparx.Project;
-import com.netspective.sparx.form.*;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogContextUtils;
+import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogFlags;
+import com.netspective.sparx.form.DialogPerspectives;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldStates;
 import com.netspective.sparx.form.field.DialogFields;
-import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.handler.DialogExecuteHandlers;
+import com.netspective.sparx.panel.PanelEditor;
 import org.apache.commons.jexl.Expression;
 import org.apache.commons.jexl.ExpressionFactory;
 import org.apache.commons.jexl.JexlContext;
@@ -76,19 +98,19 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Writer;
-import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
 
-    private static final String ATTRNAME_CONDITION = "_condition";
-    private static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
-    private static final String ATTRNAME_AUTOMAP = "_auto-map";
+    public static final String ATTRNAME_CONDITION = "_condition";
+    public static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
+    public static final String ATTRNAME_AUTOMAP = "_auto-map";
 
     protected class InsertDataTemplate extends TemplateProducer
     {
@@ -210,11 +232,18 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             String primaryKeyValueSpec = templateElement.getAttributes().getValue(ATTRNAME_PRIMARYKEY_VALUE);
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
-                primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
-                if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
-                    primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
+                HttpServletRequest request = dialogContext.getHttpRequest();
+                if (request.getAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE) != null)
+                {
+                    primaryKeyValueSpec =  (String) request.getAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE);
+                }
+                else
+                {
+                    primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
+                    if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
+                        primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
+                }
             }
-
             return ValueSources.getInstance().getValueSourceOrStatic(primaryKeyValueSpec);
         }
 
