@@ -34,6 +34,7 @@ package com.netspective.sparx.navigate.fts;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Map;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -44,6 +45,8 @@ public interface SearchHitsRenderer
     public interface SearchExpression
     {
         public String getExprText();
+
+        public String getExprTextURLEncoded();
 
         public boolean isEmptyExpression();
 
@@ -76,6 +79,13 @@ public interface SearchHitsRenderer
      * Called when the user enters an empty query
      */
     public void renderEmptyQuery(Writer writer, NavigationContext nc) throws IOException;
+
+    /**
+     * If we want to debug the FTS index, we will be passed a list of top terms so we should render them
+     *
+     * @param termsByFieldsMap Each key is a field name, the value is another Map of terms and term frequency
+     */
+    public void renderTerms(Writer writer, NavigationContext nc, Map termsByFieldsMap) throws IOException;
 
     /**
      * If this renderer expects to get a hits matrix using SearchResults.getActivePageHitMatrix then it can provide

@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -47,6 +48,8 @@ import javax.servlet.ServletRequest;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanQuery;
@@ -238,9 +241,36 @@ public class FullTextSearchPage extends NavigationPage
         return new DefaultSearchResults(this, expression, query, hits, maxResultsPerPage);
     }
 
+    public Map getTermsByFields() throws IOException
+    {
+        TreeMap termsByFieldsMap = new TreeMap();
+        IndexReader indexReader = IndexReader.open(indexDir);
+        TermEnum terms = indexReader.terms();
+        while(terms.next())
+        {
+            Term term = terms.term();
+            Map termMap = (Map) termsByFieldsMap.get(term.field());
+            if(termMap == null)
+            {
+                termMap = new TreeMap();
+                termsByFieldsMap.put(term.field(), termMap);
+            }
+
+            termMap.put(term.text(), new Integer((terms.docFreq())));
+        }
+        indexReader.close();
+        return termsByFieldsMap;
+    }
+
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         final ServletRequest request = nc.getRequest();
+        if(request.getParameter("terms") != null)
+        {
+            renderer.renderTerms(writer, nc, getTermsByFields());
+            return;
+        }
+
         final SearchExpression expression = renderer.getSearchExpression(nc);
         if(expression != null)
         {
@@ -249,7 +279,10 @@ public class FullTextSearchPage extends NavigationPage
             String redirectParams = expression.getRewrittenExpressionRedirectParams();
             if(redirectParams != null)
             {
-                nc.getHttpResponse().sendRedirect(getUrl(nc) + "?" + redirectParams);
+                final String url = getUrl(nc);
+                System.out.println(url);
+                System.out.println((url.indexOf('?') >= 0 ? "&" : "?") + redirectParams);
+                nc.getHttpResponse().sendRedirect(url + (url.indexOf('?') >= 0 ? "&" : "?") + redirectParams);
                 return;
             }
 

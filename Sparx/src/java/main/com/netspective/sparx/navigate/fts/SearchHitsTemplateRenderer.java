@@ -61,6 +61,7 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     private TemplateProcessor requestTemplate;
     private TemplateProcessor resultsTemplate;
     private TemplateProcessor queryErrorBodyTemplate;
+    private TemplateProcessor indexTermsBodyTemplate;
     private String expressionFormFieldName = "expression";
     private String searchWithinSearchResultsFormFieldName = "searchWithinResults";
     private String requestFormFieldTemplateVarName = "formFieldName";
@@ -172,6 +173,11 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
                 return exprText;
             }
 
+            public String getExprTextURLEncoded()
+            {
+                return URLEncoder.encode(exprText);
+            }
+
             public boolean isEmptyExpression()
             {
                 return exprText.length() == 0;
@@ -218,6 +224,14 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     {
         final Map templateVars = createDefaultTemplateVars(searchResults);
         resultsTemplate.process(writer, nc, templateVars);
+    }
+
+    public void renderTerms(Writer writer, NavigationContext nc, Map termsByFieldsMap) throws IOException
+    {
+        Map templateVars = new HashMap();
+        templateVars.put(rendererTemplateVarName, this);
+        templateVars.put("termsByFieldsMap", termsByFieldsMap);
+        indexTermsBodyTemplate.process(writer, nc, templateVars);
     }
 
     public String getExpressionFormFieldName()
@@ -273,6 +287,21 @@ public class SearchHitsTemplateRenderer implements SearchHitsRenderer
     public TemplateProcessor getQueryErrorBody()
     {
         return queryErrorBodyTemplate;
+    }
+
+    public TemplateProcessor createIndexTermsBody()
+    {
+        return new FreeMarkerTemplateProcessor();
+    }
+
+    public void addIndexTermsBody(TemplateProcessor templateProcessor)
+    {
+        indexTermsBodyTemplate = templateProcessor;
+    }
+
+    public TemplateProcessor getIndexTermsBody()
+    {
+        return indexTermsBodyTemplate;
     }
 
     public String[] getHitsMatrixFieldNames()
