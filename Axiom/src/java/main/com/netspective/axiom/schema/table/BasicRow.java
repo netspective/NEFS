@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicRow.java,v 1.3 2003-06-21 21:39:52 shahid.shah Exp $
+ * $Id: BasicRow.java,v 1.4 2003-06-26 05:00:26 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema.table;
@@ -169,5 +169,24 @@ public class BasicRow implements Row, XmlDataModelSchema.CustomElementAttributeS
             str.append("\n");
         }
         return str.toString();
+    }
+
+    public boolean equals(Object o){
+
+        BasicRow rowObject;
+
+        if (o == null)
+            return false;
+
+        try
+        {
+            rowObject = (BasicRow) o;
+        }
+        catch (ClassCastException cce)
+        {
+            return false;
+        }
+
+        return this.getColumnValues().equals(rowObject.getColumnValues());
     }
 }
