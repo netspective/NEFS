@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DialogFieldConditionalApplyFlag.java,v 1.5 2003-06-09 06:47:06 aye.thu Exp $
+ * $Id: DialogFieldConditionalApplyFlag.java,v 1.6 2003-06-09 22:27:12 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.conditional;
@@ -76,7 +76,6 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     private String[] lackPermissions;
     private ValueSource valueSource;
     private ValueSource conditionalValueSource;
-    private Flag flag = new Flag();
     private ValueSource hasValue;
     private ValueSource isTrue;
 
@@ -96,36 +95,9 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
         flags = value.createFlags();
     }
 
-    /**
-     * Inner class for defining all the flags available for dialog field conditionals. This class
-     * directly reads from DialogField.Flags to construct all the available flags.
-     */
-    public static class Flag extends XdmEnumeratedAttribute
+    public DialogField.Flags createFlags()
     {
-        public Flag()
-        {
-        }
-
-        public String[] getValues()
-        {
-            DialogField.Flags.FlagDefn[] flagDefns =  DialogField.FLAG_DEFNS;
-            String[] values = new String[DialogField.FLAG_DEFNS.length];
-            for (int i = 0; i < values.length; i++)
-            {
-                values[i] = DialogField.FLAG_DEFNS[i].getName().toLowerCase().replace('_', '-');
-            }
-            return values;
-        }
-    }
-
-    public Flag getFlag()
-    {
-        return flag;
-    }
-
-    public void setFlag(Flag flag)
-    {
-        this.flag = flag;
+        return flags;
     }
 
     public DialogField.Flags getFlags()
@@ -268,7 +240,7 @@ public class DialogFieldConditionalApplyFlag extends DialogFieldConditionalActio
     {
         boolean status = true;
         // Need to do this to set the flags
-        flags.setValue(flag.getValue().toUpperCase().replace('-', '_'));
+        //flags.setValue(flag.getValue().toUpperCase().replace('-', '_'));
 
         // the keep checking things until the status is set to false -- if it's false, we're going to just leave
         // and not do anything
