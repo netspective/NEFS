@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.28 2003-10-19 23:13:38 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.29 2003-10-22 19:04:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -80,11 +80,13 @@ import com.netspective.commons.io.MultipleUriAddressableFileLocators;
 import com.netspective.commons.io.UriAddressableFileLocator;
 import com.netspective.commons.io.UriAddressableInheritableFileResource;
 import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialogMode;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.RuntimeEnvironment;
+import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.io.FileFind;
 import com.netspective.commons.text.TextUtils;
@@ -530,7 +532,25 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         Theme theme = getTheme(httpServletRequest);
         httpServletRequest.setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_THEME, theme);
 
-        NavigationTree tree = getNavigationTree();
+        NavigationTree tree = null;
+
+        if(isSecure())
+        {
+            // check to see if there is an active user and the user wants a user-specific navigation tree
+            AuthenticatedUser user = getLoginManager().getAuthenticatedUser(httpServletRequest);
+            if(user instanceof NavigationControllerAuthenticatedUser)
+            {
+                NavigationControllerAuthenticatedUser ncUser = (NavigationControllerAuthenticatedUser) user;
+                if(ncUser.hasUserSpecificNavigationTree())
+                    tree = ncUser.getUserSpecificNavigationTree(this, httpServletRequest, httpServletResponse);
+            }
+        }
+
+        // if we get to here it means the user is not overriding the current tree so we'll use the default
+        if(tree == null)
+            tree = getNavigationTree();
+
+        // if the tree is still null we've got a big problem
         if(tree == null)
             throw new ServletException("Navigation tree '"+ servletOptions.getNavigationTreeName() +"' not found. Available: " + project.getNavigationTrees());
 
@@ -540,38 +560,65 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
 
         NavigationSkin skin = theme.getDefaultNavigationSkin();
 
-        return skin.createContext(getServletContext(), this, httpServletRequest, httpServletResponse,
+        return skin.createContext(this, httpServletRequest, httpServletResponse,
                                         tree, activePageId);
     }
 
-    protected boolean loginDialogPresented(NavigationContext nc) throws ServletException, IOException
-    {
-        HttpLoginManager loginManager = getLoginManager();
-        if(loginManager != null)
-        {
-            nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
-            return loginManager.loginDialogPresented(nc);
-        }
-
-        return false;
-    }
-
-    protected void checkForLogout(NavigationContext nc) throws ServletException, IOException
+    protected boolean logoutRequested(NavigationContext nc) throws ServletException, IOException
     {
         if(isSecure())
         {
             String logoutActionReqParamValue = nc.getHttpRequest().getParameter(servletOptions.getLogoutActionReqParamName());
             if(logoutActionReqParamValue != null && TextUtils.toBoolean(logoutActionReqParamValue))
+            {
                 getLoginManager().logout(nc);
+                return true;
+            }
         }
+
+        return false;
     }
 
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
-        // If a login dialog was presented, we don't want to render anything because the login dialog should take over
-        // the entire page
-        if(isSecure() && loginDialogPresented(nc))
-            return;
+        if(isSecure())
+        {
+            HttpLoginManager loginManager = getLoginManager();
+            LoginDialogMode loginDialogMode = LoginDialogMode.ACCESS_ALLOWED;
+            if(loginManager != null)
+            {
+                nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
+                loginDialogMode = loginManager.getLoginDialogMode(nc);
+
+                // if we're getting input or we're denying login it means that the presentation is complete (HTML is already on the screen)
+                if(loginDialogMode == LoginDialogMode.GET_INPUT || loginDialogMode == LoginDialogMode.LOGIN_DENIED)
+                    return;
+            }
+
+            // if we get to here, it means that the login dialog mode is either LOGIN_ACCEPTED (user has just logged in) or ACCESS_ALLOWED
+            // which means that access was previously granted and the user is still valid
+
+            // check to see if the user has recently logged in and is using the wrong navigation tree
+            if(loginDialogMode == LoginDialogMode.LOGIN_ACCEPTED)
+            {
+                AuthenticatedUser user = nc.getAuthenticatedUser();
+                if(user instanceof NavigationControllerAuthenticatedUser)
+                {
+                    NavigationControllerAuthenticatedUser ncUser = (NavigationControllerAuthenticatedUser) user;
+                    if(ncUser.hasUserSpecificNavigationTree())
+                    {
+                        NavigationTree userTree = ncUser.getUserSpecificNavigationTree(this, nc.getHttpRequest(), nc.getHttpResponse());
+                        if(userTree != null && nc.getOwnerTree() != userTree)
+                        {
+                            // we want to redirect back to the home page of the navigation tree so that the proper tree
+                            // will be picked up by the createContext() method
+                            nc.getHttpResponse().sendRedirect(userTree.getHomePage().getUrl(nc));
+                            return;
+                        }
+                    }
+                }
+            }
+        }
 
         NavigationPage activePage = nc.getActivePage();
         Writer writer = nc.getResponse().getWriter();
@@ -614,7 +661,12 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             return;
         }
 
-        checkForLogout(nc);
+        if(logoutRequested(nc))
+        {
+            httpServletResponse.sendRedirect(nc.getServletRootUrl());
+            return;
+        }
+
         if(nc.isRedirectToAlternateChildRequired())
         {
             String url =nc.getActivePage().getUrl(nc);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.18 2003-10-19 17:05:32 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.19 2003-10-22 19:04:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -533,10 +533,10 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
         return loginDialog;
     }
 
-    public boolean loginDialogPresented(NavigationContext nc) throws IOException, ServletException
+    public LoginDialogMode getLoginDialogMode(NavigationContext nc) throws IOException, ServletException
     {
         if(accessAllowed(nc))
-            return false;
+            return LoginDialogMode.ACCESS_ALLOWED;
 
         Theme theme = nc.getActiveTheme();
         LoginDialog loginDialog = getLoginDialog();
@@ -557,14 +557,14 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
                 // we're not in execute mode so we need to present the login dialog
                 nc.getSkin().renderPageMetaData(writer, nc);
                 ldc.getSkin().renderHtml(writer, ldc);
-                return true;
+                return LoginDialogMode.GET_INPUT;
             }
             try
             {
                 // we're in execute mode so we'll "run" the dialog (create the user, etc) and then
                 // return 'false' which means we're not presenting a login dialog (page should continue)
                 loginDialog.execute(writer, ldc);
-                return false;
+                return LoginDialogMode.LOGIN_ACCEPTED;
             }
             catch (DialogExecuteException e)
             {
@@ -578,7 +578,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             // because the login denial may itself be considered a login dialog
             nc.getSkin().renderPageMetaData(writer, nc);
             renderLoginAttemptDeniedHtml(writer, ldc);
-            return true;
+            return LoginDialogMode.LOGIN_DENIED;
         }
     }
 }
