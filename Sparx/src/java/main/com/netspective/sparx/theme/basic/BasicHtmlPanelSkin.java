@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.21 2003-10-12 05:20:54 aye.thu Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.22 2004-02-20 14:49:05 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -302,7 +302,6 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
     {
         int actionsCount = actions.size();
         if(actionsCount == 0) return;
-        String bannerItemFontAttrs = "";
 
         if(actions.getStyle().getValueIndex() == HtmlPanelActions.Style.HORIZONTAL)
         {
@@ -324,13 +323,11 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                     caption = constructRedirect(rc, itemRedirect, itemCaption != null ? itemCaption.getValue(rc).getTextValue() : "item" + i,
                             hint, null);
                 }
-                writer.write("<font " + bannerItemFontAttrs + ">");
                 if(i > 0)
                     writer.write(", ");
                 if(itemIcon != null)
                     writer.write("<img src='" + itemIcon.getValue(rc) + "'>");
                 writer.write(caption);
-                writer.write("</font>");
             }
         }
         else
@@ -357,12 +354,12 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
                 writer.write("<tr><td>");
                 writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
                 writer.write("</td>");
-                writer.write("<td><font " + bannerItemFontAttrs + ">");
+                writer.write("<td>");
                 if(caption != null)
                     writer.write(caption);
                 if(childItems != null && childItems.size() > 0)
                     produceBannerActionsHtml(writer, rc, childItems);
-                writer.write("</font></td>");
+                writer.write("</td>");
                 writer.write("</tr>");
             }
             writer.write("</table>");
