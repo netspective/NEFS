@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.4 2003-06-26 07:05:37 aye.thu Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.5 2003-06-28 05:25:07 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -158,7 +158,8 @@ public class DataSourceNavigatorButtonsField extends DialogField
                 writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             boolean hasMoreRows = false;
-            if(dataSource.hasMoreRows())
+            //dataSource.hasMoreRows()
+            if(activePage != lastPage)
             {
                 writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_NEXT +"' value='" + nextCaption.getTextValue(dc) + "' " + attrs + "> ");
                 hasMoreRows = true;
