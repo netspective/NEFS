@@ -37,7 +37,6 @@ import java.util.BitSet;
 
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.attr.Attributes;
 
 public interface AuthenticatedUser extends Principal
 {
@@ -58,8 +57,6 @@ public interface AuthenticatedUser extends Principal
     public String getEncryptedPassword();
 
     public boolean isRemembered();
-
-    public Attributes getPreferences();
 
     public AuthenticatedOrganizations getOrganizations();
 }

@@ -32,8 +32,6 @@
  */
 package com.netspective.commons.security;
 
-import com.netspective.commons.attr.Attributes;
-
 public interface MutableAuthenticatedOrganization extends AuthenticatedOrganization
 {
     public void setPrimary(boolean primary);
@@ -43,8 +41,4 @@ public interface MutableAuthenticatedOrganization extends AuthenticatedOrganizat
     public void setOrgType(Object type);
 
     public void setOrgName(String name);
-
-    public Attributes createPreferences();
-
-    public void setPreferences(Attributes attributes);
 }

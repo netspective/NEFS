@@ -32,8 +32,6 @@
  */
 package com.netspective.commons.security;
 
-import com.netspective.commons.attr.Attributes;
-
 public interface AuthenticatedOrganization
 {
     public boolean isPrimary();
@@ -43,6 +41,4 @@ public interface AuthenticatedOrganization
     public Object getOrgType();
 
     public String getOrgName();
-
-    public Attributes getPreferences();
 }

@@ -42,14 +42,9 @@ import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
 import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
-import com.netspective.commons.attr.Attribute;
-import com.netspective.commons.attr.Attributes;
-import com.netspective.commons.attr.BasicAttributes;
-import com.netspective.commons.attr.MutableAttributes;
-import com.netspective.commons.attr.MutableAttributes.AttributeMutationObserver;
 import com.netspective.commons.value.ValueContext;
 
-public class BasicAuthenticatedUser implements MutableAuthenticatedUser, AttributeMutationObserver, java.io.Serializable
+public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io.Serializable
 {
     private static final Log log = LogFactory.getLog(BasicAuthenticatedUser.class);
 
@@ -60,7 +55,6 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     private String[] userRoleNames;
     private String[] userPermissionNames;
     private BitSet userPermissions;
-    private Attributes preferences = createPreferences();
     private AuthenticatedOrganizations organizations = createOrganizations();
 
     public BasicAuthenticatedUser()
@@ -222,34 +216,5 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Attribu
     protected MutableAuthenticatedOrganizations createOrganizations()
     {
         return new BasicAuthenticatedOrganizations();
-    }
-
-    protected MutableAttributes createPreferences()
-    {
-        MutableAttributes result = new BasicAttributes();
-        result.addMutationObserver(this);
-        return result;
-    }
-
-    public void setPreferences(Attributes attributes)
-    {
-        this.preferences = attributes;
-    }
-
-    public Attributes getPreferences()
-    {
-        return preferences;
-    }
-
-    public void observeAttributeAdd(Attributes attributes, Attribute attribute)
-    {
-    }
-
-    public void observeAttributeChange(Attributes attributes, Attribute attribute)
-    {
-    }
-
-    public void observeAttributeRemove(Attributes attributes, Attribute attribute)
-    {
     }
 }

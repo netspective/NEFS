@@ -32,16 +32,12 @@
  */
 package com.netspective.commons.security;
 
-import com.netspective.commons.attr.Attributes;
-import com.netspective.commons.attr.BasicAttributes;
-
 public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrganization
 {
     private boolean primary;
     private Object orgId;
     private Object orgType;
     private String orgName;
-    private Attributes attributes;
 
     public boolean isPrimary()
     {
@@ -81,20 +77,5 @@ public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrgan
     public void setOrgName(String name)
     {
         this.orgName = name;
-    }
-
-    public Attributes createPreferences()
-    {
-        return new BasicAttributes();
-    }
-
-    public void setPreferences(Attributes attributes)
-    {
-        this.attributes = attributes;
-    }
-
-    public Attributes getPreferences()
-    {
-        return attributes;
     }
 }

@@ -32,10 +32,7 @@
  */
 package com.netspective.sparx.security.authenticator;
 
-import java.sql.SQLException;
 import java.util.Map;
-
-import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,8 +40,6 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
-import com.netspective.commons.attr.Attribute;
-import com.netspective.commons.attr.MutableAttributes;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
 import com.netspective.commons.security.MutableAuthenticatedOrganization;
@@ -64,16 +59,11 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     private Query roleQuery;            // the query to get the user's roles
     private Query primaryOrgQuery;      // the query to get the user's primary organization
     private Query orgsQuery;            // the query to get the user's supplementary organizations
-    private Query userPrefsQuery;       // the query to get a user's preferences list
-    private Query primaryOrgPrefsQuery; // the query to get a primary org's preferences list
-    private Query orgsPrefsQuery;       // the query to get a supplementary org's preferences list
     private boolean passwordEncrypted;  // true if the password is encrypted
 
     private static final String ATTRNAME_PASSWORD_QUERY_RESULTS = "PASSWORD_QUERY_RESULTS";
     private static final String ATTRNAME_PRIMARY_ORG_QUERY_RESULTS = "PRIMARY_ORG_QUERY_RESULTS";
     private static final String ATTRNAME_ORGS_QUERY_RESULTS = "ORGS_QUERY_RESULTS";
-    private static final String ATTRNAME_USER_PREFS_QUERY_RESULTS = "USER_PREFS_QUERY_RESULTS";
-    private static final String ATTRNAME_ORG_PREFS_QUERY_RESULTS = "PRIMARY_ORG_PREFS_QUERY_RESULTS";
 
     public String getPasswordQueryPasswordColumnLabel()
     {
@@ -131,8 +121,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, MutableAuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
         assignUserInfo(ldc, user);
-        retrievePreferences(ldc, userPrefsQuery, new Object[]{ldc.getUserIdInput()}, (MutableAttributes) user.getPreferences(), ATTRNAME_USER_PREFS_QUERY_RESULTS);
-
         assignOrganizations(ldc, user);
         assignUserRoles(ldc, user);
 
@@ -181,49 +169,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
         }
     }
 
-    protected void retrievePreferences(LoginDialogContext ldc, Query query, Object[] queryParams, MutableAttributes preferences, String resultsAttrName)
-    {
-        if(query != null)
-        {
-            try
-            {
-                QueryResultSet qrs = query.execute(ldc, queryParams, false);
-                if(qrs != null)
-                {
-                    Map[] prefsResult = ResultSetUtils.getInstance().getResultSetRowsAsMapArray(qrs.getResultSet(), true);
-                    if(prefsResult != null)
-                    {
-                        ldc.setAttribute(resultsAttrName, prefsResult);
-
-                        preferences.setObserving(false); // make sure add/update/remove announcements aren't made
-                        try
-                        {
-                            for(int rowIndex = 0; rowIndex < prefsResult.length; rowIndex++)
-                            {
-                                final Attribute attribute = preferences.createAttribute(prefsResult[rowIndex]);
-                                if(attribute != null)
-                                    preferences.addAttribute(attribute);
-                            }
-                        }
-                        finally
-                        {
-                            preferences.setObserving(true); // from now on, announcements should be made
-                        }
-                    }
-                    qrs.close(true);
-                }
-            }
-            catch(SQLException e)
-            {
-                log.error("Error retrieving preferences", e);
-            }
-            catch(NamingException e)
-            {
-                log.error("Error retrieving preferences", e);
-            }
-        }
-    }
-
     protected void assignOrganizations(LoginDialogContext ldc, AuthenticatedUser user)
     {
         MutableAuthenticatedOrganizations mutableOrgs = (MutableAuthenticatedOrganizations) user.getOrganizations();
@@ -245,8 +190,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                         Map row = orgsResult[rowIndex];
                         schema.assignMapValues(org, row, "*");
                         mutableOrgs.addOrganization(org);
-
-                        retrievePreferences(ldc, orgsPrefsQuery, new Object[]{org.getOrgId()}, (MutableAttributes) org.getPreferences(), null);
                     }
 
                     qrs.close(true);
@@ -276,7 +219,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                     org.setPrimary(true);
                     mutableOrgs.addOrganization(org);
 
-                    retrievePreferences(ldc, primaryOrgPrefsQuery, new Object[]{org.getOrgId()}, (MutableAttributes) org.getPreferences(), ATTRNAME_ORG_PREFS_QUERY_RESULTS);
                     qrs.close(true);
                 }
             }
@@ -355,50 +297,5 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
     public void addPrimaryOrgQuery(Query query)
     {
         primaryOrgQuery = query;
-    }
-
-    public Query getUserPrefsQuery()
-    {
-        return userPrefsQuery;
-    }
-
-    public Query createUserPrefsQuery()
-    {
-        return new Query();
-    }
-
-    public void addUserPrefsQuery(Query query)
-    {
-        userPrefsQuery = query;
-    }
-
-    public Query getPrimaryOrgPrefsQuery()
-    {
-        return primaryOrgPrefsQuery;
-    }
-
-    public Query createPrimaryOrgPrefsQuery()
-    {
-        return new Query();
-    }
-
-    public void addPrimaryOrgPrefsQuery(Query query)
-    {
-        primaryOrgPrefsQuery = query;
-    }
-
-    public Query getOrgsPrefsQuery()
-    {
-        return orgsPrefsQuery;
-    }
-
-    public Query createOrgsPrefsQuery()
-    {
-        return new Query();
-    }
-
-    public void addOrgsPrefsQuery(Query query)
-    {
-        orgsPrefsQuery = query;
     }
 }
