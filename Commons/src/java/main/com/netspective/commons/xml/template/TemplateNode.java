@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: TemplateNode.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateNode.java,v 1.2 2003-07-01 01:02:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
 
 import org.xml.sax.SAXException;
 
-abstract class TemplateNode
+public abstract class TemplateNode
 {
     protected abstract void apply(TemplateApplyContext ac) throws SAXException;
     protected abstract boolean isAllowReplaceExpressions();

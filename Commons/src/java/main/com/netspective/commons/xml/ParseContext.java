@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ParseContext.java,v 1.5 2003-06-10 02:51:05 shahid.shah Exp $
+ * $Id: ParseContext.java,v 1.6 2003-07-01 01:02:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -106,6 +106,7 @@ public class ParseContext
         TRANSFORM_OPTIONS.addOption(resourceOption);
     }
 
+    private ParseContext parentPC;
     private String sourceText;
     private File sourceFile;
     private Resource sourceResource;
@@ -124,6 +125,7 @@ public class ParseContext
 
     public ParseContext(ParseContext parentPC, String text) throws ParserConfigurationException, SAXException
     {
+        this.parentPC = parentPC;
         if(parentPC != null)
             setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(text));
@@ -131,6 +133,7 @@ public class ParseContext
 
     public ParseContext(ParseContext parentPC, File srcFile) throws ParserConfigurationException, SAXException, FileNotFoundException
     {
+        this.parentPC = parentPC;
         if(parentPC != null)
             setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(srcFile));
@@ -138,6 +141,7 @@ public class ParseContext
 
     public ParseContext(ParseContext parentPC, Resource resource) throws ParserConfigurationException, SAXException, IOException
     {
+        this.parentPC = parentPC;
         if(parentPC != null)
             setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(resource));
@@ -145,9 +149,15 @@ public class ParseContext
 
     public ParseContext(ParseContext parentPC, File jarFile, ZipEntry jarFileEntry) throws ParserConfigurationException, SAXException, FileNotFoundException, IOException
     {
+        this.parentPC = parentPC;
         if(parentPC != null)
             setParentFileTracker(parentPC.getInputFileTracker());
         init(createInputSource(jarFile, jarFileEntry));
+    }
+
+    public ParseContext getParentPC()
+    {
+        return parentPC;
     }
 
     public FileTracker getParentFileTracker()

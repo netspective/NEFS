@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateText.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateText.java,v 1.2 2003-07-01 01:02:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -67,6 +67,11 @@ public class TemplateText extends TemplateNode
     protected boolean isAllowReplaceExpressions()
     {
         return parentElement.isAllowReplaceExpressions();
+    }
+
+    public String getText()
+    {
+        return text;
     }
 
     protected void apply(TemplateApplyContext ac) throws SAXException

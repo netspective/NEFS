@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateElement.java,v 1.1 2003-03-13 18:33:14 shahid.shah Exp $
+ * $Id: TemplateElement.java,v 1.2 2003-07-01 01:02:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml.template;
@@ -102,6 +102,20 @@ public class TemplateElement extends TemplateNode
     public void addChild(TemplateNode child)
     {
         children.add(child);
+    }
+
+    public TemplateElement addChild(String elementName, String[][] attrNamesValues)
+    {
+        AttributesImpl attrs = new AttributesImpl();
+        if(attrNamesValues != null)
+        {
+            for(int i = 0; i < attrNamesValues.length; i++)
+                attrs.addAttribute(null, null, attrNamesValues[i][0], "CDATA", attrNamesValues[i][1]);
+        }
+
+        TemplateElement result = new TemplateElement(defnContentHandler, null, null, elementName, attrs);
+        addChild(result);
+        return result;
     }
 
     protected boolean isAllowReplaceExpressions()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.7 2003-06-30 15:33:03 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.8 2003-07-01 01:02:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -135,12 +135,15 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public TemplateProducer getDynamicTemplatesProducer()
     {
-        return nodeIdentifiers.getDynamicTemplatesProducer();
+        if(parseContext.getParentPC() != null)
+            return ((TemplateContentHandler) parseContext.getParentPC().getParser().getContentHandler()).getDynamicTemplatesProducer();
+        else
+            return nodeIdentifiers.getDynamicTemplatesProducer();
     }
 
     public void addDynamicTemplate(Template template)
     {
-        templateCatalog.registerTemplate(nodeIdentifiers.getDynamicTemplatesProducer(), Integer.toString(template.hashCode()), template);
+        templateCatalog.registerTemplate(getDynamicTemplatesProducer(), Integer.toString(template.hashCode()), template);
     }
 
     public ContentHandlerNodeStackEntry getActiveNodeEntry()
@@ -340,7 +343,7 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
     public void executeDynamicTemplates() throws SAXException
     {
         // see if we have any dynamic templates that we now need to process
-        List dynTemplates = nodeIdentifiers.getDynamicTemplatesProducer().getInstances();
+        List dynTemplates = getDynamicTemplatesProducer().getInstances();
         if(dynTemplates.size() > 0)
         {
             TemplateApplyContext tac = new TemplateApplyContext(this);
