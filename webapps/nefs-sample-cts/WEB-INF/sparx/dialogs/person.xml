@@ -20,7 +20,7 @@
     </xdm:template>
     <xdm:template name="subject-demographics">
         <field type="separator" heading="Demographic Information"/>
-        <field type="date" caption="Date of Birth" name="date_of_birth" size="12"/>
+        <field type="date" caption="Date of Birth" name="birth_date" size="12"/>
         <field type="ssn" caption="Social Security Number"  name="ssn" required="yes" size="11"/>
         <field type="select" name="gender_id" caption="Gender" choices="schema-enum:Gender_Type" prepend-blank="yes" required="yes"/>
         <field type="select" name="marital_status_id" caption="Marital Status"  choices="schema-enum:Marital_Status_Type"/>
@@ -153,6 +153,21 @@
             </on-edit-data>
             <on-delete-data>
                 <person _pk-value="request:person_id" _auto-map="*">
+                </person>
+            </on-delete-data>
+        </dialog>
+        <dialog name="self-short-profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Profile"/>
+            <xdm:include template="person-profile"/>
+            <xdm:include template="subject-demographics"/>
+            <on-edit-data>
+                <person _pk-value="request:person_id" _auto-map="*">
+                </person>
+            </on-edit-data>
+            <on-delete-data>
+                <person _pk-value="request:person_id" name_last="name_last" name_first="name_first"
+                    name_suffix="name_suffix" name_middle="name_middle" ssn="ssn" gender_id="gender_id"
+                    ethnicity_id="ethnicity_id" language_id="language_id">
                 </person>
             </on-delete-data>
         </dialog>
