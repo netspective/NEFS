@@ -39,32 +39,39 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.5 2003-08-31 23:40:52 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.6 2003-11-16 19:52:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.RuntimeEnvironmentFlags;
-import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.ProjectComponent;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.ServletRequest;
-import java.util.Enumeration;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.io.Writer;
-import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Enumeration;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.netspective.commons.RuntimeEnvironmentFlags;
+import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 public class HttpUtils
 {
@@ -235,5 +242,33 @@ public class HttpUtils
         final NavigationPage.Flags flags = (NavigationPage.Flags) nc.getActiveState().getFlags();
         if(flags.isDebuggingRequest())
             develEnvironmentHeader.process(writer, nc, null);
+    }
+
+    public static void includeServletResourceContent(Writer writer, HttpServletValueContext vc, String includePath, String valueContextAttrName) throws IOException, ServletException
+    {
+        ServletRequest request = vc.getRequest();
+        ServletResponse response = vc.getResponse();
+
+        RequestDispatcher rd = request.getRequestDispatcher(includePath);
+
+        if(writer != response.getWriter())
+            response = new AlternateOutputDestServletResponse(writer, response);
+
+        request.setAttribute(valueContextAttrName, vc);
+        rd.include(request, response);
+        request.removeAttribute(valueContextAttrName);
+    }
+
+    public static void includeUrlContent(String spec, Writer writer) throws IOException
+    {
+        URL url = new URL(spec);
+        URLConnection urlConn = url.openConnection();
+        InputStream urlIn = urlConn.getInputStream();
+        int iRead = urlIn.read();
+        while (iRead != -1)
+        {
+            writer.write((char) iRead);
+            iRead = urlIn.read();
+        }
     }
 }

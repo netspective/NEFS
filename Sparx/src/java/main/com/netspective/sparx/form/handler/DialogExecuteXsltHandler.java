@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogExecuteXsltHandler.java,v 1.5 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: DialogExecuteXsltHandler.java,v 1.6 2003-11-16 19:52:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
@@ -60,6 +60,7 @@ import javax.xml.transform.Source;
 public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
 {
     private Transform transform = new Transform();
+    private boolean writeErrorsToOutput = false;
 
     public DialogExecuteXsltHandler()
     {
@@ -115,13 +116,23 @@ public class DialogExecuteXsltHandler extends DialogExecuteDefaultHandler
         transform.setStyleSheetFile(styleSheet);
     }
 
+    public boolean isWriteErrorsToOutput()
+    {
+        return writeErrorsToOutput;
+    }
+
+    public void setWriteErrorsToOutput(boolean writeErrorsToOutput)
+    {
+        this.writeErrorsToOutput = writeErrorsToOutput;
+    }
+
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         try
         {
             Map textValuesMap = dc.getFieldStates().createTextValuesMap("field.");
             transform.render(writer, dc, transform.getSource() != null ? null :
-                             new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, false);
+                             new javax.xml.transform.dom.DOMSource(dc.getAsXmlDocument()), textValuesMap, writeErrorsToOutput);
         }
         catch (Exception e)
         {

@@ -39,31 +39,37 @@
  */
 
 /**
- * $Id: DialogExecuteIncludeResourceHandler.java,v 1.4 2003-11-16 19:52:29 shahid.shah Exp $
+ * $Id: HtmlIncludePanel.java,v 1.1 2003-11-16 19:52:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.handler;
+package com.netspective.sparx.panel;
 
 import java.io.IOException;
 import java.io.Writer;
 import javax.servlet.ServletException;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.util.HttpUtils;
 
-public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHandler
+public class HtmlIncludePanel extends AbstractPanel
 {
-    private static final Log log = LogFactory.getLog(DialogExecuteIncludeResourceHandler.class);
+    private static final Log log = LogFactory.getLog(HtmlIncludePanel.class);
+
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    public static final String REQATTRNAME_NAVIGATION_CONTEXT = "navigationContext";
     public static final String REQATTRNAME_DIALOG_CONTEXT = "dialogContext";
     private boolean local;
     private ValueSource path;
 
-    public DialogExecuteIncludeResourceHandler()
+    public HtmlIncludePanel()
     {
     }
 
@@ -94,8 +100,47 @@ public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHan
         this.local = local;
     }
 
-    public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
+
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+        vc.setNavigationContext(nc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
+
+        if (path == null)
+        {
+            writer.write("No path to resource or URL provided.");
+            return;
+        }
+
+        String includePath = getPath().getTextValue(nc);
+        if(local)
+        {
+            try
+            {
+                HttpUtils.includeServletResourceContent(writer, nc, includePath, REQATTRNAME_NAVIGATION_CONTEXT);
+            }
+            catch (ServletException e)
+            {
+                log.error(e);
+                throw new NestableRuntimeException("Error including '"+ includePath +"'", e);
+            }
+        }
+        else
+            HttpUtils.includeUrlContent(includePath, writer);
+
+        templatePanelSkin.renderFrameEnd(writer, vc);
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
+        vc.setNavigationContext(dc.getNavigationContext());
+        vc.setDialogContext(dc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
+
         if (path == null)
         {
             writer.write("No path to resource or URL provided.");
@@ -112,10 +157,12 @@ public class DialogExecuteIncludeResourceHandler extends DialogExecuteDefaultHan
             catch (ServletException e)
             {
                 log.error(e);
-                throw new DialogExecuteException("Error including '"+ includePath +"'", e);
+                throw new NestableRuntimeException("Error including '"+ includePath +"'", e);
             }
         }
         else
             HttpUtils.includeUrlContent(includePath, writer);
+
+        templatePanelSkin.renderFrameEnd(writer, vc);
     }
 }

@@ -39,29 +39,39 @@
  */
 
 /**
- * $Id: NavigationPageTransformBodyHandler.java,v 1.4 2003-11-16 19:52:29 shahid.shah Exp $
+ * $Id: TransformPanel.java,v 1.1 2003-11-16 19:52:29 shahid.shah Exp $
  */
 
-package com.netspective.sparx.navigate.handler;
+package com.netspective.sparx.panel;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import javax.servlet.ServletException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.text.Transform;
-import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.util.HttpUtils;
 
-/**
- * Transforms the given source XML file or resource using the style-sheet file or resource and places the output
- * in the page.
- */
-
-public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaultHandler
+public class TransformPanel extends AbstractPanel
 {
+    private static final Log log = LogFactory.getLog(TransformPanel.class);
+
     private Transform transform = new Transform();
     private boolean writeErrorsToOutput = false;
+
+    public TransformPanel()
+    {
+    }
 
     public void addParam(Transform.StyleSheetParameter param)
     {
@@ -118,15 +128,44 @@ public class NavigationPageTransformBodyHandler extends NavigationPageBodyDefaul
         this.writeErrorsToOutput = writeErrorsToOutput;
     }
 
-    public void handleNavigationPageBody(NavigationPage page, Writer writer, NavigationContext nc) throws ServletException, IOException
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+        vc.setNavigationContext(nc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
+
         try
         {
             transform.render(writer, nc, null, null, writeErrorsToOutput);
         }
-        catch (Exception e)
+        catch (TransformerException e)
         {
-            throw new ServletException(e);
+            log.error(e);
+            throw new NestableRuntimeException(e);
         }
+
+        templatePanelSkin.renderFrameEnd(writer, vc);
+    }
+
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
+    {
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
+        vc.setNavigationContext(dc.getNavigationContext());
+        vc.setDialogContext(dc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
+
+        try
+        {
+            transform.render(writer, dc, null, null, writeErrorsToOutput);
+        }
+        catch (TransformerException e)
+        {
+            log.error(e);
+            throw new NestableRuntimeException(e);
+        }
+
+        templatePanelSkin.renderFrameEnd(writer, vc);
     }
 }
