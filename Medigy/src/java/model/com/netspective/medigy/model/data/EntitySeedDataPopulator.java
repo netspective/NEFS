@@ -41,10 +41,10 @@ package com.netspective.medigy.model.data;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.util.HibernateUtil;
-import org.hibernate.Session;
-import org.hibernate.HibernateException;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -66,13 +66,14 @@ public class EntitySeedDataPopulator
 
     public void populateSeedData() throws HibernateException
     {
+        if (log.isInfoEnabled())
+            log.info("Initializing with seed data");
         HibernateUtil.beginTransaction();
         globalParty = new Party("SYS_GLOBAL_PARTY");
         session.save(globalParty);
 
         populatePartyRoleType();
         HibernateUtil.commitTransaction();
-        HibernateUtil.closeSession();
     }
 
     protected void populatePartyRoleType() throws HibernateException
