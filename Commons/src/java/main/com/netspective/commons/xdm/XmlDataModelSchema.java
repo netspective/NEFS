@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.48 2004-08-03 19:49:30 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.49 2004-08-08 20:01:22 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1588,16 +1588,31 @@ public class XmlDataModelSchema
             Class[] args = method.getParameterTypes();
             if (args.length == 1)
             {
-                XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) getAttributeSetters().get(key);
                 Object value = map.get(key);
-                if (value == null)
-                {
-                    if (required)
-                        throw new RuntimeException("Map key '" + key + "' is required but not available.");
 
-                    value = defaultValue;
+                XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) getAttributeSetters().get(key);
+                if(as != null)
+                {
+                    if (value == null)
+                    {
+                        if (required)
+                            throw new RuntimeException("Map key '" + key + "' is required but not available.");
+
+                        value = defaultValue;
+                    }
+                    as.set(null, element, value == null ? null : value.toString());
                 }
-                as.set(null, element, value == null ? null : value.toString());
+                else
+                {
+                    try
+                    {
+                        method.invoke(element, new Object[] { value });
+                    }
+                    catch (Exception e)
+                    {
+                        log.error("Attempting to assign '" + key + "' to a method in '" + element.getClass() + "' but no attribute setter was found and unable to call setXXX(Object).", e);
+                    }
+                }
             }
             else if (required && log.isErrorEnabled())
                 log.error("Attempting to assign '" + key + "' to a method in '" + element.getClass() + "' but the method has more than one argument.");
