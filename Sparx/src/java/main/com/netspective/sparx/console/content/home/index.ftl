@@ -7,7 +7,7 @@
                 <@reportTable
                         headings = ["Property", "Value"]
                         data=[
-                          ["Application Id", "<code>${vc.servlet.servletConfig.servletContext.servletContextName}</code>"],
+                          ["Application Id", "<code>${vc.servlet.servletConfig.servletContext.servletContextName?default('UNKNOWN')}</code>"],
                           ["Application Home", "<code>${vc.getConsoleFileBrowserLink(vc.servlet.servletContext.getRealPath(''), false)}</code>"],
                           ["<a href='project/project-source'>Sparx Project Source</a>", "<code>${vc.getConsoleFileBrowserLink(vc.projectComponent.inputSource.identifier, true)}</code>"],
                           ["<a href='project/configuration/runtime-environment'>Runtime Environment</a>", "<code>${vc.runtimeEnvironmentFlags.flagsText}</code>"],
