@@ -78,13 +78,13 @@
             <frame heading="Sample Date/Time Fields"/>
             <field type="duration" name="duration_field" caption="Duration Field" begin-min-value="10/20/1900" end-max-value="today"
                 hint="Format is MM/dd/yyyy"/>
-            <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="MM-dd-yyyy"
+            <field type="date" name="date_field_strict" caption="Date (Strict Year)" format="MM-dd-yyyy" client-calendar-format="%m-%d-%Y"
                 default="today" hint="Format is MM-dd-yyyy"/>
-            <field type="date" name="date_field_nonstrict" caption="Date (Non-Strict Year)" client-calendar-format="MM/dd/yyyy"
+            <field type="date" name="date_field_nonstrict" caption="Date (Non-Strict Year)" client-calendar-format="%m/%d/%Y"
                 strict-year="no" default="today+1" hint="Format is MM/dd/yyyy"/>
             <field type="time" name="time_field" caption="Time" strict-time="no" initial-focus="yes" default="now" hint="Format is HH\:mm"/>
-            <field type="date-time" name="datetime_field" caption="Date and Time" format="MM-dd-yyyy HH:mm" client-calendar-format="MM-dd-yyyy"
-                default="today" hint="Format is MM-dd-yyyy"/>
+            <field type="date-time" name="datetime_field" caption="Date and Time" format="MM-dd-yyyy HH:mm" client-calendar-format="%m-%d-%Y %H:%M"
+                default="today" hint="Format is MM-dd-yyyy HH\:mm"/>
             <director submit-caption="Submit"/>
         </dialog>
 
