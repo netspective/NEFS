@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.41 2004-01-09 14:20:58 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.42 2004-02-24 22:42:19 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -50,6 +50,7 @@ import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -775,6 +776,12 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     {
         // record the starting time because it may be used by skins to show complete render times.
         httpServletRequest.setAttribute(REQATTRNAME_RENDER_START_TIME, new Long(System.currentTimeMillis()));
+
+        // [SNS] Retrieve the session once because for some reason if this is not done, IE doesn't create sessions properly
+        // (Mozilla seems to be immune). If the session is not retrieved early, then dialog states don't work too well
+        // so things like query select scroll states fail too. :-(
+        // TODO: try and figure out why!
+        httpServletRequest.getSession();
 
         setThreadServletContext(getServletContext());
         setThreadServlet(this);
