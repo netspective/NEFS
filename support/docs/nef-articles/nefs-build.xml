@@ -27,8 +27,8 @@
 
       <listitem>
         <para><ulink url="http://www.caucho.com">Resin 2.1.10+</ulink> for web
-        application server. Release 3.0 of Resin should work but has
-        <emphasis>not</emphasis> been tested.</para>
+        application server. Although Release 3.0 of Resin should work and there is a configuration file prepared for it, it has
+        <emphasis>not</emphasis> been as well-tested as the Resin 2.1 configuration.</para>
       </listitem>
 
       <listitem>
@@ -291,7 +291,7 @@
     ensure that the proper paths are supplied. </para>
 
     <sect2>
-      <title>If you compiled using and IDE (IDEA, Eclipse, JBuilder, etc)</title>
+      <title>If you compiled using an IDE (IDEA, Eclipse, JBuilder, etc)</title>
 
       <itemizedlist>
         <listitem>
