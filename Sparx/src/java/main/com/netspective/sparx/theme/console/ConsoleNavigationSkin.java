@@ -51,31 +51,25 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.41 2003-11-27 19:33:30 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.42 2003-12-11 17:50:17 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
 
-import com.netspective.sparx.navigate.NavigationSkin;
-import com.netspective.sparx.navigate.NavigationTree;
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.navigate.NavigationPath;
-import com.netspective.sparx.navigate.NavigationPage;
-import com.netspective.sparx.navigate.NavigationControllerServlet;
-import com.netspective.sparx.navigate.NavigationPathFlags;
-import com.netspective.sparx.theme.basic.AbstractThemeSkin;
-import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.ProjectComponent;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.value.ValueSource;
-
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.ProjectComponent;
+import com.netspective.sparx.navigate.*;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.theme.basic.AbstractThemeSkin;
+import com.netspective.sparx.util.HttpUtils;
 
 public class ConsoleNavigationSkin extends AbstractThemeSkin implements NavigationSkin
 {
@@ -83,6 +77,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
 
     private int sidebarWidth = 125;
     private boolean showAuthenticatedUser = true;
+    private boolean showErrorHeader;
 
     public ConsoleNavigationSkin(Theme theme, String name)
     {
@@ -107,6 +102,16 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     public void setShowAuthenticatedUser(boolean showAuthenticatedUser)
     {
         this.showAuthenticatedUser = showAuthenticatedUser;
+    }
+
+    public boolean isShowErrorHeader()
+    {
+        return showErrorHeader;
+    }
+
+    public void setShowErrorHeader(boolean showErrorHeader)
+    {
+        this.showErrorHeader = showErrorHeader;
     }
 
     public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
@@ -408,6 +413,10 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
+        // in case any errors or messages need to appear, they'll show up at the top of our app
+        if(isShowErrorHeader())
+            HttpUtils.renderDevelopmentEnvironmentHeader(writer, nc);
+
         if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))
             return;
 

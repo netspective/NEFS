@@ -538,6 +538,15 @@
     </@panel>
 </#macro>
 
+<#macro objectXmlLocator object>
+    <#if object.inputSourceLocator?exists>
+        <#assign isl = object.inputSourceLocator/>
+        ${vc.getConsoleFileBrowserLink(isl.inputSourceTracker.identifier, true)} ${isl.lineNumbersText}
+    <#else>
+        Unable to get input source locator for ${object.class.name};
+    </#if>
+</#macro>
+
 <#macro objectXmlSource object>
     <#if object.inputSourceLocator?exists>
         <#assign isl = object.inputSourceLocator/>
