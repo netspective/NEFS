@@ -57,6 +57,8 @@ import com.netspective.commons.command.CommandException;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.PanelEditor;
+import com.netspective.sparx.panel.PanelEditorState;
+import com.netspective.sparx.panel.ReportPanelEditor;
 import com.netspective.sparx.theme.Theme;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -70,7 +72,7 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: PanelEditorCommand.java,v 1.6 2004-03-05 00:06:40 aye.thu Exp $
+ * @version $Id: PanelEditorCommand.java,v 1.7 2004-03-07 02:56:57 aye.thu Exp $
  */
 public class PanelEditorCommand extends AbstractHttpServletCommand
 {
@@ -191,14 +193,19 @@ public class PanelEditorCommand extends AbstractHttpServletCommand
              throw new RuntimeException("Record editor panel '"+ getPanelEditorName() + "' not found in "+ this +".");
         }
         Theme theme = nc.getActiveTheme();
-        // TODO: maybe these context settings should be changed to methods in the PanelEditor
-        HttpServletRequest request = nc.getHttpRequest();
-        request.setAttribute(PanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, getPanelEditorName());
-        request.setAttribute(PanelEditor.CURRENT_MODE_CONTEXT_ATTRIBUTE, getPanelMode());
-        if (previousPanelMode != null)
-            request.setAttribute(PanelEditor.PREV_MODE_CONTEXT_ATTRIBUTE, previousPanelMode);
+        // set the state object for the panel editor
+        PanelEditorState panelState = ePanel.constructPanelEditorState();
+        int mode = PanelEditor.validatePanelEditorMode(panelMode, recordKey);
+        if (mode == PanelEditor.UNKNOWN_MODE)
+            throw new RuntimeException("Requested mode '" + panelMode + "'  for panel editor '"+ getPanelEditorName() + "' is invalid.");
+
+        panelState.setCurrentMode(mode);
         if (recordKey != null)
-            request.setAttribute(PanelEditor.POPULATE_KEY_CONTEXT_ATTRIBUTE, recordKey);
+            panelState.setRecordKey(recordKey);
+        panelState.setPreviousMode(PanelEditor.translatePanelEditorMode(previousPanelMode));
+
+        HttpServletRequest request = nc.getHttpRequest();
+        request.setAttribute(ReportPanelEditor.PANEL_EDITOR_CONTEXT_ATTRIBUTE, panelState);
         ePanel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
 
     }
