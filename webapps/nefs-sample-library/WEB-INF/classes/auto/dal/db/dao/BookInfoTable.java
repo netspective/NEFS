@@ -12,6 +12,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
+import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
 import com.netspective.axiom.schema.column.type.TextColumn;
 import com.netspective.axiom.schema.column.type.EnumerationIdRefColumn;
@@ -71,6 +72,16 @@ public final class BookInfoTable
     public final QueryDefnSelect getAccessorByPrimaryKeysEquality()
     {
         return accessors.get(ACCESSORID_BY_PRIMARY_KEYS_EQUALITY);
+    }
+    
+    public final BookInfoTable.Records getAccessorRecords(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues)
+    throws NamingException, SQLException
+    {
+        Rows rows = getTable().createRows();
+        QueryResultSet qrs = accessor.execute(cc, bindValues, false);
+        if(qrs != null) rows.populateDataByIndexes(qrs.getResultSet());
+        qrs.close(false);
+        return new Records(rows);
     }
     
     public final TextColumn getAuthorColumn()
@@ -148,6 +159,12 @@ public final class BookInfoTable
             this.values = row.getColumnValues();
         }
         
+        public final boolean dataChangedInStorage(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            return table.dataChangedInStorage(cc, row);
+        }
+        
         public final void delete(ConnectionContext cc, String whereCond, Object[] whereCondBindParams)
         throws NamingException, SQLException
         {
@@ -209,6 +226,12 @@ public final class BookInfoTable
         throws NamingException, SQLException
         {
             table.insert(cc, row);
+        }
+        
+        public final void refresh(ConnectionContext cc)
+        throws NamingException, SQLException
+        {
+            table.refreshData(cc, row);
         }
         
         public final void setAuthor(com.netspective.commons.value.Value value)
