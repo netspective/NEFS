@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ThemesPage.java,v 1.3 2003-10-13 03:10:27 shahid.shah Exp $
+ * $Id: ThemesPage.java,v 1.4 2003-11-19 17:28:24 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -92,7 +92,7 @@ public class ThemesPage extends ConsoleServletPage
                 page.setDefault(true);
             FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
             templateProcessor.setConfig("console");
-            templateProcessor.setSource(ValueSources.getInstance().getValueSource(ValueSources.createSpecification("console-page-content:../inspector.ftl"), ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION));
+            templateProcessor.setSource(ValueSources.getInstance().getValueSource(ValueSources.createSpecification("console-page-content:../inspector.ftl"), ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION, true));
             page.addBody(templateProcessor);
             appendChild(page);
         }

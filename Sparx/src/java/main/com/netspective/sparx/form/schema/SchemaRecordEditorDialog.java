@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.12 2003-11-16 15:18:04 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.13 2003-11-19 17:27:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -406,7 +406,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
 
             // if the column value is a value source spec, we don't map the value to a field
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
             if(vs == null)
             {
                 DialogField.State fieldState = states.getState(columnTextValue, null);
@@ -575,7 +575,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
 
             // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
             else if (vs instanceof SqlExpressionValueSource)
@@ -685,7 +685,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
 
             // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
             else if (vs instanceof SqlExpressionValueSource)
@@ -793,7 +793,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             }
 
             // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
             if(vs == null)
                 DialogContextUtils.getInstance().populateColumnValueWithFieldValue(sredc, columnValue, columnTextValue);
             else if (vs instanceof SqlExpressionValueSource)
