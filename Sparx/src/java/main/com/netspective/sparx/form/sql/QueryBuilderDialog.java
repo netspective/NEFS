@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.3 2003-05-31 17:55:45 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.4 2003-06-24 05:08:47 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.sql;
@@ -400,18 +400,21 @@ public class QueryBuilderDialog extends Dialog
         QueryDefnSelect result = new QueryDefnSelect(queryDefn);
 
         boolean customizing = true;
-        DialogField.State predefinedSelState = states.getState("options.predefined_select");
-        if(predefinedSelState.hasRequiredValue())
+        if(queryDefn.getSelects().size() > 0)
         {
-            String predefinedSel = predefinedSelState.getValue().getTextValue();
-            if(! predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE_TEXT))
+            DialogField.State predefinedSelState = states.getState("options.predefined_select");
+            if (predefinedSelState.hasRequiredValue())
             {
-                customizing = false;
-                QueryDefnSelect sel = queryDefn.getSelects().get(predefinedSel);
-                if(sel != null)
-                    result.copy(sel);
-                else
-                    throw new RuntimeException("QueryDefnSelect '" + predefinedSel + "' not found.");
+                String predefinedSel = predefinedSelState.getValue().getTextValue();
+                if(! predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE_TEXT))
+                {
+                    customizing = false;
+                    QueryDefnSelect sel = queryDefn.getSelects().get(predefinedSel);
+                    if(sel != null)
+                        result.copy(sel);
+                    else
+                        throw new RuntimeException("QueryDefnSelect '" + predefinedSel + "' not found.");
+                }
             }
         }
 
@@ -428,14 +431,14 @@ public class QueryBuilderDialog extends Dialog
                 }
             }
         }
-
+        // get all the possible condition count. this doesn't mean all conditions were used.
         int lastCondIndex = maxConditions-1;
         for(int i = 0; i < maxConditions; i++)
         {
             String conditionId = "condition_" + i;
             String value = states.getState(conditionId + ".value").getValue().getTextValue();
             String join = i < lastCondIndex ? states.getState(conditionId + ".join").getValue().getTextValue() : null;
-
+            boolean connectorAdded = false;
             if(value != null && value.length() > 0)
             {
                 QueryDefnCondition cond = result.createCondition();
@@ -444,13 +447,17 @@ public class QueryBuilderDialog extends Dialog
                 comparison.setValue(states.getState(conditionId + ".compare").getValue().getTextValue());
                 cond.setComparison(comparison);
                 cond.setValue(new StaticValueSource(value));
-                QueryDefnConditionConnectorEnumeratedAttribute conn = new QueryDefnConditionConnectorEnumeratedAttribute();
-                conn.setValue(join);
-                cond.setConnector(conn);
+                if (join != null && join.length() > 0 && !join.equals(" "))
+                {
+                    QueryDefnConditionConnectorEnumeratedAttribute conn = new QueryDefnConditionConnectorEnumeratedAttribute();
+                    conn.setValue(join);
+                    cond.setConnector(conn);
+                    connectorAdded = true;
+                }
                 result.addCondition(cond);
             }
-
-            if(join == null || join.equals(" "))
+            // if no connector was added to the condition, then this must be the last condition
+            if(!connectorAdded)
                 break;
         }
 
@@ -588,6 +595,7 @@ public class QueryBuilderDialog extends Dialog
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 log.error("Error trying to get debug SQL", e);
                 throw new NestableRuntimeException();
             }
