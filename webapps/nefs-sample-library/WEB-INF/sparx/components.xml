@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+<component xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+	<!--
+	**********************************************************************
+	** NETSPECTIVE FRAMEWORKS' RESOURCE FILES                           **
+	********************************************************************** -->
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+    <xdm:include resource="com/netspective/axiom/conf/axiom.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/sparx.xml"/>
+    <xdm:include resource="com/netspective/sparx/conf/console.xml"/>
+
+	<!--
+	**********************************************************************
+	** USER INTERFACE (PRESENTATION) SPECIFICATIONS                     **
+	********************************************************************** -->
+
+    <navigation-tree name="library" default="yes">
+        <page name="home" default="yes" caption="Home">
+            <body>
+                Welcome to the home page.
+            </body>
+        </page>
+        <page name="add" caption="Add Book" command="dialog,library.bookInfo,add"/>
+    </navigation-tree>
+
+	<dialogs package="library">
+		<dialog name="bookInfo" retain-params="*">
+			<frame heading="create-data-cmd-heading:Book Information"/>
+
+			<field name="id" type="text" caption="Book ID" required="yes" max-length="10"/>
+			<field name="name" type="text" caption="Name" required="yes"/>
+			<field name="author" type="text" caption="Author" required="yes"/>
+			<field name="genre" type="select" caption="Genre" choices="schema-enum:library.Book_Type" prepend-blank="yes" required="yes"/>
+			<field name="isbn" type="text" caption="ISBN" max-length="10" required="yes" invalid-reg-ex-message="Please enter an ISBN of the form X-XXXX-XXXX-X i.e. with dashes, not spaces.  Thank you." reg-expr="/^\d+$/"/>
+            <director>
+            	<!--
+                <next-actions>
+                    <choices>
+                        <choice value="index.jsp">Choose next action</choice>
+                        <choice value="bookInfo.jsp?data_cmd=add">Add another book</choice>
+                        <choice value="index.jsp">Return to home</choice>
+                    </choices>
+                </next-actions>
+                -->
+            </director>
+		</dialog>
+	</dialogs>
+
+	<!--
+	**********************************************************************
+	** DATA MANAGEMENT STRUCTURE (SCHEMA) SPECIFICATIONS                **
+	********************************************************************** -->
+
+	<schema name="library">
+		<xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
+
+		<table name="Book_Info" abbrev="bkI">
+			<column name="id" type="text" size="10" primary-key="yes" descr="Unique ID for every book in the database"/>
+			<column name="name" type="text" size="64" descr="Name of the book"/>
+            <column name="author" type="text" size="64" descr="Name of the author(s)"/>
+			<column name="genre" lookup-ref="Book_Type"/>
+			<column name="isbn" type="text" size="10" descr="The 10 digit ISBN number"/>
+		</table>
+
+		<table name="Book_Type" abbrev="bkT" type="Enumeration">
+			<enumerations>
+				<enum>Science Fiction</enum>
+				<enum>Mystery</enum>
+				<enum>Business</enum>
+				<enum>Information Technology</enum>
+				<enum>Nuclear Physics</enum>
+				<enum>Chemistry</enum>
+			</enumerations>
+		</table>
+
+	</schema>
+
+	<!--
+	**********************************************************************
+	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
+	********************************************************************** -->
+
+</component>
