@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.5 2003-10-20 15:43:45 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.6 2003-10-20 22:21:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -91,7 +91,6 @@ import com.netspective.sparx.Project;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
-    public static final String PARAMNAME_PRIMARYKEY = "pk";
     private static final String ATTRNAME_CONDITION = "_condition";
     private static final String ATTRNAME_PRIMARYKEY_VALUE = "_pk-value";
     private static final String ATTRNAME_AUTOMAP = "_auto-map";
@@ -196,7 +195,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
 
                     // make sure this dialog has the given column and add the column
                     if(field != null)
-                        attrs.addAttribute(null, null, column.getXmlNodeName(), "CDATA", column.getName());
+                        attrs.addAttribute(null, null, column.getName(), "CDATA", column.getName());
                 }
             }
             else
@@ -215,9 +214,9 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
             String primaryKeyValueSpec = templateElement.getAttributes().getValue(ATTRNAME_PRIMARYKEY_VALUE);
             if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
             {
-                primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
+                primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
                 if(primaryKeyValueSpec == null || primaryKeyValueSpec.length() == 0)
-                    primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getName());
+                    primaryKeyValueSpec = templateElement.getAttributes().getValue(table.getPrimaryKeyColumns().getSole().getXmlNodeName());
             }
 
             return ValueSources.getInstance().getValueSourceOrStatic(primaryKeyValueSpec);
@@ -384,7 +383,7 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
                 populateFieldValuesUsingAttributes(sredc, activeRow, templateElement);
             else
             {
-                if(! sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
+                if(! (sredc.editingData() && getDialogFlags().flagIsSet(SchemaRecordEditorDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND)))
                     sredc.getValidationContext().addValidationError("Unable to locate primary key using value {0}={1} in table {2}.", new Object[] { primaryKeyValueSource, primaryKeyValueSource.getTextValue(sredc), table.getName() });
             }
         }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.41 2003-10-19 17:05:31 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.42 2003-10-20 22:21:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -244,16 +244,6 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
         public DialogFieldValue constructValueInstance()
         {
             return new BasicStateValue();
-        }
-
-        /**
-         * Creates the flags object associated with the field state. Extending classes that have their own Flag class
-         * <b>MUST</b> overwrite this method to create the flag object. This method is called by the initialize() method
-         * during object construction.
-         */
-        public void createStateFlags()
-        {
-            stateFlags = new DialogFieldFlags(this);
         }
 
         /**
