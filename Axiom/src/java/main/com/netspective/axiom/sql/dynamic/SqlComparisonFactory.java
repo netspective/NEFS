@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.4 2004-06-01 04:10:10 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.5 2004-07-29 17:07:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -53,6 +53,7 @@ import com.netspective.axiom.sql.dynamic.comparison.BinaryOpComparison;
 import com.netspective.axiom.sql.dynamic.comparison.ContainsComparison;
 import com.netspective.axiom.sql.dynamic.comparison.ContainsComparisonIgnoreCase;
 import com.netspective.axiom.sql.dynamic.comparison.DateComparison;
+import com.netspective.axiom.sql.dynamic.comparison.DynamicComparison;
 import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparisonIgnoreCase;
 import com.netspective.axiom.sql.dynamic.comparison.InComparison;
@@ -60,6 +61,7 @@ import com.netspective.axiom.sql.dynamic.comparison.IsDefinedComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparisonIgnoreCase;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.ValueSources;
 
 public class SqlComparisonFactory
 {
@@ -119,7 +121,21 @@ public class SqlComparisonFactory
 
     public static SqlComparison getComparison(String name)
     {
-        return (SqlComparison) comparisonsMap.get(name);
+        if(name.startsWith(DynamicComparison.DYNAMIC_ID))
+        {
+            String[] items = TextUtils.split(name, ",", true);
+            if(items.length == 2)
+            {
+                SqlComparison dynamicComparison =
+                        new DynamicComparison("private",
+                                              ValueSources.getInstance().getValueSource(items[1], ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION));
+                return dynamicComparison;
+            }
+            else
+                return (SqlComparison) comparisonsMap.get(name);
+        }
+        else
+            return (SqlComparison) comparisonsMap.get(name);
     }
 
     public static String[] getComparisonIdentifiers()
