@@ -22,6 +22,7 @@
 	<xdm:include file="data-management/query/statements.xml"/>
 	<xdm:include file="data-management/schema/schema.xml"/>
     <xdm:include file="forms/dialogs.xml"/>
+    <xdm:include file="editors/editor-panels.xml"/>
 
     <!-- setup the data access layer Singleton to point to our schema -->
     <listener class="app.Util"/>
@@ -41,36 +42,8 @@
     <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
         <navigation-skin default="yes" show-authenticated-user="no" show-error-header="yes"/>
         <dialog-skin class="app.theme.ModernDialogSkin" name="modern" default="yes" panel-class-name-prefix="panel-output" panel-resources-prefix="panel/output"/>
+        <report-skin class="app.theme.PanelEditorSkin" name="panel-editor" full-width="yes"/>
     </theme>
-    <!--
-       ======================================
-       Application record editor panels
-       ======================================
-    -->
-    <record-editor-panels package="personAttribute">
-        <record-editor-panel name="contact" dialog="personAttribute.contact">
-            <query>
-                select
-				system_id,
-				Contact_Method_Type.caption "Method",
-				method_value "Value"
-                from
-                    Person_Contact,
-                    Contact_Method_Type
-                where
-                    Person_Contact.parent_id = ? and
-                    Person_Contact.method_type = Contact_Method_Type.id
-                <params>
-                    <param value="request:person_id"/>
-                </params>
-                <presentation>
-                    <panel>
-                        <frame heading="Contact Information"/>
-                    </panel>
-                </presentation>
-            </query>
-        </record-editor-panel>
-    </record-editor-panels>
 
 
     <!--
@@ -184,12 +157,12 @@
             <page name="documents" caption="Documents"/>
         </page>
 
-        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes"  allow-page-cmd-param="yes" retain-params="person_id">
+        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
-                    <panel type="command" command="query,personAttribute.address,-,-,-,record-editor"/>
-                    <panel type="command" command="query,personAttribute.classification,-,-,-,record-editor"/>
+                    <panel type="command" command="record-editor-panel,personAttribute.address"/>
+                    <panel type="command" command="record-editor-panel,personAttribute.classification"/>
                     <panel type="command" command="record-editor-panel,personAttribute.contact"/>
                     <panel type="command" command="query,personAttribute.relationship,-,-,-,record-editor"/>
                 </panels>
