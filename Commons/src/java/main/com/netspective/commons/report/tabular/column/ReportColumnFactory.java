@@ -92,6 +92,10 @@ public class ReportColumnFactory
                     column = new NumericColumn();
                 break;
 
+            case Types.CLOB:
+                column = new ClobColumn();
+                break;
+
             default:
                 column = new GeneralColumn();
                 break;
