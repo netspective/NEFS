@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: ValidationRule.java,v 1.2 2003-05-10 18:13:36 shahid.shah Exp $
+ * $Id: ValidationRule.java,v 1.3 2003-05-10 21:35:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
 
 import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
 
 public interface ValidationRule
 {
@@ -55,6 +56,8 @@ public interface ValidationRule
      * Return the value identifier for the purposes of including in a validation message.
      */
     public String getValueCaption(ValidationContext vc);
+    public ValueSource getCaption();
+    public void setCaption(ValueSource caption);
 
     /**
      * Check to see if the given value is valid with respect to this rule.

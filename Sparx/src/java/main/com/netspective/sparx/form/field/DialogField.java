@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.6 2003-05-10 18:14:22 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.7 2003-05-10 21:35:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -83,7 +83,6 @@ import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationRules;
-import com.netspective.commons.validate.ValidationRulesCollection;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.commons.xml.template.Template;
@@ -406,7 +405,7 @@ public class DialogField implements TemplateConsumer
 
     public ValidationRules constructValidationRules()
     {
-        return new ValidationRulesCollection();
+        return new DialogFieldValidations(this);
     }
 
     public ValidationRules getValidationRules()

@@ -41,74 +41,81 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsRefByPanel.java,v 1.2 2003-05-10 21:35:44 shahid.shah Exp $
+ * $Id: SchemaTableColumnsValidationsPanel.java,v 1.1 2003-05-10 21:35:44 shahid.shah Exp $
  */
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.Arrays;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.console.panel.data.schema.SchemaTableColumnsPanel;
+import com.netspective.sparx.console.panel.presentation.dialogs.DialogFieldsValidationPanel;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.Columns;
-import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.column.ColumnsCollection;
 
-public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
+public class SchemaTableColumnsValidationsPanel extends SchemaTableColumnsPanel
 {
-    private static final HtmlTabularReport fKeysReport = new BasicHtmlTabularReport();
+    private static final Log log = LogFactory.getLog(SchemaTableColumnsValidationsPanel.class);
+    public static final String REQPARAMNAME_SHOW_DETAIL_COLUMN = "schema-table-column";
+    private static final HtmlTabularReport columnsDalReport = new BasicHtmlTabularReport();
+    private static final GeneralColumn schemaTableColumn = new GeneralColumn();
 
     static
     {
         GeneralColumn column = new GeneralColumn();
-        fKeysReport.addColumn(column);
+        columnsDalReport.addColumn(column);
 
-        column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("SQL Name"));
-        fKeysReport.addColumn(column);
+        schemaTableColumn.setHeading(new StaticValueSource("Column"));
+        schemaTableColumn.setCommand("redirect,detail?"+ REQPARAMNAME_SHOW_DETAIL_COLUMN +"=%{0}");
+        columnsDalReport.addColumn(schemaTableColumn);
 
         column = new GeneralColumn();
         column.setHeading(new StaticValueSource("Domain"));
-        fKeysReport.addColumn(column);
+        columnsDalReport.addColumn(column);
+
+        column = new NumericColumn();
+        column.setHeading(new StaticValueSource("Validations"));
+        columnsDalReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Referenced By"));
-        fKeysReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Validators"));
+        columnsDalReport.addColumn(column);
     }
 
-    public SchemaTableColumnsRefByPanel()
+    public SchemaTableColumnsValidationsPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Referenced By"));
-    }
-
-    public HtmlTabularReport getReport(NavigationContext nc)
-    {
-        return fKeysReport;
+        getFrame().setHeading(new StaticValueSource("Validations"));
     }
 
     public ColumnsDataSource createColumnsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Table table)
     {
-        Columns depColumns = new ColumnsCollection();
+        Columns valColumns = new ColumnsCollection();
         for(int i = 0; i < table.getColumns().size(); i++)
         {
             Column col = table.getColumns().get(i);
-            if(col.getDependentForeignKeys() != null)
-                depColumns.add(col);
+            if(col.getValidationRules() != null && col.getValidationRules().size() > 0)
+                valColumns.add(col);
         }
 
-        return new ColumnsFKeysDataSource(nc, vc, depColumns);
+        return new ColumnsValidationsDataSource(nc, vc, valColumns);
     }
 
-    protected class ColumnsFKeysDataSource extends ColumnsDataSource
+    public HtmlTabularReport getReport(NavigationContext nc)
     {
-        public ColumnsFKeysDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
+        return columnsDalReport;
+    }
+
+    protected class ColumnsValidationsDataSource extends ColumnsDataSource
+    {
+        public ColumnsValidationsDataSource(NavigationContext nc, HtmlTabularReportValueContext vc, Columns columns)
         {
             super(nc, vc, columns);
         }
@@ -125,24 +132,10 @@ public class SchemaTableColumnsRefByPanel extends SchemaTableColumnsPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    Set dependents = column.getDependentForeignKeys();
-                    String[] depNames = new String[dependents.size()];
-                    int dn = 0;
-                    for(Iterator i = column.getDependentForeignKeys().iterator(); i.hasNext(); )
-                    {
-                        ForeignKey fKey = (ForeignKey) i.next();
-                        depNames[dn] = fKey.getSourceColumns().getFirst().getQualifiedName();
-                        dn++;
-                    }
-                    Arrays.sort(depNames);
+                    return new Integer(column.getValidationRules().size());
 
-                    StringBuffer sb = new StringBuffer();
-                    for(int i = 0; i < depNames.length; i++)
-                    {
-                        sb.append(depNames[i]);
-                        sb.append("<br>");
-                    }
-                    return sb.toString();
+                case 4:
+                    return DialogFieldsValidationPanel.getValidationsHtml((HtmlTabularReportValueContext) reportValueContext, column.getValidationRules());
 
                 default:
                     return null;

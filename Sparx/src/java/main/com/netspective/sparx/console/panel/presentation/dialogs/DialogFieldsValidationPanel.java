@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: DialogFieldsValidationPanel.java,v 1.1 2003-05-10 18:14:22 shahid.shah Exp $
+ * $Id: DialogFieldsValidationPanel.java,v 1.2 2003-05-10 21:35:44 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
 
 import java.util.Map;
-import java.util.Iterator;
+import java.util.Arrays;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
@@ -56,6 +56,7 @@ import com.netspective.sparx.form.field.DialogField;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.validate.ValidationRule;
@@ -79,7 +80,7 @@ public class DialogFieldsValidationPanel extends DialogDetailPanel
         column.setHeading(new StaticValueSource("Control Id"));
         dialogFieldsReport.addColumn(column);
 
-        column = new GeneralColumn();
+        column = new NumericColumn();
         column.setHeading(new StaticValueSource("Validations"));
         dialogFieldsReport.addColumn(column);
 
@@ -107,6 +108,62 @@ public class DialogFieldsValidationPanel extends DialogDetailPanel
         return dialogFieldsReport;
     }
 
+    public static final String getValidationsHtml(HtmlTabularReportValueContext vc, ValidationRules rules)
+    {
+        StringBuffer text = new StringBuffer("<table>");
+        for(int i = 0; i < rules.size(); i++)
+        {
+            ValidationRule rule = rules.get(i);
+            text.append("<tr><td colspan=3 class=report-column-even>");
+            text.append(vc.getSkin().constructClassRef(rule.getClass()));
+            text.append("</td></tr>");
+            if(! rule.getName().equals(rule.getClass().getName()))
+            {
+                text.append("<tr>");
+                text.append("<td class=report-column-even>&nbsp;&nbsp;</td>");
+                text.append("<td class=report-column-even>Name</td>");
+                text.append("<td class=report-column-even>"+ rule.getName() +"</td>");
+                text.append("</tr>");
+            }
+            XmlDataModelSchema schema = XmlDataModelSchema.getSchema(rule.getClass());
+            Map attributeAccessors = schema.getAttributeAccessors();
+            Object[] attrNames = attributeAccessors.keySet().toArray();
+            Arrays.sort(attrNames);
+
+            Map propertyNames = schema.getPropertyNames();
+            for(int an = 0; an < attrNames.length; an++)
+            {
+                String attrName = (String) attrNames[an];
+                if(attrName.equals("name") || attrName.equals("class"))
+                    continue;
+
+                XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) propertyNames.get(attrName);
+                if(propNames != null && propNames.isPrimaryName(attrName))
+                {
+                    XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) attributeAccessors.get(attrName);
+                    if(accessor != null)
+                    {
+                        text.append("<tr>");
+                        text.append("<td class=report-column-even>&nbsp;&nbsp;</td>");
+                        text.append("<td class=report-column-even>" + propNames.getPrimaryName() + "</td>");
+                        try
+                        {
+                            text.append("<td class=report-column-even>" + accessor.get(null, rule) + "</td>");
+                        }
+                        catch (Exception e)
+                        {
+                            text.append("<td class=report-column-even>" + e.toString() + "</td>");
+                        }
+                        text.append("</tr>");
+                    }
+                }
+            }
+        }
+        text.append("</table>");
+        return text.toString();
+
+    }
+
     protected class DialogFieldsValidationPanelDataSource extends DialogFieldsDataSource
     {
         public DialogFieldsValidationPanelDataSource(HtmlTabularReportValueContext vc, SelectedDialog selectedDialog)
@@ -131,57 +188,7 @@ public class DialogFieldsValidationPanel extends DialogDetailPanel
 
                 case 4:
                     if(activeField != null)
-                    {
-                        StringBuffer text = new StringBuffer();
-                        ValidationRules rules = activeField.getValidationRules();
-                        for(int i = 0; i < rules.size(); i++)
-                        {
-                            if(i > 0)
-                                text.append("<p>");
-
-                            ValidationRule rule = rules.get(i);
-                            text.append(reportValueContext.getSkin().constructClassRef(rule.getClass()));
-                            if(! rule.getName().equals(rule.getClass().getName()))
-                            {
-                                text.append("<br>");
-                                text.append("name = ");
-                                text.append(rule.getName());
-                            }
-                            XmlDataModelSchema schema = XmlDataModelSchema.getSchema(rule.getClass());
-                            Map attributeAccessors = schema.getAttributeAccessors();
-                            Map propertyNames = schema.getPropertyNames();
-                            for(Iterator entryIter = attributeAccessors.entrySet().iterator(); entryIter.hasNext(); )
-                            {
-                                Map.Entry entry = (Map.Entry) entryIter.next();
-                                String attrName = (String) entry.getKey();
-
-                                if(attrName.equals("name") || attrName.equals("class"))
-                                    continue;
-
-                                XmlDataModelSchema.PropertyNames propNames = (XmlDataModelSchema.PropertyNames) propertyNames.get(attrName);
-                                if(propNames != null && propNames.isPrimaryName(attrName))
-                                {
-                                    XmlDataModelSchema.AttributeAccessor accessor = (XmlDataModelSchema.AttributeAccessor) attributeAccessors.get(attrName);
-                                    if(accessor != null)
-                                    {
-                                        text.append("<br>");
-                                        text.append(propNames.getPrimaryName());
-                                        text.append(" = ");
-                                        try
-                                        {
-                                            text.append(accessor.get(null, rule));
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            text.append(e.toString());
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                        return text.toString();
-                    }
+                        return getValidationsHtml((HtmlTabularReportValueContext) reportValueContext, activeField.getValidationRules());
 
                 default:
                     return null;

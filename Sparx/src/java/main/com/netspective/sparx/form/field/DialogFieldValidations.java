@@ -39,77 +39,26 @@
  */
 
 /**
- * $Id: StaticValueSource.java,v 1.4 2003-05-10 21:35:31 shahid.shah Exp $
+ * $Id: DialogFieldValidations.java,v 1.1 2003-05-10 21:35:44 shahid.shah Exp $
  */
 
-package com.netspective.commons.value.source;
+package com.netspective.sparx.form.field;
 
-import com.netspective.commons.value.source.AbstractValueSource;
-import com.netspective.commons.value.ValueSourceSpecification;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.exception.ValueSourceException;
-import com.netspective.commons.value.exception.ValueSourceInitializeException;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.validate.ValidationRulesCollection;
+import com.netspective.commons.validate.ValidationRule;
 
-public class StaticValueSource extends AbstractValueSource
+public class DialogFieldValidations extends ValidationRulesCollection
 {
-    public static final String[] IDENTIFIERS = new String[] { "static", "text", "string" };
-    public static final ValueContext VALUE_CONTEXT_NOT_REQUIRED = null;
-    protected static int usageCount = 0;
-    protected Value staticValue;
+    private DialogField field;
 
-    public static String[] getIdentifiers()
+    public DialogFieldValidations(DialogField field)
     {
-        return IDENTIFIERS;
+        this.field = field;
     }
 
-    public static int getUsageCount()
+    public void addRule(ValidationRule rule)
     {
-        return usageCount;
-    }
-
-    public StaticValueSource()
-    {
-        super();
-        usageCount++;
-    }
-
-    public StaticValueSource(String staticValue)
-    {
-        ValueSourceSpecification spec = new ValueSourceSpecification("static:" + staticValue);
-        initialize(spec);
-        usageCount++;
-    }
-
-    public void initialize(ValueSourceSpecification spec) throws ValueSourceInitializeException
-    {
-        super.initialize(spec);
-        staticValue = new GenericValue(spec.getParams());
-    }
-
-    public Value getValue(ValueContext vc) throws ValueSourceException
-    {
-        return staticValue;
-    }
-
-    public Value getPresentationValue(ValueContext vc)
-    {
-        return staticValue;
-    }
-
-    public boolean hasValue(ValueContext vc) throws ValueSourceException
-    {
-        return staticValue != null;
-    }
-
-    public String getTextValue(ValueContext vc)
-    {
-        return staticValue.getTextValue();
-    }
-
-    public String getTextValueOrBlank(ValueContext vc)
-    {
-        return staticValue.getTextValueOrBlank();
+        rule.setCaption(field.getCaption());
+        super.addRule(rule);
     }
 }
