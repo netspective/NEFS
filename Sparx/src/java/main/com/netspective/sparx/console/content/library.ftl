@@ -44,12 +44,20 @@
             <td class="report-column-${classSuffix}">
                 <#assign summaryTemplateName = "/content${child.qualifiedName}/summary.ftl"/>
                 <#assign summaryTemplateAltName = "/content${child.qualifiedName}.ftl"/>
-                <#if templateExists(summaryTemplateName)>
-                    <#include summaryTemplateName/>
-                <#elseif templateExists(summaryTemplateAltName)>
-                    <#include summaryTemplateAltName/>
+                <#assign summary>
+                    <#if templateExists(summaryTemplateName)>
+                        <#include summaryTemplateName/>
+                    <#elseif templateExists(summaryTemplateAltName)>
+                        <#include summaryTemplateAltName/>
+                    <#else>
+                        Neither <font color=red>${summaryTemplateName}</font> nor <font color=red>${summaryTemplateAltName}</font> are available.
+                    </#if>
+                </#assign>
+                <#assign sentenceEnd = summary?index_of('. ')/>
+                <#if sentenceEnd != -1>
+                    ${summary[0 .. sentenceEnd]}
                 <#else>
-                    Neither <font color=red>${summaryTemplateName}</font> nor <font color=red>${summaryTemplateAltName}</font> are available.
+                    ${summary}
                 </#if>
             </td>
         </tr>
