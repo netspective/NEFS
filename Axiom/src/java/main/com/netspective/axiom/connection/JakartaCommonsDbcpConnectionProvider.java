@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.4 2003-09-13 03:03:53 roque.hernandez Exp $
+ * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.5 2003-11-19 02:15:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -268,19 +268,20 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
         if (dataSourceInfo == null)
             throw new NamingException("Data Source: '" + dataSourceId + "' not defined as a data source for Jakarta Commons DBCP provider.");
 
+        String driverClassName = dataSourceInfo.driverClass.getTextValueOrBlank(vc);
         try
         {
-            Class.forName(dataSourceInfo.driverClass.getTextValueOrBlank(vc));
+            Class.forName(driverClassName);
         }
         catch (ClassNotFoundException cnfe)
         {
-            log.error("Driver '" + dataSourceInfo.driverClass + "' not found for name '" + dataSourceId + "'");
-            throw new NamingException("Driver '" + dataSourceInfo.driverClass + "' not found for name '" + dataSourceId + "'");
+            log.error("Driver '" + driverClassName + "' not found for name '" + dataSourceId + "'");
+            throw new NamingException("Driver '" + driverClassName + "' not found for name '" + dataSourceId + "'");
         }
 
         if (log.isDebugEnabled()){
             log.debug("Initializing data source: '" + dataSourceInfo.getName() + "'\n" +
-                      "                  driver: '" + dataSourceInfo.driverClass.getTextValueOrBlank(vc) + "'\n" +
+                      "                  driver: '" + driverClassName + "'\n" +
                       "                     url: '" + dataSourceInfo.url.getTextValueOrBlank(vc) + "'\n" +
                       "                    user: '" + dataSourceInfo.user.getTextValueOrBlank(vc) + "'\n" +
                       "                password: '" + dataSourceInfo.password.getTextValueOrBlank(vc) + "'");
