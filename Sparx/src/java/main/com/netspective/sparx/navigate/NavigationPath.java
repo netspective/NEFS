@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.5 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.6 2003-08-11 07:12:44 aye.thu Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -61,37 +61,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Iterator;
-
-import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Constructor;
 
 public class NavigationPath
 {
     static public final String PATH_SEPARATOR = "/";
 
-    public static final Flags.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
-    {
-    };
-
-    public class Flags extends XdmBitmaskedFlagsAttribute
-    {
-        public static final int START_CUSTOM = 1;
-
-        public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
-        {
-            return FLAG_DEFNS;
-        }
-    }
-
     public class State
     {
-        private Flags flags;
+        private NavigationPathFlags flags;
 
         public State()
         {
-            this.flags = (NavigationPath.Flags) NavigationPath.this.getFlags().cloneFlags();
+            this.flags = (NavigationPathFlags) NavigationPath.this.getFlags().cloneFlags();
         }
 
-        public Flags getFlags()
+        public NavigationPathFlags getFlags()
         {
             return flags;
         }
@@ -104,12 +90,13 @@ public class NavigationPath
 
     private NavigationTree owner;
     private NavigationPath parent;
-    private Flags flags;
+    private NavigationPathFlags flags;
     private String qualifiedName;
     private String name;
     private List childrenList = new ArrayList();
     private Map childrenMap = new HashMap();
     private Map descendantsByQualifiedName = new HashMap();
+    private NavigationConditionalActions conditionalActions = new NavigationConditionalActions();
     private Map ancestorMap = new HashMap();
     private List ancestorsList = new ArrayList();
     private NavigationPath defaultChild;
@@ -126,6 +113,44 @@ public class NavigationPath
     {
         for(int i = 0; i < childrenList.size(); i++)
             ((NavigationPath) childrenList.get(i)).finalizeContents(nc);
+    }
+
+    public void makeStateChanges(NavigationContext nc)
+    {
+        //The make state changes should affect the current navPath, its sibilings, its ancestors and the ancestor's sibilings and its children
+        if (getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+            applyConditionals(conditionalActions.getActions(), nc);
+
+        List sibilings = this.getSibilingList();
+        for (int i = 0; sibilings != null && i < sibilings.size(); i++)
+        {
+            NavigationPath sibiling = (NavigationPath) sibilings.get(i);
+            if (sibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+                applyConditionals(sibiling.getConditionals().getActions(), nc);
+        }
+
+        List ancestors = this.getAncestorsList();
+        for (int i = 0; ancestors != null && i < ancestors.size(); i++)
+        {
+            NavigationPath ancestor = (NavigationPath) ancestors.get(i);
+            if (ancestor.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+                applyConditionals(ancestor.getConditionals().getActions(), nc);
+            List ancestorSibilings = ancestor.getSibilingList();
+            for (int j = 0; ancestorSibilings != null && j < ancestorSibilings.size(); j++)
+            {
+                NavigationPath ancestorSibiling = (NavigationPath) ancestorSibilings.get(j);
+                if (ancestorSibiling.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+                    applyConditionals(ancestorSibiling.getConditionals().getActions(), nc);
+            }
+        }
+
+        List children = this.getChildrenList();
+        for (int i = 0; children != null && i < children.size(); i++)
+        {
+            NavigationPath child = (NavigationPath) children.get(i);
+            if (child.getFlags().flagIsSet(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS))
+                applyConditionals(child.getConditionals().getActions(), nc);
+        }
     }
 
     public State constructState()
@@ -225,24 +250,69 @@ public class NavigationPath
         owner.setMaxLevel(level);
     }
 
-    public Flags createFlags()
+    /**
+     * Get a list of conditional actions
+     *
+     * @return List a list of conditional actions
+     */
+    public NavigationConditionalActions getConditionals()
     {
-        return new Flags();
+        return conditionalActions;
     }
 
-    public Flags getFlags()
+    public void addConditional(NavigationConditionalAction action)
+    {
+        conditionalActions.addAction(action);
+        getFlags().setFlag(NavigationPathFlags.HAS_CONDITIONAL_ACTIONS);
+    }
+
+    public NavigationConditionalAction createConditional()
+    {
+        return new NavigationConditionalAction(this);
+    }
+
+    public NavigationConditionalAction createConditional(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(NavigationConditionalAction.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { NavigationPath.class });
+            return (NavigationConditionalAction) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
+    }
+
+    public void applyConditionals(List conditionals, NavigationContext nc)
+    {
+        if (conditionals != null)
+        {
+            for (int i = 0; i < conditionals.size(); i++)
+            {
+                NavigationConditionalAction action = (NavigationConditionalAction) conditionals.get(i);
+                if (action instanceof NavigationConditionalApplyFlag)
+                    ((NavigationConditionalApplyFlag) action).applyFlags(nc);
+            }
+        }
+    }
+
+    public NavigationPathFlags createFlags()
+    {
+        return new NavigationPathFlags();
+    }
+
+    public NavigationPathFlags getFlags()
     {
         return flags;
     }
 
-    public void setFlags(Flags flags)
+    public void setFlags(NavigationPathFlags flags)
     {
         this.flags.copy(flags);
     }
 
     public void setFlagRecursively(long flag)
     {
-        flags.setFlag(flag);
+        //flags.setFlag(flag);
         if (childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
@@ -253,7 +323,7 @@ public class NavigationPath
 
     public void clearFlagRecursively(long flag)
     {
-        flags.clearFlag(flag);
+        //flags.clearFlag(flag);
         if (childrenList.size() > 0)
         {
             Iterator i = childrenList.iterator();
