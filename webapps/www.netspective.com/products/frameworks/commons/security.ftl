@@ -1,7 +1,7 @@
 <h1>The Commons Core Library Security Service</h1>
 Most companies think security is about protecting servers and networks using firewalls and encryption using SSL. While
 that's a must, it's only a start. The majority of hacking that occurs takes place at the application level which means
-data protection and security code must be be built into the application itself.
+data protection and security code must be built into the application itself.
 
 <h1>Generate all the important Security Components</h1>
 NEFS' Commons Core Library Security Service automatically generates all the important application security
