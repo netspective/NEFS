@@ -39,17 +39,22 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.4 2003-03-17 23:22:13 shahid.shah Exp $
+ * $Id: DefaultValueContext.java,v 1.5 2003-03-20 14:56:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
 
+import org.apache.commons.discovery.tools.DiscoverClass;
+
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.security.BasicAuthenticatedUser;
 
 public class DefaultValueContext implements ValueContext
 {
+    private static DiscoverClass discoverClass = new DiscoverClass();
+
     public AccessControlListsManager getAccessControlListsManager()
     {
         return null;
@@ -60,9 +65,19 @@ public class DefaultValueContext implements ValueContext
         return null;
     }
 
+    public AuthenticatedUser createAuthenticatedUser() throws InstantiationException, IllegalAccessException
+    {
+        Class authUserClass = discoverClass.find(AuthenticatedUser.class, BasicAuthenticatedUser.class.getName());
+        return (AuthenticatedUser) authUserClass.newInstance();
+    }
+
     public AuthenticatedUser getAuthenticatedUser()
     {
         return null;
+    }
+
+    public void setAuthenticatedUser(AuthenticatedUser user)
+    {
     }
 
     public Object getAttribute(String attributeId)
