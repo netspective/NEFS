@@ -43,32 +43,79 @@
  */
 package com.netspective.medigy.model.org;
 
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.Table;
+import com.netspective.medigy.model.party.Party;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import javax.ejb.Entity;
+import javax.ejb.Inheritance;
+import javax.ejb.InheritanceJoinColumn;
+import javax.ejb.InheritanceType;
+import javax.ejb.Table;
+import javax.ejb.Transient;
+import javax.ejb.Column;
 
 @Entity
+@Inheritance(strategy=InheritanceType.JOINED)
+@InheritanceJoinColumn(name="partyId")
 @Table(name = "Org")
-public class Organization extends AbstractTopLevelEntity
+public class Organization extends Party
 {
-    private Long orgId;
+    private String name;
+    private String ein;     // Employment Identification Number (EIN)
 
     public Organization()
     {
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    public Long getOrgId()
+    @Transient
+    public String getPartyName()
     {
-        return orgId;
+        return getName();
     }
 
-    protected void setOrgId(final Long orgId)
+    public String getName()
     {
-        this.orgId = orgId;
+        return this.name;
     }
+
+    public void setName(final String name)
+    {
+        this.name = name;
+    }
+
+    @Transient
+    public Long getOrgId()
+    {
+        return super.getPartyId();
+    }
+
+    public void setOrgId(final Long orgId)
+    {
+        super.setPartyId(orgId);
+    }
+
+    /**
+     * Gets the Employment Identification Number (EIN). Also known as Federal Tax Identification Number
+     * @return
+     */
+    @Column(name="ein", length=9)
+    public String getEin()
+    {
+        return ein;
+    }
+
+    public void setEin(String ein)
+    {
+        this.ein = ein;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Org{" +
+                "indentifier=" + getOrgId() +
+                ",name='" + name + "'" +
+                ",ein='" + ein + "'" +
+                "}";
+    }
+
 }
