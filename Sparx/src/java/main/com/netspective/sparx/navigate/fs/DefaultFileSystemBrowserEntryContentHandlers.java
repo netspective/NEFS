@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultFileSystemBrowserEntryContentHandlers.java,v 1.1 2004-06-13 21:19:04 shahid.shah Exp $
+ * $Id: DefaultFileSystemBrowserEntryContentHandlers.java,v 1.2 2004-06-13 22:11:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
@@ -47,10 +47,12 @@ package com.netspective.sparx.navigate.fs;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.FileSystemEntry;
 
 public class DefaultFileSystemBrowserEntryContentHandlers implements FileSystemBrowserEntryContentHandlers
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private Map handlersByFileType = new HashMap();
 
     public DefaultFileSystemBrowserEntryContentHandlers()
@@ -66,7 +68,7 @@ public class DefaultFileSystemBrowserEntryContentHandlers implements FileSystemB
     {
         handlersByFileType.put(handler.getFileType().toLowerCase(), handler);
     }
-    
+
     public FileSystemBrowserEntryContentHandler getContentHandler(FileSystemEntry fileSystemEntry)
     {
         return (FileSystemBrowserEntryContentHandler) handlersByFileType.get(fileSystemEntry.getEntryType().toLowerCase());

@@ -1,3 +1,4 @@
+<p>
 <style>
     table.filesys-browser-struct {}
     table.filesys-browser-struct td { font-family: verdana; font-size: 9pt; }

@@ -39,18 +39,21 @@
  */
 
 /**
- * $Id: DefaultFileSystemEntryContentHandler.java,v 1.1 2004-06-13 21:19:04 shahid.shah Exp $
+ * $Id: DefaultFileSystemEntryContentHandler.java,v 1.2 2004-06-13 22:11:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
 
+import java.io.IOException;
 import java.io.Writer;
 
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.FileSystemEntry;
 import com.netspective.sparx.navigate.NavigationContext;
 
 public class DefaultFileSystemEntryContentHandler implements FileSystemBrowserEntryContentHandler
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private String fileType;
     private String mimeType;
     private boolean download;
@@ -85,7 +88,7 @@ public class DefaultFileSystemEntryContentHandler implements FileSystemBrowserEn
         this.download = download;
     }
 
-    public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry)
+    public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry) throws IOException
     {
         throw new RuntimeException("Can only handle downloadable files.");
     }

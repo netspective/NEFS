@@ -39,18 +39,18 @@
  */
 
 /**
- * $Id: FileSystemBrowserPage.java,v 1.1 2004-06-13 21:19:04 shahid.shah Exp $
+ * $Id: FileSystemBrowserPage.java,v 1.2 2004-06-13 22:11:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -73,7 +73,7 @@ public class FileSystemBrowserPage extends NavigationPage
     private static final String ATTRNAME_INVALID_FILE = "FILE_SYSTEM_ENTRY_INVALID_FILE";
 
     private boolean projectBrowser;
-    private boolean serveFilesWithUnknownHandlers;
+    private boolean serveFilesWithUnknownHandlers = true;
     private boolean showExactEntryNames;
     private TemplateProcessor renderer;
     private TemplateProcessor unableToServeFileTemplate;
@@ -96,10 +96,9 @@ public class FileSystemBrowserPage extends NavigationPage
         addRenderer(renderer);
 
         FreeMarkerTemplateProcessor unableToServeBody = (FreeMarkerTemplateProcessor) createUnableToServeBody();
-        unableToServeBody.addTemplateContent(
-            "Unable to serve file ${entry.file.absolutePath}."
-        );
-        unableToServeBody.finalizeContents();;
+        unableToServeBody.addTemplateContent("Unable to serve file ${entry.file.absolutePath}.");
+        unableToServeBody.finalizeContents();
+        ;
         addUnableToServeBody(unableToServeBody);
 
         DefaultFileSystemBrowserEntries ignoreEntries = createIgnoreEntries();
@@ -117,7 +116,11 @@ public class FileSystemBrowserPage extends NavigationPage
     public void setProjectBrowser(boolean projectBrowser)
     {
         this.projectBrowser = projectBrowser;
-        if(projectBrowser) setShowExactEntryNames(true);
+        if (projectBrowser)
+        {
+            setShowExactEntryNames(true);
+            SyntaxHighlightingContentHandler.registerAll((DefaultFileSystemBrowserEntryContentHandlers) contentHandlers);
+        }
     }
 
     public boolean isServeFilesWithUnknownHandlers()
@@ -249,57 +252,61 @@ public class FileSystemBrowserPage extends NavigationPage
         boolean evenFlag = true;
         String evenText = "even";
 
-        writer.write("<table class='"+ filesTableCssClass +"'>\n");
-        if(includeDirs && ! dirsMixedWithFiles)
+        writer.write("<table class='" + filesTableCssClass + "'>\n");
+        if (includeDirs && !dirsMixedWithFiles)
         {
-            for(int i = 0; i < activePathChildren.size(); i++)
+            for (int i = 0; i < activePathChildren.size(); i++)
             {
                 final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
                 final File childFile = child.getFile();
-                if(ignoreEntries.contains(child))
+                if (ignoreEntries.contains(child))
                     continue;
 
-                if(! childFile.isDirectory())
+                if (!childFile.isDirectory())
                     continue;
 
-                writer.write("    <tr class='"+ evenText +"'>\n");
-                writer.write("        <td class='image-"+ evenText +"'><img src='"+ theme.getResourceUrl(images.getFolderClosedImage()) +"'></td>");
-                writer.write("        <td class='spacer-"+ evenText +"'>&nbsp;</td>");
-                writer.write("        <td class='entry-"+ evenText +"'>");
+                writer.write("    <tr class='" + evenText + "'>\n");
+                writer.write("        <td class='image-" + evenText + "'><img src='" + theme.getResourceUrl(images.getFolderClosedImage()) + "'></td>");
+                writer.write("        <td class='spacer-" + evenText + "'>&nbsp;</td>");
+                writer.write("        <td class='entry-" + evenText + "'>");
 
-                String href = haveTrailingSlashInURI ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
-                writer.write("<a class='entry' href='"+ href +"'>"+ (showExactEntryNames ? childFile.getName() : child.getEntryCaption()) +"</a>");
+                String href = haveTrailingSlashInURI
+                        ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
+                writer.write("<a class='entry' href='" + href + "'>" + (showExactEntryNames
+                        ? childFile.getName() : child.getEntryCaption()) + "</a>");
 
                 writer.write("        </td>");
                 writer.write("    </tr>\n");
 
-                evenFlag = ! evenFlag;
+                evenFlag = !evenFlag;
                 evenText = evenFlag ? "even" : "odd";
             }
         }
 
-        for(int i = 0; i < activePathChildren.size(); i++)
+        for (int i = 0; i < activePathChildren.size(); i++)
         {
             final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
             final File childFile = child.getFile();
-            if(ignoreEntries.contains(child))
+            if (ignoreEntries.contains(child))
                 continue;
 
-            if(childFile.isDirectory() && (! includeDirs || ! dirsMixedWithFiles))
+            if (childFile.isDirectory() && (!includeDirs || !dirsMixedWithFiles))
                 continue;
 
-            writer.write("    <tr class='"+ evenText +"'>\n");
-            writer.write("        <td class='image-"+ evenText +"'><img src='"+ images.getImage(theme, child) +"'></td>");
-            writer.write("        <td class='spacer-"+ evenText +"'>&nbsp;</td>");
-            writer.write("        <td class='entry-"+ evenText +"'>");
+            writer.write("    <tr class='" + evenText + "'>\n");
+            writer.write("        <td class='image-" + evenText + "'><img src='" + images.getImage(theme, child) + "'></td>");
+            writer.write("        <td class='spacer-" + evenText + "'>&nbsp;</td>");
+            writer.write("        <td class='entry-" + evenText + "'>");
 
-            String href = haveTrailingSlashInURI ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
-            writer.write("<a class='entry' href='"+ href +"'>"+ (showExactEntryNames ? childFile.getName() : child.getEntryCaption()) +"</a>");
+            String href = haveTrailingSlashInURI
+                    ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
+            writer.write("<a class='entry' href='" + href + "'>" + (showExactEntryNames
+                    ? childFile.getName() : child.getEntryCaption()) + "</a>");
 
             writer.write("        </td>");
             writer.write("    </tr>\n");
 
-            evenFlag = ! evenFlag;
+            evenFlag = !evenFlag;
             evenText = evenFlag ? "even" : "odd";
         }
 
@@ -319,30 +326,31 @@ public class FileSystemBrowserPage extends NavigationPage
         boolean evenFlag = true;
         String evenText = "even";
 
-        writer.write("<table class='"+ stuctureTableCssClass +"'>\n");
-        for(int i = 0; i < activePathParents.size(); i++)
+        writer.write("<table class='" + stuctureTableCssClass + "'>\n");
+        for (int i = 0; i < activePathParents.size(); i++)
         {
             final FileSystemEntry parent = (FileSystemEntry) activePathParents.get(i);
-            if(ignoreEntries.contains(parent))
+            if (ignoreEntries.contains(parent))
                 continue;
 
-            writer.write("    <tr class='parent-"+ evenText +"'>\n");
-            writer.write("        <td class='parent-"+ evenText +"'>");
+            writer.write("    <tr class='parent-" + evenText + "'>\n");
+            writer.write("        <td class='parent-" + evenText + "'>");
 
-            for(int l = 0; l < level; l++)
+            for (int l = 0; l < level; l++)
                 writer.write(stuctureLevelPrefixHtml);
 
             String href = ".";
-            if(ancestorsCount > 0)
+            if (ancestorsCount > 0)
             {
                 final StringBuffer hrefBuffer = new StringBuffer();
-                for(int a = 1; a <= ancestorsCount; a++)
+                for (int a = 1; a <= ancestorsCount; a++)
                     hrefBuffer.append(a < ancestorsCount ? "../" : "..");
                 href = hrefBuffer.toString();
             }
 
-            writer.write("<img class='parent-entry-image' src='"+ theme.getResourceUrl(images.getFolderOpenImage())  +"'>&nbsp;");
-            writer.write("<a class='parent-entry-name' href='"+ href +"'>"+ (showExactEntryNames ? parent.getFile().getName() : parent.getEntryCaption()) +"</a>");
+            writer.write("<img class='parent-entry-image' src='" + theme.getResourceUrl(images.getFolderOpenImage()) + "'>&nbsp;");
+            writer.write("<a class='parent-entry-name' href='" + href + "'>" + (showExactEntryNames
+                    ? parent.getFile().getName() : parent.getEntryCaption()) + "</a>");
 
             writer.write("        </td>");
             writer.write("    </tr>\n");
@@ -350,79 +358,83 @@ public class FileSystemBrowserPage extends NavigationPage
             level++;
             ancestorsCount--;
 
-            evenFlag = ! evenFlag;
+            evenFlag = !evenFlag;
             evenText = evenFlag ? "even" : "odd";
         }
 
-        writer.write("    <tr class='active-"+ evenText +"'>\n");
-        writer.write("        <td class='active-"+ evenText +"'>\n");
+        writer.write("    <tr class='active-" + evenText + "'>\n");
+        writer.write("        <td class='active-" + evenText + "'>\n");
 
-        for(int l = 0; l < level; l++)
+        for (int l = 0; l < level; l++)
             writer.write(stuctureLevelPrefixHtml);
 
-        writer.write("            <img class='active-entry-image' src='"+ theme.getResourceUrl(images.getFolderActiveImage())  +"'>&nbsp;");
-        writer.write("            <span class='active-entry-name'>"+ (showExactEntryNames ? activePath.getFile().getName() : activePath.getEntryCaption()) +"</span>");
+        writer.write("            <img class='active-entry-image' src='" + theme.getResourceUrl(images.getFolderActiveImage()) + "'>&nbsp;");
+        writer.write("            <span class='active-entry-name'>" + (showExactEntryNames
+                ? activePath.getFile().getName() : activePath.getEntryCaption()) + "</span>");
         writer.write("        </td>\n");
         writer.write("    </tr>\n");
 
-        evenFlag = ! evenFlag;
+        evenFlag = !evenFlag;
         evenText = evenFlag ? "even" : "odd";
         level++;
 
-        for(int i = 0; i < activePathChildren.size(); i++)
+        for (int i = 0; i < activePathChildren.size(); i++)
         {
             final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
             final File childFile = child.getFile();
-            if(ignoreEntries.contains(child))
+            if (ignoreEntries.contains(child))
                 return;
 
-            final boolean isFile = ! childFile.isDirectory();
-            if(isFile && (! includeFiles || ! filesMixedWithDirs))
+            final boolean isFile = !childFile.isDirectory();
+            if (isFile && (!includeFiles || !filesMixedWithDirs))
                 continue;
 
-            writer.write("    <tr class='child-"+ evenText +"'>\n");
-            writer.write("        <td class='child-"+ evenText +"'>");
+            writer.write("    <tr class='child-" + evenText + "'>\n");
+            writer.write("        <td class='child-" + evenText + "'>");
 
-            for(int l = 0; l < level; l++)
+            for (int l = 0; l < level; l++)
                 writer.write(stuctureLevelPrefixHtml);
 
-            String href = haveTrailingSlashInURI ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
-            writer.write("<img class='child-entry-image' src='"+ images.getImage(theme, child)  +"'>&nbsp;");
-            writer.write("<a class='child-entry-name' href='"+ href +"'>"+ (showExactEntryNames ? child.getFile().getName() : child.getEntryCaption()) +"</a>");
+            String href = haveTrailingSlashInURI
+                    ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
+            writer.write("<img class='child-entry-image' src='" + images.getImage(theme, child) + "'>&nbsp;");
+            writer.write("<a class='child-entry-name' href='" + href + "'>" + (showExactEntryNames
+                    ? child.getFile().getName() : child.getEntryCaption()) + "</a>");
 
             writer.write("        </td>");
             writer.write("    </tr>\n");
 
-            evenFlag = ! evenFlag;
+            evenFlag = !evenFlag;
             evenText = evenFlag ? "even" : "odd";
         }
 
-        if(includeFiles && (! filesMixedWithDirs))
+        if (includeFiles && (!filesMixedWithDirs))
         {
-            for(int i = 0; i < activePathChildren.size(); i++)
+            for (int i = 0; i < activePathChildren.size(); i++)
             {
                 final FileSystemEntry child = (FileSystemEntry) activePathChildren.get(i);
                 final File childFile = child.getFile();
-                if(ignoreEntries.contains(child))
+                if (ignoreEntries.contains(child))
                     return;
 
-                if(childFile.isDirectory())
+                if (childFile.isDirectory())
                     continue;
 
-                writer.write("    <tr class='child-"+ evenText +"'>\n");
-                writer.write("        <td class='child-"+ evenText +"'>");
+                writer.write("    <tr class='child-" + evenText + "'>\n");
+                writer.write("        <td class='child-" + evenText + "'>");
 
-                for(int l = 0; l < level; l++)
+                for (int l = 0; l < level; l++)
                     writer.write(stuctureLevelPrefixHtml);
 
-                String href = haveTrailingSlashInURI ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
-                writer.write("<img class='child-entry-image' src='"+ images.getImage(theme, child)  +"'>&nbsp;");
-                writer.write("<a class='child-entry-name' href='"+ href +"'>"+ child.getEntryCaption() +"</a>");
+                String href = haveTrailingSlashInURI
+                        ? requestURI + childFile.getName() : requestURI + "/" + childFile.getName();
+                writer.write("<img class='child-entry-image' src='" + images.getImage(theme, child) + "'>&nbsp;");
+                writer.write("<a class='child-entry-name' href='" + href + "'>" + child.getEntryCaption() + "</a>");
 
                 writer.write("        </td>");
                 writer.write("    </tr>\n");
 
-                evenFlag = ! evenFlag;
+                evenFlag = !evenFlag;
                 evenText = evenFlag ? "even" : "odd";
             }
         }
@@ -457,11 +469,11 @@ public class FileSystemBrowserPage extends NavigationPage
         final FileSystemBrowserEntryContentHandler handler = (FileSystemBrowserEntryContentHandler) request.getAttribute(ATTRNAME_HANDLER);
         final FileSystemEntry activePath = fileSystemContext.getActivePath();
 
-        if(handler != null)
+        if (handler != null)
             handler.handleContent(writer, nc, activePath);
         else
         {
-            if(request.getAttribute(ATTRNAME_INVALID_FILE) != null)
+            if (request.getAttribute(ATTRNAME_INVALID_FILE) != null)
             {
                 Map templateVars = new HashMap();
                 templateVars.put("entry", activePath);
@@ -475,15 +487,15 @@ public class FileSystemBrowserPage extends NavigationPage
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
         final FileSystemContext fileSystemContext = projectBrowser ? nc.getProjectFileSystemContext() :
-                                                                     nc.getFileSystemContext(new File(getRootPath().getTextValue(nc)), getRootCaption().getTextValue(nc));
+                nc.getFileSystemContext(new File(getRootPath().getTextValue(nc)), getRootCaption().getTextValue(nc));
         final FileSystemEntry activePath = fileSystemContext.getActivePath();
         final ServletRequest request = nc.getRequest();
-        if(activePath.getFile().isFile())
+        if (activePath.getFile().isFile())
         {
             final FileSystemBrowserEntryContentHandler handler = contentHandlers.getContentHandler(activePath);
-            if(handler != null)
+            if (handler != null)
             {
-                if(handler.isDownload())
+                if (handler.isDownload())
                     activePath.send(nc.getHttpResponse(), handler.getMimeType());
                 else
                 {

@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.121 2004-06-13 21:19:04 shahid.shah Exp $
+  * $Id: console.xml,v 1.122 2004-06-13 22:11:47 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -30,8 +30,8 @@
             <page name="input-source" caption="Source" heading="Project Source File and Dependencies">
                 <body config="console" source="console-page-content:../input-source.ftl"/>
             </page>
-	        <page name="build" caption="Ant Build" heading="Execute Ant Build Target" class="com.netspective.sparx.console.page.project.AntBuildProjectsPage"/>
-	        <page name="inspect" caption="Inspect" heading="Inspect Objects" command="dialog,console.inspect"/>
+            <page name="build" caption="Ant Build" heading="Execute Ant Build Target" class="com.netspective.sparx.console.page.project.AntBuildProjectsPage"/>
+            <page name="inspect" caption="Inspect" heading="Inspect Objects" command="dialog,console.inspect"/>
             <page name="commands" caption="Commands">
                 <page name="catalog" caption="Catalog" heading="Commands Catalog" retain-params="selected-command">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
@@ -43,7 +43,7 @@
                     <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
             </page>
-	        <page name="value-sources" caption="Value Sources">
+            <page name="value-sources" caption="Value Sources">
                 <page name="catalog" caption="Catalog" heading="Value Sources Catalog" retain-params="selected-value-source">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
@@ -54,24 +54,24 @@
                     <body config="console" source="console-page-content:../documentation.ftl"/>
                 </page>
             </page>
-	        <page name="metrics" caption="Metrics">
+            <page name="metrics" caption="Metrics">
                 <body config="console" source="console-page-content:index.ftl"/>
             </page>
-	        <page name="configuration" caption="Configuration">
-	            <page name="servlet" caption="Servlet Config">
+            <page name="configuration" caption="Configuration">
+                <page name="servlet" caption="Servlet Config">
                     <body config="console" source="console-page-content:../servlet.ftl"/>
                 </page>
-	            <page name="runtime-environment" caption="Runtime Env">
+                <page name="runtime-environment" caption="Runtime Env">
                     <body config="console" source="console-page-content:../runtime-environment.ftl"/>
                 </page>
-	            <page name="class-path" caption="Class Path">
+                <page name="class-path" caption="Class Path">
                     <body config="console" source="console-page-content:../class-path.ftl"/>
                 </page>
-	            <page name="dependencies" caption="Dependencies">
+                <page name="dependencies" caption="Dependencies">
                     <body config="console" source="console-page-content:../dependencies.ftl"/>
                 </page>
             </page>
-	        <page name="access-control" caption="Access Control">
+            <page name="access-control" caption="Access Control">
                 <page name="catalog" caption="ACLs Catalog">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
@@ -91,12 +91,18 @@
             <page name="folders" caption="Project Folders">
                 <body config="console" source="console-page-content:../folders.ftl"/>
             </page>
-            <page name="files" caption="Project Files" class="com.netspective.sparx.navigate.fs.FileSystemBrowserPage" project-browser="yes"/>
+            <page name="files" caption="Project Files" class="com.netspective.sparx.navigate.fs.FileSystemBrowserPage" project-browser="yes">
+                <content-handlers>
+                    <handler class="com.netspective.sparx.navigate.fs.LocalFileSystemImageContentHandler" file-type="gif"/>
+                    <handler class="com.netspective.sparx.navigate.fs.LocalFileSystemImageContentHandler" file-type="jpg"/>
+                    <handler class="com.netspective.sparx.navigate.fs.LocalFileSystemImageContentHandler" file-type="jpeg"/>
+                </content-handlers>
+            </page>
         </page>
 
         <page name="presentation" caption="Presentation" heading="Presentation Layer">
 
-	        <page name="navigation" caption="Navigation">
+            <page name="navigation" caption="Navigation">
                 <page name="catalog" caption="Catalog" heading="Navigation Trees Catalog">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
@@ -118,9 +124,9 @@
                 <page name="page-conditionals" caption="Conditionals" heading="Page Conditional Actions">
                     <body config="console" source="console-page-content:../page-conditional-actions.ftl"/>
                 </page>
-	        </page>
+            </page>
 
-	        <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
+            <page name="dialogs" default="yes" caption="Dialogs" retain-params="selected-dialog-id">
                 <page name="catalog" caption="Catalog" heading="Dialogs Catalog" retain-params="selected-dialog-id">
                     <body config="console" source="console-page-content:../catalog.ftl"/>
                 </page>
@@ -142,22 +148,22 @@
                 <page name="field-conditionals" caption="Conditionals" heading="Field Conditional Actions">
                     <body config="console" source="console-page-content:../field-conditional-actions.ftl"/>
                 </page>
-	        </page>
+            </page>
 
             <page name="themes" caption="Themes" class="com.netspective.sparx.theme.console.ThemesPage">
                 <body config="console" source="console-page-content:catalog.ftl"/>
             </page>
 
-<!-- TODO: need to implement these soon
-            <page name="reports" caption="Reports"/> (reports needs to go to all the <presentation> tags in queries, etc)
-            <page name="template-engines" caption="Template Engines"/>
--->
+            <!-- TODO: need to implement these soon
+                        <page name="reports" caption="Reports"/> (reports needs to go to all the <presentation> tags in queries, etc)
+                        <page name="template-engines" caption="Template Engines"/>
+            -->
         </page>
 
         <page name="data-management" caption="Data Management" heading="Data Management Layer">
 
-	        <page name="static-queries" caption="Static Queries">
-				<page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
+            <page name="static-queries" caption="Static Queries">
+                <page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.StaticQueriesCatalogPanel"/>
                     </panels>
@@ -168,16 +174,16 @@
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
                     </panels>
                 </page>
-				<page name="test" caption="Unit Test" retain-params="selected-query-id">
+                <page name="test" caption="Unit Test" retain-params="selected-query-id">
                     <panels>
                         <panel type="command" command="dynamic,simple-expr:query,${request:selected-query-id},default,-,10"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel"/>
                         <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
                     </panels>
                 </page>
-	        </page>
+            </page>
 
-	        <page name="dynamic-queries" caption="Dynamic Queries">
+            <page name="dynamic-queries" caption="Dynamic Queries">
                 <page name="catalog" caption="Catalog" heading="Dynamic SQL Queries" retain-params="query-defn-source,selected-query-defn-id">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.sql.DynamicQueriesCatalogPanel"/>
@@ -191,11 +197,11 @@
                     </panels>
                 </page>
                 <page name="test" caption="Unit Test" retain-params="query-defn-source,selected-query-defn-id"/>
-		        <page name="sql-comparisons" caption="SQL Comparisons"/>
-		        <page name="active-scroll-states" caption="Scroll States"/>
-	        </page>
+                <page name="sql-comparisons" caption="SQL Comparisons"/>
+                <page name="active-scroll-states" caption="Scroll States"/>
+            </page>
 
-	        <page name="schemas" caption="Schemas">
+            <page name="schemas" caption="Schemas">
                 <page name="catalog" caption="Schema Tables" heading="Schema Structure" retain-params="schema-table">
                     <panels>
                         <panels style="tabbed">
@@ -248,15 +254,15 @@
                     </missing-params-body>
                 </page>
                 <page name="table-types" caption="Table Types">
-                     <body config="console" source="console-page-content:../table-types.ftl"/>
+                    <body config="console" source="console-page-content:../table-types.ftl"/>
                 </page>
                 <page name="data-types" caption="Data Types">
                     <body config="console" source="console-page-content:../data-types.ftl"/>
                 </page>
                 <page name="reverse-engineer" caption="Rev Engineer" heading="Reverse Engineer Existing Database" command="dialog,console.reverse-engineer-schema"/>
-	        </page>
+            </page>
 
-	        <page name="data-sources" caption="Data Sources">
+            <page name="data-sources" caption="Data Sources">
                 <page name="catalog" caption="Catalog">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.DataSourcesCatalogPanel"/>
@@ -268,7 +274,7 @@
                     </panels>
                 </page>
             </page>
-	        <page name="database-policies" caption="Database Policies"/>
+            <page name="database-policies" caption="Database Policies"/>
             <page name="connection-providers" caption="Connection Providers"/>
             <page name="open-connections" caption="Open Connections">
                 <body config="console" source="console-page-content:../open-connections.ftl"/>

@@ -39,43 +39,41 @@
  */
 
 /**
- * $Id: FileSystemBrowserEntryContentHandler.java,v 1.2 2004-06-13 22:11:47 shahid.shah Exp $
+ * $Id: SyntaxHighlightingContentHandler.java,v 1.1 2004-06-13 22:11:47 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate.fs;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.netspective.sparx.navigate.FileSystemEntry;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
 
-public interface FileSystemBrowserEntryContentHandler
+public class SyntaxHighlightingContentHandler extends DefaultFileSystemEntryContentHandler
 {
-    /**
-     * Get the file type (extension) for the file that this handler will serve
-     */
-    public String getFileType();
+    public static void registerAll(DefaultFileSystemBrowserEntryContentHandlers handlers)
+    {
+        Set extensions = HtmlSyntaxHighlightPanel.getLexers().keySet();
+        for (Iterator i = extensions.iterator(); i.hasNext();)
+        {
+            String extn = (String) i.next();
+            SyntaxHighlightingContentHandler handler = new SyntaxHighlightingContentHandler();
+            handler.setFileType(extn);
+            handlers.addHandler(handler);
+        }
+    }
 
-    /**
-     * Get the MIME type for the content handler (only useful if it's downloaded)
-     */
-    public String getMimeType();
+    public SyntaxHighlightingContentHandler()
+    {
+        setDownload(false);
+    }
 
-    /**
-     * Ascertain whether this file system entry is downloaded or shown in the browser.
-     *
-     * @return True if the file is downloaded, false if the file is shown in the browser (handleContent should be called)
-     */
-    public boolean isDownload();
-
-    /**
-     * If this content handler can write content to a browser, then this method should do that work
-     *
-     * @param writer          The writer to which content should be written
-     * @param nc              The navigation content for the content
-     * @param fileSystemEntry
-     */
-    public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry) throws IOException;
+    public void handleContent(Writer writer, NavigationContext nc, FileSystemEntry fileSystemEntry) throws IOException
+    {
+        HtmlSyntaxHighlightPanel.emitHtml(fileSystemEntry.getFile(), writer);
+    }
 }
-
