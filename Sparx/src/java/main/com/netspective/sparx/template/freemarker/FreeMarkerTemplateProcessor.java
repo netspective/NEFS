@@ -39,31 +39,31 @@
  */
 
 /**
- * $Id: FreeMarkerTemplateProcessor.java,v 1.14 2003-11-27 19:26:46 shahid.shah Exp $
+ * $Id: FreeMarkerTemplateProcessor.java,v 1.15 2004-08-12 16:29:18 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
-import java.io.Writer;
 import java.io.IOException;
-import java.util.Map;
+import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.template.AbstractTemplateProcessor;
+import com.netspective.commons.template.TemplateProcessorException;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.sparx.value.ServletValueContext;
+
+import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import freemarker.ext.beans.BeansWrapper;
-
-import com.netspective.commons.template.AbstractTemplateProcessor;
-import com.netspective.commons.template.TemplateProcessorException;
-import com.netspective.sparx.value.ServletValueContext;
-import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.XdmParseContext;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
 
 public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
 {
@@ -118,13 +118,20 @@ public class FreeMarkerTemplateProcessor extends AbstractTemplateProcessor
     public void process(Writer writer, ValueContext vc, Map templateVars) throws IOException, TemplateProcessorException
     {
         Configuration fmConfig = fmConfigAdapter == null ?
-                ((ServletValueContext) vc).getFreeMarkerConfiguration() :
+                ((vc instanceof ServletValueContext) ? ((ServletValueContext) vc).getFreeMarkerConfiguration() : null) :
                 fmConfigAdapter.getConfiguration();
 
         // if we have a shared configuration (like from a theme or something) then use it
         Configuration sharedConfig = (Configuration) vc.getAttribute(VCATTRNAME_SHARED_FM_CONFIG);
         if(sharedConfig != null)
             fmConfig = sharedConfig;
+
+        // fmConfig may be null if not running from a Servlet or other templating environment (like within Ant)
+        if(fmConfig == null)
+        {
+            FreeMarkerConfigurationAdapter adapter = FreeMarkerConfigurationAdapters.getInstance().createConfigurationAdapter();
+            fmConfig = adapter.getConfiguration();
+        }
 
         try
         {
