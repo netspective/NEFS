@@ -84,8 +84,8 @@ public class AxiomTask extends XdmComponentTask
     private String graphVizErdFocusedFileNameFormat;
     private String graphVizErdIgnoreColumnNames;
     private String graphVizErdIgnoreTableNames;
-    private String graphVizErdDotCmdStr = "dot";
-    private String graphVizErdDotOutputType = "png";
+    private String graphVizErdDotCmdStr;
+    private String graphVizErdDotOutputType;
     private File dtdFile;
     private DriverManagerConnectionProvider.DataSourceInfo dsInfo;
     private String dalRootPackage;
@@ -108,8 +108,8 @@ public class AxiomTask extends XdmComponentTask
         graphVizErdFocusedFileNameFormat = null;
         graphVizErdIgnoreColumnNames = null;
         graphVizErdIgnoreTableNames = null;
-        graphVizErdDotCmdStr = "dot";
-        graphVizErdDotOutputType = "png";
+        graphVizErdDotCmdStr = null;
+        graphVizErdDotOutputType = null;
         dsInfo = null;
         dalRootPackage = null;
         dalClassNameWithoutPackage = DEFAULTCLASSNAME_DAL;
@@ -419,6 +419,16 @@ public class AxiomTask extends XdmComponentTask
     public void setGraphVizErdIgnoreTableNames(String graphVizErdIgnoreTableNames)
     {
         this.graphVizErdIgnoreTableNames = graphVizErdIgnoreTableNames;
+    }
+
+    public void setGraphVizErdDotCmdStr(String graphVizErdDotCmdStr)
+    {
+        this.graphVizErdDotCmdStr = graphVizErdDotCmdStr;
+    }
+
+    public void setGraphVizErdDotOutputType(String graphVizErdDotOutputType)
+    {
+        this.graphVizErdDotOutputType = graphVizErdDotOutputType;
     }
 
     public void generateGraphVizErd(SqlManager sqlManager) throws BuildException
