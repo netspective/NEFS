@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Commands.java,v 1.5 2003-05-24 20:28:14 shahid.shah Exp $
+ * $Id: Commands.java,v 1.6 2003-07-03 00:41:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.command;
@@ -50,6 +50,7 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 import org.apache.commons.discovery.tools.DiscoverClass;
@@ -93,7 +94,7 @@ public class Commands implements MetricsProducer
 
     protected Map createSourceClassesMap()
     {
-        return new HashMap();
+        return new TreeMap();
     }
 
     protected Set createSourceClassesSet()
@@ -105,12 +106,12 @@ public class Commands implements MetricsProducer
     {
     }
 
-    public Map getValueSourceClassesMap()
+    public Map getClassesMap()
     {
         return srcClassesMap;
     }
 
-    public Set getValueSourceClassesSet()
+    public Set getClassesSet()
     {
         return srcClassesSet;
     }

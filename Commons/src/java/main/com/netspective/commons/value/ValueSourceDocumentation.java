@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceDocumentation.java,v 1.5 2003-05-09 01:23:35 shahid.shah Exp $
+ * $Id: ValueSourceDocumentation.java,v 1.6 2003-07-03 00:41:57 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -133,6 +133,11 @@ public class ValueSourceDocumentation
             this.enums = enums;
         }
 
+        public boolean hasEnums()
+        {
+            return enums != null;
+        }
+
         public XdmBitmaskedFlagsAttribute getFlags()
         {
             return flags;
@@ -141,6 +146,11 @@ public class ValueSourceDocumentation
         public void setFlags(XdmBitmaskedFlagsAttribute flags)
         {
             this.flags = flags;
+        }
+
+        public boolean hasFlags()
+        {
+            return flags != null;
         }
 
         public String getDescription()
