@@ -48,7 +48,7 @@
  * OF SUCH DAMAGES.
  *
  * @author Shahid N. Shah
- * $Id: HtmlSingleRowReportPanelSkin.java,v 1.1 2003-08-12 18:40:45 aye.thu Exp $
+ * $Id: HtmlSingleRowReportPanelSkin.java,v 1.2 2003-08-30 14:06:36 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -137,6 +137,9 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
             dataTable.append("<tr>");
             for(int i = 0; i < dataColsCount; i++)
             {
+                // spacer before the column
+                dataTable.append("<td class=\"report-detail\">&nbsp;&nbsp;</td>");
+
                 TabularReportColumn column = columns.getColumn(i);
                 if(column.getBreak() != null)
                 {
@@ -163,11 +166,13 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
                     data = rc.getSkin().constructRedirect(rc, column.getCommand(), data, null, null);
                 }
 
-
-                dataTable.append("<td class=\"report-field-detail\"><nobr>" +
-                        column.getHeading().getValue(rc).getTextValue() + "</nobr></td>");
+                String heading = column.getHeading() != null ? column.getHeading().getValue(rc).getTextValue() : "&nbsp;";
+                dataTable.append("<td class=\"report-field-detail\"><nobr>" + heading + "</nobr></td>");
                 dataTable.append("<td class=\"report-detail\" style=\""+ state.getCssStyleAttrValue() + "\">" +
                         data + "</td>");
+
+                // spacer after the column
+                dataTable.append("<td class=\"report-detail\">&nbsp;&nbsp;</td>");
 
                 colCount++;
                 if(colCount >= tableCols)
@@ -181,7 +186,7 @@ public class HtmlSingleRowReportPanelSkin extends BasicHtmlTabularReportPanelSki
         }
         else
         {
-            writer.write("Currently, vertical layout is not supported yet.");
+            writer.write("Vertical layout is not supported yet.");
         }
         return 1;
     }
