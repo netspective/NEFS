@@ -59,56 +59,36 @@
             </accessor>
         </table>
 
-        <table name="Project" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The project's auto-generated id (internal identifier)"/>
-            <column name="project_id" unique="yes" type="text" size="64" descr="The project's name or other identifier"/>
-            <column name="parent" selfref="Project.system_id" descr="The project's parent if this product is a sub-project of another product"/>
-            <column name="caption" type="text" required="yes" size="200" descr="The project's brief caption"/>
+        <table name="Case_Source" type="Default">
+            <description>Describes the source of a case such as a project, product, or other area</description>
+            <column name="system_id" primarykey="yes" type="auto-inc" descr="The source's auto-generated id (internal identifier)"/>
+            <column name="source_id" unique="yes" type="text" size="64" descr="The source's name or other identifier"/>
+            <column name="source_type" lookup-ref="Case_Source_Type" descr="The type of case source"/>
+            <column name="parent" selfref="Case_Source.system_id" descr="The source's parent if this source is a sub-product or sub-project of another source"/>
+            <column name="caption" type="text" required="yes" size="200" descr="The source's brief caption"/>
 
             <accessor name="lookup">
-                <display fields="system_id, project_id, caption"/>
+                <display fields="system_id, source_id, caption"/>
             </accessor>
         </table>
 
-        <table name="Project_Area" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The project area's auto-generated id (internal identifier)"/>
-            <column name="area_id" unique="yes" type="text" size="64" descr="The area's unique name or other identifier"/>
-            <column name="project_id" lookup-ref="Project.system_id" descr="The identifier of the project this area belongs"/>
-            <column name="caption" type="text" required="yes" size="200" descr="The area's brief caption"/>
-
-            <accessor name="lookup">
-                <display fields="system_id, area_id, caption"/>
-            </accessor>
-        </table>
-
-        <table name="Product" type="Default">
-            <column name="system_id" primarykey="yes" type="auto-inc" descr="The products's auto-generated id (internal identifier)"/>
-            <column name="product_id" unique="yes" type="text" size="64" descr="The product's name or other identifier"/>
-            <column name="parent" selfref="Product.system_id" descr="The product's parent if this product is a sub-component of another product"/>
-            <column name="caption" type="text" required="yes" size="200" descr="The product's brief caption"/>
-
-            <accessor name="lookup">
-                <display fields="system_id, product_id, caption"/>
-            </accessor>
-        </table>
-
-        <table name="Product_Version" type="Default">
+        <table name="Case_Source_Product_Version" type="Default">
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The version's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Product.system_id" descr="The product that this component belongs to"/>
+            <column name="product_id" parentref="Case_Source.system_id" descr="The product (case source record) that this component belongs to"/>
             <column name="version" unique="yes" type="text" size="64" descr="The product's version identifier"/>
         </table>
 
-        <table name="Product_Milestone" type="Default">
+        <table name="Case_Source_Product_Milestone" type="Default">
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The milestone's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Product.system_id" descr="The product that this milestone belongs to"/>
+            <column name="product_id" parentref="Case_Source.system_id" descr="The product (case source record) that this milestone belongs to"/>
             <column name="milestone" unique="yes" type="text" size="64" descr="The product's milestone identifier"/>
         </table>
 
         <table name="Case_Incidence" type="Default">
             <column name="system_id" primarykey="yes" type="auto-inc" descr="The case's auto-generated id (internal identifier)"/>
-            <column name="product_id" parentref="Product.system_id" descr="The product that this case belongs to"/>
-            <column name="version_id" lookupref="Product_Version.system_id" descr="The product version that this case belongs to"/>
-            <column name="milestone_id" lookupref="Product_Milestone.system_id" descr="The product milestone that this case belongs to"/>
+            <column name="product_id" parentref="Case_Source.system_id" descr="The product, project, or other case source that this case belongs to"/>
+            <column name="version_id" lookupref="Case_Source_Product_Version.system_id" descr="The product version that this case belongs to"/>
+            <column name="milestone_id" lookupref="Case_Source_Product_Milestone.system_id" descr="The product milestone that this case belongs to"/>
             <column name="case_title" unique="yes" type="text" size="128" descr="A brief overview of the case"/>
         </table>
 
@@ -118,6 +98,12 @@
             <column name="elaboration_text" type="data-block" descr="The actual text of the elaboration"/>
         </table>
 
+        <table name="Case_Source_Type" type="Enumeration">
+            <enumerations>
+                <enum id="0">Product</enum>
+                <enum id="1">Project</enum>
+            </enumerations>
+        </table>
     </schema>
 
 </project>
