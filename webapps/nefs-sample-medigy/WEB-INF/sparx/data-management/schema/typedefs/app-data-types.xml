@@ -162,14 +162,6 @@
 
     <data-type name="past-time" type="time"/>
 
-    <data-type name="creation-stamp" type="stamp">
-        <!--
-        AXIOM CONVERSION NOTICE: XIF SchemaDoc tag &lt;java-default&gt; is no longer used in Axiom.
-        Column triggers, validation, and DAL information must now be placed in Java classes.
-        <java-default/>
-        -->
-    </data-type>
-
     <data-type name="survey">
         <composite>
             <column name="${params.name}_id" lookupref="${params.surveyTypeEnum}" descr="The text of the question"/>
