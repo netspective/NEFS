@@ -148,6 +148,14 @@ Setup instructions:
 
     <target name="jar" depends="compile-main">
 
+        <!-- copy configuration files into the build directory, too -->
+        <copy todir="${project.build.main.classes.dir}">
+            <fileset dir="${project.src.main.home}">
+                <include name="**/*.xml"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+
         <!-- create the version-specific jar -->
         <jar jarfile="${project.lib.dir}/${project.output.versioned.jar-name}" basedir="${project.build.main.classes.dir}">
             <include name="**/*"/>
