@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.14 2003-08-06 04:51:22 aye.thu Exp $
+ * $Id: ValueSources.java,v 1.15 2003-10-16 04:52:03 aye.thu Exp $
  */
 
 package com.netspective.commons.value;
@@ -309,6 +309,9 @@ public class ValueSources implements MetricsProducer
     {
         ValueSource vs;
         String idOrClassName = vss.getIdOrClassName();
+        // if the id or class name is null, then the specification did not contain a valid value source string
+        if (idOrClassName == null)
+            return null;
         Class vsClass = (Class) srcClassesMap.get(idOrClassName);
         try
         {
