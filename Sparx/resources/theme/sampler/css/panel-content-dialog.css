@@ -74,8 +74,8 @@ table.dialog tr.dialog-field-block-errors td { padding: 3px 3px 3px 10px; }
 table.dialog label.dialog-field-caption           { color: #333;    font: normal 8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle; background: url(../images/panel/input/content-separator.gif) no-repeat right center; padding-right: 7px; }
 table.dialog label.dialog-field-caption-required  { color: #000000; font: bold   8pt Tahoma, Arial, Sans Serif; text-align: right; vertical-align: middle; background: url(../images/panel/input/content-separator.gif) no-repeat right center; padding-right: 7px; }
 table.dialog label.dialog-field-caption-required:before  { content: '*'; color: red}
-table.dialog span.dialog-field-hint              { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top }
-table.dialog span.dialog-field-hint-hidden       { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../../../../../sparx/theme/sampler/images/panel/input/hint-indicator.gif) no-repeat left top; display: none; }
+table.dialog span.dialog-field-hint              { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top }
+table.dialog span.dialog-field-hint-hidden       { color: #696969; font: 8pt Tahoma, Arial, Sans Serif; background: url(../images/panel/input/hint-indicator.gif) no-repeat left top; display: none; }
 table.dialog span.dialog-field-input             { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; width: auto; whitespace: nowrap }
 table.dialog span.dialog-field-input-required    { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; width: auto; whitespace: nowrap }
 table.dialog span.dialog-field-input-readonly    { color: #000; font: normal 8pt Tahoma, Arial, Sans Serif; width: auto; whitespace: nowrap; }
