@@ -2,16 +2,9 @@
 
 <netspective>
     <release>
-        <product name="Sparx" version="7.1.0"/>
-        <product name="Axiom" version="7.1.0"/>
         <product name="Commons" version="7.1.0"/>
         <change-log>
-            <summary>Major and minor enhancements</summary>
-            <change-log-entry>
-                <![CDATA[
-                Added new <i>starts-with-ignore-case</i> and <i>ends-with-ignore-case</i> SQL comparisons.
-                ]]>
-            </change-log-entry>
+            <summary>Minor bug fix, enhancements, and code roll-up</summary>
             <change-log-entry>
                 <![CDATA[
                 Added new validation, <code>TimeZoneValidationRule</code>, for timezones using the TimeZone class. Also added
@@ -19,26 +12,69 @@
                 ]]>
             </change-log-entry>
             <change-log-entry>
+                The MultipleUriAddressableFileLocators cache was storing the locator instead of the resource.
+                Bug fixed so that the cache now stores the resource; this was causing a ClassCastException if the cache
+                was in use (but no error if the cache was ignored).
+            </change-log-entry>
+            <change-log-entry>
+                In TextValueValidationRule, optimized the regular expression handling so that a pattern is created,
+                cached, and reused by a matcher instead of being recreated for each call to isValid(). Also added better
+                error messages when text validation fails.
+            </change-log-entry>
+            <change-log-entry>
+                 Added new DelimitedValuesParser class useful for parsing comma-separated values (CSV) input.
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Axiom" version="7.1.0"/>
+        <change-log>
+            <summary>Major enhancements and code roll-up</summary>
+            <change-log-entry>
                 <![CDATA[
-                Added capability for DAL import XML files to import CSV delimited text entries. Introduced two new 'dal:csv'
-                and 'dal:csv-file' attributes that perform the action. For example, in the 'initial-and-test-data.xml' you can now do the following:
-                <pre>
-                  <dal xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer">
-                      <book-info dal:csv="test-cvs-01,CSV Book 01,&quot;Shah, Shahid N.&quot;,Mystery,ISBNCSV01"/>
-                      <book-info dal:csv-file="c:\X\Y\initial-and-test-data.csv"/>
-                  </dal>
-                 </pre>
-                The first version (dal:csv) supports a single line of CSV. The second points to a file. In either version, all
-                columns must be provided in the order they were defined in the Schema XML.  Be sure to add the
-                xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer" namespace in the <dal> tag and
-                replace the table name.
+                Added new <i>starts-with-ignore-case</i> and <i>ends-with-ignore-case</i> SQL comparisons.
                 ]]>
             </change-log-entry>
             <change-log-entry>
                 <![CDATA[
-                Added new flag called <i>hidden-unless-active</i> that works just like the hidden flag which keeps a page from
-                being clicked by a user. However, this one is different in that once a page is active then the menu item will
-                appear and be clickable. 
+                Added capability for DAL import XML files to import CSV delimited text entries. Introduced two new 'dal:csv'
+                and 'dal:csv-file' attributes that perform the action. For example, in the 'initial-and-test-data.xml' you can now do the following:
+                <pre>
+&lt;dal xmlns:dal="...">
+  &lt;table-name dal:csv="X,Y,Z"/>
+  &lt;table-name dal:csv-file="c:\X\data.csv"/>
+&lt;/dal></pre>
+                The first version (dal:csv) supports a single line of CSV and you may include as many as necessary.
+                The second points to a file. In either version, all
+                columns must be provided in the order they were defined in the Schema XML.  Be sure to add the
+                xmlns:dal="http://www.netspective.org/Framework/Axiom/DataAccessLayer" namespace in the <dal> tag and
+                replace the table name. There is a complete example available in the nefs-sample-books WEB-INF/database/data/initial-and-test-data.xml file.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+
+    <release>
+        <product name="Sparx" version="7.1.0"/>
+        <change-log>
+            <summary>Major enhancements and code roll-up</summary>
+            <change-log-entry>
+                <![CDATA[
+                Upgraded the DHTML calendar JavaScript library from 0.9.2 to 0.9.6. The source of the library remains
+                <a href="http://dynarch.com/mishoo/calendar.epl">Mishoo DTHML Calendar</a>. The older version at
+                Sparx/resources/theme/common/calendar-0.9.2 is now no longer in the CVS repository and is replaced by
+                the Sparx/resources/theme/common/jscalendar-0.9.6 directory. If you have your own navigation skin, please
+                be sure to update the reference to the new directory. For example, if you have a reference to
+                theme.getResourceUrl("/calendar-0.9.2/calendar-win2k-1.css") it needs to change to
+                theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css").
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added new navigation page flag called <i>hidden-unless-active</i> that works just like the hidden flag
+                which keeps a page from being clicked by a user. However, this one is different in that once a page is
+                active then the menu item will appear and be clickable.
                 ]]>
             </change-log-entry>
             <change-log-entry>
@@ -48,29 +84,31 @@
                 adding, editing, and deleting information related to the <i>content</i> of the panel editor child element.
                 Currently, the panel editor supports <b>report</b> type children elements whose <i>content</i> is a report.
                 An example of a declaration of panel editor is shown below:
-                <panel-editors package="samplePanelEdiorPkg">
-                    <panel-editor  name="samplePanelEditor" require-request-param="abc">
-                        <frame heading="Sample Panel Editor"/>
-                        <element type="report" name="contacts" caption="Sample Element" pk-column-index="0" >
-                            <dialog>
-                                ...
-                                ...
-                            </dialog>
-                            <query>
-                                ...
-                                ...
-                            </query>
-                        </element>
-                        <element .../>
-                    </panel-editor>
-                </panel-editors>
+                <pre>
+&lt;panel-editors package="X">
+    &lt;panel-editor  name="Y" require-request-param="Z">
+        &lt;frame heading="Sample Panel Editor"/>
+        &lt;element type="report" name="X" pk-column-index="0">
+            &lt;dialog>
+                ...
+                ...
+            &lt;/dialog>
+            &lt;query>
+                ...
+                ...
+            &lt;/query>
+        &lt;/element>
+        &lt;element .../>
+    &lt;/panel-editor>
+&lt;/panel-editors></pre>
                 As you can see, the panel editors are defined using a package similar to dialogs and queries. Each
                 panel editor can have multiple child elements and each element will have their own content declaration (in
                 this case, a query and a dialog). The dialog will be used to add, edit, and delete records related to
                 the query. The dialog doesn't have to be defined inside the panel editor and can be referenced using the
                 <code>dialogRef</code> attribute. The attribute <code>pk-column-index</code> is used to define
                 which column from the query report should be used for edit and delete actions. A panel editor can be invoked using commands like:
-                <code>command="panel-editor,samplePanelEditorPkg.samplePanelEditor"</code>.
+                <code>command="panel-editor,X.Y"</code>. Panel editors are demonstrated
+                in the nefs-sample-medigy sample app.
                 ]]>
             </change-log-entry>
             <change-log-entry>
@@ -98,6 +136,7 @@
             </change-log-entry>
         </change-log>
     </release>
+
     <release>
         <product name="Sparx" version="7.0.21"/>
         <change-log>
