@@ -21,6 +21,7 @@
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
 * Add ID constants generator to Sparx components (just like Axiom components)
 * Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
+* Used http://jakarta.apache.org/commons/fileupload/ to add file upload features
 * Add DHTML popup calendar from http://students.infoiasi.ro/~mishoo/site/calendar/cal.html.
 * Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
 * Convert all ValueSource objects so their default points to ValueSource.NULL_VALUE_SOURCE -- this will eliminate many "if null" checks
