@@ -74,6 +74,7 @@ public class NavigationTree implements TemplateProducerParent
     private String name;
     private NavigationPage root;
     private NavigationPage homePage;
+    private NavigationPage popupPage;
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
     private int maxLevel = -1;
@@ -96,8 +97,25 @@ public class NavigationTree implements TemplateProducerParent
         if(contentsFinalized) return;
 
         if(root != null)
+        {
+            if (popupPage == null)
+            {
+                try
+                {
+                    popupPage = createPage();
+                    NavigationPathFlags flags =  popupPage.createFlags();
+                    flags.setFlag(NavigationPage.Flags.IS_POPUP_MODE | NavigationPage.Flags.HIDDEN);
+                    popupPage.setFlags(flags);
+                    popupPage.setName("popup");
+                    root.addPage(popupPage);
+                }
+                catch (Exception e)
+                {
+                    log.warn("Failed to create default popup page", e);
+                }
+            }
             root.finalizeContents(nc);
-
+        }
         contentsFinalized = true;
     }
 
@@ -174,6 +192,11 @@ public class NavigationTree implements TemplateProducerParent
     public NavigationPage getHomePage()
     {
         return homePage;
+    }
+
+    public NavigationPage getPopupPage()
+    {
+        return popupPage;
     }
 
     public int getMaxLevel()
