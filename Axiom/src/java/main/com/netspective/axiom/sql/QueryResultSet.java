@@ -37,6 +37,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportColumn;
@@ -49,6 +52,7 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 public class QueryResultSet
 {
+    private Log log = LogFactory.getLog(QueryResultSet.class);
     private Query query;
     private StoredProcedure sp;
     private ConnectionContext cc;
@@ -185,7 +189,15 @@ public class QueryResultSet
     {
         // according to JDK 1.3 javadocs, "When a Statement object is closed, its current ResultSet object, if one exists, is also closed."
         //resultSet.getStatement().close();
-        resultSet.close();
+        try
+        {
+            resultSet.close();
+        }
+        catch(SQLException e)
+        {
+            log.error("Got error trying to close what should be an open result set. Ignoring the error.", e);
+        }
+
         resultSet = null;
         if(closeConnToo)
         {
