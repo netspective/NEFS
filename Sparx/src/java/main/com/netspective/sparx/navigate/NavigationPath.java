@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.7 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.8 2003-08-19 17:10:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -320,8 +320,7 @@ public class NavigationPath
             for (int i = 0; i < conditionals.size(); i++)
             {
                 NavigationConditionalAction action = (NavigationConditionalAction) conditionals.get(i);
-                if (action instanceof NavigationConditionalApplyFlag)
-                    ((NavigationConditionalApplyFlag) action).applyFlags(nc);
+                action.execute(nc);
             }
         }
     }
