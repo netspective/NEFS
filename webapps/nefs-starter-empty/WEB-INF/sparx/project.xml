@@ -12,44 +12,17 @@
             <body>
                 Welcome to the Home page for the Sparx starter app.
                 <![CDATA[<p>
+                <#include "console/content/library.ftl"/>
+
+                <i>If you're asked to log into Console, use 'console' for both user id and password.</i>
                 <ul>
-                    <li>Click <a href="${vc.consoleUrl}">here</a> to see the console or
-                    <li>Click <a href="${vc.consoleUrl}/manual">here</a> to view the user's manual or
-                    <li>Open <code>${vc.projectComponent.inputSource.identifier}</code> to begin declaring your
-                        application components.
-                </ul>]]>
+                    <li>Edit the NEFS <@projectFile/> file to begin declaring your application components.
+                    <li>Open the <a href="${vc.consoleUrl}?_dc.userId=console&_dc.password=console">Console</a> for this application.
+                    <li>Browse the <a href="${vc.consoleUrl}/manual">User's Manual</a>.
+                </ul>
+                ]]>
             </body>
         </page>
     </navigation-tree>
-
-    
-<!-- 
-    *******************************************************************************************************************
-    ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
-    ** ============================================================================================================= **
-    ** Any data source called 'jdbc/default' will automatically be used as the default JDBC data source. If you wish **
-    ** to change the name of the default data source, you may specify it as a tag in project.xml like the following: **
-    ** <project>                                                                                                     **
-    **     <default-data-source>jdbc/other</default-data-source>						     **
-    **														     **
-    ** Or by specifying it in the data source definition as follows:						     **
-    **     <data-source name="theName" default="yes"								     **
-    **														     **
-    ** Note that data sources specified under this connection provider will be managed by the Jakarta Commons DBCP   **
-    ** If you wish to use JNDI, you simply have to specify the resource according to the server you're using.	     **
-    **														     **
-    ******************************************************************************************************************* 
-    -->
-
-    <connection-provider class="com.netspective.axiom.connection.JakartaCommonsDbcpConnectionProvider">
-
-        <data-source name="jdbc/default">
-            <driver-class>org.hsqldb.jdbcDriver</driver-class>
-            <url>vs-expr:jdbc:hsqldb:${servlet-context-path:/WEB-INF/database/instance/db}</url>
-            <user>sa</user>
-            <password></password>
-        </data-source>
-
-    </connection-provider>
 
 </project>
