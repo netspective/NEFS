@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicColumn.java,v 1.8 2003-05-24 20:27:57 shahid.shah Exp $
+ * $Id: BasicColumn.java,v 1.9 2003-06-21 21:36:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -386,6 +386,9 @@ public class BasicColumn implements Column, TemplateProducerParent, TemplateCons
         if(this instanceof ForeignKeyPlaceholderColumn)
         {
             ForeignKey fkey = getForeignKey();
+            if(fkey.getReferencedColumns() == null)
+                throw new RuntimeException("Invalid Foreign Key " + fkey + " in column " + this);
+
             Column referenced = fkey.getReferencedColumns().getSole();
             if(referenced == null)
                 throw new RuntimeException("Unable to finish construction of '"+ getQualifiedName() +"': referenced foreign key '"+ fkey +"' not found.");
