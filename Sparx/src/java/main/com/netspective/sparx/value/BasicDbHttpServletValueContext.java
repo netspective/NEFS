@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.37 2003-09-13 05:03:15 roque.hernandez Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.38 2003-09-15 02:34:46 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.value;
@@ -301,6 +301,11 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public final String getSparxResourceUrl(String resource)
     {
         return rootUrl + "/sparx/" + resource;
+    }
+
+    public final String getAppResourceUrl(String resource)
+    {
+        return rootUrl + "/resources/" + resource;
     }
 
     public final String getRootUrl()
