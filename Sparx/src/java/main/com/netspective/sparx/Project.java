@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.11 2003-07-12 03:30:54 shahid.shah Exp $
+ * $Id: Project.java,v 1.12 2003-08-06 01:05:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -72,6 +72,7 @@ import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.form.Dialogs;
 import com.netspective.sparx.form.DialogsManager;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.form.field.DialogFields;
@@ -101,10 +102,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private static final Log log = LogFactory.getLog(Project.class);
     public static final String TEMPLATEELEMNAME_PANEL_TYPE = "panel-type";
     public static final String TEMPLATEELEMNAME_DIALOG_TYPE = "dialog-type";
+    public static final String TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER = "dialog-execute-handler";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_TYPE = "dialog-field-type";
     public static final String TEMPLATEELEMNAME_DIALOG_FIELD_CONDITIONAL_ACTION_TYPE = "dialog-field-conditional-action";
     private static final PanelTypeTemplate PANEL_TYPES = new PanelTypeTemplate();
     private static final DialogTypeTemplate DIALOG_TYPES = new DialogTypeTemplate();
+    private static final DialogExecuteHandlerTemplate DIALOG_EXECUTE_HANDLERS = new DialogExecuteHandlerTemplate();
     private static final DialogFieldTypeTemplate FIELD_TYPES = new DialogFieldTypeTemplate();
     private static final DialogFieldConditionalActionTemplate CONDITIONAL_ACTIONS = new DialogFieldConditionalActionTemplate();
 
@@ -121,6 +124,14 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
         public DialogTypeTemplate()
         {
             super(Dialog.class.getName(), TEMPLATEELEMNAME_DIALOG_TYPE, "name", "extends", true, false);
+        }
+    }
+
+    protected static class DialogExecuteHandlerTemplate extends TemplateProducer
+    {
+        public DialogExecuteHandlerTemplate()
+        {
+            super(DialogExecuteHandler.class.getName(), TEMPLATEELEMNAME_DIALOG_EXECUTE_HANDLER, "name", "extends", true, false);
         }
     }
 
@@ -144,6 +155,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     {
         templateProducers.add(PANEL_TYPES);
         templateProducers.add(DIALOG_TYPES);
+        templateProducers.add(DIALOG_EXECUTE_HANDLERS);
         templateProducers.add(FIELD_TYPES);
         templateProducers.add(CONDITIONAL_ACTIONS);
     }
@@ -183,6 +195,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public DialogTypeTemplate getDialogTypes()
     {
         return DIALOG_TYPES;
+    }
+
+    public static DialogExecuteHandlerTemplate getDialogExecuteHandlers()
+    {
+        return DIALOG_EXECUTE_HANDLERS;
     }
 
     public DialogFieldTypeTemplate getFieldTypes()

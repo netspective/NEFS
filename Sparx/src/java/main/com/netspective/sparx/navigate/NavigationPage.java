@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.27 2003-08-05 17:41:53 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.28 2003-08-06 01:05:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -91,7 +91,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static final Log log = LogFactory.getLog(NavigationPage.class);
-    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 9];
+    public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAG_DEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[NavigationPath.FLAG_DEFNS.length + 10];
     public static final String ATTRNAME_TYPE = "type";
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name" };
     public static final String PARAMNAME_PAGE_FLAGS = "page-flags";
@@ -100,15 +100,16 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     {
         for(int i = 0; i < NavigationPath.FLAG_DEFNS.length; i++)
             FLAG_DEFNS[i] = NavigationPath.FLAG_DEFNS[i];
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
-        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "REQUIRE_LOGIN", Flags.REQUIRE_LOGIN);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 1] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "REJECT_FOCUS", Flags.REJECT_FOCUS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 2] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "HIDDEN", Flags.HIDDEN);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 3] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "ALLOW_PAGE_CMD_PARAM", Flags.ALLOW_PAGE_CMD_PARAM);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 4] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_PRIVATE, "HAS_CONDITIONAL_ACTIONS", Flags.HAS_CONDITIONAL_ACTIONS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 5] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_RETAIN_PARAMS", Flags.INHERIT_RETAIN_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 6] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "INHERIT_ASSIGN_STATE_PARAMS", Flags.INHERIT_ASSIGN_STATE_PARAMS);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 7] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "POPUP", Flags.IS_POPUP_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 8] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "PRINT", Flags.IS_PRINT_MODE);
+        FLAG_DEFNS[NavigationPath.FLAG_DEFNS.length + 9] = new XdmBitmaskedFlagsAttribute.FlagDefn(Flags.ACCESS_XDM, "SERVICE", Flags.IS_SERVICE_MODE);
     }
 
     protected class PageTypeTemplateConsumerDefn extends TemplateConsumerDefn
@@ -126,7 +127,8 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
     public class Flags extends NavigationPath.Flags
     {
-        public static final int REJECT_FOCUS = NavigationPath.Flags.START_CUSTOM;
+        public static final int REQUIRE_LOGIN = NavigationPath.Flags.START_CUSTOM;
+        public static final int REJECT_FOCUS = REQUIRE_LOGIN * 2;
         public static final int HIDDEN = REJECT_FOCUS * 2;
         public static final int ALLOW_PAGE_CMD_PARAM = HIDDEN * 2;
         public static final int HAS_CONDITIONAL_ACTIONS = ALLOW_PAGE_CMD_PARAM * 2;
@@ -139,7 +141,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
         public Flags()
         {
-            setFlag(ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
+            setFlag(REQUIRE_LOGIN | ALLOW_PAGE_CMD_PARAM | INHERIT_RETAIN_PARAMS | INHERIT_ASSIGN_STATE_PARAMS);
         }
 
         public FlagDefn[] getFlagsDefns()
@@ -621,11 +623,6 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
     public TemplateProcessor getBodyTemplate()
     {
         return bodyTemplate;
-    }
-
-    public boolean requireLogin(NavigationContext nc)
-    {
-        return true;
     }
 
     public boolean canHandlePage(NavigationContext nc)

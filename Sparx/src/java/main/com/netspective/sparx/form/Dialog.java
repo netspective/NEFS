@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.24 2003-07-17 14:43:20 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.25 2003-08-06 01:05:37 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -72,6 +72,21 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.SeparatorField;
+import com.netspective.sparx.form.handler.DialogExecuteHandler;
+import com.netspective.sparx.form.handler.DialogExecuteHandlers;
+import com.netspective.sparx.form.handler.DialogExecuteDefaultHandler;
+import com.netspective.sparx.form.listener.DialogPopulateForSubmitListener;
+import com.netspective.sparx.form.listener.DialogStateListener;
+import com.netspective.sparx.form.listener.DialogInitialPopulateForSubmitListener;
+import com.netspective.sparx.form.listener.DialogInitialPopulateForDisplayListener;
+import com.netspective.sparx.form.listener.DialogInitialPopulateListener;
+import com.netspective.sparx.form.listener.DialogPopulateListener;
+import com.netspective.sparx.form.listener.DialogPopulateForDisplayListener;
+import com.netspective.sparx.form.listener.DialogStateBeforeValidationListener;
+import com.netspective.sparx.form.listener.DialogStateAfterValidationListener;
+import com.netspective.sparx.form.listener.DialogValidateListener;
+import com.netspective.sparx.form.listener.DialogListener;
+import com.netspective.sparx.form.listener.DialogListenerPlaceholder;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.text.TextUtils;
@@ -169,6 +184,28 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
     private Class dialogContextClass = DialogContext.class;
     private List dialogTypes = new ArrayList();
     private List clientJavascripts = new ArrayList();
+    private DialogExecuteHandlers executeHandlers = new DialogExecuteHandlers();
+
+    private boolean haveInitialPopulateForDisplayListeners;
+    private boolean haveInitialPopulateForSubmitListeners;
+    private boolean haveInitialPopulateListeners;
+    private boolean havePopulateForDisplayListeners;
+    private boolean havePopulateForSubmitListeners;
+    private boolean havePopulateListeners;
+    private boolean haveStateAfterValidationListeners;
+    private boolean haveStateBeforeValidationListeners;
+    private boolean haveStateListeners;
+    private boolean haveValidationListeners;
+    private List initialPopulateForDisplayListeners = new ArrayList();
+    private List initialPopulateForSubmitListeners = new ArrayList();
+    private List initialPopulateListeners = new ArrayList();
+    private List populateForDisplayListeners = new ArrayList();
+    private List populateForSubmitListeners = new ArrayList();
+    private List populateListeners = new ArrayList();
+    private List stateAfterValidationListeners = new ArrayList();
+    private List stateBeforeValidationListeners = new ArrayList();
+    private List stateListeners = new ArrayList();
+    private List validationListeners = new ArrayList();
 
     /**
      * Create a dialog
@@ -568,6 +605,45 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
             if(field != null)
                 field.populateValue(dc, formatType);
         }
+
+        if(dc.isInitialEntry())
+        {
+            if(formatType == DialogField.DISPLAY_FORMAT && haveInitialPopulateForDisplayListeners)
+            {
+                for(int i = 0; i < initialPopulateForDisplayListeners.size(); i++)
+                    ((DialogInitialPopulateForDisplayListener) initialPopulateForDisplayListeners.get(i)).populateInitialDialogValuesForDisplay(dc);
+            }
+
+            if(formatType == DialogField.SUBMIT_FORMAT && haveInitialPopulateForSubmitListeners)
+            {
+                for(int i = 0; i < initialPopulateForSubmitListeners.size(); i++)
+                    ((DialogInitialPopulateForSubmitListener) initialPopulateForSubmitListeners.get(i)).populateInitialDialogValuesForSubmit(dc);
+            }
+
+            if(haveInitialPopulateListeners)
+            {
+                for(int i = 0; i < initialPopulateListeners.size(); i++)
+                    ((DialogInitialPopulateListener) initialPopulateListeners.get(i)).populateInitialDialogValues(dc, formatType);
+            }
+        }
+
+        if(formatType == DialogField.DISPLAY_FORMAT && havePopulateForDisplayListeners)
+        {
+            for(int i = 0; i < populateForDisplayListeners.size(); i++)
+                ((DialogPopulateForDisplayListener) populateForDisplayListeners.get(i)).populateDialogValuesForDisplay(dc);
+        }
+
+        if(formatType == DialogField.SUBMIT_FORMAT && havePopulateForSubmitListeners)
+        {
+            for(int i = 0; i < populateForSubmitListeners.size(); i++)
+                ((DialogPopulateForSubmitListener) populateForSubmitListeners.get(i)).populateDialogValuesForSubmit(dc);
+        }
+
+        if(havePopulateListeners)
+        {
+            for(int i = 0; i < populateListeners.size(); i++)
+                ((DialogPopulateListener) populateListeners.get(i)).populateDialogValues(dc, formatType);
+        }
     }
 
     /**
@@ -589,20 +665,58 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         DialogDirector director = getDirector();
         if(director != null)
             director.makeStateChanges(dc, stage);
+
+        if(stage == DialogContext.STATECALCSTAGE_INITIAL && haveStateBeforeValidationListeners)
+        {
+            for(int i = 0; i < stateBeforeValidationListeners.size(); i++)
+                ((DialogStateBeforeValidationListener) stateBeforeValidationListeners.get(i)).makeDialogStateChangesBeforeValidation(dc);
+        }
+
+        if(stage == DialogContext.STATECALCSTAGE_FINAL && haveStateAfterValidationListeners)
+        {
+            for(int i = 0; i < stateAfterValidationListeners.size(); i++)
+                ((DialogStateAfterValidationListener) stateAfterValidationListeners.get(i)).makeDialogStateChangesChangesAfterValidation(dc);
+        }
+
+        if(haveStateListeners)
+        {
+            for(int i = 0; i < stateListeners.size(); i++)
+                ((DialogStateListener) stateListeners.get(i)).makeDialogStateChanges(dc, stage);
+        }
+    }
+
+    public DialogExecuteHandler createOnExecute()
+    {
+        return new DialogExecuteDefaultHandler();
+    }
+
+    public void addOnExecute(DialogExecuteHandler handler)
+    {
+        executeHandlers.add(handler);
+        addListener(handler); // see if there are any other interfaces implemented by this handler
+    }
+
+    public DialogExecuteHandlers getExecuteHandlers()
+    {
+        return executeHandlers;
     }
 
     /**
      * Execute the actions of the dialog
-     * @param writer output stream for error message
+     * @param writer stream for dialog execution output
      * @param dc dialog context
      */
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        if(! dc.executeStageHandled())
-        {
+        if(dc.executeStageHandled())
+            return;
+
+        if(executeHandlers.size() > 0)
+            executeHandlers.handleDialogExecute(writer, dc);
+        else
             dc.renderDebugPanels(writer);
-            dc.setExecuteStageHandled(true);
-        }
+
+        dc.setExecuteStageHandled(true);
     }
 
     public void handlePostExecute(Writer writer, DialogContext dc) throws IOException
@@ -853,6 +967,12 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
                 field.validate(dvc);
         }
 
+        if(haveValidationListeners)
+        {
+            for(int i = 0; i < validationListeners.size(); i++)
+                ((DialogValidateListener) validationListeners.get(i)).validateDialog(dvc);
+        }
+
         boolean isValid = dvc.isValid();
         dvc.setValidationStage(isValid ? DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED : DialogValidationContext.VALSTAGE_PERFORMED_FAILED);
         return isValid;
@@ -866,5 +986,132 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
         writer.write(stackTraceWriter.toString());
         writer.write("</pre>");
+    }
+
+    public DialogListener createListener()
+    {
+        return new DialogListenerPlaceholder();
+    }
+
+    private void registerListener(List listeners, DialogListener listener)
+    {
+        if(! listeners.contains(listener))
+            listeners.add(listener);
+    }
+
+    public void addListener(DialogListener listener)
+    {
+        if(listener instanceof DialogInitialPopulateForDisplayListener)
+        {
+            haveInitialPopulateForDisplayListeners = true;
+            registerListener(initialPopulateForDisplayListeners, listener);
+        }
+
+        if(listener instanceof DialogInitialPopulateForSubmitListener)
+        {
+            haveInitialPopulateForSubmitListeners = true;
+            registerListener(initialPopulateForSubmitListeners, listener);
+        }
+
+        if(listener instanceof DialogInitialPopulateListener)
+        {
+            haveInitialPopulateListeners = true;
+            registerListener(initialPopulateListeners, listener);
+        }
+
+        if(listener instanceof DialogPopulateForDisplayListener)
+        {
+            havePopulateForDisplayListeners = true;
+            registerListener(populateForDisplayListeners, listener);
+        }
+
+        if(listener instanceof DialogPopulateForSubmitListener)
+        {
+            havePopulateForSubmitListeners = true;
+            registerListener(populateForSubmitListeners, listener);
+        }
+
+        if(listener instanceof DialogPopulateListener)
+        {
+            havePopulateListeners = true;
+            registerListener(populateListeners, listener);
+        }
+
+        if(listener instanceof DialogStateAfterValidationListener)
+        {
+            haveStateAfterValidationListeners = true;
+            registerListener(stateAfterValidationListeners, listener);
+        }
+
+        if(listener instanceof DialogStateBeforeValidationListener)
+        {
+            haveStateBeforeValidationListeners = true;
+            registerListener(stateBeforeValidationListeners, listener);
+        }
+
+        if(listener instanceof DialogStateListener)
+        {
+            haveStateListeners = true;
+            registerListener(stateListeners, listener);
+        }
+
+        if(listener instanceof DialogValidateListener)
+        {
+            haveValidationListeners = true;
+            registerListener(validationListeners, listener);
+        }
+
+        if(listener instanceof DialogExecuteHandler)
+            executeHandlers.add((DialogExecuteHandler) listener);
+    }
+
+    public List getInitialPopulateForDisplayListeners()
+    {
+        return initialPopulateForDisplayListeners;
+    }
+
+    public List getInitialPopulateForSubmitListeners()
+    {
+        return initialPopulateForSubmitListeners;
+    }
+
+    public List getInitialPopulateListeners()
+    {
+        return initialPopulateListeners;
+    }
+
+    public List getPopulateForDisplayListeners()
+    {
+        return populateForDisplayListeners;
+    }
+
+    public List getPopulateForSubmitListeners()
+    {
+        return populateForSubmitListeners;
+    }
+
+    public List getPopulateListeners()
+    {
+        return populateListeners;
+    }
+
+    public List getStateAfterValidationListeners()
+    {
+        return stateAfterValidationListeners;
+    }
+
+    public List getStateBeforeValidationListeners()
+    {
+        return stateBeforeValidationListeners;
+    }
+
+    public List getStateListeners()
+    {
+        return stateListeners;
+    }
+
+    public List getValidationListeners()
+    {
+        return validationListeners;
     }
 }

@@ -2,7 +2,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.34 2003-08-06 00:06:13 aye.thu Exp $
+  * $Id: sparx.xml,v 1.35 2003-08-06 01:05:37 shahid.shah Exp $
   *****************************************************************************************
  -->
 
@@ -81,14 +81,19 @@
     <dialog-field-conditional-action name="apply-flags" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalApplyFlag"/>
     <dialog-field-conditional-action name="display" class="com.netspective.sparx.form.field.conditional.DialogFieldConditionalDisplay"/>
 
-
     <dialog-field-type name="ant-build-property" class="com.netspective.sparx.ant.AntBuildDialogPropertyField"/>
+
     <dialog-type name="ant-build" class="com.netspective.sparx.ant.AntBuildDialog">
         <frame heading="Ant Build"/>
         <field name="project-id" type="text" caption="Registered Ant Project Id" read-only="yes"/>
         <field name="project-file" type="text" caption="Registered Ant Project File" read-only="yes"/>
         <field name="target" type="select" caption="Execute Target" style="combo" required="yes"/>
     </dialog-type>
+
+    <dialog-execute-handler name="command" class="com.netspective.sparx.form.handler.DialogExecuteCommandHandler"/>
+    <dialog-execute-handler name="template" class="com.netspective.sparx.form.handler.DialogExecuteFreemarkerTemplateHandler"/>
+    <dialog-execute-handler name="include" class="com.netspective.sparx.form.handler.DialogExecuteIncludeResourceHandler"/>
+    <dialog-execute-handler name="panels" class="com.netspective.sparx.form.handler.DialogExecutePanelsHandler"/>
 
     <register-ant-project id="Project" file="servlet-context-path:/WEB-INF/sparx/ant-build-project.xml" default="yes">
         <dialog type="ant-build"/>
