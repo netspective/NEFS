@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.39 2003-11-07 17:43:08 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.40 2003-11-13 04:53:57 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -748,6 +748,22 @@ public class Dialog extends AbstractPanel implements TemplateConsumer, XmlDataMo
                 for(int i = 0; i < initialPopulateListeners.size(); i++)
                     ((DialogInitialPopulateListener) initialPopulateListeners.get(i)).populateInitialDialogValues(dc, formatType);
             }
+            // save the initial values of the dialog if requested
+            try
+            {
+                if (getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE))
+                {
+                    // set the context XML string in the current request and it will be used to create a hidden
+                    // field when the dialog is generated
+                    dc.setInitialContextXml(dc.getAsXml());
+                }
+            }
+            catch (Exception e)
+            {
+                // failed to construct an XML string representation of the Dialog context
+                log.error("Failed to save the dialog's initial context as an XML string. ", e);
+            }
+
         }
 
         if(formatType == DialogField.DISPLAY_FORMAT && havePopulateForDisplayListeners)

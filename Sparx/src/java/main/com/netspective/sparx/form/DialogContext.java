@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.28 2003-11-09 19:30:09 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.29 2003-11-13 04:53:57 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -73,6 +73,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -110,9 +111,7 @@ import com.netspective.commons.text.TextUtils;
  * A dialog context functions as the controller of the dialog, tracking and managing field state and field data.
  * A new <code>DialogContext</code> object is created for each HTTP request coming from a JSP even though
  * the dialogs are cached.
- * <p>
- * <img src="doc-files/dialogcontext-1.jpg"/>
- * <p>
+ *
  * For most occasions, the default <code>DialogContext</code> object should be sufficient but
  * for special curcumstances when the behavior of a dialog needs to be modified, the <code>DialogContext</code> class
  * can be extended (inherited) to create a customzied dialog context.
@@ -421,7 +420,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
             catch (Exception e)
             {
-                e.printStackTrace();
+                log.error("Failed to load the saved initial context XML.");
             }
         }
 
@@ -448,6 +447,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             debugFlagsStr = (String) request.getAttribute(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
             if(debugFlagsStr == null)
                 debugFlagsStr = request.getParameter(Dialog.PARAMNAME_DEBUG_FLAGS_INITIAL);
+
         }
         else
         {
@@ -531,7 +531,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         ServletRequest request = getRequest();
         String redirectToUrl = redirect != null ? redirect : request.getParameter(DEFAULT_REDIRECT_PARAM_NAME);
-        if(redirectToUrl == null)
+        if(redirectToUrl == null || redirectToUrl.length() == 0)
         {
             redirectToUrl = request.getParameter(dialog.getPostExecuteRedirectUrlParamName());
             if(redirectToUrl == null)
@@ -1074,6 +1074,16 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         executeHandled = value;
     }
 
+    public String getInitialContextXml()
+    {
+        return initialContextXml;
+    }
+
+    public void setInitialContextXml(String initialContextXml)
+    {
+        this.initialContextXml = initialContextXml;
+    }
+
     /**
      * Retrieves the HTTP request parameters that has been retained through the different dialog states
      *
@@ -1117,6 +1127,11 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         hiddens.append("<input type='hidden' name='" + dialog.getRunSequenceParamName() + "' value='" + (runSequence + 1) + "'>\n");
         hiddens.append("<input type='hidden' name='" + dialog.getExecuteSequenceParamName() + "' value='" + execSequence + "'>\n");
         hiddens.append("<input type='hidden' name='" + dialog.getActiveModeParamName() + "' value='" + nextMode + "'>\n");
+
+        // save the initial context xml as a hidden field but to be safe URL encode the XML string
+        if (dialog.getDialogFlags().flagIsSet(DialogFlags.RETAIN_INITIAL_STATE) &&  initialContextXml != null)
+            hiddens.append("<input type='hidden' name='" + dialog.getInitialContextParamName() + "' value='" +
+                    URLEncoder.encode(initialContextXml) + "'>\n");
 
         String pageCmd = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
         if(pageCmd != null)
