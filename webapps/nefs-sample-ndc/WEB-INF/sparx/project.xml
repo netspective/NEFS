@@ -17,6 +17,38 @@
     <navigation-tree name="app" default="yes">
         <page name="home" default="yes" caption="Home/Drug Name" 
             command="query-defn,sbn,sbnt,searchByNameDialog"/>
+        <page name="acti" default="no" caption="Active Ingredient" 
+            command="query-defn,sbi,sbit,searchByActIngDialog"/>
+        <page name="ingr" caption="Ingredient" hidden="yes" require-request-param="ingredient_name" retain-params="ingredient_name">
+            <missing-params-body>
+               Please choose an active ingrediant to display &lt;a href='acti'&gt; here &lt;/a&gt;.
+            </missing-params-body>
+            <panels style="vertical">
+                <panel type="command" command="query,ndc.dispbyin,-,-,-,record-manager-compressed"/>
+            </panels> 
+        </page>
+        <page name="clas" default="no" caption="Drug Classification" 
+            command="query-defn,sbc,sbct,searchByClassDialog"/>
+        <page name="clasi" caption="Classification" hidden="yes" require-request-param="product_class_no" retain-params="product_class_no">
+            <missing-params-body>
+               Please choose a drug classification to display &lt;a href='clas'&gt; here &lt;/a&gt;.
+            </missing-params-body>
+            <panels style="vertical">
+                <panel type="command" command="query,ndc.dispbycl,-,-,-,record-manager-compressed"/>
+            </panels> 
+        </page>
+        <page name="disp" caption="Display" hidden="yes" require-request-param="listing_seq_no" retain-params="listing_seq_no">
+            <missing-params-body>
+               Please choose a drug product to display &lt;a href='home'&gt; here &lt;/a&gt;.
+            </missing-params-body>
+            <panels style="vertical">
+                <panel type="command" command="query,ndc.dispdrug,-,-,-,record-manager-compressed"/>
+                <panel type="command" command="query,ndc.drugrout,-,-,-,record-manager-compressed"/>
+                <panel type="command" command="query,ndc.drugpkg,-,-,-,record-manager-compressed"/>
+                <panel type="command" command="query,ndc.drugform,-,-,-,record-manager-compressed"/>
+            </panels> 
+        </page>
+        
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
         <dialog-next-action-provider class="app.Util"/>
     </navigation-tree>
@@ -113,22 +145,145 @@
     ** DATA MANAGEMENT STATIC QUERY (SQL) SPECIFICATIONS                **
     ********************************************************************** 
     -->
+    <queries package="ndc">
+
+        <query name="dispdrug">
+	    select listing_seq_no, lblcode+'-'+LTRIM(prodcode) as ndccode,tradename,dosage_form,rx_otc,firm_name
+	      from listings, firms 
+	     where listing_seq_no=? and listings.firm_seq_no=firms.firm_seq_no
+            <presentation>
+                <panel>
+                    <report>
+                        <column heading ="Lst Seq No"/>
+                        <column heading ="NDC"/>
+                        <column heading ="Trade Name"/>
+                        <column heading ="Dosage"/>
+                        <column heading ="R/O"/>
+                        <column heading ="Firm Name"/> 
+                    </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:listing_seq_no"/>
+	    </params>
+        </query>
+
+        <query name="drugrout">
+            select route_name
+	      from routes
+	     where listing_seq_no=? 
+            <presentation>
+                <panel>
+                    <report>
+                        <column heading ="Rout of Admin"/>
+                    </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:listing_seq_no"/>
+	    </params>
+        </query>
+        
+        <query name="drugpkg">
+            select lblcode+'-'+LTRIM(prodcode)+'-'+LTRIM(pkgcode) as ndccode, packtype, packsize
+              from listings, packages
+             where listings.listing_seq_no=? 
+               and listings.listing_seq_no=packages.listing_seq_no
+            <presentation>
+                <panel>
+                    <report>
+			<column heading="NDC Full"/>
+			<column heading="Ea"/>
+			<column heading="Packaging"/>
+                     </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:listing_seq_no"/>
+	    </params>
+        </query>
+        
+        <query name="drugform">
+	    select strength, unit, ingredient_name
+	      from formulat
+	     where listing_seq_no=? 
+            <presentation>
+                <panel>
+                    <report>
+			<column heading="Strength"/>
+			<column heading="Unit"/>
+			<column heading="Ingredient Name"/>
+                   </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:listing_seq_no"/>
+	    </params>
+        </query> 
+        
+        <query name="dispbyin">
+			select lblcode+'-'+LTRIM(prodcode) as ndccode,tradename,
+			       dosage_form+' '+listings.strength+' '+listings.unit as dform,
+			       firm_name,listings.listing_seq_no
+			  from listings, firms, formulat 
+			 where listings.listing_seq_no=formulat.listing_seq_no 
+			   and ingredient_name=? 
+			   and listings.firm_seq_no=firms.firm_seq_no
+            <presentation>
+                <panel>
+                    <report>
+			<column heading="NDC 2 Part" format="plain" redirect="page-id:/disp?listing_seq_no=${4}"/>
+			<column heading="Drug Name"/>
+			<column heading="Dosage Form"/>
+			<column heading="Manufacturer"/>
+			<column hidden="yes"/>                   </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:ingredient_name"/>
+	    </params>
+        </query> 
+        
+        <query name="dispbycl">
+			select lblcode+'-'+LTRIM(prodcode) as ndccode,tradename,
+			       dosage_form+' '+strength+' '+unit as dform,
+			       firm_name,listings.listing_seq_no
+			  from listings, firms, drugclas 
+			 where listings.listing_seq_no=drugclas.listing_seq_no 
+			   and product_class_no=? 
+			   and listings.firm_seq_no=firms.firm_seq_no
+		      group by tradename, ndccode
+		      order by tradename, ndccode
+            <presentation>
+                <panel>
+                    <report>
+			<column heading="NDC 2 Part" format="plain" redirect="page-id:/disp?listing_seq_no=${4}"/>
+			<column heading="Drug Name"/>
+			<column heading="Dosage Form"/>
+			<column heading="Manufacturer"/>
+			<column hidden="yes"/>                   </report>
+                </panel>
+            </presentation>
+	    <params>
+		<param value="request:product_class_no"/>
+	    </params>
+        </query> 
+        
+    </queries>
 
     <!--
     **********************************************************************
     ** DATA MANAGEMENT DYNAMIC QUERY-DEFM (SQL) SPECIFICATIONS          **
     ********************************************************************** 
     -->
-    <query-defn name="sbn">
+    <query-defn name="sbn"> 
         <field name="listing_seq_no" caption="Lst Seq No" join="Listings" column="listing_seq_no"/>
-        <field name="lblcode" caption="Lbl" join="Listings" column="lblcode"/>
-        <field name="prodcode" caption="Prod" join="Listings" column="prodcode"/>
+        <field name="ndccode" caption="NDX" join="Listings" column="lblcode+'-'+LTRIM(prodcode)"/>
         <field name="strength" caption="Strength" join="Listings" column="strength"/>
         <field name="unit" caption="Unit" join="Listings" column="unit"/>
         <field name="rx_otc" caption="R/O" join="Listings" column="rx_otc"/>
         <field name="dosage_form" caption="Dosage" join="Listings" column="dosage_form"/>
-        <field name="firm_seq_no" caption="Firm Seq" join="Listings" column="firm_seq_no"/>
-        <field name="firm-name" caption="Firm Name" join="Firms" column="firm_name"/> -->
+        <field name="firmname" caption="Firm Name" join="Firms" column="firm_seq_no" column-expr="Firms.firm_name"/>
         <field name="tradename" caption="Trade Name" join="Listings" column="tradename"/>
 
         <join name="Listings" table="listings"/>
@@ -142,14 +297,12 @@
                 <select name="sbnt">
                     <order-by field="tradename"/> 
                     <display field="listing_seq_no"/>
-                    <display field="lblcode"/>
-                    <display field="prodcode"/>
+                    <display field="ndccode"/>
                     <display field="strength"/>
                     <display field="unit"/>
                     <display field="rx_otc"/>
                     <display field="dosage_form"/>
-                    <display field="firm_seq_no"/>
-                   <!-- <display field="firmname"/> --> 
+                    <display field="firmname"/>
                     <display field="tradename"/>
 
                     <condition field="tradename" allow-null="no" comparison="starts-with-ignore-case" value="field:Tradename"/>
@@ -159,14 +312,12 @@
                             <frame heading="static:Search by Trade Name Results"/>
                             <report>
                                 <column heading ="Lst Seq No" format="plain" redirect="page-id:/disp?listing_seq_no=${0}"/>
-                                <column heading ="Lbl"/>
-                                <column heading ="Prod"/>
+                                <column heading ="NDC"/>
                                 <column heading ="Strength"/>
                                 <column heading ="Unit"/>
                                 <column heading ="R/O"/>
                                 <column heading ="Dosage"/>
-                                <column heading ="Firm Seq"/> 
-<!--                                <column heading ="Firm Name"/> -->
+                                <column heading ="Firm Name"/> 
                                 <column heading ="Trade Name"/>
                              </report>
                         </panel>
@@ -175,7 +326,67 @@
             </select-dialog>
         </presentation>
     </query-defn>
+    
+    <query-defn name="sbi"> 
+        <field name="ingredient_name" caption="Active Ingredient" join="Formulat" column="ingredient_name"/>
 
+        <join name="Formulat" table="formulat"/>
+
+        <presentation>
+            <select-dialog name="searchByActIngDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
+                <frame heading="Search for Active Ingredients" />
+                <field type="text" name="Ingredient_name" caption="Active Ingredient"/>
+                
+                <select name="sbit">
+                    <group-by field="ingredient_name"/>
+                    <order-by field="ingredient_name"/> 
+                    <display  field="ingredient_name"/>
+
+                    <condition field="ingredient_name" allow-null="no" comparison="starts-with-ignore-case" value="field:Ingredient_name"/>
+
+                    <presentation>
+                        <panel name="report">
+                            <frame heading="static:Select an Active Ingredient"/>
+                            <report>
+                                <column heading ="Active Ingredient" format="plain" redirect="page-id:/ingr?ingredient_name=${0}"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
+
+    <query-defn name="sbc"> 
+        <field name="drug_classification" caption="Drug Classification" join="Drugclas" column="drug_classification"/>
+        <field name="product_class_no" caption="Prod Class" join="Drugclas" column="product_class_no"/>
+
+        <join name="Drugclas" table="drugclas"/>
+
+        <presentation>
+            <select-dialog name="searchByClassDialog"  allow-debug="yes" hide-output-dests="no" hide-readonly-hints="yes" >
+                <frame heading="Search for Drug Classes" />
+                <field type="text" name="Drug_classification" caption="Drug Classification"/>
+               
+                <select name="sbct">
+                   <display  field="drug_classification"/>
+                   <display  field="product_class_no"/>
+
+                    <condition field="drug_classification" allow-null="no" comparison="starts-with-ignore-case" value="field:Drug_classification"/>
+
+                    <presentation>
+                        <panel name="report">
+                            <frame heading="static:Select a Drug Classification"/>
+                            <report>
+                                <column heading ="Drug Classification" format="plain" redirect="page-id:/clasi?product_class_no=${1}"/>
+                                <column hidden="yes"/>
+                            </report>
+                        </panel>
+                    </presentation>
+                </select>
+            </select-dialog>
+        </presentation>
+    </query-defn>
 
 
 
