@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.1 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.2 2003-08-17 16:20:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
@@ -49,6 +49,7 @@ import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.sparx.security.LoginAuthenticator;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.security.HttpLoginManager;
 
 import javax.servlet.ServletConfig;
 
@@ -71,9 +72,11 @@ public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
     public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_PLAIN_TEXT";
     public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_ENCRYPTED";
 
-    public boolean isUserValid(LoginDialog loginDialog, LoginDialogContext loginDialogContext)
+    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
         ServletConfig servletConfig = loginDialogContext.getServlet().getServletConfig();
+        LoginDialog loginDialog = loginDialogContext.getLoginDialog();
+
         String loginUserId = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_ID);
         String loginPasswordEncrypted = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED);
         if(loginPasswordEncrypted == null)

@@ -39,77 +39,21 @@
  */
 
 /**
- * $Id: LoginDialogContext.java,v 1.3 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: HttpLoginAttemptsManager.java,v 1.1 2003-08-17 16:20:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
-import com.netspective.sparx.form.DialogContext;
-import com.netspective.sparx.form.field.DialogField;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.LoginDialog;
-import com.netspective.commons.security.Crypt;
-import com.netspective.commons.security.AuthenticatedUser;
+import java.io.Writer;
+import java.io.IOException;
 
-public class LoginDialogContext extends DialogContext
+import com.netspective.commons.value.ValueSource;
+
+public interface HttpLoginAttemptsManager
 {
-    private boolean hasRememberedValues;
-    private boolean hasEncryptedPassword;
-
-    public LoginDialog getLoginDialog()
-    {
-        return (LoginDialog) getDialog();
-    }
-
-    public String getUserIdInput()
-    {
-        LoginDialog loginDialog = (LoginDialog) getDialog();
-        return getFieldStates().getState(loginDialog.getUserIdFieldName()).getValue().getTextValue();
-    }
-
-    public String getPasswordInput(boolean encrypted)
-    {
-        LoginDialog loginDialog = (LoginDialog) getDialog();
-        String password = getFieldStates().getState(loginDialog.getPasswordFieldName()).getValue().getTextValue();
-        return encrypted ? Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, password) : password;
-    }
-
-    public boolean getRememberIdInput()
-    {
-        LoginDialog loginDialog = (LoginDialog) getDialog();
-        DialogField.State rememberState = getFieldStates().getState(loginDialog.getRememberIdFieldName(), null);
-        return rememberState != null ? rememberState.getValue().getTextValue().equals("1") : false;
-    }
-
-    public boolean hasRememberedValues(HttpLoginManager loginManager)
-    {
-        String rememberedUserId = loginManager.getRememberedUserId(this);
-        String rememberedEncPassword = loginManager.getRememberedEncryptedPassword(this);
-
-        if(rememberedUserId != null && rememberedEncPassword != null &&
-           rememberedUserId.length() > 0 && rememberedEncPassword.length() > 0)
-        {
-            DialogContext.DialogFieldStates states = getFieldStates();
-            LoginDialog loginDialog = (LoginDialog) getDialog();
-            states.getState(loginDialog.getUserIdFieldName()).getValue().setValue(rememberedUserId);
-            states.getState(loginDialog.getPasswordFieldName()).getValue().setValue(rememberedEncPassword);
-
-            hasEncryptedPassword = true;
-            hasRememberedValues = true;
-            return true;
-        }
-
-        hasRememberedValues = false;
-        return false;
-    }
-
-    public boolean hasRememberedValues()
-    {
-        return hasRememberedValues;
-    }
-
-    public boolean hasEncryptedPassword()
-    {
-        return hasEncryptedPassword;
-    }
+    public boolean allowLoginAttempt(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    public void maxLoginAttemptsExceeeded(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
+    public void renderLoginAttemptDeniedHtml(Writer writer, HttpLoginManager loginManager, LoginDialogContext loginDialogContext) throws IOException;
+    public int getMaxLoginAttempts();
+    public ValueSource getMaxLoginAttemptsExceededMessage();
 }

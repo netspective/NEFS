@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.12 2003-08-17 00:18:35 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.13 2003-08-17 16:20:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -61,10 +61,6 @@ import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
 import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.LoginDialog;
-import com.netspective.sparx.security.LoginDialogContext;
-import com.netspective.sparx.form.DialogExecuteException;
-import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.theme.Themes;
@@ -253,35 +249,7 @@ public class NavigationControllerServlet extends HttpServlet
         if(loginManager != null)
         {
             nc.getRequest().setAttribute(BasicDbHttpServletValueContext.REQATTRNAME_ACTIVE_LOGIN_MANAGER, loginManager);
-
-            if(! loginManager.accessAllowed(nc))
-            {
-                Theme theme = getTheme();
-                LoginDialog loginDialog = loginManager.getLoginDialog();
-                LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
-
-                if(ldc.hasRememberedValues(loginManager))
-                    nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
-                loginDialog.prepareContext(ldc);
-
-                Writer writer = nc.getResponse().getWriter();
-
-                if(! ldc.inExecuteMode())
-                {
-                    nc.getSkin().renderPageMetaData(writer, nc);
-                    ldc.getSkin().renderHtml(writer, ldc);
-                    return true;
-                }
-                try
-                {
-                    loginDialog.execute(writer, ldc);
-                }
-                catch (DialogExecuteException e)
-                {
-                    log.error("Unable to execute login dialog", e);
-                    throw new ServletException(e);
-                }
-            }
+            return loginManager.loginDialogPresented(nc);
         }
 
         return false;
@@ -299,6 +267,8 @@ public class NavigationControllerServlet extends HttpServlet
 
     protected void renderPage(NavigationContext nc) throws ServletException, IOException
     {
+        // If a login dialog was presented, we don't want to render anything because the login dialog should take over
+        // the entire page
         if(isSecure() && loginDialogPresented(nc))
             return;
 

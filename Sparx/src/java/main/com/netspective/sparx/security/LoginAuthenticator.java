@@ -39,12 +39,12 @@
  */
 
 /**
- * $Id: LoginAuthenticator.java,v 1.1 2003-08-08 17:19:22 shahid.shah Exp $
+ * $Id: LoginAuthenticator.java,v 1.2 2003-08-17 16:20:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
 public interface LoginAuthenticator
 {
-    public boolean isUserValid(LoginDialog loginDialog, LoginDialogContext loginDialogContext);
+    public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext);
 }

@@ -39,15 +39,18 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.5 2003-08-17 00:16:05 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.6 2003-08-17 16:20:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
 
 import java.util.BitSet;
+import java.io.Writer;
+import java.io.IOException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.ServletException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +59,11 @@ import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.form.listener.DialogValidateListener;
 import com.netspective.sparx.form.DialogValidationContext;
+import com.netspective.sparx.form.Dialog;
+import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator;
+import com.netspective.sparx.theme.Theme;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.BasicAuthenticatedUser;
@@ -78,7 +85,13 @@ public class HttpLoginManager
         public void validateDialog(DialogValidationContext dvc)
         {
             LoginDialogContext ldc = (LoginDialogContext) dvc.getDialogContext();
-            LoginDialog loginDialog = (LoginDialog) ldc.getDialog();
+
+            HttpLoginAttemptsManager attemptsManager = getLoginAttemptsManager();
+            if(! allowLoginAttempt(ldc))
+            {
+                dvc.addError(attemptsManager.getMaxLoginAttemptsExceededMessage().getTextValue(ldc));
+                return;
+            }
 
             if(loginAuthenticator == null)
             {
@@ -86,7 +99,7 @@ public class HttpLoginManager
                 return;
             }
 
-            if(! loginAuthenticator.isUserValid(loginDialog, ldc))
+            if(! loginAuthenticator.isUserValid(HttpLoginManager.this, ldc))
                 dvc.addError(invalidUserMessage.getTextValue(ldc));
         }
     }
@@ -103,6 +116,7 @@ public class HttpLoginManager
     private int rememberUserIdCookieMaxAge = 60 * 60 * 24 * 365; // 1 year
     private LoginDialog loginDialog;
     private LoginAuthenticator loginAuthenticator;
+    private HttpLoginAttemptsManager loginAttemptsManager = createLoginAttemptsListener();
     private ValueSource invalidUserMessage = DEFAULT_INVALID_USER_MESSAGE;
 
     public HttpLoginManager()
@@ -220,6 +234,16 @@ public class HttpLoginManager
     public void setInvalidUserMessage(ValueSource invalidUserMessage)
     {
         this.invalidUserMessage = invalidUserMessage;
+    }
+
+    public LoginAuthenticator getLoginAuthenticator()
+    {
+        return loginAuthenticator;
+    }
+
+    public HttpLoginAttemptsManager getLoginAttemptsManager()
+    {
+        return loginAttemptsManager;
     }
 
     /**
@@ -351,6 +375,21 @@ public class HttpLoginManager
         }
     }
 
+    public boolean allowLoginAttempt(LoginDialogContext ldc)
+    {
+        return loginAttemptsManager.allowLoginAttempt(this, ldc);
+    }
+
+    protected void maxLoginAttemptsExceeded(LoginDialogContext ldc)
+    {
+        loginAttemptsManager.maxLoginAttemptsExceeeded(this, ldc);
+    }
+
+    public void renderLoginAttemptDeniedHtml(Writer writer, LoginDialogContext ldc) throws IOException
+    {
+        loginAttemptsManager.renderLoginAttemptDeniedHtml(writer, this, ldc);
+    }
+
     protected void registerLogin(HttpServletValueContext hsvc, AuthenticatedUser user)
     {
         user.registerLogin();
@@ -463,6 +502,16 @@ public class HttpLoginManager
         this.loginAuthenticator = loginAuthenticator;
     }
 
+    public HttpLoginAttemptsManager createLoginAttemptsListener()
+    {
+        return new DefaultLoginAttemptsManager();
+    }
+
+    public void addLoginAttemptsListener(HttpLoginAttemptsManager loginMaxAttemptsExceededListener)
+    {
+        this.loginAttemptsManager = loginMaxAttemptsExceededListener;
+    }
+
     public LoginDialog createLoginDialog()
     {
         return new LoginDialog();
@@ -478,5 +527,54 @@ public class HttpLoginManager
     public LoginDialog getLoginDialog()
     {
         return loginDialog;
+    }
+
+    public boolean loginDialogPresented(NavigationContext nc) throws IOException, ServletException
+    {
+        if(accessAllowed(nc))
+            return false;
+
+        Theme theme = nc.getActiveTheme();
+        LoginDialog loginDialog = getLoginDialog();
+        LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
+
+        if(ldc.hasRememberedValues(this))
+            nc.getRequest().setAttribute(Dialog.PARAMNAME_AUTOEXECUTE, "yes");
+        loginDialog.prepareContext(ldc);
+
+        Writer writer = nc.getResponse().getWriter();
+
+        // check to make sure the user's not locked out because of max attempts from before
+        if(allowLoginAttempt(ldc))
+        {
+            // ok, we're not locked out so see if we're in execute mode
+            if(! ldc.inExecuteMode())
+            {
+                // we're not in execute mode so we need to present the login dialog
+                nc.getSkin().renderPageMetaData(writer, nc);
+                ldc.getSkin().renderHtml(writer, ldc);
+                return true;
+            }
+            try
+            {
+                // we're in execute mode so we'll "run" the dialog (create the user, etc) and then
+                // return 'false' which means we're not presenting a login dialog (page should continue)
+                loginDialog.execute(writer, ldc);
+                return false;
+            }
+            catch (DialogExecuteException e)
+            {
+                log.error("Unable to execute login dialog", e);
+                throw new ServletException(e);
+            }
+        }
+        else
+        {
+            // since the user is somehow denied the login attempt, handle the denial and then return true
+            // because the login denial may itself be considered a login dialog
+            nc.getSkin().renderPageMetaData(writer, nc);
+            renderLoginAttemptDeniedHtml(writer, ldc);
+            return true;
+        }
     }
 }
