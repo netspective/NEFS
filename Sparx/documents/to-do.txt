@@ -9,6 +9,7 @@
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
+* Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
 * Allow documentation panels in console which borrow ideas form Sparx 2.0 documentation (XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates
 * Look at Struts' MessageResources class for creating and 'rb' (resource-bundle) value source for internationlization
@@ -19,3 +20,5 @@
 * Use XDoclet for generating TLD files -- using appropriate merge points.
 * Consider using XDoclet for generation of DTD files and XSDs.
 * Consider adding struts-style plugins?
+* Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
+* Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings

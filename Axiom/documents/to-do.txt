@@ -1,5 +1,6 @@
 * [IMPORTANT] -- wherever a "close()" method is called for result sets and exceptions are being thrown, be sure to capture the close() in a try..finally block (reported by Aye)
 * [IMPORTANT] -- allowd for pooled/cached PreparedStatements in Queries (tests show that prepared statements are 20% slower than non-prepared unless they are reused)
+* Review http://jakarta.apache.org/commons/codec/index.html and implement soundex, metaphone, etc encoders to save/search those encodings using query defs and such
 * Add feature to connection provider to detect connection leaks (a connection leak occurs when a connection obtained from the pool was not closed explicitly by calling close() and then was disposed by the garbage collector and returned to the connection pool).
 * Store call stack where database connections are opened so that if any are left open at the end of a program run we know where they were created.
 * Add "versioning of rows" feature into the framework -- perhaps a table-type called "Versioned" that would manage it?
@@ -12,19 +13,17 @@
 * Allow 'access' (read-only/read-write) modifier on columns so that DAL knows whether to generate accessor/mutators appropriately
 * Consider schema-type schema templates (just like table-type and data-type templates for tables/columns)
 * In schema manager, improve automatically generated table Query Definitions with more features such a foreign key references, parent references, etc.
-* Complete optimistic locking of an object/row using a Timestamp or Integer column. When conflicts occur, throw an ObjectHasChanged exception.
+* Implement optimistic locking of an object/row using a Timestamp or Integer column. When conflicts occur, throw an ObjectHasChanged exception.
 * Try and catch required, maxlength, and other DAL exceptions prior to the values getting to the JDBC driver (add additional validation rules).
 * Add capability to create <data> tags within <table> tags to supply DDL-time data (like <enumerations> except generic).
-* Add capability to store the data-types (domain names and descriptions) to columns so that DBDDs can pick them up (all inherited data-types).
-* Add capability to store the table-type (table inheritance) to tables so that DBDDs can pick them up (all inherited table-types).
-* Add "description" column to enumerations so that each row can contain documentation on itself.
+* Add "description" column to enumerations so that each row can contain documentation on itself but not be placed into the .
 * Add column, table, abbrev validations in collections so that duplicated abbreviations and names are not allowed.
 * Add relationship descriptions to foreign keys like they are defined in "Universal Data Models" -- this will allow better DBDDs.
 * Add support for validation of "exclusive arcs" where only one of a set of columns should have data (mutually exlusive column values).
 * Change 'self-ref' nomenclature to 'recursive-ref'?
 * Add java triggers to foreign keys declarations so that onadd/onupdate/etc runs whenever the referenced value changes.
-* Add Jakarta DBCP connection pooling as another ConnectionProvider.
-* Add flag to Query class that would allow usage of normal Statements with SQL injection instead of just prepared statements with bind parameters.
+* Add Jakarta DBCP connection pooling as another ConnectionProvider -- this will allow app-server-independent connection pooling and allow control through console.
+* Add flag to Query class that would allow usage of normal Statements with SQL injection instead of just prepared statements with bind parameters. Is this a good idea??
 * Allow <query> tags to be added under <schema> that would simply allow the <schema> to act as a namespace.
 * Add result set iterator (paging) base classes from Sparx (should this really be in reports data source?).
 * Add timeouts and auto-refresh logic to DAL objects so that Rows can re-read themselves after a period of time (useful for caching data).

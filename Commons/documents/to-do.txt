@@ -1,5 +1,6 @@
-* Conver the isProduction(), isTesting, isDevelopment methods to a single XdmBitmaskedFlagsAttribute object called EnvironmentFlags
+* Convert the isProduction(), isTesting, isDevelopment methods to a single XdmBitmaskedFlagsAttribute object called EnvironmentFlags
 * Using some of the ideas from M7 (http://www.m7.com/products/personalization.html), create a Personalization subsystem/framework similar to AccessControl/Permissions subsystem
+* Use Jakarta Commons Attributes (http://jakarta.apache.org/commons/sandbox/attributes/index.html) to allow XDM to store additional information useful at runtime (like descriptions, etc)
 * Add a workflow engine subsystem that would allow multiple workflows engines to be plugged-in (werken, etc)
 * Create "XdmFlags" datatype that would allow XML files to supply flags as yes/no using booleans as well as Java-style A | B | C
 * Add <documentation type="requirement | fs | etc">1.2.3.4</document> tag to all objects to allow gathering of documentation like reqs, specs, etc
