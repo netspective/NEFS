@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataModelSchemaTest.java,v 1.5 2003-04-01 13:09:37 shahbaz.javeed Exp $
+ * $Id: DataModelSchemaTest.java,v 1.6 2003-04-02 06:25:32 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -48,6 +48,9 @@ import java.io.IOException;
 import java.io.File;
 import java.util.*;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 import junit.framework.TestCase;
 
@@ -356,6 +359,33 @@ public class DataModelSchemaTest extends TestCase
         }
     }
 
+	static public class SampleBitmaskedFlagsAttribute extends XdmBitmaskedFlagsAttribute
+	{
+		private FlagDefn[] fd = null;
+		private static String[] maskNames = new String[] { "BIT_ZERO", "BIT_ONE", "BIT_TWO", "BIT_THREE", "BIT_FOUR", "BIT_FIVE", "BIT_SIX", "BIT_SEVEN" };
+
+		public SampleBitmaskedFlagsAttribute (int flags) {
+			super(flags);
+		}
+
+		public SampleBitmaskedFlagsAttribute () {
+		}
+
+		/**
+		 * This is the only method a subclass needs to implement.
+		 * @return an array holding all possible values of the flags.
+		 */
+		public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns () {
+			if (null == fd)
+			{
+				fd = new FlagDefn[8];
+				for (int i = 0; i < maskNames.length; i ++)
+					fd[i] = new FlagDefn(maskNames[i], 1 << i);
+			}
+			return fd;
+		}
+	}
+
     static public class Nested11Test
     {
         public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
@@ -363,6 +393,7 @@ public class DataModelSchemaTest extends TestCase
         private String text;
         private int integer;
         private int type;
+	    private long bitMask;
 
         public Nested11Test()
         {
@@ -397,6 +428,14 @@ public class DataModelSchemaTest extends TestCase
         {
             this.integer = integer;
         }
+
+	    public long getBitMask () {
+		    return bitMask;
+	    }
+
+	    public void setBitMask (SampleBitmaskedFlagsAttribute bitMask) {
+		    this.bitMask = bitMask.getFlags();
+	    }
     }
 
     static public class CustomNested11Test extends Nested11Test
@@ -462,7 +501,7 @@ public class DataModelSchemaTest extends TestCase
         Nested1Test nested1FromInclude = (Nested1Test) dmt.getRoot().getNested1().get(0);
         assertTrue(nested1FromInclude != null);
         assertTrue(nested1FromInclude.getPcData().indexOf("PCDATA in included-nested1.") > 0);
-        assertEquals(2, nested1FromInclude.getNested11List().size());
+        assertEquals(3, nested1FromInclude.getNested11List().size());
 
         Nested1Test nested1FromMain = (Nested1Test) dmt.getRoot().getNested1().get(1);
         assertTrue(nested1FromMain != null);
@@ -477,6 +516,24 @@ public class DataModelSchemaTest extends TestCase
         assertEquals("TestText12", test.getText());
         assertEquals(12, test.getInteger());
         assertEquals(2, test.getType());
+
+	    Nested11Test includeTestZero = (Nested11Test) nested1FromInclude.getNested11List().get(0);
+	    assertEquals("included-TestText11", includeTestZero.getText());
+	    assertEquals(15, includeTestZero.getInteger());
+	    assertEquals(0, includeTestZero.getType());
+	    assertEquals(106, includeTestZero.getBitMask());
+
+	    Nested11Test includeTestOne = (Nested11Test) nested1FromInclude.getNested11List().get(1);
+	    assertEquals("included-TestText12", includeTestOne.getText());
+	    assertEquals(17, includeTestOne.getInteger());
+	    assertEquals(2, includeTestOne.getType());
+	    assertEquals(11, includeTestOne.getBitMask());
+
+	    Nested11Test includeTestTwo = (Nested11Test) nested1FromInclude.getNested11List().get(2);
+	    assertEquals("pinky.and.the.brain", includeTestTwo.getText());
+	    assertEquals(7, includeTestTwo.getInteger());
+	    assertEquals(1, includeTestTwo.getType());
+	    assertEquals(0, includeTestTwo.getBitMask());
 
         assertEquals(CustomNested11Test.class, nested1FromMain.getNested11List().get(2).getClass());
         CustomNested11Test ctest = (CustomNested11Test) nested1FromMain.getNested11List().get(2);
@@ -598,8 +655,16 @@ public class DataModelSchemaTest extends TestCase
 
 		Set schemaPropertySet = schema.getPropertyNames().keySet();
 		assertEquals(rootSchemaPropertyNames.length + schemaModifiedPropertyNames.length, schemaPropertySet.size());
+		int numAliases = 0;
 		for (int i = 0; i < rootSchemaPropertyNames.length; i ++)
+		{
 			assertTrue(schemaPropertySet.contains(rootSchemaPropertyNames[i]));
+			XmlDataModelSchema.PropertyNames xdmspn = (XmlDataModelSchema.PropertyNames) schema.getPropertyNames().get(rootSchemaPropertyNames[i]);
+			assertTrue(xdmspn.getAliases().contains(TextUtils.replaceTextValues(rootSchemaPropertyNames[i], "-", "")));
+			numAliases += xdmspn.getAliases().size();
+		}
+
+		assertEquals(rootSchemaPropertyNames.length + schemaModifiedPropertyNames.length, numAliases);
 
 		for (int i = 0; i < schemaModifiedPropertyNames.length; i ++)
 			assertTrue(schemaPropertySet.contains(schemaModifiedPropertyNames[i]));
@@ -609,7 +674,6 @@ public class DataModelSchemaTest extends TestCase
 
 	public void testXmlDataModelSchemaAttributes ()
 	{
-		System.out.println("\n");
 		Map schemas = XmlDataModelSchema.getSchemas();
 		Set schemaNames = schemas.keySet();
 		Class[] expectedSchemas = new Class[] { DataModelTest.class, RootTest.class, Nested1Test.class, Nested11Test.class, CustomNested11Test.class };
@@ -625,16 +689,22 @@ public class DataModelSchemaTest extends TestCase
 		// This should be the same as the RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS
 		assertEquals(RootTest.XML_DATA_MODEL_SCHEMA_OPTIONS, schemaOpt);
 
-//		rootSchemaPropertyNames = new String[] { "integer", "nested-1", "path-separator-char", "root-attr-1", "test-boolean", "test-byte", "test-class", "test-double", "test-file", "test-float", "test-long", "test-short" };
-
 		Map rootSchemaAttributeSetters = rootSchema.getAttributeSetters();
 		Set rootSchemaAttributeSetterKeys = rootSchemaAttributeSetters.keySet();
 		assertEquals(rootSchema.getAttributes(), rootSchemaAttributeSetterKeys);
 
-		for (Iterator iter = rootSchemaAttributeSetterKeys.iterator(); iter.hasNext();)
+		//TODO: Why cant the object named 'test' be cast to XmlDataModelSchema?  It certainly shows XmlDataModelSchema as the output of getClass()
+		for (Iterator iter = rootSchemaAttributeSetters.keySet().iterator(); iter.hasNext();)
 		{
 			Object key = iter.next();
-//			System.out.println(key + " => " + rootSchemaAttributeSetters.get(key));
+			Object test = rootSchemaAttributeSetters.get(key);
+
+/*
+			assertEquals(XmlDataModelSchema.class, test.getClass());
+			XmlDataModelSchema xdm = (XmlDataModelSchema) test;
+
+			System.out.println("\tProperty Names: " + xdm.getPropertyNames().keySet());
+*/
 			// Decipher this...
 		}
 
@@ -661,6 +731,128 @@ public class DataModelSchemaTest extends TestCase
 			String removeDashes = TextUtils.replaceTextValues(key, "-", "");
 			assertEquals(expectedAttributeTypes.get(key), rootSchemaAttributeTypes.get(removeDashes));
 		}
+	}
+
+	public void testXdmEnumeratedAttribute ()
+	{
+		XdmEnumeratedAttribute xea = new Nested11TypeEnumeratedAttribute();
+
+        assertNull(xea.getValue());
+		assertEquals(3, xea.getValues().length);
+		assertFalse(xea.containsValue("test"));
+		assertFalse(xea.containsValue(null));
+
+		boolean exceptionThrown = true;
+
+		try {
+			xea.setValue(null);
+			exceptionThrown = false;
+		} catch (Exception e) {
+			assertTrue(exceptionThrown);
+		}
+		assertTrue(exceptionThrown);
+
+		assertNull(xea.getValue());
+		assertFalse(xea.containsValue(null));
+
+		try {
+			xea.setValue("type-B");
+			exceptionThrown = false;
+		} catch (Exception e) {
+			// Must not reach here...
+			assertFalse(exceptionThrown);
+		}
+		assertFalse(exceptionThrown);
+		exceptionThrown = true;
+
+		assertEquals("type-B", xea.getValue());
+		assertEquals(1, xea.getValueIndex());
+		assertEquals(1, xea.getValueIndex("type-B"));
+		assertTrue(xea.containsValue("type-B"));
+	}
+
+	public void testXdmBitmaskedFlagsAttribute ()
+	{
+		XdmBitmaskedFlagsAttribute bmfa = new SampleBitmaskedFlagsAttribute();
+
+		assertEquals(0, bmfa.getFlags());
+
+		for (int i = 0; i < 8; i ++)
+			assertFalse(bmfa.flagIsSet(i));
+
+		// BitMask: 10101010
+		long expectedBitMaskOne = 170;
+		String[] possibleFlagNames = new String[] { "BIT_ZERO", "BIT_ONE", "BIT_TWO", "BIT_THREE", "BIT_FOUR", "BIT_FIVE", "BIT_SIX", "BIT_SEVEN" };
+		String[] expectedBitStringsOne = new String[] { "BIT_ONE", "BIT_THREE", "BIT_FIVE", "BIT_SEVEN" };
+        bmfa = new SampleBitmaskedFlagsAttribute(170);
+		assertEquals(expectedBitMaskOne, bmfa.getFlags());
+		assertEquals(TextUtils.join(expectedBitStringsOne, " | "), bmfa.getFlagsText());
+		String[] actualBitStringsOne = bmfa.getFlagNames();
+		assertEquals(possibleFlagNames.length, actualBitStringsOne.length);
+
+		for (int i = 0; i < 8; i ++)
+		{
+			assertEquals(possibleFlagNames[i], actualBitStringsOne[i]);
+
+			if (0 == i % 2)
+				assertFalse(bmfa.flagIsSet(1 << i));
+			else
+				assertTrue(bmfa.flagIsSet(1 << i));
+		}
+
+		// Reverse these bits now...
+		long expectedBitMaskTwo = 85;
+		String[] expectedBitStringsTwo = new String[] { "BIT_ZERO", "BIT_TWO", "BIT_FOUR", "BIT_SIX" };
+
+		for (int i = 0; i < 8; i ++)
+		{
+			long flagValue = 1 << i;
+
+			if (bmfa.flagIsSet(flagValue))
+				bmfa.clearFlag(flagValue);
+			else
+				bmfa.setFlag(flagValue);
+		}
+
+		assertEquals(expectedBitMaskTwo, bmfa.getFlags());
+		assertEquals(TextUtils.join(expectedBitStringsTwo, " | "), bmfa.getFlagsText());
+
+		for (int i = 0; i < 8; i ++)
+		{
+			if (0 == i % 2)
+				assertTrue(bmfa.flagIsSet(1 << i));
+			else
+				assertFalse(bmfa.flagIsSet(1 << i));
+		}
+
+		// Reverse the bits again ... using a different routine
+		for (int i = 0; i < 8; i ++)
+            bmfa.updateFlag(1 << i, 0 != i % 2);
+
+		assertEquals(170, bmfa.getFlags());
+
+		// Finally, do a basic test of the FlagDefn class
+		SampleBitmaskedFlagsAttribute.FlagDefn[] fd = bmfa.getFlagsDefns();
+
+		for (int i = 0; i < fd.length; i ++)
+		{
+			assertEquals(1 << i, fd[i].getMask());
+			fd[i].setMask(0);
+			assertEquals(0, fd[i].getMask());
+			fd[i].setMask(1 << i);
+			assertEquals(1 << i, fd[i].getMask());
+
+			assertEquals(SampleBitmaskedFlagsAttribute.maskNames[i], fd[i].getName());
+			fd[i].setName("RAND_AL_THOR");
+			assertEquals("RAND_AL_THOR", fd[i].getName());
+			fd[i].setName(SampleBitmaskedFlagsAttribute.maskNames[i]);
+			assertEquals(SampleBitmaskedFlagsAttribute.maskNames[i], fd[i].getName());
+		}
+
+		// Try switching the name and see if it'll have any effect
+		fd[1].setName("TOM_AND_JERRY");
+		expectedBitStringsOne[0] = "TOM_AND_JERRY";
+		assertEquals(TextUtils.join(expectedBitStringsOne, " | "), bmfa.getFlagsText());
 	}
 
 	public void testXmlDataModelSchema ()

@@ -8,8 +8,9 @@
     <nested1 text="included-TestText1" integer="13" boolean="no">
         PCDATA in included-nested1.
 
-        <nested11 text="included-TestText11" integer="15"/>
-        <nested11 type="type-C" text="included-TestText12" integer="17"/>
+        <nested11 text="included-TestText11" integer="15" bit-mask="BIT_THREE|BIT_FIVE|BIT_SIX|BIT_ONE"/>
+        <nested11 type="type-C" text="included-TestText12" integer="17" bit-mask="BIT_ZERO|BIT_ONE|BIT_THREE"/>
+        <nested11 type="type-B" text="pinky.and.the.brain" integer="007"/>
 
     </nested1>
 
