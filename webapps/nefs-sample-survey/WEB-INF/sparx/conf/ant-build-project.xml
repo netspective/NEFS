@@ -25,6 +25,7 @@
 
         <property name="app.sparx.project.home" value="${app.WEB-INF.path}/sparx"/>
         <property name="app.sparx.project.file" value="${app.sparx.project.home}/project.xml"/>
+        <property name="app.sparx.project.dtd.file" value="${app.sparx.project.home}/project.dtd"/>
 
         <property name="app.documents.home" value="${app.WEB-INF.path}/documents"/>
         <property name="app.documents.javadoc.home" value="${app.documents.home}/javadoc"/>
@@ -96,6 +97,12 @@
         <sparx action="generate-import-data-dtd"
                projectFile="${app.sparx.project.file}"
                dtdFile="${app.database.defn.path}/${app.database.default-schema-name}-import.dtd"/>
+    </target>
+
+    <target name="generate-project-dtd" depends=".init" description="Generate Project DTD">
+            <sparx action="generate-dtd"
+                   projectFile="${app.sparx.project.file}"
+                   dtdFile="${app.sparx.project.dtd.file}"/>
     </target>
 
     <target name="generate-graphviz-erd" depends=".init" if="app.database.default-schema-name" description="Generates a DOT file used by GraphViz to produce entity-relationship diagrams (ERDs) for the default schema.">
