@@ -40,12 +40,8 @@
 
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
-import com.netspective.medigy.reference.custom.party.FacilityType;
-import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -57,8 +53,13 @@ import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
 import javax.ejb.Table;
-import java.util.HashSet;
-import java.util.Set;
+
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
+import com.netspective.medigy.reference.custom.party.FacilityType;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 @Entity()
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -66,6 +67,26 @@ import java.util.Set;
 public class Party extends AbstractTopLevelEntity
 {
     public static final String SYS_GLOBAL_PARTY_NAME = "SYS_GLOBAL_PARTY";
+
+    public enum Cache
+    {
+        SYS_GLOBAL_PARTY();
+
+        private Party entity;
+
+        public Party getEntity()
+        {
+            if(entity == null)
+                throw new RuntimeException(getClass() + " " + name() + " has not been initialized.");
+
+            return entity;
+        }
+
+        public void setEntity(Party entity)
+        {
+            this.entity = entity;
+        }
+    }
 
     private Long partyId;
     private String partyName;

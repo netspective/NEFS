@@ -38,24 +38,25 @@
  */
 package com.netspective.medigy.model.data;
 
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.util.HibernateUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.util.HibernateUtil;
+
 public class EntitySeedDataPopulator
 {
-    private Log log = LogFactory.getLog(EntitySeedDataPopulator.class);
+    private final Log log = LogFactory.getLog(EntitySeedDataPopulator.class);
 
     private Session session;
     private Party globalParty;
