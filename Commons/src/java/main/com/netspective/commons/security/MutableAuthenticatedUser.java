@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MutableAuthenticatedUser.java,v 1.1 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: MutableAuthenticatedUser.java,v 1.2 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -69,7 +69,7 @@ public interface MutableAuthenticatedUser extends AuthenticatedUser
 
     public void setRemembered(boolean isRemembered);
 
-    public void registerLogin();
+    public void registerLogin(ValueContext vc);
 
-    public void registerLogout(AuthenticatedUserLogoutType type);
+    public void registerLogout(ValueContext vc, AuthenticatedUserLogoutType type);
 }

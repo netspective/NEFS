@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.14 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.15 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -58,7 +58,7 @@ import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
 import com.netspective.commons.value.ValueContext;
 
-public class BasicAuthenticatedUser implements MutableAuthenticatedUser, MutableAuthenticatedOrgUser, java.io.Serializable
+public class BasicAuthenticatedUser implements MutableAuthenticatedUser, java.io.Serializable
 {
     private static final Log log = LogFactory.getLog(BasicAuthenticatedUser.class);
 
@@ -69,9 +69,9 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Mutable
     private String[] userRoleNames;
     private String[] userPermissionNames;
     private BitSet userPermissions;
-    private Object userOrgId;
-    private String userOrgName;
     private Map attributes = new HashMap();
+    private EntityPreferences preferences = createPreferences();
+    private AuthenticatedOrganizations organizations = createOrganizations();
 
     public BasicAuthenticatedUser()
     {
@@ -104,26 +104,6 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Mutable
     public void setUserId(String userId)
     {
         this.userId = userId;
-    }
-
-    public String getUserOrgName()
-    {
-        return userOrgName != null ? userOrgName : (userOrgId != null ? userOrgId.toString() : null);
-    }
-
-    public void setUserOrgName(String userOrgName)
-    {
-        this.userOrgName = userOrgName;
-    }
-
-    public Object getUserOrgId()
-    {
-        return userOrgId;
-    }
-
-    public void setUserOrgId(String userOrgId)
-    {
-        this.userOrgId = userOrgId;
     }
 
     public String getEncryptedPassword()
@@ -261,11 +241,36 @@ public class BasicAuthenticatedUser implements MutableAuthenticatedUser, Mutable
         this.isRemembered = isRemembered;
     }
 
-    public void registerLogin()
+    public void registerLogin(ValueContext vc)
     {
     }
 
-    public void registerLogout(AuthenticatedUserLogoutType type)
+    public void registerLogout(ValueContext vc, AuthenticatedUserLogoutType type)
     {
+    }
+
+    public AuthenticatedOrganizations getOrganizations()
+    {
+        return organizations;
+    }
+
+    protected MutableAuthenticatedOrganizations createOrganizations()
+    {
+        return new BasicAuthenticatedOrganizations();
+    }
+
+    protected MutableEntityPreferences createPreferences()
+    {
+        return new BasicEntityPreferences();
+    }
+
+    public void setPreferences(EntityPreferences preferences)
+    {
+        this.preferences = preferences;
+    }
+
+    public EntityPreferences getPreferences()
+    {
+        return preferences;
     }
 }

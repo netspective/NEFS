@@ -39,81 +39,60 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.18 2004-08-08 22:53:33 shahid.shah Exp $
+ * $Id: BasicEntityPreference.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.security;
 
-public class ProductRelease implements Product
+public class BasicEntityPreference implements EntityPreference, MutableEntityPreference, java.io.Serializable
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private Object type;
+    private String key;
+    private String value;
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public BasicEntityPreference()
     {
     }
 
-    public String getProductId()
+    public BasicEntityPreference(String key, String value)
     {
-        return PRODUCT_ID;
+        this(null, key, value);
     }
 
-    public String getProductName()
+    public BasicEntityPreference(Object type, String key, String value)
     {
-        return PRODUCT_NAME;
+        this.type = type;
+        this.key = key;
+        this.value = value;
     }
 
-    public final int getReleaseNumber()
+    public Object getPreferenceType()
     {
-        return PRODUCT_RELEASE_NUMBER;
+        return type;
     }
 
-    public final int getVersionMajor()
+    public void setPreferenceType(Object type)
     {
-        return PRODUCT_VERSION_MAJOR;
+        this.type = type;
     }
 
-    public final int getVersionMinor()
+    public String getPreferenceKey()
     {
-        return PRODUCT_VERSION_MINOR;
+        return key;
     }
 
-    public final int getBuildNumber()
+    public void setPreferenceKey(String key)
     {
-        return BuildLog.BUILD_NUMBER;
+        this.key = key;
     }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
+    public String getPreferenceValue()
     {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
+        return value;
     }
 
-    public final String getVersion()
+    public void setPreferenceValue(String value)
     {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        this.value = value;
     }
 }

@@ -39,13 +39,13 @@
  */
 
 /**
- * $Id: AuthenticatedOrgUser.java,v 1.2 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: AuthenticatedOrganizations.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-public interface AuthenticatedOrgUser extends AuthenticatedUser
+public interface AuthenticatedOrganizations
 {
-    public Object getUserOrgId();
-    public String getUserOrgName();
+    public AuthenticatedOrganization getPrimaryOrganization();
+    public AuthenticatedOrganization[] getOrganizations(boolean includePrimary);
 }

@@ -39,81 +39,13 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.18 2004-08-08 22:53:33 shahid.shah Exp $
+ * $Id: MutableEntityPreferences.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.security;
 
-public class ProductRelease implements Product
+public interface MutableEntityPreferences extends EntityPreferences
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
-
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
-    {
-    }
-
-    public String getProductId()
-    {
-        return PRODUCT_ID;
-    }
-
-    public String getProductName()
-    {
-        return PRODUCT_NAME;
-    }
-
-    public final int getReleaseNumber()
-    {
-        return PRODUCT_RELEASE_NUMBER;
-    }
-
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
-    }
+    public EntityPreference createPreference();
+    public void addPreference(EntityPreference preference);
 }

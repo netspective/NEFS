@@ -39,81 +39,56 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.18 2004-08-08 22:53:33 shahid.shah Exp $
+ * $Id: BasicAuthenticatedOrganizations.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.security;
 
-public class ProductRelease implements Product
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class BasicAuthenticatedOrganizations implements MutableAuthenticatedOrganizations
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private static final Log log = LogFactory.getLog(BasicAuthenticatedOrganizations.class);
+    private MutableAuthenticatedOrganization primary;
+    private List allOrgs = new ArrayList();
+    private List nonPrimaryOrgs = new ArrayList();
+    private AuthenticatedOrganization[] allOrgsArray = new AuthenticatedOrganization[0];
+    private AuthenticatedOrganization[] nonPrimaryOrgsArray = new AuthenticatedOrganization[0];
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public MutableAuthenticatedOrganization createOrganization()
     {
+        return new BasicAuthenticatedOrganization();
     }
 
-    public String getProductId()
+    public AuthenticatedOrganization getPrimaryOrganization()
     {
-        return PRODUCT_ID;
+        return primary;
     }
 
-    public String getProductName()
+    public AuthenticatedOrganization[] getOrganizations(boolean includePrimary)
     {
-        return PRODUCT_NAME;
+        return includePrimary ? allOrgsArray : nonPrimaryOrgsArray;
     }
 
-    public final int getReleaseNumber()
+    public void addOrganization(MutableAuthenticatedOrganization organization)
     {
-        return PRODUCT_RELEASE_NUMBER;
-    }
+        if(organization.isPrimary())
+        {
+            if(primary != null)
+                log.warn("Overriding primary org '"+ primary.toString()  +"' with '"+ organization.toString() +"'.");
 
-    public final int getVersionMajor()
-    {
-        return PRODUCT_VERSION_MAJOR;
-    }
-
-    public final int getVersionMinor()
-    {
-        return PRODUCT_VERSION_MINOR;
-    }
-
-    public final int getBuildNumber()
-    {
-        return BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
-    {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
-    }
-
-    public final String getVersion()
-    {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-    }
-
-    public final String getVersionAndBuild()
-    {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getProductBuild()
-    {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+            primary = organization;
+            allOrgs.add(organization);
+            allOrgsArray = (AuthenticatedOrganization[]) allOrgs.toArray(new AuthenticatedOrganization[allOrgs.size()]);
+        }
+        else
+        {
+            nonPrimaryOrgs.add(organization);
+            nonPrimaryOrgsArray = (AuthenticatedOrganization[]) nonPrimaryOrgs.toArray(new AuthenticatedOrganization[nonPrimaryOrgs.size()]);
+        }
     }
 }

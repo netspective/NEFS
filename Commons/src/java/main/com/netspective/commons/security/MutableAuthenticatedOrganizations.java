@@ -39,12 +39,13 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrgsUser.java,v 1.1 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: MutableAuthenticatedOrganizations.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-public interface MutableAuthenticatedOrgsUser extends AuthenticatedOrgsUser, MutableAuthenticatedUser
+public interface MutableAuthenticatedOrganizations extends AuthenticatedOrganizations
 {
-    public void addUserOrg(boolean isPrimary, String userOrgId, String userOrgName);
+    public MutableAuthenticatedOrganization createOrganization();
+    public void addOrganization(MutableAuthenticatedOrganization organization);
 }

@@ -39,81 +39,71 @@
  */
 
 /**
- * $Id: ProductRelease.java,v 1.18 2004-08-08 22:53:33 shahid.shah Exp $
+ * $Id: BasicAuthenticatedOrganization.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.security;
 
-public class ProductRelease implements Product
+public class BasicAuthenticatedOrganization implements MutableAuthenticatedOrganization
 {
-    public static final com.netspective.commons.Product PRODUCT_RELEASE = new ProductRelease();
+    private boolean primary;
+    private Object orgId;
+    private Object orgType;
+    private String orgName;
+    private EntityPreferences preferences;
 
-    public static final String PRODUCT_NAME = "Netspective Commons";
-    public static final String PRODUCT_ID = "netspective-commons";
-
-    public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
-
-    public ProductRelease()
+    public boolean isPrimary()
     {
+        return primary;
     }
 
-    public String getProductId()
+    public void setPrimary(boolean primary)
     {
-        return PRODUCT_ID;
+        this.primary = primary;
     }
 
-    public String getProductName()
+    public Object getOrgId()
     {
-        return PRODUCT_NAME;
+        return orgId;
     }
 
-    public final int getReleaseNumber()
+    public void setOrgId(Object orgId)
     {
-        return PRODUCT_RELEASE_NUMBER;
+        this.orgId = orgId;
     }
 
-    public final int getVersionMajor()
+    public Object getOrgType()
     {
-        return PRODUCT_VERSION_MAJOR;
+        return orgType;
     }
 
-    public final int getVersionMinor()
+    public void setOrgType(Object orgType)
     {
-        return PRODUCT_VERSION_MINOR;
+        this.orgType = orgType;
     }
 
-    public final int getBuildNumber()
+    public String getOrgName()
     {
-        return BuildLog.BUILD_NUMBER;
+        return orgName;
     }
 
-    public final String getBuildFilePrefix(boolean includeBuildNumber)
+    public void setOrgName(String name)
     {
-        String filePrefix = PRODUCT_ID + "-" + PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
-        if(includeBuildNumber)
-            filePrefix = filePrefix + "_" + BuildLog.BUILD_NUMBER;
-        return filePrefix;
+        this.orgName = name;
     }
 
-    public final String getVersion()
+    public EntityPreferences createPreferences()
     {
-        return PRODUCT_RELEASE_NUMBER + "." + PRODUCT_VERSION_MAJOR + "." + PRODUCT_VERSION_MINOR;
+        return new BasicEntityPreferences();
     }
 
-    public final String getVersionAndBuild()
+    public void setPreferences(EntityPreferences preferences)
     {
-        return "Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
+        this.preferences = preferences;
     }
 
-    public final String getProductBuild()
+    public EntityPreferences getPreferences()
     {
-        return PRODUCT_NAME + " Version " + getVersion() + " Build " + BuildLog.BUILD_NUMBER;
-    }
-
-    public final String getVersionAndBuildShort()
-    {
-        return "v" + getVersion() + " b" + BuildLog.BUILD_NUMBER;
+        return preferences;
     }
 }

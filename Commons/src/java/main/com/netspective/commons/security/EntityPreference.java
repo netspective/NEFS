@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: MutableAuthenticatedOrgUser.java,v 1.1 2004-08-03 19:53:41 shahid.shah Exp $
+ * $Id: EntityPreference.java,v 1.1 2004-08-08 22:53:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
 
-public interface MutableAuthenticatedOrgUser extends AuthenticatedOrgUser, MutableAuthenticatedUser
+public interface EntityPreference
 {
-    public void setUserOrgName(String userOrgName);
-    public void setUserOrgId(String userOrgId);
+    public Object getPreferenceType();
+    public String getPreferenceKey();
+    public String getPreferenceValue();
 }
