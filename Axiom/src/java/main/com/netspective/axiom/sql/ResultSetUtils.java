@@ -38,8 +38,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
 
@@ -222,6 +224,14 @@ public class ResultSetUtils
             return (String[]) result.toArray(new String[result.size()]);
         else
             return null;
+    }
+
+    public Set getResultSetRowsFirstColumnAsSet(ResultSet rs) throws SQLException
+    {
+        Set result = new HashSet();
+        while(rs.next())
+            result.add(rs.getObject(1));
+        return result;
     }
 
     /**
