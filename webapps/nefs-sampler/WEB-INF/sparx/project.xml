@@ -100,6 +100,16 @@
                     ]]>
                 </summary>
             </page>
+
+            <page name="select-fields-auto-submit" caption="Conditional Select" command="dialog,form.input.select-fields-auto-submit">
+                <summary>
+                    <![CDATA[
+                    This page demonstrates how to create and use fields that allow selection of values and auto submit
+                    forms that will do other data population from the server side (for conditional values).
+                    ]]>
+                </summary>
+            </page>
+
             <!-- This page is for demonstrating grid and composite fields in a form -->
             <page name="grid-fields" caption="Grids" command="dialog,form.input.grid-and-composite-fields">
                 <summary>

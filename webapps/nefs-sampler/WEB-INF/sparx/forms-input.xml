@@ -136,6 +136,25 @@
                 choices="text-list:Choice 1=A;Choice 2=B;Choice 3=C"/>
         </dialog>
 
+        <dialog type="input-sample" class="app.form.input.SelectFieldsAutoSubmit" name="select-fields-auto-submit" allow-multiple-executes="yes">
+            <frame heading="Sample Select Fields with Auto Submit"/>
+
+            <field type="select" name="sel_field_main" caption="Main Select Field (Will cause resubmit)" style="combo"
+                prepend-blank="yes" append-blank="yes">
+                <items>
+                    <item value="A" caption="Choice A"/>
+                    <item value="B" caption="Choice B"/>
+                    <item value="C" caption="Choice C"/>
+                    <item value="D" caption="Choice D"/>
+                    <item value="E" caption="Choice E"/>
+                </items>
+
+                <client-js event="value-changed" type="extends" js-expr="document.forms[0].submit()"/>
+            </field>
+
+            <field type="select" name="sel_field_related" caption="Related Select Field" style="combo"/>
+        </dialog>
+
         <dialog type="input-sample" name="grid-and-composite-fields" generate-dcb="yes">
             <frame heading="Sample Grid and Composite Field"/>
             <field type="separator" heading="Grid" />
