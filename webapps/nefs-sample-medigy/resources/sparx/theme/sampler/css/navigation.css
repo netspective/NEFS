@@ -3,5 +3,7 @@
 .masthead-left      { background: url(../images/masthead/masthead-left.gif) no-repeat left top }
 .masthead-top-right  { background: url(../images/masthead/masthead-right.gif) no-repeat right top; width: 25px; height: 65px }
 
-.page-sub-heading .sub-heading-item { color: #ededed; padding-left: 2px; padding-right: 20px;}
-.page-sub-heading .sub-heading-item .sub-heading-item-caption { font-weight: normal; font-style: italic}
+.page-sub-heading-table     { background-image: url(../images/active-user/active-user-backdrop.gif); padding-top: 2px; padding-left: 38px; border-bottom: 1px solid #dcdcdc; height: 12px; whitespace: nowrap }
+.sub-heading-items-table { width: auto; padding: 0; }
+.sub-heading-items-table tr td.sub-heading-item { color: #ededed; padding-left: 5px; padding-right: 5px; white-space: nowrap; font-size: 10px; }
+.sub-heading-items-table td.sub-heading-item span.sub-heading-item-caption { font-weight: normal; font-style: italic; padding-right: 3px}

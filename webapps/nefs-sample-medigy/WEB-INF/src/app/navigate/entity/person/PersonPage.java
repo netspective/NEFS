@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PersonPage.java,v 1.6 2004-04-20 13:21:14 aye.thu Exp $
+ * $Id: PersonPage.java,v 1.7 2004-04-27 04:15:22 aye.thu Exp $
  */
 
 package app.navigate.entity.person;
@@ -134,20 +134,21 @@ public abstract class PersonPage extends EntityPage implements PersonSubtypePage
                 language = languageId.getReferencedEnumRow().getCaption();
              */
 
-            // TODO: This needs to be moved/changed so that it will be formatted only in the SKIN
-            return new GenericValue("<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Category:</span> " + getEntitySubTypeName() + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">SSN:</span> " +
-                    ssn.getTextValueOrBlank() + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Birth Date:</span> " +
-                    birthDate.getTextValueOrBlank() + "</span> " +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Marital Status:</span> " +
-                    maritalStatus.getReferencedEnumRow().getCaption() + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
-                    gender.getReferencedEnumRow().getCaption() + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Ethnicity:</span> " +
-                    ethnicity + "</span>" +
-                    "<span class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Language:</span> " +
-                    language + "</span>");
+            return new GenericValue("<table class=\"sub-heading-items-table\">\n" +
+                    "<tr><td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Category:</span> " + getEntitySubTypeName() + "</td>" +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">SSN:</span> " +
+                    ssn.getTextValueOrBlank() + "</td>" +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Birth Date:</span> " +
+                    birthDate.getTextValueOrBlank() + "</td> " +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Marital Status:</span> " +
+                    maritalStatus.getReferencedEnumRow().getCaption() + "</td>" +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Gender:</span> " +
+                    gender.getReferencedEnumRow().getCaption() + "</td>" +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Ethnicity:</span> " +
+                    ethnicity + "</td>" +
+                    "<td class=\"sub-heading-item\"><span class=\"sub-heading-item-caption\">Language:</span> " +
+                    language + "</td></tr>\n" +
+                    "</table>\n");
         }
 
         public PresentationValue getPresentationValue(ValueContext vc)
