@@ -86,7 +86,7 @@ import java.util.Map;
  *
  *
  * @author Aye Thu
- * @version $Id: ModernDialogSkin.java,v 1.7 2004-03-22 08:04:59 aye.thu Exp $
+ * @version $Id: ModernDialogSkin.java,v 1.8 2004-04-20 13:17:55 aye.thu Exp $
  */
 public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
@@ -685,7 +685,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void renderCompositeControlsHtml(Writer writer, DialogContext dc, DialogField parentField) throws IOException
     {
         DialogFields children = parentField.getChildren();
-        writer.write("<span class='dialog-fields-no-arrow'>");
+        writer.write("<table id=\"" + parentField.getHtmlFormControlId() +"\" class='dialog-fields-no-arrow'><tr>");
         // loop through all the children field
         for(int i = 0; i < children.size(); i++)
         {
@@ -701,8 +701,10 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 {
                     // render the field
                     DialogFieldFlags flags = field.getFlags();
-                    if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
-                        writer.write("<br/>");
+                    //if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_BEFORE))
+                    //    writer.write("<br/>");
+
+                    writer.write("<td>");
                     //check to see if the caption of the child field should be shown
                     boolean showCaption = field.showCaptionAsChild();
                     if(showCaption)
@@ -710,21 +712,24 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                         String caption = field.getCaption().getTextValue(dc);
                         if(caption != DialogField.CUSTOM_CAPTION && caption != null)
                         {
-                            writer.write("<nobr>" + (field.isRequired(dc) ? "<b>" + caption + "</b>" : caption));
-                            if(getCaptionSuffix() != null)
-                                writer.write(getCaptionSuffix());
-                            writer.write("<br/>");
+                            String captionHtml = generateFieldCaption(field, dc);
+                            writer.write("<nobr>" + captionHtml);
+                            //writer.write("<br/>");
                         }
                     }
-                    field.renderControlHtml(writer, dc);
+                    //field.renderControlHtml(writer, dc);
+                    String hintHtml = generateFieldHint(field, dc);
+                    String controlHtml = generateFieldControl(field, dc);
+                    writer.write(controlHtml + (hintHtml != null? "<br/>" + hintHtml : ""));
                     writer.write("&nbsp;");
                     if(showCaption) writer.write("</nobr>");
-                    if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_AFTER))
-                        writer.write("<br/>");
+                    writer.write("</td>");
+                    //if(flags.flagIsSet(DialogFieldFlags.COLUMN_BREAK_AFTER))
+                    //    writer.write("<br/>");
                 }
             }
         }
-        writer.write("</span>");
+        writer.write("</tr></table>");
     }
 
     /**
@@ -739,6 +744,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     {
         DialogFields children = parentField.getChildren();
         StringWriter hiddenWriter = new StringWriter();
+        writer.write("<fieldset>\n");
+        if (parentField.getCaption() != null && parentField.getCaption().hasValue(dc))
+            writer.write("<legend>" + parentField.getCaption().getTextValue(dc) + "</legend>\n");
         writer.write("<table class=\"dialog-section-field\">\n");
         int displayedColCount = 0;
         for(int i = 0; i < children.size(); i++)
@@ -753,34 +761,41 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 }
                 else
                 {
-                    if (displayedColCount == 0)
-                        writer.write("<tr>\n");
+                    //if (displayedColCount == 0)
+                    //    writer.write("<tr>\n");
                     // render the field
                     String captionHtml = generateFieldCaption(field, dc);
                     String controlHtml = generateFieldControl(field, dc);
                     String messagesHtml = generateFieldErrorMessage(field, dc, fieldErrorMsgs);
                     String hintHtml = generateFieldHint(field, dc);
-                    writer.write("<td>");
-                    writer.write(captionHtml + "<br/>" + controlHtml);
-                    writer.write(hintHtml != null ? "<br/>"+  hintHtml : "");
+                    //writer.write("<td>");
+                    //writer.write(captionHtml + "<br/>" + controlHtml);
+                    //writer.write(hintHtml != null ? "<br/>"+  hintHtml : "");
+
+                    writer.write(generateFieldBlock(dc, field, captionHtml, controlHtml, hintHtml, messagesHtml));
+
                     // now append the error message html on the next row
                     //if (errorHtml != null && errorHtml.length() > 0)
                     //    fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
-                    writer.write("</td>\n");
+
+                    //writer.write("</td>\n");
                     displayedColCount++;
-                    if (displayedColCount == ((SectionField)parentField).getDisplayColumns())
-                    {
-                        writer.write("</tr>\n");
-                        displayedColCount = 0;
-                    }
+
+
+                    //if (displayedColCount == ((SectionField)parentField).getDisplayColumns())
+                    //{
+                    //    writer.write("</tr>\n");
+                    //    displayedColCount = 0;
+                    //}
                 }
             }
         }
-        if (displayedColCount != 0)
-        {
-            writer.write("<td colspan=\"" + (4- displayedColCount) + "\">&nbsp;</td></tr>");
-        }
+        //if (displayedColCount != 0)
+        //{
+        //    writer.write("<td colspan=\"" + (4- displayedColCount) + "\">&nbsp;</td></tr>");
+        //}
         writer.write("</table>\n");
+        writer.write("</fieldset>\n");
         writer.write(hiddenWriter.getBuffer().toString());
     }
 
@@ -988,7 +1003,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         renderCompositeControlsHtml(writer, dc, field);
 
         String captionHtml = generateFieldCaption(field, dc);
-        fieldsHtml.append(generateFieldBlock(field, captionHtml, writer.getBuffer().toString(), null, null));
+        fieldsHtml.append(generateFieldBlock(dc, field, captionHtml, writer.getBuffer().toString(), null, null));
         if (field.getName() != null)
 		    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
     }
@@ -1001,7 +1016,9 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         String idHtml = generateFieldBlockId(field);
         //fieldsHtml.append("<tr" + getFieldBlockStyleClass() != null ? (" class=\"" + getFieldBlockStyleClass() + "\">\n") : ">\n" +
         //                "<td>\n" + writer.getBuffer().toString() + "</td></tr>\n");
-        fieldsHtml.append("<tr class=\"" +  getFieldBlockStyleClass() + "\">\n<td>\n" + writer.getBuffer().toString() + "</td></tr>\n");
+
+        fieldsHtml.append("<tr class=\"" +  getFieldBlockStyleClass() + "\">\n<td colspan=\"2\">\n" + writer.getBuffer().toString() + "</td></tr>\n");
+        //fieldsHtml.append(writer.getBuffer().toString());
 
         if (field.getName() != null)
 		    fieldsJSDefn.append(field.getJavaScriptDefn(dc));
@@ -1074,7 +1091,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         String messagesHtml = generateFieldErrorMessage(field, dc, fieldErrorMsgs);
         String hintHtml = generateFieldHint(field, dc);
 
-        fieldsHtml.append(generateFieldBlock(field, captionHtml, controlHtml, hintHtml, messagesHtml));
+        fieldsHtml.append(generateFieldBlock(dc, field, captionHtml, controlHtml, hintHtml, messagesHtml));
 
         if(field.getName() != null)
             fieldsJSDefn.append(field.getJavaScriptDefn(dc));
@@ -1175,12 +1192,12 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 }
             }
             fieldsHtml.append("</tr>");
-            generateDirectorBlock(director, dc, dlgTableColSpan);
+            fieldsHtml.append(generateDirectorBlock(director, dc, dlgTableColSpan));
         }
 
         StringBuffer errorMsgsHtml = new StringBuffer();
         if(fieldErrorMsgs.size() > 0)
-            generateErrorMessages(fieldErrorMsgs, dlgTableColSpan);
+            errorMsgsHtml.append(generateErrorMessages(fieldErrorMsgs, dlgTableColSpan));
         List fileList = dialog.getClientJs();
         String[] includeJSList = new String[fileList.size()];
         for (int i = 0; i < includeJSList.length; i++)
@@ -1340,7 +1357,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
      * @param errorHtml     the field error html
      * @return              the field's complete html block
      */
-    protected String generateFieldBlock(DialogField field, String captionHtml, String controlHtml, String hintHtml,
+    protected String generateFieldBlock(DialogContext dc, DialogField field, String captionHtml, String controlHtml, String hintHtml,
                                         String errorHtml)
     {
         StringBuffer fieldsHtml = new StringBuffer();
@@ -1366,18 +1383,19 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                         "</td></tr>\n");
             // now append the error message html on the next row
             if(errorHtml != null && errorHtml.length() > 0)
-                fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
+                fieldsHtml.append("<tr><td colspan=\"2\"><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
         }
         else
         {
 
             fieldsHtml.append("<tr"+ idHtml + (blockStyle != null ? (" class=\"" + blockStyle + "\">") : ">") +
-                        "<td>" + captionHtml + "<br/>" + controlHtml + "");
+                    "<td class=\"" + (field.isRequired(dc) ? getCaptionRequiredStyleClass(): getCaptionStyleClass()) +"\">" +
+                    captionHtml + "</td><td>" + controlHtml + "");
             fieldsHtml.append((hintHtml != null ? "<br/>"+  hintHtml : "") +
                         "</td></tr>\n");
             // now append the error message html on the next row
             if(errorHtml != null && errorHtml.length() > 0)
-                fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
+                fieldsHtml.append("<tr><td>&nbsp;</td><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  errorHtml + "</span></td></tr>\n");
         }
         return fieldsHtml.toString();
     }
@@ -1594,13 +1612,15 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 
             // if the caption suffix is set, append it to the caption
             if(getCaptionSuffix() != null && caption != null && caption.length() > 0) caption += getCaptionSuffix();
-
-            if(caption != null && field.isRequired(dc))
-                caption = "<label class=\"" + getCaptionRequiredStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +caption +
+            if(caption != null)
+            {
+                if (field.isRequired(dc))
+                    caption = "<label class=\"" + getCaptionRequiredStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +caption +
                         (endsWithPunctuation(caption) ? "" : ":") + "</label>";
-            else
-                caption = "<label class=\"" + getCaptionStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +
+                else
+                    caption = "<label class=\"" + getCaptionStyleClass() + "\" for=\"" + field.getHtmlFormControlId() + "\">" +
                         (caption != null ? caption + (endsWithPunctuation(caption) ? "" : ":") : "") + "</label>";
+            }
         }
 
         return caption;
