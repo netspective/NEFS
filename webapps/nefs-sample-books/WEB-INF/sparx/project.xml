@@ -18,7 +18,7 @@
 	********************************************************************** -->
 
     <navigation-tree name="app" default="yes">
-        <page name="home" default="yes" caption="Home" command="query,library.get-all-books,-,-,-,record-editor-compressed"/>
+        <page name="home" default="yes" caption="Home" command="query,books.get-all-books,-,-,-,record-editor-compressed"/>
 
         <page name="add" caption="Add Book" command="dialog,schema.db.Book_Info,add"/>
         <page name="edit" caption="Edit Book" command="dialog,schema.db.Book_Info,edit" require-request-param="id" retain-params="id">
@@ -31,7 +31,7 @@
                Please choose a book to delete from the &lt;a href='home'&gt; books list&lt;/a&gt;.
             </missing-params-body>
         </page>
-        <page name="search" caption="Search Books" command="query-defn,library,test,searchBooksDialog"/>
+        <page name="search" caption="Search Books" command="query-defn,books,test,searchBooksDialog"/>
         <page name="console" caption="Console" redirect="servlet-context-uri:/console"/>
         <page name="sampler" caption="Sampler" redirect="vs-expr:${servlet-context-uri:server-root}/nefs-sampler"/>
     </navigation-tree>
@@ -94,7 +94,7 @@
 	** DATA MANAGEMENT QUERY (SQL) SPECIFICATIONS                       **
 	********************************************************************** -->
 
-    <queries package="library">
+    <queries package="books">
 
         <query name="get-all-books">
 
@@ -123,7 +123,7 @@
 
     </queries>
 
-    <query-defn name="library">
+    <query-defn name="books">
         <field name="book_id" caption="Book ID" join="BookInfo" column="id"/>
         <field name="name" caption="Name" join="BookInfo" column="name"/>
         <field name="author" caption="Author" join="BookInfo" column="author"/>
