@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ************************************************************************************
+  * Commons standard configuration file (designed to be included in other XDM files. *
+  ************************************************************************************
+ -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <!--
+      ****************************************************************************************
+      * Define all of the valid report column types that can be inherited by tabular report  *
+      * columns.                                                                             *
+      ****************************************************************************************
+     -->
+    <tabular-report-column-type name="general" class="com.netspective.commons.report.tabular.column.GeneralColumn"/>
+    <tabular-report-column-type name="numeric" class="com.netspective.commons.report.tabular.column.NumericColumn"/>
+    <tabular-report-column-type name="decimal" class="com.netspective.commons.report.tabular.column.DecimalColumn"/>
+
+</xdm:container>

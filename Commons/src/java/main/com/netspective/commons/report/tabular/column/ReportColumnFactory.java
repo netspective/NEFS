@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportColumnFactory.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: ReportColumnFactory.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -94,72 +94,6 @@ public class ReportColumnFactory
         columnClasses.put("default", GeneralColumn.class);
         columnClasses.put("numeric", NumericColumn.class);
         columnClasses.put("decimal", DecimalColumn.class);
-    }
-
-    /*
-    public static void createCatalog(Element parent)
-    {
-        Document doc = parent.getOwnerDocument();
-        Element factoryElem = doc.createElement("factory");
-        parent.appendChild(factoryElem);
-        factoryElem.setAttribute("name", "Report Columns");
-        factoryElem.setAttribute("class", ReportColumnFactory.class.getName());
-        for(Iterator i = columnClasses.entrySet().iterator(); i.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            Element childElem = doc.createElement("report-column");
-            childElem.setAttribute("name", (String) entry.getKey());
-            childElem.setAttribute("class", ((Class) entry.getValue()).getName());
-            factoryElem.appendChild(childElem);
-        }
-
-        factoryElem = doc.createElement("factory");
-        parent.appendChild(factoryElem);
-        factoryElem.setAttribute("name", "Report Column Formats");
-        factoryElem.setAttribute("class", ReportColumnFactory.class.getName());
-        for(Iterator i = formats.entrySet().iterator(); i.hasNext();)
-        {
-            Map.Entry entry = (Map.Entry) i.next();
-
-            Element childElem = doc.createElement("report-column-format");
-            childElem.setAttribute("name", (String) entry.getKey());
-            childElem.setAttribute("class", (entry.getValue()).getClass().getName());
-            factoryElem.appendChild(childElem);
-        }
-    }
-    */
-
-    public static TabularReportColumn createReportColumn(String type)
-    {
-        Class rcClass = (Class) columnClasses.get(type == null ? "default" : type);
-        try
-        {
-            if(rcClass != null)
-                return (TabularReportColumn) rcClass.newInstance();
-            else
-            {
-                try
-                {
-                    // see if the type is a class name instead
-                    rcClass = Class.forName(type);
-                    return (TabularReportColumn) rcClass.newInstance();
-                }
-                catch(ClassNotFoundException cnfe)
-                {
-                    return null;
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-
-    public static TabularReportColumn createReportColumn()
-    {
-        return createReportColumn(null);
     }
 
     public static TabularReportColumn createReportColumn(ResultSetMetaData rsmd, int resultSetColIndex) throws SQLException

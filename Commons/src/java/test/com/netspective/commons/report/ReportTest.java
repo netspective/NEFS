@@ -39,33 +39,60 @@
  */
 
 /**
- * $Id: Suite.java,v 1.8 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: ReportTest.java,v 1.1 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.report;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import com.netspective.commons.xdm.DataModelSchemaTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.acl.AccessControlListTest;
+import java.io.StringReader;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.Iterator;
 
-public class Suite
+import junit.framework.TestCase;
+
+import org.xml.sax.InputSource;
+
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XmlDataModelDtd;
+import com.netspective.commons.xdm.XdmParseContext;
+import com.netspective.commons.xdm.XdmComponentFactory;
+import com.netspective.commons.xdm.exception.DataModelException;
+import com.netspective.commons.io.Resource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.DefaultValueContext;
+import com.netspective.commons.config.*;
+
+public class ReportTest extends TestCase
 {
-    public static Test suite()
+	public static String RESOURCE_NAME_ONE = "ReportTest-One.xml";
+
+    public void testComponent() throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException, IOException
     {
-        TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
-        return suite;
+	    ReportsComponent component =
+	            (ReportsComponent) XdmComponentFactory.get(
+	                    ReportsComponent.class,
+	                    new Resource(ReportTest.class, RESOURCE_NAME_ONE),
+	                    XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+        assertEquals(0, component.getErrors().size());
+        if(component.getErrors().size() > 0)
+                System.out.println(component.getErrors());
+
+        ReportsManager reportsManager = component.getItems();
+        Reports reports = reportsManager.getReports();
+        //System.out.println(reports.size());
+    }
+
+    public void testComponentDtd() throws DataModelException
+    {
+        ReportsComponent component = new ReportsComponent();
+        String dtd = new XmlDataModelDtd().getDtd(component);
+        assertTrue(dtd != null);
+
+        //System.out.println(dtd);
     }
 }

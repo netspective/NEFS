@@ -51,15 +51,14 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReport.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.netspective.commons.report.Report;
 
-public interface TabularReport
+public interface TabularReport extends Report
 {
     public String getName();
 
@@ -70,14 +69,6 @@ public interface TabularReport
     public TabularReportBanner getBanner();
 
     public void setBanner(TabularReportBanner value);
-
-    public Object getCanvas();
-
-    public void setCanvas(Object value);
-
-    public boolean getHeadingDisplayFlag();
-
-    public void setHeadingDisplayFlag(boolean value);
 
     public TabularReportColumns getColumns();
 
@@ -93,9 +84,9 @@ public interface TabularReport
 
     public void updateFlag(long flag, boolean set);
 
-    public void initialize(ResultSet rs) throws SQLException;
+    public TabularReportColumn createColumn();
 
-    public void initialize(TabularReportColumn[] cols);
+    public void addColumn(TabularReportColumn column);
 
     public String replaceOutputPatterns(TabularReportValueContext rc, TabularReportDataSource ds, String row);
 

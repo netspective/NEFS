@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabularReport.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: BasicTabularReport.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -78,41 +78,21 @@ import com.netspective.commons.xdm.exception.DataModelException;
 
 public class BasicTabularReport implements TabularReport, XmlDataModelSchema.ConstructionFinalizeListener
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     static public final int REPORTFLAG_INITIALIZED = 1;
     static public final int REPORTFLAG_HASPLACEHOLDERS = REPORTFLAG_INITIALIZED * 2;
     static public final int REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS = REPORTFLAG_HASPLACEHOLDERS * 2;
     static public final int REPORTFLAG_HIDE_HEADING = REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS * 2;
 
-    private Object canvas;
     private String name;
     private TabularReportColumns columns = new TabularReportColumns();
     private TabularReportFrame frame = new TabularReportFrame();
     private TabularReportBanner banner = null;
     private int flags;
-    private boolean showHead = true;
 
     public BasicTabularReport()
     {
-    }
-
-    public boolean getHeadingDisplayFlag()
-    {
-        return showHead;
-    }
-
-    public void setHeadingDisplayFlag(boolean value)
-    {
-        showHead = value;
-    }
-
-    public Object getCanvas()
-    {
-        return canvas;
-    }
-
-    public void setCanvas(Object value)
-    {
-        canvas = value;
     }
 
     public String getName()
@@ -180,39 +160,6 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
         if(set) flags |= flag; else flags &= ~flag;
     }
 
-    public void initialize(ResultSet rs) throws SQLException
-    {
-        if(flagIsSet(REPORTFLAG_INITIALIZED)) return;
-
-        ResultSetMetaData rsmd = rs.getMetaData();
-        int numColumns = rsmd.getColumnCount();
-
-        columns.clear();
-        for(int c = 1; c <= numColumns; c++)
-        {
-            TabularReportColumn colDefn = ReportColumnFactory.createReportColumn(rsmd, c);
-            columns.add(colDefn);
-        }
-
-        finalizeContents();
-        setFlag(REPORTFLAG_INITIALIZED);
-    }
-
-    public void initialize(TabularReportColumn[] cols)
-    {
-        if(flagIsSet(REPORTFLAG_INITIALIZED)) return;
-
-        columns.clear();
-        if(cols != null)
-        {
-            for(int c = 0; c < cols.length; c++)
-                columns.add(cols[c]);
-        }
-
-        finalizeContents();
-        setFlag(REPORTFLAG_INITIALIZED);
-    }
-
     public void finalizeContents()
     {
         for(int c = 0; c < columns.size(); c++)
@@ -246,7 +193,7 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
             setFlag(REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS);
 
         if(firstRow.equals("none"))
-            setHeadingDisplayFlag(false);
+            setFlag(REPORTFLAG_HIDE_HEADING);
 
         throw new RuntimeException("Don't know what to dow with first-row value " + firstRow);
     }
@@ -258,6 +205,7 @@ public class BasicTabularReport implements TabularReport, XmlDataModelSchema.Con
 
     public void addColumn(TabularReportColumn column)
     {
+        column.setColIndex(columns.size());
         columns.add(column);
     }
 

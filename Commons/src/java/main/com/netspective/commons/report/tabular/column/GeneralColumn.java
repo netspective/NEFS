@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -71,16 +71,31 @@ import com.netspective.commons.report.tabular.calc.ColumnDataCalculatorFactory;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateConsumerDefn;
 
-public class GeneralColumn implements TabularReportColumn
+public class GeneralColumn implements TabularReportColumn, TemplateConsumer
 {
     static public final String PLACEHOLDER_COLDATA = "{.}";
     static public final String PLACEHOLDER_OPEN = "{";
     static public final String PLACEHOLDER_CLOSE = "}";
 
+    public static final String CTYPE_TEMPLATE_NAMESPACE = TabularReportColumn.class.getName();
+    public static final String CTYPE_ATTRNAME_TYPE = "type";
+    public static final String[] CTYPE_ATTRNAMES_SET_BEFORE_CONSUMING = null;
+    public static final ColumnTypeTemplateConsumerDefn templateConsumer = new ColumnTypeTemplateConsumerDefn();
+
+    protected static class ColumnTypeTemplateConsumerDefn extends TemplateConsumerDefn
+    {
+        public ColumnTypeTemplateConsumerDefn()
+        {
+            super(CTYPE_TEMPLATE_NAMESPACE, CTYPE_ATTRNAME_TYPE, CTYPE_ATTRNAMES_SET_BEFORE_CONSUMING);
+        }
+    }
+
     private int dataType;
     private int align;
-    private int colIndex;
+    private int colIndex = -1;
     private ValueSource heading;
     private ValueSource headingAnchorAttrs;
     private ValueSource url;
@@ -97,6 +112,11 @@ public class GeneralColumn implements TabularReportColumn
     public GeneralColumn()
     {
         setColIndex(-1);
+    }
+
+    public TemplateConsumerDefn getTemplateConsumerDefn()
+    {
+        return templateConsumer;
     }
 
     public final int getDataType()
@@ -117,6 +137,11 @@ public class GeneralColumn implements TabularReportColumn
     public final void setBreak(String header)
     {
         breakHeader = header;
+    }
+
+    public final boolean isColIndexSet()
+    {
+        return colIndex != -1;
     }
 
     public final int getColIndex()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelDtd.java,v 1.1 2003-03-13 18:33:13 shahid.shah Exp $
+ * $Id: XmlDataModelDtd.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -62,7 +62,8 @@ public class XmlDataModelDtd
     private final String ELEMENTS = "%elements;";
     private final String ELEMNAME_INCLUDE = "xdm:include";
 
-    private Map visited = new HashMap();
+    private Map visitedElements = new HashMap();
+    private Set visitedProducers = new HashSet();
 
     public void generate(XmlDataModel model, PrintWriter out) throws DataModelException
     {
@@ -85,7 +86,7 @@ public class XmlDataModelDtd
         finally
         {
             if (out != null) out.close();
-            visited.clear();
+            visitedElements.clear();
         }
     }
 
@@ -164,14 +165,14 @@ public class XmlDataModelDtd
     private void printElementDecl(PrintWriter out, XmlDataModel model, XmlDataModelSchema parentSchema, String name, Class element) throws DataModelException
     {
         TemplateProducers templateProducers = null;
-        if(model instanceof TemplateProducerParent)
-            templateProducers = ((TemplateProducerParent) model).getTemplateProducers();
+        if(parentSchema instanceof TemplateProducerParent)
+            templateProducers = ((TemplateProducerParent) parentSchema).getTemplateProducers();
 
-        if (visited.containsKey(name))
+        if (visitedElements.containsKey(name))
         {
             return;
         }
-        visited.put(name, "");
+        visitedElements.put(name, "");
 
         XmlDataModelSchema schema = XmlDataModelSchema.getSchema(element);
         Map parentPropertyNames = parentSchema.getPropertyNames();
@@ -334,8 +335,12 @@ public class XmlDataModelDtd
             iterator = templateProducers.getElementNames().iterator();
             while (iterator.hasNext())
             {
-                Map.Entry entry = (Map.Entry) iterator.next();
-                TemplateProducer tp = (TemplateProducer) entry.getValue();
+                String producerName = (String) iterator.next();
+                TemplateProducer tp = templateProducers.get(producerName);
+                if(visitedProducers.contains(tp))
+                    continue;
+
+                visitedProducers.add(tp);
 
                 sb = new StringBuffer("<!ELEMENT ");
                 sb.append(tp.getElementName()).append(" (#PCDATA)*>").append("\n");

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TabularReportColumn.java,v 1.1 2003-03-25 20:59:54 shahid.shah Exp $
+ * $Id: TabularReportColumn.java,v 1.2 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -162,6 +162,8 @@ public interface TabularReportColumn
     public void setOutput(String value);
 
     public String resolvePattern(String srcStr);
+
+    public void setWordWrap(boolean wrap);
 
     public String getBreak();
 

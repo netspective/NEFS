@@ -39,33 +39,41 @@
  */
 
 /**
- * $Id: Suite.java,v 1.8 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: Reports.java,v 1.1 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.report;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-import com.netspective.commons.xdm.DataModelSchemaTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.acl.AccessControlListTest;
+import com.netspective.commons.report.tabular.BasicTabularReport;
 
-public class Suite
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Reports
 {
-    public static Test suite()
+    private Map reportsByName = new HashMap();
+    private List reports = new ArrayList();
+
+    public void add(Report report)
     {
-        TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
-        return suite;
+        reportsByName.put(report.getName(), report);
+        reports.add(report);
+    }
+
+    public Report get(String name)
+    {
+        return (Report) reportsByName.get(name);
+    }
+
+    public Report get(int i)
+    {
+        return (Report) reports.get(i);
+    }
+
+    public int size()
+    {
+        return reports.size();
     }
 }

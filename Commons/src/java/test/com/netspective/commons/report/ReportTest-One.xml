@@ -1,0 +1,12 @@
+<component>
+
+    <xdm:include resource="com/netspective/commons/conf/commons.xml"/>
+
+    <tabular-report name="test-001">
+        <frame heading="Test 001"/>
+        <column type="general" heading="Test 001 Column 001"/>
+        <column type="numeric" heading="Test 001 Column 002"/>
+        <column type="decimal" heading="Test 001 Column 003"/>
+    </tabular-report>
+
+</component>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.5 2003-03-20 22:38:16 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.6 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -56,12 +56,43 @@ import com.netspective.commons.acl.Role;
 import com.netspective.commons.acl.RoleNotFoundException;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.report.ReportsManager;
+import com.netspective.commons.report.Reports;
+import com.netspective.commons.report.Report;
+import com.netspective.commons.report.tabular.TabularReport;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducerParent;
 
-public class DefaultXdmComponentItems implements ConfigurationsManager, AccessControlListsManager
+public class DefaultXdmComponentItems implements TemplateProducerParent, ConfigurationsManager, AccessControlListsManager, ReportsManager
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+    private static final TemplateProducers templateProducers = new TemplateProducers();
+    public static final String TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE = "tabular-report-column-type";
+
+    protected static class TabularReportColumnTypeTemplate extends TemplateProducer
+    {
+        public TabularReportColumnTypeTemplate()
+        {
+            super(TabularReportColumn.class.getName(), TEMPLATEELEMNAME_TABULAR_REPORT_COLUMN_TYPE, "name", "extends", false);
+        }
+    }
+
+    static
+    {
+        templateProducers.add(new TabularReportColumnTypeTemplate());
+    }
+
+    public TemplateProducers getTemplateProducers()
+    {
+        return templateProducers;
+    }
+
     private AccessControlLists aclsManager;
     private Configurations configsManager;
+    private Reports reportsManager;
 
     public void addRegisterValueSource(ValueSource vs)
     {
@@ -129,5 +160,24 @@ public class DefaultXdmComponentItems implements ConfigurationsManager, AccessCo
     public Role getRole(String name) throws RoleNotFoundException
     {
         return getAccessControlLists().getRole(name);
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public Reports getReports()
+    {
+        if(reportsManager == null)
+            reportsManager = new Reports();
+        return reportsManager;
+    }
+
+    public void addTabularReport(BasicTabularReport report)
+    {
+        getReports().add(report);
+    }
+
+    public Report getReport(String name)
+    {
+        return getReports().get(name);
     }
 }

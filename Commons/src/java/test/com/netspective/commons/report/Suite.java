@@ -39,33 +39,20 @@
  */
 
 /**
- * $Id: Suite.java,v 1.8 2003-03-27 22:22:20 shahid.shah Exp $
+ * $Id: Suite.java,v 1.1 2003-03-27 22:22:20 shahid.shah Exp $
  */
 
-package com.netspective.commons;
+package com.netspective.commons.report;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import com.netspective.commons.xdm.DataModelSchemaTest;
-import com.netspective.commons.value.ValueSourcesTest;
-import com.netspective.commons.config.ConfigurationTest;
-import com.netspective.commons.acl.AccessControlListTest;
 
 public class Suite
 {
     public static Test suite()
     {
         TestSuite suite = new TestSuite();
-	    suite.addTest(com.netspective.commons.set.Suite.suite());
-	    suite.addTest(com.netspective.commons.text.Suite.suite());
-		suite.addTest(com.netspective.commons.value.Suite.suite());
-		suite.addTest(com.netspective.commons.value.source.Suite.suite());
-	    suite.addTest(com.netspective.commons.io.Suite.suite());
-	    suite.addTest(com.netspective.commons.report.Suite.suite());
-        suite.addTest(new TestSuite(DataModelSchemaTest.class));
-        suite.addTest(new TestSuite(ValueSourcesTest.class));
-        suite.addTest(new TestSuite(ConfigurationTest.class));
-	    suite.addTest(new TestSuite(AccessControlListTest.class));
+	    suite.addTest(new TestSuite(ReportTest.class));
         return suite;
     }
 }
