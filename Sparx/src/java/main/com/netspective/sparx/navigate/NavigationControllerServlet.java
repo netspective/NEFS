@@ -106,6 +106,8 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     private static final ThreadLocal NAVIGATION_CONTEXT = new ThreadLocal();
 
     public static final String CLIENT_SERVICE_REQUEST_HEADER_NAME = "Sparx-Http-Controller";
+    public static final String CLIENT_SERVICE_RESPONSE_HEADER_NAME = "Sparx-Http-Controller-Response";
+
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
     public static final String REQPARAMNAME_COMMAND_ONLY = "command-only";
