@@ -82,6 +82,16 @@ but this still throws a RTE so the question is do we want to catch this and not 
 source return an empty string???
 
 
+* Query Defn
+1. When adding query-defn into XML and you don't include a 'name' element (using 'id' mistkenly), it throws a really bad error
+instead of complaining about not having a 'name' element.
+java.lang.NullPointerException
+        at com.netspective.axiom.sql.dynamic.QueryDefinition.translateNameForMapKey(QueryDefinition.java:118)
+        at com.netspective.axiom.sql.dynamic.QueryDefinition.getNameForMapKey(QueryDefinition.java:128)
+        at com.netspective.axiom.sql.collection.QueryDefinitionsCollection.add(QueryDefinitionsCollection.java:68)
+        at com.netspective.axiom.SqlManager.addQueryDefn(SqlManager.java:229)
+
+
 
 
 
