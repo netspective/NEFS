@@ -30,8 +30,6 @@
             <field type="date" caption="Date of Birth" name="birth_date" size="12" required="yes"/>
             <field type="select" name="marital_status_id" caption="Marital Status" choices="schema-enum:Marital_Status_Type" prepend-blank="yes"/>
             <field type="select" name="blood_type_id" caption="Blood Type" choices="schema-enum:Blood_Type" required="yes" prepend-blank="yes"/>
-        </section>
-        <section name="ethnicity_lang" display-columns="2">
             <field type="select" name="ethnicity_id" caption="Ethnicity" choices="schema-enum:Ethnicity_Type"
                 max-item-per-row="2" />
             <field type="select" name="language_id" caption="Language" choices="schema-enum:Language_Type"
@@ -173,13 +171,21 @@
             <field type="text" name="rel_descr" caption="Other Relationship" size="16" max-length="16">
                 <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
             </field>
+            <field type="text" name="name_last" caption="Responsible Party's Last Name" >
+                <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
+            </field>
+            <field type="text" name="name_first" caption="First Name">
+                <popup action="page-id:/search/person/people_popup" fill="responsible.name_last,responsible.name_first,resp_party_id"/>
+                <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
+            </field>
         </section>
 
-        <field type="text" name="resp_party_name" caption="Reponsible Party Name" hint="Last Name, First Name">
+        <!--field type="text" name="resp_party_name" caption="Reponsible Party Name" hint="Last Name, First Name">
             <popup action="page-id:/search/person/people_popup" fill="resp_party_name,resp_party_id"/>
             <conditional action="display" partner-field-name="responsible.rel_type_id" expression="control.selectedIndex != 0"/>
-        </field>
-        <field type="text" name="resp_party_id" hidden="yes" />
+        </field-->
+        
+        <field type="text" name="resp_party_id" hidden="no" />
 
     </xdm:template>
 
