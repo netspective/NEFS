@@ -94,6 +94,22 @@
             select caption,id from book_type
         </query>
 
+        <query name="get-book">
+            select * from book_info where id = 'test-001'
+            <presentation>
+                <panel name="Test">
+                    <frame heading="static:Book Information"/>
+                    <report>
+                        <column heading="ID"/>
+                        <column heading="Name" command="redirect,yahoo.com"/>
+                        <column heading="Author"/>
+                        <column heading="Genre"/>
+                        <column heading="ISBN"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+
     </queries>
 
     <query-defn>
