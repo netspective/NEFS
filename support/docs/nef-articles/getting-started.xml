@@ -232,7 +232,7 @@
 
         <orderedlist>
           <listitem>
-            <para>Install JDK 1.3 or late if you&#39;re using Resin 2.1 or
+            <para>Install JDK 1.3 or later if you&#39;re using Resin 2.1 or
             above. JDK 1.4 or later if you&#39;re using Resin 3.0 or above. On
             Unix, set the JAVA_HOME variable or link <filename
             class="directory">/usr/java</filename> to the Java home. On
@@ -248,7 +248,7 @@
 
           <listitem>
             <para>Uncompress (unzip/untar) the package into <filename
-            class="directory">C:\resin-x.y.z</filename>, e.g. <filename
+            class="directory">resin-x.y.z</filename>, e.g. <filename
             class="directory">C:\resin-3.0.4</filename>, or other directory.</para>
           </listitem>
 
@@ -256,7 +256,7 @@
             <para>Click <ulink
             url="http://sampler.netspective.com/nefs-sampler/downloads/nefs-sample-hello-forms.war">here</ulink>
             to download the Hello Forms sample application and save it in
-            <filename class="directory">c:\resin-x.y.z\webapps</filename>.</para>
+            <filename class="directory">resin-x.y.z\webapps</filename>.</para>
           </listitem>
 
           <listitem>
