@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.20 2003-06-19 03:09:58 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.21 2003-06-19 14:26:52 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -385,6 +385,21 @@ public class XmlDataModelSchema
     private Class bean;
 
     /**
+     * The settable attributes list useful for creating DTDs and other documentation for this bean
+     */
+    private AttributeDetailList settableAttrsDetailWithFlagsExpanded;
+
+    /**
+     * The settable attributes list useful for creating DTDs and other documentation for this bean
+     */
+    private AttributeDetailList settableAttrsDetailWithoutFlagsExpanded;
+
+    /**
+     * The list of nested elements useful for creating DTDs and other documentation for this bean
+     */
+    private ElementDetailList nestedElementsDetail;
+
+    /**
      * instances we've already created
      */
     private static Map schemas = new HashMap();
@@ -483,27 +498,30 @@ public class XmlDataModelSchema
 
     public ElementDetailList getNestedElementsDetail() throws DataModelException
     {
-        ElementDetailList result = new ElementDetailList();
-
-        Map childPropertyNames = getPropertyNames();
-
-        Set sortedChildPropertyNames = new TreeSet(getNestedElements().keySet());
-        Iterator iterator = sortedChildPropertyNames.iterator();
-        while (iterator.hasNext())
+        if(nestedElementsDetail == null)
         {
-            String attrName = (String) iterator.next();
+            nestedElementsDetail = new ElementDetailList();
 
-            if(getOptions().ignoreAttribute(attrName))
-                continue;
+            Map childPropertyNames = getPropertyNames();
 
-            XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
-            if(attrNames != null && ! attrNames.isPrimaryName(attrName))
-                continue;
+            Set sortedChildPropertyNames = new TreeSet(getNestedElements().keySet());
+            Iterator iterator = sortedChildPropertyNames.iterator();
+            while (iterator.hasNext())
+            {
+                String attrName = (String) iterator.next();
 
-            result.add(new ElementDetail(attrName));
+                if(getOptions().ignoreAttribute(attrName))
+                    continue;
+
+                XmlDataModelSchema.PropertyNames attrNames = (XmlDataModelSchema.PropertyNames) childPropertyNames.get(attrName);
+                if(attrNames != null && ! attrNames.isPrimaryName(attrName))
+                    continue;
+
+                nestedElementsDetail.add(new ElementDetail(attrName));
+            }
         }
 
-        return result;
+        return nestedElementsDetail;
     }
 
     public class AttributeDetail
@@ -653,6 +671,10 @@ public class XmlDataModelSchema
 
     public AttributeDetailList getSettableAttributesDetail(boolean expandFlagAliases) throws IllegalAccessException, InstantiationException, InvocationTargetException, DataModelException
     {
+        AttributeDetailList result = expandFlagAliases ? settableAttrsDetailWithFlagsExpanded : settableAttrsDetailWithoutFlagsExpanded;
+        if(result != null)
+            return result;
+
         Map childPropertyNames = getPropertyNames();
 
         Map flagSetterPrimaries = new HashMap();
@@ -690,7 +712,7 @@ public class XmlDataModelSchema
             }
         }
 
-        AttributeDetailList result = new AttributeDetailList();
+        result = new AttributeDetailList();
 
         Set sortedChildPropertyNames = new TreeSet(getAttributes());
         sortedChildPropertyNames.addAll(flagSetterAliases.keySet());
@@ -722,6 +744,11 @@ public class XmlDataModelSchema
 
             result.add(new AttributeDetail(attrName));
         }
+
+        if(expandFlagAliases)
+            settableAttrsDetailWithFlagsExpanded = result;
+        else
+            settableAttrsDetailWithoutFlagsExpanded = result;
 
         return result;
     }
