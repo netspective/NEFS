@@ -39,25 +39,39 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.3 2003-06-06 23:14:57 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.4 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.File;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.lang.exception.NestableRuntimeException;
 
 import freemarker.template.Configuration;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.cache.WebappTemplateLoader;
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.ext.beans.BeansWrapper;
 
 import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.sparx.ProductRelease;
+import com.netspective.commons.text.TextUtils;
 
 public class FreeMarkerConfigurationAdapters
 {
+    private static final Log log = LogFactory.getLog(FreeMarkerConfigurationAdapters.class);
     private static final FreeMarkerConfigurationAdapters INSTANCE = (FreeMarkerConfigurationAdapters) DiscoverSingleton.find(FreeMarkerConfigurationAdapters.class, FreeMarkerConfigurationAdapters.class.getName());
 
     private StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
@@ -105,13 +119,51 @@ public class FreeMarkerConfigurationAdapters
         return (FreeMarkerConfigurationAdapter) configs.get(name);
     }
 
+    public void configureSharedVariables(Configuration configuration)
+    {
+        configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
+        configuration.setSharedVariable("getXmlDataModelSchema", new XmlDataModelSchemaMethod());
+        configuration.setSharedVariable("getClassForName", new ClassReferenceMethod());
+        configuration.setSharedVariable("getClassInstanceForName", new ClassInstanceMethod());
+        configuration.setSharedVariable("getAntBuildProject", new AntBuildProjectMethod());
+        configuration.setSharedVariable("getFile", new GetFileMethod());
+        configuration.setSharedVariable("getInputSourceDependencies", new InputSourceDependenciesMethod());
+        configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
+        configuration.setSharedVariable("panel", new PanelTransform());
+        configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
+    }
+
     public Configuration constructWebAppConfiguration(ServletValueContext vc)
     {
+        ServletContext servletContext = vc.getServletContext();
+        String templatePathsText = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-paths");
+        String templatePathsDelim = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-path-delim");
+
         Configuration result = new Configuration();
-        result.setTemplateLoader(new MultiTemplateLoader(new TemplateLoader[] {
-                stringTemplateLoader,
-                new WebappTemplateLoader(vc.getServletContext())
-            }));
+        List templateLoaders = new ArrayList();
+        templateLoaders.add(stringTemplateLoader);
+        templateLoaders.add(new WebappTemplateLoader(servletContext));
+
+        try
+        {
+            if(templatePathsText != null)
+            {
+                String[] templatePaths = TextUtils.split(templatePathsText, templatePathsDelim == null ? File.pathSeparator : templatePathsDelim, true);
+                for(int i = 0; i < templatePaths.length; i++)
+                    templateLoaders.add(new FileTemplateLoader(new File(vc.getServletContext().getRealPath(templatePaths[i]))));
+            }
+        }
+        catch(Exception e)
+        {
+            log.error("Unable to setup file templates loader.", e);
+            throw new NestableRuntimeException(e);
+        }
+
+        templateLoaders.add(new ClassTemplateLoader(ProductRelease.class, "console")); // this makes the console FTL libraries and stuff available too)
+
+        result.setTemplateLoader(new MultiTemplateLoader((TemplateLoader[]) templateLoaders.toArray(new TemplateLoader[templateLoaders.size()])));
+
+        configureSharedVariables(result);
         return result;
     }
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.32 2003-08-19 17:09:59 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.33 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -575,7 +575,7 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer
 
         ValueSource retainParamsVS = getRetainParams();
         if(retainParamsVS != null)
-            result = HttpUtils.appendParams(vc, result, retainParamsVS.getTextValue(vc));
+            result = HttpUtils.appendParams(vc.getHttpRequest(), result, retainParamsVS.getTextValue(vc));
 
         return result;
     }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.14 2003-08-19 17:09:42 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.15 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -60,6 +60,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationSkin;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.util.HttpUtils;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.sparx.theme.Theme;
@@ -309,7 +310,10 @@ public class NavigationControllerServlet extends HttpServlet
         checkForLogout(nc);
         if(nc.isRedirectToAlternateChildRequired())
         {
-            httpServletResponse.sendRedirect(nc.getActivePage().getUrl(nc));
+            String url =nc.getActivePage().getUrl(nc);
+            if(url.indexOf('?') == -1) // see if we've appened any parameters (if not, we want to include all)
+                url = HttpUtils.appendParams(httpServletRequest, url, "*");
+            httpServletResponse.sendRedirect(url);
             return;
         }
         else

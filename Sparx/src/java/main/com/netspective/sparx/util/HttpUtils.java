@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpUtils.java,v 1.2 2003-04-08 17:59:20 shahid.shah Exp $
+ * $Id: HttpUtils.java,v 1.3 2003-08-20 19:00:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.util;
@@ -47,9 +47,9 @@ package com.netspective.sparx.util;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.sparx.value.HttpServletValueContext;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.ServletRequest;
 import java.util.Enumeration;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -150,11 +150,10 @@ public class HttpUtils
         }
     }
 
-    public static String appendParams(HttpServletValueContext vc, String url, String paramNames)
+    public static String appendParams(ServletRequest req, String url, String paramNames)
     {
         StringBuffer result = new StringBuffer(url);
         boolean hasQueryChar = url.indexOf('?') >= 0;
-        HttpServletRequest req = vc.getHttpRequest();
 
         if(paramNames.equals("*"))
         {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.15 2003-08-19 17:09:32 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.16 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -106,7 +106,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
         if(activePage != null)
         {
             activePageValid = activePage.isValid(this);
-            if(! activePageValid)
+            if(activePageValid)
                 activePage.makeStateChanges(this);
         }
     }

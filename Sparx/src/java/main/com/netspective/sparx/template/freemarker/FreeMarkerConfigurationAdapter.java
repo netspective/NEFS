@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapter.java,v 1.14 2003-08-17 00:10:52 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapter.java,v 1.15 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -58,7 +58,6 @@ import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.ext.beans.BeansWrapper;
 
 public class FreeMarkerConfigurationAdapter
 {
@@ -95,15 +94,7 @@ public class FreeMarkerConfigurationAdapter
             configuration = new Configuration();
             configuration.setTemplateUpdateDelay(templateUpdateDelay);
             configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
-            configuration.setSharedVariable("templateExists", new TemplateExistsMethod());
-            configuration.setSharedVariable("getXmlDataModelSchema", new XmlDataModelSchemaMethod());
-            configuration.setSharedVariable("getClassForName", new ClassReferenceMethod());
-            configuration.setSharedVariable("getClassInstanceForName", new ClassInstanceMethod());
-            configuration.setSharedVariable("getAntBuildProject", new AntBuildProjectMethod());
-            configuration.setSharedVariable("getInputSourceDependencies", new InputSourceDependenciesMethod());
-            configuration.setSharedVariable("executeCommand", new ExecuteCommandMethod());
-            configuration.setSharedVariable("panel", new PanelTransform());
-            configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
+            FreeMarkerConfigurationAdapters.getInstance().configureSharedVariables(configuration);
             SyntaxHighlightTransform.registerTransforms(configuration);
         }
         return configuration;

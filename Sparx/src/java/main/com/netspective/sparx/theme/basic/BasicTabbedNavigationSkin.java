@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.21 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.22 2003-08-20 19:00:22 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -470,7 +470,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("      <td align=\"left\" valign=\"top\">");
         writer.write("          <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("              <tr>");
-        writer.write("                  <td align=\"left\" valign=\"top\" nowrap>");
+        writer.write("                  <td align=\"left\" valign=\"top\">");
         writer.write("                  <div align=\"left\">");
         renderPageHeading(writer, nc);
 
