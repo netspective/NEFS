@@ -3,24 +3,11 @@
 
     <!-- General Data Types -->
 
-    <data-type name="session-id">
-        <generate-id>guid32</generate-id>
-        <size>36</size>
-        <sql-ddl>
-            <define dbms="ansi" xdm:replace-template-expressions="no">varchar(${size})</define>
-            <define dbms="mssql" xdm:replace-template-expressions="no">varchar(${size})</define>
-        </sql-ddl>
-        <presentation>
-            <field.guid32>
-                <conditional action="apply-flag" flag="hidden" perspective="add"/>
-            </field.guid32>
-        </presentation>
-    </data-type>
+    <data-type name="session-id" type="guid32"/>
 
     <data-type name="name" type="text">
-        <copytype>text</copytype>
         <validation>
-            <rule name="letters-and-spaces-only" type="regex">^[a-zA-Z ]*$</rule>
+            <rule name="letters-and-spaces-only" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^[a-zA-Z ]*$"/>
         </validation>
     </data-type>
 
@@ -108,12 +95,7 @@
 
     <!-- Person Data Types -->
 
-    <data-type name="person-id" type="guid32">
-        <generate-id>guid32</generate-id>
-        <presentation>
-            <field type="guid32" hidden="yes"/>
-        </presentation>
-    </data-type>
+    <data-type name="person-id" type="guid32"/>
 
     <data-type name="person-classification-id" type="guid32"/>
     <data-type name="person-ethnicity-id" type="guid32"/>
