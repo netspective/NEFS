@@ -51,13 +51,15 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: QueryBuilderDialog.java,v 1.2 2003-05-31 17:17:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.IOException;
 import java.io.Writer;
+
+import javax.servlet.ServletContext;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.LogFactory;
@@ -85,9 +87,11 @@ import com.netspective.axiom.sql.dynamic.QueryDefnCondition;
 import com.netspective.axiom.sql.dynamic.SqlComparisonEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.QueryDefnConditionConnectorEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.QueryDefnSortFieldReference;
+import com.netspective.axiom.sql.dynamic.QueryDefnFieldReference;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnJoinNotFoundException;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.value.source.QueryDefnSelectsValueSource;
 import com.netspective.axiom.value.source.QueryDefnFieldsValueSource;
 import com.netspective.axiom.ConnectionContext;
@@ -286,8 +290,8 @@ public class QueryBuilderDialog extends Dialog
 
         if(predefinedSels != null)
         {
-            displayFields.addConditional(new DialogFieldConditionalDisplay(displayFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE + "'"));
-            sortFields.addConditional(new DialogFieldConditionalDisplay(sortFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE + "'"));
+            displayFields.addConditional(new DialogFieldConditionalDisplay(displayFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE_TEXT + "'"));
+            sortFields.addConditional(new DialogFieldConditionalDisplay(sortFields, "options.predefined_select", "control.options[control.selectedIndex].value == '" + QueryDefnSelectsValueSource.CUSTOMIZE_TEXT + "'"));
         }
 
         DialogField options = new DialogField();
@@ -318,7 +322,6 @@ public class QueryBuilderDialog extends Dialog
         addResultsSepatorField();
         addOutputDestinationFields();
         addDisplayOptionsFields();
-        addField(new DialogDirector());
         addField(new DataSourceNavigatorButtonsField());
     }
 
@@ -340,7 +343,6 @@ public class QueryBuilderDialog extends Dialog
     public void setMaxConditions(int value)
     {
         maxConditions = value;
-        createContents();
     }
 
     public QueryDefinition getQueryDefn()
@@ -351,7 +353,12 @@ public class QueryBuilderDialog extends Dialog
     public void setQueryDefn(QueryDefinition queryDefn)
     {
         this.queryDefn = queryDefn;
-        setMaxConditions(5);
+    }
+
+    public void finalizeContents(ServletContext context)
+    {
+        super.finalizeContents(context);
+        createContents();
     }
 
     public void makeStateChanges(DialogContext dc, int stage)
@@ -369,11 +376,12 @@ public class QueryBuilderDialog extends Dialog
         if(dc.inExecuteMode() && stage == DialogContext.STATECALCSTAGE_FINAL)
         {
             states.getState("conditions_separator").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState("results_separator").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             states.getState("output").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             states.getState("options").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             states.getState("display_fields").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             states.getState("sort_fields").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
-            states.getState("director").getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
+            states.getState(getDirector()).getStateFlags().setFlag(DialogField.Flags.UNAVAILABLE);
             states.getState("ds_nav_buttons").getStateFlags().clearFlag(DialogField.Flags.UNAVAILABLE);
 
             int flag = dFlags.flagIsSet(QueryBuilderDialogFlags.HIDE_CRITERIA) ? DialogField.Flags.UNAVAILABLE : DialogField.Flags.READ_ONLY;
@@ -388,36 +396,47 @@ public class QueryBuilderDialog extends Dialog
         }
     }
 
-    public QueryDefnSelect createSelect(DialogContext dc) throws QueryDefnFieldNotFoundException, QueryDefnSqlComparisonNotFoundException
+    public QueryDefnSelect createSelect(DialogContext dc) throws QueryDefnFieldNotFoundException, QueryDefnSqlComparisonNotFoundException, QueryDefinitionException
     {
         DialogContext.DialogFieldStates states = dc.getFieldStates();
         QueryDefnSelect result = new QueryDefnSelect(queryDefn);
 
         boolean customizing = true;
-        String predefinedSel = states.getState("options.predefined_select").getValue().getTextValue();
-        if(predefinedSel != null && !predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE))
+        DialogField.State predefinedSelState = states.getState("options.predefined_select");
+        if(predefinedSelState.hasRequiredValue())
         {
-            customizing = false;
-            result.copy(queryDefn.getSelects().get(predefinedSel));
+            String predefinedSel = predefinedSelState.getValue().getTextValue();
+            if(! predefinedSel.equals(QueryDefnSelectsValueSource.CUSTOMIZE_TEXT))
+            {
+                customizing = false;
+                QueryDefnSelect sel = queryDefn.getSelects().get(predefinedSel);
+                if(sel != null)
+                    result.copy(sel);
+                else
+                    throw new RuntimeException("QueryDefnSelect '" + predefinedSel + "' not found.");
+            }
         }
 
-        /*
-        TODO: is this needed anymore?
         if(customizing)
         {
-            String[] display = dc.getValues("display_fields");
+            String[] display = states.getState("display_fields").getValue().getTextValues();
             if(display != null && display.length > 0)
-                result.addReportFields(display);
-            else
-                result.addReportField("*");
+            {
+                for(int i = 0; i < display.length; i++)
+                {
+                    QueryDefnFieldReference ref = new QueryDefnFieldReference(getQueryDefn());
+                    ref.setField(display[i]);
+                    result.addDisplay(ref);
+                }
+            }
         }
-        */
 
+        int lastCondIndex = maxConditions-1;
         for(int i = 0; i < maxConditions; i++)
         {
             String conditionId = "condition_" + i;
             String value = states.getState(conditionId + ".value").getValue().getTextValue();
-            String join = states.getState(conditionId + ".join").getValue().getTextValue();
+            String join = i < lastCondIndex ? states.getState(conditionId + ".join").getValue().getTextValue() : null;
 
             if(value != null && value.length() > 0)
             {
@@ -496,7 +515,7 @@ public class QueryBuilderDialog extends Dialog
     }
     */
 
-    public void renderReport(DialogContext dc, HtmlTabularReportDestination destination, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefnFieldNotFoundException, QueryDefnJoinNotFoundException, QueryDefnSqlComparisonNotFoundException
+    public void renderReport(DialogContext dc, HtmlTabularReportDestination destination, HtmlTabularReportSkin reportSkin) throws IOException, QueryDefinitionException
     {
         QueryReportPanel reportPanel = null;
 
@@ -562,7 +581,8 @@ public class QueryBuilderDialog extends Dialog
             try
             {
                 QueryDefnSelect select = createSelect(dc);
-                ConnectionContext cc = dc.getConnection(queryDefn.getDataSrc().getTextValue(dc), false);
+                ValueSource dataSource = queryDefn.getDataSrc();
+                ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false);
                 String message = select.createExceptionMessage(cc, null);
                 cc.close();
                 writer.write("<p><pre><code>" + message + "</code></pre>");
@@ -588,13 +608,13 @@ public class QueryBuilderDialog extends Dialog
         switch(outputDest)
         {
             case DESTINATION_BROWSER:
-                HtmlTabularReportBrowserDestination browserDest = desintations.createBrowserDestination(dc);
+                HtmlTabularReportBrowserDestination browserDest = desintations.createBrowserDestination(writer, dc);
                 destination = browserDest;
                 break;
 
             case DESTINATION_BROWSER_PAGED:
                 String rowsPerPageStr = getFirstAvailableFieldValue(dc, new String[] { "rows_per_page", "rows-per-page", "output.rows_per_page" }, "20");
-                browserDest = desintations.createBrowserDestination(dc, Integer.parseInt(rowsPerPageStr));
+                browserDest = desintations.createBrowserDestination(writer, dc, Integer.parseInt(rowsPerPageStr));
                 destination = browserDest;
                 break;
 

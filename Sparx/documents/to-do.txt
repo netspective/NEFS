@@ -1,3 +1,4 @@
+* Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Ugrade to FreeMarker 2.3 (has numerous new features that will be useful)
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)

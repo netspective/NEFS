@@ -39,52 +39,36 @@
  */
 
 /**
- * $Id: HtmlTabularReportDestinations.java,v 1.2 2003-05-31 17:17:42 shahid.shah Exp $
+ * $Id: DialogFieldConditionalActions.java,v 1.1 2003-05-31 17:17:42 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report.tabular;
+package com.netspective.sparx.form.field;
 
-import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.discovery.tools.DiscoverSingleton;
+import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportDownloadableFileDestination;
-import com.netspective.sparx.report.tabular.destination.HtmlTabularReportEmailDestination;
-import com.netspective.sparx.form.DialogContext;
-
-public class HtmlTabularReportDestinations
+public class DialogFieldConditionalActions
 {
-    private static final HtmlTabularReportDestinations INSTANCE = (HtmlTabularReportDestinations) DiscoverSingleton.find(HtmlTabularReportDestinations.class, HtmlTabularReportDestinations.class.getName());
+    private List actions = new ArrayList();
 
-    public static HtmlTabularReportDestinations getInstance()
+    public DialogFieldConditionalActions()
     {
-        return INSTANCE;
     }
 
-    public HtmlTabularReportBrowserDestination createBrowserDestination(Writer writer, DialogContext dc)
+    public void addAction(DialogFieldConditionalAction action)
     {
-        HtmlTabularReportBrowserDestination result = new HtmlTabularReportBrowserDestination(dc);
-        result.setWriter(writer);
-        return result;
+        actions.add(action);
     }
 
-    public HtmlTabularReportBrowserDestination createBrowserDestination(Writer writer, DialogContext dc, int pageSize)
+    public DialogFieldConditionalAction getAction(int index)
     {
-        HtmlTabularReportBrowserDestination result = new HtmlTabularReportBrowserDestination(dc);
-        result.setWriter(writer);
-        result.setPageSize(pageSize);
-        result.setScrollable(true);
-        return result;
+        return (DialogFieldConditionalAction) actions.get(index);
     }
 
-    public HtmlTabularReportDownloadableFileDestination createDownloadableFileDestination()
+    public int size()
     {
-        return new HtmlTabularReportDownloadableFileDestination();
-    }
-
-    public HtmlTabularReportEmailDestination createEmailDestination()
-    {
-        return new HtmlTabularReportEmailDestination();
+        return actions.size();
     }
 }

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.13 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.14 2003-05-31 17:17:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -370,8 +370,8 @@ public class DialogField implements TemplateConsumer
     private ValueSource hint = ValueSource.NULL_VALUE_SOURCE;
 	private String cookieName;
 	private DialogFields children;
-	private List conditionalActions;
-	private List dependentConditions;
+	private DialogFieldConditionalActions conditionalActions = new DialogFieldConditionalActions();
+	private DialogFieldConditionalActions dependentConditions = new DialogFieldConditionalActions();
 	private List clientJavascripts;
 	private Flags flags = createFlags();
 	private DialogFieldPopup popup;
@@ -471,18 +471,15 @@ public class DialogField implements TemplateConsumer
      *
      * @return List a list of conditional actions
      */
-    public List getConditionalActions()
+    public DialogFieldConditionalActions getConditionalActions()
     {
         return conditionalActions;
     }
 
     public void addConditional(DialogFieldConditionalAction action)
     {
-        if(conditionalActions == null)
-            conditionalActions = new ArrayList();
-
-        conditionalActions.add(action);
-        flags.setFlag(Flags.HAS_CONDITIONAL_DATA);
+        conditionalActions.addAction(action);
+        flags.setFlag(Flags.HAS_CONDITIONAL_DATA); // in case JavaScript needs it
     }
 
     public DialogFieldPopup getPopup()
@@ -787,19 +784,15 @@ public class DialogField implements TemplateConsumer
 	 */
 	public void finalizeContents()
 	{
-		if (conditionalActions != null)
-		{
-			Iterator i = conditionalActions.iterator();
-			while (i.hasNext())
-			{
-				DialogFieldConditionalAction action = (DialogFieldConditionalAction) i.next();
-				DialogField partnerField = owner.getFields().getByQualifiedName(action.getPartnerFieldName());
-				if (partnerField != null)
-					action.setPartnerField(partnerField);
-                else
-                    log.error("Unknown partner supplied for conditional action " + action.getSourceField().getQualifiedName());
-			}
-		}
+        for(int i = 0; i < conditionalActions.size(); i++)
+        {
+            DialogFieldConditionalAction action = conditionalActions.getAction(i);
+            DialogField partnerField = owner.getFields().getByQualifiedName(action.getPartnerFieldName());
+            if (partnerField != null)
+                action.setPartnerField(partnerField);
+            else
+                log.error("Unknown partner supplied for conditional action " + action.getSourceField().getQualifiedName());
+        }
 
 		if (children != null)
 		{
@@ -830,15 +823,9 @@ public class DialogField implements TemplateConsumer
 		this.addClientJs(deOnChangeJS);
 	}
 
-	public List getDependentConditions()
+	public DialogFieldConditionalActions getDependentConditions()
 	{
 		return dependentConditions;
-	}
-
-	public void addDependentCondition(DialogFieldConditionalAction action)
-	{
-		if (dependentConditions == null) dependentConditions = new ArrayList();
-		dependentConditions.add(action);
 	}
 
 	/**
@@ -883,24 +870,19 @@ public class DialogField implements TemplateConsumer
 	 */
 	public boolean isAvailable(DialogContext dc)
 	{
-		if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA) && conditionalActions != null)
-		{
-			Iterator i = conditionalActions.iterator();
-			while (i.hasNext())
-			{
-				DialogFieldConditionalAction action = (DialogFieldConditionalAction) i.next();
-				if (action instanceof DialogFieldConditionalData)
-				{
-					// if the partner field doesn't have data yet, hide this field
-					if (isRequired(dc))
-					{
-						String value = dc.getFieldStates().getState(action.getPartnerField()).getValue().getTextValue();
-						if (value == null || value.length() == 0)
-							return false;
-					}
-				}
-			}
-		}
+        for(int i = 0; i < conditionalActions.size(); i++)
+        {
+            DialogFieldConditionalAction action = conditionalActions.getAction(i);
+            if (action instanceof DialogFieldConditionalData)
+            {
+                // if the partner field doesn't have data yet, hide this field
+                if (isRequired(dc))
+                {
+                    if(! dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
+                        return false;
+                }
+            }
+        }
 
         DialogField.State state = dc.getFieldStates().getState(this);
         DialogField.Flags stateFlags = state.getStateFlags();
@@ -1010,17 +992,19 @@ public class DialogField implements TemplateConsumer
         DialogContext dc = dvc.getDialogContext();
         State fieldState = dc.getFieldStates().getState(this);
 
-        if (flags.flagIsSet(Flags.HAS_CONDITIONAL_DATA))
+        for(int i = 0; i < conditionalActions.size(); i++)
         {
-            Iterator i = conditionalActions.iterator();
-            while (i.hasNext())
+            DialogFieldConditionalAction action = conditionalActions.getAction(i);
+            if (action instanceof DialogFieldConditionalData)
             {
-                DialogFieldConditionalAction action = (DialogFieldConditionalAction) i.next();
-                if (action instanceof DialogFieldConditionalData)
+                // if the partner field doesn't have data, then this field is "invalid"
+                if (isRequired(dc))
                 {
-                    // if the partner field doesn't have data, then this field is "invalid"
-                    if (isRequired(dc) && dc.getFieldStates().getState(action.getPartnerField()).getValue().getTextValue() == null)
+                    if(! dc.getFieldStates().getState(action.getPartnerField()).hasRequiredValue())
+                    {
+                        dvc.addValidationError(fieldState.getValidationContextScope(), getRequiredFieldMissingMessage(), new Object[] { action.getPartnerField().getErrorCaption().getTextValue(dc) });
                         return;
+                    }
                 }
             }
         }
@@ -1071,11 +1055,11 @@ public class DialogField implements TemplateConsumer
 
 	public void makeStateChanges(DialogContext dc, int stage)
 	{
-		if (stage == DialogContext.STATECALCSTAGE_INITIAL && conditionalActions != null)
+		if (stage == DialogContext.STATECALCSTAGE_INITIAL)
 		{
 			for (int i = 0; i < conditionalActions.size(); i++)
 			{
-				DialogFieldConditionalAction action = (DialogFieldConditionalAction) conditionalActions.get(i);
+				DialogFieldConditionalAction action = conditionalActions.getAction(i);
 				if (action instanceof DialogFieldConditionalApplyFlag)
 					((DialogFieldConditionalApplyFlag) action).applyFlags(dc);
 			}
@@ -1140,15 +1124,12 @@ public class DialogField implements TemplateConsumer
 		if (customStr != null)
 			js += customStr;
 
-		List dependentConditions = this.getDependentConditions();
-		if (dependentConditions != null)
+		if (dependentConditions.size() > 0)
 		{
 			StringBuffer dcJs = new StringBuffer();
-			Iterator i = dependentConditions.iterator();
-			while (i.hasNext())
+            for(int i = 0; i < dependentConditions.size(); i++)
 			{
-				DialogFieldConditionalAction o = (DialogFieldConditionalAction) i.next();
-
+				DialogFieldConditionalAction o = dependentConditions.getAction(i);
 				if (o instanceof DialogFieldConditionalDisplay)
 				{
 					DialogFieldConditionalDisplay action = (DialogFieldConditionalDisplay) o;

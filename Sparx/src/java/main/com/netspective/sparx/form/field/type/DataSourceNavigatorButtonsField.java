@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: DataSourceNavigatorButtonsField.java,v 1.1 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: DataSourceNavigatorButtonsField.java,v 1.2 2003-05-31 17:17:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -126,7 +126,7 @@ public class DataSourceNavigatorButtonsField extends DialogField
         TabularReportDataSourceScrollState state = HtmlTabularReportDataSourceScrollStates.getInstance().getScrollStateByDialogTransactionId(dc);
         if(state == null)
         {
-            writer.write("<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getValue(dc) + "' " + attrs + "> ");
+            writer.write("<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + submitCaption.getTextValue(dc) + "' " + attrs + "> ");
             return;
         }
 
@@ -147,22 +147,22 @@ public class DataSourceNavigatorButtonsField extends DialogField
             }
             writer.write("</nobr>&nbsp;&nbsp;");
             if(activePage > 1)
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_FIRST +"' value='" + firstCaption.getValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_FIRST +"' value='" + firstCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             if(activePage > 2)
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_PREV + "' value='" + prevCaption.getTextValue(dc) + "' " + attrs + "> ");
 
             boolean hasMoreRows = false;
             if(dataSource.hasMoreRows())
             {
-                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_NEXT +"' value='" + nextCaption.getValue(dc) + "' " + attrs + "> ");
+                writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_NEXT +"' value='" + nextCaption.getTextValue(dc) + "' " + attrs + "> ");
                 hasMoreRows = true;
             }
 
             if(isScrollable)
             {
                 if(activePage < lastPage)
-                    writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_LAST +"' value='" + lastCaption.getValue(dc) + "' " + attrs + "> ");
+                    writer.write("<input type='submit' name='"+ RSNAV_BUTTONNAME_LAST +"' value='" + lastCaption.getTextValue(dc) + "' " + attrs + "> ");
                 writer.write("&nbsp;&nbsp;<nobr>");
                 writer.write(NumberFormat.getNumberInstance().format(dataSource.getTotalRows()));
                 writer.write(" total rows</nobr>");
@@ -185,10 +185,10 @@ public class DataSourceNavigatorButtonsField extends DialogField
         if(doneCaption != null)
         {
             if(doneUrl == null)
-                writer.write("&nbsp;&nbsp;<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + doneCaption.getValue(dc) + "' " + attrs + "> ");
+                writer.write("&nbsp;&nbsp;<input type='submit' name='" + dc.getDialog().getResetContextParamName() + "' value='" + doneCaption.getTextValue(dc) + "' " + attrs + "> ");
             else
-                writer.write("&nbsp;&nbsp;<input type='button' name='jump' value='" + doneCaption.getValue(dc) +
-                        "' onclick='this.form.action=\"" + doneUrl.getValue(dc) + "\";this.form.submit();'" + attrs + "> ");
+                writer.write("&nbsp;&nbsp;<input type='button' name='jump' value='" + doneCaption.getTextValue(dc) +
+                        "' onclick='this.form.action=\"" + doneUrl.getTextValue(dc) + "\";this.form.submit();'" + attrs + "> ");
         }
         writer.write("</center>");
     }
