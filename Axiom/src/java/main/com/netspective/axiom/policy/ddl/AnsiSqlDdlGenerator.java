@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.4 2004-08-09 22:13:32 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.5 2004-08-09 22:29:21 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -48,7 +48,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -205,7 +204,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         String tableCommentClauseFormat = ddlFormats.getTableCommentClauseFormat();
         String columnCommentClauseFormat = ddlFormats.getColumnCommentClauseFormat();
 
-        Map vars = new HashMap();
+        Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
 
         if(tableCommentClauseFormat != null)
@@ -240,7 +239,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         String format = isDropSql ? ddlFormats.getDropSequenceStatementFormat() : ddlFormats.getCreateSequenceStatementFormat();
 
         int seqCount = 0;
-        Map vars = new HashMap();
+        Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
 
         JavaExpressionText jet = new JavaExpressionText(format, vars);
@@ -280,7 +279,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
         String format = isDropSql ? ddlFormats.getDropIndexStatementFormat() : ddlFormats.getCreateIndexStatementFormat();
 
-        Map vars = new HashMap();
+        Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
 
         JavaExpressionText jet = new JavaExpressionText(format, vars);
@@ -348,7 +347,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(format == null)
             return;
 
-        Map vars = new HashMap();
+        Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
         vars.put("fkey", fkey);
 
@@ -369,7 +368,7 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
         if(format == null)
             return false;
 
-        Map vars = new HashMap();
+        Map vars = ddlFormats.createJavaExpressionVars();
         vars.put("table", table);
 
         Set tableConstraints = new HashSet();

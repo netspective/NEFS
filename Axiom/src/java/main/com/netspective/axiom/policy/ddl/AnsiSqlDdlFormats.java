@@ -39,12 +39,16 @@
  */
 
 /**
- * $Id: AnsiSqlDdlFormats.java,v 1.2 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: AnsiSqlDdlFormats.java,v 1.3 2004-08-09 22:29:21 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.netspective.axiom.policy.SqlDdlFormats;
+import com.netspective.commons.text.TextUtils;
 
 public class AnsiSqlDdlFormats implements SqlDdlFormats
 {
@@ -75,6 +79,13 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         setFkeyConstraintAlterTableStatementFormat("ALTER TABLE ${fkey.sourceColumns.first.table.name} ADD " + getFkeyConstraintTableClauseFormat());
         setCreatePrimaryKeyIndex(true);
         setCreateParentKeyIndex(true);
+    }
+
+    public Map createJavaExpressionVars()
+    {
+        Map result = new HashMap();
+        result.put("textUtils", TextUtils.getInstance());
+        return result;
     }
 
     public String getCreateTableClauseFormat()

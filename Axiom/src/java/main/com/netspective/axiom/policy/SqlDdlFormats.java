@@ -39,10 +39,12 @@
  */
 
 /**
- * $Id: SqlDdlFormats.java,v 1.3 2004-08-09 20:28:52 shahid.shah Exp $
+ * $Id: SqlDdlFormats.java,v 1.4 2004-08-09 22:29:21 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
+
+import java.util.Map;
 
 public interface SqlDdlFormats
 {
@@ -84,4 +86,6 @@ public interface SqlDdlFormats
 
     public String getColumnCommentClauseFormat();
     public void setColumnCommentClauseFormat(String columnCommentClauseFormat);
+
+    public Map createJavaExpressionVars();
 }
