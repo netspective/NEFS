@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlEditorDialog.java,v 1.1 2003-07-05 19:28:07 shahid.shah Exp $
+ * $Id: SqlEditorDialog.java,v 1.2 2003-07-17 14:43:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.form;
@@ -79,38 +79,45 @@ public class SqlEditorDialog extends ConsoleDialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
-        DialogContext.DialogFieldStates states = dc.getFieldStates();
-        String sql = states.getState("sql").getValue().getTextValue();
-        String dataSource = states.getState("data-source").getValue().getTextValue();
-        String name = states.getState("name").getValue().getTextValue();
-        int rowsPerPage = states.getState("rows-per-page").getValue().getIntValue();
-
-        SqlManager sqlManager = dc.getSqlManager();
-        Query query = new Query();
-        query.setDataSrc(new StaticValueSource(dataSource));
-        query.setName(name);
-        query.setNameSpace(sqlManager.getTemporaryQueriesNameSpace());
-
-        DbmsSqlText dbmsSqlText = query.createSql();
-        dbmsSqlText.setSql(sql);
-        query.addSql(dbmsSqlText);
-
-        sqlManager.addQuery(query);
-
         try
         {
-            HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
-            command.handleCommand(writer, dc, false);
+            DialogContext.DialogFieldStates states = dc.getFieldStates();
+            String sql = states.getState("sql").getValue().getTextValue();
+            String dataSource = states.getState("data-source").getValue().getTextValue();
+            String name = states.getState("name").getValue().getTextValue();
+            int rowsPerPage = states.getState("rows-per-page").getValue().getIntValue();
+
+            SqlManager sqlManager = dc.getSqlManager();
+            Query query = new Query();
+            query.setDataSrc(new StaticValueSource(dataSource));
+            query.setName(name);
+            query.setNameSpace(sqlManager.getTemporaryQueriesNameSpace());
+
+            DbmsSqlText dbmsSqlText = query.createSql();
+            dbmsSqlText.setSql(sql);
+            query.addSql(dbmsSqlText);
+
+            sqlManager.addQuery(query);
+
+            try
+            {
+                HttpServletCommand command = (HttpServletCommand) Commands.getInstance().getCommand("query," + query.getQualifiedName());
+                command.handleCommand(writer, dc, false);
+            }
+            catch (CommandNotFoundException e)
+            {
+                log.error("Unable to find query command -- this should never happen.", e);
+                throw new DialogExecuteException(e);
+            }
+            catch (CommandException e)
+            {
+                log.error("Error executing query command.", e);
+                throw new DialogExecuteException(e);
+            }
         }
-        catch (CommandNotFoundException e)
+        catch(Exception e)
         {
-            log.error("Unable to find query command -- this should never happen.", e);
-            throw new DialogExecuteException(e);
-        }
-        catch (CommandException e)
-        {
-            log.error("Error executing query command.", e);
-            throw new DialogExecuteException(e);
+            renderFormattedExceptionMessage(writer, e);
         }
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.1 2003-07-12 03:31:46 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.2 2003-07-17 14:43:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -168,12 +168,7 @@ public class AntBuildDialog extends ConsoleDialog
         }
         catch (Exception e)
         {
-            StringWriter stackTraceWriter = new StringWriter();
-            PrintWriter stackTrace = new PrintWriter(stackTraceWriter);
-            e.printStackTrace(stackTrace);
-            writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
-            writer.write(stackTraceWriter.toString());
-            writer.write("</pre>");
+            renderFormattedExceptionMessage(writer, e);
             return;
         }
 

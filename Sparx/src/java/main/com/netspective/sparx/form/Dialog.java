@@ -51,14 +51,12 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.23 2003-07-12 03:33:23 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.24 2003-07-17 14:43:20 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.io.File;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
@@ -66,6 +64,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.Main;
 
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.field.DialogField;
@@ -857,5 +856,15 @@ public class Dialog extends AbstractPanel implements TemplateConsumer
         boolean isValid = dvc.isValid();
         dvc.setValidationStage(isValid ? DialogValidationContext.VALSTAGE_PERFORMED_SUCCEEDED : DialogValidationContext.VALSTAGE_PERFORMED_FAILED);
         return isValid;
+    }
+
+    protected void renderFormattedExceptionMessage(Writer writer, Exception e) throws IOException
+    {
+        StringWriter stackTraceWriter = new StringWriter();
+        PrintWriter stackTrace = new PrintWriter(stackTraceWriter);
+        e.printStackTrace(stackTrace);
+        writer.write("<div class='textbox'>"+ Main.getAntVersion() +"<p><pre>");
+        writer.write(stackTraceWriter.toString());
+        writer.write("</pre>");
     }
 }
