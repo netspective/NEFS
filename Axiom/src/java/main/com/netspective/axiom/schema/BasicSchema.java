@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.15 2003-12-10 20:58:44 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.16 2004-03-06 23:00:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -107,10 +107,21 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private TemplateProducer dataTypes;
     private TemplateProducers templateProducers;
     private Schema.TableTree structure;
+    private InputSourceLocator inputSourceLocator;
 
     public BasicSchema(SqlManager sqlManager)
     {
         setSqlManager(sqlManager);
+    }
+
+    public InputSourceLocator getInputSourceLocator()
+    {
+        return inputSourceLocator;
+    }
+
+    public void setInputSourceLocator(InputSourceLocator inputSourceLocator)
+    {
+        this.inputSourceLocator = inputSourceLocator;
     }
 
     public SqlManager getSqlManager()

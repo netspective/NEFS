@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.20 2003-11-20 04:13:24 aye.thu Exp $
+ * $Id: SqlManager.java,v 1.21 2004-03-06 23:00:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -53,7 +53,6 @@ import com.netspective.axiom.sql.*;
 import com.netspective.axiom.sql.collection.*;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
-import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.metric.Metric;
 import com.netspective.commons.metric.MetricsProducer;
 import com.netspective.commons.metric.MetricsGroup;
@@ -78,6 +77,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(SqlManager.class);
+    private static final ThreadLocal THREAD_SQL_MANAGER = new ThreadLocal();
 
     public static final ConnectionProvider DEFAULT_CONN_PROVIDER = (ConnectionProvider) DiscoverSingleton.find(ConnectionProvider.class, JndiConnectionProvider.class.getName());
     private ConnectionProvider provider = DEFAULT_CONN_PROVIDER;
@@ -88,6 +88,22 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
     static
     {
         NetspectiveComponent.getInstance().registerProduct(com.netspective.axiom.ProductRelease.PRODUCT_RELEASE);
+    }
+
+    public static final SqlManager getThreadSqlManager()
+    {
+        return (SqlManager) THREAD_SQL_MANAGER.get();
+    }
+
+    public static final Schema getThreadDefaultSchema()
+    {
+        SqlManager sqlManager = getThreadSqlManager();
+        return sqlManager != null ? sqlManager.getSchemas().getDefault() : null;
+    }
+
+    public static final void setThreadSqlManager(SqlManager sqlManager)
+    {
+        THREAD_SQL_MANAGER.set(sqlManager);
     }
 
     protected QueriesNameSpace activeNameSpace;

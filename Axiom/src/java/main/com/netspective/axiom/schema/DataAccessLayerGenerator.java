@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.15 2003-11-16 15:15:59 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.16 2004-03-06 23:00:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -178,6 +178,8 @@ public class DataAccessLayerGenerator
         rootClass = rootUnit.newClass(dalClassName);
         rootClass.setAccess(Access.PUBLIC);
         rootClass.isFinal(true);
+        rootClass.javadoc("This is the DataAccessLayer type-specific wrapper for the Axiom schema called '"+ structure.getSchema().getName() +"'. " +
+                "This schema was generated on "+ (new Date()) +" using the source in " + (structure.getSchema().getInputSourceLocator()) + ".");
 
         ClassField field = rootClass.newField(vm.newType(dalClassName), "INSTANCE");
         field.setAccess(Access.PRIVATE);
@@ -189,6 +191,14 @@ public class DataAccessLayerGenerator
         field.setAccess(Access.PRIVATE);
 
         rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType(dalClassName), "getInstance");
+        rootClassChildrenAssignmentBlock.setAccess(Access.PUBLIC);
+        rootClassChildrenAssignmentBlock.isFinal(true);
+        rootClassChildrenAssignmentBlock.isStatic(true);
+        rootClassChildrenAssignmentBlock.isSynchronized(true);
+        rootClassChildrenAssignmentBlock.newStmt(vm.newFree("if(INSTANCE.schema == null) INSTANCE.setSchema(com.netspective.axiom.SqlManager.getThreadDefaultSchema())"));
+        rootClassChildrenAssignmentBlock.newReturn().setExpression(vm.newFree("INSTANCE"));
+
+        rootClassChildrenAssignmentBlock = rootClass.newMethod(vm.newType(dalClassName), "getInstancePrime");
         rootClassChildrenAssignmentBlock.setAccess(Access.PUBLIC);
         rootClassChildrenAssignmentBlock.isFinal(true);
         rootClassChildrenAssignmentBlock.isStatic(true);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Schema.java,v 1.3 2003-08-28 00:42:01 shahid.shah Exp $
+ * $Id: Schema.java,v 1.4 2004-03-06 23:00:30 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -48,13 +48,14 @@ import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.QueriesNameSpace;
 import com.netspective.axiom.SqlManager;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 import java.io.Writer;
 import java.io.IOException;
 import java.io.File;
 import java.util.List;
 
-public interface Schema
+public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
 {
     public String getName();
     public String getNameForMapKey();
