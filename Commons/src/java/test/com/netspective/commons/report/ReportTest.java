@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ReportTest.java,v 1.4 2003-04-03 23:58:52 shahbaz.javeed Exp $
+ * $Id: ReportTest.java,v 1.5 2003-04-04 17:15:28 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.report;
@@ -50,6 +50,7 @@ import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.text.TextUtils;
 import junit.framework.TestCase;
 
 import java.io.IOException;
@@ -198,13 +199,42 @@ public class ReportTest extends TestCase
 		assertEquals(report, vc.getReport());
 		assertEquals(skin, vc.getSkin());
 
+		assertEquals(4, vc.getVisibleColsCount());
 		vc.getState(3).setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+		assertEquals(4, vc.getVisibleColsCount());
+
+		StringWriter expectedSw = new StringWriter();
+		expectedSw.write("Column A\tColumn B\tColumn C\t\n");
+		expectedSw.write("row 0\t100\t200.2\t\n");
+		expectedSw.write("row 1\t101\t201.201\t\n");
+		expectedSw.write("row 2\t102\t202.202\t\n");
+		expectedSw.write("row 3\t103\t203.203\t\n");
+		expectedSw.write("row 4\t104\t204.204\t\n");
+		expectedSw.write("row 5\t105\t205.205\t\n");
+		expectedSw.write("row 6\t106\t206.206\t\n");
+		expectedSw.write("row 7\t107\t207.207\t\n");
+		expectedSw.write("row 8\t108\t208.208\t\n");
+		expectedSw.write("row 9\t109\t209.209\t\n");
+		expectedSw.write("row 10\t110\t210.21\t\n");
+		expectedSw.write("row 11\t111\t211.211\t\n");
+		expectedSw.write("row 12\t112\t212.212\t\n");
+		expectedSw.write("row 13\t113\t213.213\t\n");
+		expectedSw.write("row 14\t114\t214.214\t\n");
+		expectedSw.write("row 15\t115\t215.215\t\n");
+		expectedSw.write("row 16\t116\t216.216\t\n");
+		expectedSw.write("row 17\t117\t217.217\t\n");
+		expectedSw.write("row 18\t118\t218.218\t\n");
+		expectedSw.write("row 19\t119\t219.219\t\n");
+		expectedSw.write("row 20\t120\t220.22\t\n");
+		expectedSw.write("row 21\t121\t221.221\t\n");
+		expectedSw.write("row 22\t122\t222.222\t\n");
+		expectedSw.write("row 23\t123\t223.223\t\n");
+		expectedSw.write("row 24\t124\t224.224\t\n");
+		expectedSw.write("25\t2,800\t5,305.3\t\n");
 
 		StringWriter sw = new StringWriter();
 		vc.produceReport(sw, new TestReportDataSource());
-
-		System.out.println();
-		System.out.println(sw);
+		assertEquals(expectedSw.toString(), sw.toString());
 	}
 
 	public void testTabularColumns()
