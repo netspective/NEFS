@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JavaDocs.java,v 1.1 2003-08-13 12:18:31 shahid.shah Exp $
+ * $Id: JavaDocs.java,v 1.2 2003-10-15 19:14:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -94,7 +94,7 @@ public class JavaDocs
             return javaDoc;
 
         String javaDocXmlFileName = (cls.getName() + ".xml").replace('$', '.');
-        URL javaDocUrl = ResourceLoader.getResource(new String[] { javaDocXmlFileName, "java-doc-xml/" + javaDocXmlFileName, "resources/java-doc-xml/" + javaDocXmlFileName });
+        URL javaDocUrl = ResourceLoader.getFirstResource(new String[] { javaDocXmlFileName, "java-doc-xml/" + javaDocXmlFileName, "resources/java-doc-xml/" + javaDocXmlFileName });
         if(javaDocUrl != null)
         {
             InputStream is = javaDocUrl.openStream();

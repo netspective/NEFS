@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ResourceLoader.java,v 1.2 2003-06-15 20:30:47 shahid.shah Exp $
+ * $Id: ResourceLoader.java,v 1.3 2003-10-15 19:14:12 shahid.shah Exp $
  */
 
 package com.netspective.commons.lang;
@@ -105,7 +105,7 @@ public class ResourceLoader
      * @param resources The list of different resource names to try
      * @return The URL for the first resource found or NULL if resource could not be located
      */
-    public static URL getResource(String[] resources)
+    public static URL getFirstResource(String[] resources)
     {
         for(int i = 0; i < resources.length; i++)
         {
