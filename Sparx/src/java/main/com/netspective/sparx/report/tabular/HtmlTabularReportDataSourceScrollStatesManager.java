@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceScrollStatesManager.java,v 1.2 2003-11-13 17:30:50 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollStatesManager.java,v 1.3 2004-02-24 21:30:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -107,7 +107,13 @@ public class HtmlTabularReportDataSourceScrollStatesManager implements HtmlTabul
 
     public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc)
     {
-        HtmlTabularReportDataSourceScrollState state = (HtmlTabularReportDataSourceScrollState) scrollStates.get(dc.getHttpRequest().getSession().getId() + "." + dc.getDialogState().getIdentifier());
+        return getScrollStateByDialogTransactionId(dc, dc.getDialogState().getIdentifier());
+    }
+
+    public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(HttpServletValueContext vc, String id)
+    {
+        HtmlTabularReportDataSourceScrollState state =
+                (HtmlTabularReportDataSourceScrollState) scrollStates.get(vc.getHttpRequest().getSession().getId() + "." + id);
 
         // since set the data source to auto close after a period of time, make sure the data source didn't close itself
         if(state != null && ! state.isClosed())

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.3 2003-09-14 05:39:58 shahid.shah Exp $
+ * $Id: HtmlTabularReportDataSourceScrollStates.java,v 1.4 2004-02-24 21:30:01 aye.thu Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -51,6 +51,8 @@ import com.netspective.commons.report.tabular.TabularReportDataSourceScrollState
 public interface HtmlTabularReportDataSourceScrollStates
 {
     public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(DialogContext dc);
+
+    public HtmlTabularReportDataSourceScrollState getScrollStateByDialogTransactionId(HttpServletValueContext vc, String id);
 
     public HtmlTabularReportDataSourceScrollState getActiveScrollState(HttpServletValueContext vc);
 
