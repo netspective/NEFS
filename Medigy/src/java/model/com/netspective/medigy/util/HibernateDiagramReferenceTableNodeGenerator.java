@@ -48,7 +48,7 @@ public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDia
 
     private int maxRowsToShow = 5;
     private String entityTableAttrs = "BORDER=\"1\" CELLSPACING=\"0\" CELLBORDER=\"0\"";
-    private String tableNameBgColor = "bisque";
+    private String tableNameBgColor = "mistyrose";
 
     public HibernateDiagramReferenceTableNodeGenerator(String name)
     {
@@ -103,7 +103,7 @@ public class HibernateDiagramReferenceTableNodeGenerator implements HibernateDia
         GraphvizDiagramNode result = new GraphvizDiagramNode(generator.getGraphvizDiagramGenerator(), table.getName());
         result.setLabel(tableNodeLabel.toString());
         result.setShape("plaintext");
-        result.setFontName("Courier");
+        result.setFontName("Helvetica");
 
         return result;
     }

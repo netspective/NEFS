@@ -57,7 +57,7 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
     private boolean showConstraints = true;
 
     private String entityTableAttrs = "BORDER=\"1\" CELLSPACING=\"0\" CELLBORDER=\"0\"";
-    private String tableNameBgColor = "lightgoldenrodyellow";
+    private String tableNameBgColor = "lightsteelblue";
 
     public HibernateDiagramTableStructureNodeGenerator(final String name)
     {
@@ -70,59 +70,38 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
     }
 
     public String getColumnDefinitionRow(final HibernateDiagramGenerator generator,
+                                         final HibernateDiagramGeneratorFilter filter,
                                          final Column column,
-                                         final boolean isPK,
-                                         final boolean isFK,
+                                         final PrimaryKey partOfPrimaryKey,
+                                         final ForeignKey partOfForeignKey,
                                          final String indent) throws SQLException, NamingException
     {
+        final String extraAttrs = partOfPrimaryKey != null ? " BGCOLOR=\"gray90\"" : "";
         final StringBuffer result = new StringBuffer(indent + "<TR>\n");
-        result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\">" + column.getName() + "</TD>\n");
+        result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\"" + extraAttrs + ">" + column.getName() + "</TD>\n");
 
         if (showDataTypes)
-            result.append(indent + indent + "<TD ALIGN=\"LEFT\">" + column.getSqlType(generator.getDialect(), generator.getMapping()) + "</TD>\n");
+            result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + ">" + filter.getColumnDataType(generator, column, partOfPrimaryKey, partOfForeignKey) + "</TD>\n");
 
         if (showConstraints)
         {
 
             List constraints = new ArrayList();
-            if (isPK)
+            if (partOfPrimaryKey != null)
                 constraints.add("PK");
             if (column.isUnique())
                 constraints.add("U");
             if (column.isFormula())
                 constraints.add("F");
-            if (!column.isNullable())
+            if (!column.isNullable() && partOfPrimaryKey == null)
                 constraints.add("R");
-            if (isFK)
+            if (partOfForeignKey != null)
                 constraints.add("FK");
 
-/*
-            TODO: see if we can figure out whether a foreign key is a parent/child key or a "lookup" key (Axiom notions)
-            final ForeignKey foreignKey = column.getForeignKey();
-            if(foreignKey != null)
-            {
-                final Table refTable = foreignKey.getReference().getColumns().getFirst().getTable();
-                switch(foreignKey.getType())
-                {
-                    case ForeignKey.FKEYTYPE_PARENT:
-                        constraints.add("FK: Parent");
-                        break;
-
-                    case ForeignKey.FKEYTYPE_LOOKUP:
-                        constraints.add("FK: " + refTable.getName());
-                        break;
-
-                    case ForeignKey.FKEYTYPE_SELF:
-                        constraints.add("FK: Self");
-                        break;
-                }
-            }
-*/
-
             if (constraints.size() > 0)
-                result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\">" + constraints + "</TD>\n");
+                result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\"" + extraAttrs + ">" + constraints + "</TD>\n");
             else
-                result.append(indent + indent + "<TD ALIGN=\"LEFT\"> </TD>\n");
+                result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + "> </TD>\n");
         }
 
         result.append(indent + "</TR>\n");
@@ -151,22 +130,22 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
                 try
                 {
                     if (primaryKeyColumns.containsColumn(column))
-                        primaryKeyRows.append(getColumnDefinitionRow(generator, column, true, false, indent) + "\n");
+                        primaryKeyRows.append(getColumnDefinitionRow(generator, filter, column, primaryKeyColumns, null, indent) + "\n");
                     //else if(parentRefColumns.contains(column))
                     //    parentKeyRows.append(getColumnDefinitionRow(generator, column, false, indent) + "\n");
                     else
                     {
-                        boolean isFK = false;
+                        ForeignKey partOfForeignKey = null;
                         for (Iterator fkIterator = table.getForeignKeyIterator(); fkIterator.hasNext();)
                         {
                             final ForeignKey fKey = (ForeignKey) fkIterator.next();
                             if (fKey.containsColumn(column))
                             {
-                                isFK = true;
+                                partOfForeignKey = fKey;
                                 break;
                             }
                         }
-                        columnRows.append(getColumnDefinitionRow(generator, column, false, isFK, indent) + "\n");
+                        columnRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
                     }
                 }
                 catch (SQLException e)
@@ -200,7 +179,7 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
         GraphvizDiagramNode result = new GraphvizDiagramNode(generator.getGraphvizDiagramGenerator(), table.getName());
         result.setLabel(tableNodeLabel.toString());
         result.setShape("plaintext");
-        result.setFontName("Courier");
+        result.setFontName("Helvetica");
 
         return result;
     }
@@ -222,9 +201,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             }
         }
 
-        return foreignKey.getTable().getName() + ":" + (showConstraints
+        return filter.isIncludeEdgePort(generator, foreignKey, true) ? (foreignKey.getTable().getName() + ":" + (showConstraints
                 ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
-                : foreignKey.getColumn(0).getName());
+                : foreignKey.getColumn(0).getName())) : foreignKey.getTable().getName();
 
     }
 
@@ -245,7 +224,9 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             }
         }
 
-        return foreignKey.getReferencedTable().getName() + ":" + foreignKey.getReferencedTable().getPrimaryKey().getColumn(0).getName();
+        return filter.isIncludeEdgePort(generator, foreignKey, false) ?
+                (foreignKey.getReferencedTable().getName() + ":" + foreignKey.getReferencedTable().getPrimaryKey().getColumn(0).getName()) :
+                foreignKey.getReferencedTable().getName();
     }
 
     public boolean isShowConstraints()

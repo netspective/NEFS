@@ -8,6 +8,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 
 import com.netspective.medigy.reference.ReferenceEntity;
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
@@ -46,6 +47,13 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public void formatForeignKeyEdge(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, final GraphvizDiagramEdge edge)
     {
+        if (showReferenceData && isReferenceRelationship(generator, foreignKey))
+        {
+            edge.setArrowHead("none");
+            edge.setStyle("dotted");
+            return;
+        }
+
         if (isShowClassStructure(generator, foreignKey) && generator.isSubclassRelationship(foreignKey))
         {
             edge.setArrowHead("onormal");
@@ -62,6 +70,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
                 if (foreignKey.getReferencedTable() == coll.getOwner().getTable() && foreignKey.getTable() == coll.getCollectionTable())
                 {
                     edge.setArrowHead("crow");
+                    edge.setArrowSize("2");
                     return;
                 }
             }
@@ -76,6 +85,14 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
         return ReferenceEntity.class.isAssignableFrom(pclass.getMappedClass());
     }
 
+    public boolean isReferenceRelationship(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    {
+        if (!showReferenceData)
+            return false;
+
+        return isReferenceClass(generator, generator.getClassForTable(foreignKey.getReferencedTable()));
+    }
+
     public Class getReferenceCachedItems(final HibernateDiagramGenerator generator, final PersistentClass pclass)
     {
         return ((HibernateConfiguration) generator.getConfiguration()).getReferenceEntitiesAndCachesMap().get(pclass.getMappedClass());
@@ -84,6 +101,22 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     public boolean isShowClassStructure(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
         return showClassStructure;
+    }
+
+    public String getColumnDataType(HibernateDiagramGenerator generator, Column column, PrimaryKey partOfPrimaryKey, ForeignKey partOfForeignKey)
+    {
+        if (showReferenceData && partOfForeignKey != null && isReferenceRelationship(generator, partOfForeignKey))
+            return partOfForeignKey.getReferencedTable().getName();
+        else
+            return column.getSqlType(generator.getDialect(), generator.getMapping());
+    }
+
+    public boolean isIncludeEdgePort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, boolean source)
+    {
+        if (showReferenceData && isReferenceRelationship(generator, foreignKey))
+            return false;
+        else
+            return true;
     }
 
     public void formatTableNode(final HibernateDiagramGenerator generator, final PersistentClass pclass, final GraphvizDiagramNode node)

@@ -35,6 +35,7 @@ package com.netspective.tool.hibernate.document.diagram;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
@@ -57,7 +58,13 @@ public interface HibernateDiagramGeneratorFilter
 
     public boolean isReferenceClass(HibernateDiagramGenerator generator, PersistentClass pclass);
 
+    public boolean isReferenceRelationship(HibernateDiagramGenerator generator, ForeignKey foreignKey);
+
     public Class getReferenceCachedItems(HibernateDiagramGenerator generator, PersistentClass pclass);
 
     public boolean isShowClassStructure(HibernateDiagramGenerator generator, ForeignKey foreignKey);
+
+    public String getColumnDataType(HibernateDiagramGenerator generator, Column column, PrimaryKey partOfPrimaryKey, ForeignKey partOfForeignKey);
+
+    public boolean isIncludeEdgePort(HibernateDiagramGenerator generator, ForeignKey foreignKey, boolean source);
 }

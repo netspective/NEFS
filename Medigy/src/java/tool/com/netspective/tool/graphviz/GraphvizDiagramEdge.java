@@ -40,6 +40,7 @@ public class GraphvizDiagramEdge
     public static final String ARROWHEADSTYLE_CROW = "crow";
     private static final String ATTRNAME_ARROWHEAD = "arrowhead";
     private static final String ATTRNAME_ARROWSIZE = "arrowsize";
+    private static final String ATTRNAME_STYLE = "style";
 
     /**
      * The node attributes
@@ -114,4 +115,13 @@ public class GraphvizDiagramEdge
         attributes.put(ATTRNAME_ARROWSIZE, arrowSize);
     }
 
+    public String getStyle()
+    {
+        return (String) attributes.get(ATTRNAME_STYLE);
+    }
+
+    public void setStyle(String style)
+    {
+        attributes.put(ATTRNAME_STYLE, style);
+    }
 }
