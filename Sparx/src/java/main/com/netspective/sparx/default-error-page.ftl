@@ -49,11 +49,10 @@
 
     <b><font color=red>Your application has encountered an error.</font></b><p>
     <#if nc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting()>
-    Since you have not specified an &lt;error-page&gt; tag in your
-    navigation tree, this default error page is being displayed. In addition to supplying this message, the error has
-    been logged according to the Jakarta Commons Logging properties you have specified for the application.
-    The stack trace only appears in a development or testing environment and will not appear in other environments
-    such as production.
+    In addition to supplying this message, the error has been logged according to the Jakarta Commons Logging
+    properties you have specified for the application. The stack trace and debugging information (like request params
+    list) only appears in a development or testing environment and will not appear in other environments such as
+    production.
     </#if>
 
     <p>
@@ -63,6 +62,13 @@
             <td class="heading">Active Page:</td>
             <td>
                 <code>${nc.activePage.qualifiedName}</code>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="heading">Runtime Environment:</td>
+            <td>
+                <code>${vc.getRuntimeEnvironmentFlags().flagsText}</code>
             </td>
         </tr>
 
@@ -87,7 +93,7 @@
             </td>
         </tr>
 
-        <#if nc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting()>
+        <#if vc.getRuntimeEnvironmentFlags().isDevelopmentOrTesting()>
         <tr>
             <td class="headingLastRow">Request Parameters:</td>
             <td class="lastRow">
