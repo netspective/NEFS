@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManagers.java,v 1.1 2003-08-08 01:03:32 shahid.shah Exp $
+ * $Id: HttpLoginManagers.java,v 1.2 2003-10-07 01:38:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -81,5 +81,10 @@ public class HttpLoginManagers
     public void setDefaultManager(HttpLoginManager defaultManager)
     {
         this.defaultManager = defaultManager;
+    }
+
+    public int size()
+    {
+        return loginManagers.size();
     }
 }
