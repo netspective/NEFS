@@ -39,20 +39,20 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.16 2004-06-06 23:50:14 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.17 2004-08-09 20:29:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.FileInputStream;
-import java.io.BufferedInputStream;
-import java.io.Reader;
-import java.io.LineNumberReader;
 import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -74,16 +74,18 @@ public class TextUtils
     /**
      * Return the name of the given cls that is different from the relativeTo class. Basically, this chops off the
      * package name of the cls that is equivalent to that of the relativeTo class.
+     *
      * @param relativeTo
      * @param cls
+     *
      * @return
      */
     static public String getRelativeClassName(Class relativeTo, Class cls)
     {
         String className = cls.getName();
         String relativeToPkg = relativeTo.getPackage().getName();
-        if(className.startsWith(relativeToPkg))
-            return className.substring(relativeToPkg.length()+1);
+        if (className.startsWith(relativeToPkg))
+            return className.substring(relativeToPkg.length() + 1);
         else
             return className;
     }
@@ -91,7 +93,7 @@ public class TextUtils
     static public String getClassNameWithoutPackage(String pkgAndClassName, char sep)
     {
         int classNameDelimPos = pkgAndClassName.lastIndexOf(sep);
-        return classNameDelimPos != -1 ? pkgAndClassName.substring(classNameDelimPos+1) : pkgAndClassName;
+        return classNameDelimPos != -1 ? pkgAndClassName.substring(classNameDelimPos + 1) : pkgAndClassName;
     }
 
     /**
@@ -99,11 +101,12 @@ public class TextUtils
      * name (without the package name) for a Java class
      *
      * @param pkgAndClassName
+     *
      * @return
      */
-	static public String getClassNameWithoutPackage(String pkgAndClassName)
+    static public String getClassNameWithoutPackage(String pkgAndClassName)
     {
-	    return getClassNameWithoutPackage(pkgAndClassName, '.');
+        return getClassNameWithoutPackage(pkgAndClassName, '.');
     }
 
     static public String getPackageName(String pkgAndClassName, char sep)
@@ -112,115 +115,155 @@ public class TextUtils
         return classNameDelimPos != -1 ? pkgAndClassName.substring(0, classNameDelimPos) : null;
     }
 
-	/**
-	 * A version of getPackageName with sensible defaults for most common usage: getting the package name for a Java
-	 * class
-	 *
-	 * @param pkgAndClassName
-	 * @return
-	 */
+    /**
+     * A version of getPackageName with sensible defaults for most common usage: getting the package name for a Java
+     * class
+     *
+     * @param pkgAndClassName
+     *
+     * @return
+     */
     static public String getPackageName(String pkgAndClassName)
     {
-	    return getPackageName(pkgAndClassName, '.');
+        return getPackageName(pkgAndClassName, '.');
     }
 
     static public String[] split(String source, String delimiter, boolean trim)
     {
-        if(source == null)
+        if (source == null)
             return null;
 
-	    if (null == delimiter)
-	        delimiter = " ";
+        if (null == delimiter)
+            delimiter = " ";
 
         List list = new ArrayList();
         StringTokenizer st = new StringTokenizer(source, delimiter);
-        if(trim)
+        if (trim)
         {
-            while(st.hasMoreTokens())
+            while (st.hasMoreTokens())
                 list.add(st.nextToken().trim());
         }
         else
         {
-            while(st.hasMoreTokens())
+            while (st.hasMoreTokens())
                 list.add(st.nextToken());
         }
         return (String[]) list.toArray(new String[list.size()]);
     }
 
-	/**
-	 * A version of split with sensible defaults for most common usage: splitting sentences into words
-	 *
-	 * @param source
-	 * @return
-	 */
-	static public String[] split(String source)
-	{
-		return split(source, " ", false);
-	}
+    /**
+     * A version of split with sensible defaults for most common usage: splitting sentences into words
+     *
+     * @param source
+     *
+     * @return
+     */
+    static public String[] split(String source)
+    {
+        return split(source, " ", false);
+    }
 
     static public String join(String[] source, String delimiter)
     {
-        if(source == null) return null;
-	    if (null == delimiter)
-	        delimiter = "";
+        if (source == null) return null;
+        if (null == delimiter)
+            delimiter = "";
 
         StringBuffer result = new StringBuffer();
-        for(int i = 0; i < source.length; i++)
+        for (int i = 0; i < source.length; i++)
         {
             result.append(source[i]);
-            if(i < source.length -1)
+            if (i < source.length - 1)
                 result.append(delimiter);
         }
         return result.toString();
     }
 
-	/**
-	 * A version of join with sensible defaults for most common usage: concatenating multiple String objects together
-	 *
-	 * @param source
-	 * @return
-	 */
-	static public String join(String[] source)
-	{
-		return join(source, "");
-	}
+    /**
+     * A version of join with sensible defaults for most common usage: concatenating multiple String objects together
+     *
+     * @param source
+     *
+     * @return
+     */
+    static public String join(String[] source)
+    {
+        return join(source, "");
+    }
 
-	/**
-	 * A version of join with an additional parameter (trim) which automatically trims each String in the source and
-	 * then does the join.
-	 *
-	 * @param source
-	 * @param delimiter
-	 * @param trim
-	 * @return
-	 */
-	static public String join(String[] source, String delimiter, boolean trim)
-	{
-		if (trim)
-		{
-			for (int i = 0; i < source.length; i ++)
-				source[i] = source[i].trim();
-		}
+    /**
+     * A version of join with an additional parameter (trim) which automatically trims each String in the source and
+     * then does the join.
+     *
+     * @param source
+     * @param delimiter
+     * @param trim
+     *
+     * @return
+     */
+    static public String join(String[] source, String delimiter, boolean trim)
+    {
+        if (trim)
+        {
+            for (int i = 0; i < source.length; i++)
+                source[i] = source[i].trim();
+        }
 
-		return join(source, delimiter);
-	}
+        return join(source, delimiter);
+    }
 
     /**
      * Perform a simple string replacement of findStr to replStr in origStr and returns the result. All instances
      * of findStr are replaced to replStr (regardless of how many there are). Not optimized for performance.
+     *
      * @param originalText The source text
-     * @param findText The text to locate
-     * @param replaceText The text to replace for each findStr
+     * @param findText     The text to locate
+     * @param replaceText  The text to replace for each findStr
      */
-    static public String replaceTextValues(final String originalText, final String findText, final String replaceText)
+    public static String replaceTextValues(final String originalText, final String findText, final String replaceText)
     {
-		//TODO: Might it be better to make it so it's just if (null == findText || null == replaceText) return originalText ?
+        if (findText == null || replaceText == null)
+            return originalText;
+
+        final StringBuffer result = new StringBuffer();
+        //startIdx and idxOld delimit various chunks of aInput; these
+        //chunks always end where aOldPattern begins
+        int startIdx = 0;
+        int idxOld = 0;
+        while ((idxOld = originalText.indexOf(findText, startIdx)) >= 0)
+        {
+            //grab a part of aInput which does not include aOldPattern
+            result.append(originalText.substring(startIdx, idxOld));
+            //add aNewPattern to take place of aOldPattern
+            result.append(replaceText);
+
+            //reset the startIdx to just after the current match, to see
+            //if there are any further matches
+            startIdx = idxOld + findText.length();
+        }
+        //the final chunk will go to the end of aInput
+        result.append(originalText.substring(startIdx));
+        return result.toString();
+    }
+
+    /**
+     * Perform a simple string replacement of findStr to replStr in origStr and returns the result. All instances
+     * of findStr are replaced to replStr (regardless of how many there are). Not optimized for performance.
+     *
+     * @deprecated This old method was slower and had a few bugs
+     * @param originalText The source text
+     * @param findText     The text to locate
+     * @param replaceText  The text to replace for each findStr
+     */
+    static public String oldReplaceTextValues(final String originalText, final String findText, final String replaceText)
+    {
+        //TODO: Might it be better to make it so it's just if (null == findText || null == replaceText) return originalText ?
         if (findText == null || replaceText == null)
             return originalText;
 
         String activeText = originalText;
         int findLoc = activeText.indexOf(findText);
-        while(findLoc >= 0)
+        while (findLoc >= 0)
         {
             StringBuffer sb = new StringBuffer(activeText);
             sb.replace(findLoc, findLoc + findText.length(), replaceText);
@@ -233,32 +276,33 @@ public class TextUtils
 	        replaceTextValues("Some rules should be broken", "rules", "rules");
 */
             if (findLoc != activeText.length())
-	            findLoc = activeText.indexOf(findText, findLoc + 1);
+                findLoc = activeText.indexOf(findText, findLoc + replaceText.length());
         }
 
         return activeText;
     }
 
-	/**
-	 * Perform a simple string replacement of findStr to replStr in all the members of origStr and returns the result.
-	 * All instances of findStr are replaced to replStr (regardless of how many there are). Not optimized for
-	 * performance.
-	 * @param originalText An array containing all the source texts on which this replacement should be performed
-	 * @param findText The text to locate
-	 * @param replaceText The text to replace for each findStr
-	 */
-	static public String[] replaceTextValues(final String[] originalText, final String findText, final String replaceText)
-	{
+    /**
+     * Perform a simple string replacement of findStr to replStr in all the members of origStr and returns the result.
+     * All instances of findStr are replaced to replStr (regardless of how many there are). Not optimized for
+     * performance.
+     *
+     * @param originalText An array containing all the source texts on which this replacement should be performed
+     * @param findText     The text to locate
+     * @param replaceText  The text to replace for each findStr
+     */
+    static public String[] replaceTextValues(final String[] originalText, final String findText, final String replaceText)
+    {
         String[] returnValue = new String[originalText.length];
 
-		if (null == findText || null == replaceText)
-			returnValue = originalText;
-		else
-			for (int i = 0; i < originalText.length; i ++)
-				returnValue[i] = replaceTextValues(originalText[i], findText, replaceText);
+        if (null == findText || null == replaceText)
+            returnValue = originalText;
+        else
+            for (int i = 0; i < originalText.length; i++)
+                returnValue[i] = replaceTextValues(originalText[i], findText, replaceText);
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
     public static String[] getBooleanChoices()
     {
@@ -282,10 +326,44 @@ public class TextUtils
      */
     public static boolean toBoolean(String s, boolean valueIfNull)
     {
-        if(s == null)
+        if (s == null)
             return valueIfNull;
         else
             return toBoolean(s);
+    }
+
+    /**
+     * Given some text, return it as a literal string (surrounded by single or double quotes).
+     *
+     * @param text               The text to surround as SQL literal
+     * @param surroundWith       The string to place before and after the text
+     * @param escapeText         Any special text that should be replaced (like ' to '' or " to \")
+     * @param replaceWith        If escapeText is specified, this is the string to put in place of the escape
+     * @param trim               Remove leading and trailing spaces
+     * @param stripNewLines      True if newlines (carriage returns, etc) should be replaced by a single space
+     * @param valueIfNullOrBlank The string to return if the string is null or has no text (blank string)
+     *
+     * @return The text surrounded by ' and with all internal ' characters escaped as ''
+     */
+    public static String createLiteral(String text, String surroundWith, String escapeText, String replaceWith,
+                                       boolean trim, boolean stripNewLines, String valueIfNullOrBlank)
+    {
+        if (text == null || text.length() == 0)
+            return valueIfNullOrBlank;
+
+        if(stripNewLines)
+            text = replaceTextValues(text, "\n", " ");
+
+        if(trim)
+            text = text.trim();
+
+        if(escapeText != null)
+            text = replaceTextValues(text, escapeText, replaceWith);
+
+        StringBuffer sb = new StringBuffer(surroundWith);
+        sb.append(text);
+        sb.append(surroundWith);
+        return sb.toString();
     }
 
     /**
@@ -327,16 +405,16 @@ public class TextUtils
      */
     public static String javaIdentifierToXmlNodeName(final String javaIdentifier)
     {
-        if(javaIdentifier == null || javaIdentifier.length() == 0)
+        if (javaIdentifier == null || javaIdentifier.length() == 0)
             return javaIdentifier;
 
         StringBuffer nodeName = new StringBuffer();
         nodeName.append(javaIdentifier.charAt(0));
-        for(int i = 1; i < javaIdentifier.length(); i++)
+        for (int i = 1; i < javaIdentifier.length(); i++)
         {
-			//TODO: Might be a good idea to replace _ with - and to lower the case of any uppercase letters
+            //TODO: Might be a good idea to replace _ with - and to lower the case of any uppercase letters
             char ch = javaIdentifier.charAt(i);
-            if(Character.isLowerCase(ch))
+            if (Character.isLowerCase(ch))
                 nodeName.append(ch);
             else
             {
@@ -359,31 +437,32 @@ public class TextUtils
      */
     public static String xmlTextToJavaIdentifier(String xml, boolean ucaseInitial)
     {
-        if(xml == null || xml.length() == 0)
+        if (xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer identifier = new StringBuffer();
         char ch = xml.charAt(0);
-        if(Character.isJavaIdentifierStart(ch))
+        if (Character.isJavaIdentifierStart(ch))
             identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
         else
         {
             identifier.append('_');
-            if(Character.isJavaIdentifierPart(ch))
-               identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
+            if (Character.isJavaIdentifierPart(ch))
+                identifier.append(ucaseInitial ? Character.toUpperCase(ch) : Character.toLowerCase(ch));
         }
 
         boolean uCase = false;
-        for(int i = 1; i < xml.length(); i++)
+        for (int i = 1; i < xml.length(); i++)
         {
             ch = xml.charAt(i);
-            if(ch == '.')
+            if (ch == '.')
             {
                 identifier.append('_');
             }
-            else if(ch != '_' && Character.isJavaIdentifierPart(ch))
+            else if (ch != '_' && Character.isJavaIdentifierPart(ch))
             {
-                identifier.append(Character.isUpperCase(ch) ? ch : (uCase ? Character.toUpperCase(ch) : Character.toLowerCase(ch)));
+                identifier.append(Character.isUpperCase(ch)
+                        ? ch : (uCase ? Character.toUpperCase(ch) : Character.toLowerCase(ch)));
                 uCase = false;
             }
             else
@@ -398,15 +477,15 @@ public class TextUtils
      */
     public static String xmlTextToJavaPackageName(String xml)
     {
-        if(xml == null || xml.length() == 0)
+        if (xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer result = new StringBuffer();
         StringTokenizer st = new StringTokenizer(xml, ".");
-        while(st.hasMoreTokens())
+        while (st.hasMoreTokens())
         {
             result.append(xmlTextToJavaIdentifier(st.nextToken(), false).toLowerCase());
-            if(st.hasMoreTokens())
+            if (st.hasMoreTokens())
                 result.append(".");
         }
 
@@ -420,11 +499,11 @@ public class TextUtils
      */
     public static String xmlTextToJavaConstant(String xml)
     {
-        if(xml == null || xml.length() == 0)
+        if (xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer constant = new StringBuffer();
-        for(int i = 0; i < xml.length(); i++)
+        for (int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
             constant.append(Character.isJavaIdentifierPart(ch) ? Character.toUpperCase(ch) : '_');
@@ -440,20 +519,20 @@ public class TextUtils
      */
     public static String xmlTextToJavaConstantTrimmed(String xml)
     {
-        if(xml == null || xml.length() == 0)
+        if (xml == null || xml.length() == 0)
             return xml;
 
         boolean stringStarted = false;
         StringBuffer constant = new StringBuffer();
-        for(int i = 0; i < xml.length(); i++)
+        for (int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
-            if(Character.isJavaIdentifierPart(ch))
+            if (Character.isJavaIdentifierPart(ch))
             {
                 stringStarted = true;
                 constant.append(Character.toUpperCase(ch));
             }
-            else if(stringStarted)
+            else if (stringStarted)
                 constant.append('_');
         }
         return constant.toString();
@@ -466,11 +545,11 @@ public class TextUtils
      */
     public static String xmlTextToNodeName(String xml)
     {
-        if(xml == null || xml.length() == 0)
+        if (xml == null || xml.length() == 0)
             return xml;
 
         StringBuffer constant = new StringBuffer();
-        for(int i = 0; i < xml.length(); i++)
+        for (int i = 0; i < xml.length(); i++)
         {
             char ch = xml.charAt(i);
             constant.append(Character.isLetterOrDigit(ch) ? Character.toLowerCase(ch) : '-');
@@ -480,7 +559,9 @@ public class TextUtils
 
     /**
      * Return the given text unindented by whatever the first line is indented by
+     *
      * @param text The original text
+     *
      * @return Unindented text or original text if not indented
      */
     public static String getUnindentedText(String text)
@@ -489,10 +570,10 @@ public class TextUtils
          * if the string is indented, find out how far the first line is indented
          */
         StringBuffer replStr = new StringBuffer();
-        for(int i = 0; i < text.length(); i++)
+        for (int i = 0; i < text.length(); i++)
         {
             char ch = text.charAt(i);
-            if(Character.isWhitespace(ch))
+            if (Character.isWhitespace(ch))
                 replStr.append(ch);
             else
                 break;
@@ -503,7 +584,7 @@ public class TextUtils
          */
         Perl5Util perlUtil = new Perl5Util();
 
-        if(replStr.length() > 0)
+        if (replStr.length() > 0)
             return perlUtil.substitute("s/^" + replStr + "//gm", text).trim();
         else
             return text;
@@ -519,7 +600,9 @@ public class TextUtils
 
     /**
      * Return the given block of text indented by the given string.
+     *
      * @param text The original text
+     *
      * @return Unindented text or original text if not indented
      */
     public static String getIndentedText(String text, String indent, boolean appendNewLine)
@@ -530,15 +613,15 @@ public class TextUtils
          * If the first line is indented, unindent all the lines the distance of just the first line
          */
         Perl5Util perlUtil = new Perl5Util();
-        text = perlUtil.substitute("s/^/"+ indent +"/gm", text);
+        text = perlUtil.substitute("s/^/" + indent + "/gm", text);
         return appendNewLine ? text + "\n" : text;
     }
 
     /* make the table name title cased (cap each letter after _) */
     public static String fixupTableNameCase(String tableNameOrig)
     {
-		if (null == tableNameOrig)
-			return null;
+        if (null == tableNameOrig)
+            return null;
 
         StringBuffer tableNameBuf = new StringBuffer(tableNameOrig.toLowerCase());
         boolean capNext = false;
@@ -562,9 +645,10 @@ public class TextUtils
      * Check if the given string is null, empty or made up only of whitespace.
      *
      * @param value a tested string
+     *
      * @return true if the string is empty
-     **/
-    public static boolean isEmpty (String value)
+     */
+    public static boolean isEmpty(String value)
     {
         if (value == null) return true;
         if (value.length() == 0) return true;
@@ -574,8 +658,11 @@ public class TextUtils
 
     /**
      * Retrieve the contents of the given URL into a String.
+     *
      * @param strLocation The URL
+     *
      * @return The text of the contents of the URL
+     *
      * @throws IOException
      */
     public static String getUrlContents(String strLocation) throws IOException
@@ -595,8 +682,11 @@ public class TextUtils
 
     /**
      * Retrieve the contents of the given File into a String.
+     *
      * @param location The URL
+     *
      * @return The text of the contents of the File
+     *
      * @throws IOException
      */
     public static String getFileContents(String location) throws IOException
@@ -614,10 +704,13 @@ public class TextUtils
 
     /**
      * Retrieve lines of text from an input stream
-     * @param location The fully qualified name of the file to read
+     *
+     * @param location        The fully qualified name of the file to read
      * @param startLineNumber The starting line number
-     * @param endLineNumber The ending line number
+     * @param endLineNumber   The ending line number
+     *
      * @return The text contained in line numbers startingLineNumber to endingLineNumber
+     *
      * @throws IOException
      */
     public static String getTextFileLines(String location, int startLineNumber, int endLineNumber) throws IOException
@@ -627,18 +720,21 @@ public class TextUtils
 
     /**
      * Retrieve lines of text from an input stream
-     * @param is The input stream to read
+     *
+     * @param is              The input stream to read
      * @param startLineNumber The starting line number
-     * @param endLineNumber The ending line number
+     * @param endLineNumber   The ending line number
+     *
      * @return The text contained in line numbers startingLineNumber to endingLineNumber
+     *
      * @throws IOException
      */
     public static String getTextStreamLines(InputStream is, int startLineNumber, int endLineNumber) throws IOException
     {
-        if(is == null)
+        if (is == null)
             return null;
 
-        if(startLineNumber <= 0 && endLineNumber <= 0)
+        if (startLineNumber <= 0 && endLineNumber <= 0)
             return null;
 
         Reader isReader = null;
@@ -652,25 +748,25 @@ public class TextUtils
 
             String line = null;
 
-            if(startLineNumber > 0 && endLineNumber <= 0)
+            if (startLineNumber > 0 && endLineNumber <= 0)
             {
-                while((line = reader.readLine()) != null)
+                while ((line = reader.readLine()) != null)
                 {
-                    if(reader.getLineNumber() == startLineNumber)
+                    if (reader.getLineNumber() == startLineNumber)
                         return line;
                 }
 
             }
             else
             {
-                while((line = reader.readLine()) != null)
+                while ((line = reader.readLine()) != null)
                 {
                     int lineNumber = reader.getLineNumber();
 
-                    if(lineNumber < startLineNumber)
+                    if (lineNumber < startLineNumber)
                         continue;
 
-                    if(lineNumber > endLineNumber)
+                    if (lineNumber > endLineNumber)
                         break;
 
                     result.append(line);
@@ -680,10 +776,10 @@ public class TextUtils
         }
         finally
         {
-            if(reader != null)
+            if (reader != null)
                 reader.close();
 
-            if(isReader != null)
+            if (isReader != null)
                 is.close();
 
             is.close();
@@ -702,51 +798,136 @@ public class TextUtils
             char c = s.charAt(i);
             switch (c)
             {
-                case '<': sb.append("&lt;"); break;
-                case '>': sb.append("&gt;"); break;
-                case '&': sb.append("&amp;"); break;
-                case '"': sb.append("&quot;"); break;
-                case 'à': sb.append("&agrave;"); break;
-                case 'À': sb.append("&Agrave;"); break;
-                case 'â': sb.append("&acirc;"); break;
-                case 'Â': sb.append("&Acirc;"); break;
-                case 'ä': sb.append("&auml;"); break;
-                case 'Ä': sb.append("&Auml;"); break;
-                case 'å': sb.append("&aring;"); break;
-                case 'Å': sb.append("&Aring;"); break;
-                case 'æ': sb.append("&aelig;"); break;
-                case 'Æ': sb.append("&AElig;"); break;
-                case 'ç': sb.append("&ccedil;"); break;
-                case 'Ç': sb.append("&Ccedil;"); break;
-                case 'é': sb.append("&eacute;"); break;
-                case 'É': sb.append("&Eacute;"); break;
-                case 'è': sb.append("&egrave;"); break;
-                case 'È': sb.append("&Egrave;"); break;
-                case 'ê': sb.append("&ecirc;"); break;
-                case 'Ê': sb.append("&Ecirc;"); break;
-                case 'ë': sb.append("&euml;"); break;
-                case 'Ë': sb.append("&Euml;"); break;
-                case 'ï': sb.append("&iuml;"); break;
-                case 'Ï': sb.append("&Iuml;"); break;
-                case 'ô': sb.append("&ocirc;"); break;
-                case 'Ô': sb.append("&Ocirc;"); break;
-                case 'ö': sb.append("&ouml;"); break;
-                case 'Ö': sb.append("&Ouml;"); break;
-                case 'ø': sb.append("&oslash;"); break;
-                case 'Ø': sb.append("&Oslash;"); break;
-                case 'ß': sb.append("&szlig;"); break;
-                case 'ù': sb.append("&ugrave;"); break;
-                case 'Ù': sb.append("&Ugrave;"); break;
-                case 'û': sb.append("&ucirc;"); break;
-                case 'Û': sb.append("&Ucirc;"); break;
-                case 'ü': sb.append("&uuml;"); break;
-                case 'Ü': sb.append("&Uuml;"); break;
-                case '®': sb.append("&reg;"); break;
-                case '©': sb.append("&copy;"); break;
-                case '€': sb.append("&euro;"); break;
+                case '<':
+                    sb.append("&lt;");
+                    break;
+                case '>':
+                    sb.append("&gt;");
+                    break;
+                case '&':
+                    sb.append("&amp;");
+                    break;
+                case '"':
+                    sb.append("&quot;");
+                    break;
+                case 'à':
+                    sb.append("&agrave;");
+                    break;
+                case 'À':
+                    sb.append("&Agrave;");
+                    break;
+                case 'â':
+                    sb.append("&acirc;");
+                    break;
+                case 'Â':
+                    sb.append("&Acirc;");
+                    break;
+                case 'ä':
+                    sb.append("&auml;");
+                    break;
+                case 'Ä':
+                    sb.append("&Auml;");
+                    break;
+                case 'å':
+                    sb.append("&aring;");
+                    break;
+                case 'Å':
+                    sb.append("&Aring;");
+                    break;
+                case 'æ':
+                    sb.append("&aelig;");
+                    break;
+                case 'Æ':
+                    sb.append("&AElig;");
+                    break;
+                case 'ç':
+                    sb.append("&ccedil;");
+                    break;
+                case 'Ç':
+                    sb.append("&Ccedil;");
+                    break;
+                case 'é':
+                    sb.append("&eacute;");
+                    break;
+                case 'É':
+                    sb.append("&Eacute;");
+                    break;
+                case 'è':
+                    sb.append("&egrave;");
+                    break;
+                case 'È':
+                    sb.append("&Egrave;");
+                    break;
+                case 'ê':
+                    sb.append("&ecirc;");
+                    break;
+                case 'Ê':
+                    sb.append("&Ecirc;");
+                    break;
+                case 'ë':
+                    sb.append("&euml;");
+                    break;
+                case 'Ë':
+                    sb.append("&Euml;");
+                    break;
+                case 'ï':
+                    sb.append("&iuml;");
+                    break;
+                case 'Ï':
+                    sb.append("&Iuml;");
+                    break;
+                case 'ô':
+                    sb.append("&ocirc;");
+                    break;
+                case 'Ô':
+                    sb.append("&Ocirc;");
+                    break;
+                case 'ö':
+                    sb.append("&ouml;");
+                    break;
+                case 'Ö':
+                    sb.append("&Ouml;");
+                    break;
+                case 'ø':
+                    sb.append("&oslash;");
+                    break;
+                case 'Ø':
+                    sb.append("&Oslash;");
+                    break;
+                case 'ß':
+                    sb.append("&szlig;");
+                    break;
+                case 'ù':
+                    sb.append("&ugrave;");
+                    break;
+                case 'Ù':
+                    sb.append("&Ugrave;");
+                    break;
+                case 'û':
+                    sb.append("&ucirc;");
+                    break;
+                case 'Û':
+                    sb.append("&Ucirc;");
+                    break;
+                case 'ü':
+                    sb.append("&uuml;");
+                    break;
+                case 'Ü':
+                    sb.append("&Uuml;");
+                    break;
+                case '®':
+                    sb.append("&reg;");
+                    break;
+                case '©':
+                    sb.append("&copy;");
+                    break;
+                case '€':
+                    sb.append("&euro;");
+                    break;
 
                 default:
-                    sb.append(c); break;
+                    sb.append(c);
+                    break;
             }
         }
         return sb.toString();
