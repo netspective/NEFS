@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletRequestAttributeValueSource.java,v 1.1 2003-11-03 06:39:10 aye.thu Exp $
+ * $Id: ServletRequestAttributeValueSource.java,v 1.2 2003-12-22 09:05:03 aye.thu Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -116,6 +116,44 @@ public class ServletRequestAttributeValueSource extends AbstractValueSource
 
         };
     }
+
+    public String getTextValue(ValueContext vc)
+    {
+        return getValue(vc).getTextValue();
+    }
+
+    public String[] getTextValues(ValueContext vc)
+    {
+        final ServletValueContext svc = (ServletValueContext)
+                (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
+                vc);
+        Object values = svc.getRequest().getAttribute(attributeName);
+        if (values instanceof String[])
+            return (String[]) values;
+        else if (values instanceof int[])
+        {
+            int[] ints = (int[])values;
+            String[] tmp = new String[ints.length];
+            for (int i=0; i < ints.length; i++)
+            {
+                tmp[i] = Integer.toString(ints[i]);
+            }
+            return tmp;
+        }
+        else if (values instanceof float[])
+        {
+            float[] floatList = (float[])values;
+            String[] tmp = new String[floatList.length];
+            for (int i=0; i < floatList.length; i++)
+            {
+                tmp[i] = Float.toString(floatList[i]);
+            }
+            return tmp;
+        }
+        else
+            return null;
+    }
+
 
     public boolean hasValue(ValueContext vc)
     {
