@@ -39,19 +39,19 @@
  */
 
 /**
- * $Id: IgmlFormat.java,v 1.1 2003-03-13 18:37:20 shahid.shah Exp $
+ * $Id: IgmlFormat.java,v 1.2 2003-03-14 03:38:40 shahid.shah Exp $
  */
 
 package com.netspective.junxion.edi.format.igml;
 
 import com.netspective.commons.xdm.exception.DataModelException;
-import com.netspective.commons.xdm.AbstractXdmComponent;
+import com.netspective.commons.xdm.DefaultXdmComponent;
 import com.netspective.junxion.edi.format.igml.util.TextContainer;
 import com.netspective.junxion.edi.format.InterchangeFormat;
 import com.netspective.junxion.edi.format.validation.InputValidator;
 import com.netspective.junxion.edi.format.validation.OutputValidator;
 
-public class IgmlFormat extends AbstractXdmComponent implements InterchangeFormat
+public class IgmlFormat extends DefaultXdmComponent implements InterchangeFormat
 {
     /**
      * The root element of the IGML source is an element called <Standard>
