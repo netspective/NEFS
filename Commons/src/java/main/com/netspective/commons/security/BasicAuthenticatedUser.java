@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicAuthenticatedUser.java,v 1.2 2003-03-14 04:04:19 shahid.shah Exp $
+ * $Id: BasicAuthenticatedUser.java,v 1.3 2003-03-20 14:55:34 shahid.shah Exp $
  */
 
 package com.netspective.commons.security;
@@ -52,7 +52,7 @@ import java.util.List;
 
 import com.netspective.commons.acl.Permission;
 import com.netspective.commons.acl.PermissionNotFoundException;
-import com.netspective.commons.acl.AccessControlLists;
+import com.netspective.commons.acl.AccessControlListsManager;
 
 public class BasicAuthenticatedUser implements AuthenticatedUser
 {
@@ -63,6 +63,10 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
     private String userOrgName;
     private String userOrgId;
     private Map attributes = new HashMap();
+
+    public BasicAuthenticatedUser()
+    {
+    }
 
     public BasicAuthenticatedUser(String name, String id)
     {
@@ -82,6 +86,11 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userName;
     }
 
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+    }
+
     public String getName() // implementation for java.security.Principal
     {
         return userId;
@@ -92,14 +101,29 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userId;
     }
 
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
     public String getUserOrgName()
     {
         return userOrgName;
     }
 
+    public void setUserOrgName(String userOrgName)
+    {
+        this.userOrgName = userOrgName;
+    }
+
     public String getUserOrgId()
     {
         return userOrgId;
+    }
+
+    public void setUserOrgId(String userOrgId)
+    {
+        this.userOrgId = userOrgId;
     }
 
     public BitSet getUserPermissions()
@@ -112,14 +136,14 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userRoles;
     }
 
-    public void setRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException
+    public void setRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
     {
         userRoles = roles;
         if(userRoles == null)
             return;
 
         if(userPermissions == null)
-            userPermissions = new BitSet(aclsManager.getHighestPermissionId());
+            userPermissions = new BitSet(aclsManager.getAccessControlLists().getHighestPermissionId());
 
         for(int i = 0; i < userRoles.length; i++)
         {
@@ -131,7 +155,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
     }
 
-    public void removeRoles(AccessControlLists aclsManager, String[] roles) throws PermissionNotFoundException
+    public void removeRoles(AccessControlListsManager aclsManager, String[] roles) throws PermissionNotFoundException
     {
         if(userRoles == null || userPermissions == null)
             return;
@@ -179,13 +203,13 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         }
     }
 
-    public void removeAllRoles(AccessControlLists aclsManager) throws PermissionNotFoundException
+    public void removeAllRoles(AccessControlListsManager aclsManager) throws PermissionNotFoundException
     {
         if(userRoles != null)
             removeRoles(aclsManager, userRoles);
     }
 
-    public boolean hasPermission(AccessControlLists aclsManager, String permissionName) throws PermissionNotFoundException
+    public boolean hasPermission(AccessControlListsManager aclsManager, String permissionName) throws PermissionNotFoundException
     {
         Permission perm = aclsManager.getPermission(permissionName);
         if(perm == null)
@@ -193,7 +217,7 @@ public class BasicAuthenticatedUser implements AuthenticatedUser
         return userPermissions.get(perm.getId());
     }
 
-    public boolean hasAnyPermission(AccessControlLists aclsManager, String[] permissionNames) throws PermissionNotFoundException
+    public boolean hasAnyPermission(AccessControlListsManager aclsManager, String[] permissionNames) throws PermissionNotFoundException
     {
         for(int i = 0; i < permissionNames.length; i++)
         {
