@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: SingleUserServletLoginAuthenticator.java,v 1.2 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: SingleUserServletLoginAuthenticator.java,v 1.3 2003-08-24 18:48:27 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
 import com.netspective.commons.security.Crypt;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.security.LoginAuthenticator;
 import com.netspective.sparx.security.LoginDialog;
 import com.netspective.sparx.security.LoginDialogContext;
@@ -53,50 +54,112 @@ import com.netspective.sparx.security.HttpLoginManager;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.PosixParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
+
 /**
  * Implements a basic login authenticator that assumes a single user has access to the entire servlet and the user
- * information is stored in servlet init parameters.
- *
- * The following parameters must be defined as init parameters in the servlet:
- *   'login-user-id' - the single valid user id
- *   'login-password' OR 'login-password-encrypted' - the login-password param, if provided, assumes the password is
- *       plain text. If an encrypted password is provided using the login-password-encrypted param, the assumption is
- *       that the Commons Crypt class is used for encryption. You may run run
- *            "java com.netspective.commons.security.Crypt NC <password>"
- *       to generate an encrypted password. If both an encrypted and unencrypted form is provided, the encrypted
- *       version takes precedence.
+ * information is stored in servlet init parameter called <pre>com.netspective.sparx.security.authenticator.SingleUserServletLoginAuthenticator.OPTIONS</pre>.
+ * The OPTIONS parameter is parsed as a command line using Jakarta CLI and has the following usage:
+ * <pre>
+ * -u,--user-id <id>                          The user id that should be used to log the user in.
+ * -P,--encrypted-password <encrypted-text>   The encrypted password for the user.
+ * -p,--plain-text-password <plain-text>      The plain-text password for the user.
+ * -s,--show-encrypted-password               Prints the encrypted password to stdout (useful if you want to know what the plain-text password is when encrypted).
+ * -?,--help                                  Print options to stdout.
+ * </pre>
  */
 public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
 {
-    public static final String INITPARAMNAME_LOGIN_USER_ID = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_USER_ID";
-    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_PLAIN_TEXT";
-    public static final String INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED = SingleUserServletLoginAuthenticator.class.getName() + ".LOGIN_PASSWORD_ENCRYPTED";
+    private static final Log log = LogFactory.getLog(SingleUserServletLoginAuthenticator.class);
+    public static final String INITPARAMNAME_OPTIONS = SingleUserServletLoginAuthenticator.class.getName() + ".OPTIONS";
+
+    private Options createAuthenticatorOptions()
+    {
+        Options authenticatorOptions = new Options();
+        authenticatorOptions.addOption(OptionBuilder.withLongOpt("help")
+                                              .withDescription("Print options to stdout")
+                                              .create('?'));
+        authenticatorOptions.addOption(OptionBuilder.withLongOpt("user-id")
+                                              .hasArg().withArgName("id")
+                                              .withDescription("The user id that should be used to log the user in")
+                                              .isRequired()
+                                              .create('u'));
+        authenticatorOptions.addOption(OptionBuilder.withLongOpt("show-encrypted-password")
+                                              .withDescription("Prints the encrypted version of plain-text password to stdout")
+                                              .create('s'));
+
+        OptionGroup passwordOptionGroup = new OptionGroup();
+        passwordOptionGroup.setRequired(true);
+        passwordOptionGroup.addOption(OptionBuilder.withLongOpt("plain-text-password")
+                                              .hasArg().withArgName("plain-text")
+                                              .withDescription("The plain-text password for the user")
+                                              .create('p'));
+        passwordOptionGroup.addOption(OptionBuilder.withLongOpt("encrypted-password")
+                                              .hasArg().withArgName("encrypted-text")
+                                              .withDescription("The encrypted password for the user")
+                                              .create('P'));
+
+        authenticatorOptions.addOptionGroup(passwordOptionGroup);
+        return authenticatorOptions;
+    }
+
+    private CommandLine getOptionsCommandLine(LoginDialogContext loginDialogContext, String optionsText)
+    {
+        Options authenticatorOptions = createAuthenticatorOptions();
+        CommandLineParser parser = new PosixParser();
+        CommandLine result = null;
+        try
+        {
+            result = parser.parse(authenticatorOptions, optionsText != null ? TextUtils.split(optionsText) : new String[0]);
+            if(result.hasOption('?'))
+                printHelp(authenticatorOptions);
+        }
+        catch (ParseException e)
+        {
+            log.error("Error parsing command line "+ optionsText, e);
+            printHelp(authenticatorOptions);
+            loginDialogContext.getLoginDialog().getUserIdField().invalidate(loginDialogContext, "Error parsing command line: " + e);
+            return null;
+        }
+        return result;
+    }
 
     public boolean isUserValid(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
     {
         ServletConfig servletConfig = loginDialogContext.getServlet().getServletConfig();
         LoginDialog loginDialog = loginDialogContext.getLoginDialog();
+        String optionsText = servletConfig.getInitParameter(INITPARAMNAME_OPTIONS);
+        if(optionsText == null)
+        {
+            log.error("Servlet param " + INITPARAMNAME_OPTIONS + " not specified.");
+            loginDialog.getUserIdField().invalidate(loginDialogContext, "Servlet param " + INITPARAMNAME_OPTIONS + " not specified.");
+            return false;
+        }
 
-        String loginUserId = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_ID);
-        String loginPasswordEncrypted = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED);
+        CommandLine commandLine = getOptionsCommandLine(loginDialogContext, optionsText);
+        if(commandLine == null)
+            return false;
+
+        String loginUserId = commandLine.getOptionValue('u');
+        String loginPasswordEncrypted = commandLine.getOptionValue('P');
         if(loginPasswordEncrypted == null)
         {
-            String loginPasswordUnencrypted = servletConfig.getInitParameter(INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED);
+            String loginPasswordUnencrypted = commandLine.getOptionValue('p');
             if(loginPasswordUnencrypted != null)
                 loginPasswordEncrypted = Crypt.crypt(AuthenticatedUser.PASSWORD_ENCRYPTION_SALT, loginPasswordUnencrypted);
         }
 
-        if(loginUserId == null)
-        {
-            loginDialog.getUserIdField().invalidate(loginDialogContext, "No '"+ INITPARAMNAME_LOGIN_USER_ID +"' servlet init parameter provided.");
-            return false;
-        }
-
-        if(loginPasswordEncrypted == null)
-        {
-            loginDialog.getPasswordField().invalidate(loginDialogContext, "No '"+ INITPARAMNAME_LOGIN_USER_PASSWORD_UNENCRYPTED +"' or '"+ INITPARAMNAME_LOGIN_USER_PASSWORD_ENCRYPTED +"' servlet init parameter provided.");
-            return false;
-        }
+        if(commandLine.hasOption('s'))
+            System.out.println(TextUtils.getClassNameWithoutPackage(getClass().getName()) + " encrypted password is " + loginPasswordEncrypted);
 
         if(! loginUserId.equals(loginDialogContext.getUserIdInput()))
             return false;
@@ -105,5 +168,12 @@ public class SingleUserServletLoginAuthenticator implements LoginAuthenticator
             return false;
 
         return true;
+    }
+
+    private void printHelp(Options authenticatorOptions)
+    {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.defaultWidth = 120;
+        formatter.printHelp(getClass().getName(), authenticatorOptions);
     }
 }
