@@ -293,5 +293,12 @@
                 </panel>
             </presentation>
         </query>
+
+        <query name="get-all-medications">
+            select
+                med_name, med_id
+            from
+                org_medication
+        </query>
     </queries>
 </xdm:container>
