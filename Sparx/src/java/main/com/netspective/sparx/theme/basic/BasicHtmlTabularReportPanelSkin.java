@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.28 2003-10-21 16:54:33 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.29 2003-11-18 04:51:34 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -477,7 +477,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 RedirectValueSource redirect = (RedirectValueSource)reportAction.getRedirect();
                 if (redirect != null)
                 {
-                    String title = reportAction.getTitle().getTextValue(rc);
+                    String title = reportAction.getTitle() != null ? reportAction.getTitle().getTextValue(rc) : "";
                     sb.append("            <td colspan=\"" + colsCount + "\" class=\"report-column-heading\">" +
                             "<a class=\""+ panelClassNamePrefix +"-frame-action\" title=\""+ title + "\" href=\"" +
                              redirect.getUrl(rc)  + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
