@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo Stopping Resin
-$HOME/www-ctl.sh stop
+$NEFS_HOME/tools/resin-ctl.sh stop
 
 echo Performing CVS Update
 cd Frameworks
@@ -20,7 +20,7 @@ find . -name "ant-build-project.log" -exec rm -f {} \; -print
 
 echo Starting up Resin
 cd 
-$HOME/www-ctl.sh start
+$NEFS_HOME/tools/resin-ctl.sh start
 
 echo Waiting for Resin to startup...
 sleep 15s
