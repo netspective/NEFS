@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.11 2003-09-10 04:06:12 aye.thu Exp $
+ * $Id: GeneralColumn.java,v 1.12 2003-10-01 15:21:01 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -304,9 +304,15 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         if(calc != null)
         {
             if(formatter != null)
-                return formatter.format(new Double(calc.getValue(rc)));
+                synchronized(formatter)
+                {
+                    return formatter.format(new Double(calc.getValue(rc)));
+                }
             else
-                return generalNumberFmt.format(calc.getValue(rc));
+                synchronized(generalNumberFmt)
+                {
+                    return generalNumberFmt.format(calc.getValue(rc));
+                }
         }
         else
             return null;
