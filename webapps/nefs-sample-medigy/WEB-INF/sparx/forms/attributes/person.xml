@@ -21,13 +21,7 @@
 			<field type="select" name="state" caption="State" choices="schema-enum:US_State_Type"/>
 			<field type="zip-code" name="zip" caption="Zip Code"/>
 			<field type="text" name="country" caption="Country" size="16"/>
-            <director>
-                <next-actions caption="Next Action ">
-                    <items>
-                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
-                    </items>
-                </next-actions>
-            </director>
+
             <on-add-data>
                 <person-address parent_id="parent_id" line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type_id="address_type_id"
                     state_id="state" rec-stat-id="static:Active"/>
@@ -57,13 +51,7 @@
                         expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
-            <director>
-                <next-actions caption="Next Action ">
-                    <items>
-                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
-                    </items>
-                </next-actions>
-            </director>
+
             <on-add-data>
                 <person-classification person_type_id="personType.person_type_id"
                     person_id="parent_id" org_id="org_id"  rec-stat-id="static:Active"/>
@@ -91,13 +79,7 @@
 				</field>
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
-            <director>
-                <next-actions caption="Next Action ">
-                    <items>
-                        <item value="vs-expr:${page-id:person}?person_id=${request:person_id}" caption="Summary"/>
-                    </items>
-                </next-actions>
-            </director>
+            
             <on-add-data>
                 <person-contact method_value="method_value" parent_id="parent_id" method_type="contactType.method_type"
                     rec-stat-id="static:Active"/>

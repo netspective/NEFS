@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PanelEditor.java,v 1.4 2004-03-03 22:11:22 aye.thu Exp $
+ * $Id: PanelEditor.java,v 1.5 2004-03-05 01:03:23 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -68,6 +68,7 @@ import com.netspective.sparx.command.PanelEditorCommand;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogState;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
@@ -111,16 +112,21 @@ public class PanelEditor extends AbstractPanel
     public static final int ADD_RECORD_DISPLAY_MODE     = 4;    /* add a record mode (dialog and report) */
     public static final int MANAGE_RECORDS_DISPLAY_MODE = 5;    /* managing records mode (report only but different from default) */
 
-    /* the display mode is passed to the panel using this attribute in the navigation context */
-    public static final String DISPLAY_MODE_CONTEXT_ATTRIBUTE = "panel-editor-mode";
     /* default skin to use to display query report panel */
     public static final String DEFAULT_EDITOR_SKIN = "panel-editor";
     /* default name assigned to the query defined in the panel editor */
     public static final String DEFAULT_QUERY_NAME = "panel-editor-query";
     /* default name assigned to the dialog defined in the panel editor */
     public static final String DEFAULT_DIALOG_NAME = "panel-editor-dialog";
+
+    /* a request attribute name used to save the name of the panel editor */
+    public static final String PANEL_EDITOR_CONTEXT_ATTRIBUTE = "panel-editor-name";
+    /* the display mode is passed to the panel using a request attribute with this name */
+    public static final String CURRENT_MODE_CONTEXT_ATTRIBUTE = "panel-editor-mode";
     /* the primary key of the record that is to be edited/deleted is passed to the dialog context using this attribute name */
     public static final String POPULATE_KEY_CONTEXT_ATTRIBUTE = "panel-editor-key";
+    /* the previous mode of the panel passed using the request attribute */
+    public static final String PREV_MODE_CONTEXT_ATTRIBUTE = "panel-editor-prev-mode";
 
     /* associated project */
     private Project project;
@@ -155,6 +161,38 @@ public class PanelEditor extends AbstractPanel
     {
         this(project);
         setNameSpace(pkg);
+    }
+
+     /**
+     * Calculate the mode the record editor panel is in and also set the
+     *
+     * @return  the current mode of the panel editor
+     */
+    public static int validatePanelEditorMode(String panelMode, String recordKey)
+    {
+        int mode = PanelEditor.UNKNOWN_MODE;
+        if (panelMode == null)
+        {
+            mode = PanelEditor.DEFAULT_DISPLAY_MODE;
+        }
+        else if (panelMode.equals("add"))
+        {
+            mode = PanelEditor.ADD_RECORD_DISPLAY_MODE;
+        }
+        else if (panelMode.equals("edit") && recordKey != null)
+        {
+            mode = PanelEditor.EDIT_RECORD_DISPLAY_MODE;
+        }
+        else if (panelMode.equals("delete") && recordKey != null)
+        {
+            mode = PanelEditor.DELETE_RECORD_DISPLAY_MODE;
+        }
+        else if (panelMode.equals("manage"))
+        {
+            mode = PanelEditor.MANAGE_RECORDS_DISPLAY_MODE;
+        }
+
+        return mode;
     }
 
     /**
@@ -424,25 +462,77 @@ public class PanelEditor extends AbstractPanel
     }
 
     /**
-     * Generates the URL string for the associated actions
+     * Generates the URL string for the  panel editor's associated actions
      *
-     * @param mode    type of record action
-     * @return              url string used to construct a redirect value source
+     * @param actionMode    the mode  for which the URL is being calculated
+     * @return              url string (containing context sensitive elements) used to construct a redirect value source
      */
-    public String generateRecordActionUrl(NavigationContext nc, int mode)
+    public String generateRecordActionUrl(NavigationContext nc, int actionMode)
     {
         String url = "?";
         String currentUrl = nc.getActivePage().getUrl(nc);
 
-
-        if (mode == EDIT_RECORD_DISPLAY_MODE)
-             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",edit,${" + pkColumnIndex + "}";
-        else if (mode == DELETE_RECORD_DISPLAY_MODE)
-            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",delete,${" + pkColumnIndex + "}";
-        else if (mode == ADD_RECORD_DISPLAY_MODE)
-            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",add";
-        else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
+        if (actionMode == EDIT_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
+                    ",edit,${" + pkColumnIndex + "},${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+        }
+        else if (actionMode == DELETE_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
+                    ",delete,${" + pkColumnIndex + "},${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+        }
+        else if (actionMode == ADD_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() +
+                    ",add,,${request-attr:" + PREV_MODE_CONTEXT_ATTRIBUTE + "}";
+        }
+        else if (actionMode == MANAGE_RECORDS_DISPLAY_MODE)
             url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",manage";
+        else if (actionMode == DEFAULT_DISPLAY_MODE)
+            url = currentUrl;
+
+        ValueSource retainParamsVS = nc.getActivePage().getRetainParams();
+        if(retainParamsVS != null)
+            url = HttpUtils.appendParams(nc.getHttpRequest(), url, retainParamsVS.getTextValue(nc));
+        return url;
+    }
+
+    /**
+     * Generates a URL to use to go to invoke the page with the passed in panel editor and its mode.
+     *
+     * @param nc
+     * @param panelMode
+     * @return          a static URL string 
+     */
+    public static String generatePanelEditorActionUrl(NavigationContext nc, String panelName, String panelMode, String prevMode,
+                                                      String panelRecordKey)
+    {
+        String url = "?";
+        String currentUrl = nc.getActivePage().getUrl(nc);
+        int mode = validatePanelEditorMode(panelMode, panelRecordKey);
+        if (mode == EDIT_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName +
+                    ",edit," + panelRecordKey;
+            if (prevMode != null)
+                url= url + "," + prevMode;
+        }
+        else if (mode == DELETE_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName +
+                    ",delete," + panelRecordKey;
+            if (prevMode != null)
+                url= url + "," + prevMode;
+        }
+        else if (mode == ADD_RECORD_DISPLAY_MODE)
+        {
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",add";
+            if (prevMode != null)
+                url= url + "," + prevMode;
+        }
+        else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
+            url = url + PanelEditorCommand.PANEL_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + panelName + ",manage";
         else if (mode == DEFAULT_DISPLAY_MODE)
             url = currentUrl;
 
@@ -451,6 +541,7 @@ public class PanelEditor extends AbstractPanel
             url = HttpUtils.appendParams(nc.getHttpRequest(), url, retainParamsVS.getTextValue(nc));
         return url;
     }
+
 
     /**
      * Creates all the panel actions for the  panel editor. This method SHOULD only be called once to populate the
@@ -554,18 +645,15 @@ public class PanelEditor extends AbstractPanel
     /**
      * Calculate and process the state of the all the panel actions based on current context
      *
-     * @param nc    current navigation context
-     * @param vc    current report panel context
+     * @param nc                current navigation context
+     * @param vc                current report panel context
+     * @param panelRecordCount  total number of records being displayed
+     * @param mode              panel mode
      */
-    public void preparePanelActionStates(NavigationContext nc, HtmlTabularReportValueContext vc, int panelRecordCount)
+    public void preparePanelActionStates(NavigationContext nc, HtmlTabularReportValueContext vc, int panelRecordCount, int mode)
     {
         HtmlPanelActionStates actionStates = vc.getPanelActionStates();
-        QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
-        HtmlPanelActions bannerActions = qrp.getBanner().getActions();
-        HtmlPanelActions frameActions = qrp.getFrame().getActions();
-        HtmlReportActions recordActions = ((BasicHtmlTabularReport)qrp.getReport()).getActions();
 
-        int mode = ((Integer) nc.getAttribute(DISPLAY_MODE_CONTEXT_ATTRIBUTE)).intValue();
         if (mode == DEFAULT_DISPLAY_MODE)
         {
             actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
@@ -576,8 +664,7 @@ public class PanelEditor extends AbstractPanel
                 actionStates.getState(PANEL_RECORD_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
         else if (mode == ADD_RECORD_DISPLAY_MODE || mode == EDIT_RECORD_DISPLAY_MODE || mode == DELETE_RECORD_DISPLAY_MODE)
-        {
-            actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+        {            
             actionStates.getState(PANEL_RECORD_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
             actionStates.getState(PANEL_RECORD_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
         }
@@ -621,6 +708,10 @@ public class PanelEditor extends AbstractPanel
                 throw new RuntimeException("Record editor panel '" + getQualifiedName() + "' requires the request " +
                         "parameter '" + getRequireRequestParam() + "'.");
         }
+        String requestedMode = (String) nc.getRequest().getAttribute(CURRENT_MODE_CONTEXT_ATTRIBUTE);
+        String requestedKey = (String) nc.getRequest().getAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE);
+        String prevMode = (String) nc.getRequest().getAttribute(PREV_MODE_CONTEXT_ATTRIBUTE);
+
         // add all the required panel actions
         if (!isActionsPrepared())
             createPanelActions(nc);
@@ -632,20 +723,30 @@ public class PanelEditor extends AbstractPanel
         HtmlTabularReportValueContext context = qrp.createContext(nc, theme);
         context.setPanelRenderFlags(flags);
 
+        // get the requested mode, key, and previous modes from the request
+        int mode = validatePanelEditorMode(requestedMode, requestedKey);
+        if (mode == UNKNOWN_MODE)
+        {
+            log.error("Unexpected mode encountered for the record editor panel '" + getName() + "'.");
+            throw new RuntimeException("Unexpected mode encountered for the record editor panel '" + getName() + "'.");
+        }
+
         TabularReportDataSource dataRoot = qrp.createDataSource(nc);
         int totalRows = dataRoot.getTotalRows();
         // process the context to calculate the states of the panel actions
-        preparePanelActionStates(nc, context, totalRows);
+        preparePanelActionStates(nc, context, totalRows, mode);
 
         writer.write("<table border=\"0\" cellspacing=\"0\" class=\"panel-editor-table\">");
         writer.write("<tr valign=\"top\">");
-        int mode = ((Integer) nc.getAttribute(DISPLAY_MODE_CONTEXT_ATTRIBUTE)).intValue();
         if (mode == PanelEditor.ADD_RECORD_DISPLAY_MODE || mode == PanelEditor.EDIT_RECORD_DISPLAY_MODE ||
             mode == PanelEditor.DELETE_RECORD_DISPLAY_MODE)
         {
+            // set the dialog perspective using the requested mode.
+            // IMPORTANT: The dialog perspective strings are exactly the same as the panel editor's add/edit/delete modes.
+            nc.getRequest().setAttribute(DialogState.PARAMNAME_PERSPECTIVE, requestedMode);
             // record action was defined so we need to display the requested display mode
             DialogContext dc = dialog.createContext(nc, theme.getDefaultDialogSkin());
-            dc.setAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE, nc.getAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE));
+            //dc.setAttribute(POPULATE_KEY_CONTEXT_ATTRIBUTE, requestedKey);
             dc.addRetainRequestParams(DialogCommand.DIALOG_COMMAND_RETAIN_PARAMS);
 
             dialog.prepareContext(dc);
