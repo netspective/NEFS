@@ -36,3 +36,49 @@
 * Implement JavaScript menu system using http://www.cs.ucla.edu/~heng/JSCookMenu/ (free for use)
 * Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
 * Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings
+
+BUGS
+* SelectField:
+1. When choices are pure text (e.g. choices="Choice1=A;Choice2=B") without using the text-list value source, an ArrayIndexOutofBound exception is thrown instead of taking the choices string as a list with only one item. The same thing holds true for the default attribute also.
+	java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
+	at java.util.ArrayList.RangeCheck(ArrayList.java:508)
+	at java.util.ArrayList.get(ArrayList.java:320)
+	at com.netspective.commons.value.AbstractValue.getTextValue(AbstractValue.java:113)
+	at com.netspective.commons.value.PresentationValue.getTextValue(PresentationValue.java:219)
+	at com.netspective.commons.value.PresentationValue.getItems(PresentationValue.java:180)
+	at com.netspective.sparx.form.field.type.SelectField.renderControlHtml(SelectField.java:509)
+2. style="popup" doesn't  show the popup icon.
+3. When choices attribute is set to a query that doesn't exist, an exception is thrown on the screen and the dialog isn't drawn.
+	java.lang.NullPointerException
+	at com.netspective.axiom.sql.Query.translateNameForMapKey(Query.java:168)
+	at com.netspective.axiom.SqlManager.getQuery(SqlManager.java:131)
+	at com.netspective.axiom.value.source.QueryResultsValueSource.getQueryResults(QueryResultsValueSource.java:281)
+	at com.netspective.axiom.value.source.QueryResultsValueSource.getPresentationValue(QueryResultsValueSource.java:464)
+	at com.netspective.commons.value.source.AbstractValueSource.getPresentationItem(AbstractValueSource.java:100)
+	at com.netspective.sparx.form.field.type.SelectField.populateValue(SelectField.java:396)
+
+
+* DateTimeField: The default values are being displayed in the wrong format. For time type, it is still considering it a date type.
+
+* Conditionals: Error.
+java.lang.NullPointerException
+	at com.netspective.sparx.form.field.DialogField.finalizeContents(DialogField.java:794)
+	at com.netspective.sparx.form.Dialog.finalizeContents(Dialog.java:502)
+	at com.netspective.sparx.form.Dialog.createContext(Dialog.java:601)
+	at com.netspective.sparx.command.DialogCommand.handleCommand(DialogCommand.java:229)
+	at com.netspective.sparx.command.ValueSourceCommand.handleCommand(ValueSourceCommand.java:128)
+
+* client-js:
+1. Adding <client-js> to throws NPE
+	java.lang.NullPointerException
+        	at com.netspective.sparx.form.field.DialogField.addClientJs(DialogField.java:509)
+
+* Value source error:
+1. When using database related value sources (e.g query, query-col) and the SQL is not defined an exception is thrown:
+java.lang.AbstractMethodError: com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.createDataSource(Lcom/netspective/sparx/navigate/NavigationContext;)Lcom/netspective/commons/report/tabular/TabularReportDataSource;
+	at com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.render(AbstractHtmlTabularReportPanel.java:114)
+	at com.netspective.sparx.panel.HtmlLayoutPanel.render(HtmlLayoutPanel.java:196)
+
+
+
+
