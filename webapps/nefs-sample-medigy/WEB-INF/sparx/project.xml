@@ -132,7 +132,7 @@
             <body>Unknown page subtype for page ${vc.activePage.class.name}, id = ${vc.activeState.entitySubtypeId}, name = ${vc.activeState.entitySubtypeName?default('null')}.</body>
         </page>
 
-        <page type="entity" name="patient" class="app.navigate.entity.person.PatientPage" hidden="yes">
+        <page type="entity" name="patient" class="app.navigate.entity.person.PatientPage" hidden-unless-active="yes" caption="Patient" retain-params="person_id">
             <page name="summary" caption="Summary">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
@@ -153,7 +153,7 @@
             <page name="documents" caption="Documents"/>
         </page>
 
-        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden="yes" retain-params="person_id">
+        <page type="entity" name="physician" class="app.navigate.entity.person.PhysicianPage" hidden-unless-active="yes" caption="Physician" retain-params="person_id">
             <page name="summary" caption="Summary" require-request-param="person_id" retain-params="person_id">
                 <panels style="two-columns-stacked">
                     <panel type="command" command="query,personAttribute.profile,-,-,-,detail" />
@@ -166,7 +166,7 @@
             <page name="documents" caption="Documents"/>
         </page>
 
-        <page type="entity" name="org" hidden="yes" retain-params="org_id">
+        <page type="entity" name="org" hidden-unless-active="yes" caption="Organization" retain-params="org_id" >
             <page type="entity-view" name="summary" caption="Summary" require-request-param="org_id">
                 <panels style="two-columns">
                     <panel type="command" command="query,orgAttribute.profile,-,-,-,detail" />
