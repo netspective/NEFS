@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AutoIncColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: AutoIncColumn.java,v 1.2 2003-07-19 00:37:47 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -58,11 +58,6 @@ public class AutoIncColumn extends LongIntegerColumn implements GeneratedValueCo
     {
         super(table);
         setAllowAddToTable(true);
-    }
-
-    public Class getForeignKeyReferenceeClass()
-    {
-        return LongIntegerColumn.class;
     }
 
     public boolean retainValueInDml(ConnectionContext cc) throws NamingException, SQLException

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: EnumerationIdColumn.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: EnumerationIdColumn.java,v 1.2 2003-07-19 00:37:39 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column.type;
@@ -51,10 +51,5 @@ public class EnumerationIdColumn extends IntegerColumn
     public EnumerationIdColumn(Table table)
     {
         super(table);
-    }
-
-    public Class getForeignKeyReferenceeClass()
-    {
-        return EnumerationIdRefColumn.class;
     }
 }
