@@ -67,6 +67,7 @@
 		<page type="top-level" name="search" caption="Search" reject-focus="yes">
 			<page type="container" name="person" caption="Person" >
                 <page type="default" name="people" caption="People" command="query-defn,searchPersons,-,searchPersonDialog"/>
+                <page type="default" hidden="yes" name="people_popup" caption="People" command="query-defn,searchPersons,-,searchPersonPopupDialog"/>
                 <page type="default" name="patient" caption="Patients" command="query-defn,searchPersons,-,searchPatientDialog" default="yes"/>
                 <page type="default" name="physician" caption="Physicians" command="query-defn,searchPersons,-,searchPhysicianDialog"/>
                 <page type="default" name="referring-doctor" caption="Reffering Doctors" command="query-defn,searchPersons,-,searchReferringDoctorDialog"/>
