@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataImportDtd.java,v 1.3 2003-05-23 02:18:01 shahid.shah Exp $
+ * $Id: DataImportDtd.java,v 1.4 2003-06-21 21:33:35 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.transport;
@@ -68,15 +68,21 @@ public class DataImportDtd
     public void generate(Schema schema, PrintWriter out)
     {
         Tables tables = schema.getApplicationTables();
+        Set childColumnElemNames = new TreeSet();
 
         try
         {
             printHead(out, tables);
 
             for(int i = 0; i < tables.size(); i++)
-            {
-                printElementDecl(out, tables.get(i));
+                printElementDecl(out, tables.get(i), childColumnElemNames);
 
+            for(Iterator i = childColumnElemNames.iterator(); i.hasNext(); )
+            {
+                String elemName = (String) i.next();
+                out.println("<!ELEMENT " + elemName + " (#PCDATA)>");
+                out.println("<!ATTLIST " + elemName + " IDREF CDATA #IMPLIED>");
+                out.println();
             }
 
             printTail(out);
@@ -160,7 +166,7 @@ public class DataImportDtd
     /**
      * Print the definition for a given element.
      */
-    private void printElementDecl(PrintWriter out, Table parentTable)
+    private void printElementDecl(PrintWriter out, Table parentTable, Set childColumnElemNames)
     {
         if (visited.containsKey(parentTable.getName()))
             return;
@@ -195,6 +201,7 @@ public class DataImportDtd
                 if (i != 0)
                     sb.append(" | ");
                 sb.append(list.get(i));
+                childColumnElemNames.add(list.get(i));
             }
 
             sb.append(")");
@@ -209,6 +216,10 @@ public class DataImportDtd
 
         sb.setLength(0);
         sb.append("<!ATTLIST ").append(parentTable.getXmlNodeName());
+
+        sb.append(lSep);
+        sb.append("          ID CDATA #IMPLIED").append(lSep);
+        sb.append("          IDREF CDATA #IMPLIED");
 
         for(int i = 0; i < columns.size(); i++)
         {
@@ -260,7 +271,7 @@ public class DataImportDtd
             }
 
             if(column.isPrimaryKey() || column.isRequiredByApp() || column.isRequiredByDbms())
-                sb.append("#REQUIRED");
+                sb.append("#IMPLIED"); // this column is required but #REQUIRED is not used because it could be provided using tag instead of attribute
             else
                 sb.append("#IMPLIED");
         }
@@ -271,7 +282,7 @@ public class DataImportDtd
         if(childTables != null)
         {
             for(int i = 0; i < childTables.size(); i++)
-                printElementDecl(out, childTables.get(i));
+                printElementDecl(out, childTables.get(i), childColumnElemNames);
         }
     }
 
