@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.32 2004-06-23 15:17:08 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.33 2004-08-10 20:20:30 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -95,7 +95,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         public static final int SHOW_SELECTION_COMMAND_FOOT_ROW = SHOW_SELECTION_COMMAND_HEAD_ROW * 2;  // show the selectable report's command at the bottom of the frame
         public static final int STARTCUSTOM = ALLOW_TREE_EXPAND_COLLAPSE * 2;
 
-        public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 2];
+        public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 5];
 
         static
         {
@@ -103,9 +103,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 FLAGDEFNS[i] = BasicHtmlPanelSkin.Flags.FLAGDEFNS[i];
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "SHOW_HEAD_ROW", SHOW_HEAD_ROW);
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_FOOT_ROW", SHOW_FOOT_ROW);
-            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "ALLOW_TREE_EXPAND_COLLAPSE", ALLOW_TREE_EXPAND_COLLAPSE);
-            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_HEAD_ROW", SHOW_SELECTION_COMMAND_HEAD_ROW);
-            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_FOOT_ROW", SHOW_SELECTION_COMMAND_FOOT_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 2] = new FlagDefn(ACCESS_XDM, "ALLOW_TREE_EXPAND_COLLAPSE", ALLOW_TREE_EXPAND_COLLAPSE);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 3] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_HEAD_ROW", SHOW_SELECTION_COMMAND_HEAD_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 4] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_FOOT_ROW", SHOW_SELECTION_COMMAND_FOOT_ROW);
         }
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -241,7 +241,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         }
     }
 
-    private int getTableColumnsCount(HtmlTabularReportValueContext rc)
+    protected int getTableColumnsCount(HtmlTabularReportValueContext rc)
     {
         return (rc.getVisibleColsCount() * 2) +
                (getRowDecoratorPrependColsCount(rc) * 2) +
