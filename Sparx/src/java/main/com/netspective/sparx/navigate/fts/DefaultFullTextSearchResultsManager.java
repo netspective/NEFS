@@ -36,11 +36,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.discovery.tools.DiscoverSingleton;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.netspective.sparx.navigate.NavigationContext;
 
 public class DefaultFullTextSearchResultsManager implements FullTextSearchResultsManager
 {
+    private static final Log log = LogFactory.getLog(DefaultFullTextSearchResultsManager.class);
     private static final FullTextSearchResultsManager instance = (FullTextSearchResultsManager) DiscoverSingleton.find(FullTextSearchResultsManager.class, DefaultFullTextSearchResultsManager.class.getName());
 
     public static final FullTextSearchResultsManager getInstance()
@@ -54,6 +57,10 @@ public class DefaultFullTextSearchResultsManager implements FullTextSearchResult
     {
         final String key = ftsPage.getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         final FullTextSearchResults results = (FullTextSearchResults) searchResults.get(key);
+
+        if(log.isDebugEnabled())
+            log.debug("Retrieved active search results: '" + key + "' " + results);
+
         return results;
     }
 
@@ -61,11 +68,17 @@ public class DefaultFullTextSearchResultsManager implements FullTextSearchResult
     {
         final String key = results.getSearchPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         searchResults.put(key, results);
+
+        if(log.isDebugEnabled())
+            log.debug("Stored active search results: '" + key + "' " + results);
     }
 
     public void timeOut(final FullTextSearchResults results)
     {
         // find the value and remove it
         searchResults.values().remove(results);
+
+        if(log.isDebugEnabled())
+            log.debug("Timed out active search results: '" + results.getExpression().getExprText() + "' " + results);
     }
 }

@@ -70,6 +70,9 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
             }
         }
 
+        if(log.isDebugEnabled())
+            log.debug("Retrieved active query results state: '" + key + "' " + state);
+
         return state;
     }
 
@@ -77,6 +80,9 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
     {
         final String key = state.getQueryResultsNavigatorPage().getQualifiedName() + "/" + nc.getHttpRequest().getSession().getId();
         states.put(key, state);
+
+        if(log.isDebugEnabled())
+            log.debug("Stored active query results state: '" + key + "' " + state);
     }
 
     public void timeOut(QueryResultsNavigatorState state)
@@ -91,5 +97,8 @@ public class DefaultQueryResultsNavigatorStatesManager implements QueryResultsNa
             log.error(e);
         }
         states.values().remove(state);
+
+        if(log.isDebugEnabled())
+            log.debug("Timed out active query results state: '" + state.getExecutionIdentifer() + "' " + state);
     }
 }
