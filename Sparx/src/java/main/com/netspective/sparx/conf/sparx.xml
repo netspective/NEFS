@@ -2,12 +2,11 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: sparx.xml,v 1.54 2003-09-13 03:05:36 roque.hernandez Exp $
+  * $Id: sparx.xml,v 1.55 2003-09-13 23:04:32 shahid.shah Exp $
   *****************************************************************************************
  -->
 
  <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
-
 
     <value-source class="com.netspective.sparx.value.source.ServletContextFileValueSource"/>
     <value-source class="com.netspective.sparx.value.source.ServletContextUriValueSource"/>
@@ -19,8 +18,6 @@
     <value-source class="com.netspective.sparx.value.source.EncryptParameterValueSource"/>
     <value-source class="com.netspective.sparx.value.source.HttpServletRedirectValueSource"/>
     <value-source class="com.netspective.commons.value.source.RedirectValueSource"/>
-
-
 
     <command class="com.netspective.sparx.command.RedirectCommand"/>
     <command class="com.netspective.sparx.command.DialogCommand"/>
@@ -34,6 +31,10 @@
     <class-path-provider class="com.netspective.sparx.console.util.ResinCompilingClassPathProvider"/>
 
     <theme name="slate" default="yes" class="com.netspective.sparx.theme.basic.BasicTheme" inherit-resources-from-themes="common"/>
+    <theme name="console" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="common"/>
+    <theme name="sampler" class="com.netspective.sparx.theme.console.ConsoleTheme" inherit-resources-from-themes="console,common">
+        <navigation-skin default="yes" show-authenticated-user="no"/>
+    </theme>
 
     <panel-type name="html" class="com.netspective.sparx.panel.TemplateContentPanel"/>
     <panel-type name="command" class="com.netspective.sparx.panel.HtmlCommandPanel"/>
