@@ -73,12 +73,11 @@
       library (e.g. software, periodical). Each asset can be loaned either for
       a <emphasis>short term</emphasis> or <emphasis>long term. </emphasis>
       This is represented by the Loan Type. <figure>
-          <title>Basic E-R Diagram for Library Application Database [to be
-          replaced with the correct image]</title>
+          <title>Basic E-R Diagram for Library Application Database</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="./resources/images/screen-books-app-schema.gif" />
+              <imagedata fileref="./resources/images/nefs-lib-db-design.gif" />
             </imageobject>
           </mediaobject>
         </figure></para>
@@ -226,9 +225,9 @@
       <title>Creating the Schema</title>
 
       <para>After analyzing the information that needs to be stored in the
-      database and judging from the E-R diagram shown earlier, you can derive
-      the database schema that is necessary for the Library Application. This
-      schema consists of the following five tables:</para>
+      database and judging from the E-R diagram, you can derive the database
+      schema that is necessary for the Library Application. This schema
+      consists of the following five tables:</para>
 
       <itemizedlist>
         <listitem>
