@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleLoginDialogSkin.java,v 1.1 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: ConsoleLoginDialogSkin.java,v 1.2 2003-08-10 21:10:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -49,15 +49,96 @@ import java.io.IOException;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.StandardDialogSkin;
 import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.value.ValueSource;
 
 public class ConsoleLoginDialogSkin extends LoginDialogSkin
 {
+    private String loginImage = "login.gif";
+
     public ConsoleLoginDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
         super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
-        setLoginImage("login.gif");
+        setCaptionClass(" class=\"login-dialog-fields\"");
+    }
+
+    public String getLoginImage()
+    {
+        return loginImage;
+    }
+
+    public void setLoginImage(String loginImage)
+    {
+        this.loginImage = loginImage;
+    }
+
+    public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
+    {
+        String themeImagesRootUrl = dc.getNavigationContext().getThemeImagesRootUrl(dc.getActiveTheme());
+        ValueSource heading = dc.getDialog().getFrame().getHeading();
+
+        //writer.write("        <table width=\"100%\" height=\"100%\" border=\"2\" cellspacing=\"0\" cellpadding=\"0\">");
+        //writer.write("            <tr>");
+        //writer.write("                <td class=\"panel-input-login-content\">");
+        writer.write("                    <table class=\"panel-input-login\"border=\"0\" width=\"50%\" cellspacing=\"0\" cellpadding=\"0\">");
+
+           writer.write("                        <tr width=\"100%\" height=\"100%\">");
+            writer.write("                            <td class=\"login-dialog-fields-header\" align=\"left\" valign=\"bottom\" height=\"90\">&nbsp;</td>");
+            writer.write("                        </tr>");
+
+        writer.write("                        <tr>");
+        writer.write("                            <td class=\"panel-input-login-content\">");
+        writer.write("                                <table border=\"0\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+        writer.write("                                    <tr>");
+        writer.write("                                        <td align=\"left\" valign=\"bottom\">" +
+                "<img src=\"" + themeImagesRootUrl + "/login/"+ getLoginImage() +"\" " +
+                "alt=\"\" border=\"0\"></td>");
+        writer.write("                                        <td align=\"left\" valign=\"middle\">");
+
+        writer.write("          <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+
+        if(summarizeErrors)
+            writer.write(errorMsgsHtml.toString());
+
+        writer.write(
+                "<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+                encType + " onsubmit='return(activeDialog.isValid())'>\n" +
+                dc.getStateHiddens() + "\n" +
+                fieldsHtml +
+                "</form>\n");
+
+        writer.write("          </table>\n");
+
+        writer.write("                                        </td>");
+        writer.write("                                    </tr>");
+        writer.write("                                </table>");
+        writer.write("                            </td>");
+        writer.write("                        </tr>");
+        writer.write("                    </table>");
+        //writer.write("                </td>");
+        //writer.write("            </tr>");
+        //writer.write("        </table>");
+    }
+
+    /**
+     * We typically take over the entire page for login dialog so lets give some spacing at the top and center
+     * ourselves.
+     * @param writer
+     * @param dc
+     * @throws IOException
+     */
+    public void renderHtml(Writer writer, DialogContext dc) throws IOException
+    {
+	dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_NOFRAME);
+        writer.write("<body style='background-color: black'>");
+        //writer.write("<p>&nbsp;<p>&nbsp;<p>&nbsp;<p><center>");
+        super.renderHtml(writer, dc);
+        writer.write("</center>");
+        writer.write("</body>");
+
+        // writer.write("<table class=\"panel-input-login\" width=\"100%\" height=100% ><tr><td><center>");
+        // super.renderHtml(writer, dc);
+        // writer.write("</center></td></tr></table>");
     }
 }

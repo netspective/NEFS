@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.16 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.17 2003-08-10 21:10:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -1303,4 +1303,19 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         appendPostScript = value;
     }
 
+    public String getCaptionClass() {
+        return captionClass;
+    }
+
+    public void setCaptionClass(String captionClass) {
+        this.captionClass = captionClass;
+    }
+
+    public String getControlAreaClass() {
+        return controlAreaClass;
+    }
+
+    public void setControlAreaClass(String controlAreaClass) {
+        this.controlAreaClass = controlAreaClass;
+    }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleTheme.java,v 1.3 2003-08-08 01:03:33 shahid.shah Exp $
+ * $Id: ConsoleTheme.java,v 1.4 2003-08-10 21:10:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -50,7 +50,7 @@ import com.netspective.sparx.navigate.NavigationSkin;
 
 public class ConsoleTheme extends BasicTheme
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new ConsoleLoginDialogSkin(this, "panel-input", "panel/input", false);
+    private LoginDialogSkin defaulLoginDialogSkin = new ConsoleLoginDialogSkin(this, "panel-input-login", "panel/input", false);
 
     protected NavigationSkin constructDefaultNavigationSkin()
     {
