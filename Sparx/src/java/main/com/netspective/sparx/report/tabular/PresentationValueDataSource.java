@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: PresentationValueDataSource.java,v 1.1 2003-09-07 20:02:12 aye.thu Exp $
+ * $Id: PresentationValueDataSource.java,v 1.2 2003-11-16 17:16:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -87,9 +87,9 @@ public class PresentationValueDataSource  extends AbstractHtmlTabularReportDataS
         if (activeRow != null)
         {
             if (columnIndex == 0)
-                return activeRow.getCaption();
-            else if (columnIndex == 1)
                 return activeRow.getValue();
+            else if (columnIndex == 1)
+                return activeRow.getCaption();
         }
         return null;
     }
