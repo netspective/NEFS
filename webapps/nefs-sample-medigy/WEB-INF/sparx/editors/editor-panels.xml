@@ -6,7 +6,7 @@
        ======================================
     -->
     <record-editor-panels package="personAttribute">
-        <record-editor-panel name="contact" dialog="personAttribute.contact" require-request-param="person_id">
+        <record-editor-panel name="contact" dialog-ref="personAttribute.contact" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -33,7 +33,7 @@
                 </presentation>
             </query>
         </record-editor-panel>
-        <record-editor-panel name="address" dialog="personAttribute.address" require-request-param="person_id">
+        <record-editor-panel name="address" dialog-ref="personAttribute.address" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -66,7 +66,7 @@
             </presentation>
             </query>
         </record-editor-panel>
-        <record-editor-panel name="classification" dialog="personAttribute.classification" require-request-param="person_id">
+        <record-editor-panel name="classification" dialog-ref="personAttribute.classification" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -91,6 +91,37 @@
                         <column hidden="yes"/>
                         <column heading="Org"/>
                         <column heading="Class"/>
+                    </report>
+                </panel>
+            </presentation>
+            </query>
+        </record-editor-panel>
+
+        <record-editor-panel name="relationship" dialog-ref="personAttribute.relationship" require-request-param="person_id">
+            <query>
+                select
+				system_id,
+				(Person.name_first || ' ' || Person.name_last),
+				Person_Relationship_Type.caption
+			from
+				Person,
+				Person_Relationship,
+				Person_Relationship_Type
+			where
+				Person_Relationship.parent_id = ? and
+				Person_Relationship.rel_entity_id = Person.person_id and
+				Person_Relationship.rel_type_id = Person_Relationship_Type.id
+
+            <params>
+                <param value="request:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="Related Individuals"/>
+                    <report>
+                        <column hidden="yes"/>
+                        <column heading="Person"/>
+                        <column heading="Relationship"/>
                     </report>
                 </panel>
             </presentation>
