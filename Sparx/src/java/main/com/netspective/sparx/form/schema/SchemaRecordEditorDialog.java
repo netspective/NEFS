@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaRecordEditorDialog.java,v 1.15 2003-12-03 01:25:20 shahid.shah Exp $
+ * $Id: SchemaRecordEditorDialog.java,v 1.16 2003-12-04 09:11:22 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -80,6 +80,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class SchemaRecordEditorDialog extends Dialog implements TemplateProducerParent
 {
@@ -846,126 +847,148 @@ public class SchemaRecordEditorDialog extends Dialog implements TemplateProducer
         }
     }
 
-public boolean duplicateRecordOnUniqueColumnExists(SchemaRecordEditorDialogContext sredc, ConnectionContext cc) throws NamingException, SQLException
-{
-    boolean duplicateFound = false;
-
-    List templateInstances = null;
-
-    if (sredc.editingData()){
-        if (editDataTemplateProducer == null) return false;
-        templateInstances = editDataTemplateProducer.getInstances();
-    } else
+    public boolean duplicateRecordOnUniqueColumnExists(SchemaRecordEditorDialogContext sredc, ConnectionContext cc) throws NamingException, SQLException
     {
-        if (insertDataTemplateProducer == null) return false;
-        templateInstances = insertDataTemplateProducer.getInstances();
-    }
+        boolean duplicateFound = false;
 
-    if(templateInstances.size() == 0)
-        return false;
+        List templateInstances = null;
 
-    // make sure to get the last template only because inheritance may have create multiples
-    Template editDataTemplate = (Template) templateInstances.get(templateInstances.size()-1);
-    List childTableElements = editDataTemplate.getChildren();
-    for(int i = 0; i < childTableElements.size(); i++)
-    {
-        TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
-        if (childTableNode instanceof TemplateElement) {
-            TemplateElement childTableElement = (TemplateElement) childTableNode;
-            SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, childTableElement);
-            if(! stte.isTableFound())
-                return false;
+        if (sredc.editingData())
+        {
+            if (editDataTemplateProducer == null) return false;
+            templateInstances = editDataTemplateProducer.getInstances();
+        }
+        else
+        {
+            if (insertDataTemplateProducer == null) return false;
+            templateInstances = insertDataTemplateProducer.getInstances();
+        }
 
-            Table table = stte.getTable();
+        if (templateInstances.size() == 0)
+            return false;
 
-            ValueSource primaryKeyValueSource = null;
-            Object primaryKeyValue = null;
-
-            if (sredc.editingData())
+        // make sure to get the last template only because inheritance may have create multiples
+        Template editDataTemplate = (Template) templateInstances.get(templateInstances.size() - 1);
+        List childTableElements = editDataTemplate.getChildren();
+        for (int i = 0; i < childTableElements.size(); i++)
+        {
+            TemplateNode childTableNode = (TemplateNode) childTableElements.get(i);
+            if (childTableNode instanceof TemplateElement)
             {
-                primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+                TemplateElement childTableElement = (TemplateElement) childTableNode;
+                SchemaTableTemplateElement stte = new SchemaTableTemplateElement(sredc, childTableElement);
+                if (!stte.isTableFound())
+                    return false;
 
-                if(primaryKeyValueSource == null)
-                    sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[] { table.getName() });
-                else
-                    primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
-            }
+                Table table = stte.getTable();
 
+                ValueSource primaryKeyValueSource = null;
+                Object primaryKeyValue = null;
 
-            Attributes templateAttributes = childTableElement.getAttributes();
-            for(int j = 0; j < templateAttributes.getLength(); j++)
-            {
-                String columnName = templateAttributes.getQName(j);
-                String columnTextValue = templateAttributes.getValue(j);
-
-                // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
-                // we want to do this update or false if we don't
-                if(columnName.equalsIgnoreCase(ATTRNAME_CONDITION))
+                if (sredc.editingData())
                 {
-                    if(! isConditionalExpressionTrue(sredc, columnTextValue))
-                        break; // don't bother setting values since we're not inserting
+                    primaryKeyValueSource = stte.getPrimaryKeyValueSource();
+
+                    if (primaryKeyValueSource == null)
+                        sredc.getValidationContext().addValidationError("Unable to locate primary key for table {0} because value source is NULL.", new Object[]{table.getName()});
+                    else
+                        primaryKeyValue = primaryKeyValueSource.getValue(sredc).getValue();
                 }
 
-                // these are private "instructions"
-                if(columnName.startsWith("_"))
-                    continue;
+                Attributes templateAttributes = childTableElement.getAttributes();
 
-                Column column = table.getColumns().getByName(columnName);
+                Indexes indexes = table.getIndexes();
+                for (int j = 0; j < indexes.size(); j++)
+                {   //Iterate through all of the indexes.  This includes all of the single columns indexes that are created when
+                    //a columns is marked as unique.
 
-                if(column == null || !column.isUnique())    //if that column doesn't exist or is not unique then we do not worry about it
-                {
-                    continue;
-                }
+                    Index index = indexes.get(j);
+                    if (!index.isUnique())
+                        continue;
 
-                String columnValue = null;
-                DialogField.State fieldState = null;
 
-                // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
-                ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
-                if(vs == null)
-                {
-                    fieldState = sredc.getFieldStates().getState(columnTextValue);
-                    columnValue = fieldState.getValue().getTextValue();
-                }
-                else
-                    columnValue = vs.getTextValue(sredc);
+                    List fields = new ArrayList();
 
-                //if (getLog().isDebugEnabled())
-                    getLog().debug("The column name to be checked for uniqueness is: '"+ columnName +"'\nThe value to be chekcked is: '"+ columnValue + "'");
-                if (fieldState != null)// && getLog().isDebugEnabled())
-                    getLog().debug("And the field name that the column maps to is: '" + fieldState.getField().getName() + "'");
+                    IndexColumns indexColumns = index.getColumns();
+                    List params = new ArrayList();
+                    for (int k = 0; k < indexColumns.size(); k++)
+                    {   //Iterate through all of the columns in the index
+                        Column column = indexColumns.get(k);
+                        String columnTextValue = templateAttributes.getValue(column.getName());
+                        String columnValue = null;
+                        // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
+                        ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL, true);
+                        if (vs == null)
+                        {
+                            DialogField.State fieldState = sredc.getFieldStates().getState(columnTextValue);
+                            columnValue = fieldState.getValue().getTextValue();
+                            fields.add(fieldState);
+                        }
+                        else
+                            columnValue = vs.getTextValue(sredc);
 
-                QueryDefnSelect columnAccessor = table.getAccessorByColumnEquality(column);
-                QueryResultSet results = columnAccessor.execute(cc, new Object[] { columnValue }, false);
-                ResultSet resultSet = results.getResultSet();
-
-                if (resultSet.next())
-                {
-                    if (sredc.editingData())
-                    {
-                        ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
-                        ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
-
-                        dialogVals.getByColumnIndex(0).setValue(primaryKeyValue);
-                        dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
-                        if (dbVals.equals(dialogVals))
-                            continue; // This means that the row found was the same as the one we were trying to update so it should be ok
+                        params.add(columnValue);
                     }
 
-                    getLog().error("A Unique constraint violation found for Table: '" + table.getName() + "' Column: '" + columnName + "'");
-                    if (fieldState == null || fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
-                        sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
-                    else
-                        fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
-                    duplicateFound =  true;
+                    QueryDefnSelect indexAccessor = null;
+                    indexAccessor = table.getAccessorByIndexEquality(index);
+
+                    QueryResultSet results = indexAccessor.execute(cc, params.toArray(), false);
+                    ResultSet resultSet = results.getResultSet();
+
+                    if (resultSet.next())
+                    {
+                        if (sredc.editingData())
+                        {
+                            ColumnValues dialogVals = table.createRow().getPrimaryKeyValues();
+                            ColumnValues dbVals = table.createRow().getPrimaryKeyValues();
+
+                            dialogVals.getByColumnIndex(0).setValue(primaryKeyValue);
+                            dbVals.getByColumnIndex(0).setValueFromSqlResultSet(resultSet, 0, resultSet.findColumn(table.getPrimaryKeyColumns().get(0).getName()));
+                            if (dbVals.equals(dialogVals))
+                                continue; // This means that the row found was the same as the one we were trying to update so it should be ok
+                        }
+
+                        getLog().debug("A Unique constraint violation found for Table: '" + table.getName() + "' Index: '" + index.getName() + "'");
+
+                        if (fields.size() == 1)
+                        {   //If there is only one field that is violating the unqie constraint then the scenario is simple
+                            DialogField.State fieldState = (DialogField.State) fields.get(0);
+                            if (fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
+                                sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
+                            else
+                                fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
+                        }
+                        else if (fields.size() > 1)
+                        {   //If there are more than one field, then need to construct a list of the field name to show at the top of the dialog
+                            String fieldNameList = "";
+                            for (int k = 0; k < fields.size(); k++)
+                            {   //Looping through each field and invalidating it and adding to the list of fields if the field is visible and available to the user
+                                DialogField.State fieldState = (DialogField.State) fields.get(k);
+                                if (fieldState.getStateFlags().flagIsSet(DialogFieldFlags.READ_ONLY | DialogFieldFlags.INPUT_HIDDEN | DialogFieldFlags.UNAVAILABLE))
+                                {
+                                    fieldState.getField().invalidate(sredc, "The value for field: " + fieldState.getField().getName() + " must be unique.  A record was found with the same value.  Please change the value and try again.");
+                                    fieldNameList = fieldNameList + (fieldNameList.length() <= 0 ? "" : ", ") + fieldState.getField().getName();
+                                }
+                            }
+                            sredc.getValidationContext().addError("The combination of the following fields: " + fieldNameList + " must be unique. A record was found with the same set of values. Please change the values and try again.");
+
+                        }
+                        else
+                        {   //In this case, all of the values for the unqiue constrain are not comming from fields, in which case the user can't do anything to resolve the problem.
+                            sredc.getValidationContext().addError("A problem was encountered when validating that the data was able to be persisted.  Please re-open the record you were trying to edit and try it again.");
+                        }
+
+                        duplicateFound = true;
+                    }
+                    resultSet.close();
+                    results.close(true);
                 }
-                resultSet.close();
-                results.close(true);
             }
         }
+        return duplicateFound;
     }
-    return duplicateFound;
-}
+
 
 
     public boolean isValid(DialogContext dc)
