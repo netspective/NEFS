@@ -850,7 +850,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             QueryDefnSelect selectByColumn = tqd.createSelect();
             selectByColumn.setName("by-" + column.getXmlNodeName() + "-equality");
             selectByColumn.setDistinct(false);
-            tqd.addSelect(selectByColumn);
+            tqd.addSelect(selectByColumn, new String[]{"by-" + column.getName() + "-equality"});
 
             try
             {
@@ -870,12 +870,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             Index index = indexes.get(i);
 
             QueryDefnSelect selectByIndex = tqd.createSelect();
-            if(index.getColumns().size() == 1)
-            {
-                selectByIndex.setName("by-" + index.getColumns().get(0).getName() + "-equality");
-            } else
-                selectByIndex.setName("by-index-" + index.getName() + "-equality");
-
+            selectByIndex.setName("by-index-" + index.getName() + "-equality");
             selectByIndex.setDistinct(false);
             tqd.addSelect(selectByIndex);
 
@@ -1038,7 +1033,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
         if(index.getColumns().size() == 1)
             accessorName = "by-" + index.getColumns().get(0).getName() + "-equality";
-        
+
         return tqd.getSelects().get(accessorName);
     }
 

@@ -356,6 +356,11 @@ public class QueryDefinition implements QueriesNameSpace
         selects.add(select);
     }
 
+    public void addSelect(QueryDefnSelect select, String[] aliases)
+    {
+        selects.add(select, aliases);
+    }
+
     public QueryDefnFieldsValueSource getFieldsValueSource()
     {
         return fieldsValueSource;

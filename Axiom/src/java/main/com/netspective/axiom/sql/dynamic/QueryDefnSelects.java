@@ -62,6 +62,13 @@ public class QueryDefnSelects
         selectsByName.put(select.getQualifiedName(), select);
     }
 
+    public void add(QueryDefnSelect select, String[] aliases)
+    {
+        add(select);
+        for(int i = 0; i < aliases.length; i++)
+            selectsByName.put(aliases[i], select);
+    }
+
     public QueryDefnSelect get(int i)
     {
         return (QueryDefnSelect) selects.get(i);
