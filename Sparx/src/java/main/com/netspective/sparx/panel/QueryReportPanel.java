@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.7 2003-06-21 21:42:00 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.8 2003-06-26 07:07:51 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -125,13 +125,23 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
         this.urlFormats = urlFormats;
     }
 
+    /**
+     * Executes the query and assigns the result set to a new report data source object
+     * @param nc
+     * @return
+     */
     public TabularReportDataSource createDataSource(NavigationContext nc)
     {
         try
         {
             QueryResultSet resultSet = (QueryResultSet) nc.getAttribute("QRS-" + this.hashCode());
             if(resultSet == null)
-                resultSet = query.execute(nc, null, false);
+            {
+                if (isScrollable())
+                    resultSet = query.execute(nc, null, true);
+                else
+                    resultSet = query.execute(nc, null, false);
+            }
             QueryResultSetDataSource qrsds = new QueryResultSetDataSource(NO_DATA_MSG);
             qrsds.setQueryResultSet(resultSet);
             return qrsds;
@@ -152,7 +162,11 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
             report = new BasicHtmlTabularReport();
             try
             {
-                QueryResultSet resultSet = query.execute(nc, null, false);
+                QueryResultSet resultSet = null;
+                if (isScrollable())
+                    resultSet = query.execute(nc, null, true);
+                else
+                    resultSet = query.execute(nc, null, false);
                 resultSet.fillReportFromMetaData(report);
                 nc.setAttribute("QRS-" + this.hashCode(), resultSet); // store the result set so we don't run it again
             }
