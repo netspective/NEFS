@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DurationField.java,v 1.1 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: DurationField.java,v 1.2 2003-06-09 06:54:35 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -98,10 +98,18 @@ public class DurationField extends DialogField
     protected DateTimeField beginField;
     protected DateTimeField endField;
 
+
     public DurationField()
     {
         super();
+        createContents();
+    }
 
+    /**
+     * Creates the begin and end children fields
+     */
+    public void createContents()
+    {
         beginField = new DateTimeField();
         beginField.setName("begin");
         beginField.setCaption(new StaticValueSource("Begin"));
@@ -109,9 +117,6 @@ public class DurationField extends DialogField
         endField = new DateTimeField();
         endField.setName("end");
         endField.setCaption(new StaticValueSource("End"));
-
-        addField(beginField);
-        addField(endField);
     }
 
     public DialogField.Flags createFlags()
@@ -172,5 +177,13 @@ public class DurationField extends DialogField
             invalidate(dc, "Beginning value should be before ending value.");
             return;
         }
+    }
+
+    public void finalizeContents()
+    {
+        // add the begin and end fields
+        addField(beginField);
+        addField(endField);
+        super.finalizeContents();
     }
 }
