@@ -1,4 +1,4 @@
-<#include "*/library.ftl"/>
+<#include "/content/library.ftl"/>
 
 <table cellpadding=5>
     <tr valign=top>
