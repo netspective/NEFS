@@ -32,6 +32,8 @@
  */
 package com.netspective.sparx.console.panel.data.schema;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +62,7 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
     private static final Log log = LogFactory.getLog(SchemaTableColumnsPanel.class);
     public static final String REQPARAMNAME_SHOW_DETAIL_TABLE = "schema-table";
     private static final HtmlTabularReport columnsReport = new BasicHtmlTabularReport();
+    private static final String ATTRID_ACTIVE_TABLE = "ACTIVE_TABLE";
 
     static
     {
@@ -109,8 +112,19 @@ public class SchemaTableColumnsPanel extends AbstractHtmlTabularReportPanel
         if(selectedRow == null)
             return new SimpleMessageDataSource(SchemaTablesPanel.noTableSelected);
         else
-            return createColumnsDataSource(nc, selectedRow.tableTreeNode != null
-                                               ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable);
+        {
+            final Table activeTable = selectedRow.tableTreeNode != null
+                                      ? selectedRow.tableTreeNode.getTable() : selectedRow.enumTable;
+            nc.setAttribute(ATTRID_ACTIVE_TABLE, activeTable);
+            return createColumnsDataSource(nc, activeTable);
+        }
+    }
+
+    public void renderBeforeReport(Writer writer, NavigationContext nc, Theme theme, TabularReportDataSource ds) throws IOException
+    {
+        Table table = (Table) nc.getAttribute(ATTRID_ACTIVE_TABLE);
+        if(table != null)
+            writer.write("<div class='textbox'>" + table.getDescription() + "</div>");
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
