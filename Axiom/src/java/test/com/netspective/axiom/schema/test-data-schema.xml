@@ -11,6 +11,7 @@
       <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
       <table-type name="Default" type="Versioned"/>
+      <table name="Record_Status" type="Record_Status"/>
 
       <table name="SchemaTest" abbrev="SchTst" type="Default">
          <description>
@@ -77,6 +78,7 @@
       <xdm:include resource="com/netspective/axiom/conf/schema.xml"/>
 
       <table-type name="Default" type="Versioned"/>
+      <table name="Record_Status" type="Record_Status"/>
 
       <table name="Test_Three" abbrev="Tst3" type="Default">
          <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
