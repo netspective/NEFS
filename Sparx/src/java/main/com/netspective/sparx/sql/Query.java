@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.3 2003-05-23 02:18:41 shahid.shah Exp $
+ * $Id: Query.java,v 1.4 2003-06-21 21:42:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.sql;
@@ -75,6 +75,12 @@ public class Query extends com.netspective.axiom.sql.Query
             result.getFrame().setHeading(new StaticValueSource("Query: " + Query.this.getQualifiedName()));
             result.setQuery(Query.this);
             return result;
+        }
+
+        // created here because we need to ignore text but can't include public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+        public void addText(String text)
+        {
+
         }
 
         public void addPanel(QueryReportPanel panel)

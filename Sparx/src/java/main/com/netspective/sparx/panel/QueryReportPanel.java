@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.6 2003-05-30 23:11:34 shahid.shah Exp $
+ * $Id: QueryReportPanel.java,v 1.7 2003-06-21 21:42:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -51,6 +51,7 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
@@ -60,6 +61,7 @@ import com.netspective.axiom.sql.QueryResultSet;
 
 public class QueryReportPanel extends AbstractHtmlTabularReportPanel
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(QueryReportPanel.class);
     private static final ValueSource NO_DATA_MSG = new StaticValueSource("No data in query results.");
 

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: HtmlPanelBanner.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: HtmlPanelBanner.java,v 1.3 2003-06-21 21:42:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -62,11 +62,13 @@ import java.util.ArrayList;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.panel.HtmlPanelAction;
 import com.netspective.sparx.panel.HtmlPanelActions;
 
 public class HtmlPanelBanner
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     public static class Style extends XdmEnumeratedAttribute
     {
         public static final int HORIZONTAL = 0;
