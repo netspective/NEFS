@@ -51,24 +51,28 @@
  */
 
 /**
- * $Id: RecordEditorPanel.java,v 1.2 2004-03-01 18:50:04 aye.thu Exp $
+ * $Id: RecordEditorPanel.java,v 1.3 2004-03-02 07:36:06 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
+import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.value.source.RedirectValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateConsumerDefn;
 import com.netspective.sparx.Project;
+import com.netspective.sparx.command.RecordEditorCommand;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.report.tabular.HtmlReportActions;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.sql.Query;
 import com.netspective.sparx.sql.QueryDefinition;
 import com.netspective.sparx.theme.Theme;
@@ -82,18 +86,37 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
 {
     private static final Log log = LogFactory.getLog(RecordEditorPanel.class);
 
-    public static final String DEFAULT_REPORT_SKIN = "";
+    public static final String PANEL_RECORD_EDIT_ACTION     = "Edit";
+    public static final String PANEL_RECORD_ADD_ACTION      = "Add";
+    public static final String PANEL_RECORD_MANAGE_ACTION  = "Add/Edit";
+    public static final String PANEL_RECORD_DONE_ACTION     = "Done";
+    public static final String PANEL_RECORD_DELETE_ACTION   = "Delete";
+
+    // the following are all the possible modes that the editor panel can be in
+    public static final int UNKNOWN_MODE                = -1;
+    public static final int DEFAULT_DISPLAY_MODE        = 1;    /* default display report mode */
+    public static final int EDIT_RECORD_DISPLAY_MODE    = 2;    /* editing a record mode (dialog and report) */
+    public static final int DELETE_RECORD_DISPLAY_MODE  = 3;    /* deleting a record mode (dialog and report) */
+    public static final int ADD_RECORD_DISPLAY_MODE     = 4;    /* add a record mode (dialog and report) */
+    public static final int MANAGE_RECORDS_DISPLAY_MODE = 5;    /* managing records mode (report only but different from default) */
+
+    /* the display mode is passed to the panel using this attribute in the navigation context */
+    public static final String DISPLAY_MODE_CONTEXT_ATTRIBUTE = "record-editor-mode";
+    /* default skin to use to display query report panel */
+    public static final String DEFAULT_EDITOR_SKIN = "panel-editor";
+    /* default name assigned to the query defined in the editor panel */
     public static final String DEFAULT_QUERY_NAME = "records-query";
 
     public static final String ATTRNAME_TYPE = "record-editor-panel";
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final String[] ATTRNAMES_SET_BEFORE_CONSUMING = new String[] { "name", "dialog" };
     private static RecordEditorPanel.RecordEditorTemplateConsumerDefn recordEditorPanelConsumer = new RecordEditorPanel.RecordEditorTemplateConsumerDefn();
 
     static
     {
+        XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
         TemplateCatalog.registerConsumerDefnForClass(recordEditorPanelConsumer, RecordEditorPanel.class, true, true);
     }
-
 
     protected static class RecordEditorTemplateConsumerDefn extends TemplateConsumerDefn
     {
@@ -120,14 +143,18 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     private RecordEditorPanelsPackage nameSpace;
     /* name of the panel */
     private String name;
-    /* */
+    /* flag to indicate if the record actions for this panel have been prepared or not */
     private boolean actionsPrepared = false;
+    /* indicates what column index of the query is used as the primary key */
+    private int pkColumnIndex = 0;
+    /* indicates what request parameter is required for this panel */
+    private String requireRequestParam = null;
 
     public RecordEditorPanel(Project project)
     {
         this.project = project;
         // assign the default report skin to use
-        setReportSkin(DEFAULT_REPORT_SKIN);
+        setReportSkin(DEFAULT_EDITOR_SKIN);
     }
 
     /**
@@ -137,6 +164,26 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     {
         this(project);
         setNameSpace(pkg);
+    }
+
+    public int getPkColumnIndex()
+    {
+        return pkColumnIndex;
+    }
+
+    public void setPkColumnIndex(int pkColumnIndex)
+    {
+        this.pkColumnIndex = pkColumnIndex;
+    }
+
+    public String getRequireRequestParam()
+    {
+        return requireRequestParam;
+    }
+
+    public void setRequireRequestParam(String requireRequestParam)
+    {
+        this.requireRequestParam = requireRequestParam;
     }
 
     /**
@@ -298,20 +345,25 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
     /**
      * Generates the URL string for the associated actions
      *
-     * @param actionType    type of record action
+     * @param mode    type of record action
      * @return              url string used to construct a redirect value source
      */
-    public String generateRecordActionUrl(NavigationContext nc, int actionType)
+    public String generateRecordActionUrl(NavigationContext nc, int mode)
     {
         String url = "?";
         String existingUrlParams = nc.getHttpRequest().getQueryString();
         if (existingUrlParams != null)
             url = url + existingUrlParams + "&";
-        if (actionType == HtmlReportAction.Type.RECORD_EDIT)
-             url = url + "cmd=record-editor-panel," + this.getQualifiedName() + ",edit,${0}";
-        else if (actionType == HtmlReportAction.Type.RECORD_DELETE)
-            url = url + "cmd=record-editor-panel," + this.getQualifiedName() + ",delete,${0}";
-
+        if (mode == EDIT_RECORD_DISPLAY_MODE)
+             url = url + RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",edit,${" + pkColumnIndex + "}";
+        else if (mode == DELETE_RECORD_DISPLAY_MODE)
+            url = url + RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",delete,${" + pkColumnIndex + "}";
+        else if (mode == ADD_RECORD_DISPLAY_MODE)
+            url = url + RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",add";
+        else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
+            url = url + RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME + "=" + this.getQualifiedName() + ",manage";
+        else if (mode == DEFAULT_DISPLAY_MODE)
+            url = "";
         return url;
     }
 
@@ -319,7 +371,7 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
      *
      * @param nc
      */
-    public void prepareRecordActionUrls(NavigationContext nc)
+    protected void createPanelActions(NavigationContext nc)
     {
         QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
         if (qrp == null)
@@ -330,30 +382,114 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
             qrp.setDefault(true);
             getQuery().getPresentation().setDefaultPanel(qrp);
         }
-
         BasicHtmlTabularReport report = (BasicHtmlTabularReport) qrp.getReport();
         if (report == null)
         {
             report = new BasicHtmlTabularReport();
             qrp.addReport(report);
         }
+        // HIDE THE HEADING
+        qrp.getReport().getFlags().setFlag(TabularReport.Flags.HIDE_HEADING);
+
+        createPanelBannerActions(nc);
         if (report.getActions() == null)
         {
             HtmlReportActions actions = new HtmlReportActions();
             HtmlReportAction editAction = actions.createAction();
-            editAction.setTitle(new StaticValueSource("Edit"));
-            editAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, HtmlReportAction.Type.RECORD_EDIT)));
+            editAction.setTitle(new StaticValueSource(PANEL_RECORD_EDIT_ACTION));
+            editAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, EDIT_RECORD_DISPLAY_MODE)));
             editAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_EDIT));
 
             HtmlReportAction deleteAction = actions.createAction();
-            deleteAction.setTitle(new StaticValueSource("Delete"));
-            deleteAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, HtmlReportAction.Type.RECORD_DELETE)));
+            deleteAction.setTitle(new StaticValueSource(PANEL_RECORD_DELETE_ACTION));
+            deleteAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, DELETE_RECORD_DISPLAY_MODE)));
             deleteAction.setType(new HtmlReportAction.Type(HtmlReportAction.Type.RECORD_DELETE));
+
             actions.addAction(editAction);
             actions.addAction(deleteAction);
             report.addActions(actions);
         }
-        qrp.setReportSkin("record-editor");
+        qrp.setReportSkin(DEFAULT_EDITOR_SKIN);
+        actionsPrepared = true;
+    }
+
+    /**
+     *
+     * @param nc
+     */
+    protected void createPanelBannerActions(NavigationContext nc)
+    {
+        // Calculate what to display in the banner
+        QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
+        if (qrp.getBanner() == null)
+        {
+            qrp.setBanner(new HtmlPanelBanner());
+        }
+        HtmlPanelBanner banner = qrp.getBanner();
+        HtmlPanelActions actions = new HtmlPanelActions();
+
+        HtmlPanelAction manageAction = banner.createAction();
+        //addAction.setIcon(ValueSources.getInstance().createValueSourceOrStatic("servlet-context-uri:/resources/sparx/theme/sampler/images/panel/output/record-editor-add-edit.gif"));
+        manageAction.setCaption(new StaticValueSource(PANEL_RECORD_MANAGE_ACTION));
+        manageAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, MANAGE_RECORDS_DISPLAY_MODE)));
+        actions.add(manageAction);
+
+        HtmlPanelAction addAction = banner.createAction();
+        //addAction.setIcon(ValueSources.getInstance().createValueSourceOrStatic("servlet-context-uri:/resources/sparx/theme/sampler/images/panel/output/record-editor-add-edit.gif"));
+        addAction.setCaption(new StaticValueSource(PANEL_RECORD_ADD_ACTION));
+        addAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, ADD_RECORD_DISPLAY_MODE)));
+        actions.add(addAction);
+
+        HtmlPanelAction doneAction = banner.createAction();
+        //doneAction.setIcon(ValueSources.getInstance().createValueSourceOrStatic("servlet-context-uri:/resources/sparx/theme/sampler/images/panel/output/record-editor-done.gif"));
+        doneAction.setCaption(new StaticValueSource(PANEL_RECORD_DONE_ACTION));
+        doneAction.setRedirect(new RedirectValueSource(generateRecordActionUrl(nc, DEFAULT_DISPLAY_MODE)));
+        actions.add(doneAction);
+
+        banner.setActions(actions);
+    }
+
+    /**
+     *
+     * @param nc
+     * @param vc
+     */
+    public void preparePanelActionStates(NavigationContext nc, HtmlTabularReportValueContext vc)
+    {
+        HtmlPanelActionStates actionStates = vc.getPanelActionStates();
+        QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
+        HtmlPanelActions actions = qrp.getBanner().getActions();
+
+        int mode = ((Integer) nc.getAttribute(DISPLAY_MODE_CONTEXT_ATTRIBUTE)).intValue();
+        if (mode == DEFAULT_DISPLAY_MODE)
+        {
+            actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            actionStates.getState(PANEL_RECORD_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+        }
+        else if (mode == ADD_RECORD_DISPLAY_MODE || mode == EDIT_RECORD_DISPLAY_MODE || mode == DELETE_RECORD_DISPLAY_MODE)
+        {
+            actionStates.getState(PANEL_RECORD_DONE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            actionStates.getState(PANEL_RECORD_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+            actionStates.getState(PANEL_RECORD_ADD_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+        }
+        else if (mode == MANAGE_RECORDS_DISPLAY_MODE)
+        {
+            actionStates.getState(PANEL_RECORD_MANAGE_ACTION).getStateFlags().setFlag(HtmlPanelAction.Flags.HIDDEN);
+        }
+
+
+    }
+
+    /**
+     * Check to see if all the actions needed for the editor panel have been ADDED. The
+     * adding of the actions need to be done only once and this flag is set
+     * once the addition is done.
+     *
+     * @return  True if all required actions have been added
+     */
+    public boolean isActionsPrepared()
+    {
+        return actionsPrepared;
     }
 
     /**
@@ -363,16 +499,27 @@ public class RecordEditorPanel extends AbstractHtmlTabularReportPanel implements
      */
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        // handle the basic display mode first
         com.netspective.sparx.sql.Query query = (com.netspective.sparx.sql.Query) getQuery();
         if(query == null)
         {
             throw new RuntimeException("Query not found in "+ this +".");
         }
-        if (!actionsPrepared)
-            prepareRecordActionUrls(nc);
+        if (getRequireRequestParam() != null)
+        {
+            if (nc.getHttpRequest().getParameter(getRequireRequestParam()) == null)
+                throw new RuntimeException("Record editor panel '" + getQualifiedName() + "' requires the request " +
+                        "parameter '" + getRequireRequestParam() + "'.");
+        }
+        // add all the required panel actions
+        if (!isActionsPrepared())
+            createPanelActions(nc);
         QueryReportPanel qrp = getQuery().getPresentation().getDefaultPanel();
-        qrp.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
+        HtmlTabularReportValueContext context = qrp.createContext(nc, theme);
+        context.setPanelRenderFlags(flags);
+
+        // process the context to calculate the states of the panel actions
+        preparePanelActionStates(nc, context);
+        qrp.render(writer, context, qrp.createDataSource(nc));
     }
 
 
