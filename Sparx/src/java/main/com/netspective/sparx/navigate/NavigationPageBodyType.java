@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationPageBodyType.java,v 1.2 2003-08-14 14:23:30 shahid.shah Exp $
+ * $Id: NavigationPageBodyType.java,v 1.3 2003-10-24 03:25:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -72,7 +72,5 @@ public class NavigationPageBodyType extends XdmEnumeratedAttribute
     {
         return VALUES;
     }
-
-
 }
 
