@@ -2,6 +2,65 @@
 
 <netspective>
     <release>
+        <product name="Sparx" version="7.1.0"/>
+        <change-log>
+            <summary>Major and minor enhancements</summary>
+            <change-log-entry>
+                <![CDATA[
+                Created a new component called <b>panel editor</b> which contains children elements that are
+                comprised of a <i>content</i> and a <i>dialog</i>  for editing the <i>content</i>.  The dialog is for
+                adding, editing, and deleting information related to the <i>content</i> of the panel editor child element.
+                Currently, the panel editor supports <b>report</b> type children elements whose <i>content</i> is a report.
+                An example of a declaration of panel editor is shown below:
+                <panel-editors package="samplePanelEdiorPkg">
+                    <panel-editor  name="samplePanelEditor" require-request-param="abc">
+                        <frame heading="Sample Panel Editor"/>
+                        <element type="report" name="contacts" caption="Sample Element" pk-column-index="0" >
+                            <dialog>
+                                ...
+                                ...
+                            </dialog>
+                            <query>
+                                ...
+                                ...
+                            </query>
+                        </element>
+                        <element .../>
+                    </panel-editor>
+                </panel-editors>
+                As you can see, the panel editors are defined using a package similar to dialogs and queries. Each
+                panel editor can have multiple child elements and each element will have their own content declaration (in
+                this case, a query and a dialog). The dialog will be used to add, edit, and delete records related to
+                the query. The dialog doesn't have to be defined inside the panel editor and can be referenced using the
+                <code>dialogRef</code> attribute. The attribute <code>pk-column-index</code> is used to define
+                which column from the query report should be used for edit and delete actions. A panel editor can be invoked using commands like:
+                <code>command="panel-editor,samplePanelEditorPkg.samplePanelEditor"</code>.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                Added a new field type called <b>Section</b> which is similar to the Composite field. The new field allows
+                grouping of fields based on how you want to lay them out in the dialog. The main idea behind this field is
+                to allow different layouts within the dialog without having to extend from existing field classes. Currently, this
+                field is NOT SUPPORTED in the default dialog skin. A new skin named <i>modern</i> will be introduced
+                later on that will support this new field type.
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                Added a new attribute for the Select field called <code>max-item-per-row</code> to support grouping for
+                checkboxes. By default, the value is 1 and all checkboxes are displayed in one column. When the value is set
+                to 2, the checkboxes will be displayed in two columns.
+                ]]>
+            </change-log-entry>
+            <change-log-entry>
+                <![CDATA[
+                <code>HtmlTabularReport</code> interface now includes an extra method called addActions()
+                and <code>BasicHtmlTabularReport</code> implements it. All classes that directly implement the interface
+                WILL BREAK until the new method is implemented.
+                ]]>
+            </change-log-entry>
+        </change-log>
+    </release>
+    <release>
         <product name="Sparx" version="7.0.21"/>
         <change-log>
             <summary>Minor bug fixes and enhancements</summary>
