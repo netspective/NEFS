@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentTask.java,v 1.2 2003-07-08 02:29:33 shahid.shah Exp $
+ * $Id: XdmComponentTask.java,v 1.3 2003-07-17 13:49:54 shahid.shah Exp $
  */
 
 package com.netspective.commons.ant;
@@ -52,6 +52,8 @@ import java.util.HashMap;
 
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Delete;
 
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.xdm.XdmComponent;
@@ -74,7 +76,21 @@ public abstract class XdmComponentTask extends Task
     private boolean metrics = false;
     private boolean debug = false;
     private boolean executeHandled = false;
+    private boolean cleanFirst = false;
     private String genIdConstantsRootPkgAndClass;
+    private Delete deleteTask = new Delete();
+
+    public void setTaskName(String name)
+    {
+        super.setTaskName(name);
+        deleteTask.setTaskName(name);
+    }
+
+    public void setProject(Project project)
+    {
+        super.setProject(project);
+        deleteTask.setProject(project);
+    }
 
     public void init() throws BuildException
     {
@@ -86,6 +102,7 @@ public abstract class XdmComponentTask extends Task
         debug = false;
         metrics = false;
         executeHandled = false;
+        cleanFirst = false;
         genIdConstantsRootPkgAndClass = null;
     }
 
@@ -112,6 +129,26 @@ public abstract class XdmComponentTask extends Task
         actionHandler = (ActionHandler) actionHandlers.get(action);
         if(actionHandler == null)
             throw new BuildException("Unknown action '"+ action +"'. Available: " + actionHandlers.keySet());
+    }
+
+    public boolean isCleanFirst()
+    {
+        return cleanFirst;
+    }
+
+    public void setCleanFirst(boolean cleanFirst)
+    {
+        this.cleanFirst = cleanFirst;
+    }
+
+    /**
+     * Deletes the contents of the given directory.
+     * @param dir The directory to delete
+     */
+    public synchronized void delete(File dir)
+    {
+        deleteTask.setDir(dir);
+        deleteTask.execute();
     }
 
     public boolean isExecuteHandled()
@@ -179,7 +216,10 @@ public abstract class XdmComponentTask extends Task
         if(getDestDir() != null || genIdConstantsRootPkgAndClass != null)
         {
             if(getDestDir() == null || genIdConstantsRootPkgAndClass == null)
-                throw new BuildException("idConstantsFile and idConstantsClass are both required to generate Identifier Constants.");
+                throw new BuildException("destDir and idConstantsClass are both required to generate Identifier Constants.");
+
+            if(isCleanFirst())
+                delete(new File(getDestDir(), genIdConstantsRootPkgAndClass.replace('.', '/')));
 
             try
             {
