@@ -51,13 +51,14 @@
  */
 
 /**
- * $Id: QueryBuilderDialog.java,v 1.10 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: QueryBuilderDialog.java,v 1.11 2003-08-31 22:51:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.sql;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.SQLException;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.commons.logging.LogFactory;
@@ -108,8 +109,6 @@ import com.netspective.sparx.navigate.NavigationContext;
 
 public class QueryBuilderDialog extends Dialog
 {
-    private static final Log log = LogFactory.getLog(QueryBuilderDialog.class);
-
     public static final String QBDIALOG_QUERYDEFN_NAME_PASSTHRU_FIELDNAME = "query-defn-name";
     public static final String QBDIALOG_RESORT_PARAMNAME = "_qbd_resort";
 
@@ -603,21 +602,33 @@ public class QueryBuilderDialog extends Dialog
         String debugStr = states.getState("options.debug").getValue().getTextValue();
         if(debugStr != null && debugStr.equals("1"))
         {
+            ConnectionContext cc = null;
             try
             {
                 QueryDefnSelect select = createSelect(dc);
                 ValueSource dataSource = queryDefn.getDataSrc();
-                ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+                cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false);
                 String message = select.createExceptionMessage(cc, null);
-                cc.close();
                 writer.write("<p><pre><code>" + message + "</code></pre>");
                 return;
             }
             catch (Exception e)
             {
                 e.printStackTrace();
-                log.error("Error trying to get debug SQL", e);
-                throw new NestableRuntimeException();
+                getLog().error("Error trying to get debug SQL", e);
+                throw new DialogExecuteException(e);
+            }
+            finally
+            {
+                try
+                {
+                    if(cc != null) cc.close();
+                }
+                catch (SQLException e)
+                {
+                    getLog().error("Error while trying to close the connection", e);
+                    throw new DialogExecuteException(e);
+                }
             }
         }
 
@@ -685,7 +696,7 @@ public class QueryBuilderDialog extends Dialog
         }
         catch (Exception e)
         {
-            log.error("Exception while trying to render report", e);
+            getLog().error("Exception while trying to render report", e);
             throw new DialogExecuteException(e);
         }
     }

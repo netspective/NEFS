@@ -69,12 +69,13 @@ import com.netspective.commons.value.source.StaticValueSource;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.SQLException;
 
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
 
 /**
- * $Id: QuerySelectDialog.java,v 1.6 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: QuerySelectDialog.java,v 1.7 2003-08-31 22:51:51 shahid.shah Exp $
  */
 public class QuerySelectDialog extends QueryBuilderDialog
 {
@@ -208,13 +209,13 @@ public class QuerySelectDialog extends QueryBuilderDialog
             String debugStr = states.getState("options.debug").getValue().getTextValue();
             if(debugStr != null && debugStr.equals("1"))
             {
+                ConnectionContext cc = null;
                 try
                 {
                     QueryDefnSelect select = qdSelect;
                     ValueSource dataSource = getQueryDefn().getDataSrc();
-                    ConnectionContext cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false, ConnectionContext.OWNERSHIP_DEFAULT);
+                    cc = dc.getConnection(dataSource != null ? dataSource.getTextValue(dc) : null, false);
                     String message = select.createExceptionMessage(cc, null);
-                    cc.close();
                     writer.write("<p><pre><code>" + message + "</code></pre>");
                     return;
                 }
@@ -222,7 +223,19 @@ public class QuerySelectDialog extends QueryBuilderDialog
                 {
                     e.printStackTrace();
                     //log.error("Error trying to get debug SQL", e);
-                    throw new NestableRuntimeException();
+                    throw new DialogExecuteException(e);
+                }
+                finally
+                {
+                    try
+                    {
+                        if(cc != null) cc.close();
+                    }
+                    catch (SQLException e)
+                    {
+                        getLog().error("Error while trying to close the connection", e);
+                        throw new DialogExecuteException(e);
+                    }
                 }
             }
         }
