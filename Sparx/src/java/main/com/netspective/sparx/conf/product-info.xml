@@ -71,6 +71,15 @@
                 <source home-uri="http://jwebunit.sourceforge.net/"
                     license="Open Source, Free, Custom License"/>
             </library>
+
+            <library>
+                <name>Jakarta Lucene Full Text Search API</name>
+                <version>1.4</version>
+                <class-path>lucene.jar</class-path>
+                <source home-uri="http://jakarta.apache.org/lucene"
+                    license="Apache Software License"
+                    license-uri="http://www.apache.org/LICENSE"/>
+            </library>
         </dependencies>
     </product>
 </netspective>
