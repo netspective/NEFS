@@ -30,14 +30,15 @@
   </section>
 
   <section>
-    <title>Centrally Manage and Visualize Your Project</title>
+    <title>Central Management and Visualization of Your Project</title>
 
     <section>
       <title>Project</title>
 
       <para>The Console serves as the central repository for all your project
-      components. It enables you to manage and visualize all the static and
-      dynamic components using one thin client.</para>
+      components. Unlike other existing frameworks, NEFS Console provides a
+      window into your application. It enables you to manage and visualize all
+      the static and dynamic components using one thin client.</para>
 
       <para><table frame="none">
           <title>Centrally Manage and Visualize Your Project</title>
@@ -98,7 +99,7 @@
       (using the XML definitions and XSLT stylesheets) all the pages,
       forms/dialogs, sql statements, schema objects, and other programming
       artifacts. The HTML based design documentation and functional specs help
-      your team visualiza various application components. </para>
+      your team visualize various application components.</para>
 
       <para><note>
           <para>Also, using simple stylesheets developers can create docbook
@@ -111,7 +112,7 @@
       <title>Navigation</title>
 
       <para>The Console provides a complete HTML based representation of the
-      workflow of your application. Using the Console's NAvigation Tree
+      workflow of your application. Using the Console's Navigation Tree
       Inspector you can easily.</para>
 
       <para>All of the navigation trees that are externalized in XML files
@@ -201,12 +202,21 @@
         legacy databases that may not be built with fully relational
         integrity.</para>
 
-        <para>Using the XML-based schema definition, all the database tables,
-        columns, indexes, SQL DDL, and Java data access can be automatically
-        documented in the Console.</para>
+        <para>Now you don't need experienced DBAs to create consistent,
+        high-quality SQL DDL during the design and construction phases of your
+        application. Also, because almost all schema resources are defined in
+        XML, Sparx allows for re-use of Schemas across applications and
+        different database vendors. This continued re-use provides standard
+        behaviors for columns and tables across your enterprise, ensuring
+        stable applications.</para>
+
+        <para>Another benefit of this approach is that by using the XML-based
+        schema definition, all the database tables, columns, indexes, SQL DDL,
+        and Java data access can be automatically documented in the Console.
+        </para>
 
         <para><table frame="none">
-            <title>Automatically generate Schema Doc</title>
+            <title>Automatically Generate Schema Doc</title>
 
             <tgroup cols="2">
               <tbody>
@@ -260,7 +270,7 @@
         <title>Table Types Dictionary</title>
 
         <para>The Axiom Table Types dictionary contains definitions for
-        generic tables and bevaiors that can be inherited by real tables.
+        generic tables and behaviors that can be inherited by real tables.
         Table types work as “table templates” that allow a programmer to
         specify a table type. They may be inherited from other table types,
         allowing better reuse and object-orientation in relational
@@ -269,12 +279,13 @@
         <para>You can view the complete documentation for the built-in as well
         as custom table types through the Console. Note that this
         documentation is automatically generated when you define a new table
-        type.</para>
+        type. </para>
 
         <para></para>
 
         <para><figure>
-            <title>View Built-in and Custom Table Types</title>
+            <title>Avoid Rewriting Common Schema Elements Using
+            Dictionaries</title>
 
             <mediaobject>
               <imageobject>
@@ -282,6 +293,9 @@
               </imageobject>
             </mediaobject>
           </figure></para>
+
+        <para>The dictionaries shield your database programmers from rewriting
+        common schema elements for every new application.</para>
       </section>
 
       <section>
@@ -289,7 +303,7 @@
 
         <para>Almost all components of a SQL statement are automatically
         captured and documented within the Console. This includes a list of
-        all the SQL statements used througout the application, the parameters
+        all the SQL statements used throughout the application, the parameters
         they require, and any views that may be attached to them.</para>
 
         <para>NEFS allows all SQL statements and dynamic parameters used in a
@@ -375,7 +389,7 @@
           </figure></para>
 
         <para>The full documentation for each command is also available
-        automatically through the Console. </para>
+        automatically through the Console.</para>
 
         <para><figure>
             <title>Command Documentation</title>
@@ -394,7 +408,7 @@
         <para>Value Sources allow dynamic data to be included in XML without
         creating a programming language inside XML They allow common business
         logic and business values to be stored in shareable instance and then
-        used either in XML or Java files where necessary. </para>
+        used either in XML or Java files where necessary.</para>
 
         <para>The NEF ships with many built-in value sources and you can
         create as many value sources as you need on your own. You can view a
@@ -414,7 +428,7 @@
           </figure></para>
 
         <para>The full documentation for each value source is automatically
-        available through the Console. </para>
+        available through the Console.</para>
 
         <para><figure>
             <title>Value Source Documentation</title>
@@ -454,7 +468,7 @@
     different phases of development. Now you can easily access the full
     configuration details from a central console application. The availability
     of complete configuration information greatly helps in the debugging
-    process. </para>
+    process.</para>
 
     <para><table frame="none">
         <title>Easy Management of Configuration Parameters</title>
@@ -549,8 +563,8 @@
     <section>
       <title>Custom Pages and Classes</title>
 
-      <para>TYou can define your own pages and handler classes to customize
-      the framework according to your own needs. All the page definitions are
+      <para>You can define your own pages and handler classes to customize the
+      framework according to your own needs. All the page definitions are
       available for analysis through the Console. Similarly, all the built-in
       and custom handlers are also available for viewing through the
       Console.</para>
@@ -602,7 +616,7 @@
       <para>They also provide the ability to create new fields or modify
       existing ones. These fields are similar to HTML fields but are far more
       powerful because they can format and validate themselves according to
-      rules that you declare. </para>
+      rules that you declare.</para>
 
       <para>Sparx comes with lots of pre-defined field types. The Console
       always displays all of the available field types (including all built-in
@@ -627,9 +641,11 @@
     running automated unit tests. While developers are working on forms and
     SQL statements, Console automatically provides browser-based testing of
     the forms and statements. No servlets, or JSPs need to be written for
-    basic testing of forms, validations, and SQL statements. This provides the
-    ability to quickly test things "<emphasis>in container</emphasis>" without
-    requiring any extra effort from the development team.<note>
+    basic testing of forms, validations, and SQL statements. This also means
+    that no compilation or configuration effort is required for testing your
+    app components. This provides the ability to quickly test things
+    "<emphasis>in container</emphasis>" without requiring any extra effort
+    from the development team.<note>
         <para>The testing is done using the same classloader, classpaths, and
         other container (app server) configurations as the ones used by the
         application. So problems related to the container are easier to
@@ -732,16 +748,63 @@
     </section>
 
     <section>
-      <title>Database Schema</title>
+      <title>Data Sources</title>
 
-      <para>Table Dialogs - what they are and how the ease development. NEFS
-      automatically provides testing of schema tables.</para>
+      <para>NEFS provides XML tags for definition of your data sources. You
+      can either use the default data source or define your own data source.
+      All the data sources, defined by the Axiom tag, are automatically
+      documented and managed by the Console. You can view your data source(s)
+      through this Data Sources Catalog.</para>
+
+      <para><figure>
+          <title>Data Sources Catalog</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-datasource-small.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <section>
+        <title>SQL Explorer</title>
+
+        <para>You can use the SQL Explorer within the Console to unit test
+        tables within your schema. Now you do not require any other database
+        management tool to manage your database tables. Your database
+        programmers spend time working on the tables and schema elements
+        significant to your application instead of writing test cases for
+        them. Also, you can test your DB tables without using any specific
+        database tool.</para>
+
+        <para><table frame="none">
+            <title>Unit Test the Database Tables using SQL Explorer</title>
+
+            <tgroup cols="2">
+              <tbody>
+                <row>
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-sql-explorer-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+
+                  <entry><mediaobject>
+                      <imageobject>
+                        <imagedata fileref="./resources/images/screen-console-db-test-result-small.gif" />
+                      </imageobject>
+                    </mediaobject></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+      </section>
     </section>
 
     <section>
       <title>Dynamic Queries</title>
 
-      <para></para>
+      <para>TODO: The option is not available at the moment.</para>
     </section>
   </section>
 
@@ -783,13 +846,15 @@
     <section>
       <title>Access Control Lists</title>
 
-      <para></para>
+      <para>NEF has built-in support for building user authorization rules and
+      declaratively controlling access to application components based on
+      authorization rules such as roles and permissions.</para>
     </section>
 
     <section>
       <title>Permission management</title>
 
-      <para></para>
+      <para>Hierarchical permissions and roles.</para>
     </section>
 
     <section>
@@ -814,14 +879,16 @@
   <section>
     <title>Remote Development and Debugging</title>
 
-    <para>Because it uses Thin-client for Console, it supports remote
+    <para>Because it uses thin-client for Console, it supports remote
     development and debugging. This is beneficial regardless of where the
-    development team is physically located. It works well with teams where
-    team members are situated in different cities or even continents.</para>
+    development team is physically located. This means that multiple
+    developers in different cities can now review code across hundreds of
+    miles using this thin-client web application.</para>
 
-    <para>Collectively administer the framework and all the processes.</para>
-
-    <para>Managers can use console for tracking programmer work and
+    <para>A developer in one city could easily demonstrate prototypes to a
+    customer in another city with no extra work. All the team members can now
+    collectively administer the framework and all the processes. At the same
+    time, managers can use the Console for tracking programmer work and
     productivity.</para>
   </section>
 
@@ -829,7 +896,9 @@
     <title>Reverse Engineering the Existing Database</title>
 
     <para>The Console provides a facility to reverse engineer a schema from an
-    existing JDBC data source into Axiom's schema XML.</para>
+    existing JDBC data source into Axiom's schema XML. Using this facility,
+    you can reverse engineer your existing databases and use them in your
+    applications, without requiring any extra effort.</para>
 
     <para><figure>
         <title>Reverse Engineer an Existing Database</title>
@@ -845,39 +914,87 @@
   <section>
     <title>Automated Code Generation</title>
 
-    <para>Once declared, the schema descriptor supports completely automatic
+    <para>The XML declarations for schema definition can be used to generate
+    database-specific SQL DDL allowing a single XML source schema to work in a
+    variety of SQL relational databases (like Oracle, SQL Server, MySQL,
+    etc.). Once declared, the schema descriptor supports completely automatic
     generation of SQL DML (insert/updates/removes), SQL DDL (create tables,
     objects, etc), and XML import/export.</para>
-
-    <para>HTML, client/server side script generation</para>
 
     <section>
       <title>DAL Generation</title>
 
-      <para>Automatically generates a complete Java O-R map to every table in
-      the schema.</para>
+      <para>Sparx generates database-independent Java Object-relational
+      classes for an entire schema, automating the majority of SQL calls by
+      providing strongly-typed Java wrappers for all tables and columns. This
+      is called the <emphasis>Application DAL (Data Access Layer)</emphasis>.
+      The result is real database integration, with your existing and future
+      applications, that costs less to maintain.</para>
+
+      <para>The entire schema becomes fully documented through the generation
+      of JavaDoc documentation (the DAL generators generate JavaDoc comments
+      automatically for all classes, members, and methods). This allows your
+      database programmers to focus on customizing high quality packaged
+      database controls.</para>
+
+      <para>Once you have a valid XML SchemaDoc, you can generate the DAL
+      through the Console. </para>
+
+      <para><figure>
+          <title>Generate Data Access Layer (DAL) Using Built-in
+          Scripts</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-dal.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
-      <title>SQL DDL Generation</title>
+      <title>SQL DDL and DML Generation</title>
 
-      <para>Generates complete SQL DDL foe almost any relational SQL
-      database.</para>
-    </section>
+      <para>Once declared, the schema descriptor supports completely automatic
+      generation of SQL DDL (create tables, objects, etc) and SQL DML (insert,
+      update, delete, etc.) for almost any relational SQL database.
+      Database-specific SQL DDL is created by applying Database Policies to
+      the &lt;schema&gt; tags. </para>
 
-    <section>
-      <title>SQL DML Generation</title>
+      <para>Leverage your existing DBAs to work on advanced SQL functionality
+      and performance while NEFS generates high quality DML automatically for
+      non-DBAs. These packaged components also result in significantly reduced
+      time to deployment of data-driven applications and web services.</para>
 
-      <para>Built-in Ant scripts are provided to automatically
-      create/update/remove DML commands.</para>
+      <para>Built-in Ant scripts are provided, through Console, to
+      automatically create/update/remove DDL and DML commands.</para>
+
+      <para><figure>
+          <title>Generate DDL Using Built-in Scripts</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-ddl.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
   </section>
 
   <section>
     <title>Version Control</title>
 
-    <para>Easy ability to version control source code and application. You may
-    use any of your version control tools such as CVS, blah blah.</para>
+    <para>NEFS fully supports version control using your existing version
+    control techniques (CVS, ClearCase, PVCS, etc.). Other frameworks with
+    consoles prevent true revision control because they put components in a
+    database <emphasis>inside</emphasis> their admin consoles and not in
+    simple revisionable text files. In these frameworks, the configuration
+    options are stored in a proprietary database where multiple versions are
+    not visible. This does not allow the developers to <emphasis>roll
+    back</emphasis> their configuration changes. Since NEFS is specifically
+    designed for large-scale applications, it stores everything in
+    user-visible, user-editable text files which are easily managed by
+    revision control.</para>
   </section>
 
   <section>
