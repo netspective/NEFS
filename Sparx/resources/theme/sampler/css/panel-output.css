@@ -46,8 +46,8 @@ td.panel-output-banner a:visited { color: #696969; font-size: 11px; font-family:
 .panel-output-tree-expand  { background: url(../images/panel/output/tree-expand.gif) no-repeat; width: 10px; cursor: hand; }
 .panel-output-tree-leaf  { background: url(../images/panel/output/tree-leaf.gif) no-repeat; width: 10px; }
 
-table.panel-layout-table      { padding: 3px }
-table.panel-layout-table div  { padding: 3px; width: auto }
+table.panel-layout-table      { padding: 0px }
+
 
 /*
  * =============================================
@@ -56,8 +56,8 @@ table.panel-layout-table div  { padding: 3px; width: auto }
  */
 
 .panel-editor       { background-color: white }
-.panel-editor-active-content { float:left; padding-right: 5px; }
-.panel-editor-display-content {  }
+.panel-editor-active-content { float:left; padding-right: 0px; }
+.panel-editor-display-content { padding: 3px; vertical-align: top }
 
 .panel-editor-frame-heading   { color: #000; font-weight: bold; font-size: 10px; font-family: Tahoma, Arial; background-image: url(../images/panel/output/frame-heading.gif); text-transform: uppercase; padding-top: 2px }
 
@@ -72,7 +72,7 @@ table.panel-layout-table div  { padding: 3px; width: auto }
 .panel-editor-frame-end-cap { background: url(../images/panel/output/end-cap.gif) no-repeat left top; width: 2px; height: 19px }
 .panel-editor-frame-begin-cap { background: url(../images/panel/output/begin-cap.gif) no-repeat left top; width: 2px; height: 19px }
 
-.panel-editor-frame-action-item           { background: url(../images/panel/output/mid.gif);  padding-right: 1px; margin:0px; vertical-align: top}
+.panel-editor-frame-action-item           { padding-bottom: 1px;background: url(../images/panel/output/mid.gif);  vertical-align: top}
 .panel-editor-frame-action-item a         { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
 .panel-editor-frame-action-item a:link    { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
 .panel-editor-frame-action-item a:visited { border-left: 1px solid #dcdcdc; border-bottom: 1px solid #696969; border-top: 1px solid #dcdcdc; border-right: 1px solid #696969; color: #444; font-weight: normal; font-size: 9px; font-family: Tahoma, sans-serif; text-decoration: none; text-transform: lowercase; background: #dddddd }
