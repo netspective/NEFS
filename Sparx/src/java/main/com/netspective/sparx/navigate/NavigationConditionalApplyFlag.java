@@ -37,7 +37,7 @@
  *
  * @author Shahid N. Shah
 
- * $Id: NavigationConditionalApplyFlag.java,v 1.7 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: NavigationConditionalApplyFlag.java,v 1.8 2003-12-31 19:01:35 shahid.shah Exp $
  */
 package com.netspective.sparx.navigate;
 
@@ -224,22 +224,27 @@ public class NavigationConditionalApplyFlag extends NavigationConditionalAction
         if(status && (this.hasPermissions != null || this.lackPermissions != null))
         {
             AuthenticatedUser authUser = nc.getAuthenticatedUser();
-            try
+            if(authUser != null)
             {
-                if(this.hasPermissions != null)
-                    hasPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
-                if(this.lackPermissions != null)
-                    lackPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
-            }
-            catch (PermissionNotFoundException e)
-            {
-                log.error("Permission error", e);
-            }
+                try
+                {
+                    if(this.hasPermissions != null)
+                        hasPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.hasPermissions);
+                    if(this.lackPermissions != null)
+                        lackPermissionFlg = authUser.hasAnyPermission(nc.getProject(), this.lackPermissions);
+                }
+                catch (PermissionNotFoundException e)
+                {
+                    log.error("Permission error", e);
+                }
 
-            // set 'status' to true only if the user lacks certain permissions and
-            // has certain permissions
-            if(lackPermissionFlg == false && hasPermissionFlg == true)
-                status = true;
+                // set 'status' to true only if the user lacks certain permissions and
+                // has certain permissions
+                if(lackPermissionFlg == false && hasPermissionFlg == true)
+                    status = true;
+                else
+                    status = false;
+            }
             else
                 status = false;
         }
