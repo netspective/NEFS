@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogFields.java,v 1.3 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: DialogFields.java,v 1.4 2003-07-09 16:51:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -71,6 +71,11 @@ public class DialogFields
     {
         this(parent.getOwner());
         this.parent = parent;
+    }
+
+    public List getFieldsList()
+    {
+        return fields;
     }
 
     protected void storeNames(DialogField field)

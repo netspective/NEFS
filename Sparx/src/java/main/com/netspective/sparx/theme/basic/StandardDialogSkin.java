@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.10 2003-06-30 02:12:54 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.11 2003-07-09 16:51:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -797,7 +797,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
             }
             errorMsgsHtml.append("</ul></td></tr>\n");
         }
-        List fileList = dialog.getIncludeJSFiles();
+        List fileList = dialog.getClientJs();
         String[] includeJSList = new String[fileList.size()];
         for (int i = 0; i < includeJSList.length; i++)
         {

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ClassReferenceMethod.java,v 1.1 2003-06-15 20:32:17 shahid.shah Exp $
+ * $Id: ClassReferenceMethod.java,v 1.2 2003-07-09 16:51:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -56,20 +56,42 @@ import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class ClassReferenceMethod implements TemplateMethodModel
 {
+    public static final Object[] PRIMITIVES = new Object[] {
+        "boolean", java.lang.Boolean.class,
+        "char", java.lang.Character.class,
+        "byte", java.lang.Byte.class,
+        "short", java.lang.Short.class,
+        "int", java.lang.Integer.class,
+        "long", java.lang.Long.class,
+        "float", java.lang.Float.class,
+        "double", java.lang.Double.class,
+        "void", java.lang.Void.class,
+    };
+
     public TemplateModel exec(List args) throws TemplateModelException
     {
         if (args.size() != 1)
             throw new TemplateModelException("Wrong arguments: expect name of class.");
 
-        String fullyQualifiedClassName = (String) args.get(0);
         Class cls = null;
-        try
+
+        String fullyQualifiedClassName = (String) args.get(0);
+        for(int i = 0; i < PRIMITIVES.length; i += 2)
         {
-            cls = Class.forName(fullyQualifiedClassName);
+            if(PRIMITIVES[i].equals(fullyQualifiedClassName))
+                cls = (Class) PRIMITIVES[i+1];
         }
-        catch (ClassNotFoundException e)
+
+        if(cls == null)
         {
-            throw new TemplateModelException("Provided class '"+ fullyQualifiedClassName +"' not found", e);
+            try
+            {
+                cls = Class.forName(fullyQualifiedClassName);
+            }
+            catch (ClassNotFoundException e)
+            {
+                throw new TemplateModelException("Provided class '"+ fullyQualifiedClassName +"' not found", e);
+            }
         }
 
         return BeansWrapper.getDefaultInstance().wrap(cls);

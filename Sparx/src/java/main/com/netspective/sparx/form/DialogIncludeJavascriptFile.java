@@ -54,7 +54,7 @@ import com.netspective.commons.value.ValueSource;
 
 /**
  * @author Aye Thu
- * $Id: DialogIncludeJavascriptFile.java,v 1.1 2003-06-20 04:16:09 aye.thu Exp $
+ * $Id: DialogIncludeJavascriptFile.java,v 1.2 2003-07-09 16:51:40 shahid.shah Exp $
  */
 public class DialogIncludeJavascriptFile
 {
@@ -78,5 +78,10 @@ public class DialogIncludeJavascriptFile
     public void setHref(ValueSource href)
     {
         this.href = href;
+    }
+
+    public String toString()
+    {
+        return href != null ? href.getSpecification().toString() : "(no href)";
     }
 }

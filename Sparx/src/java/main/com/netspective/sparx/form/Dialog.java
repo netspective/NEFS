@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.19 2003-07-09 13:12:00 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.20 2003-07-09 16:51:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -75,7 +75,6 @@ import com.netspective.sparx.form.field.type.CompositeField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.panel.AbstractPanel;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
@@ -148,9 +147,8 @@ public class Dialog extends AbstractPanel
     private String name;
     private String htmlFormName;
     private int layoutColumnsCount = 1;
-    private String[] retainRequestParams;
+    private String[] retainRequestParams = new String[0];
     private Class dcClass = DialogContext.class;
-    private ValueSource includeJSFile = ValueSource.NULL_VALUE_SOURCE;
     private List clientJavascripts = new ArrayList();
 
     /**
@@ -427,17 +425,12 @@ public class Dialog extends AbstractPanel
         value.setOwner(this);
     }
 
-    public ValueSource getIncludeJSFile()
-    {
-        return includeJSFile;
-    }
-
     /**
 	 * Gets all the javascript files to be included with this dialog
 	 *
 	 * @return ArrayList
 	 */
-	public List getIncludeJSFiles()
+	public List getClientJs()
 	{
 		return this.clientJavascripts;
 	}

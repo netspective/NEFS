@@ -1,4 +1,4 @@
-* Add DCB's that can populate actions
+* Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
 * Add feature to hide/disable submit buttons once the submit button is pressed (in case it takes time to submit something) -- perhaps replace button with "please wait..."
@@ -7,7 +7,6 @@
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
-* Add ID constants generator to Sparx components (just like Axiom components)
 * Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
@@ -15,6 +14,9 @@
 * Add 'forward', 'action', tags to <page> in navigation tree and connect to <director>
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
+* Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
+* Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
+* Consider ways of allowing Console to be extended in end-user applications by allow "object" insertion capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
 * Use http://erw.dsi.unimi.it/ (ERW) to help explain Axiom and its features, benefits, etc.
@@ -22,12 +24,8 @@
 * Create "Define, Declare, Test, Customize, Deploy" tutorials
 * Use http://informa.sourceforge.net/ RSS library to setup RSS panels that can connect to RSS channels via URLs or files
 * Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.
-* Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
-* Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
-* Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
-* Consider ways of allowing Console to be extended in end-user applications by allow "object" insertion capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 * Integrate http://oss.metaparadigm.com/jmemprof/ open-source memory profiler intended for web application containers (like resin, tomcat, etc). Also take a look at the SUN HAT http://java.sun.com/people/billf/heap/.
 * Take a look at http://xmljs.sourceforge.net/ for JavaScript XML parsing and record set management
 * Take a look at http://www.duncanlamb.com/sdba/ for SDBA Revolution Instant Messaging Application Server and see if it's useful to create Sparx-based IM apps
@@ -49,9 +47,8 @@
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
 * Allow documentation panels in console which borrow ideas from Sparx 2.0 documentation (summary blocks, XSL, etc)
 * Add <panel-type>, <page-type> and other style page templates
-* Look at Struts' MessageResources class for creating and 'rb' (resource-bundle) value source for internationlization
-* Create demo Sparx using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
-* Add getNavigationContext() as a member of ReportContext and DialogContext -- may return null if not using navigator
+* Look at Struts' MessageResources class for creating an 'rb' (resource-bundle) value source for internationlization
+* Create Sparx demo using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
 * Allow navigation trees and other tags to be "open" -- meaning if they're defined more than once their definitions are extended not replaced.
 * Use XDoclet for generating TLD files -- using appropriate merge points.
 * Consider using XDoclet for generation of DTD files and XSDs.

@@ -1,77 +1,92 @@
 <#include "*/library.ftl">
 
-<#assign factory = statics["com.netspective.commons.value.ValueSources"].getInstance()/>
-<#assign valueSourceClassesMap = factory.getValueSourceClassesMap()/>
-<#assign describeValueSource = vc.getRequest().getParameter('selected-value-source')?default('-')/>
+<#assign selectedDialogId = vc.getRequest().getParameter('selected-dialog-id')?default('-')/>
+<#assign selectedFieldId = vc.getRequest().getParameter('selected-field-id')?default('-')/>
+<#assign dialogs = vc.project.dialogs/>
 
-<#if describeValueSource != '-' && valueSourceClassesMap.containsKey(describeValueSource)>
-    <#assign valueSourceClass = valueSourceClassesMap.get(describeValueSource)/>
-    <#assign docs = factory.getValueSourceDocumentation(valueSourceClass)?default('-')/>
-    <#if docs != '-'>
-        <@panel heading="${describeValueSource} Value Source Documentation">
-            <div class=textbox>
-            ${docs.description}
-            <#assign aliases = factory.getValueSourceAliases(describeValueSource)/>
-            <#if aliases.size() == 1>
-                <br>Alias: ${aliases}
-            <#elseif aliases.size() gt 1>
-                <br>Aliases: ${aliases}
-            </#if>
-            </div>
-            <@reportTable>
-                <#assign classSuffix="odd"/>
-                <tr>
-                    <td class="report-column-heading" colspan=2>Param</td>
-                    <td class="report-column-heading">Required</td>
-                    <td class="report-column-heading">Default</td>
-                    <td class="report-column-heading">Choices</td>
-                </tr>
-           <#assign num = 0 />
-            <#list docs.parameters as parameter>
-                <#assign num = num + 1 />
-                <tr>
-                    <td class="report-column-${classSuffix}" rowspan=2>
-                        ${num}
-                    </td>
-                    <td class="report-column-${classSuffix}">
-                        <font color=green><code>${parameter.name}</code></font>
-                    </td>
-                    <td class="report-column-${classSuffix}">
-                        <#if parameter.required>Yes<#else>&nbsp;</#if>
-                    </td>
-                    <td class="report-column-${classSuffix}">
-                        ${parameter.defaultValue?default('&nbsp;')}
-                    </td>
-                    <td class="report-column-${classSuffix}">
-                        <#if parameter.hasEnums()>
-                            ${statics["com.netspective.commons.text.TextUtils"].join(parameter.enums, ", ")}
-                        <#elseif parameter.hasFlags()>
-                            ${statics["com.netspective.commons.text.TextUtils"].join(parameter.flags.flagNames, " | ")}
-                        <#else>
-                            &nbsp;
-                        </#if>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="report-column-${classSuffix}" colspan=4>
-                        <font color=#999999>${parameter.description}</font>
-                    </td>
-                </tr>
-                <#if classSuffix = 'odd'>
-                    <#assign classSuffix='even'/>
-                <#else>
-                    <#assign classSuffix='odd'/>
-                </#if>
-            </#list>
-            </@reportTable>
-            <div class=textbox>
-            <img src="${vc.getThemeResourcesRootUrl(vc.activeTheme) + "/images/java-class.gif"}"> Handler: <code>${valueSourceClass.name}</code>
-            </div>
-        </@panel>
+<#if selectedDialogId != '-' && dialogs.names.contains(selectedDialogId?upper_case)>
+    <#assign selectedDialog = vc.project.getDialog(selectedDialogId)/>
+    <#if selectedFieldId != '-'>
+        <@describeField dialog=selectedDialog fieldId=selectedFieldId/>
+        <p>
+        <@listDialogFields dialog=selectedDialog/>
+        <p>
+        <@describeDialog dialog=selectedDialog/>
     <#else>
-        <div class="textbox">No documentation available for value source <code>${describeValueSource}</code>.</div>
+        <@describeDialog dialog=selectedDialog/>
+        <p>
+        <@listDialogFields dialog=selectedDialog/>
     </#if>
 <#else>
-    <div class="textbox">Please select a value source from the <a href='catalog'>Catalog</a> first.</div>
+    <div class="textbox">Please select a dialog from the <a href='catalog'>Catalog</a> first.</div>
 </#if>
 
+<#macro describeDialog dialog>
+    <@panel heading="Dialog '${dialog.qualifiedName}' Documentation">
+        <@reportTable
+                headings = ["Property", "Value"]
+                data=[
+                  ["Qualified Name", dialog.qualifiedName],
+                  ["Dialog Name", dialog.name],
+                  ["HTML Form Name", dialog.htmlFormName],
+                  ["Dialog Class", dialog.class.name],
+                  ["DialogContext Class", dialog.dcClass.name],
+                  ["DialogDirector Class", dialog.director.class.name?default('&nbsp;')],
+                  ["Heading", dialog.frame.heading.specification?default('&nbsp;')],
+                  ["Number of Fields", dialog.fields.size()],
+                  ["Dialog Flags", dialog.dialogFlags],
+                  ["Debug Flags", dialog.debugFlags],
+                  ["Loop Style", dialog.loop + " (separator '" + dialog.loopSeparator?html + "')"],
+                  ["Retain Params", statics["com.netspective.commons.text.TextUtils"].join(dialog.retainParams, ', ') + "&nbsp;"],
+                  ["Include JS", dialog.clientJs.toString()]
+                  ]/>
+    </@panel>
+</#macro>
+
+<#macro listDialogFields dialog>
+    <#assign fields = []/>
+    <#list dialog.fields.fieldsList as field>
+        <#assign fields = fields + [
+                    ["<a href='?selected-dialog-id=${selectedDialogId}&amp;selected-field-id=${field.qualifiedName?default('')}'>" + field.qualifiedName?default('(none)') + "</a>", field.caption?default('&nbsp;'), field.fieldTypes.toString(), getClassReference(field.class.name)]
+                    ]/>
+    </#list>
+
+    <@panel heading="Dialog '${dialog.qualifiedName}' Fields">
+        <@reportTable
+                headings = ["Field", "Caption", "Type(s)", "Class"]
+                data=fields/>
+    </@panel>
+</#macro>
+
+<#macro describeField dialog fieldId>
+    <#assign field = dialog.fields.getByQualifiedName(fieldId)/>
+
+    <#assign schema = getXmlDataModelSchema(field.class.name)/>
+    <#assign settableAttributesDetail = schema.getSettableAttributesDetail(false)/>
+    <#assign childElements = schema.getNestedElementsDetail()/>
+
+    <#assign attribs = []/>
+    <#list settableAttributesDetail as attrDetail>
+        <#if attrDetail.attrName = 'class'>
+            <#assign attribs = attribs + [
+                        [attrDetail.attrName, getClassReference(field.class.name), getClassReference(attrDetail.attrType.name)]
+                        ]/>
+        <#else>
+            <#assign accessor = attrDetail.accessor?default('-')/>
+            <#if accessor != '-'>
+                <#assign attrValue = accessor.get(null, field)?default('NULL')/>
+            <#else>
+                <#assign attrValue = '<i><font color=red>no accessor available</font></i>'/>
+            </#if>
+            <#assign attribs = attribs + [
+                        [attrDetail.attrName, attrValue, getClassReference(attrDetail.attrType.name)]
+                        ]/>
+         </#if>
+    </#list>
+
+    <@panel heading="Dialog Field '${dialog.qualifiedName}.${field.qualifiedName}' Inspector">
+        <@reportTable
+                headings = ["Property", "Value", "Type"]
+                data=attribs/>
+    </@panel>
+</#macro>
