@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CreditCardValueValidationRule.java,v 1.2 2003-05-11 17:51:42 shahid.shah Exp $
+ * $Id: CreditCardValueValidationRule.java,v 1.3 2003-11-02 17:24:45 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -51,7 +51,7 @@ import com.netspective.commons.value.ValueSource;
 
 public class CreditCardValueValidationRule extends BasicValidationRule
 {
-    private String invalidCardNumMessage = "{0} contains an invalid credit card number: '{1}'.";
+    private String invalidCardNumMessage = "{0} contains an invalid credit card number: {1}.";
 
     public CreditCardValueValidationRule()
     {
