@@ -39,25 +39,23 @@
  */
 
 /**
- * $Id: DatabaseLoginAuthenticator.java,v 1.6 2004-04-29 12:31:13 shahid.shah Exp $
+ * $Id: DatabaseLoginAuthenticator.java,v 1.7 2004-04-29 13:25:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security.authenticator;
 
-import java.sql.ResultSet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.netspective.sparx.security.LoginDialogContext;
-import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
+import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.xdm.XmlDataModelSchema;
-
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import com.netspective.sparx.security.HttpLoginManager;
+import com.netspective.sparx.security.LoginDialogContext;
 
 public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 {
@@ -111,8 +109,6 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
 
     public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
     {
-        super.initAuthenticatedUser(loginManager, ldc, user);
-
         Object[] passwordQueryResultsRow = (Object[]) ldc.getAttribute(ATTRNAME_PASSWORD_QUERY_RESULTS);
         if(passwordQueryResultsRow != null)
         {
@@ -150,6 +146,10 @@ public class DatabaseLoginAuthenticator extends AbstractLoginAuthenticator
                 log.error("Error assigning roles to user", e);
             }
         }
+
+        // the super will call user.init so we want to give the authenticated user class a chance to initalize itself
+        // now that the user information and roles have been assigned
+        super.initAuthenticatedUser(loginManager, ldc, user);
     }
 
     public boolean isPasswordEncrypted()
