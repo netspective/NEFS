@@ -39,26 +39,35 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.3 2003-10-22 06:48:21 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.4 2003-10-23 04:09:00 aye.thu Exp $
  */
 
 package app.cts;
 
-
-import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUserInitializationException;
+import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.sparx.security.LoginDialogContext;
+import com.netspective.sparx.navigate.NavigationControllerAuthenticatedUser;
+import com.netspective.sparx.navigate.NavigationTree;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.ResultSetMetaData;
 
-public class AppAuthenticatedUser extends BasicAuthenticatedUser
+public class AppAuthenticatedUser extends BasicAuthenticatedUser implements NavigationControllerAuthenticatedUser
 {
+    /**
+     * Initialize the authenticated user object with relevant data
+     * @param vc
+     * @throws AuthenticatedUserInitializationException
+     */
 
     public void init(ValueContext vc) throws AuthenticatedUserInitializationException
     {
@@ -97,8 +106,6 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
                     System.out.println(rsmd.getColumnName(i).toLowerCase() + " " + rs.getString(i));
                 }
             }
-
-
         }
         catch (Exception e)
         {
@@ -119,9 +126,36 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
         }
     }
 
-    public void setUserId(String id)
+    /**
+     * Specifies if the user has its own navigation tree
+     * @return
+     */
+    public boolean hasUserSpecificNavigationTree()
     {
-        super.setUserId(id);
+        return true;
+    }
+
+    /**
+     * Returns the tree object to be used for this user
+     * @param ncServlet
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @return
+     */
+    public NavigationTree getUserSpecificNavigationTree(NavigationControllerServlet ncServlet, HttpServletRequest httpServletRequest,
+                                                        HttpServletResponse httpServletResponse)
+    {
+        String treeName = null;
+        String type = (String) getAttribute("person_type");
+        if (type.equals("Patient"))
+            treeName = "patient";
+        else if (type.equals("Certified Clinical Research Coordinator"))
+            treeName = "coordinator";
+        else
+            throw new RuntimeException("Unknown User Type");
+
+        return ncServlet.getProject().getNavigationTree(treeName);
+
     }
 
 
