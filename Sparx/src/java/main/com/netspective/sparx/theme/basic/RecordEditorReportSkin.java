@@ -65,7 +65,7 @@ import java.io.IOException;
 
 /**
  * @author aye
- * $Id: RecordEditorReportSkin.java,v 1.6 2003-08-15 05:17:30 aye.thu Exp $
+ * $Id: RecordEditorReportSkin.java,v 1.7 2003-08-19 04:51:43 aye.thu Exp $
  */
 public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -98,6 +98,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
 
             String label = "<img src=\"" + imgPath + "/content-action-delete.gif\" alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String deleteRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
+            deleteRecordUrl = report.replaceOutputPatterns(rc, ds, deleteRecordUrl);
 
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write(deleteRecordUrl);
@@ -134,7 +135,7 @@ public class RecordEditorReportSkin extends BasicHtmlTabularReportPanelSkin
             String label = "<img src=\"" + imgPath + "/content-action-edit.gif\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
-
+            editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
             writer.write(editRecordUrl);
             writer.write("</td>");

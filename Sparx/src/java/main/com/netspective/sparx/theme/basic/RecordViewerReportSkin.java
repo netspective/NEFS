@@ -70,7 +70,7 @@ import java.io.IOException;
 /**
  * Class for producing a html report that allows adding and editing of data
  *
- * $Id: RecordViewerReportSkin.java,v 1.5 2003-08-01 05:52:23 aye.thu Exp $
+ * $Id: RecordViewerReportSkin.java,v 1.6 2003-08-19 04:51:22 aye.thu Exp $
  */
 public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
 {
@@ -147,7 +147,7 @@ public class RecordViewerReportSkin extends BasicHtmlTabularReportPanelSkin
             String label = "<img src=\"" + imgPath + "/content-action-edit.gif\" " +
                 "alt=\"\" height=\"10\" width=\"10\" border=\"0\">";
             String editRecordUrl = this.constructRedirect(rc, actionCommand, label, null, null);
-
+            editRecordUrl = report.replaceOutputPatterns(rc, ds, editRecordUrl);
             writer.write("<td " + (isOddRow ? "class=\"report\"" : "class=\"report-alternative\"") + " width=\"10\">");
             writer.write(editRecordUrl);
             writer.write("</td>");
