@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.25 2003-09-06 16:44:09 shahid.shah Exp $
+ * $Id: Project.java,v 1.26 2003-09-13 23:03:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -288,6 +288,11 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public void addTheme(Theme theme)
     {
         getThemes().registerTheme(theme);
+    }
+
+    public void setDefaultTheme(String defaultTheme)
+    {
+        getThemes().setDefaultTheme(defaultTheme);
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
