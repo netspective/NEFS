@@ -1,6 +1,6 @@
 @echo off
 
-REM $Id: build.bat,v 1.1 2003-08-10 01:08:18 shahid.shah Exp $
+REM $Id: build.bat,v 1.2 2003-08-10 01:16:09 shahid.shah Exp $
 
 REM **************************************************************************
 REM ** This script should be be run from the PROJECT_HOME\conf directory.   **
@@ -9,7 +9,7 @@ REM ** the build.xml file.                                                  **
 REM **************************************************************************
 
 if "%JAVA_HOME%" == "" echo Error: JAVA_HOME environment variable is not set. && goto end
-if "%NEFS_HOME%" == "" set NEFS_HOME=..\..
+if "%NEFS_HOME%" == "" set NEFS_HOME=..
 if "%NEFS_COMMONS_HOME%" == "" set NEFS_COMMONS_HOME=%NEFS_HOME%\Commons
 if "%NEFS_COMMONS_REDIST_LIB%" == "" set NEFS_COMMONS_REDIST_LIB=%NEFS_COMMONS_HOME%\lib\redist
 
