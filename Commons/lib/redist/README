@@ -16,3 +16,4 @@ Jakarta Commons Jexl                    1.0 beta 1 commons-jexl.jar        http:
 Jenesis Source Code Generation Library  0.2.1      jenesis.jar             http://www.inxar.org/jenesis
 JUnit Testing Framework                 3.8        junit.jar               http://www.junit.org
 Sun Microsystems Java JDBC API          2.0        jdbc.jar                http://java.sun.com
+Sun Microsystems JavaDoc to XML Library 1.0        XmlDoclet.jar           http://www.sun.com/software/xml/developers/doclet/
