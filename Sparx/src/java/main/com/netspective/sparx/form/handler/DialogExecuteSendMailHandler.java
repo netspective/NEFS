@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: DialogExecuteSendMailHandler.java,v 1.2 2003-08-31 22:52:26 shahid.shah Exp $
+ * $Id: DialogExecuteSendMailHandler.java,v 1.3 2003-11-14 19:47:23 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.handler;
 
 import java.io.Writer;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,6 +63,8 @@ import com.netspective.commons.xml.template.Template;
 public class DialogExecuteSendMailHandler extends SendMail implements DialogExecuteHandler
 {
     private static final Log log = LogFactory.getLog(DialogExecuteSendMailHandler.class);
+    private TemplateProcessor successMessage;
+    private TemplateProcessor failureMessage;
 
     public DialogExecuteSendMailHandler()
     {
@@ -80,16 +84,52 @@ public class DialogExecuteSendMailHandler extends SendMail implements DialogExec
         return new FreeMarkerTemplateProcessor();
     }
 
+    public TemplateProcessor createSuccessMessage()
+    {
+        return new FreeMarkerTemplateProcessor();
+    }
+
+    public void addSuccessMessage(TemplateProcessor message)
+    {
+        successMessage = message;
+    }
+
+    public TemplateProcessor createFailureMessage()
+    {
+        return new FreeMarkerTemplateProcessor();
+    }
+
+    public void addFailureMessage(TemplateProcessor message)
+    {
+        failureMessage = message;
+    }
+
     public void executeDialog(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
+        Map bodyTemplateVars = new HashMap();
+        bodyTemplateVars.put("vc", dc);
         try
         {
-            send(dc);
+            send(dc, bodyTemplateVars);
+
+            if(successMessage != null)
+                successMessage.process(writer, dc, bodyTemplateVars);
         }
         catch (Exception e)
         {
             log.error("Unable to send mail", e);
-            throw new DialogExecuteException(e);
+            if(failureMessage != null)
+            {
+                bodyTemplateVars.put("exception", e);
+                failureMessage.process(writer, dc, bodyTemplateVars);
+            }
+            else
+                throw new DialogExecuteException(e);
+        }
+        finally
+        {
+            bodyTemplateVars.remove("vc");
+            bodyTemplateVars = null;
         }
     }
 }
