@@ -10,8 +10,6 @@
 	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
 
 * Add keyboard navigation to navigation tree system (autogenerate JavaScript keyboard handlers that will call different pages)
-* Add execute, populate, and makeStateChanges interfaces that can be "registered" for dialogs -- to delegate these activities
-    - Add support for listeners in as many places in Sparx as makes sense -- e.g. for dialogs that don't want to be subclassed let them add DialogExecuteListener? DialogPopuplateListener? etc...
 
 * Add DHTML feature to Dialogs so that hints can optional only show up when a control is being edited (instead of all the time)
 	- DONE but the event is at onFocus and onBlur because onChange only occurred when you tabbed out of the field.
@@ -20,7 +18,6 @@
 * Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
-* Add feature to dialogs that allow forwarding, including freemarker or other templates, executing style-sheets in execute method (same features as <page>)
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
 * Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
