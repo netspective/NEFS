@@ -166,6 +166,52 @@
     <!-- alias for date-time-range -->
     <data-type name="stamp-range" type="date-time-range"/>
 
+    <data-type name="future-date" type="date">
+        <validation>
+            <rule name="future-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" future-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="past-date" type="date">
+        <validation>
+            <rule name="past-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" past-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="future-time" type="time"/>
+
+    <data-type name="past-time" type="time"/>
+
+    <data-type name="future-stamp" type="stamp">
+        <validation>
+            <rule name="future-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" future-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="past-stamp" type="stamp">
+        <validation>
+            <rule name="past-only" class="com.netspective.commons.validate.rule.DateValueValidationRule" past-only="yes"/>
+        </validation>
+    </data-type>
+
+    <data-type name="date-of-birth" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Birth" size="12"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="date-of-death" type="past-date">
+        <presentation>
+            <field type="date" caption="Date of Death" size="12"/>
+        </presentation>
+    </data-type>
+
+    <data-type name="age" type="integer">
+        <validation>
+            <rule name="age" class="com.netspective.commons.validate.rule.IntegerValueValidationRule" min="0"/>
+        </validation>
+    </data-type>
+
     <!-- ***************************************************************************
          * Auto-generated data-types useful as primary keys                        *
          *************************************************************************** -->
@@ -239,6 +285,15 @@
          * Generic non-industry-specific application data-types                    *
          *************************************************************************** -->
 
+    <data-type name="ssn" type="text">
+        <validation>
+            <rule name="ssn-format" class="com.netspective.commons.validate.rule.TextValueValidationRule" min-length="11" max-length="11" reg-expr="^[0-9]{3}\-[0-9]{2}\-[0-9]{4}$"/>
+        </validation>
+        <presentation>
+            <field type="ssn" caption="Social Security Number" required="yes" size="11"/>
+        </presentation>
+    </data-type>
+
     <data-type name="currency" class="com.netspective.axiom.schema.column.type.CurrencyColumn">
         <sql-ddl>
             <define dbms="ansi" xdm:replace-template-expressions="no">float</define>
@@ -274,6 +329,36 @@
         <size>19</size>
         <validation>
             <rule class="com.netspective.commons.validate.rule.CreditCardValueValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="stock-symbol" type="text">
+        <validation>
+            <rule name="letters-only" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^[a-zA-Z]+$"/>
+            <!--TODO: rule name="yahoo-stock-symbol-check" class="com.netspective.commons.validate.rule.StockSymbolValidationRule" method="yahoo"/ -->
+        </validation>
+    </data-type>
+
+    <data-type name="time-zone" type="text">
+        <validation>
+            <rule name="time-zone" class="com.netspective.commons.validate.rule.TimeZoneValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="internet-hostname" type="text">
+        <validation>
+            <!-- Requires at least two parts to the hostname.  TLD's aren't considered valid hostnames. -->
+            <!-- Requires custom validation -->
+            <rule name="internet-hostname" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^([a-zA-Z0-9]+\.)*[a-zA-Z0-9]+\.[a-zA-Z]+$"/>
+            <rule name="internet-hostname" class="com.netspective.commons.validate.rule.InternetHostnameValidationRule"/>
+        </validation>
+    </data-type>
+
+    <data-type name="internet-ip-address" type="text">
+        <validation>
+            <!-- Requires exactly four dotted-decimal parts -->
+            <rule name="internet-ip-address" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^([0-9]+\.){3}[0-9]+$"/>
+            <rule name="internet-ip-address" class="com.netspective.commons.validate.rule.InternetIPAddressValidationRule"/>
         </validation>
     </data-type>
 
@@ -333,13 +418,13 @@
 
     <!-- ************************************************************************** -->
 
-    <table name="Lookup_Result_Type" abbrev="LkResTy" type="Enumeration">
+    <table-type name="Lookup_Result_Type" abbrev="LkResTy" type="Enumeration">
         <enumerations>
             <enum>ID</enum>
             <enum>Caption</enum>
             <enum>Abbreviation</enum>
         </enumerations>
-    </table>
+    </table-type>
 
     <table-type name="Lookup" type="Enumeration">
         <column name="group_name" type="text" size="32" descr="The group to which the lookup item belongs"/>
@@ -367,9 +452,9 @@
         </enumerations>
     </table-type>
 
-    <table name="Record_Status" abbrev="RecStatus" type="Status">
-        <!-- //TODO: nothing here yet, just a placeholder for later enhancements -->
-    </table>
+    <table-type name="Record_Status" abbrev="RecStatus" type="Status">
+        <!-- nothing here yet, just a placeholder for later enhancements -->
+    </table-type>
 
     <!--
     *********************************************************************
@@ -399,39 +484,115 @@
     <!-- TODO: need to implement the class and template -->
 
     <table-type name="Relationship_Map" class="com.netspective.axiom.schema.table.type.RelationshipMapTable">
+        <xdm:template-param name="relationshipTypeTable" required="yes"/>
+        <xdm:template-param name="primaryIdColName" default="primary_item_id"/>
+        <xdm:template-param name="relatedIdColName" default="related_item_id"/>
+        <xdm:template-param name="primaryIdParentRef" required="yes"/>
+        <xdm:template-param name="relatedIdLookupRef" required="yes"/>
+
         <description>
-            <p>This table type is used to store a mapping between relationships and their
+            This table type is used to store a mapping between relationships and their
             corresponding inverse relationship.  Its primary function is to ease the
             creation of an automated relationship field which will be able to update
-            itself _and_ the record of the other half of the relationship.</p>
-
-            <p>Thus, if a relationship exists between two organizations such that
+            itself _and_ the record of the other half of the relationship.
+            Thus, if a relationship exists between two organizations such that
             Org A is a child of Org B, when it comes time to insert that record,
             an intelligent relationship field will automatically determine that if
             Org A is a child of Org B, then Org B must be a parent of Org A and
             will create both those relationships.  Similarly, when it comes time
             to update a relationship, it will update the corresponding relationship
-            as well.</p>
+            as well.
         </description>
-        <column name="system_id" type="auto-inc" primarykey="yes" descr="Unique System ID for any given row"/>
-        <column name="owner_id" lookup-ref="${params.relationshipOwnerTable}" descr="The owner of the relationship row this entry was created for"/>
-        <column name="parent_id" parent-ref="${params.relationshipTable}" descr="The relationship row this entry was created for"/>
-        <column name="rel_type_id" lookup-ref="${params.relationshipTypeTable}" indexed="yes" descr="The relationship for which an inverse is declared.  This should be a lookup to a table of type Relationship_Type."/>
+
+        <!-- it's crucial (because of the Java-code backing this table) that these be the last 3 columns in the table,
+             which means that if you add any columns it should be to the beginning of this group -->
+        <column name="rel_type_id" lookup-ref="${params.relationshipTypeTable}" indexed="yes" descr="The relationship type."/>
+        <column name="${params.primaryIdColName}" parent-ref="${params.primaryIdParentRef}" descr="The owner of the relationship row this entry was created for"/>
+        <column name="${params.relatedIdColName}" lookup-ref="${params.relatedIdLookupRef}" descr="The relationship row this entry was created for"/>
+
+        <!-- required for the RelationshipMapTable class so that it knows the columns it is working with -->
+        <primary-id-col-name>${params.primaryIdColName}</primary-id-col-name>
+        <related-id-col-name>${params.relatedIdColName}</related-id-col-name>
     </table-type>
 
     <table-type name="Relationship_Type" type="Enumeration">
         <enumerations>
-            <enum id="9990">Hierarchy - Self</enum>
-            <enum id="9991">Hierarchy - Child</enum>
-            <enum id="9992">Hierarchy - Ancestor</enum>
-            <enum id="9993">Hierarchy - Descendent</enum>
-            <enum id="9994">Hierarchy - Parent</enum>
-            <enum id="9995">Hierarchy - Sibling</enum>
+            <enum id="9990">Hierarchy: Self</enum>
+            <enum id="9991">Hierarchy: Parent</enum>
+            <enum id="9992">Hierarchy: Child</enum>
+            <enum id="9993">Hierarchy: Ancestor</enum>
+            <enum id="9994">Hierarchy: Descendent</enum>
+            <enum id="9995">Hierarchy: Sibling</enum>
         </enumerations>
     </table-type>
 
     <table-type name="Relationship_Status" type="Status">
         <!-- nothing here yet, just a placeholder for later enhancements -->
+    </table-type>
+
+    <!--
+    *********************************************************************
+    ** Attribute tables and enumerations
+    *********************************************************************
+    -->
+
+    <table-type name="Entity_Attribute_Category_Type" type="Enumeration">
+
+    </table-type>
+
+    <table-type name="Entity_Attribute_Type" type="Enumeration">
+        <enumerations>
+            <enum>Text</enum>
+            <enum>Integer</enum>
+            <enum>Float</enum>
+            <enum>Date</enum>
+            <enum>Duration</enum>
+        </enumerations>
+    </table-type>
+
+    <table-type name="Entity_Attribute">
+        <xdm:template-param name="parentIdColName" default="parent_id"/>
+        <xdm:template-param name="parentRef" required="yes"/>
+        <xdm:template-param name="categoryTypeLookupRef" required="yes"/>
+        <xdm:template-param name="attributeTypeLookupRef" required="yes"/>
+
+        <column name="${params.parentIdColName}" parent-ref="${params.parentRef}" descr="Reference to the parent of this attribute"/>
+        <column name="attr_category_id" lookup-ref="${params.categoryTypeLookupRef}" descr="The attribute category"/>
+        <column name="attr_type_id" lookup-ref="${params.attributeTypeLookupRef}" descr="The attribute category"/>
+        <column name="attr_label" type="text" size="255" descr="The attribute's label (caption, name, etc.)"/>
+        <column name="attr_value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+        <column name="attr_value_text" type="text" size="4096" descr="The attribute's text value (actual value may be in a type-specific table but this column has the text representation for display to the user)">
+            <table name="${owner.name}_Text" abbrev="${owner.abbrev}Txt">
+                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+                <column name="text_value" type="text" size="4096" descr="The text value"/>
+            </table>
+            <table name="${owner.name}_Integer" abbrev="${owner.abbrev}Int">
+                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+                <column name="integer_value" type="integer" descr="The integral value"/>
+            </table>
+            <table name="${owner.name}_Float" abbrev="${owner.abbrev}Fl">
+                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+                <column name="float_value" type="float" descr="The floating-point value"/>
+            </table>
+            <table name="${owner.name}_Date" abbrev="${owner.abbrev}Dt">
+                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+                <column name="date_value" type="date" descr="The date value"/>
+            </table>
+            <table name="${owner.name}_Duration" abbrev="${owner.abbrev}Du">
+                <column name="system_id" type="auto-inc" primarykey="yes" abbrev="sysid" descr="Unique record identifier"/>
+                <column name="parent_id" parentref="${owner.getPrimaryKeyColumns().get(0).qualifiedName}" descr="The parent of this record"/>
+                <column name="value_index" type="integer" descr="The ordinal value (index) of the attribute value (if it's part of an array) or null if not important"/>
+                <column name="date" type="duration"/>
+            </table>
+        </column>
     </table-type>
 
 </xdm:container>
