@@ -3,7 +3,7 @@
 	<xdm:include file="templates/person.xml"/>
 	
 	<dialogs package="personAttribute">
-		<dialog name="address"  retain-params="*" generate-dcb="yes">
+		<dialog name="address"  retain-params="*" generate-dcb="yes" type="schema-record-editor">
             <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
 			<field type="text" name="parent_id" caption="Person ID" required="yes" default="request:person_id">
@@ -30,7 +30,16 @@
                     </items>
                 </next-actions>
             </director>
-            <listener  class="app.form.person.attribute.AddressDialogHandler"/>
+            <on-add-data>
+                <person-address _auto-map="*" rec-stat-id="static:Active"/>
+            </on-add-data>
+            <on-edit-data>
+                <person-address line1="line1"  line2="line2" city="city" address_name="address_name" zip="zip" address_type-id="address_type_id"
+                    state_id="state" rec-stat-id="static:Active"/>
+            </on-edit-data>
+            <on-delete-data>
+                <person-address _auto-map="*" rec-stat-id="static:Active"/>
+            </on-delete-data>
 		</dialog>
 
 		
