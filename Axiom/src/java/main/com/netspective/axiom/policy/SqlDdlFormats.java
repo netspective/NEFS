@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlDdlFormats.java,v 1.4 2004-08-09 22:29:21 shahid.shah Exp $
+ * $Id: SqlDdlFormats.java,v 1.5 2004-08-11 02:07:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy;
@@ -49,43 +49,35 @@ import java.util.Map;
 public interface SqlDdlFormats
 {
     public String getCreateTableClauseFormat();
-    public void setCreateTableClauseFormat(String createTableClauseFormat);
+
+    public String getCreateTableAppendParamsFormat();
 
     public String getDropTableStatementFormat();
-    public void setDropTableStatementFormat(String dropTableStatementFormat);
 
     public String getCreateIndexStatementFormat();
-    public void setCreateIndexStatementFormat(String createIndexStatementFormat);
+
+    public String getCreateIndexAppendParamsFormat();
 
     public String getDropIndexStatementFormat();
-    public void setDropIndexStatementFormat(String dropIndexStatementFormat);
 
     public String getCreateSequenceStatementFormat();
-    public void setCreateSequenceStatementFormat(String createSequenceStatementFormat);
 
     public String getDropSequenceStatementFormat();
-    public void setDropSequenceStatementFormat(String dropSequenceStatementFormat);
 
     public String getfkeyConstraintAlterTableStatementFormat();
-    public void setFkeyConstraintAlterTableStatementFormat(String fKeyConstraintAlterTableStatementFormat);
 
     public String getFkeyConstraintTableClauseFormat();
-    public void setFkeyConstraintTableClauseFormat(String fKeyConstraintTableClauseFormat);
 
     public String getScriptStatementTerminator();
-    public void setScriptStatementTerminator(String scriptStatementTerminator);
 
-    boolean isCreatePrimaryKeyIndex();
-    void setCreatePrimaryKeyIndex(boolean createPrimaryKeyIndex);
+    public boolean isCreatePrimaryKeyIndex();
 
-    boolean isCreateParentKeyIndex();
-    void setCreateParentKeyIndex(boolean createParentKeyIndex);
+    public boolean isCreateParentKeyIndex();
 
     public String getTableCommentClauseFormat();
-    public void setTableCommentClauseFormat(String tableCommentClauseFormat);
 
     public String getColumnCommentClauseFormat();
-    public void setColumnCommentClauseFormat(String columnCommentClauseFormat);
 
     public Map createJavaExpressionVars();
+
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlFormats.java,v 1.3 2004-08-09 22:29:21 shahid.shah Exp $
+ * $Id: AnsiSqlDdlFormats.java,v 1.4 2004-08-11 02:07:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -54,8 +54,10 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
 {
     private String scriptStatementTerminator;
     private String createTableClauseFormat;
+    private String createTableAppendParamsFormat;
     private String dropTableStatementFormat;
     private String createIndexStatementFormat;
+    private String createIndexAppendParamsFormat;
     private String dropIndexStatementFormat;
     private String createSequenceStatementFormat;
     private String dropSequenceStatementFormat;
@@ -71,7 +73,7 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         setScriptStatementTerminator(";");
         setCreateTableClauseFormat("CREATE TABLE ${table.name}");
         setDropTableStatementFormat("DROP TABLE ${table.name}");
-        setCreateIndexStatementFormat("CREATE ${index.type} INDEX ${index.name} on ${index.table.name} (${index.columns.getNamesDelimited(', ')})");
+        setCreateIndexStatementFormat("CREATE ${index.type.toUpperCase()} INDEX ${index.name} on ${index.table.name} (${index.columns.getNamesDelimited(', ')})");
         setDropIndexStatementFormat("DROP INDEX ${index.name}");
         setCreateSequenceStatementFormat("CREATE SEQUENCE ${column.sequenceName} increment 1 start 1");
         setDropSequenceStatementFormat("DROP SEQUENCE ${column.sequenceName}");
@@ -98,6 +100,16 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         this.createTableClauseFormat = createTableClauseFormat;
     }
 
+    public String getCreateTableAppendParamsFormat()
+    {
+        return createTableAppendParamsFormat;
+    }
+
+    public void setCreateTableAppendParamsFormat(String createTableAppendParamsFormat)
+    {
+        this.createTableAppendParamsFormat = createTableAppendParamsFormat;
+    }
+
     public String getDropTableStatementFormat()
     {
         return dropTableStatementFormat;
@@ -108,6 +120,11 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
         return createIndexStatementFormat;
     }
 
+    public String getCreateIndexAppendParamsFormat()
+    {
+        return createIndexAppendParamsFormat;
+    }
+
     public String getDropIndexStatementFormat()
     {
         return dropIndexStatementFormat;
@@ -116,6 +133,11 @@ public class AnsiSqlDdlFormats implements SqlDdlFormats
     public void setCreateIndexStatementFormat(String createIndexStatementFormat)
     {
         this.createIndexStatementFormat = createIndexStatementFormat;
+    }
+
+    public void setCreateIndexAppendParamsFormat(String createIndexAppendParamsFormat)
+    {
+        this.createIndexAppendParamsFormat = createIndexAppendParamsFormat;
     }
 
     public void setDropIndexStatementFormat(String dropIndexStatementFormat)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AnsiSqlDdlGenerator.java,v 1.6 2004-08-10 00:25:58 shahid.shah Exp $
+ * $Id: AnsiSqlDdlGenerator.java,v 1.7 2004-08-11 02:07:59 shahid.shah Exp $
  */
 
 package com.netspective.axiom.policy.ddl;
@@ -329,7 +329,16 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
 
                 DbmsSqlText appendExpr = index.getSqlDataDefns().getCreateIndexAppendParams().getByDbmsOrAnsi(policy);
                 if(appendExpr != null)
-                    writer.write(appendExpr.getSql(gc.getValueContext()));                            
+                    writer.write(appendExpr.getSql(gc.getValueContext()));
+                else
+                {
+                    String appendParamsFormat = ddlFormats.getCreateIndexAppendParamsFormat();
+                    if(appendParamsFormat != null)
+                    {
+                        JavaExpressionText appenderJet = new JavaExpressionText(appendParamsFormat, vars);
+                        writer.write(appenderJet.getFinalText(gc.getValueContext()));
+                    }
+                }
 
                 writer.write(ddlFormats.getScriptStatementTerminator());
                 writer.write("\n");
@@ -482,6 +491,15 @@ public class AnsiSqlDdlGenerator implements SqlDdlGenerator
             DbmsSqlText appendExpr = table.getSqlDataDefns().getCreateTableAppendParams().getByDbmsOrAnsi(policy);
             if(appendExpr != null)
                 writer.write(appendExpr.getSql(gc.getValueContext()));
+            else
+            {
+                String appendParamsFormat = ddlFormats.getCreateTableAppendParamsFormat();
+                if(appendParamsFormat != null)
+                {
+                    JavaExpressionText appenderJet = new JavaExpressionText(appendParamsFormat, vars);
+                    writer.write(appenderJet.getFinalText(gc.getValueContext()));
+                }
+            }
         }
         catch (Exception e)
         {
