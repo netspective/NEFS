@@ -495,9 +495,16 @@
         <xdm:template-param name="uniqueHierIndexName" default="hier_unq"/>
 
         <description>
-            This table is used to store a mapping of the hierarchy of a single entity with respect to other entities
-            of the same type. For example, it can keep track of parent/child and ancestor/descendent hiearchies for
-            person, org, or other entities.
+            Maintains the hierarchy of a ${params.entityRef} row with respect to other
+            ${params.entityRef} rows. The ${params.primaryIdColName} column is a ${params.entityRef} reference that
+            indicates it is hierarcially related to the ${params.relatedIdColName}. The actual relationship type is
+            specified in ${params.hierTypeIdColName}. Only records of ${params.hierTypeIdColName} 'Parent' (id 0) should
+            be added or deleted to this row; this is because the 'Ancestor' (id 1) type is automatically managed by
+            Axiom table triggers (in Java, on the application side). Records in this table should not be updated, only
+            added or deleted. If a relationship needs to be modified, the existing 'Parent' relationship should first be
+            deleted (so that the triggers can remove the ancestors) and then a new one should be added (so that the
+            triggers can add the ancestors). The relationship is read like "the ${params.primaryIdColName} is a
+            '${params.hierTypeIdColName}' (Parent, Ancestor) of ${params.relatedIdColName}".
         </description>
 
         <column name="${params.hierTypeIdColName}" lookup-ref="${params.hierTypeTable}" indexed="yes" required="yes" descr="The relationship type."/>
@@ -539,17 +546,13 @@
         <xdm:template-param name="uniqueRelationshipIndexName" default="rel_unq"/>
 
         <description>
-            This table is used to store a mapping between relationships and their
-            corresponding inverse relationship.  Its primary function is to ease the
-            creation of an automated relationship field which will be able to update
-            itself and the record of the other half of the relationship.
-            Thus, if a relationship exists between two organizations such that
-            Org A is a child of Org B, when it comes time to insert that record,
-            an intelligent relationship field will automatically determine that if
-            Org A is a child of Org B, then Org B must be a parent of Org A and
-            will create both those relationships.  Similarly, when it comes time
-            to update a relationship, it will update the corresponding relationship
-            as well.
+            Maintains the mapping of the relationship of a ${params.primaryIdParentRef} row with
+            respect to a ${params.relatedIdLookupRef} row. A row in this table is owned by (is a child of) the
+            ${params.primaryIdParentRef} table and is identified by the ${params.primaryIdColName}. How the row
+            referened by the ${params.primaryIdColName} is related to the ${params.relatedIdLookupRef}, identified by
+            ${params.relatedIdColName}, is specified in the ${params.relationshipTypeIdColName} column. The relationship
+            is read like "the ${params.primaryIdColName} is a '${params.relatedIdLookupRef}' (Child, etc) of
+            ${params.relatedIdColName}".
         </description>
 
         <column name="${params.relationshipTypeIdColName}" lookup-ref="${params.relationshipTypeTable}" indexed="yes" required="yes" descr="The relationship type."/>
