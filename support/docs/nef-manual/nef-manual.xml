@@ -11,7 +11,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) User's Manual</title>
 
-    <releaseinfo>Release 7.1 ($Date: 2004-05-18 03:32:16 $)</releaseinfo>
+    <releaseinfo>Release 7.1 ($Date: 2004-05-21 03:42:57 $)</releaseinfo>
 
     <releaseinfo>This version is in DRAFT until May 25, 2004 when it's
     expected to be completed. Check back daily until then because material is
@@ -2562,7 +2562,16 @@
       <section>
         <title>Generating Security Layer code</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Generate Login Managers and Login Authenticators for
+        password-based identity and authentication. Generate principal
+        identification for Authenitcated Users. Principal identification is
+        fundamental security operation and is used to determine whether access
+        to a particular resource is allowed. Generate Access Control Lists and
+        Role Queries for role-based access control. Declare Roles and Access
+        Control Lists which can be mapped to a principal (Authenticated User)
+        and/or resource (ex. Navigation Tree). When attempts are made to
+        access a restricted resource, permissions are checked against the
+        Authenticated User.</para>
       </section>
     </section>
 
@@ -2600,7 +2609,13 @@
       <section>
         <title>Customizing Security Layer Code</title>
 
-        <para>TODO: documentation coming soon...</para>
+        <para>Use Java class inheritance to create custom principals for
+        custom access control. Authenticated Users can be created to classify
+        levels, privileges, permissions, or roles for fine-grained access
+        control decision making. Custom Login Managers that provide
+        authentication types such as certificate-based identity and
+        authentication or Kerberos password-based identity and authentication
+        can be created using Java inheritance. </para>
       </section>
     </section>
 
@@ -7121,7 +7136,7 @@ public class Test1  extends com.netspective.sparx.form.Dialog
 
           <step>
             <para>If needed define the data-src and/or presentation for the
-            query </para>
+            query</para>
           </step>
 
           <step>
