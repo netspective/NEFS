@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicSchema.java,v 1.1 2003-03-13 18:25:40 shahid.shah Exp $
+ * $Id: BasicSchema.java,v 1.2 2003-03-13 22:10:17 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -71,6 +71,7 @@ import com.netspective.commons.xml.template.TemplateProducers;
 public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModelSchema.ConstructionFinalizeListener
 {
     private static final Log log = LogFactory.getLog(BasicSchema.class);
+    private static int counter = 0;
     public static final String TEMPLATEELEMNAME_DATA_TYPE = "data-type";
     public static final String TEMPLATEELEMNAME_TABLE_TYPE = "table-type";
     public static final String TEMPLATEELEMNAME_PRESENTATION = "presentation";
@@ -81,7 +82,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
         XML_DATA_MODEL_SCHEMA_OPTIONS.setIgnorePcData(true);
     }
 
-    private String name;
+    private String name = "schema" + (counter++);
     private String xmlNodeName;
     private Tables tables = new TablesCollection();
     private TemplateProducers templateProducers;
