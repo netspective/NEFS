@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.6 2003-08-19 16:10:52 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.7 2003-08-28 00:44:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -72,6 +72,7 @@ public class TableDialog extends Dialog
     private Table table;
     private Column primaryKeyColumn;
     private ValueSource dataSrc;
+    private ValueSource primaryKeyValueForEditOrDelete;
 
     public TableDialog()
     {
@@ -143,6 +144,16 @@ public class TableDialog extends Dialog
         this.dataSrc = dataSrc;
     }
 
+    public ValueSource getPrimaryKeyValueForEditOrDelete()
+    {
+        return primaryKeyValueForEditOrDelete;
+    }
+
+    public void setPrimaryKeyValueForEditOrDelete(ValueSource primaryKeyValueForEditOrDelete)
+    {
+        this.primaryKeyValueForEditOrDelete = primaryKeyValueForEditOrDelete;
+    }
+
     /**
      * If the schema and table objects are null then try and use the names and look them up.
      * @param nc
@@ -190,6 +201,26 @@ public class TableDialog extends Dialog
         return true;
     }
 
+    protected Object getPrimaryKeyValueForEditOrDelete(DialogContext dc)
+    {
+        if(primaryKeyValueForEditOrDelete != null)
+            return primaryKeyValueForEditOrDelete.getValue(dc).getValue();
+
+        HttpServletRequest request = dc.getHttpRequest();
+        Object pkValue = request.getAttribute(PARAMNAME_PRIMARYKEY);
+        if(pkValue == null)
+        {
+            pkValue = request.getAttribute(primaryKeyColumn.getName());
+            if(pkValue == null && primaryKeyColumn != null)
+            {
+                pkValue = request.getParameter(PARAMNAME_PRIMARYKEY);
+                if(pkValue == null)
+                    pkValue = request.getParameter(primaryKeyColumn.getName());
+            }
+        }
+        return pkValue;
+    }
+
     public void populateValues(DialogContext dc, int formatType)
     {
         if(dc.isInitialEntry())
@@ -200,18 +231,7 @@ public class TableDialog extends Dialog
             }
             else if((dc.editingData() || dc.deletingData()))
             {
-                HttpServletRequest request = dc.getHttpRequest();
-                Object pkValue = request.getAttribute(PARAMNAME_PRIMARYKEY);
-                if(pkValue == null)
-                {
-                    pkValue = request.getParameter(PARAMNAME_PRIMARYKEY);
-                    if(pkValue == null && primaryKeyColumn != null)
-                    {
-                        pkValue = request.getAttribute(primaryKeyColumn.getName());
-                        if(pkValue == null)
-                            pkValue = request.getParameter(primaryKeyColumn.getName());
-                    }
-                }
+                Object pkValue = getPrimaryKeyValueForEditOrDelete(dc);
 
                 try
                 {
@@ -227,7 +247,7 @@ public class TableDialog extends Dialog
                                 DialogContextUtils.getInstance().populateRowWithFieldValues(dc, row);
                                 ((TableDialogContext) dc).setPrimaryKeyValue(pkValue);
                             }
-                            else if(! getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDITPK_NOT_FOUND))
+                            else if(! getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                                 dc.getValidationContext().addValidationError("Unable to locate primary key '{0}'", new Object[] { pkValue });
                         }
                         finally
@@ -235,6 +255,8 @@ public class TableDialog extends Dialog
                             if(cc != null) cc.close();
                         }
                     }
+                    else
+                        dc.getValidationContext().addValidationError("Primary key not specified in primary-key-value-for-edit-or-delete attr, request attr or param.", (Object[]) null);
                 }
                 catch (NamingException e)
                 {
@@ -276,7 +298,7 @@ public class TableDialog extends Dialog
                     break;
 
                 case DialogPerspectives.EDIT:
-                    if(getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDITPK_NOT_FOUND))
+                    if(getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND))
                     {
                         Object pkValue = tdc.getPrimaryKeyValue();
                         if(pkValue == null)

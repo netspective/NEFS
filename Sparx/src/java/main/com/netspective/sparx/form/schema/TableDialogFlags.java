@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialogFlags.java,v 1.1 2003-07-02 14:02:47 shahid.shah Exp $
+ * $Id: TableDialogFlags.java,v 1.2 2003-08-28 00:44:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -49,15 +49,15 @@ import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 
 public class TableDialogFlags extends DialogFlags
 {
-    public static final int ALLOW_INSERT_IF_EDITPK_NOT_FOUND = DialogFlags.CUSTOM_START;
-    public static final int CUSTOM_START = ALLOW_INSERT_IF_EDITPK_NOT_FOUND * 2;
+    public static final int ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND = DialogFlags.CUSTOM_START;
+    public static final int CUSTOM_START = ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND * 2;
 
     public static final FlagDefn[] TABLE_DIALOG_FLAG_DEFNS = new FlagDefn[DialogFlags.FLAG_DEFNS.length + 1];
     static
     {
         for(int i = 0; i < DialogFlags.FLAG_DEFNS.length; i++)
             TABLE_DIALOG_FLAG_DEFNS[i] = DialogFlags.FLAG_DEFNS[i];
-        TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_INSERT_IF_EDITPK_NOT_FOUND", ALLOW_INSERT_IF_EDITPK_NOT_FOUND);
+        TABLE_DIALOG_FLAG_DEFNS[DialogFlags.FLAG_DEFNS.length + 0] = new XdmBitmaskedFlagsAttribute.FlagDefn(ACCESS_XDM, "ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND", ALLOW_INSERT_IF_EDIT_PK_NOT_FOUND);
     }
 
     public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
