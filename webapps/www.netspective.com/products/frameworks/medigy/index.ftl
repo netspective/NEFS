@@ -1,3 +1,8 @@
+<#macro screenShot name>
+    <p align="center"><a href="${resourcesPath}/images/products/frameworks/suite/screen-shots/${name}.gif" target="nefs-medigy-screen-shot"
+       ><img src="${resourcesPath}/images/products/frameworks/suite/screen-shots/${name}-preview.gif" border=0></a></p>
+</#macro>
+
 Using Medigy, healthcare IT groups can finally stop building applications from scratch each time and leverage existing
 talent, databases, and components to reduce time-to-market, improve quality, and cut costs.
 
@@ -14,6 +19,13 @@ Medigy leverages Netspective's other Enterprise Frameworks (Commons, Axiom, Spar
 medical informatics <i>platform</i> or <i>framework</i> that would allow web
 services, information transparency, legacy integration, data consolidation, customer relationship management,
 enterprise reporting, and knowledge management applications to be <i>built on top of an existing infrastructure</i>.
+
+<table align=center cellpadding=7>
+    <tr>
+        <td><@screenShot name="cts-login"/></td>
+        <td><@screenShot name="cts-summary-page"/></td>
+    </tr>
+</table>
 
 <h1>Types of Applications that Medigy Enables</h1>
 <ul class="check-list">
