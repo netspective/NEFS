@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.6 2003-07-11 20:53:15 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.7 2003-07-20 19:42:49 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -64,12 +64,10 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class NavigationControllerServlet extends HttpServlet
 {
-    private File xdmSourceFile;
-
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
-        xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
+        File xdmSourceFile = new File(BasicDbHttpServletValueContext.getProjectFileName(getServletContext()));
         if(! xdmSourceFile.exists())
             throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
                     "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_PROJECT_FILE +"' in your WEB-INF/web.xml file.");
