@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.3 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.4 2003-09-05 16:12:13 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -135,7 +135,7 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         public void setReportValueContext(TabularReportValueContext reportValueContext)
         {
             super.setReportValueContext(reportValueContext);
-            ConnectionProviderEntries cpe = ((HtmlTabularReportValueContext) reportValueContext).getConnectionProvider().getDataSourceEntries();
+            ConnectionProviderEntries cpe = ((HtmlTabularReportValueContext) reportValueContext).getConnectionProvider().getDataSourceEntries(reportValueContext);
             entries = (ConnectionProviderEntry[]) cpe.values().toArray(new ConnectionProviderEntry[cpe.size()]);
             lastRow = entries.length-1;
         }

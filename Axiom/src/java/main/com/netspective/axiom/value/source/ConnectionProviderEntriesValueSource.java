@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionProviderEntriesValueSource.java,v 1.5 2003-05-25 17:28:45 shahid.shah Exp $
+ * $Id: ConnectionProviderEntriesValueSource.java,v 1.6 2003-09-05 16:11:03 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.value.source;
@@ -133,7 +133,7 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
         DatabaseConnValueContext dbcvc = (DatabaseConnValueContext) vc;
 
         ConnectionProvider cp = dbcvc.getConnectionProvider();
-        ConnectionProviderEntries entries = cp.getDataSourceEntries();
+        ConnectionProviderEntries entries = cp.getDataSourceEntries(vc);
 
         List entriesSelected = new ArrayList();
         for(Iterator i = entries.entrySet().iterator(); i.hasNext(); )
@@ -153,7 +153,7 @@ public class ConnectionProviderEntriesValueSource extends AbstractValueSource
         DatabaseConnValueContext dbcvc = (DatabaseConnValueContext) vc;
 
         ConnectionProvider cp = dbcvc.getConnectionProvider();
-        ConnectionProviderEntries entries = cp.getDataSourceEntries();
+        ConnectionProviderEntries entries = cp.getDataSourceEntries(vc);
 
         PresentationValue result = new PresentationValue();
         PresentationValue.Items items = result.createItems();

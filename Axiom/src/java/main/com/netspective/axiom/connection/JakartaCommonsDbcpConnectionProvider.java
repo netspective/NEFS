@@ -39,15 +39,16 @@
  */
 
 /**
- * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.1 2003-09-02 17:06:56 roque.hernandez Exp $
+ * $Id: JakartaCommonsDbcpConnectionProvider.java,v 1.2 2003-09-05 16:10:42 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
 
-import com.netspective.axiom.ConnectionProvider;
-import com.netspective.axiom.ConnectionProviderEntries;
-import com.netspective.axiom.ConnectionProviderEntry;
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.axiom.*;
+import com.netspective.commons.xdm.*;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.source.StaticValueSource;
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
@@ -61,100 +62,205 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 {
     private static final Log log = LogFactory.getLog(JakartaCommonsDbcpConnectionProvider.class);
-    private Map dataSourcesInfo = new HashMap();
-    private Map dataSources = new HashMap();
+    private Map dataSourcesInfo = Collections.synchronizedMap(new HashMap());
+    private Map dataSources = Collections.synchronizedMap(new HashMap());
+    private int dataSourceInfoIndex = 0;
 
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-    public class DataSourceInfo
+    public static class DataSourceInfo
     {
-        private String dataSourceId;
-        private String driverName;
-        private String connUrl;
-        private String connUser;
-        private String connPassword;
+        public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
-        public DataSourceInfo()
+        private String name;
+        private boolean defaultDataSource;
+        private ValueSource driverClass = new StaticValueSource("");
+        private ValueSource url = new StaticValueSource("");
+        private ValueSource user = new StaticValueSource("");
+        private ValueSource password = new StaticValueSource("");
+        private GenericObjectPool.Config poolConfig = new GenericObjectPool.Config();
+        private TestOnActionsFlags testFlags = createTestFlags();
+
+        public String getName()
         {
+            return name;
         }
 
-        public DataSourceInfo(String driverName, String connUrl, String connUser, String connPassword)
+        public void setName(String name)
         {
-            this.driverName = driverName;
-            this.connUrl = connUrl;
-            this.connUser = connUser;
-            this.connPassword = connPassword;
+            this.name = name;
         }
 
-        public String getDataSourceId()
+        public boolean isDefault()
         {
-            return dataSourceId;
+            return defaultDataSource;
         }
 
-        public void setDataSourceId(String dataSourceId)
+        public void setDefault(boolean defaultDataSource)
         {
-            this.dataSourceId = dataSourceId;
+            this.defaultDataSource = defaultDataSource;
         }
 
-        public String getDriverName()
+        public ValueSource getDriverClass()
         {
-            return driverName;
+            return driverClass;
         }
 
-        public void setDriverName(String driverName)
+        public void setDriverClass(ValueSource driverClass)
         {
-            this.driverName = driverName;
+            this.driverClass = driverClass;
         }
 
-        public String getConnUrl()
+        public ValueSource getUrl()
         {
-            return connUrl;
+            return url;
         }
 
-        public void setConnUrl(String connUrl)
+        public void setUrl(ValueSource url)
         {
-            this.connUrl = connUrl;
+            this.url = url;
         }
 
-        public String getConnUser()
+        public ValueSource getUser()
         {
-            return connUser;
+            return user;
         }
 
-        public void setConnUser(String connUser)
+        public void setUser(ValueSource user)
         {
-            this.connUser = connUser;
+            this.user = user;
         }
 
-        public String getConnPassword()
+        public ValueSource getPassword()
         {
-            return connPassword;
+            return password;
         }
 
-        public void setConnPassword(String connPassword)
+        public void setPassword(ValueSource password)
         {
-            this.connPassword = connPassword;
+            this.password = password;
+        }
+
+        public void setMaxConnections(int maxConns)
+        {
+            this.poolConfig.maxActive = maxConns;
+        }
+
+        public void setMaxIdleConnections(int maxIdleConns)
+        {
+            this.poolConfig.maxIdle = maxIdleConns;
+        }
+
+        public void setMaxWait(long maxWait)
+        {
+            this.poolConfig.maxWait = maxWait;
+        }
+
+        public void setTimeBetweenEvictions(long timeBetweenEvictions)
+        {
+            this.poolConfig.timeBetweenEvictionRunsMillis = timeBetweenEvictions;
+        }
+
+        public void setMinEvictableIdleTime(long minEvictableIdleTime)
+        {
+            this.poolConfig.minEvictableIdleTimeMillis = minEvictableIdleTime;
+        }
+
+        public void setNumTestsPerEviction(int numTestsPerEviction)
+        {
+            this.poolConfig.numTestsPerEvictionRun = numTestsPerEviction;
+        }
+
+        public GenericObjectPool.Config getPoolConfig()
+        {
+            return poolConfig;
+        }
+
+        //******************************************************************
+
+        static public class TestOnActionsFlags extends XdmBitmaskedFlagsAttribute
+        {
+            public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+            private static final int TEST_ON_BORROW = 1;
+            private static final int TEST_ON_RETURN = TEST_ON_BORROW * 2;
+            private static final int TEST_WHILE_IDLE = TEST_ON_RETURN * 2;
+
+            private static FlagDefn[] FLAG_DEFNS = new FlagDefn[]
+            {
+                new FlagDefn(ACCESS_XDM, "TEST_ON_BORROW", TEST_ON_BORROW),
+                new FlagDefn(ACCESS_XDM, "TEST_ON_RETURN", TEST_ON_RETURN),
+                new FlagDefn(ACCESS_XDM, "TEST_WHILE_IDLE", TEST_WHILE_IDLE),
+            };
+
+            public FlagDefn[] getFlagsDefns()
+            {
+                return FLAG_DEFNS;
+            }
+        }
+
+        static public class ExhaustedAction extends XdmEnumeratedAttribute
+        {
+            public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
+            private static final String[] VALUES = new String[]{"WHEN_EXHAUSTED_FAIL", "WHEN_EXHAUSTED_BLOCK", "WHEN_EXHAUSTED_GROW"};
+
+            public String[] getValues()
+            {
+                return VALUES;
+            }
+        }
+
+        public TestOnActionsFlags createTestFlags()
+        {
+            return new TestOnActionsFlags();
+        }
+
+        public void setTestFlags(TestOnActionsFlags testFlags)
+        {
+            this.testFlags.copy(testFlags);
+            poolConfig.testOnBorrow = testFlags.flagIsSet(TestOnActionsFlags.TEST_ON_BORROW);
+            poolConfig.testOnReturn = testFlags.flagIsSet(TestOnActionsFlags.TEST_ON_RETURN);
+            poolConfig.testWhileIdle = testFlags.flagIsSet(TestOnActionsFlags.TEST_WHILE_IDLE);
+        }
+
+        public ExhaustedAction createExhaustedAction()
+        {
+            return new ExhaustedAction();
+        }
+
+        public void setExhaustedAction(ExhaustedAction exhaustedAction)
+        {
+            poolConfig.whenExhaustedAction = (byte) exhaustedAction.getValueIndex();
         }
     }
 
-    public DataSourceInfo createDataSource(){
+    public DataSourceInfo createDataSource()
+    {
         return new DataSourceInfo();
     }
 
     public void addDataSource(DataSourceInfo dataSourceInfo)
     {
-        dataSourcesInfo.put(dataSourceInfo.getDataSourceId(), dataSourceInfo);
+        if (dataSourceInfo.getName() == null || dataSourceInfo.getName().equals("")){
+            dataSourceInfo.setName("data-source-" + this.dataSourceInfoIndex);
+        }
+        this.dataSourceInfoIndex++;
+
+        dataSourcesInfo.put(dataSourceInfo.getName(), dataSourceInfo);
+
+        //TODO: Figure out how to set the default data source on SqlManager
+        //if (dataSourceInfo.isDefault()) Do something
+
     }
 
-    protected DataSource createDataSource(String dataSourceId) throws NamingException {
+    protected DataSource createDataSource(ValueContext vc, String dataSourceId) throws NamingException
+    {
 
         DataSourceInfo dataSourceInfo = (DataSourceInfo) dataSourcesInfo.get(dataSourceId);
 
@@ -163,69 +269,90 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
         try
         {
-            Class.forName(dataSourceInfo.driverName);
+            Class.forName(dataSourceInfo.driverClass.getTextValueOrBlank(vc));
         }
-        catch(ClassNotFoundException cnfe)
+        catch (ClassNotFoundException cnfe)
         {
-            throw new NamingException("Driver '"+ dataSourceInfo.driverName + "' not found for dataSourceId '"+ dataSourceId +"'");
+            log.error("Driver '" + dataSourceInfo.driverClass + "' not found for name '" + dataSourceId + "'");
+            throw new NamingException("Driver '" + dataSourceInfo.driverClass + "' not found for name '" + dataSourceId + "'");
         }
 
-        ObjectPool connectionPool = new GenericObjectPool(null);
-        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dataSourceInfo.connUrl, dataSourceInfo.connUser, dataSourceInfo.connPassword);
+        if (log.isDebugEnabled()){
+            log.debug("Initializing data source: '" + dataSourceInfo.getName() + "'\n" +
+                      "                  driver: '" + dataSourceInfo.driverClass.getTextValueOrBlank(vc) + "'\n" +
+                      "                     url: '" + dataSourceInfo.url.getTextValueOrBlank(vc) + "'\n" +
+                      "                    user: '" + dataSourceInfo.user.getTextValueOrBlank(vc) + "'\n" +
+                      "                password: '" + dataSourceInfo.password.getTextValueOrBlank(vc) + "'");
+        }
+
+        ObjectPool connectionPool = new GenericObjectPool(null, dataSourceInfo.getPoolConfig());
+        ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(dataSourceInfo.url.getTextValueOrBlank(vc), dataSourceInfo.user.getTextValueOrBlank(vc), dataSourceInfo.password.getTextValueOrBlank(vc));
         try
         {
-            PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+            //The reference to this object is not used within this method.  It's constuctor sets a reference of itself
+            //in the conectionPool object we pass as a parameter.
+            PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, null, false, true);
         }
-        catch (Exception e)
+        catch (IllegalStateException e)
         {
-            //TODO: Need to figure out exactly what exception is thrown here.
-            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+            log.error("Trying to reset the pool factory for data source: '" + dataSourceInfo.name + "' when the pool objects are already in use, thus the pool is active.");
+            return null;
         }
+
+        catch (Exception e) //Generic Exception being caught here because Constructor of PoolableConnectionFactory is declared that way
+        {
+            log.error("An Exception was encountered when creating the pool factory in the Jakarta Commons DBCP framework.", e);
+            return null;
+        }
+
         PoolingDataSource dataSource = new PoolingDataSource(connectionPool);
 
         return dataSource;
     }
 
-    public DataSource getDataSource(String dataSourceId) throws NamingException {
+    public DataSource getDataSource(ValueContext vc, String dataSourceId) throws NamingException
+    {
 
         DataSource dataSource = (DataSource) dataSources.get(dataSourceId);
-        if (dataSource == null){
-            dataSource = createDataSource(dataSourceId);
-            dataSources.put(dataSourceId, dataSource);
+        if (dataSource == null)
+        {
+            dataSource = createDataSource(vc, dataSourceId);
+            if (dataSource != null)
+                dataSources.put(dataSourceId, dataSource);
         }
         return dataSource;
     }
 
-    public final Connection getConnection(String dataSourceId) throws NamingException, SQLException
+    public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
     {
-        if(dataSourceId == null)
-            throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
+        if (dataSourceId == null)
+            throw new NamingException("name is NULL in " + this.getClass().getName() + ".getConnection(String)");
 
-        DataSource source = getDataSource(dataSourceId);
+        DataSource source = getDataSource(vc, dataSourceId);
 
-        if(source == null)
+        if (source == null)
         {
-            if(log.isDebugEnabled())
-                log.debug("dataSourceId not found in "+ JakartaCommonsDbcpConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
+            if (log.isDebugEnabled())
+                log.debug("name not found in " + JakartaCommonsDbcpConnectionProvider.class.getName() + ".getConnection('" + dataSourceId + "'). Available: " + getAvailableDataSources());
             throw new NamingException("Data source '" + dataSourceId + "' not found in Jakarta Commons DBCP provider.");
         }
 
         return source.getConnection();
     }
 
-    public ConnectionProviderEntry getDataSourceEntry(String dataSourceId)
+    public ConnectionProviderEntry getDataSourceEntry(ValueContext vc, String dataSourceId)
     {
         try
         {
-            DataSource source = getDataSource(dataSourceId);
-            if(source == null)
+            DataSource source = getDataSource(vc, dataSourceId);
+            if (source == null)
                 return null;
 
             return getDataSourceEntry(dataSourceId, source);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            log.debug(JakartaCommonsDbcpConnectionProvider.class.getName() + ".getDataSourceEntry('"+ dataSourceId +"')", ex);
+            log.error(JakartaCommonsDbcpConnectionProvider.class.getName() + ".getDataSourceEntry('" + dataSourceId + "')", ex);
             return null;
         }
     }
@@ -239,17 +366,18 @@ public class JakartaCommonsDbcpConnectionProvider implements ConnectionProvider
 
     public Set getAvailableDataSources()
     {
-        return dataSources.keySet();
+        return dataSourcesInfo.keySet();
     }
 
-    public ConnectionProviderEntries getDataSourceEntries()
+    public ConnectionProviderEntries getDataSourceEntries(ValueContext vc)
     {
         ConnectionProviderEntries entries = new BasicConnectionProviderEntries();
         Set available = getAvailableDataSources();
-        for(Iterator i = available.iterator(); i.hasNext(); )
+        for (Iterator i = available.iterator(); i.hasNext();)
         {
-            ConnectionProviderEntry entry = getDataSourceEntry((String) i.next());
-            if(entry != null)
+
+            ConnectionProviderEntry entry = getDataSourceEntry(vc, (String) i.next());
+            if (entry != null)
                 entries.add(entry);
         }
         return entries;

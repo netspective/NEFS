@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JndiConnectionProvider.java,v 1.4 2003-05-24 20:26:29 shahid.shah Exp $
+ * $Id: JndiConnectionProvider.java,v 1.5 2003-09-05 16:10:42 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -64,6 +64,7 @@ import com.netspective.axiom.ConnectionProviderEntry;
 import com.netspective.axiom.ConnectionProviderEntries;
 import com.netspective.axiom.connection.BasicConnectionProviderEntries;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
+import com.netspective.commons.value.ValueContext;
 
 public class JndiConnectionProvider implements ConnectionProvider
 {
@@ -109,7 +110,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         }
     }
 
-    public final Connection getConnection(String dataSourceId) throws NamingException, SQLException
+    public final Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
     {
         if(dataSourceId == null)
             throw new NamingException("dataSourceId is NULL in " + this.getClass().getName() + ".getConnection(String)");
@@ -134,7 +135,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         return result;
     }
 
-    public ConnectionProviderEntry getDataSourceEntry(String dataSourceId)
+    public ConnectionProviderEntry getDataSourceEntry(ValueContext vc, String dataSourceId)
     {
         try
         {
@@ -170,7 +171,7 @@ public class JndiConnectionProvider implements ConnectionProvider
         return result;
     }
 
-    public ConnectionProviderEntries getDataSourceEntries()
+    public ConnectionProviderEntries getDataSourceEntries(ValueContext vc)
     {
         ConnectionProviderEntries entries = new BasicConnectionProviderEntries();
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.14 2003-08-31 22:41:17 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.15 2003-09-05 16:10:42 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -105,7 +105,7 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     {
         if(connection == null)
         {
-            connection = dbvc.getConnectionProvider().getConnection(getDataSourceId());
+            connection = dbvc.getConnectionProvider().getConnection(this, getDataSourceId());
 
             // hang on to the point where the connection was created so that we can throw this if the connection is
             // not properly closed

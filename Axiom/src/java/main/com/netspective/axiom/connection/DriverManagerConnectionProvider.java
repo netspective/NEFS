@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DriverManagerConnectionProvider.java,v 1.2 2003-05-24 20:26:29 shahid.shah Exp $
+ * $Id: DriverManagerConnectionProvider.java,v 1.3 2003-09-05 16:10:42 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -62,6 +62,7 @@ import com.netspective.axiom.ConnectionProviderEntries;
 import com.netspective.axiom.ConnectionProviderEntry;
 import com.netspective.axiom.connection.BasicConnectionProviderEntries;
 import com.netspective.axiom.connection.BasicConnectionProviderEntry;
+import com.netspective.commons.value.ValueContext;
 
 public class DriverManagerConnectionProvider implements ConnectionProvider
 {
@@ -155,7 +156,7 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
         dataSources.put(dataSourceId, dataSourceInfo);
     }
 
-    public Connection getConnection(String dataSourceId) throws NamingException, SQLException
+    public Connection getConnection(ValueContext vc, String dataSourceId) throws NamingException, SQLException
     {
         DataSourceInfo dsInfo = getDataSourceInfo(dataSourceId);
         if(dsInfo != null)
@@ -179,20 +180,20 @@ public class DriverManagerConnectionProvider implements ConnectionProvider
         return dataSources.keySet();
     }
 
-    public ConnectionProviderEntries getDataSourceEntries()
+    public ConnectionProviderEntries getDataSourceEntries(ValueContext vc)
     {
         ConnectionProviderEntries entries = new BasicConnectionProviderEntries();
         Set available = getAvailableDataSources();
         for(Iterator i = available.iterator(); i.hasNext(); )
         {
-            ConnectionProviderEntry entry = getDataSourceEntry((String) i.next());
+            ConnectionProviderEntry entry = getDataSourceEntry(vc, (String) i.next());
             if(entry != null)
                 entries.add(entry);
         }
         return entries;
     }
 
-    public ConnectionProviderEntry getDataSourceEntry(String dataSourceId)
+    public ConnectionProviderEntry getDataSourceEntry(ValueContext vc, String dataSourceId)
     {
         DataSourceInfo dsInfo = getDataSourceInfo(dataSourceId);
         if(dsInfo != null)
