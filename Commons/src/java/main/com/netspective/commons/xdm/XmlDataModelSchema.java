@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.23 2003-06-22 04:50:58 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.24 2003-06-25 03:16:29 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -713,6 +713,10 @@ public class XmlDataModelSchema
             String attrName = (String) i.next();
             Class attrType = getAttributeType(attrName);
             if(! XdmBitmaskedFlagsAttribute.class.isAssignableFrom(attrType))
+                continue;
+
+            PropertyNames pNames = (PropertyNames) childPropertyNames.get(attrName);
+            if(! pNames.isPrimaryName(attrName))
                 continue;
 
             XdmBitmaskedFlagsAttribute bfa = null;
