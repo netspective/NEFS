@@ -170,8 +170,20 @@ public class NavigationPath
 
     public void finalizeContents()
     {
+        // we now know our position in the tree to set the name for good
+        setQualifiedName(constructQualifiedName());
+
         for(int i = 0; i < childrenList.size(); i++)
-            ((NavigationPath) childrenList.get(i)).finalizeContents();
+        {
+            final NavigationPath navigationPath = (NavigationPath) childrenList.get(i);
+            navigationPath.registerChild(navigationPath);
+        }
+
+        for(int i = 0; i < childrenList.size(); i++)
+        {
+            final NavigationPath navigationPath = (NavigationPath) childrenList.get(i);
+            navigationPath.finalizeContents();
+        }
 
         for(int i = 0; i < finalizeContentsListeners.size(); i++)
             ((NavigationPathFinalizeContentsListener) finalizeContentsListeners.get(i)).finalizeNavigationPathContents(this);
@@ -229,21 +241,23 @@ public class NavigationPath
 
     public String getQualifiedName()
     {
-        if(null == qualifiedName)
-        {
-            StringBuffer sb = new StringBuffer();
-            if(parent != null)
-                sb.append(parent.getQualifiedName());
+        if(qualifiedName == null)
+            return constructQualifiedName();
+        else
+            return qualifiedName;
+    }
 
-            if(sb.length() == 0 || sb.charAt(sb.length() - 1) != '/')
-                sb.append(PATH_SEPARATOR);
+    protected String constructQualifiedName()
+    {
+        StringBuffer sb = new StringBuffer();
+        if(parent != null)
+            sb.append(parent.getQualifiedName());
 
-            sb.append(getName());
+        if(sb.length() == 0 || sb.charAt(sb.length() - 1) != '/')
+            sb.append(PATH_SEPARATOR);
 
-            setQualifiedName(sb.toString());
-        }
-
-        return qualifiedName;
+        sb.append(getName());
+        return sb.toString();
     }
 
     public String getQualifiedNameIncludingTreeId()
@@ -462,7 +476,7 @@ public class NavigationPath
         path.setParent(this);
         childrenList.add(path);
         childrenMap.put(path.getName(), path);
-        registerChild(path);
+        // registerChild(path); -- we do this in finalizeContents()
     }
 
     public void removeChild(NavigationPath path)
