@@ -27,11 +27,20 @@
         <echo message="Default Schema is '${app.database.schema.default-name}'"/>
     </target>
 
-    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants.">
+    <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
+        <delete dir="${app.WEB-INF.classes.path}/app/auto/id"/>
         <sparx action="generate-id-constants"
                projectFile="${sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
-               idConstantsClass="app.id"/>
+               idConstantsClass="app.auto.id"/>
+    </target>
+
+    <target name="generate-dcb" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
+        <delete dir="${app.WEB-INF.classes.path}/app/auto/dcb"/>
+        <sparx action="generate-dcb"
+               projectFile="${sparx.project.file}"
+               destDir="${app.WEB-INF.classes.path}"
+               dcbPackage="app.auto.dcb"/>
     </target>
 
     <target name="generate-ddl" depends=".init" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
@@ -41,11 +50,12 @@
                ddl="*"/>
     </target>
 
-    <target name="generate-dal" depends=".init" description="Generates typed Java classes for all tables and columns in the default database schema. This target should be executed anytime the default schema is modified.">
+    <target name="generate-dal" depends=".init" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
+        <delete dir="${app.WEB-INF.classes.path}/app/auto/dal/${app.database.schema.default-name}"/>
         <sparx action="generate-dal"
                projectFile="${sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
-               dalPackage="app.dal"/>
+               dalPackage="app.auto.dal"/>
     </target>
 
     <target name="generate-import-data-dtd" depends=".init" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
@@ -60,7 +70,7 @@
                graphVizDot="${app.database.path}/data/${app.database.schema.default-name}-erd.dot"/>
     </target>
 
-    <target name="generate-all" depends="generate-id-constants,generate-ddl,generate-dal,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
+    <target name="generate-all" depends="generate-id-constants,generate-dcb,generate-ddl,generate-dal,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
 
     <target name="create-database-hsqldb" depends="generate-dal,generate-import-data-dtd,generate-graphviz-erd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
         <property name="app.database.instance.path" value="${app.database.path}/instance"/>
