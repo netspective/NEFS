@@ -9,7 +9,7 @@
   <bookinfo>
     <title>Netspective Enterprise Frameworks (NEF) 7.0 User&#39;s Manual</title>
 
-    <releaseinfo>Release 7.0.0 ($Date: 2003-10-28 16:56:48 $)</releaseinfo>
+    <releaseinfo>Release 7.0.0 ($Date: 2003-10-29 02:56:16 $)</releaseinfo>
 
     <authorgroup>
       <author>
@@ -157,6 +157,11 @@
             </listitem>
 
             <listitem>
+              <para>Uses normal Java inheritance and delegation for
+              extensiblity</para>
+            </listitem>
+
+            <listitem>
               <para>Low learning curve</para>
             </listitem>
 
@@ -215,7 +220,7 @@
             </listitem>
 
             <listitem>
-              <para>Business Rules Repository</para>
+              <para>Business Values and Rules Repository</para>
             </listitem>
 
             <listitem>
@@ -623,8 +628,7 @@
           <listitem>
             <para>Most of the open source tools cater to very talented Java
             engineers since they require a serious understanding of low-level
-            computer science concepts, J2EE APIs, and Java programming.
-            </para>
+            computer science concepts, J2EE APIs, and Java programming.</para>
           </listitem>
 
           <listitem>
@@ -1232,6 +1236,18 @@
         </varlistentry>
 
         <varlistentry>
+          <term>APP_ROOT/resources</term>
+
+          <listitem>
+            <para>If present this directory tree contains all of the
+            application&#39;s shared files that need to be served to end users
+            of your applications. Web browser resources that your application
+            needs such as images and scripts are placed here and will be
+            served to your end users by their browser.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
           <term>APP_ROOT/sparx</term>
 
           <listitem>
@@ -1242,6 +1258,24 @@
             will be served to your end users by their browser. You should not
             modify files in this directory because it does not contain any
             programmer-modifiable files.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>APP_ROOT/resources/sparx</term>
+
+          <listitem>
+            <para>This directory tree (which is not present in the starter
+            application or the diagram above) contains optional Sparx shared
+            files and resources that usually belong in <literal>APP_ROOT/sparx</literal>
+            but are being overridden by your application. For example, if you
+            have your own stylesheets or images that need to replace something
+            in Sparx, they would be placed in this directory. Because the
+            <literal>APP_ROOT/sparx</literal> directory contents should never
+            be modified, the <literal>APP_ROOT/resources/sparx</literal>
+            directory gives you the opportunity to override Sparx resources
+            without worrying about files being overwritten when Sparx is
+            upgrade.</para>
           </listitem>
         </varlistentry>
 
@@ -1267,7 +1301,7 @@
         </varlistentry>
 
         <varlistentry>
-          <term>APP_ROOT/WEB-INF/classes</term>
+          <term>WEB-INF/classes</term>
 
           <listitem>
             <para>This directory, which is a part of the J2EE Servlet
@@ -1292,7 +1326,7 @@
         </varlistentry>
 
         <varlistentry>
-          <term>APP_ROOT/WEB-INF/classes/auto</term>
+          <term>WEB-INF/classes/auto</term>
 
           <listitem>
             <para>Although this directory is not found in the starter package,
@@ -1304,7 +1338,7 @@
         </varlistentry>
 
         <varlistentry>
-          <term>APP_ROOT/WEB-INF/lib</term>
+          <term>WEB-INF/lib</term>
 
           <listitem>
             <para>This directory, which is a part of the J2EE Servlet
@@ -1315,21 +1349,21 @@
         </varlistentry>
 
         <varlistentry>
-          <term>APP_ROOT/WEB-INF/sparx</term>
+          <term>WEB-INF/sparx</term>
 
           <listitem>
             <para>Sparx uses the <literal>WEB-INF/sparx</literal> directory to
-            obtain its resources. There is usually at least one
-            <literal>project.xml</literal> file and may contain subdirectories
-            if you wish to split up your application component declarations.
-            The <emphasis role="bold">APP_ROOT/WEB-INF/sparx/project.xml</emphasis>
+            store its project component descriptors. There is usually at least
+            one <literal>project.xml</literal> file and may contain
+            subdirectories if you wish to split up your application component
+            declarations. The <emphasis role="bold">APP_ROOT/WEB-INF/sparx/project.xml</emphasis>
             is the file that drives all of the Sparx functionality in your
-            application.</para>
+            application (see <xref linkend="nef-project-file" />).</para>
           </listitem>
         </varlistentry>
 
         <varlistentry>
-          <term>APP_ROOT/WEB-INF/sparx/conf</term>
+          <term>WEB-INF/sparx/conf</term>
 
           <listitem>
             <para>This directory contains contains sample <literal>web.xml</literal>
@@ -1419,8 +1453,8 @@
       customer stories (XP/Agile style). Normally. the more time you spend in
       the definition phase understanding your customer&#39;s requirements, the
       less time you&#39;ll spend changing code later on. However, using
-      NEF&#39;s delcarative programming model allow you change requirements
-      and lets your customers change their mind without significant impact to
+      NEF&#39;s delcarative programming model allow you to change requirements
+      and lets your customers change their minds without significant impact to
       your code.</para>
     </section>
 
@@ -1487,7 +1521,7 @@
     applications.</para>
 
     <section>
-      <title>The NEF Project File</title>
+      <title id="nef-project-file">The NEF Project File</title>
 
       <para>All of the NEF (Sparx, Axiom, and Commons) components are declared
       in an <emphasis>input source</emphasis> file known as the
@@ -1822,7 +1856,7 @@ id="project-file-basic-eg-7" />
         <title>XDM Tags versus JSP Tags</title>
 
         <para>JSP tag libraries are usually used for emitting HTML. They are
-        commonly use in the view component of the MVC paradigm. NEF XML tags
+        commonly used in the view component of the MVC paradigm. NEF XML tags
         are used to describe and declare all aspects of your application (UI,
         database, security, etc). NEF can use existing JSP tag libraries but
         they are seldom needed because NEF&#39;s Sparx framework will handle
@@ -1831,69 +1865,25 @@ id="project-file-basic-eg-7" />
       </section>
 
       <section>
-        <title>Including XML Files</title>
+        <title>Declaring Project Components using Tags</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>XDM Tag Reference</title>
+
+        <para></para>
+      </section>
+
+      <section>
+        <title>Including XML Files into Other XML Files</title>
 
         <para>The <sgmltag class="starttag">xdm:include</sgmltag> tag allows
         you to import to include the contents of other XML files into the
         Project File. The <sgmltag class="starttag">xdm:include</sgmltag> tag
         may also be called recursively. This means that the one file can
-        include another file which can include another file and so on. The
-        <sgmltag class="starttag">xdm:include</sgmltag> tag has the following
-        attributes:</para>
-
-        <variablelist>
-          <varlistentry>
-            <term><sgmltag class="attribute">file</sgmltag></term>
-
-            <listitem>
-              <para>Include the contents of the given file name, which may be
-              either a relative path or an absolute path. If the an absolute
-              filename is not provided then the filename it is relative to the
-              file performing the include.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term><sgmltag class="attribute">resource</sgmltag></term>
-
-            <listitem>
-              <para>Include the contents of the given file name but locate it
-              using Java&#39;s resource loading mechanism. If no <sgmltag
-              class="attribute">relative-to</sgmltag> attribute is provided,
-              the resource will be located relative to the
-              com.netspective.sparx.Project class.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term><sgmltag class="attribute">relative-to</sgmltag></term>
-
-            <listitem>
-              <para>If the <sgmltag class="attribute">resource</sgmltag>
-              attribute is used for locating the include file, then this
-              attribute may be provided to specify the name of a class that
-              should be used as the class relative to which the <sgmltag
-              class="attribute">resource</sgmltag> attribute&#39;s value will
-              be located.</para>
-            </listitem>
-          </varlistentry>
-
-          <varlistentry>
-            <term><sgmltag class="attribute">template</sgmltag></term>
-
-            <listitem>
-              <para>See <xref linkend="xdm-templates" />.</para>
-            </listitem>
-          </varlistentry>
-        </variablelist>
-
-        <note>
-          <para>The <sgmltag class="attribute">file</sgmltag>, <sgmltag
-          class="attribute">resource</sgmltag>, and <sgmltag class="attribute">template</sgmltag>
-          attributes are all mutually exclusive meaning if you include a file
-          you may not, within the same tag, also include resources or
-          templates.</para>
-        </note>
+        include another file which can include another file and so on.</para>
 
         <example>
           <title>How to use the <sgmltag class="starttag">xdm:include</sgmltag>
@@ -1901,14 +1891,61 @@ id="project-file-basic-eg-7" />
 
           <programlisting>&#60;project xmlns:xdm=&#34;http://www.netspective.org/Framework/Commons/XMLDataModel&#34;&#62;
 
-    &#60;xdm:include file=&#34;/some/absolute/file.name&#34;/&#62;
-    &#60;xdm:include file=&#34;a/relative/file.name&#34;/&#62;
+    &#60;xdm:include file=&#34;/some/absolute/file.name&#34;/&#62; <co
+id="xdm-include-file-abs" />
+    &#60;xdm:include file=&#34;a/relative/file.name&#34;/&#62; <co
+id="xdm-include-file-rel" />
 
-    &#60;xdm:include resource=&#34;a/resource/relative/to/Project.class&#34;/&#62;
-    &#60;xdm:include resource=&#34;a/resource/relative/to/my.custom.className.class&#34; relative-to=&#34;my.custom.className&#34;/&#62;
+    &#60;xdm:include resource=&#34;a/relative/file.name&#34;/&#62; <co
+id="xdm-include-res-abs" />
+    &#60;xdm:include resource=&#34;a/relative/file.name&#34; relative-to=&#34;my.custom.ClassName&#34;/&#62; <co
+id="xdm-include-res-rel" />
 
-    &#60;xdm:include template=&#34;template-name&#34;/&#62;</programlisting>
+    &#60;xdm:include template=&#34;template-name&#34;/&#62; <co
+id="xdm-include-template" /></programlisting>
         </example>
+
+        <calloutlist>
+          <callout arearefs="xdm-include-file-abs">
+            <para>Include the contents of the given file using an abosolute
+            path.</para>
+          </callout>
+
+          <callout arearefs="xdm-include-file-rel">
+            <para>Include the contents of the given file using a relative
+            path. When relative paths are provided, the path is relative to
+            the parent file.</para>
+          </callout>
+
+          <callout arearefs="xdm-include-res-abs">
+            <para>Include the contents of the given file name but locate it
+            using Java&#39;s resource loading mechanism. Since no <sgmltag
+            class="attribute">relative-to</sgmltag> attribute is provided, the
+            resource will be located relative to the <classname>com.netspective.sparx.Project</classname>
+            class.</para>
+          </callout>
+
+          <callout arearefs="xdm-include-res-rel">
+            <para>Include the contents of the given file name but locate it
+            using Java&#39;s resource loading mechanism. Since the <sgmltag
+            class="attribute">relative-to</sgmltag> attribute is provided, the
+            resource will be located relative to the class called
+            <classname>my.custom.ClassName</classname>.</para>
+          </callout>
+
+          <callout arearefs="xdm-include-template">
+            <para>See <xref linkend="xdm-templates" />.</para>
+          </callout>
+        </calloutlist>
+
+        <note>
+          <para>The <sgmltag class="attribute">file</sgmltag>, <sgmltag
+          class="attribute">resource</sgmltag>, and <sgmltag class="attribute">template</sgmltag>
+          attributes are all mutually exclusive meaning if you include a file
+          you may not, within the same tag, also include resources or
+          templates. However, you can separate them into multiple <sgmltag
+          class="starttag">xdm:include</sgmltag> tags.</para>
+        </note>
       </section>
 
       <section>
@@ -1925,21 +1962,37 @@ id="project-file-basic-eg-7" />
           <title>How to Pre-process an XDM file</title>
 
           <programlisting>&#60;?xml version=&#34;1.0&#34;?&#62;
-<emphasis role="bold">&#60;?transform --resource --xslt com/netspective/commons/xdm/DataModelSchemaTestTransform.xsl?&#62;</emphasis> <co
-id="xdm-pre-process-pi" />
+&#60;?transform --xslt /an/absolute/file.xsl?&#62; <co
+id="xdm-pre-process-pi-file-abs" />
+&#60;?transform --xslt a/relative/file.xsl?&#62; <co
+id="xdm-pre-process-pi-file-rel" />
+&#60;?transform --resource --xslt com/netspective/commons/xdm/DataModelSchemaTestTransform.xsl?&#62; <co
+id="xdm-pre-process-pi-res-abs" />
 
 &#60;project ...&#62;
     ....
 &#60;/project&#62;</programlisting>
 
           <calloutlist>
-            <callout arearefs="xdm-pre-process-pi">
+            <callout arearefs="xdm-pre-process-pi-file-abs">
               <para>The XDM pre-processing occurs with a processing
               instruction called <sgmltag class="pi">transform</sgmltag>. The
-              main parameter, called --xslt, provides the name of the XSLT
-              file to send the XML file through before processing as XDM. If
-              the XSLT file should be located using Java&#39;s resource
-              loading mechanism then the --resource flag may be specified.</para>
+              main parameter, called <literal>--xslt</literal>, provides the
+              name of the XSLT file to send the XML file through before
+              processing as XDM. In this example it&#39;s an absolute file.</para>
+            </callout>
+
+            <callout arearefs="xdm-pre-process-pi-file-rel">
+              <para>You can specify relative files for the pre-processor as
+              well. If the file is not absolute then it is relative to the
+              parent file (the file containing the <sgmltag class="pi">transform</sgmltag>
+              instruction.</para>
+            </callout>
+
+            <callout arearefs="xdm-pre-process-pi-res-abs">
+              <para>Specify <literal>the --resource</literal> parameter If the
+              XSLT file should be located using Java&#39;s resource loading
+              mechanism then the --resource flag may be specified.</para>
             </callout>
           </calloutlist>
         </example>
@@ -1951,44 +2004,79 @@ id="xdm-pre-process-pi" />
         <para>XDM Templates are very powerful but easy to use alternatives to
         pre-processing using XSLT. They basically allow defining custom tags
         that are not actually instantiated into obects; instead they are
-        stored as a template to be reused by other objects. All templates have
-        the following features:</para>
+        stored as a template to be reused by other objects. An example should
+        clarify how to create (produce) and use (consume) templates:</para>
 
-        <itemizedlist>
-          <listitem>
+        <example>
+          <title>How to Use Global XDM Templates</title>
+
+          <programlisting>&#60;xdm:template name=&#34;test-template-1&#34;&#62; <co
+id="xdm-template-define" /> <co id="xdm-template-name" />
+    &#60;xdm:template-param name=&#34;param1&#34; default=&#34;4234&#34;/&#62; <co
+id="xdm-template-param-optional" />
+    &#60;xdm:template-param name=&#34;param2&#34; required=&#34;yes&#34;/&#62; <co
+id="xdm-template-param-required" />
+
+    &#60;nested1 text=&#34;TestNested1Template&#34; integer=&#34;100&#34;&#62;
+        PCDATA in TestNested1Template.
+        &#60;nested11 text=&#34;<emphasis role="bold">${params.param1}</emphasis>&#34; integer=&#34;<emphasis
+role="bold">${params.param2}</emphasis>&#34;/&#62; <co
+id="xdm-template-param-use" />
+        &#60;nested11 type=&#34;type-A&#34; text=&#34;TestText12&#34; integer=&#34;12&#34;/&#62;
+        &#60;nested11 class=&#34;com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test&#34;
+                  text=&#34;CustomTestText12&#34;
+                  integer=&#34;122&#34;/&#62;
+    &#60;/nested1&#62;
+&#60;/xdm:template&#62;
+
+<emphasis role="bold">&#60;xdm:include template=&#34;test-template-1&#34; xdm:param-param1=&#34;param1-value&#34;/&#62; </emphasis><co
+id="xdm-template-consume-generic" /></programlisting>
+        </example>
+
+        <calloutlist>
+          <callout arearefs="xdm-template-define">
             <para>A template is created (or <emphasis>produced</emphasis>)
             using the <sgmltag class="starttag">xdm:template</sgmltag> tag or
             with custom tags defined by <emphasis>template producers</emphasis>
-            (see <xref linkend="xdm-template-producers" />).</para>
-          </listitem>
-
-          <listitem>
-            <para>A template is contained within a <emphasis>namespace</emphasis>.
-            If a template is <emphasis>produced</emphasis> (defined) using the
+            (see <xref linkend="xdm-template-producers" />). Every template is
+            contained within a <emphasis>template namespace</emphasis>. If a
+            template is <emphasis>produced</emphasis> (defined) using the
             <sgmltag class="starttag">xdm:template</sgmltag> tag, it is
             considered a <emphasis>global</emphasis> template (in the
-            <emphasis>global</emphasis> namespace).</para>
-          </listitem>
+            <emphasis>global</emphasis> namespace). A template may be defined
+            and used within the same files or separated across files (meaning
+            defined in one file and used later in another file).</para>
+          </callout>
 
-          <listitem>
+          <callout arearefs="xdm-template-name">
             <para>A template has a name.</para>
-          </listitem>
+          </callout>
 
-          <listitem>
+          <callout arearefs="xdm-template-param-optional">
             <para>A templates may contain optional parameters that can act as
             simple variable replacements. They are not as powerful as XSLT
             parameters but are much easier to define and use. Parameters must
-            specify a <sgmltag>name</sgmltag> attribute and optionally a
-            <sgmltag class="attribute">required</sgmltag>, and <sgmltag
-            class="attribute">default</sgmltag> attributes.</para>
-          </listitem>
+            specify a <sgmltag>name</sgmltag> attribute and optionally specify
+            a <sgmltag class="attribute">default</sgmltag> attribute. Template
+            parameter names must be valid Java identifiers because they are
+            treated as Java expressions.</para>
+          </callout>
 
-          <listitem>
-            <para>A template may be defined and used within the same files or
-            separated across files.</para>
-          </listitem>
+          <callout arearefs="xdm-template-param-required">
+            <para>A template may contain parameters which are <sgmltag
+            class="attribute">required</sgmltag>.</para>
+          </callout>
 
-          <listitem>
+          <callout arearefs="xdm-template-param-use">
+            <para>Template parameters are used by enclosing them like this:
+            <literal>${params.<replaceable>paramName</replaceable>}</literal>.
+            Variable replacements only occur within attribute values and
+            PCDATA. The text within <literal>${</literal> and
+            <literal>}</literal> may be an expression. So, <literal>${params.param1
+            + &#39; &#39; + params.param2}</literal> would be valid.</para>
+          </callout>
+
+          <callout arearefs="xdm-template-consume-generic">
             <para>A template is <emphasis>consumed</emphasis> or used by
             supplying the <sgmltag class="starttag">xdm:include</sgmltag> tag
             with an appropriate <sgmltag class="attribute">template</sgmltag>=<sgmltag
@@ -2001,36 +2089,8 @@ id="xdm-pre-process-pi" />
             class="starttag">xdm:include</sgmltag> tag with the contents of
             the template producer so that the NEF never even encounters the
             <sgmltag class="starttag">xdm:include</sgmltag> tag.</para>
-          </listitem>
-        </itemizedlist>
-
-        <example>
-          <title>How to Use Global XDM Templates</title>
-
-          <programlisting>&#60;!--
-     * an xdm:template tag is considered a &#34;generic&#34; template and all generic templates share a single namespace
-     * templates may contain parameters that may be optional or required. values of the parameters are available as {$paramx.XXX}
-       (note: parameter names must be valid Java identifiers because they are treated as Java expressions)
---&#62;
-<emphasis role="bold">&#60;xdm:template name=&#34;test-template-1&#34;&#62;</emphasis>
-    <emphasis role="bold">&#60;xdm:template-param name=&#34;param1&#34; required=&#34;yes&#34;/&#62;</emphasis>
-    <emphasis role="bold">&#60;xdm:template-param name=&#34;param2&#34; default=&#34;4234&#34;/&#62;</emphasis>
-
-    &#60;nested1 text=&#34;TestNested1Template&#34; integer=&#34;100&#34;&#62;
-        PCDATA in TestNested1Template.
-        &#60;nested11 text=&#34;<emphasis role="bold">${params.param1}</emphasis>&#34; integer=&#34;<emphasis
-role="bold">${params.param2}</emphasis>&#34;/&#62;
-        &#60;nested11 type=&#34;type-A&#34; text=&#34;TestText12&#34; integer=&#34;12&#34;/&#62;
-        &#60;nested11 class=&#34;com.netspective.commons.xdm.DataModelSchemaTest$CustomNested11Test&#34;
-                  text=&#34;CustomTestText12&#34;
-                  integer=&#34;122&#34;/&#62;
-    &#60;/nested1&#62;
-<emphasis role="bold">&#60;/xdm:template&#62;</emphasis>
-
-&#60;!-- include the generic template that we just defined, the contents of the template will replace the &#60;xdm:include&#62; tag --&#62;
-&#60;!-- template parameters may only be passed in as attributes (not nested elements) --&#62;
-<emphasis role="bold">&#60;xdm:include template=&#34;test-template-1&#34; xdm:param-param1=&#34;param1-value&#34;/&#62;</emphasis></programlisting>
-        </example>
+          </callout>
+        </calloutlist>
 
         <section>
           <title id="xdm-template-producers">Template Producer and Consumer
@@ -2091,18 +2151,6 @@ role="bold">${params.param2}</emphasis>&#34;/&#62;
             </varlistentry>
           </variablelist>
         </section>
-      </section>
-
-      <section>
-        <title>Declaring Project Components using Tags</title>
-
-        <para></para>
-      </section>
-
-      <section>
-        <title>XDM Tag Reference</title>
-
-        <para></para>
       </section>
     </section>
 
