@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractContentHandler.java,v 1.10 2003-10-12 18:08:58 shahid.shah Exp $
+ * $Id: AbstractContentHandler.java,v 1.11 2003-10-30 05:12:27 shahid.shah Exp $
  */
 
 package com.netspective.commons.xml;
@@ -364,6 +364,9 @@ public abstract class AbstractContentHandler implements TemplateContentHandler
 
     public void endDocument() throws SAXException
     {
+        nodeStack.clear();
+        ignoreStack.clear();
+        templateDefnStack.clear();
     }
 
     public boolean handleDefaultStartElement(String url, String localName, String qName, Attributes attributes) throws SAXException
