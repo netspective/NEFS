@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.10 2003-04-08 17:59:20 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.11 2003-04-08 18:06:28 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -519,7 +519,10 @@ public class NavigationPage extends NavigationPath
 
     public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
+        if(panel != null)
+            panel.render(writer, nc);
+        else
+            writer.write("Path '"+ nc.getActivePathFindResults().getSearchedForPath() +"' is a " + this.getClass().getName() + " class but has no body.");
     }
 
     public void handlePageFooter(Writer writer, NavigationContext nc) throws ServletException, IOException
@@ -543,10 +546,7 @@ public class NavigationPage extends NavigationPath
         {
             // render the body first and let it modify the navigation context
             StringWriter body = new StringWriter();
-            if(panel != null)
-                panel.render(body, nc);
-            else
-                handlePageBody(body, nc);
+            handlePageBody(body, nc);
 
             handlePageMetaData(writer, nc);
             handlePageHeader(writer, nc);
@@ -561,10 +561,7 @@ public class NavigationPage extends NavigationPath
                 handlePageMetaData(writer, nc);
                 handlePageHeader(writer, nc);
             //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
-                if(panel != null)
-                    panel.render(writer, nc);
-                else
-                    handlePageBody(writer, nc);
+                handlePageBody(writer, nc);
                 handlePageFooter(writer, nc);
             //}
             //catch (ComponentCommandException e)
