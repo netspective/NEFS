@@ -73,6 +73,18 @@ if(libraryStyle != 'ite' && libraryStyle != 'sde-ide' && libraryStyle != 'sde-an
 var projectClassPath = "";
 projectClassPath = addPathToClassPath(projectClassPath, webInfFolder + "\\classes");
 
+if(env("JAVA_HOME") == "")
+{
+    WScript.echo("JAVA_HOME does not seem to be set.");
+    WScript.quit();
+}
+else
+{
+    WScript.echo("JAVA_HOME is " + env("JAVA_HOME"));
+    projectClassPath = addPathToClassPath(projectClassPath, env("JAVA_HOME") + "\\lib\\tools.jar");
+    projectClassPath = addPathToClassPath(projectClassPath, env("JAVA_HOME") + "\\lib\\classes.zip");
+}   
+
 if(libraryStyle == 'ite')
 {
 	projectClassPath = addFilesToClassPath(projectClassPath, webInfLibFolderName);
