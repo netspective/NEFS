@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.56 2003-12-13 17:33:32 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.57 2004-02-10 16:29:55 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -321,6 +321,17 @@ public class NavigationPage extends NavigationPath implements TemplateConsumer, 
     public NavigationErrorPage createErrorPage()
     {
         return new NavigationErrorPage(getOwner());
+    }
+
+    public NavigationErrorPage createErrorPage(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(NavigationErrorPage.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { NavigationTree.class });
+            return (NavigationErrorPage) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
     }
 
     public void registerErrorPage(NavigationErrorPage page)
