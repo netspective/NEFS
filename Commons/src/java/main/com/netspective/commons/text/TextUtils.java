@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TextUtils.java,v 1.12 2003-12-10 21:00:59 shahid.shah Exp $
+ * $Id: TextUtils.java,v 1.13 2003-12-10 23:36:38 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -50,7 +50,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
-import java.io.File;
+import java.io.Reader;
+import java.io.LineNumberReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -590,6 +592,86 @@ public class TextUtils
             iRead = is.read();
         }
         return sb.toString();
+    }
+
+    /**
+     * Retrieve lines of text from an input stream
+     * @param location The fully qualified name of the file to read
+     * @param startLineNumber The starting line number
+     * @param endLineNumber The ending line number
+     * @return The text contained in line numbers startingLineNumber to endingLineNumber
+     * @throws IOException
+     */
+    public static String getTextFileLines(String location, int startLineNumber, int endLineNumber) throws IOException
+    {
+        return getTextStreamLines(new FileInputStream(location), startLineNumber, endLineNumber);
+    }
+
+    /**
+     * Retrieve lines of text from an input stream
+     * @param is The input stream to read
+     * @param startLineNumber The starting line number
+     * @param endLineNumber The ending line number
+     * @return The text contained in line numbers startingLineNumber to endingLineNumber
+     * @throws IOException
+     */
+    public static String getTextStreamLines(InputStream is, int startLineNumber, int endLineNumber) throws IOException
+    {
+        if(is == null)
+            return null;
+
+        if(startLineNumber <= 0 && endLineNumber <= 0)
+            return null;
+
+        Reader isReader = null;
+        LineNumberReader reader = null;
+        StringBuffer result = new StringBuffer();
+
+        try
+        {
+            isReader = new InputStreamReader(is);
+            reader = new LineNumberReader(isReader);
+
+            String line = null;
+
+            if(startLineNumber > 0 && endLineNumber <= 0)
+            {
+                while((line = reader.readLine()) != null)
+                {
+                    if(reader.getLineNumber() == startLineNumber)
+                        return line;
+                }
+
+            }
+            else
+            {
+                while((line = reader.readLine()) != null)
+                {
+                    int lineNumber = reader.getLineNumber();
+
+                    if(lineNumber < startLineNumber)
+                        continue;
+
+                    if(lineNumber > endLineNumber)
+                        break;
+
+                    result.append(line);
+                    result.append("\n");
+                }
+            }
+        }
+        finally
+        {
+            if(reader != null)
+                reader.close();
+
+            if(isReader != null)
+                is.close();
+
+            is.close();
+        }
+
+        return result.toString();
     }
 
     public static final String escapeHTML(String s)
