@@ -115,8 +115,6 @@
     <data-type name="mime-type" type="text"/>
     <data-type name="uri" type="text"/>
 
-    <data-type name="creation-stamp" type="stamp"/>
-
     <data-type name="stock-symbol" type="text">
         <validation>
             <rule name="letters-only" class="com.netspective.commons.validate.rule.TextValueValidationRule" reg-expr="^[a-zA-Z]+$"/>
