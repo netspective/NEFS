@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPath.java,v 1.13 2003-11-15 19:03:47 shahid.shah Exp $
+ * $Id: NavigationPath.java,v 1.14 2003-11-27 19:29:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -116,6 +116,7 @@ public class NavigationPath
     private boolean defaultChildOfParent;
     private int maxChildLevel;
     private int level;
+    private Map attributes = new HashMap();
 
     public NavigationPath()
     {
@@ -125,6 +126,38 @@ public class NavigationPath
     public Log getLog()
     {
         return log;
+    }
+
+    public Object getAttribute(String attributeId)
+    {
+        return attributes.get(attributeId);
+    }
+
+    public void removeAttribute(String attributeId)
+    {
+        attributes.remove(attributeId);
+    }
+
+    public void setAttribute(String attributeId, Object attributeValue)
+    {
+        attributes.put(attributeId, attributeValue);
+    }
+
+    /**
+     * Calculate the absolute path of the given relativePath assuming it was relative to this path.
+     * @param relativePath The relative path to use
+     * @return The absolute path of the relative path based on this path
+     */
+    public String getAbsPathRelativeToThisPath(String relativePath)
+    {
+        StringBuffer result = new StringBuffer(getQualifiedName());
+        if(! (result.charAt(result.length()-1) == '/'))
+            result.append('/');
+        if(relativePath.startsWith("/"))
+            result.append(relativePath.substring(1));
+        else
+            result.append(relativePath);
+        return result.toString();
     }
 
     public int size()
