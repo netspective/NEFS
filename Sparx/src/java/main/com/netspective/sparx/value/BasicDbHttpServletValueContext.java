@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.36 2003-09-09 14:12:28 roque.hernandez Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.37 2003-09-13 05:03:15 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.value;
@@ -316,6 +316,13 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public final String getConsoleUrl()
     {
         return rootUrl + "/console";
+    }
+
+    public final String getServerRootUrl()
+    {
+        String reqURL = getHttpRequest().getRequestURL().toString();
+        String reqURI = getHttpRequest().getRequestURI();
+        return reqURL.substring(0, reqURL.length() - reqURI.length());
     }
 
     public Theme getActiveTheme()

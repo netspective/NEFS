@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletContextUriValueSource.java,v 1.1 2003-08-08 00:56:45 shahid.shah Exp $
+ * $Id: ServletContextUriValueSource.java,v 1.2 2003-09-13 05:03:15 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -72,6 +72,7 @@ public class ServletContextUriValueSource extends AbstractValueSource
     public final int URITYPE_ACTIVE_SERVLET = 1;
     public final int URITYPE_CUSTOM_FROM_ROOT = 2;
     public final int URITYPE_CUSTOM_FROM_SERVLET = 3;
+    public final int URITYPE_SERVER_ROOT = 4;
 
     private int type;
 
@@ -94,6 +95,8 @@ public class ServletContextUriValueSource extends AbstractValueSource
             type = URITYPE_ROOT;
         else if(relativePath.equals("active-servlet"))
             type = URITYPE_ACTIVE_SERVLET;
+        else if (relativePath.equals("server-root"))
+            type = URITYPE_SERVER_ROOT;
         else
         {
             if(relativePath.startsWith("/"))
@@ -129,6 +132,13 @@ public class ServletContextUriValueSource extends AbstractValueSource
 
             case URITYPE_CUSTOM_FROM_SERVLET:
                 return new GenericValue(contextPath + request.getServletPath() + spec.getParams());
+
+            case URITYPE_SERVER_ROOT:
+                {
+                    String reqURL = request.getRequestURL().toString();
+                    String reqURI = request.getRequestURI();
+                    return new GenericValue(reqURL.substring(0, reqURL.length() - reqURI.length()));
+                }
         }
 
         return null;
