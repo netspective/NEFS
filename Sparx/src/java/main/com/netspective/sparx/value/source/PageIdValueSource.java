@@ -120,7 +120,7 @@ public class PageIdValueSource extends AbstractValueSource
 
         if(treeSource == null || treeSource.length() == 0)
         {
-            navTree = svc.getProject().getDefaultNavigationTree();
+            navTree = svc.getNavigationContext().getActivePage().getOwner();
             if(navTree == null)
                 return new GenericValue("No default NavigationTree found");
         }
