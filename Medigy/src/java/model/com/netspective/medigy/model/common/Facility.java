@@ -40,6 +40,7 @@
 package com.netspective.medigy.model.common;
 
 import com.netspective.medigy.reference.type.FacilityType;
+import com.netspective.medigy.model.party.PartyFacilityRole;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -62,7 +63,7 @@ public class Facility extends AbstractTopLevelEntity
     private FacilityType type;
     // children childFacilities (e.g Rooms on a Floor, offices in a building)
     private Set<Facility> childFacilities = new HashSet<Facility>();
-    //private PartyFacilityRole facilityRole;
+    private PartyFacilityRole facilityRole;
 
     public Facility()
     {
@@ -124,7 +125,6 @@ public class Facility extends AbstractTopLevelEntity
         this.childFacilities = childFacilities;
     }
 
-    /*
     @OneToOne
     @JoinColumn(name = "facility_id")
     public PartyFacilityRole getFacilityRole()
@@ -136,5 +136,5 @@ public class Facility extends AbstractTopLevelEntity
     {
         this.facilityRole = facilityRole;
     }
-    */
+
 }
