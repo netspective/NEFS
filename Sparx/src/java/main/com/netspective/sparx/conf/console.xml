@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.124 2004-07-18 15:42:31 shahid.shah Exp $
+  * $Id: console.xml,v 1.125 2004-08-31 01:59:25 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -210,6 +210,7 @@
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="all"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="all"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesInheritancePanel" view="all"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesLocationsPanel" view="all"/>
                         </panels>
                     </panels>
                 </page>
@@ -223,6 +224,7 @@
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesPanel" view="active-table"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesDescriptionsPanel" view="active-table"/>
                             <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesInheritancePanel" view="active-table"/>
+                            <panel class="com.netspective.sparx.console.panel.data.schema.SchemaTablesLocationsPanel" view="active-table"/>
                         </panels>
                         <panels style="tabbed">
                             <frame heading="Table Columns"/>
