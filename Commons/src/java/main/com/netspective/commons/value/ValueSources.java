@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSources.java,v 1.9 2003-03-25 20:57:16 shahid.shah Exp $
+ * $Id: ValueSources.java,v 1.10 2003-03-29 19:12:54 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons.value;
@@ -221,7 +221,7 @@ public class ValueSources implements MetricsProducer
 
     public final void assertValueContextInstance(Class expected, ValueContext vc, ValueSource vs) throws UnexpectedValueContextException
     {
-        if(! expected.isAssignableFrom(vc.getClass()))
+        if(! expected.isAssignableFrom(vc.getClass()) || null == vc || null == expected)
         {
             UnexpectedValueContextException e = new UnexpectedValueContextException(expected, vc, vs);
             log.error(e);
