@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.12 2003-09-29 03:07:33 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.13 2003-10-14 14:54:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -48,11 +48,20 @@ import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.jexl.Expression;
+import org.apache.commons.jexl.ExpressionFactory;
+import org.apache.commons.jexl.JexlContext;
+import org.apache.commons.jexl.JexlHelper;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.schema.Column;
@@ -60,8 +69,18 @@ import com.netspective.axiom.schema.Columns;
 import com.netspective.axiom.schema.ForeignKey;
 import com.netspective.axiom.schema.Row;
 import com.netspective.axiom.schema.Table;
+import com.netspective.axiom.schema.ColumnValue;
+import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.xml.template.TemplateProducerParent;
+import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.commons.xml.template.TemplateProducers;
+import com.netspective.commons.xml.template.Template;
+import com.netspective.commons.xml.template.TemplateElement;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextUtils;
@@ -71,15 +90,30 @@ import com.netspective.sparx.form.DialogPerspectives;
 import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.navigate.NavigationContext;
 
-public class TableDialog extends Dialog
+public class TableDialog extends Dialog implements TemplateProducerParent
 {
     private static final Log log = LogFactory.getLog(TableDialog.class);
     public static final String PARAMNAME_PRIMARYKEY = "pk";
+
+    protected class InsertAdditionalDataTemplate extends TemplateProducer
+    {
+        public InsertAdditionalDataTemplate()
+        {
+            super("/dialog/" + getQualifiedName() + "/insert-additional-data", "insert-additional-data", null, null, false, false);
+        }
+
+        public String getTemplateName(String url, String localName, String qName, Attributes attributes) throws SAXException
+        {
+            return getName();
+        }
+    }
 
     private boolean valid;
     private Column primaryKeyColumn;
     private ValueSource dataSrc;
     private ValueSource primaryKeyValueForEditOrDelete;
+    private InsertAdditionalDataTemplate insertAdditionalDataTemplateProducer;
+    private TemplateProducers templateProducers;
 
     public TableDialog()
     {
@@ -90,6 +124,17 @@ public class TableDialog extends Dialog
     {
         super(pkg);
         setDialogContextClass(TableDialogContext.class);
+    }
+
+    public TemplateProducers getTemplateProducers()
+    {
+        if(templateProducers == null)
+        {
+            templateProducers = new TemplateProducers();
+            insertAdditionalDataTemplateProducer = new InsertAdditionalDataTemplate();
+            templateProducers.add(insertAdditionalDataTemplateProducer);
+        }
+        return templateProducers;
     }
 
     public DialogFlags createDialogFlags()
@@ -206,11 +251,11 @@ public class TableDialog extends Dialog
                 }
                 catch (NamingException e)
                 {
-                    log.error("Error in populateValues PK = " + pkValue, e);
+                    dc.getDialog().getLog().error("Error in populateValues PK = " + pkValue, e);
                 }
                 catch (SQLException e)
                 {
-                    log.error("Error in populateValues PK = " + pkValue, e);
+                    dc.getDialog().getLog().error("Error in populateValues PK = " + pkValue, e);
                 }
             }
         }
@@ -218,9 +263,11 @@ public class TableDialog extends Dialog
         super.populateValues(dc, formatType);
     }
 
-    public void insertParentAndChildren(DialogContext dc, ConnectionContext cc, Table table, Row row) throws SQLException
+    public void insertParentAndChildren(TableDialogContext tdc, ConnectionContext cc, Table table, Row row, boolean isPrimaryTable) throws SQLException
     {
         table.insert(cc, row);
+        if(isPrimaryTable)
+            tdc.setPrimaryKeyValue(row.getColumnValues().getByColumn(primaryKeyColumn));
 
         for(int i = 0; i < table.getChildTables().size(); i++)
         {
@@ -235,12 +282,145 @@ public class TableDialog extends Dialog
                 {
                     Column connector = parentKeyCols.getSole();
                     Row childRow = childTable.createRow((ParentForeignKey) connector.getForeignKey(), row);
-                    DialogContextUtils.getInstance().populateColumnValuesWithFieldValues(dc, childRow.getColumnValues());
-                    insertParentAndChildren(dc, cc, childTable, childRow);
+                    DialogContextUtils.getInstance().populateColumnValuesWithFieldValues(tdc, childRow.getColumnValues());
+                    insertParentAndChildren(tdc, cc, childTable, childRow, false);
                 }
                 else
-                    log.error("Child table '"+ childTable.getName() +"' has bound fields but doesn't have a single parent foreign key column.");
+                    tdc.getDialog().getLog().error("Child table '"+ childTable.getName() +"' has bound fields but doesn't have a single parent foreign key column.");
             }
+        }
+    }
+
+    public boolean isConditionalExpressionTrue(TableDialogContext tdc, String exprText)
+    {
+        Object result = null;
+        try
+        {
+            Expression e = ExpressionFactory.createExpression(exprText);
+            JexlContext jc = JexlHelper.createContext();
+            Map vars = new HashMap();
+            vars.put("vc", tdc);
+            jc.setVars(vars);
+            result = e.evaluate(jc);
+
+            if(result instanceof Boolean)
+                return ((Boolean) result).booleanValue();
+            else
+                return false;
+        }
+        catch (Exception e)
+        {
+            tdc.getDialog().getLog().error("Unable to evaluate '"+ exprText +"': ", e);
+            return false;
+        }
+    }
+
+    public void insertDataUsingTemplateElement(TableDialogContext tdc, ConnectionContext cc, TemplateElement templateElement, Row parentRow) throws SQLException
+    {
+        Schema schema = null;
+        String tableName = null;
+
+        String[] tableNameParts = TextUtils.split(templateElement.getElementName(), ".", false);
+        if(tableNameParts.length == 1)
+        {
+            Table bindTable = getBindTable();
+            schema = bindTable != null ? bindTable.getSchema() : tdc.getProject().getSchemas().get(0);
+            tableName = tableNameParts[0];
+        }
+        else
+        {
+            schema = tdc.getProject().getSchemas().getByNameOrXmlNodeName(tableNameParts[0]);
+            if(schema == null)
+            {
+                tdc.getDialog().getLog().error("Unable to find schema '"+ tableNameParts[0] +"' in TableDialog '"+ getQualifiedName() +"'");
+            }
+
+            tableName = tableNameParts[1];
+        }
+
+        Table table = schema.getTables().getByNameOrXmlNodeName(tableName);
+        if(table == null)
+        {
+            tdc.getDialog().getLog().error("Unable to find table '"+ tableName +"' in schema '"+ schema.getName() +"' for TableDialog '"+ getQualifiedName() +"'");
+            return;
+        }
+
+        Row activeRow = null;
+
+        // find the connector from the child table to the parent table if one is available
+        Columns parentKeyCols = table.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
+        if(parentKeyCols.size() == 1)
+        {
+            Column connector = parentKeyCols.getSole();
+            activeRow = table.createRow((ParentForeignKey) connector.getForeignKey(), parentRow);
+        }
+        else
+            activeRow = table.createRow();
+
+        ColumnValues columnValues = activeRow.getColumnValues();
+        boolean doInsert = true;
+
+        // each of the attributes provided in the template are supposed to column-name="column-value" where
+        // column-value may be a static string which refers to a dialog field name or a value source specification
+        // which refers to some dynamic value
+        Attributes templateAttributes = templateElement.getAttributes();
+        for(int i = 0; i < templateAttributes.getLength(); i++)
+        {
+            String columnName = templateAttributes.getQName(i);
+            String columnTextValue = templateAttributes.getValue(i);
+
+            // if we have an attribute called _condition then it's a JSTL-style expression that should return true if
+            // we want to do this insert or false if we don't
+            if(columnName.equalsIgnoreCase("_condition"))
+            {
+                doInsert = isConditionalExpressionTrue(tdc, columnTextValue);
+                if(! doInsert)
+                    break; // don't bother setting values since we're not inserting
+            }
+
+            ColumnValue columnValue = columnValues.getByNameOrXmlNodeName(columnName);
+            if(columnValue == null)
+            {
+                tdc.getDialog().getLog().error("Table '"+ table.getName() +"' does not have a column named '"+ columnName +"'.");
+                continue;
+            }
+
+            // if the column value is a value source spec, we get the value from the VS otherwise it's a field name in the active dialog
+            ValueSource vs = ValueSources.getInstance().getValueSource(ValueSources.createSpecification(columnTextValue), ValueSources.VSNOTFOUNDHANDLER_NULL);
+            if(vs == null)
+                DialogContextUtils.getInstance().populateColumnValueWithFieldValue(tdc, columnValue, columnTextValue);
+            else
+                columnValue.setTextValue(vs.getTextValue(tdc));
+        }
+
+        if(doInsert)
+        {
+            table.insert(cc, activeRow);
+
+            // now recursively add children if any are available
+            List childTableElements = templateElement.getChildren();
+            for(int i = 0; i < childTableElements.size(); i++)
+            {
+                TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
+                insertDataUsingTemplateElement(tdc, cc, childTableElement, tdc.getPrimaryTableRow());
+            }
+        }
+    }
+
+    public void insertDataUsingTemplate(TableDialogContext tdc, ConnectionContext cc) throws SQLException
+    {
+        if(insertAdditionalDataTemplateProducer == null)
+            return;
+
+        if(insertAdditionalDataTemplateProducer.getInstances().size() == 0)
+            return;
+
+        Template insertAdditionalDataTemplate = (Template) insertAdditionalDataTemplateProducer.getInstances().get(0);
+        List childTableElements = insertAdditionalDataTemplate.getChildren();
+        for(int i = 0; i < childTableElements.size(); i++)
+        {
+            TemplateElement childTableElement = (TemplateElement) childTableElements.get(i);
+            insertDataUsingTemplateElement(tdc, cc, childTableElement, tdc.getPrimaryTableRow());
         }
     }
 
@@ -261,12 +441,14 @@ public class TableDialog extends Dialog
 
         Table table = getBindTable();
         Row row = DialogContextUtils.getInstance().createRowWithFieldValues(dc, table);
+        tdc.setPrimaryTableRow(row);
         try
         {
             switch((int) dc.getPerspectives().getFlags())
             {
                 case DialogPerspectives.ADD:
-                    insertParentAndChildren(dc, cc, table, row);
+                    insertParentAndChildren(tdc, cc, table, row, true);
+                    insertDataUsingTemplate(tdc, cc);
                     break;
 
                 case DialogPerspectives.EDIT:
@@ -274,7 +456,10 @@ public class TableDialog extends Dialog
                     {
                         Object pkValue = tdc.getPrimaryKeyValue();
                         if(pkValue == null)
-                            insertParentAndChildren(dc, cc, table, row);
+                        {
+                            insertParentAndChildren(tdc, cc, table, row, true);
+                            insertDataUsingTemplate(tdc, cc);
+                        }
                         else
                             table.update(cc, row);
                     }
@@ -292,11 +477,15 @@ public class TableDialog extends Dialog
         }
         catch (Exception e)
         {
+            try
+            {
+                cc.rollbackAndClose();
+            }
+            catch (SQLException e1)
+            {
+                dc.getDialog().getLog().error("Error while rolling back DML", e1);
+            }
             handlePostExecuteException(writer, dc, dc.getPerspectives() + ": " + row, e);
-        }
-        finally
-        {
-            tdc.removePrimaryKeyValue();
         }
     }
 }
