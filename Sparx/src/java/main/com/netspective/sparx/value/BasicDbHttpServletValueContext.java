@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.11 2003-05-16 21:23:15 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.12 2003-05-17 17:51:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -75,6 +75,10 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 {
     public static final String INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS = "com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS";
     public static final String CONTEXTATTRNAME_RUNTIME_ENVIRONMENT_FLAGS = INITPARAMNAME_RUNTIME_ENVIRONMENT_FLAGS;
+
+    public static final String INITPARAMNAME_ROOT_CONF_FILE = "com.netspective.sparx.CONF_FILE_NAME";
+    public static final String CONTEXTATTRNAME_ROOT_CONF_FILE = INITPARAMNAME_ROOT_CONF_FILE;
+
     public static final String INITPARAMNAME_DEFAULT_DATA_SRC_ID = "com.netspective.sparx.DEFAULT_DATA_SOURCE";
     public static final String REQATTRNAME_ACTIVE_THEME = "sparx-active-theme";
 
@@ -262,22 +266,38 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         return getApplicationManager();
     }
 
+    public static final String getRootConfFileName(ServletContext context)
+    {
+        String result = (String) context.getAttribute(CONTEXTATTRNAME_ROOT_CONF_FILE);
+        if(result == null)
+        {
+            result = context.getInitParameter(INITPARAMNAME_ROOT_CONF_FILE);
+            if(result == null)
+                result = "/WEB-INF/sparx/components.xml";
+            if(result.startsWith("/WEB-INF"))
+                result = context.getRealPath(result);
+            context.setAttribute(CONTEXTATTRNAME_ROOT_CONF_FILE, result);
+        }
+        return result;
+    }
+
     public ApplicationManagerComponent getApplicationManagerComponent()
     {
         try
         {
-            // never store the PresentationManagerComponent instance since it may change if it needs to be reloaded
+            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
-            ApplicationManagerComponent pmComponent =
+            ApplicationManagerComponent amComponent =
                 (ApplicationManagerComponent) XdmComponentFactory.get(
-                        ApplicationManagerComponent.class,
-                        getServletContext().getRealPath("/WEB-INF/sparx/components.xml"),
+                        ApplicationManagerComponent.class, getRootConfFileName(context),
                         XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
-            for(int i = 0; i < pmComponent.getErrors().size(); i++)
-                System.out.println(pmComponent.getErrors().get(i));
+            for(int i = 0; i < amComponent.getErrors().size(); i++)
+                System.err.println(amComponent.getErrors().get(i));
+            for(int i = 0; i < amComponent.getWarnings().size(); i++)
+                System.out.println(amComponent.getWarnings().get(i));
 
-            return pmComponent;
+            return amComponent;
         }
         catch(Exception e)
         {

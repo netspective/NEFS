@@ -39,71 +39,85 @@
  */
 
 /**
- * $Id: NavigationTrees.java,v 1.2 2003-05-17 17:51:29 shahid.shah Exp $
+ * $Id: DialogDataCmdExprValueSource.java,v 1.1 2003-05-17 17:51:30 shahid.shah Exp $
  */
 
-package com.netspective.sparx.navigate;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Constructor;
+package com.netspective.sparx.value.source;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.value.source.AbstractValueSource;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSourceDocumentation;
+import com.netspective.commons.value.GenericValue;
+import com.netspective.commons.value.PresentationValue;
+import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogDataCommands;
 
-public class NavigationTrees
+public class DialogDataCmdExprValueSource extends AbstractValueSource
 {
-    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
-    private static final Log log = LogFactory.getLog(NavigationTrees.class);
+    private static final Log log = LogFactory.getLog(DialogDataCmdExprValueSource.class);
 
-    private NavigationTree defaultTree;
-    private Map trees = new HashMap();
+    public static final String[] IDENTIFIERS = new String[] { "create-data-cmd-heading" };
+    public static final ValueSourceDocumentation DOCUMENTATION = new ValueSourceDocumentation(
+            "Returns the current dialog data_cmd identifier plus the text provided that would be suitable for use " +
+            "as the heading of a multi-purpose dialog (a dialog that can be used for adding, updating, and deleting). For " +
+            "example, if <code><u>Person</u></code> is the text, and the current dialog's data_cmd is <code><u>add</u></code> then this SVS would return " +
+            "<code><u>Add Person</u></code>.",
+            new ValueSourceDocumentation.Parameter[]
+            {
+                new ValueSourceDocumentation.Parameter("text", true, "The text to use in the dialog data command expression."),
+            }
+    );
 
-    public NavigationTrees()
+    public static String[] getIdentifiers()
+    {
+        return IDENTIFIERS;
+    }
+
+    public static ValueSourceDocumentation getDocumentation()
+    {
+        return DOCUMENTATION;
+    }
+
+    public DialogDataCmdExprValueSource()
     {
     }
 
-    public NavigationTree getNavigationTree(final String name)
+    public Value getValue(ValueContext vc)
     {
-        NavigationTree tree = (NavigationTree) trees.get(name);
-
-        if(tree == null && log.isDebugEnabled())
+        String expr = getSpecification().getParams();
+        if(vc instanceof DialogContext)
         {
-            log.debug("Unable to find NavigationTree '"+ name +"'. Available: " + trees);
-            return null;
+            DialogDataCommands ddc = ((DialogContext) vc).getDataCommands();
+            switch((int) ddc.getFlags())
+            {
+                case DialogDataCommands.ADD:
+                    expr = "Add " + expr;
+                    break;
+
+                case DialogDataCommands.EDIT:
+                    expr = "Edit " + expr;
+                    break;
+
+                case DialogDataCommands.DELETE:
+                    expr = "Delete " + expr;
+                    break;
+            }
         }
 
-        return tree;
+        return new GenericValue(expr);
     }
 
-    public NavigationTree createNavigationTree()
+    public PresentationValue getPresentationValue(ValueContext vc)
     {
-        return new NavigationTree();
+        return new PresentationValue(getValue(vc));
     }
 
-    public void addNavigationTree(NavigationTree tree)
+    public boolean hasValue(ValueContext vc)
     {
-        if(tree.isDefaultTree() || tree.getName() == null)
-            defaultTree = tree;
-
-		trees.put(tree.getName(), tree);
-    }
-
-    public NavigationTree getDefaultTree()
-    {
-        return defaultTree;
-    }
-
-    public int size()
-    {
-        return trees.size();
-    }
-
-    public String toString()
-    {
-        return trees.toString();
+        return false;
     }
 }

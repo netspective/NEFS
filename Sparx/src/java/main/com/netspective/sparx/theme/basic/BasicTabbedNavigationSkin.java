@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.14 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.15 2003-05-17 17:51:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -128,16 +128,21 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
         // get all the CSS files associated with this theme/style combination
-        String cssRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/css";
-        String scriptsRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/scripts";
+        String resourcesUrl = nc.getThemeResourcesRootUrl(getTheme());
+        String cssRootUrl = resourcesUrl + "/css";
+        String scriptsRootUrl = resourcesUrl + "/scripts";
 
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-input.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-output.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-dialog.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-report.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-content-text.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/syntax-highlight.css\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"stylesheet\" href=\"" + resourcesUrl + "/calendar-0.9.2/calendar-win2k-1.css\" type=\"text/css\">\n");
         writer.write("  <script src=\"" + scriptsRootUrl + "/panel.js\" language=\"JavaScript1.1\"></script>\n");
+        writer.write("  <script src=\"" + scriptsRootUrl + "/dialog.js\" language=\"JavaScript1.1\"></script>\n");
 
         writer.write("</head>\n");
     }

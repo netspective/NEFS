@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.9 2003-05-16 02:53:58 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.10 2003-05-17 17:51:30 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -64,7 +64,6 @@ import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedOrgUser;
 import com.netspective.commons.io.InheritableFileResources;
 
 import javax.servlet.Servlet;
@@ -127,7 +126,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<head>\n");
         writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
-        // get all the CSS files associated with this theme/style combination
         String resourcesUrl = nc.getThemeResourcesRootUrl(getTheme());
         String cssRootUrl = resourcesUrl + "/css";
         String scriptsRootUrl = resourcesUrl + "/scripts";
@@ -161,14 +159,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             String personName = authUser != null ? authUser.getUserId() : "Not logged in";
             String personId = authUser != null ? authUser.getUserName() : "Not logged in";
 
-            String orgName = null;
-            String orgId = null;
-            if (authUser instanceof AuthenticatedOrgUser)
-            {
-                orgName = authUser != null ? ((AuthenticatedOrgUser) authUser).getUserOrgId() : "Not logged in";
-                orgId = authUser != null ? ((AuthenticatedOrgUser) authUser).getUserOrgName() : "Not logged in";
-            }
-
             String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
 
             writer.write("<!-- Active User Begins -->\n");
@@ -189,30 +179,17 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("	</td>\n");
             writer.write("	<td><img src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"20\" border=\"0\"></td>\n");
             writer.write("	<td width=\"100%\">\n");
-            if (orgName != null)
-            {
-                writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-                writer.write("			<tr>\n");
-                writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath + "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-                writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Org&nbsp;</span></td>\n");
-                writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/org/summary.jsp?org_id=" + orgId + "\">&nbsp;&nbsp;" +
-                        orgName.toUpperCase() + "</a></td>\n");
-                writer.write("			</tr>\n");
-                writer.write("		</table>\n");
-            }
-            else
-            {
-                //writer.write("<img src=\"" + nc.getRootUrl() + getThemeImagePath() + "/spacer.gif\" alt=\"\" height=\"1\" width=\"100%\" border=\"0\">");
-                writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-                writer.write("			<tr>\n");
-                writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
-                        "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
-                writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;Org&nbsp;</span></td>\n");
-                writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getRootUrl() + "/org/summary.jsp?org_id=" + orgId + "\">&nbsp;&nbsp;" +
-                        "TEST ORG</a></td>\n");
-                writer.write("			</tr>\n");
-                writer.write("		</table>\n");
-            }
+
+            writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+            writer.write("			<tr>\n");
+            writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + themeImagesPath +
+                    "/spacer.gif\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
+            writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
+            writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getServletContext().getServletContextName() + "\">&nbsp;&nbsp;" +
+                    nc.getServletContext().getServletContextName() +"</a></td>\n");
+            writer.write("			</tr>\n");
+            writer.write("		</table>\n");
+
             writer.write("	</td>\n");
             writer.write("	<td nowrap width=\"50\" >\n");
             writer.write("		<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
@@ -228,11 +205,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
             writer.write("</tr>\n");
             writer.write("</table>\n");
 
-            //writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
-            // writer.write("<tr>");
-            //writer.write("	<td><img src=\"" + nc.getRootUrl() + getThemeImagePath() + "/spacer.gif\" alt=\"\" height=\"1\" width=\"1\" border=\"0\"></td>");
-            // writer.write("</tr>");
-            // writer.write("</table>");
             writer.write("<!-- Active User Ends -->\n");
         }
     }
@@ -257,20 +229,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("	<tr>\n");
         writer.write("	    <td valign=\"bottom\">\n");
         writer.write("	        <table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-        //writer.write("              <tr height=\"18\">\n");
-        //writer.write("	                <td align=\"left\" valign=\"middle\" height=\"18\">\n");
-        //writer.write("                      <table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\">\n");
-        //writer.write("                          <tr>\n");
-        //writer.write("                              <td align=\"left\" valign=\"middle\" width=\"10\">" +
-        //        "<img src=\"" + nc.getRootUrl() + getThemeImagePath() + "/spacer.gif\" width=\"10\" height=\"18\">" +
-        //        "</td>\n");
-        //writer.write("                              <td class=\"masthead-logo\" align=\"left\" valign=\"middle\">" + (nc.getApplicationName(nc) == null ? "Application Name" : nc.getApplicationName(nc)) + "</td>\n");
-        //writer.write("                              <td class=\"masthead-logo\" align=\"left\" valign=\"middle\">" +
-        //        "<img src=\"" + nc.getRootUrl() + getThemeImagePath() + "/spacer.gif\" width=\"200\" height=\"18\"></td>\n");
-        //writer.write("                          </tr>\n");
-        //writer.write("                      </table>\n");
-        //writer.write("                  </td>\n");
-        //writer.write("              </tr>\n");
         writer.write("<!-- Masthead Ends -->\n");
         writer.write("              <tr>\n");
         writer.write("                  <td align=\"left\" valign=\"bottom\">\n");
@@ -314,7 +272,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         if (activePath == null)
             return;
 
-        String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
         switch (activePath.getLevel())
         {
             case 1:
@@ -322,16 +279,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 if (activePath.getMaxChildLevel() > 1 && activePathChildren.size() > 0)
                 {
                     writer.write(generateLevelTwoHtml((NavigationPath) activePath.getChildrenList().get(0), nc));
-/*
-                    writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
-                    writer.write("  <tr>");
-                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" alt=\"\" " +
-                            "width=\"12\" height=\"12\" border=\"0\"></td>");
-                    writer.write("      <td align=\"left\" valign=\"top\" width=\"100%\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" " +
-                            "alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>");
-                    writer.write("  </tr>");
-                    writer.write("</table>");
-*/
                 }
                 else
                 {
@@ -342,32 +289,11 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     writer.write("	</td>");
                     writer.write("	</tr>");
                     writer.write("</table>");
- /*
-                    writer.write("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
-                    writer.write("  <tr>");
-                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" alt=\"\" " +
-                            "width=\"12\" height=\"12\" border=\"0\"></td>");
-                    writer.write("      <td align=\"left\" valign=\"top\" width=\"100%\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" " +
-                            "alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>");
-                    writer.write("  </tr>");
-                    writer.write("</table>");
-*/
                 }
                 break;
 
             case 2:
                 writer.write(generateLevelTwoHtml(activePath, nc));
-                if (activePath.getMaxChildLevel() == 2)
-                {
-//                    writer.write("<table width=\"100%\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\">");
-//                    writer.write("  <tr>");
-//                    writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" alt=\"\" " +
-//                            "width=\"12\" height=\"12\" border=\"0\"></td>");
-//                    writer.write("      <td align=\"left\" valign=\"top\" width=\"100%\"><img src=\"" + themeImagesPath + "/body/spacer-big.gif\" " +
-//                            "alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>");
-//                    writer.write("  </tr>");
-//                    writer.write("</table>");
-                }
                 break;
 
             case 3:
@@ -624,9 +550,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 {
                     if (tabElement.isInActivePath(nc))
                     {
-                        //            buffer.append("                    <td class=\"menu-level-1-active-end\" valign=\"bottom\" nowrap><span class=\"menu-level-1-active\">" +
-                        //                "&nbsp;&nbsp;&nbsp;&nbsp;</span></td>\n");
-
                         buffer.append("                    <td class=\"menu-level-1-table-active-end\" valign=\"bottom\" nowrap>");
                         buffer.append("<a class=\"menu-level-1-active\"" +
                                 " href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;&nbsp;&nbsp;</a></td>\n");
@@ -695,11 +618,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     writer.append("                    <td class=\"menu-level-2-table-active\" valign=\"bottom\" nowrap>");
                     writer.append("<a class=\"menu-level-2-active\"" +
                             " href=\"" + tabElement.getUrl(nc) + "\">" + tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></td>\n");
-
-
-//                    writer.append("<td nowrap align=\"center\" class=\"menu-level-2-active\">");
-//                    writer.append("<a class=\"menu-level-2-active\" href=\"" + tabElement.getUrl(nc) + "\">&nbsp;&nbsp;" +
-//                            tabElement.getCaption(nc) + "&nbsp;&nbsp;</a></TD>\n");
                 }
                 else
                 {
@@ -709,7 +627,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 }
             }
         }
-        //writer.write("			    <td align=\"center\" nowrap><a class=\"menu-level2\">&nbsp;&nbsp;</a></td>\n");
         writer.append("            </tr>\n");
         writer.append("        </table>\n");
         writer.append("    </td>\n");
@@ -761,11 +678,6 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                     writer.append("      		</table>\n");
                     writer.append("     	</td>\n");
                     writer.append("      </tr>\n");
-
-//                    writer.append("      <tr>\n");
-//                    writer.append("          <td class=\"menu-level-3-active\" align=\"left\" valign=\"middle\">" +
-//                            "<nobr>" + sideBarElement.getCaption(nc) + "</nobr></td>\n");
-//                        writer.append("      </tr>\n");
                 }
                 else
                 {

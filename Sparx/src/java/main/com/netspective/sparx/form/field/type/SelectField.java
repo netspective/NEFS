@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: SelectField.java,v 1.4 2003-05-16 14:43:41 shahid.shah Exp $
+ * $Id: SelectField.java,v 1.5 2003-05-17 17:51:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -254,6 +254,11 @@ public class SelectField extends TextField
     {
         super();
         setSize(8);
+    }
+
+    public DialogField.Flags createFlags()
+    {
+        return new Flags();
     }
 
     public DialogField.State constructStateInstance(DialogContext dc)
@@ -491,7 +496,16 @@ public class SelectField extends TextField
         }
 
         SelectFieldState state = (SelectFieldState) dc.getFieldStates().getState(this);
-        PresentationValue pValue = this.choices.getPresentationValue(dc);
+
+        PresentationValue pValue;
+        if(choices != null)
+            pValue = choices.getPresentationValue(dc);
+        else
+        {
+            pValue = new PresentationValue();
+            pValue.createItems();
+        }
+
         PresentationValue.Items choices = pValue.getItems();
         SelectFieldState.SelectFieldValue sfValue = (SelectFieldState.SelectFieldValue) state.getValue();
         sfValue.calcSelections(choices);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServlet.java,v 1.2 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: NavigationControllerServlet.java,v 1.3 2003-05-17 17:51:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -66,24 +66,15 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class NavigationControllerServlet extends HttpServlet
 {
-    public static final String INITPARAM_NAME_XDM_SOURCE = "sparx.xdm-source";
-    public static final String INITPARAM_DEFAULTVALUE_XDM_SOURCE = "/WEB-INF/sparx/components.xml";
     private File xdmSourceFile;
 
     public void init(ServletConfig servletConfig) throws ServletException
     {
         super.init(servletConfig);
-
-        String xdmSource = servletConfig.getServletContext().getInitParameter(INITPARAM_NAME_XDM_SOURCE);
-        if(xdmSource == null)
-            xdmSource = INITPARAM_DEFAULTVALUE_XDM_SOURCE;
-
-        if(xdmSource.startsWith("/WEB-INF"))
-            xdmSource = servletConfig.getServletContext().getRealPath(xdmSource);
-
-        xdmSourceFile = new File(xdmSource);
+        xdmSourceFile = new File(BasicDbHttpServletValueContext.getRootConfFileName(getServletContext()));
         if(! xdmSourceFile.exists())
-            throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist.");
+            throw new ServletException("Sparx XDM source file '"+ xdmSourceFile.getAbsolutePath() +"' does not exist. Please " +
+                    "correct the context-param called '"+ BasicDbHttpServletValueContext.INITPARAMNAME_ROOT_CONF_FILE +"' in your web.xml file.");
     }
 
     protected Theme getTheme()
@@ -93,24 +84,26 @@ public class NavigationControllerServlet extends HttpServlet
 
     protected NavigationTree getNavigationTree(ApplicationManager am)
     {
-        return am.getConsoleNavigationTree();
+        return am.getDefaultNavigationTree();
     }
 
     protected ApplicationManager getApplicationManager() throws ServletException
     {
         try
         {
-            // never store the PresentationManagerComponent instance since it may change if it needs to be reloaded
+            // never store the ApplicationManagerComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
-            ApplicationManagerComponent pmComponent =
+            ApplicationManagerComponent amComponent =
                 (ApplicationManagerComponent) XdmComponentFactory.get(
                         ApplicationManagerComponent.class, xdmSourceFile.getAbsolutePath(),
                         XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
 
-            for(int i = 0; i < pmComponent.getErrors().size(); i++)
-                System.out.println(pmComponent.getErrors().get(i));
+            for(int i = 0; i < amComponent.getErrors().size(); i++)
+                System.out.println(amComponent.getErrors().get(i));
+            for(int i = 0; i < amComponent.getWarnings().size(); i++)
+                System.out.println(amComponent.getWarnings().get(i));
 
-            return pmComponent.getManager();
+            return amComponent.getManager();
         }
         catch(Exception e)
         {

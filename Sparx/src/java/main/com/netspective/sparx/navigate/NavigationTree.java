@@ -69,7 +69,6 @@ public class NavigationTree implements TemplateProducerParent
 {
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
     private static final Log log = LogFactory.getLog(NavigationTree.class);
-    public static final String TREENAME_DEFAULT = "default";
     public static final String TEMPLATEELEMNAME_PAGE_TYPE = "page-type";
 
     private String name;
@@ -77,12 +76,23 @@ public class NavigationTree implements TemplateProducerParent
     private Map pagesByQualifiedName = new HashMap();
     private TemplateProducers templateProducers;
     private int maxLevel = -1;
+    private boolean defaultTree;
 
     public NavigationTree()
     {
         root = constructRoot();
         root.setOwner(this);
         root.setName("");
+    }
+
+    public boolean isDefaultTree()
+    {
+        return defaultTree;
+    }
+
+    public void setDefault(boolean defaultTree)
+    {
+        this.defaultTree = defaultTree;
     }
 
     public String getPageTypesTemplatesNameSpaceId()

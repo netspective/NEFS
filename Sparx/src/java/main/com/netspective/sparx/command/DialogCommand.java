@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.5 2003-05-16 21:23:14 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.6 2003-05-17 17:51:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -209,7 +209,7 @@ public class DialogCommand extends AbstractHttpServletCommand
     public void handleCommand(Writer writer, NavigationContext nc, boolean unitTest) throws CommandException, IOException
     {
         if(dataCmd != null)
-            nc.getRequest().setAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL, dataCmd);
+            nc.getRequest().setAttribute(Dialog.PARAMNAME_DATA_CMD_INITIAL, dataCmd.getFlagsText());
 
         Dialog dialog = nc.getDialogsManager().getDialog(dialogName);
         if(dialog == null)
