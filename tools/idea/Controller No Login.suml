@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sequencediagram>
+  <Definition>[NavigationControllerServlet doGet
+[Project getNavigationTree]
+[HttpServletRequest getPathInfo]
+[Theme getDefaultNavigationSkin]
+[NavigationSkin createContext]
+[NavigationContext getActivePage]
+[NavigationPage handlePage]]</Definition>
+  <Links>
+    <Link Id="0" Class="com.netspective.sparx.navigate.NavigationControllerServlet" Method="doGet" Return="false">
+      <Comment />
+      <Return Description="">void</Return>
+      <Arguments>
+        <Param Sequence="0" Name="httpServletRequest" Type="javax.servlet.http.HttpServletRequest" Description="" />
+        <Param Sequence="1" Name="httpServletResponse" Type="javax.servlet.http.HttpServletResponse" Description="" />
+      </Arguments>
+      <Throws Name="ServletException" Description="" />
+      <Throws Name="IOException" Description="" />
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+    <Link Id="1" Class="com.netspective.sparx.Project" Method="getNavigationTree" Return="false">
+      <Comment />
+      <Return Description="">com.netspective.sparx.navigate.NavigationTree</Return>
+      <Arguments>
+        <Param Sequence="0" Name="name" Type="java.lang.String" Description="" />
+      </Arguments>
+      <CallComment ShowOnDiagram="false" />
+    </Link>
+    <Link Id="3" Class="javax.servlet.http.HttpServletRequest" Method="getPathInfo" Return="false">
+      <Comment />
+      <Return Description="">java.lang.String</Return>
+      <Arguments />
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+    <Link Id="5" Class="com.netspective.sparx.theme.Theme" Method="getDefaultNavigationSkin" Return="false">
+      <Comment />
+      <Return Description="">com.netspective.sparx.navigate.NavigationSkin</Return>
+      <Arguments />
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+    <Link Id="7" Class="com.netspective.sparx.navigate.NavigationSkin" Method="createContext" Return="false">
+      <Comment>createContext  Create a context that can be used to render this navigation skin.  </Comment>
+      <Return Description="NavigationContext ">com.netspective.sparx.navigate.NavigationContext</Return>
+      <Arguments>
+        <Param Sequence="0" Name="servlet" Type="javax.servlet.http.HttpServlet" Description="" />
+        <Param Sequence="1" Name="request" Type="javax.servlet.http.HttpServletRequest" Description="" />
+        <Param Sequence="2" Name="response" Type="javax.servlet.http.HttpServletResponse" Description="" />
+        <Param Sequence="3" Name="tree" Type="com.netspective.sparx.navigate.NavigationTree" Description="" />
+        <Param Sequence="4" Name="navTreeId" Type="java.lang.String" Description="The active page that will be rendered.   " />
+      </Arguments>
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+    <Link Id="9" Class="com.netspective.sparx.navigate.NavigationContext" Method="getActivePage" Return="false">
+      <Comment />
+      <Return Description="">com.netspective.sparx.navigate.NavigationPage</Return>
+      <Arguments />
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+    <Link Id="11" Class="com.netspective.sparx.navigate.NavigationPage" Method="handlePage" Return="false">
+      <Comment />
+      <Return Description="">void</Return>
+      <Arguments>
+        <Param Sequence="0" Name="writer" Type="java.io.Writer" Description="" />
+        <Param Sequence="1" Name="nc" Type="com.netspective.sparx.navigate.NavigationContext" Description="" />
+      </Arguments>
+      <Throws Name="ServletException" Description="" />
+      <Throws Name="IOException" Description="" />
+      <CallComment ShowOnDiagram="false">
+      </CallComment>
+    </Link>
+  </Links>
+</Sequencediagram>
+
