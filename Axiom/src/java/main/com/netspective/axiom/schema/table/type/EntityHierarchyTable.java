@@ -254,7 +254,7 @@ public class EntityHierarchyTable extends BasicTable
                 parentRowColumnValues.getByColumn(primaryIdColumn).setValue(ancestorId);
                 parentRowColumnValues.getByColumn(relatedIdColumn).setValue(childId);
                 parentRowColumnValues.getByColumn(relationshipDistanceColumn).setValue(new Long(distance));
-                insertOrUpdateIfDuplicateRowFound(cc, ancestorRow);
+                insert(cc, ancestorRow);
 
                 addAncestor(cc, stmt, ancestorId, childId, distance + 1);
             }
@@ -323,7 +323,7 @@ public class EntityHierarchyTable extends BasicTable
                 parentRowColumnValues.getByColumn(primaryIdColumn).setValue(parentId);
                 parentRowColumnValues.getByColumn(relatedIdColumn).setValue(childId);
                 parentRowColumnValues.getByColumn(relationshipDistanceColumn).setValue(new Long(0));
-                insertOrUpdateIfDuplicateRowFound(cc, ancestorRow);
+                insert(cc, ancestorRow);
 
                 PreparedStatement stmt = cc.getConnection().prepareStatement(selectParentsSql);
                 addAncestor(cc, stmt, parentId, childId, 1);
