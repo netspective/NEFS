@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.31 2003-11-13 21:15:31 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.32 2003-11-13 22:58:31 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -533,8 +533,10 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             if(autoExecOption != null && ! autoExecOption.equals("no"))
                 autoExec = true;
         }
-
-        if(autoExec || request.getParameter(dialog.getSubmitDataParamName()) != null || ignoreValidation)
+        boolean executeButtonPressed =
+            (request.getParameter(dialog.getSubmitDataParamName()) != null) ||
+            (request.getParameter(dialog.getCancelDataParamName()) != null && dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON));
+        if(autoExec ||  executeButtonPressed || ignoreValidation)
         {
             if(! dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
             {
