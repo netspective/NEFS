@@ -25,7 +25,7 @@
     <#list theme.panelSkins.values().iterator() as panelSkin>
         <#if panelSkin.isDefault()><#assign defaultSkin="Yes"><#else><#assign defaultSkin="&nbsp;"></#if>
         <#assign skins = skins + [[
-                    "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#panelSkin-${dialogSkin.name}'>${panelSkin.name}</a>", defaultSkin, getClassReference(panelSkin.class.name)]]/>
+                    "&nbsp;&nbsp;&nbsp;&nbsp;<a href='#panelSkin-${panelSkin.name}'>${panelSkin.name}</a>", defaultSkin, getClassReference(panelSkin.class.name)]]/>
     </#list>
 
     <#assign skins = skins + [[ ["colspan=3", "<i>Dialog Skins</i>"] ]]/>
