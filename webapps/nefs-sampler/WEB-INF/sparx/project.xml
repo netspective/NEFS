@@ -75,7 +75,7 @@
             <!-- This page is for demonstrating numeric fields in a form -->
             <page name="numeric-fields" caption="Numbers" command="dialog,form.input.numeric-fields">
                 <summary>
-                    This page demonstrates the usage of various types of numeric fields that are available: float, integer,
+                    This page demonstrates the usage of various types of numeric fields that are available\: float, integer,
                     currency, phone, and zip code. Each type have their own validation rules and formatting patterns.
                 </summary>
             </page>
@@ -84,7 +84,7 @@
                 <summary>
                     <![CDATA[
                     This page demonstrates usage of boolean fields which are fields that can only have a value
-                    that is either true or false.  There are several display styles available for boolean fields:
+                    that is either true or false.  There are several display styles available for boolean fields\:
                     <i>radio</i>, <i>check-alone</i>, <i>popup</i>, and <i>combo</i>.
                     ]]>
                 </summary>
@@ -95,7 +95,7 @@
                 <summary>
                     <![CDATA[
                     This page demonstrates how to create and use fields that allow selection of values. There are several
-                    styles available: <i>list</i>, <i>multidual</i>, <i>multilist</i>, <i>combo</i>, <i>radio</i>, and
+                    styles available\: <i>list</i>, <i>multidual</i>, <i>multilist</i>, <i>combo</i>, <i>radio</i>, and
                     <i>multicheck</i>.
                     ]]>
                 </summary>
@@ -139,7 +139,7 @@
                 <summary>
                     <![CDATA[
                     This page demonstrates how to create and use date/time fields. There are several versions of
-                    date/time fields that are available: <i>time</i>, <i>date</i>, <i>date and time</i>, and <i>duration</i>.
+                    date/time fields that are available\: <i>time</i>, <i>date</i>, <i>date and time</i>, and <i>duration</i>.
                     ]]>
                 </summary>
             </page>
@@ -230,7 +230,7 @@
                     <![CDATA[
                     This page demonstrates the usage of various <i>handlers</i> for the execution of a dialog. These handlers
                     are processed once the internal validation of the dialog is complete and the dialog is ready to be be executed.
-                    Handlers are special built-in actions defined for convenience and reusability: <i>url</i>, <i>mail</i>, <i>command</i>, <i>panels</i>,
+                    Handlers are special built-in actions defined for convenience and reusability\: <i>url</i>, <i>mail</i>, <i>command</i>, <i>panels</i>,
                     and <i>style-sheet</i>. For defining more
                     complex actions and logic for execution, please take a look at the <b>inheritence</b> or <b>delegation</b> examples.
                     ]]>
@@ -381,7 +381,7 @@
             <page name="test-acl1" caption="Test 1" heading="Test has-permissions">
                 <summary>
                      <![CDATA[
-                    This page is hidden in the navigation menu when the user has the following permission: <code>/acl/app/forms/execution </code>
+                    This page is hidden in the navigation menu when the user has the following permission\: <code>/acl/app/forms/execution </code>
                     ]]>
                 </summary>
                 <body>
@@ -397,7 +397,7 @@
             <page name="test-acl2" caption="Test 2" heading="Test lack-permissions">
                 <summary>
                     <![CDATA[
-                    This page is hidden in the navigation menu when the user lacks the following permission: <code>/acl/app/forms/execution</code>
+                    This page is hidden in the navigation menu when the user lacks the following permission\: <code>/acl/app/forms/execution</code>
                     ]]>
                 </summary>
                 <body>
@@ -413,7 +413,7 @@
             <page name="test-acl3" caption="Test 3" heading="Test lack-permissions">
                 <summary>
                     <![CDATA[
-                    This page is hidden in the navigation menu when the user lacks the following permission: <code>/acl/app/forms</code>
+                    This page is hidden in the navigation menu when the user lacks the following permission\: <code>/acl/app/forms</code>
                     ]]>
                 </summary>
                 <body>
@@ -456,6 +456,10 @@
         <page name="sample-apps-home" caption="Sample Apps Home" redirect="netspective-url:nefs-sample-apps-home"/>
 
         <page  name="test" hidden="yes" caption="TEST" include="jsp/test_sp.jsp"/>
+
+        <error-page class="com.netspective.sparx.navigate.error.NavigationSqlErrorPage" start-sql-code="50" end-sql-code="150" heading="Got SQL range error">
+            <body>Got a SQL Error in the 50 to 150 range. Please don't go any further.</body>
+        </error-page>
     </navigation-tree>
 
     <!--
@@ -490,7 +494,7 @@
             <role name="super-user">
                 <role name="role"/>
                 <grant permission="/acl/app/forms"/>
-                <grant permission="/acl/app/console"/>                
+                <grant permission="/acl/app/console"/>
             </role>
             <role name="restricted-user">
                 <grant permission="/acl/app/forms"/>

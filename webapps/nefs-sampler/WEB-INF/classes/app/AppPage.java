@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppPage.java,v 1.2 2003-12-13 17:36:59 shahid.shah Exp $
+ * $Id: AppPage.java,v 1.3 2004-02-25 20:55:03 shahid.shah Exp $
  */
 
 package app;
@@ -50,7 +50,6 @@ import com.netspective.sparx.navigate.NavigationTree;
 
 public class AppPage extends NavigationPage
 {
-    private String summary;
 
     public AppPage(NavigationTree owner)
     {
@@ -74,13 +73,4 @@ public class AppPage extends NavigationPage
         return null;
     }
 
-    public String getSummary()
-    {
-        return summary;
-    }
-
-    public void setSummary(String summary)
-    {
-        this.summary = summary;
-    }
 }

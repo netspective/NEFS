@@ -11,7 +11,11 @@
                 <a href="${childPage.getUrl(vc)}">${childPage.caption.getTextValue(vc)}</a>
             </td>
             <td>
-                ${childPage.summary?default("&nbsp;")}
+                <#if childPage.summary?exists>
+                ${childPage.summary.getTextValue(vc)}
+                <#else>
+                &nbsp;
+                </#if>
             </td>
         </tr>
     </#if>
