@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.34 2004-01-06 19:59:37 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.35 2004-02-24 22:01:44 aye.thu Exp $
  */
 
 package com.netspective.sparx.form;
@@ -215,7 +215,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
         String resetContext = request.getParameter(dialog.getResetContextParamName());
         if(resetContext != null)
         {
-            state.initialize(nc);
+            state.reset(nc);
             this.resetContext = true;
         }
 
