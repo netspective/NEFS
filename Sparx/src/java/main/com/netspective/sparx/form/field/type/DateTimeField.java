@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DateTimeField.java,v 1.3 2003-05-24 20:28:36 shahid.shah Exp $
+ * $Id: DateTimeField.java,v 1.4 2003-06-19 03:24:37 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -78,6 +78,7 @@ import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.exception.ValueException;
 import com.netspective.commons.validate.rule.DateValueValidationRule;
+import com.netspective.commons.text.TextUtils;
 
 public class DateTimeField extends TextField
 {
@@ -133,10 +134,11 @@ public class DateTimeField extends TextField
 
         public static final String[] VALUES = new String[] { "date-only", "time-only", "date-and-time" };
         public static final String[] SERVER_FORMATS = new String[] { "MM/dd/yyyy", "HH:mm", "MM/dd/yyyy HH:mm" };
-        public static final String[] CLIENT_FORMATS = new String[] { "mm/dd/y", "mm/dd/y", "mm/dd/y" };
+        public static final String[] CLIENT_FORMATS = new String[] { "mm/dd/yy", "mm/dd/yy", "mm/dd/yy" };
 
         public DataType()
         {
+
         }
 
         public DataType(int valueIndex)
@@ -174,6 +176,11 @@ public class DateTimeField extends TextField
                 return Date.class;
             }
 
+            public String getTextValue()
+            {
+                return (getValue() != null) ? getFormat().format((Date)getValue()) : null;
+            }
+
             public void setTextValue(String value) throws ValueException
             {
                 if(value == null || value.length() == 0)
@@ -196,7 +203,6 @@ public class DateTimeField extends TextField
                     default:
                         break;
                 }
-
                 try
                 {
                     setValue(getFormat().parse(value));
@@ -220,7 +226,7 @@ public class DateTimeField extends TextField
         }
     }
 
-    private DataType dataType;
+    private DataType dataType = null;
     private DateValueValidationRule dateValidationRule;
     private String clientCalendarFormat = "mm/dd/yyyy";
 
@@ -275,6 +281,8 @@ public class DateTimeField extends TextField
 
     public void setDataType(DataType value)
     {
+        if (value.getValueIndex() == DataType.TIME_ONLY)
+            this.getFlags().clearFlag(Flags.POPUP_CALENDAR);
         dataType = value;
         setFormat(dataType.getFormat());
         setClientCalendarFormat(dataType.getClientFormatPattern());
@@ -423,22 +431,68 @@ public class DateTimeField extends TextField
         return xlatedDate;
     }
 
+    /**
+     * Produces the control html associated with the field
+     * @param writer
+     * @param dc
+     * @throws IOException
+     */
     public void renderControlHtml(Writer writer, DialogContext dc) throws IOException
     {
-        super.renderControlHtml(writer, dc);
+        if(isInputHidden(dc))
+        {
+            writer.write(getHiddenControlHtml(dc));
+            return;
+        }
+
+        DialogField.State state = dc.getFieldStates().getState(this);
+        TextField.Flags stateFlags = (TextField.Flags) state.getStateFlags();
+        String textValue = state.getValue().getTextValue();
+
+        if(textValue == null)
+            textValue = "";
+        else
+            textValue = TextUtils.escapeHTML(textValue);
+
+        String className = isRequired(dc) ? dc.getSkin().getControlAreaRequiredStyleClass() : dc.getSkin().getControlAreaStyleClass();
+
+        String controlAreaStyle = dc.getSkin().getControlAreaStyleAttrs();
+        if(isReadOnly(dc))
+        {
+            writer.write("<input type='hidden' name='" + getHtmlFormControlId() + "' value=\"" + textValue + "\">" +
+                    "<span id='" + getQualifiedName() + "'>" + textValue + "</span>");
+        }
+        else if(isBrowserReadOnly(dc))
+        {
+            className = dc.getSkin().getControlAreaReadonlyStyleClass();
+            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" readonly value=\"" +
+                    textValue + "\" maxlength=\"" + getFormat().toPattern().length() + "\" size=\"" +
+                    getFormat().toPattern().length() + "\" " + controlAreaStyle +
+                    " class=\"" + className + "\" " + dc.getSkin().getDefaultControlAttrs() + ">");
+        }
+        else if(!stateFlags.flagIsSet(TextField.Flags.MASK_ENTRY))
+        {
+            writer.write("<input type=\"text\" name=\"" + getHtmlFormControlId() + "\" value=\"" + textValue + "\" maxlength=\"" +
+                    getFormat().toPattern().length() + "\" size=\"" + getFormat().toPattern().length() + "\" " +
+                    controlAreaStyle + " class=\"" + className + "\" " +
+                    dc.getSkin().getDefaultControlAttrs() + ">");
+        }
+
         if((isInputHidden(dc) || isReadOnly(dc)) || ! getFlags().flagIsSet(Flags.POPUP_CALENDAR))
             return;
+        if (getDataType().getValueIndex() != DataType.TIME_ONLY)
+        {
+            String resourcesRootUrl = dc.getNavigationContext().getThemeResourcesRootUrl(dc.getSkin().getTheme());
+            String calendarRootUrl = resourcesRootUrl + "/calendar-0.9.2";
 
-        String resourcesRootUrl = dc.getNavigationContext().getThemeResourcesRootUrl(dc.getSkin().getTheme());
-        String calendarRootUrl = resourcesRootUrl + "/calendar-0.9.2";
+            writer.write("<script src='" + calendarRootUrl + "/calendar.js'></script>\n");
+            writer.write("<script src='" + calendarRootUrl + "/lang/calendar-en.js'></script>\n");
+            writer.write("<script src='" + resourcesRootUrl + "/scripts/calendar-helper.js'></script>\n");
 
-        writer.write("<script src='" + calendarRootUrl + "/calendar.js'></script>\n");
-        writer.write("<script src='" + calendarRootUrl + "/lang/calendar-en.js'></script>\n");
-        writer.write("<script src='" + resourcesRootUrl + "/scripts/calendar-helper.js'></script>\n");
-
-        writer.write(
-                "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
-                "<img src='" + resourcesRootUrl + "/images/calendar.gif' title='Select from Calendar' border=0></a>");
+            writer.write(
+                    "<a href='#' onclick='javascript:showCalendar(\"" + getQualifiedName() + "\", \""+ getClientCalendarFormat() +"\")'>" +
+                    "<img src='" + resourcesRootUrl + "/images/calendar.gif' title='Select from Calendar' border=0></a>");
+        }
     }
 
     /**
