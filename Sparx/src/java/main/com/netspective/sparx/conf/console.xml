@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.106 2003-10-17 21:01:16 shahid.shah Exp $
+  * $Id: console.xml,v 1.107 2003-10-24 03:21:47 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -125,8 +125,12 @@
                 <page name="dialog-types" caption="Dialog Types">
                     <body config="console" source="console-page-content:../dialog-types.ftl"/>
                 </page>
-                <page name="field-types" caption="Field Types" redirect="../../manual/presentation/dialogs/controls"/>
-                <page name="dialog-execute-handlers" caption="Exec Handlers" redirect="../../manual/presentation/dialogs/exec-handlers"/>
+                <page name="field-types" caption="Field Types">
+                    <body config="console" source="console-page-content:../field-types.ftl"/>
+                </page>
+                <page name="dialog-execute-handlers" caption="Exec Handlers">
+                    <body config="console" source="console-page-content:../exec-handlers.ftl"/>
+                </page>
 	        </page>
 
             <page name="panels" caption="Panels">
@@ -258,23 +262,34 @@
             </page>
         </page>
 
+        <page name="manual-site" caption="Manual Site" require-login="no" heading="-" title="Manual Site">
+            <redirect>servlet-context-uri:/console/manual-site/</redirect>     <!-- be sure that URL ends in / because of relative paths in subsite -->
+            <body-handler handler="html-sub-site">
+                <root>C\:\Projects\Frameworks\Sparx\resources\content\manual\html</root>
+                <substitute>
+                    <perl-reg-ex>simple-expr:s!src="resources/!src="${servlet-context-uri:/sparx}/content/manual/resources/!g</perl-reg-ex>
+                </substitute>
+            </body-handler>
+        </page>
+
         <xdm:include resource="com/netspective/sparx/conf/console-user-manual-pages.xml"/>
 
         <page name="reference" caption="XDM Tags Reference" require-login="no" body-affects-navigation="yes">
             <body config="console" source="content/xdm-doc.ftl"/>
-
-            <page name="overview" caption="XDM Overview" heading="Overview of the XML Data Model (XDM)">
-                <panels>
-                    <panel type="console-page-summary"/>
-                    <panel type="html">
-                        <frame heading="Using XDM"/>
-                        <body config="console" source="console-page-content:documentation.ftl"/>
-                    </panel>
-                </panels>
-            </page>
-
-            <page name="templates" caption="XDM Templates Catalog"/>
         </page>
+
+<!--
+        <page name="doc-book-manual" caption="DocBook Manual" require-login="no">
+            <body-handler handler="transform">
+                <source-file>C\:/Projects/Frameworks/Sparx/resources/content/console/manual/manual.xml</source-file>
+                <style-sheet-file>D\:/shared/utils/docbook-xsl-1.62.4/html/docbook.xsl"></style-sheet-file>
+
+                <system-property name="javax.xml.parsers.DocumentBuilderFactory" value="org.apache.xerces.jaxp.DocumentBuilderFactoryImpl"/>
+                <system-property name="javax.xml.parsers.SAXParserFactory" value="org.apache.xerces.jaxp.SAXParserFactoryImpl"/>
+                <system-property name="javax.xml.transform.TransformerFactory" value="org.apache.xalan.processor.TransformerFactoryImpl"/>
+            </body-handler>
+        </page>
+-->
     </navigation-tree>
 
     <login-manager name="console">
