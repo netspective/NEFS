@@ -39,26 +39,27 @@
  */
 
 /**
- * $Id: Table.java,v 1.13 2004-04-05 14:03:31 zahara.khan Exp $
+ * $Id: Table.java,v 1.14 2004-06-10 19:57:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import java.sql.SQLException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.List;
+
 import javax.naming.NamingException;
 
 import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.schema.constraint.ParentForeignKey;
-import com.netspective.axiom.sql.QueryExecutionLog;
+import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.sql.QueriesNameSpace;
-import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
+import com.netspective.axiom.sql.QueryExecutionLog;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
-import com.netspective.commons.xml.template.TemplateProducer;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateConsumer;
+import com.netspective.commons.xml.template.TemplateProducer;
 
 /**
  * Class handling the schema tables as defined by &lt;table&gt; tag.  Provides funtionality
@@ -96,11 +97,15 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
     public TableQueryDefinition getQueryDefinition();
 
     public QueryDefnSelect getAccessorByColumnEquality(Column column);
+
     public QueryDefnSelect getAccessorByColumnsEquality(Columns columns);
+
     public QueryDefnSelect getAccessorByIndexEquality(Index index);
+
     public QueryDefnSelect getAccessorByPrimaryKeyEquality();
 
     public QueryDefnSelect createAccessor() throws QueryDefinitionException;
+
     public void addAccessor(QueryDefnSelect accessor) throws QueryDefinitionException;
 
     /* ------------------------------------------------------------------------------------------------------------- */
@@ -109,6 +114,13 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
      * Returns the name of the table as it appears in the database.
      */
     public String getName();
+
+    /**
+     * Return the name of this column with the column name quoted for output in SQL
+     *
+     * @return
+     */
+    public String getSqlName();
 
     /**
      * Returns the name of the table suitable for use as a key in a Map for
@@ -122,6 +134,15 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
      * @param value table name
      */
     public void setName(String value);
+
+    /**
+     * Ascertain whether or not the column's name should be quoted when referenced in SQL. This is so that if the
+     * column name is not a valid SQL identifier (like starts with a number or something) it can be properly generated
+     * in SQL.
+     *
+     * @return
+     */
+    public boolean isQuoteNameInSql();
 
     /**
      * Returns the name of the table suitable for use as an XML node/element.
@@ -178,6 +199,7 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Factory method to create a default column instance.
+     *
      * @return
      */
     public Column createColumn();
@@ -204,12 +226,14 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Returns the columns that are foreign keys of the given type.
+     *
      * @param fkeyType One of the constants defined in the ForeignKey class
      */
     public Columns getForeignKeyColumns(int fkeyType);
 
     /**
      * Returns all the columns that are foreign key references.
+     *
      * @return
      */
     public Columns getForeignKeyColumns();
@@ -222,6 +246,7 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public Column getParentColumn();
+
     public void setParentColumn(Column parentColumn);
 
     /**
@@ -255,7 +280,9 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
     public boolean isParentTable();
 
     public TableHierarchyReference createHierarchy();
+
     public TableHierarchyReference getHierarchy();
+
     public void addHierarchy(com.netspective.axiom.schema.TableHierarchyReference hierarchy);
 
     /* ------------------------------------------------------------------------------------------------------------- */
@@ -294,16 +321,20 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Retrieve the row identified by the given primary key
-     * @param cc The active connection context
+     *
+     * @param cc  The active connection context
      * @param row The row in which to store the data
+     *
      * @return the row passed in
      */
     public Row getRowByPrimaryKeys(ConnectionContext cc, PrimaryKeyColumnValues values, Row row) throws NamingException, SQLException;
 
     /**
      * Retrieve the row identified by the given primary key
-     * @param cc The active connection context
+     *
+     * @param cc  The active connection context
      * @param row The row in which to store the data
+     *
      * @return the row passed in
      */
     public Row getRowByPrimaryKeys(ConnectionContext cc, Object[] pkValues, Row row) throws NamingException, SQLException;
@@ -359,14 +390,16 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Update the given Row in the database using the whereCond and bind parameters.
-     * @param whereCond The condition that is appened to the update statement like <code>" where " + whereCond</code>
+     *
+     * @param whereCond           The condition that is appened to the update statement like <code>" where " + whereCond</code>
      * @param whereCondBindParams Any optional list of bind parameters that should be bound to the whereCond
      */
     public void update(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException;
 
     /**
      * Delete the given Row in the database using the whereCond and bind parameters.
-     * @param whereCond The condition that is appened to the delete statement like <code>" where " + whereCond</code>
+     *
+     * @param whereCond           The condition that is appened to the delete statement like <code>" where " + whereCond</code>
      * @param whereCondBindParams Any optional list of bind parameters that should be bound to the whereCond
      */
     public void delete(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException;
@@ -383,12 +416,14 @@ public interface Table extends QueriesNameSpace, TemplateConsumer
 
     /**
      * Add callbacks for trigger events
+     *
      * @param trigger The class that should be called when trigger events occur
      */
     public void addTrigger(TableRowTrigger trigger);
 
     /**
      * Contruct a trigger object
+     *
      * @return
      */
     public TableRowTrigger createTrigger();

@@ -39,10 +39,14 @@
  */
 
 /**
- * $Id: Column.java,v 1.10 2004-05-19 22:02:28 aye.thu Exp $
+ * $Id: Column.java,v 1.11 2004-06-10 19:57:45 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.netspective.axiom.schema.column.ColumnQueryDefnField;
 import com.netspective.axiom.schema.column.RequirementEnumeratedAttribute;
@@ -52,10 +56,6 @@ import com.netspective.commons.validate.ValidationRules;
 import com.netspective.commons.xml.template.TemplateConsumer;
 import com.netspective.commons.xml.template.TemplateElement;
 import com.netspective.commons.xml.template.TemplateProducer;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Class for handling the column of database table.  Provides functionality for
@@ -92,15 +92,36 @@ public interface Column extends TemplateConsumer
     public String getName();
 
     /**
+     * Return the name of this column with the column name quoted (if necessary) for output in SQL
+     *
+     * @return 
+     */
+    public String getSqlName();
+
+    /**
      * Returns name of the column prefixed by the name of the table.
      */
     public String getQualifiedName();
+
+    /**
+     * Returns name of the column prefixed by the name of the table.
+     */
+    public String getSqlQualifiedName();
 
     /**
      * Returns the name of the column suitable for use as a key in a Map for
      * runtime lookup purposes.
      */
     public String getNameForMapKey();
+
+    /**
+     * Ascertain whether or not the column's name should be quoted when referenced in SQL. This is so that if the
+     * column name is not a valid SQL identifier (like starts with a number or something) it can be properly generated
+     * in SQL.
+     *
+     * @return
+     */
+    public boolean isQuoteNameInSql();
 
     /**
      * Returns the name of the column suitable for use as an XML node name (abc_def becomes abc-def)
@@ -226,6 +247,7 @@ public interface Column extends TemplateConsumer
 
     /**
      * Sets the class that should be used to create a ForeignKey to this column.
+     *
      * @see Column#setForeignKeyReferenceeClass
      */
     public void setForeignKeyReferenceeClass(Class cls);
@@ -253,12 +275,14 @@ public interface Column extends TemplateConsumer
 
     /**
      * Removes foreign key dependency for this column.
+     *
      * @param fKey The foreign key from another table that references this column
      */
     public void removeForeignKeyDependency(ForeignKey fKey);
 
     /**
      * Registers foreign key dependency for this column.
+     *
      * @param fKey The foreign key from another table that references this column
      */
     public void registerForeignKeyDependency(ForeignKey fKey);
@@ -308,6 +332,7 @@ public interface Column extends TemplateConsumer
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public boolean isIndexed();
+
     public void setIndexed(boolean flag);
 
     public boolean isPrimaryKey();
@@ -320,6 +345,7 @@ public interface Column extends TemplateConsumer
     public void setPrimaryKey(boolean flag);
 
     public boolean isUnique();
+
     /**
      * Sets whether or not this column represents unique field.
      *
@@ -331,25 +357,30 @@ public interface Column extends TemplateConsumer
      * Indicates whether or not the columns value is populated by the underlying database
      * and data insertion from the application is not necessary.
      *
-     * @return  True if database is handling the insertion of value
+     * @return True if database is handling the insertion of value
      */
     public boolean isInsertManagedByDbms();
+
     public void setInsertManagedByDbms(boolean flag);
 
     /**
      * Indicates whether or not the column's value is updated by the underlying database
      * and data update from the application is not necessary.
      *
-     * @return  True if database is handling the update of the column
+     * @return True if database is handling the update of the column
      */
     public boolean isUpdateManagedByDbms();
+
     public void setUpdateManagedByDbms(boolean flag);
 
     public boolean isRequiredByApp();
+
     public boolean isRequiredByDbms();
+
     public void setRequired(RequirementEnumeratedAttribute requirement);
 
     public boolean isAllowAddToTable();
+
     public void setAllowAddToTable(boolean flag);
 
     /* ------------------------------------------------------------------------------------------------------------- */
@@ -385,8 +416,9 @@ public interface Column extends TemplateConsumer
     /**
      * Find all the presentation templates defined in this column and place copies of them into the given table dialog
      * template.
+     *
      * @param dialogTemplate The table dialog template
-     * @param jexlVars Replacement variables for interpolating template variable replacements
+     * @param jexlVars       Replacement variables for interpolating template variable replacements
      */
     public void addSchemaRecordEditorDialogTemplates(TemplateElement dialogTemplate, Map jexlVars);
 }
