@@ -57,7 +57,6 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 public class SendMail
 {
@@ -173,14 +172,6 @@ public class SendMail
         property = props.getProperty(propertyNamesPrefix + "subject");
         if(property != null)
             setSubject(valueSources.getValueSourceOrStatic(property));
-
-        property = props.getProperty(propertyNamesPrefix + "body");
-        if(property != null)
-        {
-            final FreeMarkerTemplateProcessor templateProcessor = new FreeMarkerTemplateProcessor();
-            templateProcessor.addTemplateContent(property);
-            addBody(templateProcessor);
-        }
     }
 
     public ValueSource getBcc()
