@@ -57,11 +57,13 @@ import com.netspective.sparx.template.freemarker.FreeMarkerTemplateProcessor;
 
 public class QueryResultsNavigatorPage extends NavigationPage
 {
+    private String rowsPerPageParamName = "scroll-rpp";
     private String activeScrollPageParamName = "scroll-page";
     private String queryRef;
     private Query query;
     private boolean valid;
     private String invalidMessage;
+    private boolean allowRowsPerPageChangeViaReqParam = true;
     private int maxResultsPerPage = 25;
     private int resultSetTimeOutDuration = 30000; // 30 seconds of inactivity will close the result set automatically
     private ValueSource queryExecutionId; // how a unique query execution (parameters, etc) should be identified (should return text)
@@ -185,8 +187,45 @@ public class QueryResultsNavigatorPage extends NavigationPage
         this.activeScrollPageParamName = activeScrollPageParamName;
     }
 
-    public int getMaxResultsPerPage()
+    public String getRowsPerPageParamName()
     {
+        return rowsPerPageParamName;
+    }
+
+    public void setRowsPerPageParamName(String rowsPerPageParamName)
+    {
+        this.rowsPerPageParamName = rowsPerPageParamName;
+    }
+
+    public boolean isAllowRowsPerPageChangeViaReqParam()
+    {
+        return allowRowsPerPageChangeViaReqParam;
+    }
+
+    public void setAllowRowsPerPageChangeViaReqParam(boolean allowRowsPerPageChangeViaReqParam)
+    {
+        this.allowRowsPerPageChangeViaReqParam = allowRowsPerPageChangeViaReqParam;
+    }
+
+    public int getMaxResultsPerPage(NavigationContext nc)
+    {
+        if(allowRowsPerPageChangeViaReqParam)
+        {
+            String rpp = nc.getRequest().getParameter(rowsPerPageParamName);
+            if(rpp != null)
+            {
+                try
+                {
+                    return Integer.parseInt(rpp);
+                }
+                catch(NumberFormatException e)
+                {
+                    getLog().warn("Parameter '"+ rowsPerPageParamName +"' return invalid value: " + rpp, e);
+                    return maxResultsPerPage;
+                }
+            }
+        }
+
         return maxResultsPerPage;
     }
 
@@ -201,7 +240,7 @@ public class QueryResultsNavigatorPage extends NavigationPage
     public QueryResultsNavigatorState constructQueryResults(NavigationContext nc, String executionId) throws SQLException, NamingException
     {
         QueryResultSet qrs = getQuery().execute(nc, null, true);
-        return new DefaultQueryResultsNavigatorState(getQueryResultsNavigatorStatesManager(), this, executionId, qrs, maxResultsPerPage, resultSetTimeOutDuration);
+        return new DefaultQueryResultsNavigatorState(getQueryResultsNavigatorStatesManager(), this, executionId, qrs, getMaxResultsPerPage(nc), resultSetTimeOutDuration);
     }
 
     public Map createDefaultResultsBodyTemplateVars(NavigationContext nc, QueryResultsNavigatorState state) throws SQLException
