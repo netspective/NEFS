@@ -367,21 +367,24 @@
 
     <data-type name="lookup-with-freeform">
         <xdm:template-param name="name" required="yes" copy-attribute="name"/>
-        <xdm:template-param name="size" required="yes" copy-attribute="size"/>
-        <xdm:template-param name="caption" required="yes" copy-attribute="caption"/>
-        <xdm:template-param name="descr" required="yes" copy-attribute="descr"/>
+        <xdm:template-param name="idRequired" required="yes"/>
         <xdm:template-param name="enumerationTable" required="yes"/>
+        <xdm:template-param name="primaryDescr" required="yes"/>
+        <xdm:template-param name="primaryCaption" required="yes"/>
+
+        <xdm:template-param name="freeformTextSize" default="64"/>
+        <xdm:template-param name="enumerationTableOtherCaption" default="Other"/>
 
         <composite>
-            <column name="${params.name}_id" lookupref="${params.enumerationTable}" caption="${params.caption}" descr="${params.descr}">
+            <column name="${params.name}_id" lookupref="${params.enumerationTable}" caption="${params.primaryCaption}" required="${params.idRequired}" descr="${params.primaryDescr}">
                 <presentation>
-                    <field type="select" caption="${params.caption}"/>
+                    <field type="select" caption="${params.primaryCaption}"/>
                 </presentation>
             </column>
-            <column name="${params.name}" type="text" size="${params.size}" caption="${params.caption}" descr="${params.descr} (if 'Other' chosen above)">
+            <column name="${params.name}" type="text" size="${params.freeformTextSize}" caption="${params.enumerationTableOtherCaption} ${params.primaryCaption}" descr="${params.primaryDescr} (if '${params.enumerationTableOtherCaption}' chosen above)">
                 <presentation>
-                    <field type="text" caption="Other ${params.caption}" size="16">
-                        <conditional action="display" partner="${params.name}_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+                    <field type="text" caption="${params.enumerationTableOtherCaption} ${params.primaryCaption}" size="16">
+                        <conditional action="display" partner="${params.name}_id" js-expr="control.options[control.selectedIndex].text == '${params.enumerationTableOtherCaption}'"/>
                     </field>
                 </presentation>
             </column>
