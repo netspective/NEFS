@@ -22,7 +22,7 @@
     <classpath id='${app.docDir}/../../Axiom/src/java/main' compile='false'/>
     <classpath id='${app.docDir}/../../Sparx/src/java/main' compile='false'/>
     <!-- needed to find java-doc-xml/* files -->
-    <classpath id='${app.docDir}/../../Sparx'/>
+    <classpath id='${app.docDir}/../../Sparx' compile='false'/>
 
 	<path-mapping url-pattern='/sparx/*' real-path='${app.docDir}/../../Sparx/resources'/>
 
