@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourcesDocumentationPanel.java,v 1.5 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: ValueSourcesDocumentationPanel.java,v 1.6 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -48,20 +48,34 @@ import java.util.Set;
 import java.util.Iterator;
 
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.TabularReportAction;
+import com.netspective.sparx.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.TabularReport;
+import com.netspective.sparx.report.tabular.BasicTabularReport;
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
 
 public class ValueSourcesDocumentationPanel extends AbstractHtmlTabularReportPanel
 {
     public static final TabularReport documentationReport = new BasicTabularReport();
     static
     {
+        TabularReportAction action = documentationReport.getFrame().createAction();
+        action.setCaption(new StaticValueSource("Caption"));
+        action.setIcon(new StaticValueSource("URL"));
+
         documentationReport.getFrame().setHeading(new StaticValueSource("Value Sources Documentation"));
-        documentationReport.getFrame().setFlag(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE);
+        documentationReport.getFrame().setFooting(new StaticValueSource("Footing"));
+        documentationReport.getFrame().addAction(action);
+        documentationReport.getFrame().getFlags().setFlag(TabularReportFrame.Flags.ALLOW_COLLAPSE);
+        documentationReport.getBanner().setContent(new StaticValueSource("This is a value source report"));
 
         TabularReportColumn identifiers = documentationReport.createColumn();
         identifiers.setHeading(new StaticValueSource("Identifier(s)"));

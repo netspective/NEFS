@@ -51,29 +51,31 @@
  */
 
 /**
- * $Id: BasicReportSkin.java,v 1.5 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: BasicReportSkin.java,v 1.6 2003-04-02 22:53:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 
-import com.netspective.commons.report.tabular.TabularReportFrame;
-import com.netspective.commons.report.tabular.TabularReportBanner;
-import com.netspective.commons.report.tabular.BasicTabularReport;
+import com.netspective.sparx.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.TabularReportBanner;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.sparx.report.tabular.TabularReportAction;
+import com.netspective.sparx.report.tabular.TabularReportActions;
+import com.netspective.sparx.report.tabular.TabularReport;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.ReportHttpServletValueContext;
 import com.netspective.sparx.report.HtmlTabularReportSkin;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.lang.ClassPath;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
 
 public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularReportSkin
 {
@@ -148,9 +150,9 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
     public void produceHeadingExtras(Writer writer, TabularReportValueContext rc, TabularReportFrame frame) throws IOException
     {
-        ArrayList items = frame.getItems();
+        TabularReportActions actions = frame.getActions();
 
-        if(items != null && items.size() > 0)
+        if(actions != null && actions.size() > 0)
         {
             Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
             String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
@@ -159,16 +161,16 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
             // create a temporary string buffer for the HTML of the heading action items
             StringBuffer itemBuffer = new StringBuffer();
-            for (int i=0; items != null && i < items.size(); i++)
+            for (int i=0; i < actions.size(); i++)
             {
                 if (i != 0)
                 {
                     itemBuffer.append("            <td bgcolor=\"white\"><img src=\"" + imgPath + "/login/spacer.gif\" width=\"5\" height=\"5\"></td>");
                     colCount++;
                 }
-                TabularReportFrame.Item item = (TabularReportFrame.Item) items.get(i);
-                ValueSource itemUrl = item.getUrl();
-                ValueSource itemCaption = item.getCaption();
+                TabularReportAction item = actions.get(i);
+                String itemUrl = "TODO"; //item.getParameters();
+                String itemCaption = item.getCaption().getTextValue(rc);
                 ValueSource itemIcon = item.getIcon();
                 if (itemIcon != null)
                 {
@@ -183,8 +185,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                     colCount++;
                 }
                 itemBuffer.append("            <td class=\"panel-frame-action-box-output\">" +
-                        "<a class=\"panel-frame-action-output\" href=\""+ itemUrl.getValue(rc) + "\">&nbsp;" +
-                        itemCaption.getValue(rc) + "&nbsp;</a></td>");
+                        "<a class=\"panel-frame-action-output\" href=\""+ itemUrl + "\">&nbsp;" + itemCaption + "&nbsp;</a></td>");
                 colCount++;
             }
 
@@ -208,8 +209,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
     public void produceReport(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        TabularReportFrame frame = rc.getReport().getFrame();
-        TabularReportBanner banner = rc.getReport().getBanner();
+        TabularReportFrame frame = ((TabularReport) rc.getReport()).getFrame();
 
         Theme theme = ((ReportHttpServletValueContext) rc).getActiveTheme();
         String imgPath = ((ReportHttpServletValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
@@ -232,7 +232,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                 writer.write("    <td class=\"panel-output\">\n");
                 writer.write("    <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap>\n");
                 writer.write("        <tr>\n");
-                if (frame.flagIsSet(TabularReportFrame.RPTFRAMEFLAG_ALLOW_COLLAPSE))
+                if (frame.getFlags().flagIsSet(TabularReportFrame.Flags.ALLOW_COLLAPSE))
                 {
                     if (rc.isMinimized())
                         writer.write("            <td class=\"panel-frame-heading-action-expand-output\"   align=\"left\" valign=\"middle\" nowrap width=\"17\">" +
@@ -259,17 +259,16 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
                 writer.write("    </td>\n");
                 writer.write("</tr>\n");
             }
-
-            if(banner != null)
-                produceBannerRow(writer, rc);
         }
+
+        produceBannerRow(writer, rc);
 
         writer.write("<tr>\n" +
                 "    <td class=\"panel-content-output\">\n");
         writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
-        if(flagIsSet(HTMLFLAG_SHOW_HEAD_ROW) && !rc.getReport().flagIsSet(BasicTabularReport.REPORTFLAG_HIDE_HEADING))
+        if(flagIsSet(HTMLFLAG_SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(TabularReport.Flags.HIDE_HEADING))
         {
-            if(!rc.getReport().flagIsSet(BasicTabularReport.REPORTFLAG_FIRST_DATA_ROW_HAS_HEADINGS))
+            if(!rc.getReport().getFlags().flagIsSet(TabularReport.Flags.FIRST_DATA_ROW_HAS_HEADINGS))
                 produceHeadingRow(writer, rc);
             else
                 produceHeadingRow(writer, rc, ds);
@@ -288,12 +287,69 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
             if(fvs != null)
             {
                 writer.write("<tr>\n");
-                writer.write("    <td class=\"panel-banner-footer-output\">" + fvs.getValue(rc) + "</td>\n");
+                writer.write("    <td class=\"panel-banner-footer-output\">" + fvs.getTextValue(rc) + "</td>\n");
                 writer.write("</tr>\n");
             }
         }
 
         writer.write("</table>\n");
+    }
+
+    protected void producerBannerActionsHtml(Writer writer, TabularReportValueContext rc, TabularReportActions actions) throws IOException, CommandNotFoundException
+    {
+        int actionsCount = actions.size();
+        if(actionsCount == 0) return;
+        String bannerItemFontAttrs = "";
+
+        //TODO: conversion from Sparx 2.x required below
+        //ReportSkin skin = rc.getSkin();
+        //if (skin instanceof com.netspective.sparx.xaf.skin.HtmlReportSkin)
+        //    bannerItemFontAttrs = ((HtmlReportSkin) skin).getBannerItemFontAttrs();
+
+        if(actions.getStyle().getValueIndex() == TabularReportActions.Style.HORIZONTAL)
+        {
+            for(int i = 0; i < actionsCount; i++)
+            {
+                TabularReportAction action = actions.get(i);
+                Command itemCmd = action.getCommand(rc);
+                ValueSource itemCaption = action.getCaption();
+                ValueSource itemIcon = action.getIcon();
+                String caption = itemCaption != null ? (itemCmd != null ? ("<a href='" + itemCmd.getParameters() + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
+
+                writer.write("<font " + bannerItemFontAttrs + ">");
+                if(i > 0)
+                    writer.write(", ");
+                if(itemIcon != null)
+                    writer.write("<img src='" + itemIcon.getValue(rc) + "'>");
+                writer.write(caption);
+                writer.write("</font>");
+            }
+        }
+        else
+        {
+            writer.write("<table border=0 cellspacing=0>");
+            for(int i = 0; i < actionsCount; i++)
+            {
+                TabularReportAction action = actions.get(i);
+                Command itemCmd = action.getCommand(rc);
+                ValueSource itemCaption = action.getCaption();
+                ValueSource itemIcon = action.getIcon();
+                TabularReportActions childItems = action.getChildren();
+                String caption = itemCaption != null ? (itemCmd != null ? ("<a href='" + itemCmd.getParameters() + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
+
+                writer.write("<tr><td>");
+                writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
+                writer.write("</td>");
+                writer.write("<td><font " + bannerItemFontAttrs + ">");
+                if(caption != null)
+                    writer.write(caption);
+                if(childItems != null && childItems.size() > 0)
+                    producerBannerActionsHtml(writer, rc, childItems);
+                writer.write("</font></td>");
+                writer.write("</tr>");
+            }
+            writer.write("</table>");
+        }
     }
 
     /**
@@ -302,56 +358,32 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
      * @param rc
      * @throws IOException
      */
-    private void produceBannerRow(Writer writer, TabularReportValueContext rc) throws IOException
+    protected void produceBannerRow(Writer writer, TabularReportValueContext rc) throws IOException
     {
-        TabularReportBanner banner = rc.getReport().getBanner();
+        TabularReportBanner banner = ((TabularReport) rc.getReport()).getBanner();
         if (banner == null)
             return;
 
+        TabularReportActions actions = banner.getActions();
+        ValueSource content = banner.getContent();
+        if((actions == null || (actions != null || actions.size() == 0) && content == null))
+            return;
+
         writer.write("<tr><td class=\"panel-banner-output\">\n");
-        TabularReportBanner.Items items = banner.getItems();
-        int style = items.getStyle();
-        if (style == TabularReportBanner.Items.LAYOUTSTYLE_HORIZONTAL)
+        if(content != null)
         {
-            for (int i=0; items != null && i < items.size(); i++)
-            {
-                TabularReportBanner.Item item = (TabularReportBanner.Item) items.get(i);
-                ValueSource itemUrl = item.getUrl();
-                ValueSource itemCaption = item.getCaption();
-                ValueSource itemIcon = item.getIcon();
-                String caption = itemCaption != null ? (itemUrl != null ? ("<a href='" + itemUrl.getValue(rc) + "'>" +
-                        itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
-                if(i > 0)
-                    writer.write(", ");
-                if(itemIcon != null)
-                    writer.write("<img src='" + itemIcon.getValue(rc) + "'>");
-                writer.write(caption);
-            }
+            writer.write(content.getTextValue(rc));
         }
         else
         {
-            writer.write("<table border=0 cellspacing=0>");
-            for(int i = 0; items != null && i < items.size(); i++)
+            try
             {
-                TabularReportBanner.Item item = (TabularReportBanner.Item) items.get(i);
-                ValueSource itemUrl = item.getUrl();
-                ValueSource itemCaption = item.getCaption();
-                ValueSource itemIcon = item.getIcon();
-                TabularReportBanner.Items childItems = item.getChildItems();
-                String caption = itemCaption != null ? (itemUrl != null ? ("<a href='" + itemUrl.getValue(rc) + "'>" + itemCaption.getValue(rc) + "</a>") : itemCaption.getValue(rc).getTextValue()) : null;
-
-                writer.write("<tr><td>");
-                writer.write(itemIcon != null ? "<img src='" + itemIcon.getValue(rc) + "'>" : "-");
-                writer.write("</td>");
-                writer.write("<td>");
-                if(caption != null)
-                    writer.write(caption);
-                if(childItems != null)
-                    childItems.produceHtml(writer, rc);
-                writer.write("</td>");
-                writer.write("</tr>");
+                producerBannerActionsHtml(writer, rc, actions);
             }
-            writer.write("</table>");
+            catch (CommandNotFoundException e)
+            {
+                writer.write(e.toString());
+            }
         }
         writer.write("</td></tr>\n");
     }
@@ -472,7 +504,7 @@ public class BasicReportSkin extends AbstractThemeSkin implements HtmlTabularRep
 
     public void produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
     {
-        TabularReport defn = rc.getReport();
+        TabularReport defn = ((TabularReport) rc.getReport());
         TabularReportColumns columns = rc.getColumns();
         TabularReportColumnState[] states = rc.getStates();
 

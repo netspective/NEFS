@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentsPanel.java,v 1.6 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: XdmComponentsPanel.java,v 1.7 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -49,12 +49,12 @@ import java.util.Map;
 import java.util.List;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.commons.report.tabular.BasicTabularReport;
-import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.TabularReportException;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
+import com.netspective.sparx.report.tabular.TabularReport;
+import com.netspective.sparx.report.tabular.BasicTabularReport;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.value.source.StaticValueSource;

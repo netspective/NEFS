@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.3 2003-04-01 01:45:50 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -90,6 +90,9 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     private NavigationPage activePage;
     private NavigationSkin skin;
     private NavigationTree.FindResults activePathFindResults;
+    private String pageTitle;
+    private String pageHeading;
+    private String pageSubheading;
     private Map navigationStates = new HashMap();
     private int maxLevel = 0;
 
@@ -155,6 +158,48 @@ public class NavigationContext extends BasicDbHttpServletValueContext
     public Map getNavigationStates()
     {
         return navigationStates;
+    }
+
+    public String getPageHeading()
+    {
+        if(pageHeading != null)
+            return pageHeading;
+
+        return activePage.getHeading(this);
+    }
+
+    public String getPageSubheading()
+    {
+        if(pageSubheading != null)
+            return pageSubheading;
+
+        return activePage.getSubHeading(this);
+    }
+
+    public String getPageTitle()
+    {
+        if(pageTitle != null)
+            return pageTitle;
+
+        if(pageHeading != null)
+            return pageHeading;
+
+        return activePage.getTitle(this);
+    }
+
+    public void setPageHeading(String pageHeading)
+    {
+        this.pageHeading = pageHeading;
+    }
+
+    public void setPageSubheading(String pageSubheading)
+    {
+        this.pageSubheading = pageSubheading;
+    }
+
+    public void setPageTitle(String pageTitle)
+    {
+        this.pageTitle = pageTitle;
     }
 
     public void setNavigationStates(Map navigationStates)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.1 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.2 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel;
@@ -49,8 +49,12 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.netspective.commons.report.tabular.*;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportColumnState;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.AbstractTabularReportDataSource;
+import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XmlDataModel;
 import com.netspective.commons.xdm.XmlDataModelSchema;
@@ -63,6 +67,8 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.report.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.ReportHttpServletValueContext;
 import com.netspective.sparx.report.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.TabularReport;
+import com.netspective.sparx.report.tabular.BasicTabularReport;
 
 public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 {
@@ -269,6 +275,11 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         this.dataModel = dataModel;
     }
 
+    public boolean affectsNavigationContext(NavigationContext nc)
+    {
+        return true;
+    }
+
     public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
         ReportHttpServletValueContext vc = new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
@@ -276,7 +287,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
         {
             TabularReportColumnState[] states = vc.getStates();
             states[1].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
-            states[2].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
+            //states[2].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
             states[3].setFlag(TabularReportColumn.COLFLAG_HIDDEN);
         }
         return vc;
@@ -294,7 +305,10 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
                 {
                     StructureRow structureRow = (StructureRow) structureRows.get(i);
                     if(structureRow.schema != null && structureRow.schema.getBean().getName().equals(showClassDetail))
+                    {
+                        nc.setPageHeading(structureRow.schema.getBean().getName());
                         return new DetailDataSource(structureRows, structureRow);
+                    }
                 }
                 catch (DataModelException e)
                 {

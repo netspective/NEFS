@@ -39,42 +39,68 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: TabularReportActions.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report;
+package com.netspective.sparx.report.tabular;
 
-import java.io.Writer;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.panel.HtmlPanels;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.sparx.report.tabular.TabularReportAction;
 
-public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
+public class TabularReportActions
 {
-    public HtmlPanels getChildren()
+    public static class Style extends XdmEnumeratedAttribute
     {
-        return null;
+        public static final short HORIZONTAL = 0;
+        public static final short VERTICAL = 1;
+
+        public Style()
+        {
+        }
+
+        public Style(int valueIndex)
+        {
+            super(valueIndex);
+        }
+
+        public String[] getValues()
+        {
+            return new String[] { "horizontal", "vertical" };
+        }
     }
 
-    public boolean affectsNavigationContext(NavigationContext nc)
+    private List actions = new ArrayList();
+    private Style style = new Style(Style.HORIZONTAL);
+
+    public TabularReportActions()
     {
-        return false;
     }
 
-    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    public TabularReportAction get(int i)
     {
-        return new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        return (TabularReportAction) actions.get(i);
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public void add(TabularReportAction action)
     {
-        render(writer, nc, nc.getActiveTheme().getReportSkin());
+        actions.add(action);
     }
 
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
+    public int size()
     {
-        createContext(nc, (HtmlTabularReportSkin) skin).produceReport(writer, createDataSource(nc));
+        return actions.size();
+    }
+
+    public Style getStyle()
+    {
+        return style;
+    }
+
+    public void setStyle(Style style)
+    {
+        this.style = style;
     }
 }

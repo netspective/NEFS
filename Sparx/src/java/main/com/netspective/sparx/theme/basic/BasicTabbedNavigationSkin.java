@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.3 2003-04-02 22:53:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -86,9 +86,21 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
     static public final String TAB_ON_IMAGE = "tab-on";
     static public final String TAB_OFF_IMAGE = "tab-off";
 
+    private int sidebarWidth = 150;
+
     public BasicTabbedNavigationSkin(Theme theme)
     {
         super(theme);
+    }
+
+    public int getSidebarWidth()
+    {
+        return sidebarWidth;
+    }
+
+    public void setSidebarWidth(int sidebarWidth)
+    {
+        this.sidebarWidth = sidebarWidth;
     }
 
     public String getInheritableImageUrl(NavigationContext nc, String pageId, String imageId)
@@ -119,7 +131,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("<!-- Application Header Begins -->\n");
         writer.write("<html>\n");
         writer.write("<head>\n");
-        writer.write("<title>" + (activePage != null ? activePage.getTitle(nc) : "") + "</title>\n");
+        writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
         // get all the CSS files associated with this theme/style combination
         String cssRootUrl = nc.getThemeResourcesRootUrl(getTheme()) + "/css";
@@ -377,15 +389,15 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 if (activePath.getMaxChildLevel() > 2 && activePathChildren.size() > 0)
                 {
                     writer.write("  <tr>\n");
-                    writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"150\">" +
-                            "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"150\" height=\"12\" border=\"0\"></td>\n");
+                    writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
+                            "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
                     writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
                             "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                     writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
                             "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                     writer.write("  </tr>\n");
                     writer.write("  <tr>\n");
-                    writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"150\" height=\"100%\">\n");
+                    writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
                     writer.write(generateLevelThreeHtml((NavigationPath) activePath.getChildrenList().get(0), nc));
                     writer.write("      </td>\n");
                 }
@@ -393,30 +405,30 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
 
             case 3:
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"150\">" +
-                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"150\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
+                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
                         "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"150\" height=\"100%\">\n");
+                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
                 writer.write(generateLevelThreeHtml(activePath, nc));
                 writer.write("      </td>\n");
                 break;
 
             case 4:
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\"150\">" +
-                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\"150\" height=\"12\" border=\"0\"></td>\n");
+                writer.write("      <td class=\"menu-level-3-separator\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\">" +
+                        "<img src=\"" + themeImagesPath + "/spacer-big.gif\" alt=\"\" width=\""+ sidebarWidth +"\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td class=\"body-top-left\" width=\"12\"><img src=\"" + themeImagesPath + "/spacer-big.gif\" " +
                         "alt=\"\" width=\"12\" height=\"12\" border=\"0\"></td>\n");
                 writer.write("      <td align=\"left\" valign=\"top\"><img src=\"" + themeImagesPath +
                         "/spacer-big.gif\" alt=\"\" height=\"12\" width=\"100%\" border=\"0\"></td>\n");
                 writer.write("  </tr>\n");
                 writer.write("  <tr>\n");
-                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\"150\" height=\"100%\">\n");
+                writer.write("      <td class=\"menu-table\" align=\"left\" valign=\"top\" width=\""+ sidebarWidth +"\" height=\"100%\">\n");
                 writer.write(generateLevelThreeHtml((NavigationPath) activePath.getAncestorsList().get(3), nc));
                 writer.write("      </td>\n");
                 break;
@@ -469,7 +481,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         String themeImagesPath = nc.getThemeImagesRootUrl(getTheme());
 
         NavigationPage page = nc.getActivePage();
-        String heading = page != null ? page.getHeading(nc) : "No active page";
+        String heading = page != null ? nc.getPageHeading() : "No active page";
 
         String actionIcon = page != null ? getInheritableImageUrl(nc, page.getQualifiedName(), HEADING_ACTION_IMAGE) : null;
 
@@ -509,7 +521,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         if(page == null)
             return;
 
-        String subHeading = page.getSubHeading(nc);
+        String subHeading = nc.getPageSubheading();
         if (subHeading != null && subHeading.length() > 0)
         {
             writer.write("    <tr>\n");

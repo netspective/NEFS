@@ -39,42 +39,104 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.4 2003-04-02 22:53:51 shahid.shah Exp $
+ * $Id: TabularReportAction.java,v 1.1 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
-package com.netspective.sparx.report;
+package com.netspective.sparx.report.tabular;
 
-import java.io.Writer;
-import java.io.IOException;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.command.Command;
+import com.netspective.commons.command.CommandNotFoundException;
+import com.netspective.commons.command.Commands;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.HtmlPanelSkin;
-import com.netspective.sparx.panel.HtmlPanels;
-
-public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
+public class TabularReportAction
 {
-    public HtmlPanels getChildren()
+    private ValueSource icon;
+    private ValueSource caption;
+    private ValueSource hint;
+    private ValueSource command;
+    private TabularReportActions children = new TabularReportActions();
+
+    public ValueSource getCaption()
     {
-        return null;
+        return caption;
     }
 
-    public boolean affectsNavigationContext(NavigationContext nc)
+    public void setCaption(ValueSource caption)
     {
-        return false;
+        this.caption = caption;
     }
 
-    public ReportHttpServletValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
+    public ValueSource getHint()
     {
-        return new ReportHttpServletValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), getReport(nc), skin);
+        return hint;
     }
 
-    public void render(Writer writer, NavigationContext nc) throws IOException
+    public void setHint(ValueSource hint)
     {
-        render(writer, nc, nc.getActiveTheme().getReportSkin());
+        this.hint = hint;
     }
 
-    public void render(Writer writer, NavigationContext nc, HtmlPanelSkin skin) throws IOException
+    public ValueSource getIcon()
     {
-        createContext(nc, (HtmlTabularReportSkin) skin).produceReport(writer, createDataSource(nc));
+        return icon;
+    }
+
+    public void setIcon(ValueSource icon)
+    {
+        this.icon = icon;
+    }
+
+    public ValueSource getCommand()
+    {
+        return command;
+    }
+
+    public Command getCommand(ValueContext vc) throws CommandNotFoundException
+    {
+        if(command == null)
+            return null;
+
+        String cmd = command.getTextValue(vc);
+        if(cmd == null)
+            return null;
+
+        return Commands.getInstance().getCommand(cmd);
+    }
+
+    public void setCommand(ValueSource command)
+    {
+        this.command = command;
+    }
+
+    public TabularReportActions.Style getStyle()
+    {
+        return children.getStyle();
+    }
+
+    public void setStyle(TabularReportActions.Style style)
+    {
+        children.setStyle(style);
+    }
+
+    public TabularReportActions getChildren()
+    {
+        return children;
+    }
+
+    public void setChildren(TabularReportActions children)
+    {
+        this.children = children;
+    }
+
+    public TabularReportAction createAction()
+    {
+        return new TabularReportAction();
+    }
+
+    public void addAction(TabularReportAction item)
+    {
+        children.add(item);
     }
 }

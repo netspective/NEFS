@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.2 2003-03-31 20:16:55 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.3 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -52,6 +52,17 @@ import com.netspective.sparx.navigate.NavigationContext;
 public class HtmlLayoutPanel implements HtmlPanel
 {
     private HtmlPanels children = new BasicHtmlPanels();
+
+    public boolean affectsNavigationContext(NavigationContext nc)
+    {
+        for(int i = 0; i < children.size(); i++)
+        {
+            if(children.get(i).affectsNavigationContext(nc))
+                return true;
+        }
+
+        return false;
+    }
 
     public int getStyle()
     {

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: ReportHttpServletValueContext.java,v 1.1 2003-03-25 21:05:29 shahid.shah Exp $
+ * $Id: ReportHttpServletValueContext.java,v 1.2 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report;
@@ -67,10 +67,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import com.netspective.commons.report.tabular.calc.ColumnDataCalculator;
-import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.report.tabular.TabularReportContextListener;
 import com.netspective.commons.report.tabular.TabularReportColumns;
-import com.netspective.commons.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.TabularReportFrame;
+import com.netspective.sparx.report.tabular.TabularReport;
 import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 import com.netspective.commons.report.tabular.TabularReportSkin;
 import com.netspective.commons.report.tabular.TabularReportColumnState;
@@ -120,12 +120,12 @@ public class ReportHttpServletValueContext extends BasicDbHttpServletValueContex
         }
 
         TabularReportFrame frame = reportDefn.getFrame();
-        frameFlags = frame != null ? frame.getFlags() : 0;
+        frameFlags = frame != null ? frame.getFlags().getFlags() : 0;
     }
 
     public boolean isMinimized()
     {
-        return (frameFlags & TabularReportFrame.RPTFRAMEFLAG_IS_COLLAPSED) != 0;
+        return (frameFlags & TabularReportFrame.Flags.IS_COLLAPSED) != 0;
     }
 
     /**
@@ -150,7 +150,7 @@ public class ReportHttpServletValueContext extends BasicDbHttpServletValueContex
         listeners.add(listener);
     }
 
-    public final TabularReport getReport()
+    public final com.netspective.commons.report.tabular.TabularReport getReport()
     {
         return reportDefn;
     }

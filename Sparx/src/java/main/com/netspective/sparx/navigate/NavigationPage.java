@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.4 2003-04-01 01:45:50 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.5 2003-04-02 22:53:51 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -63,6 +63,7 @@ import com.netspective.sparx.panel.HtmlLayoutPanel;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.io.StringWriter;
 import java.util.Map;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -413,22 +414,48 @@ public class NavigationPage extends NavigationPath
         if(skin != null) skin.renderPageFooter(writer, nc);
     }
 
+    public boolean bodyAffectsNavigationContext(NavigationContext nc)
+    {
+        if(panel != null && panel.affectsNavigationContext(nc))
+            return true;
+        else
+            return false;
+    }
+
     public void handlePage(Writer writer, NavigationContext nc) throws ServletException, IOException
     {
-        //try
-        //{
+        if(bodyAffectsNavigationContext(nc))
+        {
+            // render the body first and let it modify the navigation context
+            StringWriter body = new StringWriter();
+            if(panel != null)
+                panel.render(body, nc);
+            else
+                handlePageBody(body, nc);
+
             handlePageMetaData(writer, nc);
             handlePageHeader(writer, nc);
-        //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
-            if(panel != null)
-                panel.render(writer, nc);
-            else
-                handlePageBody(writer, nc);
+            writer.write(body.getBuffer().toString());
             handlePageFooter(writer, nc);
-        //}
-        //catch (ComponentCommandException e)
-        //{
-        //    throw new NavigationPageException(e);
-        //}
+        }
+        else
+        {
+            // render the body "inline" (no need to buffer) since the body doesn't affect the context
+            //try
+            //{
+                handlePageMetaData(writer, nc);
+                handlePageHeader(writer, nc);
+            //if(!ComponentCommandFactory.handleDefaultBodyItem(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse()))
+                if(panel != null)
+                    panel.render(writer, nc);
+                else
+                    handlePageBody(writer, nc);
+                handlePageFooter(writer, nc);
+            //}
+            //catch (ComponentCommandException e)
+            //{
+            //    throw new NavigationPageException(e);
+            //}
+        }
     }
 }
