@@ -28,7 +28,7 @@ import java.io.File;
 import java.sql.SQLException;
 
 /**
- * $Id: DynamicSqlTest.java,v 1.4 2003-05-28 03:00:35 shahbaz.javeed Exp $
+ * $Id: DynamicSqlTest.java,v 1.5 2003-06-11 02:42:21 roque.hernandez Exp $
  */
 public class DynamicSqlTest extends TestCase
 {
@@ -55,6 +55,9 @@ public class DynamicSqlTest extends TestCase
 
     static
     {
+
+        /* TODO: We'll take this out with time, for now it's just a reminder that we'll have to do some validation that the DB
+                 was actualyl created.
         FileFind.FileFindResults ffr = FileFind.findInPath(new String[] { "../../Axiom" }, "medspective.data", FileFind.FINDINPATHFLAG_SEARCH_RECURSIVELY);
         assertTrue("The Medspective Demo Schema was not found!  Did you run 'build generate-dal generate-ddl create-database import-data' ?", ffr.isFileFound());
         dbFile = ffr.getFoundFile();
@@ -65,7 +68,7 @@ public class DynamicSqlTest extends TestCase
         catch (IOException e)
         {
             dbFilename = "Error occurred while getting canonical filename for the Medspective Demo Database";
-        }
+        }*/
     }
 
     protected void setUp() throws Exception
@@ -382,11 +385,12 @@ public class DynamicSqlTest extends TestCase
             QueryDefnSelect qdsl = queryDefn.getSelects().get("query-select-1");
             assertNotNull(qdsl);
 
-            assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.connProvider.getDataSourceInfo(TestUtils.DATASRCID_DEFAULT).getConnUrl());
+            //TODO: See if this assertion is really necessary
+            //assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.getConnprovider().getDataSourceInfo(this.getClass().getPackage().getName()).getConnUrl());
 
             DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-            dbvc.setConnectionProvider(TestUtils.connProvider);
-        //        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+            dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        //        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
             //ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
             //Value value = vs.getValue(dbvc);
@@ -627,11 +631,12 @@ public class DynamicSqlTest extends TestCase
 			assertNull(qdCondition.getBindExpr());
 		}
 
-        assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.connProvider.getDataSourceInfo(TestUtils.DATASRCID_DEFAULT).getConnUrl());
+        //TODO: See if this assertion is really necessary
+        //assertEquals("jdbc:hsqldb:" + dbFilename, TestUtils.getConnprovider().getDataSourceInfo(this.getClass().getPackage().getName()).getConnUrl());
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 		String expectedSqlOne = "select distinct join_01.column_01 as \"field_01\", join_02.column_02a as \"Test Field 02 Caption\", column_03 as \"Test Field 03 Caption\" from join_01, Table_02 join_02, Table_03 join_03, /* implied by join definition 'join_02' */ Table_04 join_04, /* implied by join definition 'join_03' */ Table_05 join_05 /* auto-included for join definition 'join_05' */ where ( (join_01.column_01 = ?) and (join_02.column_02 like ?) and (column_03 like ?) and (column_05 like ?) and (join_01.column_01 in (?)) and (join_02.column_02 is not null) and (column_03 like ?) ) and (field_01 in ('A', 'B', 'C') ) group by join_01.column_01 order by column_03";
 

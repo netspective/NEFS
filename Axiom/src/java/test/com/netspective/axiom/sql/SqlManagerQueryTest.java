@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.8 2003-05-28 03:00:35 shahbaz.javeed Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.9 2003-06-11 02:42:21 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -63,6 +63,7 @@ import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
 import com.netspective.axiom.*;
+import com.netspective.axiom.connection.DriverManagerConnectionProvider;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
 import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
 import com.netspective.axiom.value.DatabaseConnValueContext;
@@ -72,13 +73,14 @@ import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
 public class SqlManagerQueryTest extends TestCase
 {
     public static final String RESOURCE_NAME = "SqlManagerQueryTest.xml";
-	protected SqlManagerComponent component = null;
-	protected SqlManager manager = null;
+	 protected SqlManagerComponent component = null;
+	 protected SqlManager manager = null;
     protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
     protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "statement-2"};
 
 	protected void setUp () throws Exception
     {
+
 		super.setUp();
 
 		component =
@@ -92,13 +94,14 @@ public class SqlManagerQueryTest extends TestCase
 		assertEquals(this.queryNames.length, manager.getQueries().size());
 	}
 
+
     public void testDatabaseValueContexts()
     {
         BasicDatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         assertNull(dbvc.getAccessControlListsManager());
         assertNull(dbvc.getConfigurationsManager());
         assertNull(dbvc.getSqlManager());
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.translateDataSourceId(TestUtils.DATASRCID_DEFAULT));
+        assertEquals(this.getClass().getPackage().getName(), dbvc.translateDataSourceId(this.getClass().getPackage().getName()));
 
         DatabasePolicy dbPolicy = new PostgreSqlDatabasePolicy();
         BasicDatabasePolicyValueContext dbpvc = new BasicDatabasePolicyValueContext(dbPolicy);
@@ -184,8 +187,8 @@ public class SqlManagerQueryTest extends TestCase
 			assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
         assertNotNull(cc);
 
         QueryParameters.ValueRetrieveContext vrc = params.retrieve(cc);
@@ -319,8 +322,8 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(null);
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-	    dbvc.setConnectionProvider(TestUtils.connProvider);
-	    ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+	    dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
 		// No stats recorded...
 	    QueryResultSet qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
@@ -335,8 +338,8 @@ public class SqlManagerQueryTest extends TestCase
 
 	    // Still no stats recorded...
 		assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
-	    dbvc.setDefaultDataSource(TestUtils.DATASRCID_DEFAULT);
-	    assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+	    dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+	    assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
 	    qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
@@ -361,11 +364,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi++;
-            if ("abc".equals(rs.getString(6))) numAbc++;
+            if ("ghi".equals(rs.getString(5))) numGhi++;
+            if ("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -385,8 +388,8 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(null);
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-	    dbvc.setConnectionProvider(TestUtils.connProvider);
-	    ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+	    dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+	    ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded this time...
         QueryResultSet qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
@@ -410,8 +413,8 @@ public class SqlManagerQueryTest extends TestCase
 
         // More stats recorded...
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
-        dbvc.setDefaultDataSource(TestUtils.DATASRCID_DEFAULT);
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
         qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
@@ -438,11 +441,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi++;
-            if ("abc".equals(rs.getString(6))) numAbc++;
+            if ("ghi".equals(rs.getString(5))) numGhi++;
+            if ("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -450,13 +453,13 @@ public class SqlManagerQueryTest extends TestCase
         qrsOne.close(false);
 
         // More stats recorded...
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
         dbvc.setDefaultDataSource(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE);
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
 
         assertNull(stmtOne.getDataSrc());
-        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + TestUtils.DATASRCID_DEFAULT, ValueSources.VSNOTFOUNDHANDLER_NULL));
-        assertEquals(TestUtils.DATASRCID_DEFAULT, stmtOne.getDataSrc().getTextValue(dbvc));
+        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + this.getClass().getPackage().getName(), ValueSources.VSNOTFOUNDHANDLER_NULL));
+        assertEquals(this.getClass().getPackage().getName(), stmtOne.getDataSrc().getTextValue(dbvc));
 
         qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
@@ -482,11 +485,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi++;
-            if ("abc".equals(rs.getString(6))) numAbc++;
+            if ("ghi".equals(rs.getString(5))) numGhi++;
+            if ("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -501,8 +504,8 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals(2, badStmt.getParams().size());
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded...
         boolean exceptionThrown = true;
@@ -532,8 +535,8 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(null);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // Stats recorded this time...
         QueryResultSet qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
@@ -557,8 +560,8 @@ public class SqlManagerQueryTest extends TestCase
 
         // More stats recorded...
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
-        dbvc.setDefaultDataSource(TestUtils.DATASRCID_DEFAULT);
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
 
         qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
@@ -585,11 +588,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi++;
-            if ("abc".equals(rs.getString(6))) numAbc++;
+            if ("ghi".equals(rs.getString(5))) numGhi++;
+            if ("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -597,14 +600,15 @@ public class SqlManagerQueryTest extends TestCase
         qrsOne.close(false);
 
         // More stats recorded...
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        //TODO: See if this comparison is really necesary:
+        //assertEquals(this.getClass().getPackage().getName(), dbvc.getDefaultDataSource());
         dbvc.setDefaultDataSource(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE);
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
 
         System.out.println("\nDataSrc: " + stmtOne.getDataSrc());
         assertNull(stmtOne.getDataSrc());
-        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + TestUtils.DATASRCID_DEFAULT, ValueSources.VSNOTFOUNDHANDLER_NULL));
-        assertEquals(TestUtils.DATASRCID_DEFAULT, stmtOne.getDataSrc().getTextValue(dbvc));
+        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + this.getClass().getPackage().getName(), ValueSources.VSNOTFOUNDHANDLER_NULL));
+        assertEquals(this.getClass().getPackage().getName(), stmtOne.getDataSrc().getTextValue(dbvc));
 
         qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
         qeleOne = qrsOne.getExecutionLogEntry();
@@ -630,11 +634,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi++;
-            if ("abc".equals(rs.getString(6))) numAbc++;
+            if ("ghi".equals(rs.getString(5))) numGhi++;
+            if ("abc".equals(rs.getString(5))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);
@@ -669,8 +673,8 @@ public class SqlManagerQueryTest extends TestCase
         stmtOne.setDataSrc(null);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
         // No stats recorded...
         QueryResultSet qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
@@ -685,7 +689,7 @@ public class SqlManagerQueryTest extends TestCase
         // Verify query results...
         ResultSet rs = qrsOne.getResultSet();
 
-        String[] expectedColumns = new String[] { "cr_stamp", "cr_sess_id", "rec_stat_id", "system_id", "column_a", "column_b", "column_c" };
+        String[] expectedColumns = new String[] { "cr_stamp", "rec_stat_id", "system_id", "column_a", "column_b", "column_c" };
         Map columnNames = ResultSetUtils.getColumnNamesIndexMap(rs);
 
         assertEquals(expectedColumns.length, columnNames.size());
@@ -703,11 +707,11 @@ public class SqlManagerQueryTest extends TestCase
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
             numRows++;
             assertEquals(numRows, rs.getRow());
-            assertEquals("abc", rs.getString(5));
-            assertEquals("this", rs.getString(7));
+            assertEquals("abc", rs.getString(4));
+            assertEquals("this", rs.getString(6));
 
-            if ("ghi".equals(rs.getString(6))) numGhi ++;
-            if ("abc".equals(rs.getString(6))) numAbc ++;
+            if ("ghi".equals(rs.getString(5))) numGhi ++;
+            if ("abc".equals(rs.getString(5))) numAbc ++;
         }
         assertEquals(expectedRows, numRows);
         assertEquals(expectedNumAbc, numAbc);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MiscSqlObjectsTest.java,v 1.2 2003-05-28 03:00:35 shahbaz.javeed Exp $
+ * $Id: MiscSqlObjectsTest.java,v 1.3 2003-06-11 02:42:21 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -100,7 +100,7 @@ public class MiscSqlObjectsTest extends TestCase
         assertNull(dbvc.getAccessControlListsManager());
         assertNull(dbvc.getConfigurationsManager());
         assertNull(dbvc.getSqlManager());
-        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.translateDataSourceId(TestUtils.DATASRCID_DEFAULT));
+        assertEquals(this.getClass().getPackage().getName(), dbvc.translateDataSourceId(this.getClass().getPackage().getName()));
 
         DatabasePolicy dbPolicy = new PostgreSqlDatabasePolicy();
         BasicDatabasePolicyValueContext dbpvc = new BasicDatabasePolicyValueContext(dbPolicy);
@@ -161,8 +161,8 @@ public class MiscSqlObjectsTest extends TestCase
 			assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
         assertNotNull(cc);
 
         QueryParameters.ValueRetrieveContext vrc = params.retrieve(cc);
