@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.27 2003-11-07 17:43:08 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.28 2003-11-09 19:30:09 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -552,9 +552,9 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
 
         HttpServletResponse response = (HttpServletResponse) getResponse();
         if(response.isCommitted())
-            skin.renderRedirectHtml(writer, this, redirectToUrl);
+            skin.renderRedirectHtml(writer, this, response.encodeRedirectURL(redirectToUrl));
         else
-            response.sendRedirect(redirectToUrl);
+            sendRedirect(redirectToUrl);
     }
 
     /**
