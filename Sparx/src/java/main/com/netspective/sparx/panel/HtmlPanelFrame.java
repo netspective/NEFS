@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.2 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: HtmlPanelFrame.java,v 1.3 2003-06-30 01:33:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -71,6 +71,7 @@ public class HtmlPanelFrame
         public static final int IS_SELECTABLE = HAS_FOOTING * 2;
         public static final int ALLOW_COLLAPSE = IS_SELECTABLE * 2;
         public static final int IS_COLLAPSED = ALLOW_COLLAPSE * 2;
+        public static final int HIDE_HEADING = IS_COLLAPSED * 2;
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[]
         {
@@ -133,6 +134,24 @@ public class HtmlPanelFrame
     {
         heading = vs;
         flags.updateFlag(Flags.HAS_HEADING, heading != null);
+    }
+
+    /**
+     * Checks to see if the frame heading should be hidden
+     * @return
+     */
+    public boolean hideHeading()
+    {
+        return flags.flagIsSet(Flags.HIDE_HEADING);
+    }
+
+    /**
+     * Set or clear the hide status of the frame heading
+     * @param hide
+     */
+    public void setHideHeading(boolean hide)
+    {
+         flags.updateFlag(Flags.HIDE_HEADING, hide);
     }
 
     public ValueSource getFooting()
