@@ -39,16 +39,28 @@
  */
 
 /**
- * $Id: TableDialogContext.java,v 1.1 2003-07-02 14:02:47 shahid.shah Exp $
+ * $Id: TableDialogContext.java,v 1.2 2003-08-08 00:58:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.axiom.schema.Row;
 
 public class TableDialogContext extends DialogContext
 {
     private static final String SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY = "table-dialog-active-pk-";
+    private Row lastRowManipulated;
+
+    public void setLastRowManipulated(Row row)
+    {
+        lastRowManipulated = row;
+    }
+
+    public Row getLastRowManipulated()
+    {
+        return lastRowManipulated;
+    }
 
     public Object getPrimaryKeyValue()
     {

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.20 2003-08-07 03:43:47 aye.thu Exp $
+ * $Id: DialogContext.java,v 1.21 2003-08-08 00:58:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -326,7 +326,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private DialogPerspectives perspectives = new DialogPerspectives();
     private String[] retainReqParams;
     private boolean redirectDisabled;
-    private Row lastRowManipulated;
     private String initialContextXml;
     private boolean cancelButtonPressed;
 
@@ -484,16 +483,6 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     public DialogValidationContext getValidationContext()
     {
         return validationContext;
-    }
-
-    public void setLastRowManipulated(Row row)
-    {
-        lastRowManipulated = row;
-    }
-
-    public Row getLastRowManipulated()
-    {
-        return lastRowManipulated;
     }
 
     public void persistValues()

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TableDialog.java,v 1.3 2003-07-19 00:41:13 shahid.shah Exp $
+ * $Id: TableDialog.java,v 1.4 2003-08-08 00:58:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.schema;
@@ -260,6 +260,8 @@ public class TableDialog extends Dialog
 
     public void execute(Writer writer, DialogContext dc) throws IOException
     {
+        TableDialogContext tdc = ((TableDialogContext) dc);
+
         ConnectionContext cc = null;
         try
         {
@@ -288,13 +290,13 @@ public class TableDialog extends Dialog
             {
                 case DialogPerspectives.ADD:
                     table.insert(cc, row);
-                    dc.setLastRowManipulated(row);
+                    tdc.setLastRowManipulated(row);
                     break;
 
                 case DialogPerspectives.EDIT:
                     if(getDialogFlags().flagIsSet(TableDialogFlags.ALLOW_INSERT_IF_EDITPK_NOT_FOUND))
                     {
-                        Object pkValue = ((TableDialogContext) dc).getPrimaryKeyValue();
+                        Object pkValue = tdc.getPrimaryKeyValue();
                         if(pkValue == null)
                             table.insert(cc, row);
                         else
@@ -302,12 +304,12 @@ public class TableDialog extends Dialog
                     }
                     else
                         table.update(cc, row);
-                    dc.setLastRowManipulated(row);
+                    tdc.setLastRowManipulated(row);
                     break;
 
                 case DialogPerspectives.DELETE:
                     table.delete(cc, row);
-                    dc.setLastRowManipulated(row);
+                    tdc.setLastRowManipulated(row);
                     break;
             }
 
@@ -320,7 +322,7 @@ public class TableDialog extends Dialog
         }
         finally
         {
-            ((TableDialogContext) dc).removePrimaryKeyValue();
+            tdc.removePrimaryKeyValue();
         }
     }
 }
