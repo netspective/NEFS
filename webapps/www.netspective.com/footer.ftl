@@ -7,5 +7,5 @@
         <td><img alt="" height="17" width="443" src="${resourcesPath}/images/footer/rule-bottom.gif" name="home_48"></td>
     </tr>
 </tbody></table>
-<div class="disclaimer">©1997-2004 Netspective Communications LLC. All rights reserved.</div>
+<div class="disclaimer">©1997-2004 Netspective Communications LLC. All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<a href="http://shahid.shah.org/">Shahid's Perspectives</a>]</div>
 </body></html>
