@@ -71,3 +71,20 @@ standard java extension mechanisms like inheritance or delegation.
 Most web based applications have a need for a basic report writer. Sparx includes a fully functional report writer that
 can take SQL and generate reports with one line of XML or take SQL and pass it on to an XSLT stylesheet for highly
 customizable output. If you need even more advanced functionality you can attach your favorite reporting engine.
+
+<h1>Summary of Sparx Features</h1>
+<ul class="check-list-in-body">
+    <li>Forms and Controls
+    <li>Client-side Validation
+    <li>Server-side Validation
+    <li>Use any template language like JSPs, Velocity, Tea and others.
+    <li>Automatic Form Reload on Error
+    <li>Dialog Data State Machine
+    <li>Complete HTML generation
+    <li>Data Binding to Presentation Layer
+    <li>Reports
+    <li>Navigation and Workflow
+    <li>Wireless, PDA, Browser Support
+    <li>Multiple skins support (with no code changes)
+    <li>Presentation Object Performance Statistics
+</ul>

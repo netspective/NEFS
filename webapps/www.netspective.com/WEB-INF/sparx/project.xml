@@ -141,7 +141,11 @@
                     </page>
                 </page>
 
-                <page name="console" caption="Console" heading="Netspective Enterprise Console (NEC)">
+                <page name="console" caption="Console" heading="An Industry First\: Your Own App Console">
+                    <summary>
+                        You're probably used to app servers having an management console. But, with NEFS your
+                        applications can have their own administration consoles for managing their components.
+                    </summary>
                     <body source="products/frameworks/console/index.ftl"/>
                 </page>
 
