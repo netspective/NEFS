@@ -39,16 +39,16 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.40 2003-10-14 21:23:34 terry.mayfield Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.41 2003-10-16 12:44:49 aye.thu Exp $
  */
 
 package com.netspective.sparx.value;
 
 import java.sql.SQLException;
-import java.io.File;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.Servlet;
@@ -97,6 +97,13 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public static final String REQATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
     public static final String SESSATTRNAME_SHARED_CONN_CONTEXT = "sparx-shared-cc.";
 
+    public static final int SHARED_CONN_TYPE_NONE    = 0;
+    public static final int SHARED_CONN_TYPE_REQUEST = 1;
+    public static final int SHARED_CONN_TYPE_SESSION = 2;
+
+    public static final String[] SHARED_CONN_TYPES =
+            new String[] {"none", "request", "session"};
+
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
     private Servlet servlet;
@@ -141,29 +148,69 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
      */
     public ConnectionContext getConnection(String dataSourceId, boolean transaction) throws NamingException, SQLException
     {
+        return getSharedConnection(dataSourceId, transaction, SHARED_CONN_TYPE_NONE);
+    }
+
+    /**
+     * Override the parent get connection to provide connection contexts that may be stored in HTTP sessions. If they
+     * are stored in HTTP sessions, they will be automatically closed when the session unbinding event occurs. This
+     * method allows connection sharing to take place as well -- if a connection is available in either the session or
+     * the request then it will be "reused" and a new ConnectionContext will not be created.
+     * @param dataSourceId
+     * @param transaction
+     * @param sharedType
+     * @return
+     * @throws NamingException
+     * @throws SQLException
+     */
+    public ConnectionContext getSharedConnection(String dataSourceId, boolean transaction, int sharedType) throws NamingException, SQLException
+    {
         ConnectionContext result = null;
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        result = (ConnectionContext) httpRequest.getSession().getAttribute(SESSATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
-        if(result != null)
+        if (sharedType == SHARED_CONN_TYPE_SESSION)
         {
-            if(log.isTraceEnabled())
-                log.trace("Reusing shared session CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
-            return result;
+            HttpSession session = httpRequest.getSession();
+            result = (ConnectionContext) session.getAttribute(SESSATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
+            if(result != null)
+            {
+                if(log.isTraceEnabled())
+                    log.trace("Reusing shared session CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                return result;
+            }
+            else
+            {
+                if(transaction)
+                    result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
+                else
+                    result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
+                session.setAttribute(SESSATTRNAME_SHARED_CONN_CONTEXT + dataSourceId, result);
+            }
         }
-
-        result = (ConnectionContext) httpRequest.getAttribute(REQATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
-        if(result != null)
+        else if (sharedType == SHARED_CONN_TYPE_REQUEST)
         {
-            if(log.isTraceEnabled())
-                log.trace("Reusing shared request CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
-            return result;
+            result = (ConnectionContext) httpRequest.getAttribute(REQATTRNAME_SHARED_CONN_CONTEXT + dataSourceId);
+            if(result != null)
+            {
+                if(log.isTraceEnabled())
+                    log.trace("Reusing shared request CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                return result;
+            }
+            else
+            {
+                if(transaction)
+                    result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
+                else
+                    result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
+            }
         }
-
-        if(transaction)
-            result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
         else
-            result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
+        {
+            if(transaction)
+                result = new HttpSessionBindableTransactionConnectionContext(dataSourceId, this);
+            else
+                result = new HttpSessionBindableAutoCommitConnectionContext(dataSourceId, this);
+        }
 
         if(log.isTraceEnabled())
             log.trace("Obtained " + result + " for data source '"+ result.getDataSourceId() +"'.");
@@ -268,6 +315,13 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     {
         HttpLoginManager loginManager = getActiveLoginManager();
         return loginManager != null ? loginManager.getAuthenticatedUser(this) : null;
+    }
+
+    public void setAuthenticatedUser(AuthenticatedUser user)
+    {
+        HttpLoginManager loginManager = getActiveLoginManager();
+        if (loginManager != null)
+            loginManager.setAuthenticatedUser(this, user);
     }
 
     public ConfigurationsManager getConfigurationsManager()
