@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: RiskResponseDialog.java,v 1.7 2003-10-14 21:26:02 terry.mayfield Exp $
+ * $Id: RiskResponseDialog.java,v 1.8 2003-10-19 17:07:10 shahid.shah Exp $
  */
 
 package app;
@@ -72,7 +72,9 @@ import auto.dal.db.vo.RiskResponse;
 import auto.dal.db.vo.impl.RiskResponseVO;
 
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.form.DialogsPackage;
 import com.netspective.sparx.navigate.NavigationPage;
+import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
@@ -90,6 +92,16 @@ public class RiskResponseDialog extends com.netspective.sparx.form.Dialog
     public static final String FIELDNAME_LARBUSGROUP_EFFECTIVENESS = ".larger_bus_group.effectiveness";
     public static final String FIELDNAME_ENTERPRISE_SIGNIFICANCE = ".enterprise.significance";
     public static final String FIELDNAME_ENTERPRISE_EFFECTIVENESS = ".enterprise.effectiveness";
+
+    public RiskResponseDialog(Project project)
+    {
+        super(project);
+    }
+
+    public RiskResponseDialog(Project project, DialogsPackage dialogsPackage)
+    {
+        super(project, dialogsPackage);
+    }
 
     public List getRiskIdentifiers(DialogContext dc)
     {

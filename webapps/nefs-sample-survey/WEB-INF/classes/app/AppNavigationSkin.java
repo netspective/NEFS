@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.6 2003-08-31 23:14:20 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.7 2003-10-19 17:07:10 shahid.shah Exp $
  */
 
 package app;
@@ -110,7 +110,7 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
 
         Theme theme = getTheme();
 
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\" type=\"text/css\">\n");
+        writer.write("	<link rel=\"SHORTCUT ICON\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + nc.getRootUrl() + "/resources/navigation.css" + "\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");

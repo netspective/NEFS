@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SubmitDialog.java,v 1.1 2003-08-31 03:15:28 shahid.shah Exp $
+ * $Id: SubmitDialog.java,v 1.2 2003-10-19 17:07:10 shahid.shah Exp $
  */
 
 package app;
@@ -50,9 +50,21 @@ import java.io.IOException;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogExecuteException;
+import com.netspective.sparx.form.DialogsPackage;
+import com.netspective.sparx.Project;
 
 public class SubmitDialog extends Dialog
 {
+    public SubmitDialog(Project project)
+    {
+        super(project);
+    }
+
+    public SubmitDialog(Project project, DialogsPackage dialogsPackage)
+    {
+        super(project, dialogsPackage);
+    }
+
     public void execute(Writer writer, DialogContext dc) throws IOException, DialogExecuteException
     {
         try
