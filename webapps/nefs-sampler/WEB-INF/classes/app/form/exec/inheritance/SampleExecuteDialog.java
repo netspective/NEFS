@@ -4,7 +4,7 @@
  */
 
 /**
- * $Id: SampleExecuteDialog.java,v 1.1 2003-12-11 17:37:49 shahid.shah Exp $
+ * $Id: SampleExecuteDialog.java,v 1.2 2004-03-05 14:50:13 zahara.khan Exp $
  */
 
 package app.form.exec.inheritance;
@@ -50,8 +50,8 @@ public class SampleExecuteDialog extends Dialog
         writer.write("You are running the dialog called <b>"+ dc.getDialog().getName() +"</b> in package <b>"+
                      dc.getDialog().getNameSpace().getNameSpaceId() +"</b>.");
 
-        // because we're handling both forms (sample1a and sample1b we need to check if we're running the second form)
-        if(dc.getDialog().getQualifiedName().equals("inheritance.sample1b"))
+        // because we're handling both forms (exec1a and exec1b we need to check if we're running the second form)
+        if(dc.getDialog().getQualifiedName().equals("form.exec.inheritance.exec1b"))
             writer.write("<p>You are <b>"+ dc.getFieldStates().getState("age").getValue().getIntValue() + "</b> " +
                          "years old.");
 
@@ -60,7 +60,7 @@ public class SampleExecuteDialog extends Dialog
                      "setting the 'class' attribute of the dialog. ");
         writer.write("This method of execution is called <i>Dialog Inheritance</i>. ");
 
-        String relativePath = "/WEB-INF/classes/app/inheritance/SampleExecuteDialog.java";
+        String relativePath = "/WEB-INF/classes/app/form/exec/inheritance/SampleExecuteDialog.java";
         String sourceFileLink = dc.getConsoleFileBrowserLinkShowAlt(
                                    dc.getServlet().getServletConfig().getServletContext().getRealPath(relativePath),
                                    relativePath);
