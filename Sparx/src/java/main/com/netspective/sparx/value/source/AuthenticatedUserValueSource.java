@@ -45,6 +45,8 @@ import com.netspective.commons.value.Value;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSourceDocumentation;
 import com.netspective.commons.value.ValueSourceSpecification;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.ValueSources;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
@@ -67,11 +69,13 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
                                                                                               {
                                                                                                   new ValueSourceDocumentation.Parameter("login-manager", false, "active", "The login manager to use."),
                                                                                                   new ValueSourceDocumentation.Parameter("attribute-name", true, ATTR_TYPE_VALUES, null, "An attribute of the user. If one of the enumerated attributes is not provide, then the AuthenticatedUser.getAttribute([custom]) method will be used."),
+                                                                                                  new ValueSourceDocumentation.Parameter("default-value", false, ATTR_TYPE_VALUES, null, "The default value if the attribute is not found or returns NULL. This is also a value source")
                                                                                               });
 
     private AttributeType attrType = new AttributeType();
     private String loginManagerName;
     private String customAttrName;
+    private ValueSource defaultValue;
 
     public AuthenticatedUserValueSource()
     {
@@ -120,9 +124,11 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
             customAttrName = spec.getParams();
         }
 
+        if(st.hasMoreTokens())
+            defaultValue = ValueSources.getInstance().getValueSourceOrStatic(st.nextToken());
     }
 
-    public Value getAuthenticatedUserAttrValue(AuthenticatedUser authUser)
+    public Value getAuthenticatedUserAttrValue(ValueContext vc, AuthenticatedUser authUser)
     {
         if(authUser == null)
             return new GenericValue("No active user");
@@ -152,15 +158,16 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
                 {
                     try
                     {
-                        return new GenericValue(accessor.get(null, authUser));
+                        final Object value = accessor.get(null, authUser);
+                        return new GenericValue(value != null ? value : (defaultValue != null ? defaultValue.getValue(vc) : null));
                     }
                     catch(Exception e)
                     {
                         log.error(e);
-                        return new GenericValue("Error accessing " + customAttrName);
+                        return defaultValue != null ? defaultValue.getValue(vc) : new GenericValue("Error accessing " + customAttrName);
                     }
                 }
-                return new GenericValue("No accessor for " + customAttrName);
+                return defaultValue != null ? defaultValue.getValue(vc) : new GenericValue("No accessor for " + customAttrName + " in " + authUser.getClass());
 
             default:
                 log.error("Invalid attribute type " + attrType.getValueIndex());
@@ -174,10 +181,10 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
         {
             HttpServletValueContext hsvc = ((HttpServletValueContext) vc);
             HttpLoginManager loginManager = hsvc.getProject().getLoginManagers().getLoginManager(loginManagerName);
-            return getAuthenticatedUserAttrValue(loginManager.getAuthenticatedUser(hsvc));
+            return getAuthenticatedUserAttrValue(vc, loginManager.getAuthenticatedUser(hsvc));
         }
         else
-            return getAuthenticatedUserAttrValue(vc.getAuthenticatedUser());
+            return getAuthenticatedUserAttrValue(vc, vc.getAuthenticatedUser());
     }
 
     public PresentationValue getPresentationValue(ValueContext vc)
