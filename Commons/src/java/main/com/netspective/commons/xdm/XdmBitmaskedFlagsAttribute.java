@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.10 2003-05-16 02:54:33 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.11 2003-05-16 21:21:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -241,12 +241,12 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
     }
 
-    public final long getFlags()
+    public long getFlags()
     {
         return flags;
     }
 
-    public final boolean flagIsSet(long flag)
+    public boolean flagIsSet(long flag)
     {
         return (flags & flag) == 0 ? false : true;
     }
@@ -263,12 +263,12 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         flagsChanged();
     }
 
-    public final void updateFlag(long flag, boolean set)
+    public void updateFlag(long flag, boolean set)
     {
         if(set) setFlag(flag); else clearFlag(flag);
     }
 
-    public final boolean updateFlag(String flagName, boolean set)
+    public boolean updateFlag(String flagName, boolean set)
     {
         FlagDefn flagDefn = (FlagDefn) getFlagDefnsByName().get(flagName);
         if(flagDefn == null)
@@ -280,7 +280,7 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         }
     }
 
-    public final void copy(XdmBitmaskedFlagsAttribute flags)
+    public void copy(XdmBitmaskedFlagsAttribute flags)
     {
         FlagDefn[] flagDefns = flags.getFlagsDefns();
         for(int i = 0; i < flagDefns.length; i++)

@@ -51,7 +51,7 @@
  */
  
 /**
- * $Id: TabularReport.java,v 1.5 2003-04-06 03:57:43 shahid.shah Exp $
+ * $Id: TabularReport.java,v 1.6 2003-05-16 21:21:31 shahid.shah Exp $
  */
 
 package com.netspective.commons.report.tabular;
@@ -93,4 +93,6 @@ public interface TabularReport extends Report
     public String replaceOutputPatterns(TabularReportValueContext rc, TabularReportDataSource ds, String row);
 
     public void makeStateChanges(TabularReportValueContext rc, TabularReportDataSource ds);
+
+    public void finalizeContents();
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultValueContext.java,v 1.8 2003-03-25 17:49:56 shahbaz.javeed Exp $
+ * $Id: DefaultValueContext.java,v 1.9 2003-05-16 21:21:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.value;
@@ -53,23 +53,31 @@ import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.BasicAuthenticatedUser;
 import com.netspective.commons.text.GloballyUniqueIdentifier;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public class DefaultValueContext implements ValueContext
 {
     private static final Log log = LogFactory.getLog(DefaultValueContext.class);
     private static DiscoverClass discoverClass = new DiscoverClass();
-
-    private boolean inConsole;
-    static public final int VCFLAG_HASERROR = 1;
     protected static int contextNum = 0;
+
     private String contextId;
-    private int flags;
-    private long resultCode;
     private long creationTime;
+    private RuntimeEnvironmentFlags environmentFlags = constructEnvironmentFlags();
 
     public DefaultValueContext()
     {
         this.creationTime = System.currentTimeMillis();
+    }
+
+    public RuntimeEnvironmentFlags constructEnvironmentFlags()
+    {
+        return new RuntimeEnvironmentFlags();
+    }
+
+    public RuntimeEnvironmentFlags getEnvironmentFlags()
+    {
+        return environmentFlags;
     }
 
     public long getCreationTime()
@@ -107,55 +115,6 @@ public class DefaultValueContext implements ValueContext
         return null;
     }
 
-    public boolean isInMaintenanceMode()
-    {
-        return false;
-    }
-
-    public void setMaintenanceMode(boolean maintenance)
-    {
-    }
-
-    public boolean isInConsoleMode()
-    {
-        return inConsole;
-    }
-
-    public void setConsoleMode(boolean consoleMode)
-    {
-        this.inConsole = consoleMode;
-    }
-
-    public boolean isAntBuildEnvironment()
-    {
-        return false;
-    }
-
-    public boolean isDemonstrationEnvironment()
-    {
-        return false;
-    }
-
-    public boolean isDevelopmentEnvironment()
-    {
-        return false;
-    }
-
-    public boolean isTrainingEnvironment()
-    {
-        return false;
-    }
-
-    public boolean isProductionEnvironment()
-    {
-        return false;
-    }
-
-    public boolean isTestEnvironment()
-    {
-        return false;
-    }
-
     public void removeAttribute(String attributeId)
     {
     }
@@ -189,40 +148,5 @@ public class DefaultValueContext implements ValueContext
         }
 
         return contextId;
-    }
-
-    public final int getFlags()
-    {
-        return flags;
-    }
-
-    public final boolean flagIsSet(int flag)
-    {
-        return (flags & flag) == 0 ? false : true;
-    }
-
-    public final void setFlag(int flag)
-    {
-        flags |= flag;
-    }
-
-    public final void clearFlag(int flag)
-    {
-        flags &= ~flag;
-    }
-
-    public final boolean hasError()
-    {
-        return (flags & VCFLAG_HASERROR) != 0 ? true : false;
-    }
-
-    public long getResultCode()
-    {
-        return resultCode;
-    }
-
-    public void setResultCode(long value)
-    {
-        resultCode = value;
     }
 }

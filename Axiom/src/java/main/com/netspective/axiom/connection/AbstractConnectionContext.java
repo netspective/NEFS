@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.7 2003-05-16 20:32:56 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.8 2003-05-16 21:20:15 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -60,6 +60,7 @@ import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.security.AuthenticatedUser;
+import com.netspective.commons.RuntimeEnvironmentFlags;
 
 public abstract class AbstractConnectionContext implements ConnectionContext
 {
@@ -189,54 +190,9 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         return dbvc.getContextLocation();
     }
 
-    public boolean isInMaintenanceMode()
+    public RuntimeEnvironmentFlags getEnvironmentFlags()
     {
-        return dbvc.isInMaintenanceMode();
-    }
-
-    public void setMaintenanceMode(boolean maintenance)
-    {
-        dbvc.setMaintenanceMode(maintenance);
-    }
-
-    public boolean isInConsoleMode()
-    {
-        return dbvc.isInConsoleMode();
-    }
-
-    public void setConsoleMode(boolean consoleMode)
-    {
-        dbvc.setConsoleMode(consoleMode);
-    }
-
-    public boolean isAntBuildEnvironment()
-    {
-        return dbvc.isAntBuildEnvironment();
-    }
-
-    public boolean isDemonstrationEnvironment()
-    {
-        return dbvc.isDemonstrationEnvironment();
-    }
-
-    public boolean isDevelopmentEnvironment()
-    {
-        return dbvc.isDevelopmentEnvironment();
-    }
-
-    public boolean isTrainingEnvironment()
-    {
-        return dbvc.isTrainingEnvironment();
-    }
-
-    public boolean isProductionEnvironment()
-    {
-        return dbvc.isProductionEnvironment();
-    }
-
-    public boolean isTestEnvironment()
-    {
-        return dbvc.isTestEnvironment();
+        return dbvc.getEnvironmentFlags();
     }
 
     public void removeAttribute(String attributeId)

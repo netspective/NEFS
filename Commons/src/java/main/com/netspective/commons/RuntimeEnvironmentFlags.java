@@ -39,12 +39,54 @@
  */
 
 /**
- * $Id: RuntimeEnvironment.java,v 1.4 2003-05-16 21:21:31 shahid.shah Exp $
+ * $Id: RuntimeEnvironmentFlags.java,v 1.1 2003-05-16 21:21:31 shahid.shah Exp $
  */
 
 package com.netspective.commons;
 
-public interface RuntimeEnvironment
+import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.sparx.form.DialogFlags;
+
+public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
 {
-    public RuntimeEnvironmentFlags getEnvironmentFlags();
+    public static final int ANT_BUILD = 1;
+    public static final int DEVELOPMENT = ANT_BUILD * 2;
+    public static final int TESTING = DEVELOPMENT * 2;
+    public static final int TRAINING = TESTING * 2;
+    public static final int PRODUCTION = TRAINING * 2;
+    public static final int DEMONSTRATION = PRODUCTION * 2;
+
+    /**
+     * Checks whether the current runtime environment, based on the given value source, is under maintenance.
+     * Maintenance mode is usually reserved for only production environments.
+     */
+    public static final int UNDERGOING_MAINTENANCE = DEMONSTRATION * 2;
+
+    /**
+     * Checks whether the current runtime environment, based on the given value source, is running in the
+     * Netspective Enterprise Console.
+     */
+    public static final int CONSOLE_MODE = UNDERGOING_MAINTENANCE * 2;
+
+    public static final FlagDefn[] FLAG_DEFNS = new FlagDefn[]
+    {
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "ANT_BUILD", ANT_BUILD),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "DEVELOPMENT", DEVELOPMENT),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "TESTING", TESTING),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "TRAINING", TRAINING),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "PRODUCTION", PRODUCTION),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "DEMONSTRATION", DEMONSTRATION),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "UNDERGOING_MAINTENANCE", UNDERGOING_MAINTENANCE),
+        new FlagDefn(RuntimeEnvironmentFlags.ACCESS_XDM, "CONSOLE_MODE", CONSOLE_MODE),
+    };
+
+    public RuntimeEnvironmentFlags()
+    {
+    }
+
+    public FlagDefn[] getFlagsDefns()
+    {
+        return FLAG_DEFNS;
+    }
 }
+
