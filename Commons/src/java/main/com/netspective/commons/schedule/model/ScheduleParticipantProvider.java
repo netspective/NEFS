@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: ScheduleParticipantProvider.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleParticipantProvider.java,v 1.4 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.List;
 
-public interface ScheduleParticipantProvider
+public interface ScheduleParticipantProvider extends ScheduleElementProvider
 {
     public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, List identifiers);
     public ScheduleParticipants getScheduleParticipants(ScheduleManager scheduleManager, Object[] identifiers);

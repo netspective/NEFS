@@ -39,14 +39,13 @@
  */
 
 /**
- * $Id: ScheduleTemplate.java,v 1.5 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleTemplate.java,v 1.6 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.Date;
 
-import com.netspective.commons.set.DateRangesSet;
 import com.netspective.commons.set.IntSpan;
 
 public interface ScheduleTemplate
@@ -70,6 +69,14 @@ public interface ScheduleTemplate
     public ScheduleParticipants getTemplateOwners();
 
     /**
+     * Retrieve the list of participants that are also related to this template (may be required or optional, and this
+     * list may include the template owners)
+     * @param includeOwners Set to true if the owners should be included in the list
+     * @return The participants that make up the template
+     */
+    public ScheduleParticipants getParticipants(boolean includeOwners);
+
+    /**
      * Is this time block Available or Unavailable for scheduling events?
      * @return True if events may be scheduled in the time block or false events should not be scheduled in this block
      */
@@ -79,13 +86,25 @@ public interface ScheduleTemplate
      * Ascertain the starting applicability date for this template
      * @return The date on or after which events should be allowed to use this template
      */
-    public Date getBeginDate();
+    public Date getEffectiveBeginDate();
 
     /**
      * Ascertain the ending applicability date for this template
      * @return The date on before which events should be allowed to use this template
      */
-    public Date getEndDate();
+    public Date getEffectiveEndDate();
+
+    /**
+     * Ascertain the starting time for the templates slots
+     * @return A date object whose time portion indicates the starting time (date portion should be ignored)
+     */
+    public Date getStartTime();
+
+    /**
+     * Ascertain the ending applicability date for this template
+     * @return A date object whose time portion indicates the end time (date portion should be ignored)
+     */
+    public Date getEndTime();
 
     /**
      * Get the participant types that this schedule template applies to
@@ -98,6 +117,13 @@ public interface ScheduleTemplate
      * @return The list of events that may be applied to this template
      */
     public ScheduleEventTypes getEventTypes();
+
+    /**
+     * Retrieve the actual years that this template is applicable
+     * @return A IntSpan integer set with the year numbers that this template is applicable. The year values corresponds
+     *         to Calendar.set(Calendar.YEAR).
+     */
+    public IntSpan getYears();
 
     /**
      * Retrieve the months of the year that this template is applicable
@@ -127,8 +153,12 @@ public interface ScheduleTemplate
     public int getSlotWidth();
 
     /**
-     * Retrieve all the template slots associated with this template
-     * @return A list of template slots calculated for the given date range
+     * Retrieve all the template slots associated with this template. This method will start with the beginDate and
+     * go through the endDate to find all applicable dates for which this template may be applicable and create an
+     * appropriate set of schedule templates slots for the start/end times for the given date range.
+     * @return A list of template slots calculated for the begin/end dates of this template
+     * @param beginDate
+     * @param endDate
      */
-    public ScheduleTemplateSlots getScheduleTemplateSlots(DateRangesSet dateRanges);
+    public ScheduleTemplateSlots getScheduleTemplateSlots(Date beginDate, Date endDate);
 }

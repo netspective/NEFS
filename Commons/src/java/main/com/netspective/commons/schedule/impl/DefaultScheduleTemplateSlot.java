@@ -39,42 +39,34 @@
  */
 
 /**
- * $Id: MockScheduleEvents.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: DefaultScheduleTemplateSlot.java,v 1.1 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.mock;
+package com.netspective.commons.schedule.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-import com.netspective.commons.schedule.model.ScheduleEvent;
-import com.netspective.commons.schedule.model.ScheduleEvents;
+import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleTemplate;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
 
-public class MockScheduleEvents implements ScheduleEvents
+public class DefaultScheduleTemplateSlot extends AbstractScheduleSlot implements ScheduleTemplateSlot
 {
-    private List eventsList = new ArrayList();
+    private ScheduleTemplate scheduleTemplate;
 
-    public MockScheduleEvents()
+    public DefaultScheduleTemplateSlot(ScheduleManager scheduleManager, ScheduleTemplate scheduleTemplate, Date beginDate, Date endDate)
     {
+        super(scheduleManager, beginDate, endDate);
+        this.scheduleTemplate = scheduleTemplate;
     }
 
-    public MockScheduleEvents(List events)
+    public ScheduleTemplate getScheduleTemplate()
     {
-        this.eventsList = events;
-    }
-
-    public List getEventsList()
-    {
-        return eventsList;
-    }
-
-    public ScheduleEvent[] getScheduleEvents()
-    {
-        return (ScheduleEvent[]) eventsList.toArray(new ScheduleEvent[eventsList.size()]);
+        return scheduleTemplate;
     }
 
     public String toString()
     {
-        return eventsList.toString();
+        return super.toString() + ", templateId = " + scheduleTemplate.getTemplateIdentifier() + ", available = " + scheduleTemplate.isAvailable();
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleManagerTest.java,v 1.2 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: ScheduleManagerTest.java,v 1.3 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -47,23 +47,20 @@ package com.netspective.commons.schedule;
 import java.util.Date;
 
 import com.netspective.commons.schedule.model.ScheduleEvents;
-import com.netspective.commons.schedule.model.ScheduleFactory;
-import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlots;
+import com.netspective.commons.schedule.model.ScheduleTemplates;
 
 public class ScheduleManagerTest extends ScheduleTestCase
 {
     public void testScheduleEvents()
     {
-        ScheduleManager sm = ScheduleFactory.getInstance().createScheduleManager();
-        assertNotNull(sm);
+        Date beginDate = calendarUtils.createDate(0, 1, 2004);
+        Date endDate = calendarUtils.createDate(0, 1, 2004);
 
-        Date beginDate = createDate(0, 1, 2004);
-        Date endDate = createDate(0, 1, 2004);
+        int beginDay = calendarUtils.getJulianDay(beginDate);
+        int endDay = calendarUtils.getJulianDay(endDate);
 
-        int beginDay = calendarUtils.getJulianDay(calendar, beginDate);
-        int endDay = calendarUtils.getJulianDay(calendar, endDate);
-
-        ScheduleEvents scheduleEvents = eventProvider.getScheduledEvents(sm, beginDate, endDate);
+        ScheduleEvents scheduleEvents = eventProvider.getScheduledEvents(scheduleManager, beginDate, endDate);
         System.out.println(scheduleEvents);
 /*
         assertEquals()
@@ -80,5 +77,20 @@ public class ScheduleManagerTest extends ScheduleTestCase
             }
         }
 */
+    }
+
+    public void testScheduleTemplateSlots()
+    {
+        Date effBeginDate = calendarUtils.createDate(0, 1, 2004);
+        Date effEndDate = calendarUtils.createDate(11, 31, 2004);
+
+        ScheduleTemplates scheduleTemplates = templateProvider.getScheduleTemplates(scheduleManager, effBeginDate, effEndDate, null);
+        System.out.println(scheduleTemplates);
+
+        Date slotsBeginDate = calendarUtils.createDate(0, 1, 2004);
+        Date slotsEndDate = calendarUtils.createDate(0, 3, 2004);
+
+        ScheduleTemplateSlots slots = scheduleTemplates.getScheduleTemplateSlots(slotsBeginDate, slotsEndDate);
+        System.out.println(slots);
     }
 }

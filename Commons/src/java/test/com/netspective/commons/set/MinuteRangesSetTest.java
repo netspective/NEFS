@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: MinuteRangesSetTest.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: MinuteRangesSetTest.java,v 1.2 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -54,7 +54,7 @@ import junit.framework.TestCase;
 public class MinuteRangesSetTest extends TestCase
 {
     protected Calendar calendar = Calendar.getInstance();
-    protected CalendarUtils calendarUtils = CalendarUtils.getInstance();
+    protected CalendarUtils calendarUtils = new CalendarUtils(calendar);
 
     public Date createDate(int month, int day, int year, int hour, int minute)
     {
@@ -68,7 +68,7 @@ public class MinuteRangesSetTest extends TestCase
         Date endDate = createDate(0, 1, 2004, 10, 00);
 
         MinuteRangesSet minutesSet = new MinuteRangesSet();
-        minutesSet.applyDateRange(calendar,  calendarUtils, beginDate, endDate);
+        minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
 
         assertFalse(minutesSet.isMultipleDays());
         assertEquals("09:30-10:00", minutesSet.toString());
@@ -80,7 +80,7 @@ public class MinuteRangesSetTest extends TestCase
         Date endDate = createDate(0, 3, 2004, 8, 30);
 
         MinuteRangesSet minutesSet = new MinuteRangesSet();
-        minutesSet.applyDateRange(calendar,  calendarUtils, beginDate, endDate);
+        minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
 
         assertTrue(minutesSet.isMultipleDays());
         assertEquals("0d 11:00-2d 08:30", minutesSet.toString());

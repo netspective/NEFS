@@ -39,21 +39,21 @@
  */
 
 /**
- * $Id: MinuteRangesSet.java,v 1.1 2004-03-27 15:45:08 shahid.shah Exp $
+ * $Id: MinuteRangesSet.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.Date;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
+import com.netspective.commons.schedule.CalendarUtils;
 import com.netspective.commons.set.IntSpan.ElementFormatter;
 import com.netspective.commons.set.IntSpan.IntSpanIterator;
 import com.netspective.commons.set.IntSpan.Mappable;
 import com.netspective.commons.set.IntSpan.Testable;
-import com.netspective.commons.schedule.CalendarUtils;
 
 /**
  * A type-safe wrapper of the IntSpan object designed to manage minutes of a day treated as an integer set.
@@ -81,25 +81,12 @@ public class MinuteRangesSet implements Set
         return multipleDays;
     }
 
-    public void applyDateRange(Date beginDate, Date endDate)
-    {
-        applyDateRange(Calendar.getInstance(), CalendarUtils.getInstance(), beginDate, endDate);
-    }
-
-    public void applyDateRange(Calendar calendar, Date beginDate, Date endDate)
-    {
-        applyDateRange(calendar, CalendarUtils.getInstance(), beginDate, endDate);
-    }
-
     public void applyDateRange(CalendarUtils calendarUtils, Date beginDate, Date endDate)
     {
-        applyDateRange(Calendar.getInstance(), calendarUtils, beginDate, endDate);
-    }
+        Calendar calendar = calendarUtils.getCalendar();
 
-    public void applyDateRange(Calendar calendar, CalendarUtils calendarUtils, Date beginDate, Date endDate)
-    {
-        int beginDay = calendarUtils.getJulianDay(calendar, beginDate);
-        int endDay = calendarUtils.getJulianDay(calendar, endDate);
+        int beginDay = calendarUtils.getJulianDay(beginDate);
+        int endDay = calendarUtils.getJulianDay(endDate);
 
         calendar.setTime(beginDate);
         int beginHours = calendar.get(Calendar.HOUR_OF_DAY);
@@ -249,12 +236,22 @@ public class MinuteRangesSet implements Set
         minutesSet.remove(n);
     }
 
-    public Integer getMin()
+    public Integer getMinInteger()
+    {
+        return minutesSet.getMinInteger();
+    }
+
+    public Integer getMaxInteger()
+    {
+        return minutesSet.getMaxInteger();
+    }
+
+    public int getMin()
     {
         return minutesSet.getMin();
     }
 
-    public Integer getMax()
+    public int getMax()
     {
         return minutesSet.getMax();
     }

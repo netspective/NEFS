@@ -39,16 +39,13 @@
  */
 
 /**
- * $Id: ScheduleParticipants.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleParticipants.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import java.util.BitSet;
-
 public interface ScheduleParticipants
 {
     public ScheduleParticipant[] getScheduleParticipants();
-    public BitSet getRequiredScheduleParticipants();
-    public ScheduleParticipantTypes getScheduleParticipantTypes();
+    public boolean isRequired(ScheduleParticipant participant);
 }

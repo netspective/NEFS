@@ -39,20 +39,20 @@
  */
 
 /**
- * $Id: ScheduleManager.java,v 1.4 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleManager.java,v 1.5 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-import java.util.Date;
+import com.netspective.commons.schedule.CalendarUtils;
 
 public interface ScheduleManager
 {
+    public CalendarUtils getCalendarUtils();
+
     public ScheduleParticipantProvider getScheduleParticipantProvider();
     public ScheduleEventProvider getScheduleEventProvider();
     public ScheduleTemplateProvider getScheduleTemplateProvider();
 
     public ScheduleSearchResults searchSchedule(ScheduleSearchParameters parameters);
-
-    public ScheduleTemplateSlot createTemplateSlot(ScheduleTemplate template, Date beginDate, Date endDate, boolean available);
 }

@@ -39,12 +39,26 @@
  */
 
 /**
- * $Id: ScheduleTemplates.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleTemplates.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
+import java.util.Collection;
+import java.util.Date;
+
 public interface ScheduleTemplates
 {
+    public Collection getScheduleTemplatesCollection();
     public ScheduleTemplate[] getScheduleTemplates();
+
+    /**
+     * Retrieve all the template slots associated with all templates in this list. This method will start with the
+     * beginDate and go through the endDate to find all applicable dates for which this template may be applicable and
+     * create an appropriate set of schedule templates slots for the start/end times for the given date range.
+     * @param beginDate
+     * @param endDate
+     * @return A list of template slots calculated for the begin/end dates of this template
+     */
+    public ScheduleTemplateSlots getScheduleTemplateSlots(Date beginDate, Date endDate);
 }

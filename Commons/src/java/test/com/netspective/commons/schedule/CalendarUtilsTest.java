@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CalendarUtilsTest.java,v 1.3 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: CalendarUtilsTest.java,v 1.4 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
@@ -68,10 +68,10 @@ public class CalendarUtilsTest extends ScheduleTestCase
             Date randomDate = calendar.getTime();
 
             // first calculate the julian day
-            int randomJulianDay = calendarUtils.getJulianDay(calendar, randomDate);
+            int randomJulianDay = calendarUtils.getJulianDay(randomDate);
 
             // now try to reverse the procedure
-            Date julianDate = calendarUtils.getDateFromJulianDay(randomJulianDay, calendar);
+            Date julianDate = calendarUtils.getDateFromJulianDay(randomJulianDay);
             calendar.setTime(julianDate);
 
             assertEquals(randomYear, calendar.get(Calendar.YEAR));

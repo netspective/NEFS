@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: ScheduleEventProvider.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleEventProvider.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.Date;
 
-public interface ScheduleEventProvider
+public interface ScheduleEventProvider extends ScheduleElementProvider
 {
     public ScheduleEvents getScheduledEvents(ScheduleManager scheduleManager, Date beginDate, Date endDate);
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleEventType.java,v 1.2 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleEventType.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -63,6 +63,12 @@ public interface ScheduleEventType
      * @return the required and optional participants of the event
      */
     public ScheduleParticipants getParticipants();
+
+    /**
+     * Get the participants types applicable to this event type
+     * @return the required and optional participant types of the event
+     */
+    public ScheduleParticipantTypes getParticipantsTypes();
 
     /**
      * Retrieve the number of minutes this event should consume in the schedule

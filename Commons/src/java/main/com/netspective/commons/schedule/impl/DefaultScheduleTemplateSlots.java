@@ -39,72 +39,73 @@
  */
 
 /**
- * $Id: MockScheduleEventProvider.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: DefaultScheduleTemplateSlots.java,v 1.1 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.mock;
+package com.netspective.commons.schedule.impl;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import com.netspective.commons.schedule.CalendarUtils;
-import com.netspective.commons.schedule.model.ScheduleEvent;
-import com.netspective.commons.schedule.model.ScheduleEventProvider;
-import com.netspective.commons.schedule.model.ScheduleEvents;
-import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleSlot;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlots;
 
-public class MockScheduleEventProvider implements ScheduleEventProvider
+public class DefaultScheduleTemplateSlots implements ScheduleTemplateSlots
 {
-    public static final int[][] MOCK_EVENT_HOURS = new int[][]
+    private List templateSlotsList = new ArrayList();
+
+    public DefaultScheduleTemplateSlots()
     {
-        {  9,  0,  9, 30 }, // 09:00 to 09:30 AM
-        { 10, 15, 11, 00 }, // 10:15 to 11:00 AM
-        { 13, 30, 14, 30 }, // 01:30 to 02:30 PM
-        { 14, 30, 14, 45 }, // 02:30 to 02:45 PM
-        { 15, 15, 16, 00 }  // 03:15 to 04:00 PM
-    };
-    
-    public ScheduleEvent createMockEvent(ScheduleManager scheduleManager, Date date, int beginHour, int beginMinute, int endHour, int endMinute)
-    {
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, beginHour);
-        calendar.set(Calendar.MINUTE, beginMinute);
-        calendar.set(Calendar.SECOND, 0);
-        Date eventBegin = calendar.getTime();
-
-        calendar.set(Calendar.HOUR_OF_DAY, endHour);
-        calendar.set(Calendar.MINUTE, endMinute);
-        calendar.set(Calendar.SECOND, 0);
-        Date eventEnd = calendar.getTime();
-
-        return new MockScheduleEvent(scheduleManager, eventBegin, eventEnd);
     }
 
-    public ScheduleEvents getScheduledEvents(ScheduleManager scheduleManager, Date beginDate, Date endDate)
+    protected DefaultScheduleTemplateSlots(List templateSlotsList)
     {
-        MockScheduleEvents result = new MockScheduleEvents();
-        List eventsList = result.getEventsList();
+        this.templateSlotsList = templateSlotsList;
+    }
 
-        Calendar calendar = Calendar.getInstance();
-        CalendarUtils calendarUtils = CalendarUtils.getInstance();
+    public Collection getScheduleTemplateSlotsCollection()
+    {
+        return templateSlotsList;
+    }
 
-        int beginDay = calendarUtils.getJulianDay(calendar, beginDate);
-        int endDay = calendarUtils.getJulianDay(calendar, endDate);
+   public void addTemplateSlot(ScheduleTemplateSlot slot)
+    {
+        templateSlotsList.add(slot);
+    }
 
-        for(int day = beginDay; day <= endDay; day++)
+    public void addTemplateSlots(ScheduleTemplateSlots slots)
+    {
+        templateSlotsList.addAll(slots.getScheduleTemplateSlotsCollection());
+    }
+
+    public ScheduleTemplateSlot[] getScheduleTemplateSlots()
+    {
+        return (ScheduleTemplateSlot[]) templateSlotsList.toArray(new ScheduleSlot[templateSlotsList.size()]);
+    }
+
+    public ScheduleSlot[] getScheduleSlots()
+    {
+        return getScheduleTemplateSlots();
+    }
+
+    public String getFormattedList(String delim, String indent)
+    {
+        StringBuffer sb = new StringBuffer();
+
+        for(int i = 0; i < templateSlotsList.size(); i++)
         {
-            Date julianDate = calendarUtils.getDateFromJulianDay(day, calendar);
-
-            for(int i = 0; i < MOCK_EVENT_HOURS.length; i++)
-            {
-                int[] hm = MOCK_EVENT_HOURS[i];
-                eventsList.add(createMockEvent(scheduleManager, julianDate,  hm[0],  hm[1],  hm[2], hm[3]));
-            }
+            if(i > 0) sb.append(delim);
+            sb.append(indent);
+            sb.append(templateSlotsList.get(i).toString());
         }
 
-        return result;
+        return sb.toString();
+    }
+
+    public String toString()
+    {
+        return getClass().getName() + " ("+ templateSlotsList.size() +")\n" + getFormattedList("\n", "  ");
     }
 }

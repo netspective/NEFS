@@ -39,70 +39,96 @@
  */
 
 /**
- * $Id: CalendarUtils.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
+ * $Id: CalendarUtils.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.apache.commons.discovery.tools.DiscoverClass;
 
 public class CalendarUtils
 {
     private static int JGREG = 2299161; //Julian day of adoption of Gregorian cal.
-    private static final DiscoverClass DISCOVER_CLASS = new DiscoverClass();
-    private static final CalendarUtils INSTANCE;
+    private Calendar calendar;
+    private SimpleDateFormat dateTimeFormat = new SimpleDateFormat("MM/dd/yyyy H:mm:ss");
+    private SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private SimpleDateFormat timeOnlyFormat = new SimpleDateFormat("H:mm:ss");
 
-    static
+    public CalendarUtils(Calendar calendar)
     {
-        CalendarUtils instance;
-        try
-        {
-            instance = (CalendarUtils) DISCOVER_CLASS.newInstance(CalendarUtils.class);
-        }
-        catch (Exception e)
-        {
-            instance = new CalendarUtils();
-        }
-        INSTANCE = instance;
+        this.calendar = calendar;
     }
 
-    public static CalendarUtils getInstance()
+    public Calendar getCalendar()
     {
-        return INSTANCE;
+        return calendar;
     }
 
-    private CalendarUtils()
+    public Date createDate(int month, int day, int year)
     {
+        calendar.set(year, month, day);
+        return calendar.getTime();
+    }
+
+    public Date createDate(int month, int day, int year, int hours, int minutes)
+    {
+        calendar.set(year, month, day, hours, minutes, 0);
+        return calendar.getTime();
+    }
+
+    public Date createDate(int month, int day, int year, int hours, int minutes, int seconds)
+    {
+        calendar.set(year, month, day, hours, minutes, seconds);
+        return calendar.getTime();
+    }
+
+    public Date createDate(Date date, int hours, int minutes)
+    {
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    public Date createDate(Date date, int hours, int minutes, int seconds)
+    {
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    public String formatDateTime(Date date)
+    {
+        return dateTimeFormat.format(date);
+    }
+
+    public String formatDateOnly(Date date)
+    {
+        return dateOnlyFormat.format(date);
+    }
+
+    public String formatTimeOnly(Date date)
+    {
+        return timeOnlyFormat.format(date);
     }
 
     public int getJulianDay(long dateMillis)
-    {
-        return getJulianDay(Calendar.getInstance(), dateMillis);
-    }
-
-    public int getJulianDay(Date date)
-    {
-        return getJulianDay(Calendar.getInstance(), date);
-    }
-
-    public int getJulianDay(Calendar calendar, long dateMillis)
     {
         calendar.setTimeInMillis(dateMillis);
         return getJulianDay(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR));
     }
 
-    public int getJulianDay(Calendar calendar, Date date)
+    public int getJulianDay(Date date)
     {
         calendar.setTime(date);
         return getJulianDay(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR));
-    }
-
-    public Date getDateFromJulianDay(int julianDay)
-    {
-        return getDateFromJulianDay(julianDay, Calendar.getInstance());
     }
 
     /**
@@ -151,7 +177,7 @@ public class CalendarUtils
      * This algorithm is from Press et al., Numerical Recipes
      * in C, 2nd ed., Cambridge University Press 1992
      */
-    public Date getDateFromJulianDay(int julianDay, Calendar calendar)
+    public Date getDateFromJulianDay(int julianDay, int hour, int minute, int second)
     {
         int year, month, day;
         int ja = julianDay;
@@ -177,7 +203,13 @@ public class CalendarUtils
         if (month > 2) --year;
         if (year <= 0) --year;
 
-        calendar.set(year, month - 1, day);
+        calendar.set(year, month - 1, day, hour, minute, second);
         return calendar.getTime();
     }
+
+    public Date getDateFromJulianDay(int julianDay)
+    {
+        return getDateFromJulianDay(julianDay, 12, 0, 0);
+    }
+
 }

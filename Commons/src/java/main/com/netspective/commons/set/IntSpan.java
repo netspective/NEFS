@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntSpan.java,v 1.4 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: IntSpan.java,v 1.5 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -580,15 +580,26 @@ public class IntSpan implements Cloneable, Set
         }
     }
 
-    public Integer getMin()
+    public Integer getMinInteger()
     {
         return isEmpty() || negInf ? null : new Integer(edges.getI((0)) + 1);
     }
 
-    public Integer getMax()
+    public Integer getMaxInteger()
     {
         int i = edges.size() - 1;
         return isEmpty() || posInf ? null : new Integer(edges.getI(i));
+    }
+
+    public int getMin()
+    {
+        return isEmpty() || negInf ? Integer.MIN_VALUE : edges.getI((0)) + 1;
+    }
+
+    public int getMax()
+    {
+        int i = edges.size() - 1;
+        return isEmpty() || posInf ? Integer.MAX_VALUE : edges.getI(i);
     }
 
     public static interface Testable
@@ -646,7 +657,7 @@ public class IntSpan implements Cloneable, Set
         if (negInf)
             throw new java.util.NoSuchElementException("Set.IntSpan.first");
 
-        return constructIterator(isEmpty(), getMin());
+        return constructIterator(isEmpty(), getMinInteger());
     }
 
     public IntSpanIterator last()
@@ -654,7 +665,7 @@ public class IntSpan implements Cloneable, Set
         if (posInf)
             throw new java.util.NoSuchElementException("Set.IntSpan.last");
 
-        return constructIterator(isEmpty(), getMax());
+        return constructIterator(isEmpty(), getMaxInteger());
     }
 
     public IntSpanIterator start(int n)

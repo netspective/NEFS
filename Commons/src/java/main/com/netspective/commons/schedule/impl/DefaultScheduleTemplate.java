@@ -40,41 +40,64 @@
 
 package com.netspective.commons.schedule.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.schedule.model.ScheduleTemplate;
-import com.netspective.commons.schedule.model.ScheduleManager;
-import com.netspective.commons.schedule.model.ScheduleParticipants;
-import com.netspective.commons.schedule.model.ScheduleParticipantTypes;
+import com.netspective.commons.schedule.CalendarUtils;
 import com.netspective.commons.schedule.model.ScheduleEventTypes;
+import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleParticipantTypes;
+import com.netspective.commons.schedule.model.ScheduleParticipants;
+import com.netspective.commons.schedule.model.ScheduleTemplate;
 import com.netspective.commons.schedule.model.ScheduleTemplateSlots;
-import com.netspective.commons.set.IntSpan;
 import com.netspective.commons.set.DateRangesSet;
+import com.netspective.commons.set.IntSpan;
 
 public class DefaultScheduleTemplate implements ScheduleTemplate
 {
     private Object templateIdentifier;
     private ScheduleManager scheduleManager;
-    private ScheduleParticipants templateOwners, scheduleParticipants;
+    private ScheduleParticipants templateOwners, templateParticipants;
     private boolean available;
-    private Date beginDate, endDate;
+    private Date effectiveBeginDate, effectiveEndDate;
+    private Date startTime, endTime;
     private ScheduleParticipantTypes participantTypes;
     private ScheduleEventTypes eventTypes;
-    private IntSpan monthsOfTheYear, daysOfTheMonth, daysOfTheWeek;
+    private IntSpan years, monthsOfTheYear, daysOfTheMonth, daysOfTheWeek;
+    private DateRangesSet applicableDateRangesSet;
     private int slotWidth;
 
     public DefaultScheduleTemplate(Object templateIdentifier, 
                                    ScheduleManager scheduleManager, 
-                                   ScheduleParticipants templateOwners, 
+                                   ScheduleParticipants templateOwners,
+                                   ScheduleParticipants templateParticipants,
+                                   ScheduleParticipantTypes participantTypes,
+                                   ScheduleEventTypes eventTypes,
                                    boolean available,
-                                   Date beginDate, Date endDate)
+                                   Date effectiveBeginDate, Date effectiveEndDate,
+                                   Date startTime, Date endTime,
+                                   IntSpan years, IntSpan monthsOfTheYear, IntSpan daysOfTheMonth, IntSpan daysOfTheWeek)
     {
-        this.templateIdentifier = templateIdentifier;
+        this.templateIdentifier = templateIdentifier == null ? new Integer(hashCode()) : templateIdentifier;
         this.scheduleManager = scheduleManager;
         this.templateOwners = templateOwners;
+        this.templateParticipants = templateParticipants;
+        this.participantTypes = participantTypes;
+        this.eventTypes = eventTypes;
         this.available = available;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
+        this.effectiveBeginDate = effectiveBeginDate;
+        this.effectiveEndDate = effectiveEndDate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.years = years;
+        this.monthsOfTheYear = monthsOfTheYear;
+        this.daysOfTheMonth = daysOfTheMonth;
+        this.daysOfTheWeek = daysOfTheWeek;
+        this.applicableDateRangesSet =
+                new DateRangesSet(scheduleManager.getCalendarUtils(),
+                                  effectiveBeginDate, effectiveEndDate, years, monthsOfTheYear, daysOfTheMonth,
+                                  daysOfTheWeek);
+
     }
 
     public Object getTemplateIdentifier()
@@ -97,24 +120,19 @@ public class DefaultScheduleTemplate implements ScheduleTemplate
         return available;
     }
 
-    public ScheduleParticipants getScheduleParticipants()
+    public ScheduleParticipants getParticipants(boolean includeOwners)
     {
-        return scheduleParticipants;
+        return templateParticipants;
     }
 
-    public void setScheduleParticipants(ScheduleParticipants scheduleParticipants)
+    public Date getEffectiveBeginDate()
     {
-        this.scheduleParticipants = scheduleParticipants;
+        return effectiveBeginDate;
     }
 
-    public Date getBeginDate()
+    public Date getEffectiveEndDate()
     {
-        return beginDate;
-    }
-
-    public Date getEndDate()
-    {
-        return endDate;
+        return effectiveEndDate;
     }
 
     public ScheduleParticipantTypes getParticipantTypes()
@@ -122,9 +140,14 @@ public class DefaultScheduleTemplate implements ScheduleTemplate
         return participantTypes;
     }
 
-    public void setParticipantTypes(ScheduleParticipantTypes participantTypes)
+    public Date getStartTime()
     {
-        this.participantTypes = participantTypes;
+        return startTime;
+    }
+
+    public Date getEndTime()
+    {
+        return endTime;
     }
 
     public ScheduleEventTypes getEventTypes()
@@ -132,9 +155,9 @@ public class DefaultScheduleTemplate implements ScheduleTemplate
         return eventTypes;
     }
 
-    public void setEventTypes(ScheduleEventTypes eventTypes)
+    public IntSpan getYears()
     {
-        this.eventTypes = eventTypes;
+        return years;
     }
 
     public IntSpan getMonthsOfTheYear()
@@ -142,19 +165,9 @@ public class DefaultScheduleTemplate implements ScheduleTemplate
         return monthsOfTheYear;
     }
 
-    public void setMonthsOfTheYear(IntSpan monthsOfTheYear)
-    {
-        this.monthsOfTheYear = monthsOfTheYear;
-    }
-
     public IntSpan getDaysOfTheMonth()
     {
         return daysOfTheMonth;
-    }
-
-    public void setDaysOfTheMonth(IntSpan daysOfTheMonth)
-    {
-        this.daysOfTheMonth = daysOfTheMonth;
     }
 
     public IntSpan getDaysOfTheWeek()
@@ -162,23 +175,69 @@ public class DefaultScheduleTemplate implements ScheduleTemplate
         return daysOfTheWeek;
     }
 
-    public void setDaysOfTheWeek(IntSpan daysOfTheWeek)
-    {
-        this.daysOfTheWeek = daysOfTheWeek;
-    }
-
     public int getSlotWidth()
     {
         return slotWidth;
     }
 
-    public void setSlotWidth(int slotWidth)
+    public DateRangesSet getApplicableDateRangesSet()
     {
-        this.slotWidth = slotWidth;
+        return applicableDateRangesSet;
     }
 
-    public ScheduleTemplateSlots getScheduleTemplateSlots(DateRangesSet dateRanges)
+    public String toString()
     {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        CalendarUtils calendarUtils = getScheduleManager().getCalendarUtils();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(getClass().getName() + ": ");
+        sb.append("id = " + getTemplateIdentifier() + ", ");
+        sb.append("available = " + isAvailable() + ", ");
+        sb.append("owners = " + getTemplateOwners() + ", ");
+        sb.append("participants = " + getParticipants(false) + ", ");
+        sb.append("participant types = " + getParticipantTypes() + ", ");
+        sb.append("applicable from " + calendarUtils.formatDateOnly(getEffectiveBeginDate()) + " to "+ calendarUtils.formatDateOnly(getEffectiveEndDate()) +", ");
+        sb.append("schedule from " + calendarUtils.formatTimeOnly(getStartTime()) + " to "+ calendarUtils.formatTimeOnly(getEndTime()) +", ");
+        sb.append("years = " + getYears() + ", ");
+        sb.append("months = " + getMonthsOfTheYear() + ", ");
+        sb.append("days = " + getDaysOfTheMonth() + ", ");
+        sb.append("days of week = " + getDaysOfTheWeek());
+
+        return sb.toString();
+    }
+
+    public ScheduleTemplateSlots getScheduleTemplateSlots(Date beginDate, Date endDate)
+    {
+        DefaultScheduleTemplateSlots result = new DefaultScheduleTemplateSlots();
+
+        ScheduleManager mgr = getScheduleManager();
+        CalendarUtils calendarUtils = mgr.getCalendarUtils();
+        Calendar calendar = calendarUtils.getCalendar();
+        DateRangesSet applicableDates = getApplicableDateRangesSet();
+
+        int beginDay = calendarUtils.getJulianDay(beginDate);
+        int endDay = calendarUtils.getJulianDay(endDate);
+
+        calendar.setTime(getStartTime());
+        int startHours = calendar.get(Calendar.HOUR_OF_DAY), startMinutes = calendar.get(Calendar.MINUTE);
+
+        calendar.setTime(getEndTime());
+        int endHours = calendar.get(Calendar.HOUR_OF_DAY), endMinutes = calendar.get(Calendar.MINUTE);
+
+        for(int day = beginDay; day <= endDay; day++)
+        {
+            if(! applicableDates.isMember(day))
+                continue;
+
+            // the starting date of the slot is the active date plus the starting time of the template
+            Date slotBeginDate = calendarUtils.getDateFromJulianDay(day, startHours, startMinutes, 0);
+
+            // the ending date of the slot is the same date as the slot begin date but the ending time of the template
+            Date slotEndDate = calendarUtils.createDate(slotBeginDate, endHours, endMinutes);
+
+            result.addTemplateSlot(new DefaultScheduleTemplateSlot(mgr, this, slotBeginDate, slotEndDate));
+        }
+
+        return result;
     }
 }

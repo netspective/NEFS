@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: CardinalTest.java,v 1.2 2004-03-26 16:18:45 shahid.shah Exp $
+ * $Id: CardinalTest.java,v 1.3 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -85,8 +85,8 @@ public class CardinalTest extends TestCase
             predicate(t, "posInf", t.posInf, set.isPosInfite());
             predicate(t, "infinite", t.infinite, set.isInfinite());
             predicate(t, "universal", t.universal, set.isUniversal());
-            metric(t, "min", t.min, set.getMin());
-            metric(t, "max", t.max, set.getMax());
+            metric(t, "min", t.min, set.getMinInteger());
+            metric(t, "max", t.max, set.getMaxInteger());
         }
 
         assertTrue(ok);

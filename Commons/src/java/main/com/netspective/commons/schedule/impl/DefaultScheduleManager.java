@@ -39,27 +39,45 @@
  */
 
 /**
- * $Id: DefaultScheduleManager.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: DefaultScheduleManager.java,v 1.4 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
 
-import java.util.Date;
+import java.util.Calendar;
 
+import com.netspective.commons.schedule.CalendarUtils;
+import com.netspective.commons.schedule.model.ScheduleEventProvider;
 import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleParticipantProvider;
 import com.netspective.commons.schedule.model.ScheduleSearchParameters;
 import com.netspective.commons.schedule.model.ScheduleSearchResults;
-import com.netspective.commons.schedule.model.ScheduleTemplate;
-import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
-import com.netspective.commons.schedule.model.ScheduleParticipantProvider;
-import com.netspective.commons.schedule.model.ScheduleEventProvider;
 import com.netspective.commons.schedule.model.ScheduleTemplateProvider;
 
 public class DefaultScheduleManager implements ScheduleManager
 {
+    private CalendarUtils calendarUtils;
     private ScheduleParticipantProvider scheduleParticipantProvider;
     private ScheduleEventProvider scheduleEventProvider;
     private ScheduleTemplateProvider scheduleTemplateProvider;
+
+    public DefaultScheduleManager(CalendarUtils calendarUtils, ScheduleParticipantProvider scheduleParticipantProvider, ScheduleEventProvider scheduleEventProvider, ScheduleTemplateProvider scheduleTemplateProvider)
+    {
+        this.calendarUtils = calendarUtils;
+        this.scheduleParticipantProvider = scheduleParticipantProvider;
+        this.scheduleEventProvider = scheduleEventProvider;
+        this.scheduleTemplateProvider = scheduleTemplateProvider;
+    }
+
+    public Calendar getCalendar()
+    {
+        return getCalendarUtils().getCalendar();
+    }
+
+    public CalendarUtils getCalendarUtils()
+    {
+        return calendarUtils;
+    }
 
     public ScheduleParticipantProvider getScheduleParticipantProvider()
     {
@@ -79,10 +97,5 @@ public class DefaultScheduleManager implements ScheduleManager
     public ScheduleSearchResults searchSchedule(ScheduleSearchParameters parameters)
     {
         return null;
-    }
-
-    public ScheduleTemplateSlot createTemplateSlot(ScheduleTemplate template, Date beginDate, Date endDate, boolean available)
-    {
-        return new DefaultTemplateSlot(this, beginDate, endDate, template, available);
     }
 }

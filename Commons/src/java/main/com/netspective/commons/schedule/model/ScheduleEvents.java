@@ -39,12 +39,12 @@
  */
 
 /**
- * $Id: ScheduleEvents.java,v 1.1 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: ScheduleEvents.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
-public interface ScheduleEvents
+public interface ScheduleEvents extends ScheduleSlots
 {
     public ScheduleEvent[] getScheduleEvents();
 }

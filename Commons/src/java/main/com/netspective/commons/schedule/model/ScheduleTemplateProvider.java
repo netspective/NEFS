@@ -39,14 +39,14 @@
  */
 
 /**
- * $Id: ScheduleTemplateProvider.java,v 1.2 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleTemplateProvider.java,v 1.3 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
 
 import java.util.Date;
 
-public interface ScheduleTemplateProvider
+public interface ScheduleTemplateProvider extends ScheduleElementProvider
 {
     /**
      * Retrieve the list of templates associated with a given set of attendees (such as a physician) and a

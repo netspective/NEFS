@@ -39,15 +39,13 @@
  */
 
 /**
- * $Id: MockScheduleEvent.java,v 1.1 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: MockScheduleEvent.java,v 1.2 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.mock;
 
-import java.util.Calendar;
 import java.util.Date;
 
-import com.netspective.commons.schedule.CalendarUtils;
 import com.netspective.commons.schedule.impl.AbstractScheduleSlot;
 import com.netspective.commons.schedule.model.ScheduleEvent;
 import com.netspective.commons.schedule.model.ScheduleManager;
@@ -57,20 +55,5 @@ public class MockScheduleEvent extends AbstractScheduleSlot implements ScheduleE
     public MockScheduleEvent(ScheduleManager scheduleManager, Date beginDate, Date endDate)
     {
         super(scheduleManager, beginDate, endDate);
-    }
-
-    public MockScheduleEvent(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate)
-    {
-        super(scheduleManager, calendar, beginDate, endDate);
-    }
-
-    public MockScheduleEvent(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate)
-    {
-        super(scheduleManager, calendarUtils, beginDate, endDate);
-    }
-
-    public MockScheduleEvent(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
-    {
-        super(scheduleManager, calendarUtils, calendar, beginDate, endDate);
     }
 }

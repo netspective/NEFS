@@ -39,57 +39,67 @@
  */
 
 /**
- * $Id: ScheduleFactory.java,v 1.2 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: DefaultScheduleEvents.java,v 1.1 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
-package com.netspective.commons.schedule.model;
+package com.netspective.commons.schedule.impl;
 
-import org.apache.commons.discovery.tools.DiscoverClass;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.netspective.commons.schedule.impl.DefaultScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleEvent;
+import com.netspective.commons.schedule.model.ScheduleEvents;
+import com.netspective.commons.schedule.model.ScheduleSlot;
 
-public class ScheduleFactory
+public class DefaultScheduleEvents implements ScheduleEvents
 {
-    private static final DiscoverClass DISCOVER_CLASS = new DiscoverClass();
-    private static final ScheduleFactory INSTANCE;
+    private List eventsList = new ArrayList();
 
-    static
-    {
-        ScheduleFactory instance;
-        try
-        {
-            instance = (ScheduleFactory) DISCOVER_CLASS.newInstance(ScheduleFactory.class);
-        }
-        catch (Exception e)
-        {
-            instance = new ScheduleFactory();
-        }
-        INSTANCE = instance;
-    }
-
-    public static ScheduleFactory getInstance()
-    {
-        return INSTANCE;
-    }
-
-    private ScheduleFactory()
+    public DefaultScheduleEvents()
     {
     }
 
-    public ScheduleManager createScheduleManager()
+    protected DefaultScheduleEvents(List events)
     {
-        ScheduleManager result = null;
-        try
+        this.eventsList = events;
+    }
+
+    protected List getEventsList()
+    {
+        return eventsList;
+    }
+
+    public void addEvent(ScheduleEvent event)
+    {
+        eventsList.add(event);
+    }
+
+    public ScheduleEvent[] getScheduleEvents()
+    {
+        return (ScheduleEvent[]) eventsList.toArray(new ScheduleEvent[eventsList.size()]);
+    }
+
+    public ScheduleSlot[] getScheduleSlots()
+    {
+        return getScheduleEvents();
+    }
+
+    public String getFormattedList(String eventDelim, String eventIndent)
+    {
+        StringBuffer sb = new StringBuffer();
+
+        for(int i = 0; i < eventsList.size(); i++)
         {
-            result = (ScheduleManager) DISCOVER_CLASS.newInstance(ScheduleManager.class, ScheduleManager.class.getName());
-        }
-        catch (Exception e)
-        {
+            if(i > 0) sb.append(eventDelim);
+            sb.append(eventIndent);
+            sb.append(eventsList.get(i).toString());
         }
 
-        if(result == null)
-            result = new DefaultScheduleManager();
+        return sb.toString();
+    }
 
-        return result;
+    public String toString()
+    {
+        return getClass().getName() + " ("+ eventsList.size() +")\n" + getFormattedList("\n", "  ");
     }
 }

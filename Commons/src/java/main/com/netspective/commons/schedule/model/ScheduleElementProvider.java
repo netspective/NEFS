@@ -38,20 +38,12 @@
  * @author Shahid N. Shah
  */
 
-package com.netspective.commons.schedule.mock;
+/**
+ * $Id: ScheduleElementProvider.java,v 1.1 2004-03-29 04:34:20 shahid.shah Exp $
+ */
 
-import java.util.Date;
+package com.netspective.commons.schedule.model;
 
-import com.netspective.commons.schedule.model.ScheduleTemplateProvider;
-import com.netspective.commons.schedule.model.ScheduleTemplates;
-import com.netspective.commons.schedule.model.ScheduleParticipants;
-import com.netspective.commons.schedule.model.ScheduleManager;
-
-public class MockScheduleTemplateProvider implements ScheduleTemplateProvider
+public interface ScheduleElementProvider
 {
-    public ScheduleTemplates getScheduleTemplates(ScheduleManager scheduleManager, Date beginDate, Date endDate,
-                                                  ScheduleParticipants participants)
-    {
-        return null;
-    }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleTemplateSlot.java,v 1.1 2004-03-26 16:18:44 shahid.shah Exp $
+ * $Id: ScheduleTemplateSlot.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -47,6 +47,4 @@ package com.netspective.commons.schedule.model;
 public interface ScheduleTemplateSlot extends ScheduleSlot
 {
     public ScheduleTemplate getScheduleTemplate();
-    public boolean isAvailable();
-    public boolean isUnavailable();
 }

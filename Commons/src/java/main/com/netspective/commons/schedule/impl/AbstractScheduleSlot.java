@@ -39,12 +39,11 @@
  */
 
 /**
- * $Id: AbstractScheduleSlot.java,v 1.3 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: AbstractScheduleSlot.java,v 1.4 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import com.netspective.commons.schedule.CalendarUtils;
@@ -64,27 +63,15 @@ public class AbstractScheduleSlot implements ScheduleSlot
 
     public AbstractScheduleSlot(ScheduleManager scheduleManager, Date beginDate, Date endDate)
     {
-        this(scheduleManager, CalendarUtils.getInstance(), Calendar.getInstance(), beginDate, endDate);
-    }
-
-    public AbstractScheduleSlot(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate)
-    {
-        this(scheduleManager, CalendarUtils.getInstance(), calendar, beginDate, endDate);
-    }
-
-    public AbstractScheduleSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate)
-    {
-        this(scheduleManager, calendarUtils, Calendar.getInstance(), beginDate, endDate);
-    }
-
-    public AbstractScheduleSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate)
-    {
         this.scheduleManager = scheduleManager;
+
+        CalendarUtils calendarUtils = scheduleManager.getCalendarUtils();
+
         this.beginDate = beginDate;
         this.endDate = endDate;
-        this.beginJulianDay = calendarUtils.getJulianDay(calendar, this.beginDate);
-        this.endJulianDay = calendarUtils.getJulianDay(calendar, this.endDate);
-        this.minutesSet.applyDateRange(calendar, calendarUtils, beginDate, endDate);
+        this.beginJulianDay = calendarUtils.getJulianDay(beginDate);
+        this.endJulianDay = calendarUtils.getJulianDay(endDate);
+        this.minutesSet.applyDateRange(calendarUtils, beginDate, endDate);
     }
 
     public Object getScheduleSlotIdentifier()
@@ -139,7 +126,7 @@ public class AbstractScheduleSlot implements ScheduleSlot
 
     public String toString()
     {
-        return getClass().getName() + ": id = " + identifier + ", begin = " + beginDate + ", end = " + endDate + ", minutes = " + minutesSet;
-
+        CalendarUtils calendarUtils = getScheduleManager().getCalendarUtils();
+        return getClass().getName() + ": id = " + identifier + ", begin = " + calendarUtils.formatDateTime(beginDate) + ", end = " + calendarUtils.formatDateTime(endDate) + ", minutes = " + minutesSet;
     }
 }

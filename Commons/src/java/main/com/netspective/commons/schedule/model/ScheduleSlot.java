@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ScheduleSlot.java,v 1.4 2004-03-27 19:17:03 shahid.shah Exp $
+ * $Id: ScheduleSlot.java,v 1.5 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.model;
@@ -50,6 +50,8 @@ import com.netspective.commons.set.MinuteRangesSet;
 
 public interface ScheduleSlot
 {
+    public ScheduleManager getScheduleManager();
+    
     public Object getScheduleSlotIdentifier();
 
     public boolean isMultipleDays();
@@ -63,4 +65,5 @@ public interface ScheduleSlot
     public int getEndJulianDay();
 
     public MinuteRangesSet getMinutesSet();
+
 }

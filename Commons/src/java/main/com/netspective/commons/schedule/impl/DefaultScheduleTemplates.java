@@ -39,64 +39,78 @@
  */
 
 /**
- * $Id: DefaultTemplateSlot.java,v 1.2 2004-03-26 22:03:47 shahid.shah Exp $
+ * $Id: DefaultScheduleTemplates.java,v 1.1 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule.impl;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-import com.netspective.commons.schedule.CalendarUtils;
-import com.netspective.commons.schedule.model.ScheduleManager;
 import com.netspective.commons.schedule.model.ScheduleTemplate;
-import com.netspective.commons.schedule.model.ScheduleTemplateSlot;
+import com.netspective.commons.schedule.model.ScheduleTemplateSlots;
+import com.netspective.commons.schedule.model.ScheduleTemplates;
 
-public class DefaultTemplateSlot extends AbstractScheduleSlot implements ScheduleTemplateSlot
+public class DefaultScheduleTemplates implements ScheduleTemplates
 {
-    private ScheduleTemplate scheduleTemplate;
-    private boolean available;
+    private List templatesList = new ArrayList();
 
-    public DefaultTemplateSlot(ScheduleManager scheduleManager, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public DefaultScheduleTemplates()
     {
-        super(scheduleManager, beginDate, endDate);
-        this.scheduleTemplate = scheduleTemplate;
-        this.available = available;
     }
 
-    public DefaultTemplateSlot(ScheduleManager scheduleManager, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    protected DefaultScheduleTemplates(List templates)
     {
-        super(scheduleManager, calendar, beginDate, endDate);
-        this.scheduleTemplate = scheduleTemplate;
-        this.available = available;
+        this.templatesList = templates;
     }
 
-    public DefaultTemplateSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public Collection getScheduleTemplatesCollection()
     {
-        super(scheduleManager, calendarUtils, beginDate, endDate);
-        this.scheduleTemplate = scheduleTemplate;
-        this.available = available;
+        return templatesList;
     }
 
-    public DefaultTemplateSlot(ScheduleManager scheduleManager, CalendarUtils calendarUtils, Calendar calendar, Date beginDate, Date endDate, ScheduleTemplate scheduleTemplate, boolean available)
+    public void addTemplate(ScheduleTemplate template)
     {
-        super(scheduleManager, calendarUtils, calendar, beginDate, endDate);
-        this.scheduleTemplate = scheduleTemplate;
-        this.available = available;
+        templatesList.add(template);
     }
 
-    public ScheduleTemplate getScheduleTemplate()
+    public ScheduleTemplate[] getScheduleTemplates()
     {
-        return scheduleTemplate;
+        return (ScheduleTemplate[]) templatesList.toArray(new ScheduleTemplate[templatesList.size()]);
     }
 
-    public boolean isAvailable()
+    public String getFormattedList(String eventDelim, String eventIndent)
     {
-        return available;
+        StringBuffer sb = new StringBuffer();
+
+        for(int i = 0; i < templatesList.size(); i++)
+        {
+            if(i > 0) sb.append(eventDelim);
+            sb.append(eventIndent);
+            sb.append(templatesList.get(i).toString());
+        }
+
+        return sb.toString();
     }
 
-    public boolean isUnavailable()
+    public ScheduleTemplateSlots getScheduleTemplateSlots(Date beginDate, Date endDate)
     {
-        return ! available;
+        DefaultScheduleTemplateSlots result = new DefaultScheduleTemplateSlots();
+
+        for(int i = 0; i < templatesList.size(); i++)
+        {
+            ScheduleTemplate template = (ScheduleTemplate) templatesList.get(i);
+            ScheduleTemplateSlots slots = template.getScheduleTemplateSlots(beginDate, endDate);
+            result.addTemplateSlots(slots);
+        }
+
+        return result;
+    }
+
+    public String toString()
+    {
+        return getClass().getName() + " ("+ templatesList.size() +")\n" + getFormattedList("\n", "  ");
     }
 }

@@ -39,16 +39,19 @@
  */
 
 /**
- * $Id: ScheduleTestCase.java,v 1.3 2004-03-26 22:03:48 shahid.shah Exp $
+ * $Id: ScheduleTestCase.java,v 1.4 2004-03-29 04:34:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.schedule;
 
 import java.util.Calendar;
-import java.util.Date;
 
-import com.netspective.commons.schedule.mock.MockScheduleEventProvider;
+import com.netspective.commons.schedule.impl.DefaultScheduleManager;
+import com.netspective.commons.schedule.mock.MockScheduleElementProvider;
 import com.netspective.commons.schedule.model.ScheduleEventProvider;
+import com.netspective.commons.schedule.model.ScheduleManager;
+import com.netspective.commons.schedule.model.ScheduleParticipantProvider;
+import com.netspective.commons.schedule.model.ScheduleTemplateProvider;
 
 import junit.framework.TestCase;
 
@@ -56,18 +59,22 @@ public class ScheduleTestCase extends TestCase
 {
     protected Calendar calendar;
     protected CalendarUtils calendarUtils;
+    protected MockScheduleElementProvider mockScheduleItemProvider;
+    protected ScheduleParticipantProvider participantProvider;
     protected ScheduleEventProvider eventProvider;
+    protected ScheduleTemplateProvider templateProvider;
+    protected ScheduleManager scheduleManager;
 
     protected void setUp() throws Exception
     {
         calendar = Calendar.getInstance();
-        calendarUtils = CalendarUtils.getInstance();
-        eventProvider = new MockScheduleEventProvider();
-    }
+        calendarUtils = new CalendarUtils(calendar);
 
-    public Date createDate(int month, int day, int year)
-    {
-        calendar.set(year, month, day);
-        return calendar.getTime();
+        mockScheduleItemProvider = new MockScheduleElementProvider();
+        participantProvider = mockScheduleItemProvider;
+        eventProvider = mockScheduleItemProvider;
+        templateProvider = mockScheduleItemProvider;
+
+        scheduleManager = new DefaultScheduleManager(calendarUtils, participantProvider, eventProvider, templateProvider);
     }
 }

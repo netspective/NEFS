@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DateRangesSet.java,v 1.1 2004-03-26 16:18:45 shahid.shah Exp $
+ * $Id: DateRangesSet.java,v 1.2 2004-03-29 04:34:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.set;
@@ -58,66 +58,18 @@ import com.netspective.commons.set.IntSpan.Testable;
 
 public class DateRangesSet
 {
-    private CalendarUtils calendarUtils = CalendarUtils.getInstance();
-    private Calendar defaultCalendar = Calendar.getInstance();
+    private CalendarUtils calendarUtils;
     private IntSpan daysSet = new IntSpan();
-
-    public DateRangesSet()
-    {
-    }
 
     public DateRangesSet(CalendarUtils calendarUtils)
     {
         this.calendarUtils = calendarUtils;
     }
 
-    public DateRangesSet(Calendar defaultCalendar)
-    {
-        this.defaultCalendar = defaultCalendar;
-    }
-
-    public DateRangesSet(CalendarUtils calendarUtils, Calendar defaultCalendar)
-    {
-        this.calendarUtils = calendarUtils;
-        this.defaultCalendar = defaultCalendar;
-    }
-
-    public DateRangesSet(Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        applyDateRange(defaultCalendar, calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public DateRangesSet(Calendar calendar, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        this(calendar);
-        applyDateRange(calendar, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public DateRangesSet(CalendarUtils calendarUtils, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
+    public DateRangesSet(CalendarUtils calendarUtils, Date beginDate, Date endDate, IntSpan years, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
     {
         this(calendarUtils);
-        applyDateRange(calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public DateRangesSet(Calendar calendar, CalendarUtils calendarUtils, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        this(calendarUtils, calendar);
-        applyDateRange(calendar, calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public void applyDateRange(Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        applyDateRange(defaultCalendar, calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public void applyDateRange(Calendar calendar, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        applyDateRange(calendar, calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
-    }
-
-    public void applyDateRange(CalendarUtils calendarUtils, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
-    {
-        applyDateRange(defaultCalendar, calendarUtils, beginDate, endDate, monthsOfYear, daysOfMonth, daysOfWeek);
+        applyDateRange(beginDate, endDate, years, monthsOfYear, daysOfMonth, daysOfWeek);
     }
 
     /**
@@ -125,21 +77,25 @@ public class DateRangesSet
      * the given begin and end date.
      * @param beginDate The date to start calculating from
      * @param endDate The date to end calculation at
-     * @param monthsOfYear A set of month numbers for which to calculate the date set (values must match input to Calendar.set(Calendar.MONTH))
-     * @param daysOfMonth A set of of day numbers for which to calculate the date set (values must match input to Calendar.set(Calendar.DAY_OF_MONTH))
-     * @param daysOfWeek A set of of days of the week to calculate the date set (values must match input to Calendar.set(Calendar.DAY_OF_WEEK))
+     * @param monthsOfYear A set of year members for which to calculate the date set (values must match input to Calendar.set(Calendar.YEAR)). May be NULL for all years.
+     * @param monthsOfYear A set of month numbers for which to calculate the date set (values must match input to Calendar.set(Calendar.MONTH)). May be NULL for all months.
+     * @param daysOfMonth A set of of day numbers for which to calculate the date set (values must match input to Calendar.set(Calendar.DAY_OF_MONTH)). May be NULL for all days of month.
+     * @param daysOfWeek A set of of days of the week to calculate the date set (values must match input to Calendar.set(Calendar.DAY_OF_WEEK)). May be NULL for all days of week.
      */
-    public void applyDateRange(Calendar calendar, CalendarUtils calendarUtils, Date beginDate, Date endDate, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
+    public void applyDateRange(Date beginDate, Date endDate, IntSpan years, IntSpan monthsOfYear, IntSpan daysOfMonth, IntSpan daysOfWeek)
     {
-        final int begin = calendarUtils.getJulianDay(calendar, beginDate), end = calendarUtils.getJulianDay(calendar, endDate);
-        final boolean haveMonthsOfYear = monthsOfYear != null, haveDaysOfMonth = daysOfMonth != null, haveDaysOfWeek = daysOfWeek != null;
+        Calendar calendar = calendarUtils.getCalendar();
+
+        final int begin = calendarUtils.getJulianDay(beginDate), end = calendarUtils.getJulianDay(endDate);
+        final boolean haveYears = years != null, haveMonthsOfYear = monthsOfYear != null, haveDaysOfMonth = daysOfMonth != null, haveDaysOfWeek = daysOfWeek != null;
 
         for (int julianDay = begin; julianDay <= end; julianDay++)
         {
-            Date activeDate = calendarUtils.getDateFromJulianDay(julianDay, calendar);
+            Date activeDate = calendarUtils.getDateFromJulianDay(julianDay);
             calendar.setTime(activeDate);
 
-            if ((!haveMonthsOfYear || monthsOfYear.isMember(calendar.get(Calendar.MONTH))) &&
+            if ((!haveYears || years.isMember(calendar.get(Calendar.YEAR))) &&
+                (!haveMonthsOfYear || monthsOfYear.isMember(calendar.get(Calendar.MONTH))) &&
                 (!haveDaysOfMonth || daysOfMonth.isMember(calendar.get(Calendar.DAY_OF_MONTH))) &&
                 (!haveDaysOfWeek || daysOfWeek.isMember(calendar.get(Calendar.DAY_OF_WEEK))))
             {
@@ -155,7 +111,7 @@ public class DateRangesSet
 
     public boolean add(Object o)
     {
-        add(defaultCalendar, (Date) o);
+        add((Date) o);
         return true;
     }
 
@@ -166,12 +122,12 @@ public class DateRangesSet
 
     public boolean contains(Object o)
     {
-        return isMember(defaultCalendar, (Date) o);
+        return isMember((Date) o);
     }
 
     public boolean remove(Object o)
     {
-        remove(defaultCalendar, (Date) o);
+        remove((Date) o);
         return true;
     }
 
@@ -197,7 +153,7 @@ public class DateRangesSet
 
     public Iterator iterator()
     {
-        return new DateSpanIterator(defaultCalendar, (IntSpanIterator) daysSet.iterator());
+        return new DateSpanIterator((IntSpanIterator) daysSet.iterator());
     }
 
     public Object clone()
@@ -265,14 +221,9 @@ public class DateRangesSet
         return daysSet.isUniversal();
     }
 
-    public boolean isMember(Calendar calendar, Date date)
-    {
-        return daysSet.isMember(calendarUtils.getJulianDay(calendar, date));
-    }
-
     public boolean isMember(Date date)
     {
-        return daysSet.isMember(calendarUtils.getJulianDay(defaultCalendar, date));
+        return daysSet.isMember(calendarUtils.getJulianDay(date));
     }
 
     public boolean isMember(int julianDay)
@@ -280,14 +231,9 @@ public class DateRangesSet
         return daysSet.isMember(julianDay);
     }
 
-    public void add(Calendar calendar, Date date)
-    {
-        add(calendarUtils.getJulianDay(calendar, date));
-    }
-
     public void add(Date date)
     {
-        add(calendarUtils.getJulianDay(defaultCalendar, date));
+        add(calendarUtils.getJulianDay(date));
     }
 
     public void add(int julianDay)
@@ -295,14 +241,9 @@ public class DateRangesSet
         daysSet.add(julianDay);
     }
 
-    public void remove(Calendar calendar, Date date)
-    {
-        remove(calendarUtils.getJulianDay(calendar, date));
-    }
-
     public void remove(Date date)
     {
-        remove(calendarUtils.getJulianDay(defaultCalendar, date));
+        remove(calendarUtils.getJulianDay(date));
     }
 
     public void remove(int julianDay)
@@ -310,14 +251,24 @@ public class DateRangesSet
         daysSet.remove(julianDay);
     }
 
-    public Integer getMin()
+    public int getMin()
     {
         return daysSet.getMin();
     }
 
-    public Integer getMax()
+    public int getMax()
     {
         return daysSet.getMax();
+    }
+
+    public Date getMinDate()
+    {
+        return calendarUtils.getDateFromJulianDay(getMin());
+    }
+
+    public Date getMaxDate()
+    {
+        return calendarUtils.getDateFromJulianDay(getMax());
     }
 
     public DateRangesSet grep(Testable predicate)
@@ -332,57 +283,32 @@ public class DateRangesSet
 
     public DateSpanIterator first()
     {
-        return new DateSpanIterator(defaultCalendar, daysSet.first());
-    }
-
-    public DateSpanIterator first(Calendar calendar)
-    {
-        return new DateSpanIterator(calendar, daysSet.first());
+        return new DateSpanIterator(daysSet.first());
     }
 
     public DateSpanIterator last()
     {
-        return new DateSpanIterator(defaultCalendar, daysSet.last());
-    }
-
-    public DateSpanIterator last(Calendar calendar)
-    {
-        return new DateSpanIterator(calendar, daysSet.last());
+        return new DateSpanIterator(daysSet.last());
     }
 
     public DateSpanIterator start(int julianDay)
     {
-        return new DateSpanIterator(defaultCalendar, daysSet.start(julianDay));
+        return new DateSpanIterator(daysSet.start(julianDay));
     }
 
     public DateSpanIterator start(Date date)
     {
-        return new DateSpanIterator(defaultCalendar, daysSet.start(calendarUtils.getJulianDay(defaultCalendar, date)));
-    }
-
-    public DateSpanIterator start(Calendar calendar, int julianDay)
-    {
-        return new DateSpanIterator(calendar, daysSet.start(julianDay));
-    }
-
-    public DateSpanIterator start(Calendar calendar, Date date)
-    {
-        return new DateSpanIterator(calendar, daysSet.start(calendarUtils.getJulianDay(calendar, date)));
-    }
-
-    public String toString(Calendar calendar, DateFormat format, String delim)
-    {
-        return daysSet.getFormattedRunList(new ElementDateFormatter(calendar, format, delim));
+        return new DateSpanIterator(daysSet.start(calendarUtils.getJulianDay(date)));
     }
 
     public String toString(DateFormat format, String delim)
     {
-        return daysSet.getFormattedRunList(new ElementDateFormatter(defaultCalendar, format, delim));
+        return daysSet.getFormattedRunList(new ElementDateFormatter(format, delim));
     }
 
     public String toString()
     {
-        return toString(defaultCalendar, DateFormat.getDateInstance(), ", ");
+        return toString(DateFormat.getDateInstance(), ", ");
     }
 
     public static DateRangesSet union(DateRangesSet a, DateRangesSet b)
@@ -432,13 +358,11 @@ public class DateRangesSet
 
     private class ElementDateFormatter implements IntSpan.ElementFormatter
     {
-        private Calendar calendar;
         private DateFormat format;
         private String delim;
 
-        public ElementDateFormatter(Calendar calendar, DateFormat format, String delim)
+        public ElementDateFormatter(DateFormat format, String delim)
         {
-            this.calendar = calendar;
             this.format = format;
             this.delim = delim;
         }
@@ -450,19 +374,17 @@ public class DateRangesSet
 
         public String getFormattedElement(int element)
         {
-            Date date = calendarUtils.getDateFromJulianDay(element, calendar);
+            Date date = calendarUtils.getDateFromJulianDay(element);
             return format.format(date);
         }
     }
 
     public class DateSpanIterator implements Iterator
     {
-        private Calendar calendar;
         private IntSpanIterator i;
 
-        public DateSpanIterator(Calendar calendar, IntSpanIterator i)
+        public DateSpanIterator(IntSpanIterator i)
         {
-            this.calendar = calendar;
             this.i = i;
         }
 
@@ -479,13 +401,25 @@ public class DateRangesSet
         public Object next()
         {
             Integer result = (Integer) i.next();
-            return calendarUtils.getDateFromJulianDay(result.intValue(), calendar);
+            return calendarUtils.getDateFromJulianDay(result.intValue());
         }
 
         public Object previous()
         {
             Integer result = (Integer) i.previous();
-            return calendarUtils.getDateFromJulianDay(result.intValue(), calendar);
+            return calendarUtils.getDateFromJulianDay(result.intValue());
+        }
+
+        public Date nextDate()
+        {
+            Integer result = (Integer) i.next();
+            return calendarUtils.getDateFromJulianDay(result.intValue());
+        }
+
+        public Date previousDate()
+        {
+            Integer result = (Integer) i.previous();
+            return calendarUtils.getDateFromJulianDay(result.intValue());
         }
 
         public void remove()
@@ -494,7 +428,7 @@ public class DateRangesSet
 
         public String toString()
         {
-            return calendarUtils.getDateFromJulianDay(Integer.parseInt(i.toString()), calendar).toString();
+            return calendarUtils.getDateFromJulianDay(Integer.parseInt(i.toString())).toString();
         }
     }
 }
