@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: GeneralColumn.java,v 1.15 2004-08-09 22:14:27 shahid.shah Exp $
+ * $Id: GeneralColumn.java,v 1.16 2004-08-09 22:20:54 aye.thu Exp $
  */
 
 package com.netspective.commons.report.tabular.column;
@@ -76,6 +76,7 @@ import com.netspective.commons.report.tabular.calc.TabularReportCalcs;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.RedirectValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xml.template.Template;
 import com.netspective.commons.xml.template.TemplateCatalog;
 import com.netspective.commons.xml.template.TemplateConsumer;
@@ -124,6 +125,12 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
     {
         setColIndex(-1);
         flags = createFlags();
+    }
+
+    public GeneralColumn(String heading)
+    {
+        this();
+        setHeading(new StaticValueSource(heading));
     }
 
     public TemplateConsumerDefn getTemplateConsumerDefn()
@@ -305,7 +312,7 @@ public class GeneralColumn implements TabularReportColumn, TemplateConsumer
         }
 
         if(this.flags.flagIsSet(Flags.ESCAPE_HTML))
-            data = TextUtils.getInstance().escapeHTML(data);
+            data = TextUtils.escapeHTML(data);
 
         return data;
     }
