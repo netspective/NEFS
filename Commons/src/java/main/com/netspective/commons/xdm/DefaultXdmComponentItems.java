@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultXdmComponentItems.java,v 1.17 2003-09-06 16:43:49 shahid.shah Exp $
+ * $Id: DefaultXdmComponentItems.java,v 1.18 2003-10-11 14:33:44 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -97,9 +97,9 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
         return templateProducers;
     }
 
-    private AccessControlLists aclsManager;
-    private Configurations configsManager;
-    private Reports reportsManager;
+    private AccessControlLists aclsManager = new AccessControlLists();
+    private Configurations configsManager = new Configurations();
+    private Reports reportsManager = new Reports();
 
     public void addValueSource(ValueSource vs)
     {
@@ -126,8 +126,6 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
 
     public Configurations getConfigurations()
     {
-        if(configsManager == null)
-            configsManager = new Configurations();
         return configsManager;
     }
 
@@ -150,8 +148,6 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
 
     public AccessControlLists getAccessControlLists()
     {
-        if(aclsManager == null)
-            aclsManager = new AccessControlLists();
         return aclsManager;
     }
 
@@ -189,8 +185,6 @@ public class DefaultXdmComponentItems implements TemplateProducerParent, Configu
 
     public Reports getReports()
     {
-        if(reportsManager == null)
-            reportsManager = new Reports();
         return reportsManager;
     }
 
