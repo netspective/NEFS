@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Suite.java,v 1.4 2003-03-21 13:56:57 shahbaz.javeed Exp $
+ * $Id: Suite.java,v 1.5 2003-03-23 16:45:55 shahbaz.javeed Exp $
  */
 
 package com.netspective.commons;
@@ -64,6 +64,7 @@ public class Suite
         suite.addTest(new TestSuite(ValueSourcesTest.class));
         suite.addTest(new TestSuite(ConfigurationTest.class));
 	    suite.addTest(new TestSuite(AccessControlListTest.class));
+	    suite.addTest(new TestSuite(com.netspective.commons.io.FindFileTest.class));
         return suite;
     }
 }
