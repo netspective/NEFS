@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlComparisonFactory.java,v 1.2 2003-05-30 23:06:53 shahid.shah Exp $
+ * $Id: SqlComparisonFactory.java,v 1.3 2004-03-19 03:12:20 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -57,6 +57,8 @@ import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.InComparison;
 import com.netspective.axiom.sql.dynamic.comparison.IsDefinedComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparison;
+import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparisonIgnoreCase;
+import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparisonIgnoreCase;
 
 public class SqlComparisonFactory
 {
@@ -68,9 +70,11 @@ public class SqlComparisonFactory
         registerComparison(new BinaryOpComparison("equals", "equals", "general", "="), new String[]{"is", "="});
         registerComparison(new BinaryOpComparison("not-equals", "does not equal", "general", "!="), new String[]{"is-not", "!="});
         registerComparison(new StartsWithComparison(), null);
+        registerComparison(new StartsWithComparisonIgnoreCase(), null);
         registerComparison(new ContainsComparison(), null);
         registerComparison(new ContainsComparisonIgnoreCase(), null);
         registerComparison(new EndsWithComparison(), null);
+        registerComparison(new EndsWithComparisonIgnoreCase(), null);
         registerComparison(new InComparison(), null);
         registerComparison(new IsDefinedComparison(), null);
         registerComparison(new BinaryOpComparison("greater-than", "greater than", "general", ">"), new String[]{"gt", ">"});
