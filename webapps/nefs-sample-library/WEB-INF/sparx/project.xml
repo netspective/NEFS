@@ -33,7 +33,7 @@
 			<field name="id" type="text" caption="Book ID" required="yes" max-length="10"/>
 			<field name="name" type="text" caption="Name" required="yes"/>
 			<field name="author" type="text" caption="Author" required="yes"/>
-			<field name="genre" type="select" caption="Genre" choices="schema-enum:library.Book_Type" prepend-blank="yes" required="yes"/>
+			<field name="genre" type="select" caption="Genre" choices="schema-enum:db.Book_Type" prepend-blank="yes" required="yes"/>
 			<field name="isbn" type="text" caption="ISBN" max-length="10" required="yes" invalid-reg-ex-message="Please enter an ISBN of the form X-XXXX-XXXX-X i.e. with dashes, not spaces.  Thank you." reg-expr="/^\d+$/"/>
             <director>
             	<!--
