@@ -5,8 +5,8 @@
        Application record editor panels
        ======================================
     -->
-    <record-editor-panels package="personAttribute">
-        <record-editor-panel name="contact" dialog-ref="personAttribute.contact" require-request-param="person_id">
+    <panel-editors package="personAttribute">
+        <panel-editor name="contact" dialog-ref="personAttribute.contact" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -32,8 +32,8 @@
                     </panel>
                 </presentation>
             </query>
-        </record-editor-panel>
-        <record-editor-panel name="address" dialog-ref="personAttribute.address" require-request-param="person_id">
+        </panel-editor>
+        <panel-editor name="address" dialog-ref="personAttribute.address" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -65,8 +65,8 @@
                 </panel>
             </presentation>
             </query>
-        </record-editor-panel>
-        <record-editor-panel name="classification" dialog-ref="personAttribute.classification" require-request-param="person_id">
+        </panel-editor>
+        <panel-editor name="classification" dialog-ref="personAttribute.classification" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -95,9 +95,9 @@
                 </panel>
             </presentation>
             </query>
-        </record-editor-panel>
+        </panel-editor>
 
-        <record-editor-panel name="relationship" dialog-ref="personAttribute.relationship" require-request-param="person_id">
+        <panel-editor name="relationship" dialog-ref="personAttribute.relationship" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -126,6 +126,6 @@
                 </panel>
             </presentation>
             </query>
-        </record-editor-panel>
-    </record-editor-panels>
+        </panel-editor>
+    </panel-editors>
 </xdm:container>
