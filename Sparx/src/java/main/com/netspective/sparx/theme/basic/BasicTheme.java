@@ -39,15 +39,18 @@
  */
 
 /**
- * $Id: BasicTheme.java,v 1.4 2003-08-30 16:41:29 shahid.shah Exp $
+ * $Id: BasicTheme.java,v 1.5 2003-09-02 17:25:34 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import com.netspective.sparx.navigate.NavigationSkin;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class BasicTheme extends AbstractTheme
 {
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
+
     public BasicTheme()
     {
         addReportSkin(new RecordViewerReportSkin(this, "record-viewer", "panel-output", "panel/output", true));

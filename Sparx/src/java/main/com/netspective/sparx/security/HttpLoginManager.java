@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.13 2003-08-31 23:01:03 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.14 2003-09-02 17:23:41 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.security;
@@ -70,6 +70,7 @@ import com.netspective.commons.security.AuthenticatedUsers;
 import com.netspective.commons.security.AuthenticatedUserLogoutType;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class HttpLoginManager
 {
@@ -80,6 +81,8 @@ public class HttpLoginManager
 
     private static final Log log = LogFactory.getLog(HttpLoginManager.class);
     private static final String MONITOR_ENTRY_FIELD_SEPARATOR = ",";
+
+    public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options().setIgnorePcData(true);
 
     protected class LoginDialogValidator implements DialogValidateListener
     {
