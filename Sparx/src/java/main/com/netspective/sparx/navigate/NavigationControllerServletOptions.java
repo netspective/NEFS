@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.2 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.3 2003-09-02 21:35:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -75,13 +75,13 @@ public class NavigationControllerServletOptions
     public static final Class PROJECT_COMPONENT_CLASS = discoverClass.find(ProjectComponent.class, ProjectComponent.class.getName());
     public static final Class RUNTIME_ENVIRONMENT_FLAGS_CLASS = discoverClass.find(RuntimeEnvironmentFlags.class, RuntimeEnvironmentFlags.class.getName());
 
-    private String defaultProjectFileName = "/WEB-INF/sparx/project.xml";
-    private String defaultExecPropsFileName = "/WEB-INF/sparx/conf/execution.properties";
-    private String defaultRuntimeFlags = "DEVELOPMENT|FRAMEWORK_DEVELOPMENT";
-    private String defaultLogoutRequestParamName = "_logout";
-    private String defaultSparxResourceLocators = "/resources/sparx,/sparx";
-    private String defaultInitSuccess = "END_INIT";
-    private String defaultDataSource = "jdbc/default";
+    public static final String DEFAULT_PROJECT_FILE_NAME = "/WEB-INF/sparx/project.xml";
+    public static final String DEFAULT_EXEC_PROPS_FILE_NAME = "/WEB-INF/sparx/conf/execution.properties";
+    public static final String DEFAULT_RUNTIME_FLAGS = "DEVELOPMENT|FRAMEWORK_DEVELOPMENT";
+    public static final String DEFAULT_LOGOUT_REQ_PARAM = "_logout";
+    public static final String DEFAULT_SPARX_RESOURCES_LOCATOR = "/resources/sparx,/sparx";
+    public static final String DEFAULT_INIT_SUCCESS = "END_INIT";
+    public static final String DEFAULT_DATA_SOURCE_ID = "jdbc/default";
 
     private CommandLineParser parser = new PosixParser();
     private Options servletOptions = new Options();
@@ -128,7 +128,7 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("project")
                                               .hasArg().withArgName("file")
-                                              .withDescription("The project file to use. The default is " + defaultProjectFileName)
+                                              .withDescription("The project file to use. The default is " + DEFAULT_PROJECT_FILE_NAME)
                                               .create('p'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("project-component-class")
@@ -138,7 +138,7 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("runtime-environment")
                                               .hasArg().withArgName("flags")
-                                              .withDescription("The runtime environment flags to use. The default is "+ defaultRuntimeFlags +".")
+                                              .withDescription("The runtime environment flags to use. The default is "+ DEFAULT_RUNTIME_FLAGS +".")
                                               .create('e'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("runtime-environment-class")
@@ -158,7 +158,7 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("sparx-resource-locators")
                                               .hasArg().withArgName("locators")
-                                              .withDescription("A set of comma-separated locators for finding Sparx web resources. Default is " + defaultSparxResourceLocators)
+                                              .withDescription("A set of comma-separated locators for finding Sparx web resources. Default is " + DEFAULT_SPARX_RESOURCES_LOCATOR)
                                               .create('s'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("login-manager")
@@ -168,7 +168,7 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("logout-request-param-name")
                                               .hasArg().withArgName("name")
-                                              .withDescription("The name of the servlet request parameter that will be set if when a users wants to logout. The default is \""+ defaultLogoutRequestParamName +"\".")
+                                              .withDescription("The name of the servlet request parameter that will be set if when a users wants to logout. The default is \""+ DEFAULT_LOGOUT_REQ_PARAM +"\".")
                                               .create('L'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("init-first-time-using-ant")
@@ -188,7 +188,7 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("servlet-exec-properties")
                                               .hasArg().withArgName("file")
-                                              .withDescription("The name of the file that stores the persistent servlet execution properties like initialization count. The default is " + defaultExecPropsFileName + ".")
+                                              .withDescription("The name of the file that stores the persistent servlet execution properties like initialization count. The default is " + DEFAULT_EXEC_PROPS_FILE_NAME + ".")
                                               .create('x'));
 
         servletOptions.addOption(OptionBuilder.withLongOpt("listener-class")
@@ -222,7 +222,7 @@ public class NavigationControllerServletOptions
 
     public String getLogoutActionReqParamName()
     {
-        return commandLine.getOptionValue("L", defaultLogoutRequestParamName);
+        return commandLine.getOptionValue("L", DEFAULT_LOGOUT_REQ_PARAM);
     }
 
     public String getNavigationTreeName()
@@ -232,7 +232,7 @@ public class NavigationControllerServletOptions
 
     public String getProjectFileName()
     {
-        return commandLine.getOptionValue("p", defaultProjectFileName);
+        return commandLine.getOptionValue("p", DEFAULT_PROJECT_FILE_NAME);
     }
 
     public String getProjectComponentClassName()
@@ -242,7 +242,7 @@ public class NavigationControllerServletOptions
 
     public String getRuntimeEnvFlags()
     {
-        return commandLine.getOptionValue("e", defaultRuntimeFlags);
+        return commandLine.getOptionValue("e", DEFAULT_RUNTIME_FLAGS);
     }
 
     public String getRuntimeEnvClassName()
@@ -257,7 +257,7 @@ public class NavigationControllerServletOptions
 
     public String getSparxResourceLocators()
     {
-        return commandLine.getOptionValue("s", defaultSparxResourceLocators);
+        return commandLine.getOptionValue("s", DEFAULT_SPARX_RESOURCES_LOCATOR);
     }
 
     public String getInitUsingAnt()
@@ -272,12 +272,12 @@ public class NavigationControllerServletOptions
 
     public String getServletExecutionPropertiesFileName()
     {
-        return commandLine.getOptionValue("x", defaultExecPropsFileName);
+        return commandLine.getOptionValue("x", DEFAULT_EXEC_PROPS_FILE_NAME);
     }
 
     public String getInitSuccessType()
     {
-        return commandLine.getOptionValue("c", defaultInitSuccess);
+        return commandLine.getOptionValue("c", DEFAULT_INIT_SUCCESS);
     }
 
     public String[] getProjectLifecycleListenerClassNames()
@@ -285,9 +285,9 @@ public class NavigationControllerServletOptions
         return commandLine.getOptionValues('r');
     }
 
-    public String getDefaultDataSourceId()
+    public String getDefaultDataSourceId(String defaultDataSourceId)
     {
-        return commandLine.getOptionValue('d', defaultDataSource);
+        return commandLine.getOptionValue('d', defaultDataSourceId);
     }
 
     public Properties setProperties(Properties properties, String propNamesPrefix, boolean setNulls)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.23 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: Project.java,v 1.24 2003-09-02 21:35:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -98,6 +98,7 @@ import com.netspective.commons.xdm.XdmIdentifierConstantsGenerator;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.product.NetspectiveComponent;
+import com.netspective.commons.value.ValueSource;
 
 /**
  * A container for all components such dialogs, fields, validation rules, conditional processing, static SQL statements,
@@ -190,7 +191,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
     private Themes themes = new Themes();
-    private String defaultDataSource;
+    private ValueSource defaultDataSource;
 
     public Project()
     {
@@ -409,12 +410,12 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
 
     /* ------------------------------------------------------------------------------------------------------------- */
 
-    public String getDefaultDataSource()
+    public ValueSource getDefaultDataSource()
     {
         return defaultDataSource;
     }
 
-    public void setDefaultDataSource(String defaultDataSource)
+    public void setDefaultDataSource(ValueSource defaultDataSource)
     {
         this.defaultDataSource = defaultDataSource;
     }

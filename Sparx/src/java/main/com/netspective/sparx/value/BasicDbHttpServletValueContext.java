@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.34 2003-08-31 23:08:34 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.35 2003-09-02 21:35:54 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -80,6 +80,7 @@ import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.RuntimeEnvironment;
+import com.netspective.commons.value.ValueSource;
 
 public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContext
                                       implements ServletValueContext, HttpServletValueContext,
@@ -145,7 +146,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         if(result != null)
         {
             if(log.isTraceEnabled())
-                log.trace("Reusing shared session cc " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                log.trace("Reusing shared session CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
             return result;
         }
 
@@ -153,7 +154,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         if(result != null)
         {
             if(log.isTraceEnabled())
-                log.trace("Reusing shared request cc " + result + " for data source '"+ result.getDataSourceId() +"'.");
+                log.trace("Reusing shared request CC " + result + " for data source '"+ result.getDataSourceId() +"'.");
             return result;
         }
 
@@ -170,18 +171,25 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public String getDefaultDataSource()
     {
-        String dataSourceId = super.getDefaultDataSource();
-        if(dataSourceId != null && dataSourceId.length() > 0)
-            return dataSourceId;
+        String result = super.getDefaultDataSource();
+        if(result != null && result.length() > 0)
+            return result;
 
-        dataSourceId = ((NavigationControllerServlet) servlet).getServletOptions().getDefaultDataSourceId();
-        if(dataSourceId == null)
-            dataSourceId = getProject().getDefaultDataSource();
+        // the default data source is (1) specified as a servlet init param, (2) specified in <default-data-source> in project.xml, or (3) is jdbc/default
+        result = ((NavigationControllerServlet) servlet).getServletOptions().getDefaultDataSourceId(null);
+        if(result == null)
+        {
+           ValueSource projectDefaultDataSource = getProject().getDefaultDataSource();
+           if(projectDefaultDataSource != null)
+               result = projectDefaultDataSource.getTextValue(this);
+        }
+        if(result == null)
+            result = NavigationControllerServletOptions.DEFAULT_DATA_SOURCE_ID;
 
-        if(dataSourceId == null)
+        if(result == null)
             throw new RuntimeException("No default data source available. Provide one using '"+ NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS +"' servlet context init parameter or in project.xml using 'default-data-source' tag.");
 
-        return dataSourceId;
+        return result;
     }
 
     public NavigationContext getNavigationContext()
