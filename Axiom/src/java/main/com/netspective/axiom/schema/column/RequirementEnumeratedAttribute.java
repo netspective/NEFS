@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RequirementEnumeratedAttribute.java,v 1.1 2003-03-13 18:25:41 shahid.shah Exp $
+ * $Id: RequirementEnumeratedAttribute.java,v 1.2 2003-10-20 22:17:42 shahid.shah Exp $
  */
 
 package com.netspective.axiom.schema.column;
@@ -66,5 +66,23 @@ public class RequirementEnumeratedAttribute extends XdmEnumeratedAttribute
     public String[] getValues()
     {
         return VALUES;
+    }
+
+    public int getValueIndex(String value)
+    {
+        if(value.equalsIgnoreCase("false"))
+            return NOT_REQUIRED;
+        else if(value.equalsIgnoreCase("true"))
+            return REQUIRED_BY_APP;
+        else
+            return super.getValueIndex(value);
+    }
+
+    public boolean containsValue(String value)
+    {
+        if(value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true"))
+            return true;
+        else
+            return super.containsValue(value);
     }
 }
