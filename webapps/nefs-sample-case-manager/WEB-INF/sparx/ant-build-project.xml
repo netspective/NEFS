@@ -21,10 +21,6 @@
         <property name="sparx.project.file" value="${sparx.project.path}/project.xml"/>
 
         <sparx action="get-default-schema-name" projectFile="${sparx.project.file}" property="app.database.schema.default-name"/>
-
-        <echo message="      App HOME is '${app.path}'"/>
-        <echo message="  Classes HOME is '${app.WEB-INF.classes.path}'"/>
-        <echo message="Default Schema is '${app.database.schema.default-name}'"/>
     </target>
 
     <target name="generate-id-constants" depends=".init" description="Generates typed Java constants for all dialog, field, query, and schema identifiers in Sparx XML files. Instead of accessing identifiers by strings programmers can access the identifiers using Java constants. This target will delete the WEB-INF/classes/app/auto/id directory first before generating identifiers.">
@@ -35,7 +31,7 @@
                idConstantsClass="app.auto.id"/>
     </target>
 
-    <target name="generate-dcb" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
+    <target name="generate-dialog-context-beans" depends=".init" description="Generates Java for managing form data. This target should be executed each time you modify dialogs.">
         <delete dir="${app.WEB-INF.classes.path}/app/auto/dcb"/>
         <sparx action="generate-dcb"
                projectFile="${sparx.project.file}"
@@ -43,14 +39,14 @@
                dcbPackage="app.auto.dcb"/>
     </target>
 
-    <target name="generate-ddl" depends=".init" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
+    <target name="generate-sql-ddl" depends=".init" if="app.database.schema.default-name" description="Generates all database-specific SQL Data Definition Language (DDL) files for the default schema. This target should be executed anytime the default schema is modified but instead of using the create-database you want to only generate DDL.">
         <sparx action="generate-ddl"
                projectFile="${sparx.project.file}"
                destDir="${app.database.path}/ddl"
                ddl="*"/>
     </target>
 
-    <target name="generate-dal" depends=".init" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
+    <target name="generate-data-access-layer" depends=".init" if="app.database.schema.default-name" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
         <delete dir="${app.WEB-INF.classes.path}/app/auto/dal/${app.database.schema.default-name}"/>
         <sparx action="generate-dal"
                projectFile="${sparx.project.file}"
@@ -58,21 +54,21 @@
                dalPackage="app.auto.dal"/>
     </target>
 
-    <target name="generate-import-data-dtd" depends=".init" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
+    <target name="generate-import-data-dtd" depends=".init" if="app.database.schema.default-name" description="Generates a DTD that describes the XML import structure for the default database schema. This target should be executed anytime the default schema is modified.">
         <sparx action="generate-import-data-dtd"
                projectFile="${sparx.project.file}"
                dtdFile="${app.database.path}/data/${app.database.schema.default-name}-import.dtd"/>
     </target>
 
-    <target name="generate-graphviz-erd" depends=".init" description="Generates a DOT file used by GraphViz to produce entity-relationship diagrams (ERDs) for the default schema.">
+    <target name="generate-graphviz-erd" depends=".init" if="app.database.schema.default-name" description="Generates a DOT file used by GraphViz to produce entity-relationship diagrams (ERDs) for the default schema.">
         <sparx action="generate-graphviz-erd"
                projectFile="${sparx.project.file}"
                graphVizDot="${app.database.path}/data/${app.database.schema.default-name}-erd.dot"/>
     </target>
 
-    <target name="generate-all" depends="generate-id-constants,generate-dcb,generate-ddl,generate-dal,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
+    <target name="generate-all" depends="generate-id-constants,generate-dialog-context-beans,generate-sql-ddl,generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Generates everything."/>
 
-    <target name="create-database-hsqldb" depends="generate-dal,generate-import-data-dtd,generate-graphviz-erd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
+    <target name="create-database-hsqldb" depends="generate-data-access-layer,generate-import-data-dtd,generate-graphviz-erd" description="Erases the existing default datasource (Hypersonic database), generates the SQL DDL for the default schema, loads the SQL DDL (effectively creating the Hypersonic SQL database), and finally loads the 'starter' from XML files using Sparx import from XML feature. This target should be executed anytime the default schema is modified.">
         <property name="app.database.instance.path" value="${app.database.path}/instance"/>
         <property name="jdbc.driver" value="org.hsqldb.jdbcDriver"/>
         <property name="jdbc.url" value="jdbc:hsqldb:${app.database.instance.path}/${app.database.schema.default-name}"/>
