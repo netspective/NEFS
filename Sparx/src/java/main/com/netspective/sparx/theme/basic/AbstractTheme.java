@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractTheme.java,v 1.19 2003-08-31 03:12:21 shahid.shah Exp $
+ * $Id: AbstractTheme.java,v 1.20 2003-09-13 23:05:52 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -73,7 +73,7 @@ public class AbstractTheme implements Theme
     private Map tabularReportSkins = new TreeMap();
     private Map panelSkins = new TreeMap();
     private Map dialogSkins = new TreeMap();
-    private NavigationSkin defaultNavigationSkin = constructDefaultNavigationSkin();
+    private NavigationSkin defaultNavigationSkin = createNavigationSkin();
     private HtmlPanelSkin tabbedPanelSkin = constructTabbedPanelSkin();;
     private HtmlPanelSkin templatePanelSkin = constructTabbedPanelSkin();
     private HtmlTabularReportSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "default", "panel-output", "panel/output", false);
@@ -147,11 +147,6 @@ public class AbstractTheme implements Theme
         for(int i = 0; i < inheritResourcesFromThemes.length; i++)
             themeNamesList.add(inheritResourcesFromThemes[i]);
         inheritResourcesFromThemes = (String[]) themeNamesList.toArray(new String[themeNamesList.size()]);
-    }
-
-    protected NavigationSkin constructDefaultNavigationSkin()
-    {
-        return null;
     }
 
     protected HtmlPanelSkin constructTabbedPanelSkin()
@@ -240,6 +235,11 @@ public class AbstractTheme implements Theme
         dialogSkins.put(skin.getName(), skin);
         if(skin.isDefault())
             defaultDialogSkin = skin;
+    }
+
+    public NavigationSkin createNavigationSkin()
+    {
+        return null;
     }
 
     public void addNavigationSkin(NavigationSkin skin)
