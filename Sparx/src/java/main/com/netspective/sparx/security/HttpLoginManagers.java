@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManagers.java,v 1.2 2003-10-07 01:38:06 shahid.shah Exp $
+ * $Id: HttpLoginManagers.java,v 1.3 2003-10-07 21:01:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -59,6 +59,11 @@ public class HttpLoginManagers
 
     public HttpLoginManagers()
     {
+    }
+
+    public Map getLoginManagers()
+    {
+        return loginManagers;
     }
 
     public void addLoginManager(HttpLoginManager manager)
