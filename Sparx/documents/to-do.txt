@@ -1,35 +1,18 @@
-* [IMPORTANT] Fix problem with redirect URLs in reports where the ${x} is not being translated
-* [IMPORTANT] read http://www.qos.ch/logging/thinkAgain.html on why we may need to revert to using log4j instead of Commons Logging for NDC/MDC support.
-* [IMPORTANT] because navigation conditional actions must run very quickly (faster than even DialogFieldConditionals), consider splitting all the functions of NavigationConditional into separate objects/types
-* [IMPORTANT] run through ALL try/catch blocks to ensure that if an exception is caught or rethrown that log.error(message, exception) is definitely called (any code translated from 2.3 may not be doing that)
-* [IMPORTANT] add private constructors to all singletons and check to make sure that all singletons are thread-safe (synchronized?)
-* [IMPORTANT] consider defaulting "DAL" nomenclature to "DAO" -- e.g. auto.dao.xxx instead of auto.dal.xxx. Perhaps add DAO in the name of each DAL class? DAO is probably easier to explain than DAL.
 * [IMPORTANT] review http://www.javapractices.com/index.cjp "Servlets and JSPs" section best practices to ensure we're not missing anything major (especially http://www.javapractices.com/Topic137.cjp)
 * [IMPORTANT] verify that console dialogs do not run outside of console (app shouldn't run them -- for security)
 
-* Add feature to dialog, field, report, etc conditionals that will allow applying flags based on runtime environment (production, development, etc).
-* Add password change, user registration, unregistration, etc to login manager. Also add capability for NavigationPage to set a flag that would allow "unsecured" pages.
 * Add amount of available/total memory available on Console home page (see http://www.javapractices.com/Topic83.cjp pattern)
 * Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
-* In DialogFieldConditionalAction is 'name' attribute needed anymore? If not, remove it. Also, move partner-field-name out of main class into subclasses that need them? It would make auto-documentation easier.
 * Add XML skins to SQL reports so that statements can emit XML and be associated with a stylesheet for reports (all within XDM) -- is this similar to NBCS?
-* Add 'style-sheet' value source tag to <page>, <report> and other places where XSLT might be useful
 
-* Add Label, AccessKey CSS attributes to allow keyboard navigation of forms
-	- DONE but haven't been able to test this on OS X browsers. TODO: test on Win IE 6.
-
-* Need to conduct detailed memory leak analysis, performance testing, stress/load testing (see http://www.pushtotest.com)
-* Add execution statistics to Dialogs in the same manner as the stats for SQL (collection using Logs, etc) -- need to know all the same type of info: #time executed, avg time to render, etc
 * Add style='report' to the SelectField that would merge the functionality of the old ReportField into SelectField. Consider merging the ReportSelectedItemsField into the same function so that SelectField can do everything within itself.
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
-* Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
-* Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
 * Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
-* Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
+* Allow navigation trees and other tags to be "open" -- meaning if they're defined more than once their definitions are extended not replaced.
 * Run through all the code to make sure all "TODO" tags are completed -- many of the TODO tags indicated code that hasn't been migrated over from 2.3 to 7.0.
 * Add ability for pages' body to be read in from databases, URLs, etc as well as files and local xml content
-* Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, etc)
+* Add "concurrent users" into console (all people currently logged in, perhaps total time spent doing stuff, list of pages visited, etc)
 * Create a console page that will show a list or statistics of all active scroll states (and ability to clear them/close them/etc).
 * Add capability for HTTP request parameters to be automatically populate into beans for dialog context liks Struts does (general plumbing for this already available in NavigationPage)
 * Ensure that all validation functionality is removed from fields and placed into validator objects so that they can be reused in Axiom
@@ -39,7 +22,6 @@
 * Consider adding rich text editing field mode (for field.memo) for IE/Moz using examples at http://www.interactivetools.com/products/htmlarea/ and http://www.kevinroth.com/rte/demo.htm and http://www.bris.ac.uk/is/projects/cms/ttw/ttw.html
 
 * Create "Define, Declare, Test, Customize, Deploy" tutorials
-* Add ability for child element tag documentation to be retrieved from createXXX, addXXX, or class javadoc in that order (right now only class definition javadoc is used).
 * Add documentation capability to TemplateProducers and TemplateConsumers so that those documentation resources may be displayed in Console.
 
 * Check out http://just4log.sourceforge.net/ features and incorporate them into Console
@@ -60,68 +42,15 @@
 * Add a 'tip of the day' feature to Console that would get general usage tips for Sparx, Axiom, etc.
 * Add a 'development tip of the day' feature to Console that would give general software development tips
 * Consider using Jakarta Commons VFS (http://jakarta.apache.org/commons/sandbox/vfs/api.html) for panel body source locations so that they can be obtained from anywhere
-* Look at Struts' MessageResources class for creating an 'rb' (resource-bundle) value source for internationlization
 * Create Sparx demo using CD manager example in Sue Spielman's Struts book -- maybe other e.g.'s like that?
-* Allow navigation trees and other tags to be "open" -- meaning if they're defined more than once their definitions are extended not replaced.
 * Use XDoclet for generating TLD files -- using appropriate merge points.
 * Consider using XDoclet for generation of DTD files and XSDs.
-* Consider adding struts-style plugins?
 * Implement JavaScript menu system using http://www.cs.ucla.edu/~heng/JSCookMenu/ (free for use)
 * Add data browser like http://www.jetools.com/products/databrowser/ to Console (research other tools as well)
 * Review Jakarta Commons Messenger (http://jakarta.apache.org/commons/sandbox/messenger/index.html) for JMS processing via Servlet container (very cool)
-* Review Jakarta Commons Resources (http://jakarta.apache.org/commons/sandbox/resources/index.html) for internationalization (i18n) of message strings
 * Review Logidex Asset Center (http://www.logiclibrary.com) to see if we can use JavaDoc tags to create similar asset manager for Sparx code in Console
 * Incorporate JDiff (http://javadiff.sourceforge.net/) documentation between releases
 * See if it makes sense to include Jamon (http://www.jamon.org) as a template engine option
 * Might be interesting to see if Sparx can work with x-Desktop (http://www.x-desktop.org/).
 * Review XP stories and scenarios capture methodology described in http://www.agilealliance.com/articles/articles/breitman.pdf and implement as new Sparx feature for capturing requirements and traceability
 * Review http://www.globecom.se/tora/ to see if creating a Sparx-based version would sell
-* 08/07/2003: Need to add checking for shared connection object in session in addition to checking it from the request
-
-BUGS
-* SelectField:
-1. When choices are pure text (e.g. choices="Choice1=A;Choice2=B") without using the text-list value source, an ArrayIndexOutofBound exception is thrown instead of taking the choices string as a list with only one item. The same thing holds true for the default attribute also.
-	java.lang.IndexOutOfBoundsException: Index: 0, Size: 0
-	at java.util.ArrayList.RangeCheck(ArrayList.java:508)
-	at java.util.ArrayList.get(ArrayList.java:320)
-	at com.netspective.commons.value.AbstractValue.getTextValue(AbstractValue.java:113)
-	at com.netspective.commons.value.PresentationValue.getTextValue(PresentationValue.java:219)
-	at com.netspective.commons.value.PresentationValue.getItems(PresentationValue.java:180)
-	at com.netspective.sparx.form.field.type.SelectField.renderControlHtml(SelectField.java:509)
-2. style="popup" doesn't  show the popup icon. EASY FIX: The popup icon is missing in the theme folder! Do we have a new pretty icon??!!
-3. When choices attribute is set to a query that doesn't exist, an exception is thrown on the screen and the dialog isn't drawn.
-	java.lang.NullPointerException
-	at com.netspective.axiom.sql.Query.translateNameForMapKey(Query.java:168)
-	at com.netspective.axiom.SqlManager.getQuery(SqlManager.java:131)
-	at com.netspective.axiom.value.source.QueryResultsValueSource.getQueryResults(QueryResultsValueSource.java:281)
-	at com.netspective.axiom.value.source.QueryResultsValueSource.getPresentationValue(QueryResultsValueSource.java:464)
-	at com.netspective.commons.value.source.AbstractValueSource.getPresentationItem(AbstractValueSource.java:100)
-	at com.netspective.sparx.form.field.type.SelectField.populateValue(SelectField.java:396)
-This problem was  made more 'user-friendly':
-    java.lang.RuntimeException: Unable to locate Query 'null' in SQL Manager
-but this still throws a RTE so the question is do we want to catch this and not show it on the screen or make the value
-source return an empty string???
-
-
-* Query Defn
-1. When adding query-defn into XML and you don't include a 'name' element (using 'id' mistkenly), it throws a really bad error
-instead of complaining about not having a 'name' element.
-java.lang.NullPointerException
-        at com.netspective.axiom.sql.dynamic.QueryDefinition.translateNameForMapKey(QueryDefinition.java:118)
-        at com.netspective.axiom.sql.dynamic.QueryDefinition.getNameForMapKey(QueryDefinition.java:128)
-        at com.netspective.axiom.sql.collection.QueryDefinitionsCollection.add(QueryDefinitionsCollection.java:68)
-        at com.netspective.axiom.SqlManager.addQueryDefn(SqlManager.java:229)
-
-  	FIXED: Added a null check in static method translateNameForMapKey().
-  	TODO: Give each query defn and query a default name like (queryDefnXX)
-
-2. This exception occurs once in a while.
-java.lang.NullPointerException
-        at com.netspective.sparx.sql.QueryResultSetDataSource.getActiveRowColumnData(QueryResultSetDataSource.java:123)
-        at com.netspective.commons.report.tabular.column.GeneralColumn.getFormattedData(GeneralColumn.java:290)
-        at com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin.produceDataRows(BasicHtmlTabularReportPanelSkin.java:332)
-        at com.netspective.sparx.theme.basic.BasicHtmlTabularReportPanelSkin.render(BasicHtmlTabularReportPanelSkin.java:187)
-        at com.netspective.sparx.report.tabular.HtmlTabularReportValueContext.produceReport(HtmlTabularReportValueContext.java:263)
-        at com.netspective.sparx.panel.AbstractHtmlTabularReportPanel.render(AbstractHtmlTabularReportPanel.java:207)
-        at com.netspective.sparx.report.tabular.destination.HtmlTabularReportBrowserDestination.render(HtmlTabularReportBrowserDestination.java:78)
-
