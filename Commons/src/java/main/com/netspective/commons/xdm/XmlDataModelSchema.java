@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.49 2004-08-08 20:01:22 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.50 2004-08-08 22:48:32 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1573,40 +1573,26 @@ public class XmlDataModelSchema
             ((ConstructionFinalizeListener) element).finalizeConstruction(pc, element, elementName);
     }
 
-    public void assignMapValue(final Object element, final Map map, String key, final String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
+    public boolean assignInstanceValue(final Object element, final String key, final Object value, final boolean required) throws IllegalAccessException, InvocationTargetException, DataModelException
     {
-        boolean required = false;
-        if (key.endsWith("!"))
-        {
-            required = true;
-            key = key.substring(0, key.length() - 1);
-        }
-
         Method method = (Method) getAttributeSetterMethods().get(key);
         if (method != null)
         {
             Class[] args = method.getParameterTypes();
             if (args.length == 1)
             {
-                Object value = map.get(key);
-
                 XmlDataModelSchema.AttributeSetter as = (XmlDataModelSchema.AttributeSetter) getAttributeSetters().get(key);
                 if(as != null)
                 {
-                    if (value == null)
-                    {
-                        if (required)
-                            throw new RuntimeException("Map key '" + key + "' is required but not available.");
-
-                        value = defaultValue;
-                    }
                     as.set(null, element, value == null ? null : value.toString());
+                    return true;
                 }
                 else
                 {
                     try
                     {
                         method.invoke(element, new Object[] { value });
+                        return true;
                     }
                     catch (Exception e)
                     {
@@ -1619,7 +1605,48 @@ public class XmlDataModelSchema
         }
         else if (required && log.isErrorEnabled())
             log.error("Attempting to assign '" + key + "' to a method in '" + element.getClass() + "' but there is no mutator available.");
+
+        // if we get to here, we couldn't find the method to assign the value to
+        return false;
     }
+
+    public void assignMapValue(final Object element, final Map map, String key, final String defaultValue) throws IllegalAccessException, InvocationTargetException, DataModelException
+    {
+        Object value = map.get(key);
+
+        boolean required = false;
+        if (key.endsWith("!"))
+        {
+            required = true;
+            key = key.substring(0, key.length() - 1);
+        }
+
+        if (value == null)
+        {
+            if (required)
+                throw new RuntimeException("Map key '" + key + "' is required but not available.");
+
+            value = defaultValue;
+        }
+
+        assignInstanceValue(element, key, value, required);
+    }
+
+    /**
+     * Given a Map, assign its current values using appropriate accessor methods of the instance object
+     * (using Java reflection).
+     * @param element The object who's mutator methods should be matched
+     * @param map The Map for which the key is a setXXX(YYY) call [XXX is the key] and values are the YYY parameter
+     * @param keys The names of the keys that should be assigned to the mutators of the instance object.
+     *             This may be '*' (for all keys in the map) or a comma-separated list of names. The parameter names
+     *             may optionally be followed by an '=' to indicate a default value for the parameter. Parameter
+     *             names may optionally be terminated with an '!' to indicate that they are required (an exception
+     *             is thrown if the parameter is unavailable. For example, "a,b!,c" would mean that parameter
+     *             'a', 'b' and 'c' should be assigned using setA(), setB() and setC() if available but an
+     *             exception should be thrown if 'b' is not available as a request parameter.
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
 
     public void assignMapValues(Object element, Map map, String keys) throws IllegalAccessException, DataModelException, InvocationTargetException
     {
