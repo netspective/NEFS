@@ -1,0 +1,1 @@
+* Review MEDICI (http://www.disintegration.org/~david/medici.html), C-based system similar to Junxion for EDI parsing
