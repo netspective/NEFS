@@ -1,5 +1,5 @@
 
-<project default="copy-resources">
+<project>
 
     <property name="frameworks-root-dir" value="c:/Projects/Frameworks"/>
     <property name="classes-dest-dir" value="${frameworks-root-dir}/tools/idea/classes"/>
@@ -7,6 +7,7 @@
     <target name="copy-resources">
 
         <!-- copy configuration files into the output directory, too, so that Resin has access to them -->
+        <fail message="If you get the latest copy of WEB-INF/web.xml you will see this is no longer needed -- talk to Shahid."/>
 
         <copy todir="${classes-dest-dir}">
             <fileset dir="${frameworks-root-dir}/Commons/src/java/main">
