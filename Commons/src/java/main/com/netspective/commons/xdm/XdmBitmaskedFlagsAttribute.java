@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmBitmaskedFlagsAttribute.java,v 1.18 2003-08-20 22:37:12 shahid.shah Exp $
+ * $Id: XdmBitmaskedFlagsAttribute.java,v 1.19 2003-08-20 22:53:06 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -259,7 +259,14 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
         FlagDefn[] flagDefns = getFlagsDefns();
         for(int i = 0; i < flagNames.length; i++)
         {
+            boolean set = true;
             String flagName = flagNames[i];
+            if(flagName.charAt(0) == '~')
+            {
+                set = false;
+                flagName = flagName.substring(1);
+            }
+
             boolean found = false;
             for(int j = 0; j < flagDefns.length; j++)
             {
@@ -270,7 +277,10 @@ public abstract class XdmBitmaskedFlagsAttribute implements Cloneable
                         throw new RuntimeException("Attempting to set ACCESS_PRIVATE flag '"+ flagDefn.name +"' from outside Java.");
 
                     found = true;
-                    this.flags |= flagDefn.mask;
+                    if(set)
+                        this.flags |= flagDefn.mask;
+                    else
+                        this.flags &= ~flagDefn.mask;
                 }
             }
 
