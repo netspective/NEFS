@@ -44,11 +44,17 @@
 package com.netspective.medigy.reference;
 
 import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.reference.type.GenderType;
+import com.netspective.medigy.reference.type.PartyRelationshipType;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 
 public interface Catalog
 {
     public Class[] ALL_REFERENCE_TYPES =
     {
         MaritalStatusType.class,
+        GenderType.class,
+        ContactMechanismType.class,
+        PartyRelationshipType.class
     };
 }
