@@ -27,6 +27,7 @@
 * Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 * Add feature that allows Navigation tree to "remember" the last child it was viewing (using cookies) so that traversal will be easier for users (won't have to go down the hierarchy)
 * Run through all the code to make sure all "TODO" tags are completed -- many of the TODO tags indicated code that hasn't been migrated over from 2.3 to 7.0.
+* Run ChangeLog on local CVS repository in NBCS to make sure all changes are propogated to Sparx 7.0 from NBCS Sparx 2.3 branch.
 
 * Check out http://just4log.sourceforge.net/ features and incorporate them into Console
 * Consider how to integrate http://jbpm.org/ (BPM) into Sparx
