@@ -947,7 +947,16 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
 
             QueryDefnSelect indexAccessor;
             indexAccessor = getAccessorByIndexEquality(index);
-            QueryResultSet qrs = indexAccessor.execute(cc, params, false);
+            QueryResultSet qrs = null;
+            try
+            {
+                qrs = indexAccessor.execute(cc, params, false);
+            }
+            catch(SQLException e)
+            {
+                log.error("Error while checking for columns " + index.getColumns().getOnlyNames(",") + " in unique index " + index.getName(), e);
+                continue;
+            }
             ResultSet rs = qrs.getResultSet();
             if(rs.next())
             {
