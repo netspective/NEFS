@@ -51,36 +51,80 @@
  */
 
 /**
- * @version $Id: GridFieldsFormTest.java,v 1.3 2004-01-04 04:40:27 aye.thu Exp $
+ * @version $Id: DateTimeFieldsFormTest.java,v 1.1 2004-01-04 04:40:27 aye.thu Exp $
  */
 package app.test;
 
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebLink;
 
-
-public class GridFieldsFormTest extends FormInputTest
+public class DateTimeFieldsFormTest extends FormInputTest
 {
     private WebForm form;
 
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+        formsInputLink.click();
+        WebResponse response = wc.getCurrentPage().getLinkWith("Date/Time").click();
+        form = response.getForms()[0];
+    }
+
     public void testForm() throws IOException, SAXException
     {
-        // verify all the default values
-        assertEquals("1", form.getParameterValue("_dc.grid01_row01_integerField01"));
-        assertEquals("2", form.getParameterValue("_dc.grid01_row01_integerField02"));
-        assertEquals("3", form.getParameterValue("_dc.grid01_row01_integerField03"));
-        assertEquals("4", form.getParameterValue("_dc.grid01_row01_integerField04"));
-        assertEquals("default", form.getParameterValue("_dc.composite01_textField03"));
-        assertEquals("default", form.getParameterValue("_dc.composite01_textField02"));
-        assertEquals("default", form.getParameterValue("_dc.composite01_textField01"));
+        // verify strictTodayDate's date
 
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        String strictTodayDate = sdf.format(new Date());
+        assertEquals(strictTodayDate, form.getParameterValue("_dc.dateFieldStrict"));
+
+        // verify the current time field
+        sdf = new SimpleDateFormat("HH:mm");
+        String nowTime = sdf.format(new Date());
+        assertEquals(nowTime, form.getParameterValue("_dc.timeField"));
+
+        // verify nonStrictTomorrowDate's date
+        Calendar calendar = GregorianCalendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.DAY_OF_MONTH, day + 1);
+        sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String nonStrictTomorrowDate = sdf.format(calendar.getTime());
+        assertEquals(nonStrictTomorrowDate, form.getParameterValue("_dc.dateFieldNonstrict"));
+
+        // verify the date-time field
+        sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+        String presentDateTime = sdf.format(new Date());
+        assertEquals(presentDateTime, form.getParameterValue("_dc.datetimeField"));
+
+        // set the duration field with invalid relationship values
+        form.setParameter("_dc.durationField_begin", "10/10/2003");
+        form.setParameter("_dc.durationField_end", "10/09/2003");
+
+        // verify that the error is shown
         WebResponse response = form.submit();
+        WebLink errorlink = response.getLinkWith("Beginning value should be before ending value");
+        assertNotNull(errorlink);
 
-        //  verify the first row header names
+        // set the duration field with one child missing
+        form.setParameter("_dc.durationField_begin", "");
+        response = form.submit();
+        errorlink = response.getLinkWith("Both beginning and ending values should be provided");
+        assertNotNull(errorlink);
+
+        // set the duration field with valid values
+        form.setParameter("_dc.durationField_begin", "10/10/2003");
+        form.setParameter("_dc.durationField_end", "10/11/2003");
+        response = form.submit();
+
         String[][] fieldStates = response.getTableWithID(DIALOG_CONTEXT_DEBUG_PANEL).asText();
         assertEquals("Field", fieldStates[0][0]);
         assertEquals("Type", fieldStates[0][1]);
@@ -88,31 +132,13 @@ public class GridFieldsFormTest extends FormInputTest
         assertEquals("Flags", fieldStates[0][3]);
         assertEquals("Value", fieldStates[0][4]);
 
-        // verify the first column to make sure all fields were submitted
-        // NOTE: There is a space (&nbps;) after the field names
-        assertEquals("grid-01.row-01.integer_field_01 ", fieldStates[4][0]);
-        assertEquals("grid-01.row-01.integer_field_02 ", fieldStates[5][0]);
-        assertEquals("grid-01.row-01.integer_field_03 ", fieldStates[6][0]);
-        assertEquals("grid-01.row-01.integer_field_04 ", fieldStates[7][0]);
-        assertEquals("composite-01.text_field_01 ", fieldStates[16][0]);
-        assertEquals("composite-01.text_field_02 ", fieldStates[17][0]);
-        assertEquals("composite-01.text_field_03 ", fieldStates[18][0]);
+        // verify the fourth column to make sure all the values were submitted
+        assertEquals("10/10/2003", fieldStates[2][4].trim());
+        assertEquals("10/11/2003", fieldStates[3][4].trim());
+        assertEquals(strictTodayDate, fieldStates[4][4].trim());
+        assertEquals(nonStrictTomorrowDate, fieldStates[5][4].trim());
+        assertEquals(nowTime, fieldStates[6][4].trim());
+        assertEquals(presentDateTime, fieldStates[7][4].trim());
 
-        assertEquals("1 ", fieldStates[4][4]);
-        assertEquals("2 ", fieldStates[5][4]);
-        assertEquals("3 ", fieldStates[6][4]);
-        assertEquals("4 ", fieldStates[7][4]);
-        assertEquals("default ", fieldStates[16][4]);
-        assertEquals("default ", fieldStates[17][4]);
-        assertEquals("default ", fieldStates[18][4]);
-
-    }
-
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-        formsInputLink.click();
-        WebResponse response = wc.getCurrentPage().getLinkWith("Grids").click();
-        form = response.getForms()[0];
     }
 }
