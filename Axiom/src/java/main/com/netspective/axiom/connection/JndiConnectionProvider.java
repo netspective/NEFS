@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JndiConnectionProvider.java,v 1.6 2004-01-20 14:15:51 shahid.shah Exp $
+ * $Id: JndiConnectionProvider.java,v 1.7 2004-04-28 14:52:00 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -102,7 +102,11 @@ public class JndiConnectionProvider implements ConnectionProvider
     {
         try
         {
-            return getJndiJdbcContext().getClass();
+            Context jndiJdbcContext = getJndiJdbcContext();
+            if(jndiJdbcContext != null)
+                return jndiJdbcContext.getClass();
+            else
+                return null;
         }
         catch (NamingException e)
         {
@@ -182,22 +186,25 @@ public class JndiConnectionProvider implements ConnectionProvider
         {
             Context env = getJndiJdbcContext();
 
-            for(NamingEnumeration e = env.list(""); e.hasMore();)
+            if(env != null)
             {
-                NameClassPair entry = (NameClassPair) e.nextElement();
-                String dataSourceId = JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName();
-                try
+                for(NamingEnumeration e = env.list(""); e.hasMore();)
                 {
-                    DataSource source = (DataSource) env.lookup(entry.getName());
-                    entries.add(getDataSourceEntry(dataSourceId, source));
-                }
-                catch (NamingException ex)
-                {
-                    log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
-                }
-                catch (SQLException ex)
-                {
-                    log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
+                    NameClassPair entry = (NameClassPair) e.nextElement();
+                    String dataSourceId = JNDIKEY_JDBC_ENTRY_PREFIX + entry.getName();
+                    try
+                    {
+                        DataSource source = (DataSource) env.lookup(entry.getName());
+                        entries.add(getDataSourceEntry(dataSourceId, source));
+                    }
+                    catch (NamingException ex)
+                    {
+                        log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
+                    }
+                    catch (SQLException ex)
+                    {
+                        log.debug(JndiConnectionProvider.class.getName() + ".getDataSourceEntries()", ex);
+                    }
                 }
             }
         }

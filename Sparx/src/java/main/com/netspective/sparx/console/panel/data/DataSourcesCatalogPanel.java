@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataSourcesCatalogPanel.java,v 1.6 2003-09-15 03:57:45 aye.thu Exp $
+ * $Id: DataSourcesCatalogPanel.java,v 1.7 2004-04-28 14:51:33 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -96,7 +96,8 @@ public class DataSourcesCatalogPanel extends AbstractHtmlTabularReportPanel
         public Value getValue(ValueContext vc)
         {
             ConnectionProvider cp = ((DatabaseConnValueContext) vc).getConnectionProvider();
-            return new GenericValue("Connection Provider: " + cp.getClass().getName() + "<br>" + "Underlying Implementation: " + cp.getUnderlyingImplementationClass().getName());
+            Class underlyingImplementationClass = cp.getUnderlyingImplementationClass();
+            return new GenericValue("Connection Provider: " + cp.getClass().getName() + "<br>" + "Underlying Implementation: " + (underlyingImplementationClass != null ? underlyingImplementationClass.getName() : "Unavailable"));
         }
 
         public boolean hasValue(ValueContext vc)
