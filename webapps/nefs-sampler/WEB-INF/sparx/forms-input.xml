@@ -284,8 +284,8 @@
                     Now that you're familiar with how they work in this example, you can see that<br>
                     <i>conditional</i> fields are fields whose state depends upon the state of other<br>
                     entities (in this case, other fields called <i>partner</i> fields).<br><br>
-                    A special case is the cond_text_field which needs is set to be required (from the client side)<br>
-                    but whould be not required if it's hidden. Since cond_text_field is a conditional the client side will<br>
+                    A special case is the cond_text_field which is set to be required (from the client side)<br>
+                    but would be not required if it's hidden. Since cond_text_field is a conditional the client side will<br>
                     take care of not doing the required check but the server side requires a few lines of Java.<br>
                     </div>
                     <hr/>
