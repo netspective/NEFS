@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryReportPanel.java,v 1.11 2004-03-01 07:02:52 aye.thu Exp $
+ * $Id: QueryReportPanel.java,v 1.12 2004-03-15 05:16:43 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -67,7 +67,18 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
     private Query query;
     private HtmlTabularReport report;
     private String[] urlFormats;
+    private ValueSource noDataMsg;
     private boolean defaultPanel;
+
+    public ValueSource getNoDataMsg()
+    {
+        return noDataMsg;
+    }
+
+    public void setNoDataMsg(ValueSource noDataMsg)
+    {
+        this.noDataMsg = noDataMsg;
+    }
 
     public String getName()
     {
@@ -146,7 +157,7 @@ public class QueryReportPanel extends AbstractHtmlTabularReportPanel
                 else
                     resultSet = query.execute(nc, null, false);
             }
-            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(NO_DATA_MSG);
+            QueryResultSetDataSource qrsds = new QueryResultSetDataSource(noDataMsg != null? noDataMsg : NO_DATA_MSG);
             qrsds.setQueryResultSet(resultSet);
             return qrsds;
         }
