@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.31 2003-08-31 14:06:56 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.32 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -65,7 +65,6 @@ import com.netspective.sparx.navigate.NavigationControllerServlet;
 import com.netspective.sparx.navigate.NavigationPathFlags;
 import com.netspective.sparx.theme.basic.AbstractThemeSkin;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.console.ConsoleServlet;
 import com.netspective.sparx.ProjectComponent;
 import com.netspective.commons.security.AuthenticatedUser;
 
@@ -185,7 +184,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("				<td class=\"active-user-anchor\"><img class=\"active-user-anchor\" src=\"" + theme.getResourceUrl("/images/spacer.gif") + "\" alt=\"\" height=\"100%\" width=\"100%\" border=\"0\"></td>\n");
         writer.write("				<td nowrap><span class=\"active-user-heading\">&nbsp;App&nbsp;</span></td>\n");
         writer.write("				<td nowrap><a class=\"active-user\" href=\"" + nc.getHttpRequest().getContextPath() + "\">&nbsp;&nbsp;" +
-                nc.getHttpRequest().getContextPath() +" ("+ nc.getServletContext().getServerInfo() +")</a></td>\n");
+                nc.getHttpRequest().getContextPath() +" ("+ nc.getHttpServlet().getServletContext().getServerInfo() +")</a></td>\n");
         writer.write("			</tr>\n");
         writer.write("		</table>\n");
         writer.write("	</td>\n");

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmSchemaStructurePanel.java,v 1.3 2003-08-19 13:27:48 shahid.shah Exp $
+ * $Id: XdmSchemaStructurePanel.java,v 1.4 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.framework;
@@ -325,7 +325,7 @@ public class XdmSchemaStructurePanel extends AbstractHtmlTabularReportPanel
 
     public HtmlTabularReportValueContext createContext(NavigationContext nc, HtmlTabularReportSkin skin)
     {
-        HtmlTabularReportValueContext vc = new HtmlTabularReportValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
+        HtmlTabularReportValueContext vc = new HtmlTabularReportValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this, getReport(nc), skin);
         if(view.getValueIndex() == XdmSchemaStructurePanelViewEnumeratedAttribute.TREE && vc.getReport() == structureReport)
         {
             TabularReportColumnState[] states = vc.getStates();

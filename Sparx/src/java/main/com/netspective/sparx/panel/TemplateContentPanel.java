@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.6 2003-06-12 14:36:09 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.7 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -82,7 +82,7 @@ public class TemplateContentPanel extends AbstractPanel implements XmlDataModelS
 
     public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
     {
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
         vc.setNavigationContext(nc);
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
         templatePanelSkin.renderFrameBegin(writer, vc);
@@ -92,7 +92,7 @@ public class TemplateContentPanel extends AbstractPanel implements XmlDataModelS
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServletContext(), dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
+        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
         vc.setNavigationContext(dc.getNavigationContext());
         vc.setDialogContext(dc);
         HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();

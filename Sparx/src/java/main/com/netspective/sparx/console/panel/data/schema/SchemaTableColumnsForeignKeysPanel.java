@@ -41,7 +41,7 @@ package com.netspective.sparx.console.panel.data.schema;
  */
 
 /**
- * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.4 2003-05-30 23:11:32 shahid.shah Exp $
+ * $Id: SchemaTableColumnsForeignKeysPanel.java,v 1.5 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 import java.io.StringWriter;
@@ -162,7 +162,7 @@ public class SchemaTableColumnsForeignKeysPanel extends SchemaTableColumnsPanel
                     {
                         HtmlTabularReportValueContext thisVC = (HtmlTabularReportValueContext) reportValueContext;
                         HtmlTabularReportValueContext dataVC = new HtmlTabularReportValueContext(
-                                thisVC.getServletContext(), thisVC.getServlet(),
+                                thisVC.getServlet(),
                                 thisVC.getRequest(), thisVC.getResponse(), dataPanel, dataPanel.createDataReport(fKeyTable),
                                 thisVC.getSkin()
                                 );

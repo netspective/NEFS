@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.27 2003-08-31 14:06:56 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.28 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -462,6 +462,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
      */
     public void renderPageHeader(Writer writer, NavigationContext nc) throws IOException
     {
+        // in case any errors or messages need to appear, they'll show up at the top of our app
         renderDevelopmentEnvironmentHeader(writer, nc);
 
         if (nc.getActiveState().getFlags().flagIsSet(NavigationPage.Flags.IS_POPUP_MODE))

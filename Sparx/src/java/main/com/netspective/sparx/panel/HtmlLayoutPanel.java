@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlLayoutPanel.java,v 1.17 2003-07-10 00:52:09 shahid.shah Exp $
+ * $Id: HtmlLayoutPanel.java,v 1.18 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -210,7 +210,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
-                HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
+                HtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
                 HtmlPanelSkin tabbedPanelSkin = theme.getTabbedPanelSkin();
                 tabbedPanelSkin.renderPanelRegistration(writer, vc);
                 tabbedPanelSkin.renderFrameBegin(writer, vc);
@@ -266,7 +266,7 @@ public class HtmlLayoutPanel implements HtmlPanel
                 break;
 
             case HtmlPanelsStyleEnumeratedAttribute.TABBED:
-                BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServletContext(), dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
+                BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
                 HtmlPanelSkin tabbedPanelSkin = theme.getTabbedPanelSkin();
                 vc.setDialogContext(dc);
                 tabbedPanelSkin.renderPanelRegistration(writer, vc);

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: NavigationControllerServletOptions.java,v 1.1 2003-08-24 18:50:11 shahid.shah Exp $
+ * $Id: NavigationControllerServletOptions.java,v 1.2 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -81,6 +81,7 @@ public class NavigationControllerServletOptions
     private String defaultLogoutRequestParamName = "_logout";
     private String defaultSparxResourceLocators = "/resources/sparx,/sparx";
     private String defaultInitSuccess = "END_INIT";
+    private String defaultDataSource = "jdbc/default";
 
     private CommandLineParser parser = new PosixParser();
     private Options servletOptions = new Options();
@@ -197,8 +198,11 @@ public class NavigationControllerServletOptions
 
         servletOptions.addOption(OptionBuilder.withLongOpt("debug-options")
                                               .withDescription("Dump the option values to STDOUT.")
-                                              .create('d'));
+                                              .create('g'));
 
+        servletOptions.addOption(OptionBuilder.withLongOpt("default-data-source")
+                                              .withDescription("The identifier of the default data source.")
+                                              .create('d'));
     }
 
     public boolean isHelpRequested()
@@ -208,7 +212,7 @@ public class NavigationControllerServletOptions
 
     public boolean isDebugOptionsRequested()
     {
-        return commandLine.hasOption("d");
+        return commandLine.hasOption("g");
     }
 
     public String getLoginManagerName()
@@ -279,6 +283,11 @@ public class NavigationControllerServletOptions
     public String[] getProjectLifecycleListenerClassNames()
     {
         return commandLine.getOptionValues('r');
+    }
+
+    public String getDefaultDataSourceId()
+    {
+        return commandLine.getOptionValue('d', defaultDataSource);
     }
 
     public Properties setProperties(Properties properties, String propNamesPrefix, boolean setNulls)

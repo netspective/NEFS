@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.22 2003-08-24 22:29:37 shahid.shah Exp $
+ * $Id: Project.java,v 1.23 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -190,6 +190,7 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     private AntProjects antProjects = new AntProjects();
     private HttpLoginManagers loginManagers = new HttpLoginManagers();
     private Themes themes = new Themes();
+    private String defaultDataSource;
 
     public Project()
     {
@@ -407,6 +408,16 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */
+
+    public String getDefaultDataSource()
+    {
+        return defaultDataSource;
+    }
+
+    public void setDefaultDataSource(String defaultDataSource)
+    {
+        this.defaultDataSource = defaultDataSource;
+    }
 
     public com.netspective.axiom.sql.dynamic.QueryDefinition createQueryDefn()
     {

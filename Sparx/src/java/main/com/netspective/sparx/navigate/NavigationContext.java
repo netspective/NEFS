@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationContext.java,v 1.16 2003-08-20 19:00:22 shahid.shah Exp $
+ * $Id: NavigationContext.java,v 1.17 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -83,7 +83,7 @@ public class NavigationContext extends BasicDbHttpServletValueContext
 
     public NavigationContext(NavigationTree ownerTree, ServletContext aContext, Servlet aServlet, ServletRequest aRequest, ServletResponse aResponse, NavigationSkin skin, String activePathId)
     {
-        super(aContext, aServlet, aRequest, aResponse);
+        super(aServlet, aRequest, aResponse);
 
         // in case the tree needs to do some stuff with its content
         ownerTree.finalizeContents(this);

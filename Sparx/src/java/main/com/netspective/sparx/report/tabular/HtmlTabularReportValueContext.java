@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: HtmlTabularReportValueContext.java,v 1.5 2003-06-25 07:11:23 aye.thu Exp $
+ * $Id: HtmlTabularReportValueContext.java,v 1.6 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.report.tabular;
@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -97,9 +96,9 @@ public class HtmlTabularReportValueContext extends BasicDbHttpServletValueContex
     private int rowCurrent, rowStart, rowEnd;
     private TabularReportDataSourceScrollState scrollState;
 
-    public HtmlTabularReportValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
+    public HtmlTabularReportValueContext(Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel, HtmlTabularReport reportDefn, TabularReportSkin skin)
     {
-        super(context, servlet, request, response);
+        super(servlet, request, response);
         this.panel = panel;
         this.report = reportDefn;
         this.skin = skin;

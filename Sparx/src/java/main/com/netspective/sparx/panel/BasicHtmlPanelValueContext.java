@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelValueContext.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BasicHtmlPanelValueContext.java,v 1.3 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -56,9 +56,9 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
     private HtmlPanel panel;
     private int panelRenderFlags;
 
-    public BasicHtmlPanelValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel)
+    public BasicHtmlPanelValueContext(Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel)
     {
-        super(context, servlet, request, response);
+        super(servlet, request, response);
         this.panel = panel;
     }
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.33 2003-08-31 02:01:15 aye.thu Exp $
+ * $Id: DialogField.java,v 1.34 2003-08-31 15:29:13 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -1332,7 +1332,7 @@ public class DialogField implements TemplateConsumer
             mi.addJavaCode("\tpublic DialogField.State get" + mi.getMemberName() + "State() { return fieldStates(\"" + mi.getFieldName() + "\"); }\n");
 
 		mi.addJavaCode("\tpublic "+ stateValueClassName +" get" + memberName + "() { return ("+ stateValueClassName +") get"+ mi.getMemberName() +"State().getValue(); }\n");
-		mi.addJavaCode("\tpublic DialogField.Flags get" + memberName + "StateFlags() { return get"+ mi.getMemberName() +"State().getStateFlags(); }\n");
+		mi.addJavaCode("\tpublic DialogFieldFlags get" + memberName + "StateFlags() { return get"+ mi.getMemberName() +"State().getStateFlags(); }\n");
 		mi.addJavaCode("\tpublic String get" + memberName + "PrivateRequestParam() { return dialogContext.getRequest().getParameter(\"" + Dialog.PARAMNAME_CONTROLPREFIX + fieldName + "\"); }\n");
 		mi.addJavaCode("\tpublic String get" + memberName + "PublicRequestParam() { return dialogContext.getRequest().getParameter(\"" + fieldName + "\"); }\n");
 		mi.addJavaCode("\tpublic "+ fieldClassName +" get" + memberName + "Field() { return ("+ fieldClassName +") get"+ mi.getMemberName() +"State().getField(); }\n");

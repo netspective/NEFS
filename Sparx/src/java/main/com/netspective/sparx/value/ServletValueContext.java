@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletValueContext.java,v 1.5 2003-08-28 00:46:21 shahid.shah Exp $
+ * $Id: ServletValueContext.java,v 1.6 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -70,11 +70,6 @@ public interface ServletValueContext extends ValueContext
      * Retrieve the active servlet response.
      */
     public ServletResponse getResponse();
-
-    /**
-     * Retrieve the active servlet context (application scope).
-     */
-    public ServletContext getServletContext();
 
     /**
      * Retrieve the freemark configuration object for the active servlet

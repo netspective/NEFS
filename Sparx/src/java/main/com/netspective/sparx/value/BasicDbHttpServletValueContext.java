@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.32 2003-08-28 01:18:07 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.33 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -62,13 +62,14 @@ import com.netspective.sparx.ProjectManager;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.navigate.NavigationControllerServlet;
+import com.netspective.sparx.navigate.NavigationControllerServletOptions;
 import com.netspective.sparx.form.DialogsManager;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.config.ConfigurationsManager;
 import com.netspective.commons.acl.AccessControlListsManager;
-import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.commons.RuntimeEnvironment;
 
@@ -83,7 +84,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     private NavigationContext navigationContext;
     private DialogContext dialogContext;
-    private ServletContext context;
     private Servlet servlet;
     private ServletRequest request;
     private ServletResponse response;
@@ -93,15 +93,14 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     {
     }
 
-    public BasicDbHttpServletValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response)
+    public BasicDbHttpServletValueContext(Servlet servlet, ServletRequest request, ServletResponse response)
     {
-        initialize(context, servlet, request, response);
+        initialize(servlet, request, response);
     }
 
-    public void initialize(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response)
+    public void initialize(Servlet servlet, ServletRequest request, ServletResponse response)
     {
         contextNum++;
-        this.context = context;
         this.request = request;
         this.response = response;
         this.servlet = servlet;
@@ -110,7 +109,7 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public void initialize(NavigationContext nc)
     {
-        initialize(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse());
+        initialize(nc.getServlet(), nc.getRequest(), nc.getResponse());
         setNavigationContext(nc);
     }
 
@@ -120,9 +119,12 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
         if(dataSourceId != null && dataSourceId.length() > 0)
             return dataSourceId;
 
-        dataSourceId = context.getInitParameter(INITPARAMNAME_DEFAULT_DATA_SRC_ID);
+        dataSourceId = ((NavigationControllerServlet) servlet).getServletOptions().getDefaultDataSourceId();
         if(dataSourceId == null)
-            throw new RuntimeException("No default data source available. Check '"+ INITPARAMNAME_DEFAULT_DATA_SRC_ID +"' servlet context init parameter.");
+            dataSourceId = getProject().getDefaultDataSource();
+
+        if(dataSourceId == null)
+            throw new RuntimeException("No default data source available. Provide one using '"+ NavigationControllerServletOptions.INITPARAMNAME_SERVLET_OPTIONS +"' servlet context init parameter or in project.xml using 'default-data-source' tag.");
 
         return dataSourceId;
     }
@@ -190,11 +192,6 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Servlet getServlet()
     {
         return servlet;
-    }
-
-    public ServletContext getServletContext()
-    {
-        return context;
     }
 
     public AuthenticatedUser getAuthenticatedUser()
@@ -265,11 +262,12 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
 
     public Configuration getFreeMarkerConfiguration()
     {
-        Configuration result = (Configuration) context.getAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG);
+        final ServletContext servletContext = getHttpServlet().getServletContext();
+        Configuration result = (Configuration) servletContext.getAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG);
         if(result == null)
         {
             result = FreeMarkerConfigurationAdapters.getInstance().constructWebAppConfiguration(this);
-            context.setAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG, result);
+            servletContext.setAttribute(CONTEXTATTRNAME_FREEMARKER_CONFIG, result);
         }
         return result;
     }

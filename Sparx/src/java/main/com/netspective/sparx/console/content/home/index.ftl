@@ -7,16 +7,16 @@
                 <@reportTable
                         headings = ["Property", "Value"]
                         data=[
-                          ["Application Id", "<code>${vc.servletContext.servletContextName}</code>"],
-                          ["Application Home", "<code>${vc.servletContext.getRealPath('')}</code>"],
+                          ["Application Id", "<code>${vc.servlet.servletContext.servletContextName}</code>"],
+                          ["Application Home", "<code>${vc.servlet.servletContext.getRealPath('')}</code>"],
                           ["<a href='project/project-source'>Sparx Project Source</a>", "<code>${vc.projectComponent.inputSource.identifier}</code>"],
                           ["<a href='manual/project/runtime-environment'>Runtime Environment</a>", "<code>${vc.runtimeEnvironmentFlags.flagsText}</code>"],
-                          ["<a href='project/configuration/servlet'>Deployment Descriptor</a>", "<code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}</code>"]
+                          ["<a href='project/configuration/servlet'>Deployment Descriptor</a>", "<code>${vc.servlet.servletContext.getRealPath('WEB-INF/web.xml')}</code>"]
                           ]/>
             </@panel>
             <p>
             <@panel heading="Versions">
-                <#assign appServerInfo = vc.servletContext.serverInfo?split("/")/>
+                <#assign appServerInfo = vc.servlet.servletContext.serverInfo?split("/")/>
                 <#if appServerInfo?size gt 1>
                     <#assign appServerName = " (${appServerInfo[0]})"/>
                     <#assign appServerVersion = appServerInfo[1]/>

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ServletContextFileValueSource.java,v 1.2 2003-08-24 18:46:05 shahid.shah Exp $
+ * $Id: ServletContextFileValueSource.java,v 1.3 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -56,6 +56,7 @@ import com.netspective.commons.value.PresentationValue;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.RuntimeEnvironmentFlags;
 import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.axiom.ConnectionContext;
 
 public class ServletContextFileValueSource extends AbstractValueSource
@@ -94,7 +95,7 @@ public class ServletContextFileValueSource extends AbstractValueSource
 
     public Value getValue(ValueContext vc)
     {
-        final ServletValueContext svc = (ServletValueContext)
+        final HttpServletValueContext svc = (HttpServletValueContext)
                 (vc instanceof ConnectionContext ? ((ConnectionContext) vc).getDatabaseValueContext() :
                 vc);
 
@@ -111,8 +112,8 @@ public class ServletContextFileValueSource extends AbstractValueSource
         else
         {
             return new GenericValue(root ?
-                         svc.getServletContext().getRealPath(null) :
-                         svc.getServletContext().getRealPath(spec.getParams()));
+                         svc.getHttpServlet().getServletContext().getRealPath(null) :
+                         svc.getHttpServlet().getServletContext().getRealPath(spec.getParams()));
         }
     }
 

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: FreeMarkerConfigurationAdapters.java,v 1.6 2003-08-30 19:15:48 shahid.shah Exp $
+ * $Id: FreeMarkerConfigurationAdapters.java,v 1.7 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -65,7 +65,7 @@ import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.ext.beans.BeansWrapper;
 
-import com.netspective.sparx.value.ServletValueContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.commons.text.TextUtils;
 
 public class FreeMarkerConfigurationAdapters
@@ -134,9 +134,9 @@ public class FreeMarkerConfigurationAdapters
         configuration.setSharedVariable("statics", BeansWrapper.getDefaultInstance().getStaticModels());
     }
 
-    public Configuration constructWebAppConfiguration(ServletValueContext vc)
+    public Configuration constructWebAppConfiguration(HttpServletValueContext vc)
     {
-        ServletContext servletContext = vc.getServletContext();
+        ServletContext servletContext = vc.getHttpServlet().getServletContext();
         String templatePathsText = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-paths");
         String templatePathsDelim = servletContext.getInitParameter("com.netspective.sparx.template.freemarker.template-path-delim");
 
@@ -151,7 +151,7 @@ public class FreeMarkerConfigurationAdapters
             {
                 String[] templatePaths = TextUtils.split(templatePathsText, templatePathsDelim == null ? File.pathSeparator : templatePathsDelim, true);
                 for(int i = 0; i < templatePaths.length; i++)
-                    templateLoaders.add(new FileTemplateLoader(new File(vc.getServletContext().getRealPath(templatePaths[i]))));
+                    templateLoaders.add(new FileTemplateLoader(new File(servletContext.getRealPath(templatePaths[i]))));
             }
         }
         catch(Exception e)

@@ -9,7 +9,7 @@
     <#assign paramName = 'com.netspective.sparx.RUNTIME_ENVIRONMENT_FLAGS'>
     If you'd like to modify the runtime environment flags, do the following:
     <ol>
-        <li>Open your application's web.xml file (<code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}</code>).</li>
+        <li>Open your application's web.xml file (<code>${vc.servlet.servletContext.getRealPath('WEB-INF/web.xml')}</code>).</li>
         <li>Modify the <code>${paramName}</code> context parameter. The parameter may
         be set to a single value or may contain multiple flags separated using the '<code>|</code>' character. The valid
         values for the environment flag names are:

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PanelTransform.java,v 1.3 2003-07-03 00:42:44 shahid.shah Exp $
+ * $Id: PanelTransform.java,v 1.4 2003-08-31 15:29:14 shahid.shah Exp $
  */
 
 package com.netspective.sparx.template.freemarker;
@@ -120,7 +120,7 @@ public class PanelTransform implements TemplateTransformModel
             }
 
             vc = (HttpServletValueContext) model.getWrappedObject();
-            pvc = new BasicHtmlPanelValueContext(vc.getServletContext(), vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
+            pvc = new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(), vc.getResponse(), panel);
             tabbedPanelSkin = vc.getActiveTheme().getTabbedPanelSkin();
             try
             {
