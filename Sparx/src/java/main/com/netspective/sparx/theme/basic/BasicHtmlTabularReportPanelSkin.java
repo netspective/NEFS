@@ -51,16 +51,20 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.19 2003-07-24 05:03:08 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.20 2003-08-01 05:50:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.StringTokenizer;
+import java.util.List;
 
 import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelFrame;
+import com.netspective.sparx.panel.HtmlPanelActions;
 import com.netspective.commons.report.tabular.TabularReportColumns;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.TabularReportValueContext;
@@ -72,11 +76,17 @@ import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
+import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
+import com.netspective.sparx.report.tabular.HtmlReportActions;
+import com.netspective.sparx.report.tabular.HtmlReportAction;
 import com.netspective.sparx.command.RedirectCommand;
+import com.netspective.sparx.form.sql.QueryDialog;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.command.Command;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implements HtmlTabularReportSkin
 {
@@ -85,6 +95,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         public static final int SHOW_HEAD_ROW = BasicHtmlPanelSkin.Flags.STARTCUSTOM;
         public static final int SHOW_FOOT_ROW = SHOW_HEAD_ROW * 2;
         public static final int ALLOW_TREE_EXPAND_COLLAPSE = SHOW_FOOT_ROW * 2;
+        public static final int SHOW_SELECTION_COMMAND_HEAD_ROW = ALLOW_TREE_EXPAND_COLLAPSE * 2;       // show the selectable report's command at the top of the frame
+        public static final int SHOW_SELECTION_COMMAND_FOOT_ROW = SHOW_SELECTION_COMMAND_HEAD_ROW * 2;  // show the selectable report's command at the bottom of the frame
         public static final int STARTCUSTOM = ALLOW_TREE_EXPAND_COLLAPSE * 2;
 
         public static final XdmBitmaskedFlagsAttribute.FlagDefn[] FLAGDEFNS = new XdmBitmaskedFlagsAttribute.FlagDefn[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 2];
@@ -96,6 +108,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 0] = new FlagDefn(ACCESS_XDM, "SHOW_HEAD_ROW", SHOW_HEAD_ROW);
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_FOOT_ROW", SHOW_FOOT_ROW);
             FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "ALLOW_TREE_EXPAND_COLLAPSE", ALLOW_TREE_EXPAND_COLLAPSE);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_HEAD_ROW", SHOW_SELECTION_COMMAND_HEAD_ROW);
+            FLAGDEFNS[BasicHtmlPanelSkin.Flags.FLAGDEFNS.length + 1] = new FlagDefn(ACCESS_XDM, "SHOW_SELECTION_COMMAND_FOOT_ROW", SHOW_SELECTION_COMMAND_FOOT_ROW);
         }
 
         public XdmBitmaskedFlagsAttribute.FlagDefn[] getFlagsDefns()
@@ -175,6 +189,8 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
             produceFootRow(writer, (HtmlTabularReportValueContext) rc);
 
+        // TODO: Need to check the flag to find out where the command item for the selectable report should be
+        produceSelectableCommandRow(writer, (HtmlTabularReportValueContext)rc);
         writer.write("    </table>\n");
 
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
@@ -262,17 +278,21 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             treeScript.append("var activeNode;\n");
         }
 
-        //TODO: Sparx 2.x conversion required
-        //ResultSetScrollState scrollState = rc.getScrollState();
-        //boolean paging = scrollState != null;
         HtmlTabularReportDataSourceScrollState scrollState = (HtmlTabularReportDataSourceScrollState) rc.getScrollState();
         boolean paging = scrollState != null;
-
         boolean isOddRow = false;
+
+        int currentPage = 1;
+
+        if (paging)
+        {
+            currentPage = scrollState.getActivePage();
+        }
+
         while(ds.next())
         {
             isOddRow = ! isOddRow;
-
+            int activeRow = ds.getActiveRowNumber();
             int hiearchyCol = 0;
             int activeLevel = 0;
             int activeParent = -1;
@@ -298,12 +318,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("<tr>");
 
-
-
-            produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
+            // construct the HTML for the data columns
+            String[] rowData = new String[dataColsCount];
+            StringBuffer dataBuffer = new StringBuffer();
             for(int i = 0; i < dataColsCount; i++)
             {
-
                 TabularReportColumn column = columns.getColumn(i);
                 TabularReportColumnState state = states[i];
 
@@ -328,19 +347,19 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                             (ds.isActiveRowSelected() ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style + "\">" +
                         data +
                         "&nbsp;</td>";
-
-                writer.write(defn.replaceOutputPatterns(rc, ds, singleColumn));
+                dataBuffer.append(defn.replaceOutputPatterns(rc, ds, singleColumn));
+                rowData[i] = data;
             }
-            produceDataRowDecoratorAppend(writer, rc, ds, isOddRow);
+            produceDataRowDecoratorPrepend(writer, rc, ds, rowData, isOddRow);
+            writer.write(dataBuffer.toString());
+            produceDataRowDecoratorAppend(writer, rc, ds, rowData, isOddRow);
+
             writer.write("</tr>");
             rowsWritten++;
-            //TODO: Sparx 2.x conversion required
             // check to see if this row should be the last
             if (paging && rowsWritten == scrollState.getRowsPerPage())
                 break;
 
-            //if(paging && rc.endOfPage())
-            //    break;
         }
 
         if (rowsWritten == 0)
@@ -391,6 +410,14 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int dataColsCount = columns.size();
 
         writer.write("<tr>");
+        int prependColCount = getRowDecoratorPrependColsCount(rc);
+        if (prependColCount > 0)
+        {
+            for (int k=0; k < prependColCount; k++)
+            {
+                 writer.write("        <td class=\"report-column-summary\" nowrap>&nbsp;&nbsp;</td>");
+            }
+        }
         for(int i = 0; i < dataColsCount; i++)
         {
             TabularReportColumn column = columns.getColumn(i);
@@ -403,7 +430,45 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
 
             writer.write("<td class=\"report-column-summary\" style=\""+ states[i].getCssStyleAttrValue() +"\">" + summary + "</td>");
         }
+
         writer.write("</tr>");
+    }
+
+    /**
+     * Produce the HTML for the button/link for the selectable report action processing
+     * @param rc
+     * @param writer
+     * @throws IOException
+     */
+    public void produceSelectableCommandRow( Writer writer, HtmlTabularReportValueContext rc) throws IOException
+    {
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
+        HtmlReportActions actions = report.getActions();
+        StringBuffer sb = new StringBuffer();
+        sb.append("    <tr>");
+        if (actions != null)
+        {
+            HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
+            if (reportAction != null)
+            {
+                TabularReportColumns columns = rc.getColumns();
+                int colsCount = columns.size() + getRowDecoratorPrependColsCount(rc);
+
+                Theme theme = rc.getActiveTheme();
+                Command command = reportAction.getCommand(rc);
+                if (command instanceof RedirectCommand)
+                {
+                    String title = reportAction.getTitle().getTextValue(rc);
+                    sb.append("            <td colspan=\"" + colsCount + "\" class=\"report-column-heading\">" +
+                            "<a class=\""+ panelClassNamePrefix +"-frame-action\" title=\""+ title + "\" href=\"" +
+                             ((RedirectCommand) command).getLocation().getTextValue(rc)  + "\" onClick=\"return ReportAction_submit(" + QueryDialog.EXECUTE_SELECT_ACTION +
+                            ", '"+ ((RedirectCommand) command).getLocation().getTextValue(rc)  +
+                            "')\">&nbsp;" + reportAction.getCaption().getTextValue(rc) + "&nbsp;</a></td>");
+                }
+            }
+        }
+        sb.append("    </tr>");
+        writer.write(sb.toString());
     }
 
     /**
@@ -413,8 +478,59 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
      * @param isOddRow
      * @throws IOException
      */
-    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    public void produceDataRowDecoratorPrepend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
+        HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report
+            return;
+        }
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
+        if (reportAction != null)
+        {
+            // use the active row rumber within the result set as the checkbox name
+            int activeRowNumber = ds.getActiveRowNumber();
+
+            // attach all the row data as name/value pairs to the value of the checkbox. also prepend the active row number
+            // to the string
+            StringBuffer valueStr = new StringBuffer(activeRowNumber + "\t");
+            for (int i=0; i < rowData.length; i++)
+            {
+                String colHeading = ds.getHeadingRowColumnData(i);
+                valueStr.append(i != rowData.length-1 ? (colHeading + "=" + rowData[i] + "\t") : (colHeading + "=" + rowData[i]));
+            }
+
+            writer.write("<td " + (isOddRow ? "class=\"report-column-even\"" : "class=\"report-column-odd\"") + " width=\"10\">");
+            writer.write("<input type=\"checkbox\" value=\"" + valueStr.toString() + "\" name=\"checkbox_" + activeRowNumber +
+                        "\" title=\"Click here to select the row.\" ");
+            HttpServletRequest request = (HttpServletRequest) rc.getRequest();
+
+            // get the list of selected rows so that the correct checkboxes can be highlighted
+            String[] selectedValues = request.getParameterValues("_dc.selectedItemList");
+
+            if (selectedValues != null)
+            {
+                for (int i = 0; i < selectedValues.length; i++)
+                {
+                    StringTokenizer st = new StringTokenizer(selectedValues[i], "\t");
+                    if (st.countTokens() > 0)
+                    {
+                        int selectedRow = Integer.parseInt(st.nextToken());
+
+                        if (selectedRow == activeRowNumber)
+                        {
+                            writer.write("checked");
+                            break;
+                        }
+                    }
+
+                }
+            }
+            writer.write(" onClick=\"ReportAction_selectRow(this, 'selected_item_list', '" + rowData + "')\">\n");
+            writer.write("</td>");
+        }
     }
 
     /**
@@ -424,17 +540,43 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
      * @param isOddRow
      * @throws IOException
      */
-    public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, boolean isOddRow) throws IOException
+    // TODO: Change isOddRow to the ACTUAL row number
+    public void produceDataRowDecoratorAppend(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds, String[] rowData, boolean isOddRow) throws IOException
     {
     }
 
     protected int getRowDecoratorPrependColsCount(HtmlTabularReportValueContext rc)
     {
-        return 0;
+        BasicHtmlTabularReport report = (BasicHtmlTabularReport)rc.getReport();
+        HtmlReportActions actions = report.getActions();
+        if (actions == null)
+        {
+            // no actions are defined in the report so return 0
+            return 0;
+        }
+        HtmlReportAction reportAction = actions.get(HtmlReportAction.Type.getValue(HtmlReportAction.Type.RECORD_SELECT));
+        if (reportAction != null)
+            return 1;
+        else
+            return 0;
     }
 
     protected int getRowDecoratorAppendColsCount(HtmlTabularReportValueContext rc)
     {
         return 0;
+    }
+
+    /**
+     * Produces the HTML for the panel actions and for report actions that are included by default such as selectables
+     * @param writer
+     * @param vc
+     * @param frame
+     * @throws IOException
+     */
+    public void produceHeadingExtras(Writer writer, HtmlPanelValueContext vc, HtmlPanelFrame frame) throws IOException
+    {
+        super.produceHeadingExtras(writer, vc, frame);
+
+
     }
 }
