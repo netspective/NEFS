@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateProcessor.java,v 1.1 2003-08-31 22:44:29 shahid.shah Exp $
+ * $Id: TemplateProcessor.java,v 1.2 2003-11-27 19:21:38 shahid.shah Exp $
  */
 
 package com.netspective.commons.template;
@@ -52,5 +52,13 @@ import com.netspective.commons.value.ValueContext;
 
 public interface TemplateProcessor
 {
+    /**
+     * The name of the ValueContext attribute that allows template variables to be shared. This attribute,
+     * which must be of type Map, must be set using the ValueContext.setAttribute() prior to the process() method
+     * being called. If available, the vars map will be merged with any template variables passed into the process()
+     * method.
+     */
+    public static final String VCATTRNAME_SHARED_TEMPLATE_VARS = "SHARED_TMPL_VARS";
+
     public void process(Writer writer, ValueContext vc, Map templateVars) throws IOException, TemplateProcessorException;
 }
