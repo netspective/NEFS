@@ -101,6 +101,19 @@ public interface Table extends QueriesNameSpace, TemplateConsumer, XmlDataModelS
     /* ------------------------------------------------------------------------------------------------------------- */
 
     /**
+     * Ascertain how the records in this table should be removed: physically deleted or "retired" (and whether to cascade or not)
+     */
+    public RowDeleteType getRowDeleteType();
+
+    /**
+     * If we want to retire a record, this is the XXX clause that would go in the "update table.name set XXX where ..."
+     * statement.
+     */
+    public String getLogicalDeleteUpdateSqlSetClauseFormat();
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    /**
      * Returns the name of the table as it appears in the database.
      */
     public String getName();
@@ -332,6 +345,8 @@ public interface Table extends QueriesNameSpace, TemplateConsumer, XmlDataModelS
 
     public Rows getRowsByAccessor(ConnectionContext cc, QueryDefnSelect accessor, Object[] bindValues) throws NamingException, SQLException;
 
+    public Rows getRowsByWhereCond(ConnectionContext cc, String whereCond, Object[] bindValues) throws NamingException, SQLException;
+
     /**
      * Retrieve the row identified by the given primary key
      *
@@ -451,4 +466,24 @@ public interface Table extends QueriesNameSpace, TemplateConsumer, XmlDataModelS
     public TemplateProducer getPresentation();
 
     public void addSchemaRecordEditorDialogTemplates(Template dialogsPackageTemplate);
+
+    /**
+     * Return the number of records in this table based on the where criteria
+     *
+     * @param cc         The connection context to use
+     * @param whereCond  The where criteria
+     * @param bindValues Any bind parmeters used in the where criteria
+     *
+     * @return The result of select count(*) from table where XXX
+     */
+    public long getCount(ConnectionContext cc, String whereCond, Object[] bindValues) throws NamingException, SQLException;
+
+    /**
+     * Get the number of records in the table
+     *
+     * @param cc The connection context to use
+     *
+     * @return The total number of records in the table
+     */
+    public long getCount(ConnectionContext cc) throws NamingException, SQLException;
 }

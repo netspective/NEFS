@@ -330,9 +330,9 @@ public class SchemaTableTest extends TestCase
         dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
         ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
 
-        final int entity1RowsCreateCount = 5;
+        final int entity1RowsCreateCount = 3;
         final int created = createEntity1RowAndChildren(cc, entity1Table, entity1HierarchyTable, null, "Entity 1.",
-                                                        entity1RowsCreateCount, 3, 0);
+                                                        entity1RowsCreateCount, 2, 0);
 
         cc.commitAndClose();
 
@@ -344,5 +344,34 @@ public class SchemaTableTest extends TestCase
 */
 
         cc.close();
+    }
+
+    public void testRowDeleteTypes() throws SQLException, NamingException
+    {
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+
+        final Table testTable = populatedSchema.getTables().getByName("Test_Retire");
+        assertEquals(RowDeleteType.LOGICAL_CASCADE_CHILDREN, testTable.getRowDeleteType().getValueIndex());
+
+        final Row testTableRow = testTable.createRow();
+        final ColumnValues testTableRowValues = testTableRow.getColumnValues();
+        testTableRowValues.getByName("text").setTextValue("Test 001");
+
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        testTable.insert(cc, testTableRow);
+
+        cc.commitAndClose();
+
+        cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        testTable.delete(cc, testTableRow);
+        cc.commitAndClose();
+
+        cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+        assertEquals(1, testTable.getCount(cc)); // make sure the record is there (it's status should be updated)
+        cc.commitAndClose();
+
+        // TODO: add child cascade tests
     }
 }

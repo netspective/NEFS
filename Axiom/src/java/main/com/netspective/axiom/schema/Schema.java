@@ -126,6 +126,13 @@ public interface Schema extends XmlDataModelSchema.InputSourceLocatorListener
     public QueryDefinitions getQueryDefinitions();
 
     /**
+     * Obtains the XXX part of the following SQL statement: update [table] set XXX where YYY. This SQL statement is
+     * generated whenever a table is set to use logical deletes instead of physical deletes and allows a schema-wide
+     * default for the update sql set clause for logical deletes.
+     */
+    public String getLogicalDeleteUpdateSqlSetClauseFormat();
+
+    /**
      * Obtains the table structure of this schema -- while tables already understand parent/child relationships,
      * because tables can have multiple parents dealing with the relationships within tables becomes cumbersome. The
      * TableTree structure returned by this method is far more convenient because a single tree with all parent/child

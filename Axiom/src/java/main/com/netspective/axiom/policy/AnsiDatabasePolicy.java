@@ -63,6 +63,7 @@ import com.netspective.axiom.schema.Column;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValues;
 import com.netspective.axiom.schema.GeneratedValueColumn;
+import com.netspective.axiom.schema.RowDeleteType;
 import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.GuidColumn;
@@ -735,10 +736,9 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             }
         }
 
-        Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
-        String tableName = (isPrefixTableNamesWithSchemaName()
-                            ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
-        String sql = "insert into " + tableName + " (" + namesSql + ") values (" + valuesSql + ")";
+        final Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
+        final String tableName = resolveTableName(table);
+        final String sql = "insert into " + tableName + " (" + namesSql + ") values (" + valuesSql + ")";
 
         if(execute)
         {
@@ -852,10 +852,8 @@ public class AnsiDatabasePolicy implements DatabasePolicy
             }
         }
 
-        Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
-
-        String tableName = (isPrefixTableNamesWithSchemaName()
-                            ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
+        final Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
+        final String tableName = resolveTableName(table);
 
         String sql = "update " + tableName + " set " + setsSql;
         if(whereCond != null)
@@ -916,16 +914,39 @@ public class AnsiDatabasePolicy implements DatabasePolicy
         }
 
         Table table = columnValues.getByColumnIndex(0).getColumn().getTable();
+        final RowDeleteType rowDeleteType = table.getRowDeleteType();
+        final String tableName = resolveTableName(table);
 
-        String tableName = (isPrefixTableNamesWithSchemaName()
-                            ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
-
-        String sql = "delete from " + tableName;
-        if(whereCond != null)
+        String sql = null;
+        final String identifier;
+        if(rowDeleteType.isLogicalDelete())
         {
-            if(!whereCond.startsWith("where"))
-                sql += " where";
-            sql += " " + whereCond;
+            final String customSetClauseFormat = table.getLogicalDeleteUpdateSqlSetClauseFormat();
+            final String setClauseFormat = customSetClauseFormat != null
+                                           ? customSetClauseFormat
+                                           : table.getSchema().getLogicalDeleteUpdateSqlSetClauseFormat();
+
+            sql = "update " + tableName + " set " + setClauseFormat + ' ';
+            if(whereCond != null)
+            {
+                if(!whereCond.startsWith("where"))
+                    sql += " where";
+                sql += " " + whereCond;
+            }
+
+            identifier = table.getName() + ".delete(logical)";
+        }
+        else
+        {
+            sql = "delete from " + tableName;
+            if(whereCond != null)
+            {
+                if(!whereCond.startsWith("where"))
+                    sql += " where";
+                sql += " " + whereCond;
+            }
+
+            identifier = table.getName() + ".delete(physical)";
         }
 
         if(execute)
@@ -934,7 +955,7 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                 rowListener.beforeDelete(cc, flags, columnValues);
 
             if(log.isInfoEnabled())
-                executeAndRecordStatistics(cc, table.getDmlExecutionLog(), table.getName() + ".delete()", sql, null, whereCondBindParams);
+                executeAndRecordStatistics(cc, table.getDmlExecutionLog(), identifier, sql, null, whereCondBindParams);
             else
                 executeAndIgnoreStatistics(cc, sql, null, whereCondBindParams);
 
@@ -949,12 +970,19 @@ public class AnsiDatabasePolicy implements DatabasePolicy
                     }
                 }
             }
-
-            if(rowListener != null)
-                rowListener.afterDelete(cc, flags, columnValues);
         }
 
+        if(rowListener != null)
+            rowListener.afterDelete(cc, flags, columnValues);
+
         return sql;
+    }
+
+    public String resolveTableName(Table table)
+    {
+        final String tableName = (isPrefixTableNamesWithSchemaName()
+                                  ? table.getSchema().getName() + "." + table.getSqlName() : table.getSqlName());
+        return tableName;
     }
 
     /* --------------------------------------------------------------------------------------------------------------*/

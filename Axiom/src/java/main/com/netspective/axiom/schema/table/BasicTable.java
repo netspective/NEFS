@@ -34,6 +34,7 @@ package com.netspective.axiom.schema.table;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ import com.netspective.axiom.schema.Indexes;
 import com.netspective.axiom.schema.PrimaryKeyColumnValues;
 import com.netspective.axiom.schema.PrimaryKeyColumns;
 import com.netspective.axiom.schema.Row;
+import com.netspective.axiom.schema.RowDeleteType;
 import com.netspective.axiom.schema.Rows;
 import com.netspective.axiom.schema.Schema;
 import com.netspective.axiom.schema.Table;
@@ -155,8 +157,11 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
     private QueryExecutionLog execLog = new QueryExecutionLog();
     private TableQueryDefinition queryDefn = null;
     private QueryDefnSelect selectByPrimaryKey;
+    private QueryDefnSelect selectCount;
     private String primaryKeyWhereClauseExpr;
     private QueryDefnSelect selectByParentKey;
+    private RowDeleteType rowDeleteType = new RowDeleteType(RowDeleteType.PHYSICAL);
+    private String logicalDeleteUpdateSqlSetClauseFormat;
     private Rows staticData;
     private Indexes indexes = new IndexesCollection(true);
     private TablePresentationTemplate presentation;
@@ -607,6 +612,124 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         return resultRows;
     }
 
+    public Rows getRowsByWhereCond(ConnectionContext cc, String whereCond, Object[] bindValues) throws NamingException, SQLException
+    {
+        Rows resultRows = createRows();
+
+        StringBuffer findRecsToDeleteSql = new StringBuffer("select ");
+        Columns columns = getColumns();
+        for(int i = 0; i < columns.size(); i++)
+        {
+            if(i > 0) findRecsToDeleteSql.append(", ");
+            findRecsToDeleteSql.append(columns.get(i).getName());
+        }
+        findRecsToDeleteSql.append(" from " + cc.getDatabasePolicy().resolveTableName(this));
+        if(whereCond != null)
+        {
+            findRecsToDeleteSql.append(" ");
+            if(!whereCond.startsWith("where"))
+                findRecsToDeleteSql.append("where");
+            findRecsToDeleteSql.append(" ");
+            findRecsToDeleteSql.append(whereCond);
+        }
+
+        PreparedStatement stmt = cc.getConnection().prepareStatement(findRecsToDeleteSql.toString());
+        try
+        {
+            if(bindValues != null)
+            {
+                for(int i = 0; i < bindValues.length; i++)
+                    stmt.setObject(i + 1, bindValues[i]);
+            }
+            ResultSet rs = stmt.executeQuery();
+            try
+            {
+                while(rs.next())
+                {
+                    Row resultRow = createRow();
+                    resultRow.getColumnValues().populateValues(rs, ColumnValues.RESULTSETROWNUM_SINGLEROW);
+                    resultRows.addRow(resultRow);
+                }
+            }
+            finally
+            {
+                rs.close();
+            }
+        }
+        finally
+        {
+            stmt.close();
+        }
+
+        return resultRows;
+    }
+
+    public long getCount(ConnectionContext cc, String whereCond, Object[] bindValues) throws NamingException, SQLException
+    {
+        StringBuffer sql = new StringBuffer("select count(*) from ");
+        sql.append(cc.getDatabasePolicy().resolveTableName(this));
+        if(whereCond != null)
+        {
+            sql.append(" ");
+            if(!whereCond.startsWith("where"))
+                sql.append("where");
+            sql.append(" ");
+            sql.append(whereCond);
+        }
+
+        PreparedStatement stmt = cc.getConnection().prepareStatement(sql.toString());
+        try
+        {
+            if(bindValues != null)
+            {
+                for(int i = 0; i < bindValues.length; i++)
+                    stmt.setObject(i + 1, bindValues[i]);
+            }
+            ResultSet rs = stmt.executeQuery();
+            try
+            {
+                if(rs.next())
+                    return rs.getLong(1);
+                else
+                    return 0;
+            }
+            finally
+            {
+                rs.close();
+            }
+        }
+        finally
+        {
+            stmt.close();
+        }
+    }
+
+    public long getCount(ConnectionContext cc) throws NamingException, SQLException
+    {
+        StringBuffer sql = new StringBuffer("select count(*) from ");
+        sql.append(cc.getDatabasePolicy().resolveTableName(this));
+        PreparedStatement stmt = cc.getConnection().prepareStatement(sql.toString());
+        try
+        {
+            ResultSet rs = stmt.executeQuery();
+            try
+            {
+                if(rs.next())
+                    return rs.getLong(1);
+                else
+                    return 0;
+            }
+            finally
+            {
+                rs.close();
+            }
+        }
+        finally
+        {
+            stmt.close();
+        }
+    }
+
     /* ------------------------------------------------------------------------------------------------------------- */
 
     public void registerForeignKeyDependency(ForeignKey fKey)
@@ -714,10 +837,51 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         delete(cc, row, primaryKeyWhereClauseExpr, row.getPrimaryKeyValues().getValuesForSqlBindParams());
     }
 
+    protected void deleteChildren(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws NamingException, SQLException
+    {
+        Rows parentRows = getRowsByWhereCond(cc, whereCond, whereCondBindParams);
+        for(int pr = 0; pr < parentRows.size(); pr++)
+        {
+            Row parentRow = parentRows.getRow(pr);
+
+            Tables children = getChildTables();
+            for(int ct = 0; ct < children.size(); ct++)
+            {
+                Table childTable = children.get(ct);
+
+                Columns fKeyColumns = childTable.getForeignKeyColumns(ForeignKey.FKEYTYPE_PARENT);
+                for(int fki = 0; fki < fKeyColumns.size(); fki++)
+                {
+                    ParentForeignKey fKey = (ParentForeignKey) fKeyColumns.get(fki).getForeignKey();
+                    Rows childRows = fKey.getChildRowsByParentRow(cc, parentRow);
+
+                    for(int cr = 0; cr < childRows.size(); cr++)
+                    {
+                        Row childRow = childRows.getRow(cr);
+                        childTable.delete(cc, childRow);
+                    }
+                }
+            }
+        }
+    }
+
     public void delete(ConnectionContext cc, Row row, String whereCond, Object[] whereCondBindParams) throws SQLException
     {
         for(int i = 0; i < triggers.length; i++)
             triggers[i].beforeTableRowDelete(cc, row);
+
+        final RowDeleteType rowDeleteType = getRowDeleteType();
+        if(rowDeleteType.isCasadeChildren())
+        {
+            try
+            {
+                deleteChildren(cc, row, whereCond, whereCondBindParams);
+            }
+            catch(NamingException e)
+            {
+                throw new SQLException(e.getMessage());
+            }
+        }
 
         try
         {
@@ -725,7 +889,7 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
         }
         catch(NamingException e)
         {
-            log.error("Error deleting row " + row + " whereCond " + whereCond, e);
+            log.error("Error executing delete type '" + rowDeleteType + "' for row " + row + " whereCond " + whereCond, e);
             throw new SQLException(e.getMessage());
         }
 
@@ -1060,6 +1224,26 @@ public class BasicTable implements Table, TemplateProducerParent, TemplateConsum
             }
         }
         return qds;
+    }
+
+    public String getLogicalDeleteUpdateSqlSetClauseFormat()
+    {
+        return logicalDeleteUpdateSqlSetClauseFormat;
+    }
+
+    public void setLogicalDeleteUpdateSqlSetClauseFormat(String logicalDeleteUpdateSqlSetClauseFormat)
+    {
+        this.logicalDeleteUpdateSqlSetClauseFormat = logicalDeleteUpdateSqlSetClauseFormat;
+    }
+
+    public RowDeleteType getRowDeleteType()
+    {
+        return rowDeleteType;
+    }
+
+    public void setRowDeleteType(RowDeleteType rowDeleteType)
+    {
+        this.rowDeleteType = rowDeleteType;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

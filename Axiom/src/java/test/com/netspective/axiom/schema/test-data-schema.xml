@@ -91,6 +91,7 @@
             <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
             <index name="column_a_index" columns="column_a" unique="yes"/>
         </table>
+
         <table name="Test_Four" abbrev="Test4" type="Default">
             <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
             <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
@@ -102,6 +103,26 @@
             <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
             <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
             <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+        </table>
+
+        <table name="Test_Retire" type="Default" row-delete-type="logical-cascade-children"> <!-- we're going to not delete records, just "retire" them -->
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test. Do not discard.</description>
+            <column name="auto_inc_column" primarykey="yes" type="auto-inc"/>
+            <column name="text" type="text" size="32"/>
+        </table>
+
+        <table name="Test_Retire_Child_A" type="Default" row-delete-type="logical-cascade-children">
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test. Do not discard.</description>
+            <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+            <column name="test_retire_id" parent-ref="Test_Retire"/>
+            <column name="text" type="text" size="32"/>
+        </table>
+
+        <table name="Test_Retire_Child_A_1" type="Default" row-delete-type="logical-cascade-children">
+            <description>This is a sample table that is used in the SchemaTableTest Unit Test. Do not discard.</description>
+            <column name="auto_inc_column" primarykey="yes" type="auto-inc"/>
+            <column name="test_retire_child_a_id" parent-ref="Test_Retire_Child_A"/>
+            <column name="text" type="text" size="32"/>
         </table>
 
         <table name="Enum_set_Lookup" abbrev="EnumLookup" type="Enumeration">

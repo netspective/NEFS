@@ -103,6 +103,7 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
     private TemplateProducers templateProducers;
     private Schema.TableTree structure;
     private InputSourceLocator inputSourceLocator;
+    private String logicalDeleteUpdateSqlSetClauseFormat = "record_status_id = 0";
 
     public BasicSchema(SqlManager sqlManager)
     {
@@ -318,6 +319,18 @@ public class BasicSchema implements Schema, TemplateProducerParent, XmlDataModel
                 result.add(table.getQueryDefinition());
         }
         return result;
+    }
+
+    /* ------------------------------------------------------------------------------------------------------------- */
+
+    public String getLogicalDeleteUpdateSqlSetClauseFormat()
+    {
+        return logicalDeleteUpdateSqlSetClauseFormat;
+    }
+
+    public void setLogicalDeleteUpdateSqlSetClauseFormat(String sqlFormat)
+    {
+        this.logicalDeleteUpdateSqlSetClauseFormat = sqlFormat;
     }
 
     /* ------------------------------------------------------------------------------------------------------------- */

@@ -44,6 +44,7 @@ import com.netspective.axiom.policy.SqlDdlFormats;
 import com.netspective.axiom.policy.SqlDdlGenerator;
 import com.netspective.axiom.schema.ColumnValue;
 import com.netspective.axiom.schema.ColumnValues;
+import com.netspective.axiom.schema.Table;
 import com.netspective.axiom.schema.column.type.AutoIncColumn;
 import com.netspective.axiom.schema.column.type.GuidColumn;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
@@ -249,6 +250,13 @@ public interface DatabasePolicy
     public boolean supportsSequences();
 
     public boolean supportsForeignKeyConstraints();
+
+    /**
+     * Return either just the table name or table name prefixed with schema depending on how the policy likes it
+     *
+     * @param table The table we want to get the name for
+     */
+    public String resolveTableName(Table table);
 
     public interface RowInsertListener
     {
