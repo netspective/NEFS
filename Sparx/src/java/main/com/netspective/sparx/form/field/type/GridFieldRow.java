@@ -39,13 +39,15 @@
  */
 
 /**
- * $Id: GridFieldRow.java,v 1.4 2003-07-08 20:15:06 shahid.shah Exp $
+ * $Id: GridFieldRow.java,v 1.5 2003-12-31 05:07:20 aye.thu Exp $
  */
 
 package com.netspective.sparx.form.field.type;
 
 import com.netspective.sparx.form.field.DialogField;
+import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.DialogContextBeanMemberInfo;
+import com.netspective.sparx.form.DialogContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 public class GridFieldRow extends DialogField
@@ -59,5 +61,25 @@ public class GridFieldRow extends DialogField
     public DialogContextBeanMemberInfo getDialogContextBeanMemberInfo()
     {
         return getChildren().getDialogContextBeanMemberInfo(createDialogContextMemberInfo());
+    }
+
+    /**
+     * Generates custom javascript definitions
+     * @param dc
+     * @return
+     */
+    public String getCustomJavaScriptDefn(DialogContext dc)
+	{
+        StringBuffer sb = new StringBuffer("field.childrenNames = [");
+        DialogFields columns = getChildren();
+
+        for (int k=0; k < columns.size(); k++)
+        {
+            if (k > 0)
+                sb.append(", ");
+            sb.append("'" +  columns.get(k).getQualifiedName() + "'");
+        }
+        sb.append("];\n");
+        return sb.toString();
     }
 }
