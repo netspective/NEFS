@@ -7,6 +7,7 @@
     -->
     <panel-editors package="personAttribute">
         <panel-editor  name="contact" require-request-param="person_id">
+            <frame heading="Contact Information"/>
             <element type="report" name="contacts" caption="Contacts" dialog-ref="personAttribute.contact">
                 <query>
                     select
@@ -69,6 +70,7 @@
             </element>
         </panel-editor>
         <panel-editor name="classification"  require-request-param="person_id">
+            <frame heading="Classification"/>
             <element type="report" caption="Classification" dialog-ref="personAttribute.classification">
                 <query>
                     select
@@ -102,6 +104,7 @@
         </panel-editor>
 
         <panel-editor  name="relationship"  require-request-param="person_id">
+            <frame heading="Relationships"/>
             <element type="report" dialog-ref="personAttribute.relationship">
                 <query>
                     select
