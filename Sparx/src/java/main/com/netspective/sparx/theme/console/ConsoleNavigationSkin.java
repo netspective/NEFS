@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.35 2003-10-22 15:33:29 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.36 2003-10-22 18:58:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -118,7 +118,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
                 this, navTreeId);
     }
 
-    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
+    public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }

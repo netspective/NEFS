@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationSkin.java,v 1.2 2003-03-24 13:28:00 shahid.shah Exp $
+ * $Id: NavigationSkin.java,v 1.3 2003-10-22 18:58:29 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -81,7 +81,7 @@ public interface NavigationSkin extends ThemeSkin
      * @param navTreeId The active page that will be rendered.
      * @return NavigationContext
      */
-    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId);
+    public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId);
 
     /**
      * Render the meta data like <html>, <head>, <script> etc.

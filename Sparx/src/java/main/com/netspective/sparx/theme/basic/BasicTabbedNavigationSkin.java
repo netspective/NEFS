@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.31 2003-10-22 15:33:28 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.32 2003-10-22 18:58:02 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -108,7 +108,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
                 this, navTreeId);
     }
 
-    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
+    public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }

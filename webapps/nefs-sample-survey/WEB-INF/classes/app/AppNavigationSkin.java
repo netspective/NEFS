@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: AppNavigationSkin.java,v 1.7 2003-10-19 17:07:10 shahid.shah Exp $
+ * $Id: AppNavigationSkin.java,v 1.8 2003-10-22 18:59:19 shahid.shah Exp $
  */
 
 package app;
@@ -61,7 +61,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,16 +86,15 @@ public class AppNavigationSkin extends AbstractThemeSkin implements NavigationSk
     public NavigationContext createContext(javax.servlet.jsp.PageContext jspPageContext, NavigationTree tree, String navTreeId)
     {
         return new NavigationContext(tree,
-                jspPageContext.getServletContext(),
                 (Servlet) jspPageContext.getPage(),
                 jspPageContext.getRequest(),
                 jspPageContext.getResponse(),
                 this, navTreeId);
     }
 
-    public NavigationContext createContext(ServletContext context, HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
+    public NavigationContext createContext(HttpServlet servlet, HttpServletRequest request, HttpServletResponse response, NavigationTree tree, String navTreeId)
     {
-        return new NavigationContext(tree, context, servlet, request, response, this, navTreeId);
+        return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }
 
     public void renderPageMetaData(Writer writer, NavigationContext nc) throws IOException
