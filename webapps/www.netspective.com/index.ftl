@@ -133,7 +133,8 @@
                           ["Methodology Artifacts", "<font color='#666666'>Supports XP/Agile, RUP, CMMI, &amp; Waterfall artifacts generation.</font>"],
                           ["Test Driven Development", "<font color='#666666'>Improves quality and reduces bugs with support for TDD.</font>"],
                           ["Open Source Tools", "<font color='#666666'>Uses Ant, JUnit, HttpUnit, Log4J, Jakarta Commons, others.</font>"],
-                          ["Standards Compliance", "<font color='#666666'>Java/J2EE, Servlets/JSP, XML, JDBC, EJB, HTML, CSS, others.</font>"]
+                          ["Standards Compliance", "<font color='#666666'>Java/J2EE, Servlets/JSP, XML, JDBC, EJB, HTML, CSS, others.</font>"],
+			  ["Implemented Patterns", "<font color='#666666'>MVC and MVP.</font>"]                          
                           ]/>
         	</@panel>
         </td>
