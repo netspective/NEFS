@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Util.java,v 1.1 2003-10-10 17:51:40 aye.thu Exp $
+ * $Id: Util.java,v 1.2 2003-10-22 06:48:21 aye.thu Exp $
  */
 
 package app.cts;
@@ -59,6 +59,7 @@ public class Util implements ProjectLifecyleListener
     {
         // we only have one schema so make sure that our DAOs (the DataAccessLayer) uses it
         DataAccessLayer.getInstance().setSchema(event.getProject().getSchemas().get(0));
+        event.getProject().setDefaultNavigationTree("subject");
         System.out.println("Initialized Data Access Layer for Schema '" + DataAccessLayer.getInstance().getSchema().getName() + "'");
     }
 

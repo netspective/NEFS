@@ -23,7 +23,7 @@
 				</field>
 			</field>
 			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
-            <on-execute class="app.cts.form.person.PersonContactDialog"/>
+
             <!--director>
                 <next-actions caption="Next Action\:" choices="text-list:a=x" display-single-action="yes"/>
                 <next-actions>
@@ -87,7 +87,7 @@
                 <field type="select" name="state" caption="State" choices="schema-enum:US_State_Type" required="yes"/>
                 <field type="zip-code" name="zip" caption="Zip Code" required="yes"/>
             </field>
-            <on-execute class="app.cts.form.person.SubjectDialogExecuteHandler"/>
+
             <!--
             <field type="separator" heading="Contact Methods"/>
             <field type="composite" name="primary_contact" >

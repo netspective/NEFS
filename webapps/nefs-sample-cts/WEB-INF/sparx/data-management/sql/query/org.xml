@@ -84,7 +84,7 @@
             <panel>
                 <frame heading="static:Sponsor Information"/>
                 <banner>
-                    <action caption="Edit" redirect="vs-expr:${page-id:/admin/edit/sponsor}?org_id=${0}"/>
+                    <action caption="Edit" redirect="vs-expr:${page-id:/admin/edit/sponsor}?org_id=${request:org_id}"/>
                 </banner>
                 <report>
 

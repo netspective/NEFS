@@ -45,6 +45,39 @@
             </on-add-data>
         </dialog>
     </dialogs>
+
+    <dialogs package="sponsor">
+        <!--
+            This is the dialog for creating trial sponsors. Editing and Deletion is done with a diffrent dialog.
+        -->
+        <dialog name="info" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Sponsor"/>
+			<xdm:include template="org-profile"/>
+            <xdm:include template="org-address"/>
+            <on-add-data>
+                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
+                    <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Sponsor"/>
+                    <org-address _auto_map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
+                </org>
+            </on-add-data>
+		</dialog>
+        <dialog name="profile" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <frame heading="create-dialog-perspective-heading:Sponsor Profile"/>
+			<xdm:include template="org-profile"/>
+            <on-edit-data>
+                <org  _primary-key-value="request:org_id" _auto-map="*"/>
+            </on-edit-data>
+        </dialog>
+        <!--
+            This is the dialog for creating/editing/deleting additional addresses for a sponsor
+        -->
+        <dialog name="address" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
+            <xdm:include template="org-address"/>
+            <on-add-data>
+                <org-address _auto_map="address_name,line1,line2,zip" parent_id="request:org_id" rec-stat-id="static:Active" />
+            </on-add-data>
+        </dialog>
+    </dialogs>
     <!--
         Organization related dialogs
      -->
@@ -58,19 +91,7 @@
                     _auto_map="address_name,line1,line2,country"/>
             </on-add-data>
         </dialog>
-        <!--
-            This is the dialog for creating/updating/deleteing trial sponsors
-        -->
-        <dialog name="sponsor" class="com.netspective.sparx.form.schema.SchemaRecordEditorDialog">
-            <frame heading="create-dialog-perspective-heading:Sponsor"/>
-			<xdm:include template="org-profile"/>
-            <xdm:include template="org-address"/>
-            <on-add-data>
-                <org _auto_map="org_name,org_code,org_abbrev," rec-stat-id="static:Active">
-                    <org-classification rec-stat-id="static:Active" org-type-id="static:Trial Sponsor"/>
-                </org>
-            </on-add-data>
-		</dialog>
+
 
 
         <!--

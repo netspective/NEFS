@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppAuthenticatedUser.java,v 1.2 2003-10-20 06:55:26 aye.thu Exp $
+ * $Id: AppAuthenticatedUser.java,v 1.3 2003-10-22 06:48:21 aye.thu Exp $
  */
 
 package app.cts;
@@ -59,7 +59,6 @@ import java.sql.ResultSetMetaData;
 
 public class AppAuthenticatedUser extends BasicAuthenticatedUser
 {
-    private String personId;
 
     public void init(ValueContext vc) throws AuthenticatedUserInitializationException
     {
@@ -82,6 +81,24 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
                     System.out.println(rsmd.getColumnName(i).toLowerCase() + " " + rs.getString(i));
                 }
             }
+            rs.close();
+            // check to see if the user is related to any active studies as a subject
+
+            query =  ldc.getProject().getQuery(auto.id.sql.query.Person.GET_ACTIVE_STUDY_AS_SUBJECT);
+            qrs = query.execute(cc, new Object[] {getAttribute("person_id")}, false);
+            rs = qrs.getResultSet();
+            rsmd = rs.getMetaData();
+            if (rs.next())
+            {
+                // IMPORTANT: A person can only be a subject to one study at any given time
+                for (int i=1; i <= rsmd.getColumnCount(); i++)
+                {
+                    setAttribute(rsmd.getColumnName(i).toLowerCase(), rs.getString(i));
+                    System.out.println(rsmd.getColumnName(i).toLowerCase() + " " + rs.getString(i));
+                }
+            }
+
+
         }
         catch (Exception e)
         {
@@ -107,14 +124,5 @@ public class AppAuthenticatedUser extends BasicAuthenticatedUser
         super.setUserId(id);
     }
 
-    public void setPersonId(String pid)
-    {
-        personId = pid;
-    }
-
-    public String getPersonId()
-    {
-        return personId;
-    }
 
 }

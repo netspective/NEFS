@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
     <queries package="study">
-    <query name="get-study-info-by-id">
+        <query name="get-self-study-info">
+        	select
+        		study.study_id,
+                study.study_name,
+                study.study_code,
+                study_descr,
+                study.study_status,
+                study.study_stage,
+                study.start_date,
+                study.target_end_date "target_end_date",
+                study.actual_end_date,
+                irb_name,
+                irb_number
+        	from
+        		study
+        	where
+        		study.study_id = ?
+        	<params>
+        		<param value="authenticated-user:study_id"/>
+        	</params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Clinical Trial Information"/>
+                    <report>
+                        <column heading="ID"/>
+                        <column heading="Name" align="left"/>
+                        <column heading="Code" align="left"/>
+                        <column heading="Description" />
+                        <column heading="Status" />
+                        <column heading="Stage" />
+                        <column heading="Start Date" />
+                        <column heading="Target End Date" />
+                        <column heading="Actual End Date" />
+                        <column heading="IRB Name" />
+                        <column heading="IRB Number" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="get-study-info-by-id">
         	select
         		study.study_id,
                 study.study_name,
@@ -43,6 +82,35 @@
                 </panel>
             </presentation>
         </query>
+        <query name="get-self-study-sponsors">
+        	select
+        		org.org_id,
+                org.org_name "org_name",
+                org.org_code "org_code",
+                org.org_abbrev,
+                org.employees
+        	from
+        		org, studyorg_relationship
+        	where
+        		org.org_id = studyorg_relationship.rel_entity_id and
+                studyorg_relationship.parent_id = ? and
+                studyorg_relationship.rel_type_id = 1;
+        	<params>
+        		<param value="authenticated-user:study_id"/>
+        	</params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Trial Sponsors"/>
+                    <report>
+                        <column heading="ID"/>
+                        <column heading="Name" align="left" redirect="page-id:/trial/summary/sponsor?org_id=${0}"/>
+                        <column heading="Code" />
+                        <column heading="Abbrev" />
+                        <column heading="Employees" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
         <query name="get-sponsors-by-study-id">
         	select
         		org.org_id,
@@ -71,6 +139,33 @@
                         <column heading="Code" />
                         <column heading="Abbrev" />
                         <column heading="Employees" />
+                    </report>
+                </panel>
+            </presentation>
+        </query>
+        <query name="get-self-study-sites">
+        	select
+        		org.org_id,
+                org.org_name "org_name",
+                org.org_code "org_code",
+                org.org_abbrev
+        	from
+        		org, studyorg_relationship
+        	where
+        		org.org_id = studyorg_relationship.rel_entity_id and
+                studyorg_relationship.parent_id = ?  and
+                studyorg_relationship.rel_type_id = 3;
+        	<params>
+        		<param value="authenticated-user:study_id"/>
+        	</params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Trial Sites"/>
+                    <report>
+                        <column heading="ID"/>
+                        <column heading="Name" align="left" redirect="page-id:/trial/summary/site?org_id=${0}"/>
+                        <column heading="Code" />
+                        <column heading="Abbrev" />
                     </report>
                 </panel>
             </presentation>

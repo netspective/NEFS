@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: PasswordDialogHandler.java,v 1.2 2003-10-13 05:51:19 aye.thu Exp $
+ * $Id: PasswordDialogHandler.java,v 1.3 2003-10-22 06:48:21 aye.thu Exp $
  */
 package app.cts.form.person;
 
@@ -128,7 +128,7 @@ public class PasswordDialogHandler extends DialogExecuteDefaultHandler implement
 
                 AppAuthenticatedUser user = (AppAuthenticatedUser) dc.getAuthenticatedUser();
                 user.setEncryptedPassword(newPassword);
-                dc.setAuthenticatedUser(user);
+                //dc.setAuthenticatedUser(user);
             }
             else
             {

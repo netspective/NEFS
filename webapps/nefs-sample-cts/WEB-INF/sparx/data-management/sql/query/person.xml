@@ -28,6 +28,29 @@
                 </panel>
             </presentation>
         </query>
+        <query name="get-active-study-as-subject">
+            select
+                study_id,
+                study_name
+            from
+                study, studyperson_relationship spr
+            where
+                spr.rel_entity_id = ? and
+                spr.parent_id  = study.study_id and
+                spr.rel_type_id = 0
+            <params>
+                <param value="authenticated-user:person_id"/>
+            </params>
+            <presentation>
+                <panel>
+                    <frame heading="static:Related Clinical Trials"/>
+                    <report>
+                        <column heading="ID" align="left"/>
+                        <column heading="Name" redirect="page-id:/home/study?study_id=${0}"/>
+                    </report>
+                </panel>
+            </presentation>
+        </query>
         <query name="self-active-studies">
             select
                 study_id,

@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: PersonContactDialog.java,v 1.1 2003-10-12 05:15:32 aye.thu Exp $
+ * $Id: PersonContactDialog.java,v 1.2 2003-10-22 06:48:21 aye.thu Exp $
  */
 package app.cts.form.person;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.DialogContextUtils;
 import com.netspective.sparx.form.field.type.DateTimeField;
+import com.netspective.sparx.Project;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.ResultSetUtils;
@@ -74,6 +75,11 @@ import app.cts.AppAuthenticatedUser;
  */
 public class PersonContactDialog extends com.netspective.sparx.form.Dialog
 {
+    public PersonContactDialog(Project project)
+    {
+        super(project);
+    }
+
     public void populateValues(DialogContext dc, int formatType)
     {
         super.populateValues(dc, formatType);
