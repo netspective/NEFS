@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryDefinition.java,v 1.3 2003-08-01 22:04:15 aye.thu Exp $
+ * $Id: QueryDefinition.java,v 1.4 2003-08-01 22:25:54 aye.thu Exp $
  */
 
 package com.netspective.axiom.sql.dynamic;
@@ -109,8 +109,12 @@ public class QueryDefinition implements QueriesNameSpace
     private QueryDefnSqlWhereExpressions defaultWhereExprs = new QueryDefnSqlWhereExpressions();
     private QueryDefnFieldsValueSource fieldsValueSource = new QueryDefnFieldsValueSource(this);
     private QueryDefnSelectsValueSource selectsValueSource = new QueryDefnSelectsValueSource(this);
+    private static int DEFAULT_QUERY_DEFINITION_COUNTER = 0;
+
     public QueryDefinition()
     {
+        name = "QueryDefn-" + DEFAULT_QUERY_DEFINITION_COUNTER;
+        DEFAULT_QUERY_DEFINITION_COUNTER++;
     }
 
     public static String translateNameForMapKey(String name)
