@@ -105,8 +105,6 @@
     class="directory">sparx</filename>/<filename>project.xml</filename> file
     uses XDM to declare all project components.</para>
 
-    <para></para>
-
     <para>In the Sampler app if you see the <guiicon>XML</guiicon> icon along
     with a <emphasis>View Page XDM Code</emphasis> link, at the bottom of the
     page, you can view the Netspective Xml Data Model (XDM) source code for
@@ -125,50 +123,46 @@
     </screenshot>
 
     <para>Clicking on the <emphasis>View Page XDM Code</emphasis> link to see
-    the XML code (as shown below): [TODO: Put image with the callouts]</para>
+    the XML code (as shown below): </para>
 
     <screenshot>
       <graphic fileref="./resources/images/screen-sampler-show-XDM.gif" />
     </screenshot>
 
-    <orderedlist>
-      <listitem>
+    <calloutlist>
+      <callout arearefs="???">
         <para>The link to hide the currently visible XDM code. Clicking on
         this link hides the currently visible XDM code.</para>
-      </listitem>
+      </callout>
 
-      <listitem>
+      <callout arearefs="???">
         <para>Location of the currently open XDM code in the application's
         project file (<filename class="directory">WEB-INF</filename>/<filename
         class="directory">sparx</filename>/<filename>project.xml</filename>).
         Clicking on this link takes you to the <guimenu>Project</guimenu> |
         <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
         Console, with Sampler app project file being displayed in browse
-        mode.</para>
+        mode.<screenshot>
+            <graphic fileref="./resources/images/screen-sampler-view-prj-file.gif" />
+          </screenshot></para>
+      </callout>
 
-        <screenshot>
-          <graphic fileref="./resources/images/screen-sampler-view-prj-file.gif" />
-        </screenshot>
-      </listitem>
-
-      <listitem>
+      <callout arearefs="???">
         <para>Java class file being instantiated for this page. Clicking on
         this link takes you to the <guimenu>Project</guimenu> |
         <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
         Console, with the selected java file
         (<classname>AppPage.java</classname> in this case) being displayed in
-        browse mode.</para>
+        browse mode.<screenshot>
+            <graphic fileref="./resources/images/screen-sampler-view-java.gif" />
+          </screenshot></para>
+      </callout>
 
-        <screenshot>
-          <graphic fileref="./resources/images/screen-sampler-view-java.gif" />
-        </screenshot>
-      </listitem>
-
-      <listitem>
+      <callout arearefs="???">
         <para>XDM code (from the Sampler app project file) corresponding to
         the currently opened page.</para>
-      </listitem>
-    </orderedlist>
+      </callout>
+    </calloutlist>
   </section>
 
   <section>
@@ -1016,7 +1010,7 @@
           <command>OK</command> button. A success message is displayed, along
           with the body of the email, if the mail is sent to the specified
           recipient. In case of an error, an appropriate error message is
-          displayed. </para>
+          displayed.</para>
 
           <figure>
             <title>Mail Send - Success Message</title>
@@ -1609,7 +1603,14 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
               </callout>
 
               <callout arearefs="declare-inherit-class-eg-8">
-                <para>TODO: description for this method</para>
+                <para>Getting the link to the source file of custom dialog
+                handler class (<filename>SampleExecuteDialog.java</filename>
+                in this case). The
+                <methodname>getConsoleFileBrowserLinkShowAlt</methodname>
+                method shows the name of the file that is passed into the
+                first parameter. If the second parameter is also passed, the
+                URL (anchor) reference shows an alternate text within the
+                anchor.</para>
               </callout>
 
               <callout arearefs="declare-inherit-class-eg-8">
@@ -1667,7 +1668,7 @@ public class SampleExecuteDialog extends Dialog</emphasis> <co
 
           <para>This page contains a dialog which has a custom dialog class
           that overrides the default population, validation, and execution
-          behaviors of the dialog. </para>
+          behaviors of the dialog.</para>
 
           <figure>
             <title>Sample Page for Validation using Custom Class (through
@@ -1899,7 +1900,7 @@ public class SampleValidateDialog extends Dialog
                 <para>The dialog <methodname>execute</methodname> method is
                 called as soon as all data is entered and validated. This
                 method is guaranteed to be called <emphasis>only</emphasis>
-                when all fields' data is valid. </para>
+                when all fields' data is valid.</para>
               </callout>
             </calloutlist>
           </example>
@@ -2101,7 +2102,14 @@ public class SampleExecuteHandler implements DialogExecuteHandler <co
               </callout>
 
               <callout arearefs="declare-delegate-class-eg-8">
-                <para>TODO: Description for this method</para>
+                <para>Getting the link to the source file of custom dialog
+                handler class (<filename>SampleExecuteHandler.java</filename>
+                in this case). The
+                <methodname>getConsoleFileBrowserLinkShowAlt</methodname>
+                method shows the name of the file that is passed into the
+                first parameter. If the second parameter is also passed, the
+                URL (anchor) reference shows an alternate text within the
+                anchor.</para>
               </callout>
 
               <callout arearefs="declare-delegate-class-eg-9">
