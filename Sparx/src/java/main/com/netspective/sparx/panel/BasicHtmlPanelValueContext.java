@@ -39,17 +39,16 @@
  */
 
 /**
- * $Id: BasicHtmlPanelValueContext.java,v 1.3 2003-08-31 15:29:13 shahid.shah Exp $
+ * $Id: BasicHtmlPanelValueContext.java,v 1.4 2004-03-02 07:38:48 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
-import javax.servlet.ServletContext;
+import com.netspective.sparx.value.BasicDbHttpServletValueContext;
+
 import javax.servlet.Servlet;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-
-import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 
 public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext
 {
@@ -80,5 +79,11 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
     public void setPanelRenderFlags(int panelRenderFlags)
     {
         this.panelRenderFlags = panelRenderFlags;
+    }
+
+    public HtmlPanelActionStates getPanelActionStates()
+    {
+        // TODO: currently this does not support states for panel actions
+        return null;
     }
 }
