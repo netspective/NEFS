@@ -95,20 +95,49 @@
             <@reportTable>
             <#assign classSuffix="odd"/>
                 <tr>
+                    <td class="report-column-heading">&nbsp;</td>
                     <td class="report-column-heading">${caption}</td>
                     <td class="report-column-heading">Class</td>
-                    <td class="report-column-heading">Description</td>
+                    <td class="report-column-heading">Source</td>
                 </tr>
+            <#assign tmplNum = 0>
             <#list instancesMap.keySet().iterator() as typeName>
+                <#assign tmplNum = tmplNum + 1>
+                <#assign template=instancesMap.get(typeName)/>
                 <tr>
-                    <td class="report-column-${classSuffix}">
-                        <a href="${detailUrl}${typeName}"><b>${typeName}</b></a>
+                    <td class="report-column-${classSuffix}" style="align:right" rowspan=2>
+                        ${tmplNum}
                     </td>
                     <td class="report-column-${classSuffix}">
-                        <@classReference className=instancesMap.get(typeName).alternateClassName/>
+                        <#if template.alternateClassName?exists>
+                            <a href="${detailUrl}${typeName}"><b>${typeName}</b></a>
+                        <#else>
+                            <b>${typeName}</b>
+                        </#if>
                     </td>
                     <td class="report-column-${classSuffix}">
-                        <@classDescription className=instancesMap.get(typeName).alternateClassName/>
+                        <#if template.alternateClassName?exists>
+                            <@classReference className=template.alternateClassName/>
+                        <#else>
+                            <i>Not specified</i>
+                        </#if>
+                    </td>
+                    <td class="report-column-${classSuffix}" style="color: #999999">
+                        <code>${vc.getConsoleFileBrowserLink(template.inputSourceLocator.inputSourceTracker.identifier, true)} ${template.inputSourceLocator.lineNumbersText}</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="report-column-${classSuffix}" style="color: #777777" colspan=3>
+                        <#if template.alternateClassName?exists>
+                            <#assign tmplClassSchema = getXmlDataModelSchema(template.alternateClassName)/>
+                            <#if tmplClassSchema.javaDoc.descriptionLead?exists>
+                                ${tmplClassSchema.javaDoc.descriptionLead}
+                            <#else>
+                                &nbsp;
+                            </#if>
+                        <#else>
+                            &nbsp;
+                        </#if>
                     </td>
                 </tr>
                 <#if classSuffix = 'odd'>
@@ -449,10 +478,10 @@
 </#macro>
 
 
-<#macro classDescription className>
+<#macro classDescription className defaultDescr=''>
 
     <#assign schema = getXmlDataModelSchema(className)/>
-    ${schema.javaDoc.descriptionLead?default('')}
+    ${schema.javaDoc.descriptionLead?default(defaultDescr)}
 
 </#macro>
 

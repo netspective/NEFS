@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTablesPanel.java,v 1.7 2003-09-15 03:57:45 aye.thu Exp $
+ * $Id: SchemaTablesPanel.java,v 1.8 2004-03-21 02:29:15 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data.schema;
@@ -81,7 +81,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
     static
     {
         schemaTableColumn.setHeading(new StaticValueSource("SQL Table Name"));
-        schemaTableColumn.setRedirect(new RedirectValueSource("table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}"));
+        //schemaTableColumn.setRedirect(new RedirectValueSource("table?"+ REQPARAMNAME_SHOW_DETAIL_TABLE +"=%{1}"));
         structureReport.addColumn(schemaTableColumn);
 
         GeneralColumn column = new GeneralColumn();
@@ -378,7 +378,7 @@ public class SchemaTablesPanel extends AbstractHtmlTabularReportPanel
                     if(activeTable != null)
                         return createTableHref(activeTable);
                     else
-                        return activeRow.heading;
+                        return "<b>" + activeRow.heading + "</b>";
 
                 case 1:
                     if(activeTable != null)
