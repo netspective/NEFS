@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.30 2004-02-23 16:08:44 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.31 2004-02-23 19:17:21 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -765,11 +765,12 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     {
         renderPanelRegistration(writer, dc);
 
+        if (dc.getDialog().hideHeading(dc))
+            dc.setPanelRenderFlags(dc.getPanelRenderFlags() | HtmlPanel.RENDERFLAG_HIDE_FRAME_HEADING);
         int panelRenderFlags = dc.getPanelRenderFlags();
+
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
-            if (dc.getDialog().hideHeading(dc))
-                dc.getPanel().getFrame().setHideHeading(true);
             renderFrameBegin(writer, dc);
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
