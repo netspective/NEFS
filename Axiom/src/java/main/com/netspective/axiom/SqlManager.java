@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SqlManager.java,v 1.10 2003-08-15 02:09:28 shahid.shah Exp $
+ * $Id: SqlManager.java,v 1.11 2003-08-15 02:16:07 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -87,7 +87,7 @@ public class SqlManager extends DefaultXdmComponentItems implements MetricsProdu
 
     static
     {
-        NetspectiveComponent.getInstance().registerProduct(com.netspective.commons.ProductRelease.PRODUCT_RELEASE);
+        NetspectiveComponent.getInstance().registerProduct(com.netspective.axiom.ProductRelease.PRODUCT_RELEASE);
     }
 
     protected QueriesNameSpace activeNameSpace;
