@@ -134,6 +134,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
     private boolean redirectDisabled;
     private boolean cancelButtonPressed;
     private boolean redirectAfterExecute;
+    private boolean autoExecuteRequested;
     private boolean autoExecuted;
 
     public DialogContext()
@@ -595,8 +596,8 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             }
         }
 
-        boolean autoExec = dialog.isAutoExecByDefault();
-        if(!autoExec && !dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
+        autoExecuteRequested = dialog.isAutoExecByDefault();
+        if(!autoExecuteRequested && !dialog.getDialogFlags().flagIsSet(DialogFlags.DISABLE_AUTO_EXECUTE))
         {
             String autoExecOption = request.getParameter(Dialog.PARAMNAME_AUTOEXECUTE);
             if(autoExecOption == null || autoExecOption.length() == 0)
@@ -604,12 +605,12 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 autoExecOption = (String) request.getAttribute(Dialog.PARAMNAME_AUTOEXECUTE);
 
             if(dialog.isAutoExec(this, autoExecOption))
-                autoExec = true;
+                autoExecuteRequested = true;
         }
         boolean executeButtonPressed =
                 (request.getParameter(dialog.getSubmitDataParamName()) != null) ||
                 (request.getParameter(dialog.getCancelDataParamName()) != null && dialog.getDialogFlags().flagIsSet(DialogFlags.ALLOW_EXECUTE_WITH_CANCEL_BUTTON));
-        if(autoExec || executeButtonPressed || ignoreValidation)
+        if(autoExecuteRequested || executeButtonPressed || ignoreValidation)
         {
             if(!dialogFlags.flagIsSet(DialogFlags.ALLOW_MULTIPLE_EXECUTES) && state.isAlreadyExecuted())
             {
@@ -621,13 +622,28 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
             if(dialog.isValid(this))
             {
                 state.setExecuteMode();
-                autoExecuted = autoExec;
+                autoExecuted = autoExecuteRequested;
             }
         }
 
         dialog.makeStateChanges(this, STATECALCSTAGE_AFTER_VALIDATION);
     }
 
+    /**
+     * Ascertain whether an auto-execute has been requested by the system
+     *
+     * @return True if a request was made, false if no auto request desire expressed
+     */
+    public boolean isAutoExecuteRequested()
+    {
+        return autoExecuteRequested;
+    }
+
+    /**
+     * Ascertain whether an auto-execute was actually performed (not just requested)
+     *
+     * @return True if a auto-executed, false if not auto executed
+     */
     public boolean isAutoExecuted()
     {
         return autoExecuted;
