@@ -39,13 +39,19 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.10 2003-08-14 17:53:43 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.11 2003-08-17 00:00:40 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collections;
+import java.util.Date;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import javax.naming.NamingException;
 
@@ -65,18 +71,37 @@ import com.netspective.commons.RuntimeEnvironmentFlags;
 public abstract class AbstractConnectionContext implements ConnectionContext
 {
     private static final Log log = LogFactory.getLog(AbstractConnectionContext.class);
+    private static final Set connectionContextsWithOpenConnections = Collections.synchronizedSet(new HashSet());
 
+    public static final Set getConnectionContextsWithOpenConnections()
+    {
+        return connectionContextsWithOpenConnections;
+    }
+
+    private int ownership;
     private DatabaseConnValueContext dbvc;
     private DatabasePolicy dbPolicy;
     private String dataSourceId;
     private Connection connection;
     private long creationTime;
+    private ConnectionContextNotClosedException contextNotClosedException;
 
-    public AbstractConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc)
+    public AbstractConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc, int ownership)
     {
         this.creationTime = System.currentTimeMillis();
         this.dataSourceId = dataSourceId;
         this.dbvc = dbvc;
+        this.ownership = ownership;
+    }
+
+    public int getOwnership()
+    {
+        return ownership;
+    }
+
+    public void setOwnership(int ownership)
+    {
+        this.ownership = ownership;
     }
 
     public void initializeConnection(Connection conn) throws SQLException
@@ -88,8 +113,15 @@ public abstract class AbstractConnectionContext implements ConnectionContext
         if(connection == null)
         {
             connection = dbvc.getConnectionProvider().getConnection(getDataSourceId());
+
+            // hang on to the point where the connection was created so that we can throw this if the connection is
+            // not properly closed
+            this.contextNotClosedException = new ConnectionContextNotClosedException(this);
+            connectionContextsWithOpenConnections.add(this);
+
             if(log.isTraceEnabled())
                 log.trace("Obtained " + connection + " for data source '"+ getDataSourceId() +"'.");
+
             initializeConnection(connection);
         }
         return connection;
@@ -120,7 +152,15 @@ public abstract class AbstractConnectionContext implements ConnectionContext
                 log.trace("Closed " + connection + " for data source '"+ getDataSourceId() +"'.");
             connection.close();
             connection = null;
+            connectionContextsWithOpenConnections.remove(this);
         }
+    }
+
+    public void timeOut() throws SQLException
+    {
+        if(log.isTraceEnabled())
+            log.trace("Connection " + connection + " for data source '"+ getDataSourceId() +"' timed-out.");
+        close();
     }
 
     public void commitAndClose() throws SQLException
@@ -135,7 +175,6 @@ public abstract class AbstractConnectionContext implements ConnectionContext
             {
                 close();
             }
-
         }
     }
 
@@ -143,9 +182,30 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     {
         if(connection != null)
         {
-            connection.rollback();
-            close();
+            try
+            {
+                connection.rollback();
+            }
+            finally
+            {
+                close();
+            }
         }
+    }
+
+    public ConnectionContextNotClosedException getContextNotClosedException()
+    {
+        return contextNotClosedException;
+    }
+
+    public String getConnectionOpenStackStrace()
+    {
+        if(contextNotClosedException == null)
+            return null;
+
+        StringWriter sw = new StringWriter();
+        contextNotClosedException.printStackTrace(new PrintWriter(sw));
+        return sw.getBuffer().toString();
     }
 
     /*-------------------------------------------------------------
@@ -155,6 +215,11 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public long getCreationTime()
     {
         return creationTime;
+    }
+
+    public Date getCreationDate()
+    {
+        return new Date(creationTime);
     }
 
     public AccessControlListsManager getAccessControlListsManager()

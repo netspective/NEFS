@@ -39,27 +39,24 @@
  */
 
 /**
- * $Id: TransactionConnectionContext.java,v 1.2 2003-08-17 00:00:40 shahid.shah Exp $
+ * $Id: ConnectionContextNotClosedException.java,v 1.1 2003-08-17 00:00:40 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import com.netspective.axiom.ConnectionContext;
 
-import com.netspective.axiom.value.DatabaseConnValueContext;
-import com.netspective.axiom.connection.AbstractConnectionContext;
-
-public class TransactionConnectionContext extends AbstractConnectionContext
+public class ConnectionContextNotClosedException extends Exception
 {
-    public TransactionConnectionContext(String dataSourceId, DatabaseConnValueContext dbvc, int ownership)
+    private ConnectionContext connectionContext;
+
+    public ConnectionContextNotClosedException(ConnectionContext cc)
     {
-        super(dataSourceId, dbvc, ownership);
+        this.connectionContext = cc;
     }
 
-    public void initializeConnection(Connection conn) throws SQLException
+    public ConnectionContext getConnectionContext()
     {
-        super.initializeConnection(conn);
-        conn.setAutoCommit(false);
+        return connectionContext;
     }
 }

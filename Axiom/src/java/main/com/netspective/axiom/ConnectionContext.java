@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConnectionContext.java,v 1.2 2003-03-16 21:21:14 shahid.shah Exp $
+ * $Id: ConnectionContext.java,v 1.3 2003-08-17 00:00:05 shahid.shah Exp $
  */
 
 package com.netspective.axiom;
@@ -51,14 +51,22 @@ import javax.naming.NamingException;
 
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.value.DatabasePolicyValueContext;
+import com.netspective.axiom.connection.ConnectionContextNotClosedException;
 import com.netspective.commons.value.ValueContext;
 
 public interface ConnectionContext extends DatabasePolicyValueContext
 {
+    public final static int OWNERSHIP_DEFAULT            = 0;
+    public final static int OWNERSHIP_AUTHENTICATED_USER = 1;
+
     /**
      * Retrieve the DatabaseValueContext instance that created this object.
      */
     public DatabaseConnValueContext getDatabaseValueContext();
+
+    public int getOwnership();
+
+    public void setOwnership(int ownership);
 
     /**
      * Retrieve the connection instance associated with this context. If the method is being called the first time for
@@ -77,7 +85,22 @@ public interface ConnectionContext extends DatabasePolicyValueContext
      */
     public void close() throws SQLException;
 
+    /**
+     * Called when the connection context should close the connection context and free up any associated resources
+     * but is being done so implicitly by the system (such as a session timing out) instead of explicity via an API.
+     */
+    public void timeOut() throws SQLException;
+
     public void commitAndClose() throws SQLException;
 
     public void rollbackAndClose() throws SQLException;
+
+    /**
+     * When a connection is created, an exception for that connection not being closed is created and stored
+     * (for stack trace purposes). If the connection is properly closed, the exception is not important. If, however,
+     * the connection context remains open (such as at the end of an application, end of a session, etc) the exception
+     * is available to be thrown and it will have the stack trace of the original code where the connection was created.
+     * @return
+     */
+    public ConnectionContextNotClosedException getContextNotClosedException();
 }
