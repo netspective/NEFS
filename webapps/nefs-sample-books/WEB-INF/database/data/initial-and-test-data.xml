@@ -2,7 +2,7 @@
 <!-- the xdm-transform processing instruction tells Sparx to filter special tags through the XSLT before processing -->
 <?transform --xslt initial-and-test-data.xsl?>
 
-<!DOCTYPE dal SYSTEM "..\defn\db-import.dtd">
+<!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
 
 <dal>
     <book-info

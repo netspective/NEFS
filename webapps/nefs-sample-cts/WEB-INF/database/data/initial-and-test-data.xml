@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE dal SYSTEM "../defn/db-import.dtd">
+
 <dal>
 	<!--
 		ORGANIZATIONS
@@ -9,7 +12,7 @@
 		<org-classification rec-stat-id="Active" org-type-id="Insurance"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Business" method-value="532-5512" phone-ac="703"/>
 		<org-contact rec-stat-id="Active" method-type="telephone: Company" method-value="585-5574" phone-ac="703"/>
-		<org-industry rec-stat-id="Active" industry-type-id="Healthcare" industry-type-id="Healthcare"/>
+		<org-industry rec-stat-id="Active" industry-type-id="Healthcare" />
 	</org>
 	<!-- 2 -->
     <org ID="ORG 2" org-name="Acme Clinical Trial Company" org-code="ADC" org-abbrev="ACME CTC" rec-stat-id="Active" time-zone="EST" employees="100">
@@ -59,59 +62,59 @@
     </study>
     <person ID="PERSON 0" name-first="David" name-last="Salesman" short-name="David Salesman" simple-name="David Salesman"
         short-sortable-name="Salesman, David" complete-name="David Salesman" complete-sortable-name="Salesman, David"
-        complete-name="David Salesman" gender-id="Male" ssn="123-45-6789"  marital-status-id="Single"
+        gender-id="Male" ssn="123-45-6789"  marital-status-id="Single"
         blood-type-id="Unknown" rec-stat-id="Active" >
         <person-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="352-5555" phone-ac="704"/>
         <person-address address-name="Home" zip="22059" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="987 Main Street" city="Washington" state-id="District of Columbia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Employee" rel-entity-id="IDREF:ORG 5"/>
-        <person-login user-id="person0" password="letmein" quantity="100"/>
+        <person-login rec-stat-id="Active" user-id="person0" password="letmein" quantity="100" login-status="Inactive"/>
         <person-classification person-type-id="Certified Clinical Research Coordinator" person-type="Certified Clinical Research Coordinator" rec-stat-id="Active"/>
         <personstudy-relationship rec-stat-id="Active" rel-type-id="Coordinator" rel-entity-id="IDREF:STUDY 2" rel-begin="January 10, 2003"/>
 	</person>
     <person ID="PERSON 1" name-first="Mary" name-last="Carpenter" short-name="Mary Carpenter" simple-name="Mary Carpenter"
         short-sortable-name="Carpenter, Mary" complete-name="Mary Carpenter" complete-sortable-name="Carpenter, Mary"
-        complete-name="Mary Carpenter" gender-id="Female" ssn="111-22-3333"  marital-status-id="Single"
+        gender-id="Female" ssn="111-22-3333"  marital-status-id="Single"
         blood-type-id="Unknown" rec-stat-id="Active" >
         <person-contact rec-stat-id="Active" method-type="Telephone: Business" method-value="111-1234" phone-ac="704"/>
         <person-address address-name="Home" zip="12345" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="123 Acme Street" city="Jackson" state-id="Ohio" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Physician" rel-entity-id="IDREF:ORG 3"/>
-        <person-login user-id="person1" password="letmein" quantity="100"/>
+        <person-login rec-stat-id="Active" user-id="person1" password="letmein" quantity="100" login-status="Inactive"/>
         <person-classification person-type-id="Physician" person-type="Physician" rec-stat-id="Active"/>
         <personstudy-relationship rec-stat-id="Active" rel-type-id="Coordinator" rel-entity-id="IDREF:STUDY 2" rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 2" name-first="Michael" name-last="Gabriel" short-name="Michael Gabriel" simple-name="Michael Gabriel"
         short-sortable-name="Gabriel, Michael" complete-name="Michael Gabriel" complete-sortable-name="Gabriel, Michael"
-        complete-name="Michael Gabriel" gender-id="Male" ssn="123-22-1111"  marital-status-id="Single"
+        gender-id="Male" ssn="123-22-1111"  marital-status-id="Single"
         blood-type-id="Unknown" rec-stat-id="Active" >
         <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="432-1234" phone-ac="222"/>
         <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="3301 Lothian Street" city="Merrifield" state-id="Virginia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
-        <person-login user-id="subject2" password="letmein" quantity="100"/>
+        <person-login rec-stat-id="Active" user-id="subject2" password="letmein" quantity="100" login-status="Inactive"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
         <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
             rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 0" name-first="Bubba" name-last="Smith" short-name="Bubba Smith" simple-name="Bubba Smith"
         short-sortable-name="Smith, Bubba" complete-name="Bubba Smith" complete-sortable-name="Smith, Bubba"
-        complete-name="Bubba Smith" gender-id="Male" ssn="222-22-2222"  marital-status-id="Married"
+        gender-id="Male" ssn="222-22-2222"  marital-status-id="Married"
         blood-type-id="O+" rec-stat-id="Active" birth-date="August 21, 1978">
         <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="432-1234" phone-ac="222"/>
         <person-address address-name="Home" zip="22012" rec-stat-id="Active" mailing="true" address-type-id="Primary" line1="3301 Lothian Street" city="Merrifield" state-id="Virginia" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
-        <person-login user-id="subject0" password="letmein" quantity="100"/>
+        <person-login rec-stat-id="Active" user-id="subject0" password="letmein" quantity="100" login-status="Inactive"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
         <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
             rel-begin="January 10, 2003"/>
 	</person>
     <person ID="SUBJECT 1" name-first="Mack" name-last="Daddy" short-name="Mack Daddy" simple-name="Mack Daddy"
         short-sortable-name="Daddy, Mack" complete-name="Mack Daddy" complete-sortable-name="Daddy, Mack"
-        complete-name="Mack Daddy" gender-id="Male" ssn="999-22-2222"  marital-status-id="Single"
+        gender-id="Male" ssn="999-22-2222"  marital-status-id="Single"
         blood-type-id="A+" rec-stat-id="Active" birth-date="August 12, 1960">
         <person-contact rec-stat-id="Active" method-type="Telephone: Home" method-value="111-1234" phone-ac="900"/>
         <person-address address-name="Home" zip="12345" rec-stat-id="Active" mailing="true" address-type-id="Primary"
             line1="666 Hoosier Street" city="Kalamazoo" state-id="Washington" />
         <personorg-relationship rec-stat-id="Active" rel-type-id="Patient" rel-entity-id="IDREF:ORG 3"/>
-        <person-login user-id="subject1" password="letmein" quantity="100"/>
+        <person-login rec-stat-id="Active" user-id="subject1" password="letmein" quantity="100" login-status="Inactive"/>
         <person-classification person-type-id="Patient" person-type="Patient" rec-stat-id="Active"/>
         <personstudy-relationship rec-stat-id="Active" rel-type-id="Subject" rel-entity-id="IDREF:STUDY 2"
             rel-begin="January 10, 2003"/>
