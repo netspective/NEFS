@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XdmComponentFactory.java,v 1.7 2003-08-24 18:37:15 shahid.shah Exp $
+ * $Id: XdmComponentFactory.java,v 1.8 2003-10-14 14:39:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -47,6 +47,7 @@ package com.netspective.commons.xdm;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import java.io.File;
@@ -73,7 +74,7 @@ public class XdmComponentFactory
     public static final int XDMCOMPFLAGS_DEFAULT = XDMCOMPFLAG_ALLOWRELOAD | XDMCOMPFLAG_CACHE_WHEN_NO_ERRORS;
 
     private static DiscoverClass discoverClass = new DiscoverClass();
-    private static Map componentsBySystemId = new HashMap();
+    private static Map componentsBySystemId = Collections.synchronizedMap(new HashMap());
 
     public static Map getComponentsBySystemId()
     {
