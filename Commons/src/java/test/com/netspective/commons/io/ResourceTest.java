@@ -6,7 +6,7 @@ import java.io.InputStream;
 import junit.framework.TestCase;
 
 /**
- * $Id: ResourceTest.java,v 1.2 2003-11-08 18:30:45 shahid.shah Exp $
+ * $Id: ResourceTest.java,v 1.3 2003-11-08 18:49:45 shahid.shah Exp $
  */
 public class ResourceTest extends TestCase
 {
@@ -52,7 +52,7 @@ public class ResourceTest extends TestCase
 		// Build the resource name by changing all \ to / (if needed) and prepending a 'file:/' to the result...
 		String fileTwoFQN = rsrcFileTwo.getCanonicalPath();
         if(File.separatorChar == '\\')
-		    fileTwoFQN = "/" + fileOneFQN.replace('\\', '/');
+		    fileTwoFQN = "/" + fileTwoFQN.replace('\\', '/');
 		assertEquals("file:" + fileTwoFQN, rsrcTwo.getResource().toString());
 
 		InputStream is = rsrcTwo.getResourceAsStream();
