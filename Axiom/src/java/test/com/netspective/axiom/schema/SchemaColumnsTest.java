@@ -39,17 +39,18 @@
  */
 
 /**
- * $Id: SchemaColumnsTest.java,v 1.6 2003-06-15 21:52:20 roque.hernandez Exp $
+ * $Id: SchemaColumnsTest.java,v 1.7 2003-06-20 04:08:39 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
 
-import com.netspective.axiom.ConnectionContext;
-import com.netspective.axiom.SqlManager;
-import com.netspective.axiom.SqlManagerComponent;
-import com.netspective.axiom.TestUtils;
+import com.netspective.axiom.*;
 import com.netspective.axiom.schema.column.type.*;
+import com.netspective.axiom.schema.column.*;
+import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.sql.QueryResultSet;
+import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
 import com.netspective.axiom.value.DatabaseConnValueContext;
@@ -448,5 +449,169 @@ public class SchemaColumnsTest extends TestCase
 
 
     }
+
+    public void testBasicColumn() throws NamingException, SQLException
+    {
+
+        Table table = schema.getTables().getByName("SchemaTest");
+        Row row = table.createRow();
+        Column col = table.getColumns().getByName("float_column");
+        FloatColumn.FloatColumnValue floatColValue = (FloatColumn.FloatColumnValue) row.getColumnValues().getByName("float_column");
+
+        DbmsSqlText sql = floatColValue.createSqlExpr();
+        assertNotNull(sql);
+
+        DbmsSqlText testSql = new DbmsSqlText(floatColValue.getSqlExprs());
+        testSql.setDbms(new DatabasePolicies.DatabasePolicyEnumeratedAttribute());
+        testSql.setSql("TEST");
+        floatColValue.addSqlExpr(testSql);
+        //TODO: Need to figure out how to perform an assertion here
+
+
+
+
+        Table table2 = populatedSchema.getTables().getByName("Test_Three");
+        Column col2 = table2.getColumns().getByName("enumIdRef");
+        Row row2 = table2.createRow();
+        EnumerationIdRefColumn.EnumerationIdRefValue colValue = (EnumerationIdRefColumn.EnumerationIdRefValue) row2.getColumnValues().getByName("enumIdRef");
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+
+
+
+
+        Row fkRow = colValue.getReferencedForeignKeyRow(cc);
+        Rows fkRows = colValue.getReferencedForeignKeyRows(cc);
+        //These values should be null before assigning a value to the ColumnValue
+        assertNull(fkRow);
+        assertNull(fkRows);
+
+        colValue.setTextValue("1");
+        fkRow = colValue.getReferencedForeignKeyRow(cc);
+        fkRows = colValue.getReferencedForeignKeyRows(cc);
+        EnumerationTableRow enumRow = colValue.getReferencedEnumRow();
+
+        assertNotNull(fkRow);
+        assertNotNull(fkRows);
+        assertNotNull(enumRow);
+
+        try
+        {
+            floatColValue.setTextValue("1.0");
+            floatColValue.getReferencedForeignKeyRow(cc);
+            fail();
+        }
+        catch (NamingException e)
+        {
+            fail();
+        }
+        catch (SQLException e)
+        {
+            fail();
+        }
+        catch (RuntimeException e)
+        {
+            //This is good.
+        }
+
+        try
+        {
+            floatColValue.getReferencedForeignKeyRows(cc);
+            fail();
+        }
+        catch (NamingException e)
+        {
+            fail();
+        }
+        catch (SQLException e)
+        {
+            fail();
+        }
+        catch (RuntimeException e)
+        {
+            //This is good.
+        }
+
+       assertNotNull(col2.toString());
+    }
+
+    public void testColumnsCollections(){
+        Table table2 = populatedSchema.getTables().getByName("Test_Three");
+        Columns cols = table2.getColumns();
+        Column col2 = table2.getColumns().getByName("enumIdRef");
+
+        assertTrue(cols.contains(col2));
+
+        assertEquals("cr-stamp|rec-stat-id|auto-inc-column|text-set-column|enum-set-column|column-a|enumidref", cols.getOnlyXmlNodeNames("|"));
+
+        int byName = cols.getColumnIndexInRowByName("column_a");
+        int byXml = cols.getColumnIndexInRowByNameOrXmlNodeName("column-a");
+        assertEquals(byName, byXml);
+
+        assertEquals(Columns.COLUMN_INDEX_NOT_FOUND, cols.getColumnIndexInRowByName("WRONG"));
+        assertEquals(Columns.COLUMN_INDEX_NOT_FOUND, cols.getColumnIndexInRowByNameOrXmlNodeName("WRONG"));
+
+        try
+        {
+            cols.getSole();
+            fail();
+        }
+        catch (RuntimeException e)
+        {
+            //This is good
+        }
+        assertNotNull(cols.toString());
+
+        //TODO: The only thing left to test is the BasicValues. copyValuesUsingColumnNames, populateValues
+        Row row = table2.createRow();
+        ColumnValues vals = row.getColumnValues();
+        vals.getByColumn(col2);
+        //populateValues
+
+        assertNull(vals.getByName("WRONG"));
+        assertNull(vals.getByNameOrXmlNodeName("WRONG"));
+        assertNotNull(vals.getByNameOrXmlNodeName("enumIdRef"));
+        assertNotNull(vals.toString());
+
+    }
+
+    public void testColumnValueException(){
+        ColumnValueException cve = new ColumnValueException(new Exception("Test Message"));
+        assertEquals(cve.getMessage(), "Test Message");
+        cve = new ColumnValueException("Test Message", new Exception());
+        assertEquals(cve.getMessage(), "Test Message");
+    }
+
+    public void testValueDefs(){
+        Table table = schema.getTables().getByName("SchemaTest");
+        Row row = table.createRow();
+        BasicColumn col = (FloatColumn)table.getColumns().getByName("float_column");
+        BasicColumn col2 = (IntegerColumn)table.getColumns().getByName("integer_column");
+        ValueDefns valDef = col.getValueDefns();
+        assertSame(col, valDef.getColumn());
+
+        valDef.merge(col2.getValueDefns());
+        //TODO: Not sure what to assert here
+    }
+
+    public void testColumnQueryDefnField(){
+        Table table = schema.getTables().getByName("SchemaTest");
+        BasicColumn col = (FloatColumn)table.getColumns().getByName("float_column");
+        ColumnQueryDefnField query = col.createQueryDefnField(table.getQueryDefinition());
+        assertSame(col, query.getTableColumn());
+    }
+
+    public void testSqlDataDefns(){
+        Table table = populatedSchema.getTables().getByName("Test_Three");
+        BasicColumn col = (BasicColumn)table.getColumns().getByName("enumIdRef");
+        SqlDataDefns sqlDef = col.getSqlDdl();
+        assertSame(col, sqlDef.getColumn());
+        assertNotNull(sqlDef.getSqlForeignKeyDefns());
+    }
+
 
 }
