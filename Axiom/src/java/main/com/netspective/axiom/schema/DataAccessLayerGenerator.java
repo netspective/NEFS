@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.5 2003-07-07 15:18:08 shahid.shah Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.6 2003-08-19 04:54:47 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -67,6 +67,7 @@ import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.lang.ResourceLoader;
+import com.netspective.commons.value.Value;
 
 import javax.naming.NamingException;
 
@@ -792,6 +793,13 @@ public class DataAccessLayerGenerator
                 method.setAccess(Access.PUBLIC);
                 method.isFinal(true);
                 method.newReturn().setExpression(vm.newCast(columnValueType, vm.newFree("values.getByColumnIndex(" + constantId + ")")));
+
+                Type valueType = vm.newType(Value.class.getName().replace('$', '.'));
+                method = recordInnerClass.newMethod(vm.newType(Type.VOID), "set" + methodSuffix);
+                method.addParameter(valueType, "value");
+                method.setAccess(Access.PUBLIC);
+                method.isFinal(true);
+                method.newStmt(vm.newFree("get"+ methodSuffix +"().copyValueByReference(value)"));
             }
         }
 
