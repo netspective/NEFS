@@ -15,14 +15,14 @@
 
         <page class="app.AppPage" name="products" caption="Products">
             <page name="frameworks" caption="Frameworks (NEF)">
-                <page name="suite" caption="Suite" heading="Developing Java Web Applications Gets Easier">
+                <page name="suite" caption="Suite" heading="Developing Java Web Apps Gets Easier">
                     <body source="products/frameworks/suite/index.ftl"/>
                     <summary>
                         The Netspective Enterprise Frameworks Suite (NEFS) is the fastest path to building production-ready,
                         secure, data-driven Java web applications.
                     </summary>
 
-                    <page name="what-it-does" caption="What it does" heading="NEFS Simplifies J2EE Application Development">
+                    <page name="what-it-does" caption="What it does" heading="NEFS Simplifies J2EE">
                         <summary>
                             If your team still finds J2EE app development to be difficult, you're probably using the wrong tools.
                         </summary>
@@ -74,7 +74,7 @@
                             </summary>
                             <body source="products/frameworks/suite/competitors/app-server.ftl"/>
                         </page>
-                        <page name="open-source" caption="Open Source" heading="Why not Use Free Open Source Frameworks?">
+                        <page name="open-source" caption="Open Source" heading="Why not Use Free Frameworks?">
                             <summary>
                                 Free open source frameworks often end up costing much more by the time your application
                                 is deployed. With us you get an affordable solution with full source code and excellent support.
@@ -100,7 +100,7 @@
                     <body source="products/frameworks/suite/screen-shots.ftl"/>
                 </page>
 
-                <page name="architecture" caption="Architecture" heading="An Architecture you're Already Familiar with">
+                <page name="architecture" caption="Architecture" heading="You Already Know the Architecture">
                     <summary>
                         A standards-based, pattern-oriented architecture that follows industry best-practices assures
                         that the NEFS will fit right into your development environment.
@@ -108,7 +108,7 @@
                     <body source="products/frameworks/suite/architecture.ftl"/>
                 </page>
 
-                <page name="sparx" caption="Sparx" heading="Advanced Web User Interfaces Made Simple">
+                <page name="sparx" caption="Sparx" heading="Advanced Web Interfaces Made Simple">
                     <summary>
                         If you're tired of pages and pages of HTML and hundreds or thousands of lines of Java code just to
                         allow your user to perform web-based data entry, you need Sparx.
@@ -186,7 +186,7 @@
                     </summary>
                     <body source="sales/frameworks/pricing.ftl"/>
                 </page>
-                <page name="licensing" caption="Licensing" heading="License Options Everyone Can Benefit From">
+                <page name="licensing" caption="Licensing" heading="License Options Everyone Can Live With">
                     <summary>
                         Simple license provisions, complete source code, and a very affordable price let you easily
                         justify the cost to your boss.
