@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DefaultLoginAttemptsManager.java,v 1.1 2003-08-17 16:20:07 shahid.shah Exp $
+ * $Id: DefaultLoginAttemptsManager.java,v 1.2 2003-08-31 23:01:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -50,7 +50,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletRequest;
 
-import com.netspective.sparx.template.TemplateProcessor;
+import com.netspective.commons.template.TemplateProcessor;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 

@@ -39,52 +39,26 @@
  */
 
 /**
- * $Id: AbstractLoginAuthenticator.java,v 1.3 2003-08-31 23:01:03 shahid.shah Exp $
+ * $Id: HttpSessionAuthenticatedUser.java,v 1.1 2003-08-31 23:01:03 shahid.shah Exp $
  */
 
-package com.netspective.sparx.security.authenticator;
+package com.netspective.sparx.security;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
+import javax.servlet.http.HttpSessionBindingListener;
+import javax.servlet.http.HttpSessionBindingEvent;
 
 import com.netspective.commons.security.BasicAuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUser;
-import com.netspective.commons.security.AuthenticatedUserInitializationException;
-import com.netspective.sparx.security.LoginAuthenticator;
-import com.netspective.sparx.security.HttpLoginManager;
-import com.netspective.sparx.security.LoginDialogContext;
-import com.netspective.sparx.security.HttpSessionAuthenticatedUser;
+import com.netspective.commons.security.AuthenticatedUserLogoutType;
 
-public abstract class AbstractLoginAuthenticator implements LoginAuthenticator
+public class HttpSessionAuthenticatedUser extends BasicAuthenticatedUser implements HttpSessionBindingListener
 {
-    private static final Log log = LogFactory.getLog(AbstractLoginAuthenticator.class);
-    private Class authenticatedUserClass = BasicAuthenticatedUser.class;
-
-    public Class getAuthenticatedUserClass()
+    public void valueBound(HttpSessionBindingEvent event)
     {
-        return authenticatedUserClass;
     }
 
-    public void setAuthenticatedUserClass(Class authenticatedUserClass)
+    public void valueUnbound(HttpSessionBindingEvent event)
     {
-        this.authenticatedUserClass = authenticatedUserClass;
-    }
-
-    public AuthenticatedUser constructAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext loginDialogContext)
-    {
-        try
-        {
-            return (AuthenticatedUser) getAuthenticatedUserClass().newInstance();
-        }
-        catch (Exception e)
-        {
-            log.error("Unable to create authenticated user " + getAuthenticatedUserClass(), e);
-            return new HttpSessionAuthenticatedUser();
-        }
-    }
-
-    public void initAuthenticatedUser(HttpLoginManager loginManager, LoginDialogContext ldc, AuthenticatedUser user) throws AuthenticatedUserInitializationException
-    {
-        user.init(ldc);
+        // in case the user times out, make sure to do anything that would happen on logout
+        registerLogout(AuthenticatedUserLogoutType.SESSION_TERMINATED);
     }
 }

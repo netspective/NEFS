@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HttpLoginManager.java,v 1.12 2003-08-31 03:11:50 shahid.shah Exp $
+ * $Id: HttpLoginManager.java,v 1.13 2003-08-31 23:01:03 shahid.shah Exp $
  */
 
 package com.netspective.sparx.security;
@@ -67,6 +67,7 @@ import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.commons.security.AuthenticatedUser;
 import com.netspective.commons.security.AuthenticatedUsers;
+import com.netspective.commons.security.AuthenticatedUserLogoutType;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 
@@ -433,7 +434,7 @@ public class HttpLoginManager
 
     protected void registerLogout(HttpServletValueContext hsvc, AuthenticatedUser user)
     {
-        user.registerLogout();
+        user.registerLogout(AuthenticatedUserLogoutType.USER_REQUEST);
         activeUsers.remove(user);
 
         if(user != null && log.isInfoEnabled())
@@ -518,10 +519,6 @@ public class HttpLoginManager
 
         Theme theme = nc.getActiveTheme();
         LoginDialog loginDialog = getLoginDialog();
-        if (loginDialog == null)
-            System.out.println("loginDialog = null");
-        else if (theme == null)
-            System.out.println("theme = null");
         LoginDialogContext ldc = (LoginDialogContext) loginDialog.createContext(nc, theme.getLoginDialogSkin());
 
         if(ldc.hasRememberedValues(this))
