@@ -39,19 +39,19 @@
  */
 
 /**
- * $Id: AppLoginDialogSkin.java,v 1.1 2004-04-23 04:18:29 aye.thu Exp $
+ * $Id: AppLoginDialogSkin.java,v 1.2 2004-07-11 02:18:04 shahid.shah Exp $
  */
 
 package app.theme;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.theme.basic.StandardLoginDialogSkin;
 
 import java.io.IOException;
 import java.io.Writer;
 
-public class AppLoginDialogSkin extends LoginDialogSkin
+public class AppLoginDialogSkin extends StandardLoginDialogSkin
 {
     private String loginImage = "login.gif";
 

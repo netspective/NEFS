@@ -39,26 +39,19 @@
  */
 
 /**
- * $Id: AppTheme.java,v 1.1 2004-04-23 04:19:47 aye.thu Exp $
+ * $Id: AppTheme.java,v 1.2 2004-07-11 02:18:04 shahid.shah Exp $
  */
 
 package app.theme;
 
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
 import com.netspective.sparx.theme.console.ConsoleTheme;
+import com.netspective.sparx.security.LoginDialogSkin;
 
 public class AppTheme extends ConsoleTheme
 {
-    private LoginDialogSkin defaulLoginDialogSkin = new AppLoginDialogSkin(this, "login", "panel-input-login", "panel/input", false);
-
     protected LoginDialogSkin constructLoginDialogSkin()
     {
         // CONSOLE THEME FOR SOME REASON DoESNT USE THIS TO create the login skin
         return new AppLoginDialogSkin(this, "login", "panel-input", "panel/input", false);
-    }
-
-    public LoginDialogSkin getLoginDialogSkin()
-    {
-        return defaulLoginDialogSkin;
     }
 }

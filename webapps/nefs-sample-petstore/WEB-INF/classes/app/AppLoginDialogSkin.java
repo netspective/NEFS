@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AppLoginDialogSkin.java,v 1.1 2004-02-23 14:22:28 robert.yuhasz Exp $
+ * $Id: AppLoginDialogSkin.java,v 1.2 2004-07-11 02:18:04 shahid.shah Exp $
  */
 
 package app;
@@ -47,11 +47,11 @@ package app;
 import java.io.Writer;
 import java.io.IOException;
 
-import com.netspective.sparx.theme.basic.LoginDialogSkin;
+import com.netspective.sparx.theme.basic.StandardLoginDialogSkin;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.form.DialogContext;
 
-public class AppLoginDialogSkin extends LoginDialogSkin
+public class AppLoginDialogSkin extends StandardLoginDialogSkin
 {
     public AppLoginDialogSkin(Theme theme, String name, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
