@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.14 2004-04-01 15:51:21 zahara.khan Exp $
+ * $Id: Query.java,v 1.15 2004-06-05 20:23:47 jeremy.d.hulick Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -329,7 +329,10 @@ public class Query
             for(int i = 0; i < overrideParams.length; i++)
             {
                 text.append("["+ (i + 1) +"] ");
-                text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
+                if(overrideParams[i] != null)
+                    text.append(overrideParams[i] + " ("+ overrideParams[i].getClass().getName() +")");
+                else
+                    text.append("NULL");
             }
             text.append("\n");
         }
