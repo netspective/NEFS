@@ -51,15 +51,13 @@
  */
 
 /**
- * $Id: HtmlPanelFrame.java,v 1.4 2003-07-11 05:30:32 aye.thu Exp $
+ * $Id: HtmlPanelFrame.java,v 1.5 2004-02-23 18:53:25 aye.thu Exp $
  */
 
 package com.netspective.sparx.panel;
 
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
-import com.netspective.sparx.panel.HtmlPanelAction;
-import com.netspective.sparx.panel.HtmlPanelActions;
 
 public class HtmlPanelFrame
 {
@@ -140,16 +138,18 @@ public class HtmlPanelFrame
 
     /**
      * Checks to see if the frame heading should be hidden
-     * @return
+     *
+     * @return True if the frame is configured to hide its heading or if the parent panel has the 'hide frame heading' flag set
      */
-    public boolean hideHeading()
+    public boolean isHideHeading(HtmlPanelValueContext vc)
     {
-        return flags.flagIsSet(Flags.HIDE_HEADING);
+        return ((vc.getPanelRenderFlags() & HtmlPanel.RENDERFLAG_HIDE_FRAME_HEADING) != 0) ||   flags.flagIsSet(Flags.HIDE_HEADING);
     }
 
     /**
      * Set or clear the hide status of the frame heading
-     * @param hide
+     *
+     * @param hide      flag for heading visiblity
      */
     public void setHideHeading(boolean hide)
     {
