@@ -7,19 +7,22 @@
   <section>
     <title>Overview</title>
 
-    <para>The objective of this tour is to familiarize you with different
-    sections of the <emphasis>Netspective Enterprise Console</emphasis>.
-    </para>
-
     <para>The NEF and all application components built with it can be viewed
-    with the <emphasis>Netspective Enterprise Console</emphasis> servlet. The
-    Console is a Sparx servlet that provides a browser-based administrative
-    interface to all of the dynamic Netspective Enterprise Frameworks Suite
-    (NEFS) components and objects associated with your application. </para>
+    with the <emphasis>Netspective Enterprise Console</emphasis>. The Console
+    is a Sparx servlet that provides a browser-based administrative interface
+    to all of the dynamic Netspective Enterprise Frameworks Suite (NEFS)
+    components and objects associated with your application, enabling your
+    development team to collectively manage the application development
+    process.</para>
 
-    <para>The Console is an optional component for every application built
-    with NEF and it is turned on by default. You may decide to turn it off
-    completely for your applications or secure it differently.</para>
+    <para>The Enterprise Console is an invaluable debugging aid, diagnostic
+    tool, documentation management system, and process artifact collection
+    utility in one thin client application. And, because it's a standard NEFS
+    application, it's a great demonstration and sample application.</para>
+
+    <para>The objective of this tour is to familiarize you with different
+    sections of the <emphasis>Netspective Enterprise
+    Console</emphasis>.</para>
   </section>
 
   <section>
@@ -30,6 +33,10 @@
     pattern. When you log into the Console for Application X (appX/console)
     versus Y (appY/console) you will only see components for the appropriate
     application.</para>
+
+    <para>The Console is an optional component for every application built
+    with NEF and it is turned on by default. You may decide to turn it off
+    completely for your applications or secure it differently.</para>
 
     <para>Here are some examples of how to access the Console for some of the
     sample applications.</para>
@@ -101,8 +108,9 @@
       </figure></para>
 
     <para>To save your Console User ID on the computer, select the checkbox
-    provided with <option>Remember my ID on this computer</option>
-    option.</para>
+    provided with <option>Remember my ID on this computer</option> option. The
+    "Remember my login" ability allows users to store encrypted cookies and
+    only login once.</para>
   </section>
 
   <section>
@@ -116,116 +124,30 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="./resources/images/screen-console-home.gif" />
+            <imagedata fileref="./resources/images/screen-console-home-small.gif" />
           </imageobject>
         </mediaobject>
       </figure></para>
 
-    <para>The Console Home displays the following information:</para>
+    <para>The Console Home provides a centralized control of your
+    application's configuration parameters. From this page, you can easily
+    view all the important configuration details of your application. In
+    addition, it provides quick access to all the configuration and deployment
+    components. A complete list of application components and their versions
+    is available to help your development teams keep track of the application
+    configuration information.</para>
 
-    <para><variablelist>
-        <varlistentry>
-          <term>Welcome Message</term>
-
-          <listitem>
-            <para>This is the welcome message giving a summary about Console
-            usage.</para>
-
-            <para><figure>
-                <title>Console Home - Weclome Message</title>
-
-                <mediaobject>
-                  <imageobject>
-                    <imagedata fileref="./resources/images/screen-console-welcome-msg.gif" />
-                  </imageobject>
-                </mediaobject>
-              </figure></para>
-
-            <para></para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>Configuration Overview</term>
-
-          <listitem>
-            <para>The Configuration Overview provides configuration details
-            for the application. The application ID refers to the application
-            identifier for the application with which the Console is
-            associated (<literal>nefs-sample-books</literal> in this case).
-            The Application Home provides the physical path where the
-            application resides. The Sparx Project Source provides the link to
-            the project.xml file for your application. You may view the
-            project.xml file by clicking on this link. The Runtime Environment
-            tells you if the application is working under development
-            environment or the production environment. A link is provided to
-            the web.xml file containing the deployment information for your
-            application. You may view the web.xml file by clicking on this
-            link.</para>
-
-            <para><figure>
-                <title>Console Home - Application Configuration Overview
-                </title>
-
-                <mediaobject>
-                  <imageobject>
-                    <imagedata fileref="./resources/images/screen-console-config-overview.gif" />
-                  </imageobject>
-                </mediaobject>
-              </figure></para>
-
-            <para></para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>Versions</term>
-
-          <listitem>
-            <para>This section details the versions info for various
-            application components. For example, JDK, JVM and App Server
-            versions.</para>
-
-            <para><figure>
-                <title>Console Home - Application Component Versions</title>
-
-                <mediaobject>
-                  <imageobject>
-                    <imagedata fileref="./resources/images/screen-console-versions.gif" />
-                  </imageobject>
-                </mediaobject>
-              </figure></para>
-
-            <para></para>
-          </listitem>
-        </varlistentry>
-
-        <varlistentry>
-          <term>Console Security</term>
-
-          <listitem>
-            <para>This section provides information about different methods
-            through which you can set the Console security option. </para>
-
-            <para><figure>
-                <title>Console Home - Console Security Info</title>
-
-                <mediaobject>
-                  <imageobject>
-                    <imagedata fileref="./resources/images/screen-console-security.gif" />
-                  </imageobject>
-                </mediaobject>
-              </figure></para>
-          </listitem>
-        </varlistentry>
-      </variablelist></para>
+    <para>NEFS allows different modes to support your team's development
+    process. It allows production, testing, and development modes which
+    correspond to the actual development phases.</para>
 
     <section>
       <title>Sitemap</title>
 
       <para>Click on the <guimenu>Home</guimenu> |
       <guimenuitem>Sitemap</guimenuitem> submenu to view the complete sitemap
-      for the Console application. You may use this sitemap to navigate
+      for the Console application. NEFS supports automated generation of such
+      sitemaps for your applications. The sitemap provides quick navigation
       through various Console sections.</para>
 
       <para><figure>
@@ -245,16 +167,16 @@
 
     <para>The Project section provides you access to various aspects of your
     project. This includes the project source files, the Ant build scripts and
-    Access Control options. In addition to this, this section provides the
-    documentation for the Commands and Value sources provided by NEFS. You may
-    also access the project matrices from this section.</para>
+    Access Control options. In addition, this section provides complete
+    documentation for all the Commands and Value sources provided by NEFS. You
+    may also access the project matrices from this section.</para>
 
     <para><figure>
         <title>Project Section</title>
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="./resources/images/screen-console-prj-src.gif" />
+            <imagedata fileref="./resources/images/screen-console-prj-src-small.gif" />
           </imageobject>
         </mediaobject>
       </figure></para>
@@ -266,35 +188,16 @@
       in an input source file known as the <emphasis>Project File</emphasis>.
       Click the <guimenu>Project</guimenu> | <guimenuitem>Source</guimenuitem>
       menu item to view the information about your application's project
-      source file. </para>
-
-      <para><figure>
-          <title>Active Project Source File Information</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="./resources/images/screen-console-active-prj-src.gif" />
-            </imageobject>
-          </mediaobject>
-        </figure></para>
-
-      <para>You can view the link to the active project source file. By
-      clicking on this link, you can open the project file for view. The
-      default Project File is <filename
-      class="directory">APP_ROOT</filename>/<filename
-      class="directory">WEB-INF</filename>/<filename
-      class="directory">sparx</filename>/<filename
-      class="devicefile">project.xml</filename> but may be configured to be a
-      different file.</para>
+      source file.</para>
 
       <section>
         <title>Viewing project dependencies</title>
 
-        <para>You can also see all the included resources, components, and
-        files (all of the final paths of any &lt;xdm:include&gt; tags). The
-        number of dependencies is displayed, within parantheses, with the
-        project file link. The details of the dependent files is also
-        provided. </para>
+        <para>The source section also documents the dependencies that exist
+        within your project file. The list of all the included resources,
+        components, and files (all of the final paths of any
+        &lt;xdm:include&gt; tags) gives you a complete picture of your
+        application dependencies. You don't have to</para>
       </section>
 
       <section>
@@ -302,43 +205,33 @@
 
         <para>Because the NEF manages literally hundreds of objects and
         classes and allows you to use XML to declare some sophisticated object
-        relationships, many errors and warnings may be displayed. Errors are
-        always highlighted within the Console under Errors or Warnings.</para>
+        relationships, many errors and warnings may be displayed. The Console
+        improves debugging by using the integrated Jakarta Commons Logging
+        engine. The errors are always highlighted within the
+        <guimenu>Project</guimenu> | <guisubmenu>Source</guisubmenu> under
+        Errors or Warnings.</para>
 
-        <para>Notice that if there are any errors and you are viewing the
-        Console you will see an error highlight at the top of the Console
-        window. Once you're in the Console Project -&gt; Source menu you will
-        be presented with a listing of the errors in the middle of the
-        page.</para>
+        <para>If there are any errors and you are viewing the Console, you
+        will see an error highlight at the top of the Console window. Once
+        you're in Console's <guimenu>Project</guimenu> |
+        <guisubmenu>Source</guisubmenu> menu you will be presented with a
+        listing of the errors in the middle of the page.</para>
 
         <para><figure>
             <title>Error Message in the Console</title>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../nef-manual/resources/images/screen-console-error-highlight.gif" />
+                <imagedata fileref="./resources/images/screen-console-error-msg.gif" />
               </imageobject>
             </mediaobject>
           </figure></para>
-      </section>
 
-      <section>
-        <title>Specifying a different location for project source file</title>
-
-        <para>The Source section also displays the information about how to
-        specify a location, other than the default location, for the project
-        source file. You may set the location of project file in your web.xml
-        The sample code that performs this function is also provided.</para>
-
-        <para><figure>
-            <title>Specifying a different project source</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="./resources/images/screen-console-diff-prj-src.gif" />
-              </imageobject>
-            </mediaobject>
-          </figure></para>
+        <para>This centralized error logging feature reduces the team's
+        debugging time by providing complete log of the error or warning at
+        one place instead of referring to the app server's management console.
+        This feature is especially useful for the junior developers who are
+        not well-versed with the use of app server management console.</para>
       </section>
     </section>
 
@@ -349,81 +242,224 @@
       allow you to compile your application, generate code, and upgrade NEF
       libraries and components. All of the scripts are built to be executed in
       the the industry-standard <ulink url="http://ant.apache.org/">Apache Ant
-      tool</ulink>. Apache Ant is included in the NEF distribution.</para>
+      tool</ulink>, which is included in the NEF distribution. Using this
+      integrated Ant build engine and the supplied build files, you can
+      automate your builds.</para>
 
-      <para></para>
+      <para>To execute the Ant build script, click on
+      <guimenu>Project</guimenu> | <guisubmenu>Ant Build</guisubmenu>
+      tab.</para>
 
-      <section>
-        <title>Project</title>
+      <para><figure>
+          <title>Automate builds using the integrated Ant build engine</title>
 
-        <para></para>
-      </section>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-ant-build.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
+
+      <para>As part of NEFS' approach towards providing complete
+      documentation, the Ant Build project section provides a list of all the
+      script targets along with their detailed descriptions. Using these
+      targets you can easily generate static and dynamic objects for your
+      applications.</para>
 
       <section>
         <title>NEFS / Sparx</title>
 
-        <para></para>
+        <para>TODO...</para>
+
+        <para><figure>
+            <title></title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-ant-sparx-build.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
       </section>
     </section>
 
     <section>
       <title>Inspect</title>
 
-      <para></para>
+      <para>TODO...</para>
     </section>
 
     <section>
       <title>Commands</title>
 
-      <para></para>
+      <para>Commands are Java classes that execute arbitrary tasks defined
+      either by you or the framework. They are used to encapsulate common
+      application logic and reuse that logic across pages and
+      dialogs/forms.</para>
 
       <section>
         <title>Catalog</title>
 
-        <para></para>
+        <para>Click on the <guimenu>Project</guimenu> |
+        <guisubmenu>Commands</guisubmenu> tab to view a complete catalog of
+        commands provided by NEFS. The description provided by each command
+        provides information on the appropriate usage of a particular command.
+        This helps in lowering the learning curve of your team members.</para>
+
+        <para><figure>
+            <title>Use NEFS Commands to encapsulate common application
+            logic</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-commands-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
       </section>
 
       <section>
         <title>Unit Test</title>
 
-        <para></para>
+        <para>Part of every J2EE application development process is spent in
+        testing and maintenance. To reduce the time spent in application
+        testing, NEFS Console provides unit and integrated testing facilities
+        for common and custom components. Every NEF XML tag you use to declare
+        your application's requirements has an automated means to verify and
+        test the declaration within the Console.</para>
+
+        <para>Another benefit of unit test is that by demonstrating the forms,
+        validation, pages, etc within the Console or application, you may
+        involve your customer - even before you start writing or customizing
+        any Java code.</para>
+
+        <para>You can unit test the available Commands by selecting a command
+        from the <guimenuitem>Commands Catalog</guimenuitem>. Provide the
+        values for command parameters (if any) and test the command.</para>
+
+        <para><figure>
+            <title>Unit Testing a Command</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-cmd-unit-test.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>This way you can unit test your command without doing any
+        coding.</para>
       </section>
 
       <section>
         <title>Documentation</title>
 
-        <para></para>
+        <para>NEFS automatically documents web dialogs, SQL statements, schema
+        objects, and other programming artifacts. The Enterprise Console
+        serves as the central repository for all the documentation. To view
+        the documentation for a command, select the command from
+        <guimenuitem>Commands Catalog</guimenuitem> and click on the
+        <guimenuitem>Documentation</guimenuitem> option.</para>
+
+        <para><figure>
+            <title>Viewing Command Documentation</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-cmd-doc.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
       </section>
     </section>
 
     <section>
       <title>Value Sources</title>
 
-      <para></para>
+      <para>Value sources allow common business logic and business values to
+      be stored in shareable instance and then used either in XML or Java
+      files where necessary. Value sources can be reused across modules and
+      projects.</para>
 
       <section>
         <title>Catalog</title>
 
-        <para></para>
+        <para>The NEF ships with many built-in value sources and you can
+        create as many value sources as you need on your own. To view a list
+        of all of the value sources available to your project (including all
+        built-in value sources and your own custom value sources) go to
+        <guimenu>Project</guimenu> | <guisubmenu>Value Sources</guisubmenu>
+        tab within the Console.</para>
+
+        <para><figure>
+            <title>Use Value Sources to encapsulate business values logic into
+            reusable objects</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-valuesources-small.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
       </section>
 
       <section>
         <title>Unit Test</title>
 
-        <para></para>
+        <para>To unit test the built-in or custom value sources, select a
+        value source from the <guimenuitem>Commands Sources
+        Catalog</guimenuitem>. Provide values for the value source parameters
+        (if any) and then test the value source.</para>
+
+        <para><figure>
+            <title>Unit Testing a Value Source</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="./resources/images/screen-console-vs-unit-test.gif" />
+              </imageobject>
+            </mediaobject>
+          </figure></para>
+
+        <para>This way you can unit test your value sources without doing any
+        coding.</para>
       </section>
 
       <section>
         <title>Documentation</title>
 
-        <para></para>
+        <para>You can view the documentation for a value source by selecting
+        the value source from <guimenuitem>Value Sources Catalog</guimenuitem>
+        and then selecting the <guimenuitem>Documentation</guimenuitem>
+        option.</para>
       </section>
     </section>
 
     <section>
       <title>Metrics</title>
 
-      <para></para>
+      <para>NEFS fits with model driven and iterative development processes,
+      such as eXtreme Programming (XP) or Rational unified Process (RUP). It
+      generates for you and automatically maintains XP/Agile, RUP, CMMI, and
+      Waterfall process methodology artifacts like unit tests, and
+      traceability documentation that would've taken weeks of back and forth
+      development time.</para>
+
+      <para>The Enterprise Console automatically generates application metrics
+      such as code size, function points, and feature points. These metrics
+      provide a snapshot of the overall status of the project components. This
+      helps your development team monitor the growth of the project without
+      requiring any extra effort.</para>
+
+      <para><figure>
+          <title>Automatically generated application metrices</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="./resources/images/screen-console-metrics.gif" />
+            </imageobject>
+          </mediaobject>
+        </figure></para>
     </section>
 
     <section>
@@ -572,7 +608,8 @@
       <section>
         <title>Unit Test</title>
 
-        <para></para>
+        <para>Automatically provides browser-based testing of forms and
+        statements.</para>
       </section>
 
       <section>
@@ -634,7 +671,9 @@
   <section>
     <title>Data Management</title>
 
-    <para></para>
+    <para>NEFS supports automatic generation of SQL DML and DDL. Once you
+    supply your SQL in XML files, all your Data Access Objects (DAOs) are
+    automatically generated for you.</para>
 
     <section>
       <title>Static SQL Queries</title>
@@ -656,7 +695,8 @@
       <section>
         <title>Unit Test</title>
 
-        <para></para>
+        <para>Provides a browser-based repository for all project
+        documentation alongside application code.</para>
       </section>
     </section>
 
@@ -686,7 +726,8 @@
       <section>
         <title>SQL Comparisons</title>
 
-        <para></para>
+        <para>Automatically tracks execution statistics for SQL statements,
+        servlet and JSP pages, dialogs/forms, and security</para>
       </section>
 
       <section>
@@ -699,18 +740,19 @@
     <section>
       <title>Schemas</title>
 
-      <para></para>
-
       <section>
         <title>Schema Tables</title>
 
-        <para></para>
+        <para>Create db-server independent DAOs and schemas. Once your schema
+        is defined (or reverse engineered) into XML, you can automatically
+        generate SQL DDL and type-safe table-based DAOs.</para>
       </section>
 
       <section>
         <title>Table Documentation</title>
 
-        <para></para>
+        <para>Provides a browser-based repository for all project
+        documentation alongside application code.</para>
       </section>
 
       <section>
@@ -771,14 +813,17 @@
     <section>
       <title>Open Connections</title>
 
-      <para></para>
+      <para>Using the internal connection pool still allows statistics
+      gathering and finding connection leaks but keeps your application
+      app-server-neutral.</para>
     </section>
   </section>
 
   <section>
     <title>Documentation</title>
 
-    <para></para>
+    <para>Support for reviewing tag and developer documentation online.
+    Ensures lower learning curve.</para>
   </section>
 
   <section>
@@ -803,12 +848,6 @@
 
       <para></para>
     </section>
-  </section>
-
-  <section>
-    <title>Viewing Error Messages</title>
-
-    <para></para>
   </section>
 
   <section>
