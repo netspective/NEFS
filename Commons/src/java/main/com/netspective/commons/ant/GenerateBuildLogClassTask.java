@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: GenerateBuildLogClassTask.java,v 1.1 2003-03-13 18:33:10 shahid.shah Exp $
+ * $Id: GenerateBuildLogClassTask.java,v 1.2 2003-07-14 17:13:19 erich.oliphant Exp $
  */
 
 package com.netspective.commons.ant;
@@ -109,7 +109,7 @@ public class GenerateBuildLogClassTask extends Task
             writer.write("  public static final String BUILD_JAVA_VENDOR = \"" + System.getProperty("java.vendor") + "\";\n\n");
             writer.write("  public static final String BUILD_VM_NAME = \"" + System.getProperty("java.vm.name") + "\";\n");
             writer.write("  public static final String BUILD_VM_VERSION = \"" + System.getProperty("java.vm.version") + "\";\n");
-            writer.write("  public static final String BUILD_VM_VENDOR = \"" + System.getProperty("java.vm.vendor") + "\";\n\n");
+            writer.write("  public static final String BUILD_VM_VENDOR = \"" + System.getProperty("java.vm.vendor").replace('"',' ') + "\";\n\n");
 
             writer.write("  public static final String[] BUILD_CLASS_PATH = new String[] {\n");
             ClassPath.ClassPathInfo[] cpi = ClassPath.getClassPaths();
