@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Query.java,v 1.11 2003-08-17 00:01:39 shahid.shah Exp $
+ * $Id: Query.java,v 1.12 2003-08-25 15:59:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -67,7 +67,6 @@ import javax.naming.NamingException;
 
 public class Query
 {
-    protected Log log = LogFactory.getLog(Query.class);
     public static final XmlDataModelSchema.Options XML_DATA_MODEL_SCHEMA_OPTIONS = new XmlDataModelSchema.Options();
     public static final String LISTPARAM_PREFIX = "param-list:";
     public static long queryNumber = 0;
@@ -142,6 +141,7 @@ public class Query
         }
     }
 
+    private Log log = LogFactory.getLog(Query.class);
     private QueriesNameSpace nameSpace;
     private String queryName;
     private boolean sqlTextHasExpressions;
@@ -161,6 +161,11 @@ public class Query
         queryNumber++;
         setNameSpace(nameSpace);
         setName(this.getClass().getName() + "-" + queryNumber);
+    }
+
+    public Log getLog()
+    {
+        return log;
     }
 
     public static String translateNameForMapKey(String name)
@@ -196,7 +201,7 @@ public class Query
     public void setName(String name)
     {
         this.queryName = name;
-        log = LogFactory.getLog(Query.class.getName() + "." + this.getQualifiedName());
+        log = LogFactory.getLog(getClass().getName() + "." + this.getQualifiedName());
     }
 
     public QueryParameters getParams()

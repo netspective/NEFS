@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: QueryParameter.java,v 1.5 2003-06-30 15:30:48 shahid.shah Exp $
+ * $Id: QueryParameter.java,v 1.6 2003-08-25 15:59:10 shahid.shah Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -82,7 +82,7 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         if(value == null)
         {
             RuntimeException e = new RuntimeException(QueryParameter.class.getName() + " '" + this.parent.getQuery().getQualifiedName() + "' has no 'value' or 'values' attribute.");
-            this.parent.getQuery().log.error(e.getMessage(), e);
+            this.parent.getQuery().getLog().error(e.getMessage(), e);
             throw e;
         }
     }
