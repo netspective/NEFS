@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  NOTE: this file assumes that com/netspective/axiom/conf/schema.xml has already been included
+ -->
+
+<xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
+
+    <data-type name="auto-generated-primary-key" type="auto-inc">
+        <primary-key>yes</primary-key>
+    </data-type>
+
+    <table-type name="Default" type="Versioned,Presentation">
+        <column name="cr_person_id" lookup-ref="Person.system_id" descr="The user that created the record">
+            <presentation>
+                <field type="text" hidden="yes" default="session:authenticated-user"/>
+            </presentation>
+        </column>
+    </table-type>
+
+    <table-type name="Person_Registration" type="Default">
+        <description>
+            Stores the registration information for a Person. This set of columns stores the minimal set of information
+            for a person that is required to "register" a person in the system.
+        </description>
+        <column name="system_id" type="auto-generated-primary-key" descr="The user's auto-generated id (internal identifier)"/>
+        <column name="name_first" type="text" required="yes" size="96" descr="User's first name"/>
+        <column name="name_middle" type="text" size="96" descr="User's middle name"/>
+        <column name="name_last" type="text" required="yes" size="96" descr="User's last name"/>
+
+        <accessor name="person-lookup">
+            <display fields="system_id, person_id, name_first, name_last"/>
+        </accessor>
+    </table-type>
+
+    <table-type name="Person_Login" type="Default">
+        <description>
+            Stores the login records for each person. This table has a one to many relationship with the
+            Person table and is separated to allow easily changing login information (username/password)
+            without affecting a person's registation record (primary key or public identifier).
+        </description>
+        <column name="system_id" type="auto-generated-primary-key" descr="Unique System ID for any given row"/>
+        <column name="person_id" parent-ref="Person.system_id" indexed="yes" descr="The person for whom login information is specified"/>
+        <column name="user_id" type="text" size="32" unique="yes" descr="The login ID for the person in this system"/>
+        <column name="password" type="text" size="16" descr="The login password"/>
+        <column name="quantity" type="integer" descr="The number of times login is allowed from different sessions"/>
+
+        <accessor name="login-lookup">
+            <display fields="system_id, person_id, user_id, password, quantity"/>
+        </accessor>
+    </table-type>
+
+</xdm:container>
