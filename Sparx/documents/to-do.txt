@@ -1,3 +1,4 @@
+* [IMPORTANT] add session listener to clean up anything stored in sessions (like scroll states, etc)
 * [IMPORTANT] read http://www.qos.ch/logging/thinkAgain.html on why we may need to revert to using log4j instead of Commons Logging for NDC/MDC support.
 * [IMPORTANT] because navigation conditional actions must run very quickly (faster than even DialogFieldConditionals), consider splitting all the functions of NavigationConditional into separate objects/types
 * [IMPORTANT] run through ALL try/catch blocks to ensure that if an exception is caught or rethrown that log.error(message, exception) is definitely called (any code translated from 2.3 may not be doing that)
