@@ -6,7 +6,7 @@
        ======================================
     -->
     <panel-editors package="personAttribute">
-        <panel-editor name="contact" dialog-ref="personAttribute.contact" require-request-param="person_id">
+        <panel-editor type="report" name="contact" dialog-ref="personAttribute.contact" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -33,7 +33,7 @@
                 </presentation>
             </query>
         </panel-editor>
-        <panel-editor name="address" dialog-ref="personAttribute.address" require-request-param="person_id">
+        <panel-editor type="report" name="address" dialog-ref="personAttribute.address" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -66,7 +66,7 @@
             </presentation>
             </query>
         </panel-editor>
-        <panel-editor name="classification" dialog-ref="personAttribute.classification" require-request-param="person_id">
+        <panel-editor type="report" name="classification" dialog-ref="personAttribute.classification" require-request-param="person_id">
             <query>
                 select
 				system_id,
@@ -97,7 +97,7 @@
             </query>
         </panel-editor>
 
-        <panel-editor name="relationship" dialog-ref="personAttribute.relationship" require-request-param="person_id">
+        <panel-editor type="report" name="relationship" dialog-ref="personAttribute.relationship" require-request-param="person_id">
             <query>
                 select
 				system_id,
