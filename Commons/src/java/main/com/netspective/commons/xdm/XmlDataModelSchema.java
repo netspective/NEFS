@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.43 2003-12-11 17:49:23 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.44 2004-01-20 22:45:42 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -1294,9 +1294,9 @@ public class XmlDataModelSchema
         }
         catch (InvocationTargetException ite)
         {
-            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' at " + pc.getLocator().getSystemId() +
-                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getMessage());
-            log.error(ite);
+            pc.addError("Unable to set attribute '"+ attributeName +"' to '"+ value +"' using "+ as.getDeclaringClass() +" at " + pc.getLocator().getSystemId() +
+                        " line "+ pc.getLocator().getLineNumber() + ": " + ite.getTargetException().getMessage());
+            log.error(ite.getTargetException());
             if(pc.isThrowErrorException())
             {
                 Throwable t = ite.getTargetException();
