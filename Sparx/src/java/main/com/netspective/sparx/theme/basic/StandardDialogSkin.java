@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.23 2003-08-31 02:01:16 aye.thu Exp $
+ * $Id: StandardDialogSkin.java,v 1.24 2003-09-14 05:33:00 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -335,6 +335,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
     public void renderCompositeControlsHtml(Writer writer, DialogContext dc, DialogField parentField) throws IOException
     {
         DialogFields children = parentField.getChildren();
+        writer.write("<span class='dialog-fields-no-arrow'>");
         for(int i = 0; i < children.size(); i++)
         {
             DialogField field = children.get(i);
@@ -366,6 +367,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
                 }
             }
         }
+        writer.write("</span>");
     }
 
     public void appendGridControlBasics(DialogContext dc, DialogField field, StringBuffer html) throws IOException

@@ -6,6 +6,7 @@
 .dialog-button-table   { font-size: 12px; text-align: left; padding: 7px 7px 7px 5px }
 
 .dialog-fields           { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; background: url(../images/panel/input/content-separator.gif) no-repeat right center; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px }
+.dialog-fields-no-arrow  { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; text-align: right; vertical-align: middle; padding: 7px 7px 7px 5px }
 .dialog-entry            { color: #333; font-weight: normal; font-size: 12px; font-family: Tahoma; padding-right: 7px; padding-left: 7px; width: auto }
 .dialog-fields-header    { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 15px 4px 1px 10px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto }
 .dialog-fields-separator { color: #696969; font-variant: small-caps; font-weight: bold; font-size: 100%; font-family: "Trebuchet MS", Verdana; background-color: #f1eeee; text-align: left; vertical-align: bottom; padding: 5px 4px 1px 5px; border-style: solid; border-width: 1px; border-color: #c0c0c0 #808080 #808080 #c0c0c0; width: auto }
