@@ -1,4 +1,3 @@
-* Move all generated java (DAL, DCB, IDs, etc) under 'auto' package
 * Add debug mode to pages that will show the location, class, and other data about each element (such where a panel is coming from) -- maybe even a DebugFlags for NavigationTree
 * Add permissions, conditionals, etc into navigation trees
 * Need to add support for saving DialogContext values into XML (like Sparx 2.3 "pending" dialogs)
@@ -17,7 +16,7 @@
 * Add sorting to report data source (which should also use cookies to store active sort criteria)
 * Consider removing the capability to create 'dialog' and 'query' tags outside of 'dialogs' and 'queries' package tags. Might be easier to document/explain.
 * Need to move DialogField.Flags from inner class to package class DialogFieldFlags so that XDM can instantiate it (for documentation) without requiring parent class [see problem in 'conditional' tag]
-* Consider ways of allowing Console to be extended in end-user applications by allow "object" insertion capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
+* Consider ways of allowing Console to be extended in end-user applications by allowing "object insertion" capability if a tag like <navigation-tree name="console"> is seen multiple times. Perhaps on the second instance the original object can be returned?
 
 * Start using http://jwebunit.sourceforge.net/ (JWebUnit) to automate web-based unit testing for Sparx
 * Use http://erw.dsi.unimi.it/ (ERW) to help explain Axiom and its features, benefits, etc.
