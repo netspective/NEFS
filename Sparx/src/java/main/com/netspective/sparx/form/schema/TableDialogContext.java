@@ -39,18 +39,22 @@
  */
 
 /**
- * $Id: TableDialogContext.java,v 1.2 2003-08-08 00:58:29 shahid.shah Exp $
+ * $Id: TableDialogContext.java,v 1.3 2003-09-14 04:29:43 roque.hernandez Exp $
  */
 
 package com.netspective.sparx.form.schema;
 
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.axiom.schema.Row;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class TableDialogContext extends DialogContext
 {
     private static final String SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY = "table-dialog-active-pk-";
     private Row lastRowManipulated;
+
+    private static final Log log = LogFactory.getLog(TableDialogContext.class);
 
     public void setLastRowManipulated(Row row)
     {
@@ -69,6 +73,11 @@ public class TableDialogContext extends DialogContext
 
     public void setPrimaryKeyValue(Object primaryKeyValue)
     {
+        if ((primaryKeyValue != null) && !(primaryKeyValue instanceof java.io.Serializable))
+        {
+            log.error("A non-Serializable object of type: '" + primaryKeyValue.getClass() + "' is being used as a primary key.\n" +
+                      "This object will be stored in the session. Therfore, needs to implement the Serializable interface.");
+        }
         getHttpRequest().getSession(true).setAttribute(SESSATTRNAMEPREFIX_ACTIVE_PRIMARYKEY + getTransactionId(), primaryKeyValue);
     }
 
