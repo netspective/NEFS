@@ -60,11 +60,9 @@ public class TestOrganization  extends TestCase
 
         Organization org1 = new Organization();
         org1.setName("Acme Corporation");
-        org1.setEin("123456789");
 
         final Organization org2 = new Organization();
         org2.setName("Acme Subsidiary");
-        org2.setEin("000000000");
 
         HibernateUtil.beginTransaction();
 
@@ -78,13 +76,11 @@ public class TestOrganization  extends TestCase
                 org1.getOrgId());
         assertEquals(persistedOrg1.getName(), "Acme Corporation");
         assertEquals(persistedOrg1.getPartyName(), "Acme Corporation");
-        assertEquals(persistedOrg1.getEin(), "123456789");
 
         final Organization persistedOrg2 = (Organization) HibernateUtil.getSession().load(Organization.class,
                 org2.getOrgId());
         assertEquals(persistedOrg2.getName(), "Acme Subsidiary");
         assertEquals(persistedOrg2.getPartyName(), "Acme Subsidiary");
-        assertEquals(persistedOrg2.getEin(), "000000000");
 
         HibernateUtil.beginTransaction();
 
@@ -99,7 +95,7 @@ public class TestOrganization  extends TestCase
         role2.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
         persistedOrg2.getPartyRoles().add(role2);
 
-        HibernateUtil.getSession().save(persistedOrg1);
+        HibernateUtil.getSession().update(persistedOrg1);
         HibernateUtil.getSession().save(role2);
 
         HibernateUtil.commitTransaction();
