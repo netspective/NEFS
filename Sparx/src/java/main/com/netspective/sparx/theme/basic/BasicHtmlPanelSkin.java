@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelSkin.java,v 1.11 2003-06-26 14:33:56 shahid.shah Exp $
+ * $Id: BasicHtmlPanelSkin.java,v 1.12 2003-06-30 01:34:54 aye.thu Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -218,8 +218,7 @@ public class BasicHtmlPanelSkin extends AbstractThemeSkin implements HtmlPanelSk
             ValueSource hvs = frame.getHeading();
             if(hvs != null)
                 heading = hvs.getValue(vc).getTextValue();
-
-            if(heading != null)
+            if(heading != null && !frame.hideHeading())
             {
                 writer.write("<tr>\n");
                 writer.write("    <td class=\""+ panelClassNamePrefix +"\">\n");
