@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: RuntimeEnvironmentFlags.java,v 1.5 2003-10-24 03:16:56 shahid.shah Exp $
+ * $Id: RuntimeEnvironmentFlags.java,v 1.6 2003-11-08 19:57:37 shahid.shah Exp $
  */
 
 package com.netspective.commons;
@@ -106,7 +106,7 @@ public class RuntimeEnvironmentFlags extends XdmBitmaskedFlagsAttribute
 
     public boolean isProductionOrTraining()
     {
-        return flagIsSet(DEMONSTRATION | PRODUCTION | TRAINING);
+        return flagIsSet(PRODUCTION | TRAINING);
     }
 
     public boolean isProduction()
