@@ -110,7 +110,7 @@ public class SamplerNavigationSkin extends ConsoleNavigationSkin
 
         String personId = authUser != null ? authUser.getUserId().toString() : "Not logged in";
         String personName = authUser != null ? authUser.getUserName() : "Not logged in";
-        AuthenticatedOrganization authOrg = authUser.getOrganizations().getPrimaryOrganization();
+        AuthenticatedOrganization authOrg = authUser != null ? authUser.getOrganizations().getPrimaryOrganization() : null;
 
         if(authUser != null && authUser.isRemembered())
             personName += " (remembered)";
