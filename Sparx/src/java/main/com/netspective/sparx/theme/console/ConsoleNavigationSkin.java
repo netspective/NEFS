@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.23 2003-08-14 17:59:18 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.24 2003-08-19 16:39:40 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -133,7 +133,9 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         String resourcesUrl = nc.getThemeResourcesRootUrl(getTheme());
         String cssRootUrl = resourcesUrl + "/css";
         String scriptsRootUrl = resourcesUrl + "/scripts";
+        String imagesRootUrl = resourcesUrl + "/images";
 
+        writer.write("  <LINK REL='SHORTCUT ICON' HREF='"+ imagesRootUrl +"/favicon.ico'>\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/general.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/navigation.css\" type=\"text/css\">\n");
         writer.write("	<link rel=\"stylesheet\" href=\"" + cssRootUrl + "/panel-input.css\" type=\"text/css\">\n");
