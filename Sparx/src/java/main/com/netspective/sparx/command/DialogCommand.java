@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogCommand.java,v 1.3 2003-05-10 16:49:59 shahid.shah Exp $
+ * $Id: DialogCommand.java,v 1.4 2003-05-13 02:13:38 shahid.shah Exp $
  */
 
 package com.netspective.sparx.command;
@@ -76,7 +76,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class DialogCommand extends AbstractHttpServletCommand
 {
-    public static final Log log = LogFactory.getLog(DialogCommand.class);
+    private static final Log log = LogFactory.getLog(DialogCommand.class);
     public static final String[] IDENTIFIERS = new String[] { "dialog" };
     public static final String[] DIALOG_COMMAND_RETAIN_PARAMS =
             {
@@ -243,17 +243,10 @@ public class DialogCommand extends AbstractHttpServletCommand
         */
 
         dialog.prepareContext(dc);
-        if(unitTest)
+        if(unitTest || (debugFlags != null && debugFlags.flagIsSet(DialogDebugFlags.SHOW_FIELD_DATA)))
             dc.setRedirectDisabled(true);
-        try
-        {
-            dialog.render(writer, dc, true);
-        }
-        catch (DialogExecuteException e)
-        {
-            log.error(e);
-            throw new CommandException(e, this);
-        }
+
+        dialog.render(writer, nc, nc.getActiveTheme(), 0);
     }
 
     public static class SkinParameter extends CommandDocumentation.Parameter

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicHtmlPanelValueContext.java,v 1.1 2003-04-24 02:26:21 shahid.shah Exp $
+ * $Id: BasicHtmlPanelValueContext.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -54,6 +54,7 @@ import com.netspective.sparx.value.BasicDbHttpServletValueContext;
 public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext
 {
     private HtmlPanel panel;
+    private int panelRenderFlags;
 
     public BasicHtmlPanelValueContext(ServletContext context, Servlet servlet, ServletRequest request, ServletResponse response, HtmlPanel panel)
     {
@@ -69,5 +70,15 @@ public class BasicHtmlPanelValueContext extends BasicDbHttpServletValueContext i
     public boolean isMinimized()
     {
         return false;
+    }
+
+    public int getPanelRenderFlags()
+    {
+        return panelRenderFlags;
+    }
+
+    public void setPanelRenderFlags(int panelRenderFlags)
+    {
+        this.panelRenderFlags = panelRenderFlags;
     }
 }

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DialogsCatalogOverviewPanel.java,v 1.2 2003-05-06 17:18:19 shahid.shah Exp $
+ * $Id: DialogsCatalogOverviewPanel.java,v 1.3 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.presentation.dialogs;
@@ -140,8 +140,8 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
                     return super.getActiveRowColumnData(columnIndex, flags);
 
                 case 3:
-                    return activeRowDialog.getHeading() != null && activeRowDialog.getHeading() != ValueSource.NULL_VALUE_SOURCE ?
-                            activeRowDialog.getHeading().getSpecification() :
+                    return activeRowDialog.getFrame().getHeading() != null && activeRowDialog.getFrame().getHeading() != ValueSource.NULL_VALUE_SOURCE ?
+                            activeRowDialog.getFrame().getHeading().getSpecification() :
                             null;
 
                 case 4:
@@ -165,7 +165,6 @@ public class DialogsCatalogOverviewPanel extends DialogsCatalogPanel
                     return null;
             }
         }
-
     }
 }
 

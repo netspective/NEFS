@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogContext.java,v 1.4 2003-05-11 17:52:24 shahid.shah Exp $
+ * $Id: DialogContext.java,v 1.5 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -83,14 +83,13 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 import com.netspective.sparx.panel.HtmlPanelsStyleEnumeratedAttribute;
 import com.netspective.sparx.panel.HtmlPanel;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextAttributesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesPanel;
 import com.netspective.sparx.console.panel.presentation.dialogs.DialogContextFieldStatesClassesPanel;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.text.TextUtils;
-import com.netspective.commons.validate.BasicValidationContext;
 import com.netspective.axiom.schema.Row;
 
 /**
@@ -105,7 +104,7 @@ import com.netspective.axiom.schema.Row;
  * can be extended (inherited) to create a customzied dialog context.
  *
  */
-public class DialogContext extends BasicDbHttpServletValueContext
+public class DialogContext extends BasicDbHttpServletValueContext implements HtmlPanelValueContext
 {
     private static final Log log = LogFactory.getLog(DialogContext.class);
 
@@ -253,6 +252,7 @@ public class DialogContext extends BasicDbHttpServletValueContext
         }
     }
 
+    private int panelRenderFlags;
     private DialogFieldStates fieldStates = new DialogFieldStates();
     private DialogValidationContext validationContext = new DialogValidationContext(this);
     private boolean resetContext;
@@ -273,6 +273,26 @@ public class DialogContext extends BasicDbHttpServletValueContext
 
     public DialogContext()
     {
+    }
+
+    public HtmlPanel getPanel()
+    {
+        return dialog;
+    }
+
+    public int getPanelRenderFlags()
+    {
+        return panelRenderFlags;
+    }
+
+    public boolean isMinimized()
+    {
+        return false;
+    }
+
+    public void setPanelRenderFlags(int panelRenderFlags)
+    {
+        this.panelRenderFlags = panelRenderFlags;
     }
 
     /**

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValidationUtils.java,v 1.1 2003-03-13 18:33:12 shahid.shah Exp $
+ * $Id: ValidationUtils.java,v 1.2 2003-05-13 02:12:20 shahid.shah Exp $
  */
 
 package com.netspective.commons.validate;
@@ -95,7 +95,7 @@ public class ValidationUtils
         if (regexp != null && regexp.length() > 0)
         {
             Perl5Util r = new Perl5Util();
-            match = r.match(getDelimittedRegexp(regexp), value);
+            match = r.match(regexp, value);
         }
 
         return match;

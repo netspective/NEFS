@@ -39,15 +39,34 @@
  */
 
 /**
- * $Id: DialogFieldValue.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BooleanFieldStyle.java,v 1.1 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.field;
+package com.netspective.sparx.form.field.type;
 
-import com.netspective.commons.value.Value;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-public interface DialogFieldValue extends Value
+public class BooleanFieldStyle extends XdmEnumeratedAttribute
 {
-    public DialogField getField();
-    public DialogField.State getState();
+    public static final int RADIO = 0;
+    public static final int CHECK = 1;
+    public static final int CHECKALONE = 2;
+    public static final int COMBO = 3;
+
+    public static final String[] STYLE_VALUES = new String[] { "radio", "check", "check-alone", "combo" };
+
+    public BooleanFieldStyle()
+    {
+    }
+
+    public BooleanFieldStyle(int valueIndex)
+    {
+        super(valueIndex);
+    }
+
+    public String[] getValues()
+    {
+        return STYLE_VALUES;
+    }
 }
+

@@ -39,15 +39,30 @@
  */
 
 /**
- * $Id: DialogFieldValue.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: CurrencyFieldNegativePosLocation.java,v 1.1 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.field;
+package com.netspective.sparx.form.field.type;
 
-import com.netspective.commons.value.Value;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-public interface DialogFieldValue extends Value
+public class CurrencyFieldNegativePosLocation extends XdmEnumeratedAttribute
 {
-    public DialogField getField();
-    public DialogField.State getState();
+    public static final String[] VALUES = new String[] { "before-symbol", "after-symbol" };
+    public static final int BEFORE_SYMBOL = 0;
+    public static final int AFTER_SYMBOL = 1;
+
+    public CurrencyFieldNegativePosLocation()
+    {
+    }
+
+    public CurrencyFieldNegativePosLocation(int valueIndex)
+    {
+        super(valueIndex);
+    }
+
+    public String[] getValues()
+    {
+        return VALUES;
+    }
 }

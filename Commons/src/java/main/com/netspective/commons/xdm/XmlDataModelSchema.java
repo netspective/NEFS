@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: XmlDataModelSchema.java,v 1.13 2003-05-10 18:13:36 shahid.shah Exp $
+ * $Id: XmlDataModelSchema.java,v 1.14 2003-05-13 02:12:21 shahid.shah Exp $
  */
 
 package com.netspective.commons.xdm;
@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.xdm.exception.UnsupportedAttributeException;
@@ -1169,6 +1170,34 @@ public class XmlDataModelSchema
                     catch (InstantiationException ie)
                     {
                         throw new DataModelException(pc, ie);
+                    }
+                }
+            };
+        }
+        else if (Locale.class.isAssignableFrom(arg))
+        {
+            return new AttributeSetter()
+            {
+                public void set(XdmParseContext pc, Object parent, String value)
+                        throws InvocationTargetException, IllegalAccessException, DataModelException
+                {
+                    String[] items = TextUtils.split(value, ",", true);
+                    switch(items.length)
+                    {
+                        case 1:
+                            m.invoke(parent, new Locale[] { new Locale(items[0], "") });
+                            break;
+
+                        case 2:
+                            m.invoke(parent, new Locale[] { new Locale(items[1], items[2]) });
+                            break;
+
+                        case 3:
+                            m.invoke(parent, new Locale[] { new Locale(items[1], items[2], items[3]) });
+                            break;
+
+                        case 4:
+                            throw new DataModelException(pc, "Too many items in Locale constructor.");
                     }
                 }
             };

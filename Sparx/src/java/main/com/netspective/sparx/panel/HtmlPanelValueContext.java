@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: HtmlPanelValueContext.java,v 1.1 2003-04-03 14:08:12 shahid.shah Exp $
+ * $Id: HtmlPanelValueContext.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -50,4 +50,6 @@ public interface HtmlPanelValueContext extends ValueContext
 {
     public HtmlPanel getPanel();
     public boolean isMinimized();
+    public int getPanelRenderFlags();
+    public void setPanelRenderFlags(int panelRenderFlags);
 }

@@ -39,13 +39,14 @@
  */
 
 /**
- * $Id: DialogFieldValidations.java,v 1.2 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogFieldValidations.java,v 1.3 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
 
 import com.netspective.commons.validate.ValidationRulesCollection;
 import com.netspective.commons.validate.ValidationRule;
+import com.netspective.commons.value.ValueSource;
 
 public class DialogFieldValidations extends ValidationRulesCollection
 {
@@ -68,7 +69,7 @@ public class DialogFieldValidations extends ValidationRulesCollection
 
     public void addRule(ValidationRule rule)
     {
-        if(rule.getCaption() == null && field.getCaption() != null)
+        if(rule.getCaption() == null && field.getCaption() != ValueSource.NULL_VALUE_SOURCE)
             rule.setCaption(field.getCaption());
 
         super.addRule(rule);

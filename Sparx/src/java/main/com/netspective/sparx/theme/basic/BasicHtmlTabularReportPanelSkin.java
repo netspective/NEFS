@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.9 2003-05-05 21:25:31 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.10 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -103,10 +103,9 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         }
     }
 
-    public BasicHtmlTabularReportPanelSkin(Theme theme, String panelStyle, boolean fullWidth)
+    public BasicHtmlTabularReportPanelSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme, panelStyle, fullWidth);
-        setPanelStyle(panelStyle);
+        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         flags.setFlag(Flags.SHOW_HEAD_ROW | Flags.SHOW_FOOT_ROW);
     }
 
@@ -191,7 +190,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int dataColsCount = columns.size();
 
         Theme theme = rc.getActiveTheme();
-        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelResourcesPrefix;
 
         String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
@@ -296,7 +295,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 {
                     style += "padding-left:" + (activeLevel * 15) + ";";
                     if(allowTreeExpandCollapse)
-                        data = "<span id=\""+ panelId + "_node_" + rowsWritten + "_controller\" onclick=\"TREES.toggleNodeExpansion('"+ panelId +"', 'node_"+ rowsWritten +"')\" class=\"panel-tree-collapse-output\">&nbsp;</span>" + data;
+                        data = "<span id=\""+ panelId + "_node_" + rowsWritten + "_controller\" onclick=\"TREES.toggleNodeExpansion('"+ panelId +"', 'node_"+ rowsWritten +"')\" class=\"panel-output-tree-collapse\">&nbsp;</span>" + data;
                 }
 
                 String singleColumn =

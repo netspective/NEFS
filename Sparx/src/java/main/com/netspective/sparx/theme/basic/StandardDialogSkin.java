@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: StandardDialogSkin.java,v 1.4 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: StandardDialogSkin.java,v 1.5 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -80,10 +80,10 @@ import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.SeparatorField;
 import com.netspective.sparx.theme.Theme;
-import com.netspective.commons.value.ValueSource;
+import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.commons.validate.ValidationContext;
 
-public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
+public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
 {
     static public final String FIELDROW_PREFIX = "_dfr.";
     static public final String GRIDHEADROW_PREFIX = "_dghr.";
@@ -127,15 +127,16 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
     protected String prependPostScript;
     protected String appendPreScript;
     protected String appendPostScript;
-		protected Map    includePostScriptsMap;
-		protected Map    includePreScriptsMap;
+	protected Map    includePostScriptsMap;
+	protected Map    includePreScriptsMap;
+    private String controlAreaClass;
+    private String captionClass;
 
-
-    public StandardDialogSkin(Theme theme)
+    public StandardDialogSkin(Theme theme, String panelClassNamePrefix, String panelResourcesPrefix, boolean fullWidth)
     {
-        super(theme);
+        super(theme, panelClassNamePrefix, panelResourcesPrefix, fullWidth);
         summarizeErrors = true;
-        outerTableAttrs = "cellspacing='1' cellpadding='0' bgcolor='#6699CC' ";
+        outerTableAttrs = "border=\"0\" cellspacing=\"0\" cellpadding=\"0\" nowrap";
         innerTableAttrs = "width='100%' cellspacing='0' cellpadding='4' bgcolor='#EEEEEE' ";
         frameHdRowAlign = "LEFT";
         frameHdRowAttrs = "bgcolor='#6699CC' ";
@@ -158,14 +159,14 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         controlAreaRequiredStyleClass = "dialog_control_required";
         controlAreaReadonlyStyleClass = "dialog_control_readonly";
 
-        controlAttrs = "onfocus='controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
+        controlAttrs = " onfocus='controlOnFocus(this, event)' onchange='controlOnChange(this, event)' " +
                 "onblur='controlOnBlur(this, event)' onkeypress='controlOnKeypress(this, event)' onclick='controlOnClick(this, event) '";
         separatorFontAttrs = "face='verdana,arial' size=2 color=#555555";
         separatorBannerTextFontAttrs = "face='arial' size=2 color=#555555";
-        separatorHtml = "<hr size=1 color=#555555>";
-        hintFontAttrs = "color='navy'";
+        separatorHtml = "";
+        hintFontAttrs = " class=\"dialog-fields-hint\" ";
         errorMsgFontAttrs = "color='red'";
-        captionSuffix = ": ";
+        captionSuffix = " ";
         includePreScripts = null;
         includePostScripts = null;
         includePreStyleSheets = null;
@@ -174,8 +175,11 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         prependPostScript = null;
         appendPreScript = null;
         appendPostScript = null;
-				includePostScriptsMap = new HashMap();
-				includePreScriptsMap = new HashMap();
+		includePostScriptsMap = new HashMap();
+		includePreScriptsMap = new HashMap();
+
+        controlAreaClass = " class=\"dialog-entry\" ";
+        captionClass = " class=\"dialog-fields\"";
     }
 
     public void importFromXml(Element elem)
@@ -569,7 +573,6 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             return;
         }
 
-        String name = field.getQualifiedName();
         String caption = field.getCaption().getTextValue(dc);
         DialogFields fieldChildren = field.getChildren();
         if(caption != null && fieldChildren != null && caption.equals(DialogField.GENERATE_CAPTION))
@@ -610,39 +613,29 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             String adjValue = state.getAdjacentAreaValue();
             controlHtml.write("&nbsp;<span id='" + field.getQualifiedName() + "_adjacent'>"+ (adjValue != null ? adjValue : "") +"</span>");
         }
-        if (stateFlags.flagIsSet(DialogField.Flags.CREATEADJACENTAREA_HIDDEN))
+
+        boolean haveErrors = false;
+        StringBuffer messagesHtml = null;
+        List errorMessages = dc.getValidationContext().getValidationErrorsForScope(state.getValidationContextScope());
+        if(errorMessages.size() > 0)
         {
-            String adjValue = state.getAdjacentAreaValue();
-            controlHtml.write("&nbsp;<span style='visibility: hidden' id='" + field.getQualifiedName() + "_adjacent'>"+ (adjValue != null ? adjValue : "") +"</span>");
+            messagesHtml = new StringBuffer();
+            messagesHtml.append("<font " + errorMsgFontAttrs + ">");
+            for(int i = 0; i < errorMessages.size(); i++)
+            {
+                String msgStr = (String) errorMessages.get(i);
+                fieldErrorMsgs.add(msgStr);
+                if(i > 0)
+                    messagesHtml.append("<br>");
+                messagesHtml.append("<a name='dc_error_msg_" + i + "'>" + msgStr + "</a>");
+            }
+            messagesHtml.append("</font>");
+            haveErrors = true;
         }
 
-        StringBuffer messagesHtml = new StringBuffer();
         String hint = field.getHint().getTextValue(dc);
-        if(hint != null && !(field.isReadOnly(dc) && dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
-        {
-            messagesHtml.append("<br><font " + hintFontAttrs + ">");
-            messagesHtml.append(hint);
-            messagesHtml.append("</font>");
-        }
-        boolean haveErrors = false;
-        if(name != null)
-        {
-            List errorMessages = dc.getValidationContext().getValidationErrorsForScope(state.getValidationContextScope());
-            if(errorMessages != null)
-            {
-                messagesHtml.append("<font " + errorMsgFontAttrs + ">");
-                Iterator emi = errorMessages.iterator();
-                while(emi.hasNext())
-                {
-                    int msgNum = fieldErrorMsgs.size();
-                    String msgStr = (String) emi.next();
-                    fieldErrorMsgs.add(msgStr);
-                    messagesHtml.append("<br><a name='dc_error_msg_" + msgNum + "'>" + msgStr + "</a>");
-                }
-                messagesHtml.append("</font>");
-                haveErrors = true;
-            }
-        }
+        if(hint != null && (field.isReadOnly(dc) && dc.getDialog().getDialogFlags().flagIsSet(DialogFlags.HIDE_READONLY_HINTS)))
+            hint = null;
 
         /*
 		 * each field row gets its own ID so DHTML can hide/show the row
@@ -654,13 +647,31 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
         if(caption == null)
         {
-            fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'><font " + controlAreaFontAttrs + ">" + controlHtml + messagesHtml + "</font></td></tr>\n");
+            if (field instanceof SeparatorField)
+                fieldsHtml.append("<tr" + rowAttr + "><td class=\"dialog-fields-separator\" colspan='2'>" + controlHtml + "</td></tr>\n");
+            else
+                fieldsHtml.append("<tr" + rowAttr + "><td colspan='2'>" + controlHtml + "</td></tr>\n");
+
+            if (hint != null)
+                fieldsHtml.append("<tr><td class=\"dialog-fields-hint-table\" align=\"left\" valign=\"top\" nowrap colspan=\"2\" width=\"50%\">" +
+                    "<span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span></td></tr>\n");
+
+            if (haveErrors)
+                fieldsHtml.append("<tr><td><span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  messagesHtml + "</span></td></tr>\n");
         }
         else
         {
             fieldsHtml.append(
-                    "<tr " + rowAttr + "><td " + captionCellAttrs + "><font " + captionFontAttrs + ">" + caption + "</font></td>" +
-                    "<td><font " + controlAreaFontAttrs + ">" + controlHtml + messagesHtml + "</font></td></tr>\n");
+                    "<tr><td " + captionClass + ">" + caption + "</td>" +
+                    "<td "+ controlAreaClass + " width='100%'>" + controlHtml + "</td></tr>\n");
+
+            if (hint != null)
+                fieldsHtml.append("<tr><td>&nbsp;</td><td class=\"dialog-fields-hint-table\" align=\"left\" valign=\"top\" nowrap width=\"50%\">" +
+                    "<span class=\"dialog-fields-hint\">&nbsp;&nbsp;&nbsp;"+  hint + "</span></td></tr>\n");
+
+            if (haveErrors)
+                fieldsHtml.append("<tr><td>&nbsp;</td><td>" +
+                    "<span class=\"dialog-fields-errors\">&nbsp;&nbsp;&nbsp;"+  messagesHtml + "</span></td></tr>\n");
         }
 
         if(field.getName() != null)
@@ -669,6 +680,17 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
     public void renderHtml(Writer writer, DialogContext dc) throws IOException
     {
+        renderPanelRegistration(writer, dc);
+
+        int panelRenderFlags = dc.getPanelRenderFlags();
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+        {
+            renderFrameBegin(writer, dc);
+            writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+        }
+        else
+            writer.write("    <table id=\""+ dc.getPanel().getIdentifier() +"_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+
         List fieldErrorMsgs = new ArrayList();
         List dlgErrorMsgs = dc.getValidationContext().getValidationErrorsForScope(ValidationContext.VALIDATIONSCOPE_ENTIRE_CONTEXT);
         if(dlgErrorMsgs != null)
@@ -696,7 +718,13 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             }
 
             if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
-                appendFieldHtml(dc, director, fieldsHtml, fieldsJSDefn, fieldErrorMsgs);
+            {
+                fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='2'>");
+                StringWriter directorHtml = new StringWriter();
+                director.renderControlHtml(directorHtml, dc);
+                fieldsHtml.append(directorHtml);
+                fieldsHtml.append("</td></tr>");
+            }
         }
         else
         {
@@ -744,11 +772,11 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
             if(director != null && director.isAvailable(dc) && ! dc.getDataCommands().flagIsSet(DialogDataCommands.PRINT))
             {
-                fieldsHtml.append("<tr><td colspan='" + dlgTableColSpan + "'><font " + controlAreaFontAttrs + ">");
+                fieldsHtml.append("<tr><td class=\"dialog-button-table\" colspan='" + dlgTableColSpan + "'>");
                 StringWriter directorHtml = new StringWriter();
                 director.renderControlHtml(directorHtml, dc);
                 fieldsHtml.append(directorHtml);
-                fieldsHtml.append("</font></td></tr>");
+                fieldsHtml.append("</td></tr>");
             }
         }
 
@@ -781,10 +809,8 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
             "<script language='JavaScript1.2'>_version = 1.2;</script>\n" +
             "<script language='JavaScript1.3'>_version = 1.3;</script>\n" +
             "<script language='JavaScript1.4'>_version = 1.4;</script>\n");
-
-        // if(includePreScripts != null)
-        //    writer.write(includePreScripts);
-				this.writeIncludeScripts(writer, dc, includePreScriptsMap);
+        if(includePreScripts != null)
+            writer.write(includePreScripts);
 
         writer.write("<script src='" + sharedScriptsUrl + "/popup.js' language='JavaScript1.1'></script>\n");
         writer.write("<script src='" + sharedScriptsUrl + "/dialog.js' language='JavaScript1.2'></script>\n");
@@ -799,21 +825,24 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
         if(dialogIncludeJS != null)
             writer.write("<script language='JavaScript' src='" + dialogIncludeJS + "'></script>\n");
-
-        //if(includePostScripts != null)
-        //    writer.write(includePostScripts);
-				this.writeIncludeScripts(writer, dc, includePostScriptsMap);
-
+        if(includePostScripts != null)
+            writer.write(includePostScripts);
         if(prependPostScript != null)
             writer.write(prependPostScript);
+
+        DialogFlags dflags = dialog.getDialogFlags();
+        if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_VALIDATION))
+            writer.write("<script>ALLOW_CLIENT_VALIDATION = false;</script>");
+        if(dflags.flagIsSet(DialogFlags.TRANSLATE_ENTER_KEY_TO_TAB_KEY))
+            writer.write("<script>TRANSLATE_ENTER_KEY_TO_TAB_KEY = true;</script>");
+        if(dflags.flagIsSet(DialogFlags.SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE))
+            writer.write("<script>SHOW_DATA_CHANGED_MESSAGE_ON_LEAVE = true;</script>");
+        if(dflags.flagIsSet(DialogFlags.DISABLE_CLIENT_KEYPRESS_FILTERS))
+            writer.write("<script>ENABLE_KEYPRESS_FILTERS = flase;</script>");
 
         String dialogName = dialog.getName();
 
         String encType = dialog.getDialogFlags().flagIsSet(DialogFlags.ENCTYPE_MULTIPART_FORMDATA) ? "enctype=\"multipart/form-data\"" : "";
-        String heading = null;
-        ValueSource headingVS = dialog.getHeading();
-        if(headingVS != null)
-            heading = headingVS.getValue(dc).getTextValue();
 
         String actionURL = null;
         if(director != null)
@@ -822,7 +851,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         if(actionURL == null)
             actionURL = ((HttpServletRequest) dc.getRequest()).getRequestURI();
 
-        renderContentsHtml(writer, dc, dialogName, actionURL, encType, heading, dlgTableColSpan, errorMsgsHtml, fieldsHtml);
+        renderContentsHtml(writer, dc, dialogName, actionURL, encType, dlgTableColSpan, errorMsgsHtml, fieldsHtml);
 
         if(appendPreScript != null)
             writer.write(appendPreScript);
@@ -838,42 +867,41 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
         if(appendPostScript != null)
             writer.write(appendPostScript);
+
+        // panel end
+        writer.write("    </table>\n");
+        if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
+            renderFrameEnd(writer, dc);
     }
 
-		public void writeIncludeScripts(Writer writer, DialogContext dc, Map scriptsMap) throws IOException
-		{
-			Iterator i = scriptsMap.keySet().iterator();
-			while(i.hasNext())
-			{
-				String src = (String) i.next();
-				String adjustedSrc = src;
-				if(src.startsWith("/"))
-				{
-					String appRoot = ((HttpServletRequest) dc.getRequest()).getContextPath();
-					adjustedSrc = appRoot + src;
-				}
-				String lang = (String) scriptsMap.get(src);
-				writer.write("<script src='" + adjustedSrc + "' language='" + lang + "'></script>\n");
-			}
-		}
-
-    public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, String heading, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
+    public void writeIncludeScripts(Writer writer, DialogContext dc, Map scriptsMap) throws IOException
     {
-        writer.write(
-                "<table " + outerTableAttrs + ">\n" +
-                "<tr><td><table " + innerTableAttrs + ">" +
-                (heading == null || dc.getDialog().hideHeading(dc) ? "" :
-                "<tr " + frameHdRowAttrs + "><td colspan='" + dlgTableColSpan + "' align='" + frameHdRowAlign + "'><font " + frameHdFontAttrs + "><b>" + heading + "</b></font></td></tr>\n"));
+        Iterator i = scriptsMap.keySet().iterator();
+        while(i.hasNext())
+        {
+            String src = (String) i.next();
+            String adjustedSrc = src;
+            if(src.startsWith("/"))
+            {
+                String appRoot = ((HttpServletRequest) dc.getRequest()).getContextPath();
+                adjustedSrc = appRoot + src;
+            }
+            String lang = (String) scriptsMap.get(src);
+            writer.write("<script src='" + adjustedSrc + "' language='" + lang + "'></script>\n");
+        }
+    }
 
+    public void renderContentsHtml(Writer writer, DialogContext dc, String dialogName, String actionURL, String encType, int dlgTableColSpan, StringBuffer errorMsgsHtml, StringBuffer fieldsHtml) throws IOException
+    {
         if(summarizeErrors)
             writer.write(errorMsgsHtml.toString());
 
         writer.write(
-                "<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " + encType + " onsubmit='return(activeDialog.isValid())'>\n" +
+                "<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+                encType + " onsubmit='return(activeDialog.isValid())'>\n" +
                 dc.getStateHiddens() + "\n" +
                 fieldsHtml +
-                "</form>\n" +
-                "</table></td></tr></table>");
+                "</form>\n");
     }
 
     public void renderSeparatorHtml(Writer writer, DialogContext dc, SeparatorField field) throws IOException
@@ -883,14 +911,13 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
 
         if(heading != null)
         {
-            String sep = "<font " + separatorFontAttrs + "><a name=\"" + URLEncoder.encode(heading) + "\"><b>" + heading + "</b></a></font>";
+            String sep = "<a class=\"dialog-fields-separator-link\" name=\"" + URLEncoder.encode(heading) + "\">" + heading + "</a>";
             if(field.getBanner() != null)
             {
                 sep += "<br><font " + separatorBannerTextFontAttrs + ">";
                 sep += field.getBanner().getTextValue(dc);
                 sep += "</font>";
             }
-
             if(flags.flagIsSet(SeparatorField.Flags.RULE))
                 sep += separatorHtml;
 
@@ -902,7 +929,7 @@ public class StandardDialogSkin extends AbstractThemeSkin implements DialogSkin
         else
         {
             if(! flags.flagIsSet(DialogField.Flags.COLUMN_BREAK_BEFORE))
-                writer.write(flags.flagIsSet(SeparatorField.Flags.RULE) ? "<hr size=1 color=silver>" : "<br>");
+                writer.write(flags.flagIsSet(SeparatorField.Flags.RULE) ? "<br>" : "");
         }
     }
 

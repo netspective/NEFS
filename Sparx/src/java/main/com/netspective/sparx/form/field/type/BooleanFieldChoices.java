@@ -39,15 +39,42 @@
  */
 
 /**
- * $Id: DialogFieldValue.java,v 1.2 2003-05-13 02:13:39 shahid.shah Exp $
+ * $Id: BooleanFieldChoices.java,v 1.1 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
-package com.netspective.sparx.form.field;
+package com.netspective.sparx.form.field.type;
 
-import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.xdm.XdmEnumeratedAttribute;
 
-public interface DialogFieldValue extends Value
+public class BooleanFieldChoices extends XdmEnumeratedAttribute
 {
-    public DialogField getField();
-    public DialogField.State getState();
+    public static final int YESNO = 0;
+    public static final int TRUEFALSE = 1;
+    public static final int ONOFF = 2;
+
+    public static final String[] TEXT_TYPE_VALUES = new String[] { "yesno", "truefalse", "onoff" };
+    public static final ValueSource[] TEXT_CHOICES = new ValueSource[] {
+            new StaticValueSource("No"),
+            new StaticValueSource("Yes"),
+            new StaticValueSource("False"),
+            new StaticValueSource("True"),
+            new StaticValueSource("Off"),
+            new StaticValueSource("On")
+        };
+
+    public BooleanFieldChoices()
+    {
+    }
+
+    public BooleanFieldChoices(int valueIndex)
+    {
+        super(valueIndex);
+    }
+
+    public String[] getValues()
+    {
+        return TEXT_TYPE_VALUES;
+    }
 }

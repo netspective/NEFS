@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: DialogField.java,v 1.8 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: DialogField.java,v 1.9 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field;
@@ -191,43 +191,67 @@ public class DialogField implements TemplateConsumer
         }
     }
 
-    public class BasicFieldValue extends GenericValue implements DialogFieldValue
-    {
-        public BasicFieldValue()
-        {
-        }
-
-        public BasicFieldValue(List value)
-        {
-            super(value);
-        }
-
-        public BasicFieldValue(Object value)
-        {
-            super(value);
-        }
-
-        public BasicFieldValue(String[] value)
-        {
-            super(value);
-        }
-
-        public DialogField getField()
-        {
-            return DialogField.this;
-        }
-    }
-
     public class State
     {
-        public DialogFieldValue value = constructValueInstance();
-        public String adjacentAreaValue;
-        public Flags stateFlags = createFlags();
-        public DialogContext dc;
+        private DialogFieldValue value = constructValueInstance();
+        private String adjacentAreaValue;
+        private Flags stateFlags = createFlags();
+        private DialogContext dialogContext;
+
+        public class BasicStateValue extends GenericValue implements DialogFieldValue
+        {
+            private boolean isValid = true;
+            private String invalidText;
+
+            public BasicStateValue()
+            {
+            }
+
+            public BasicStateValue(List value)
+            {
+                super(value);
+            }
+
+            public BasicStateValue(Object value)
+            {
+                super(value);
+            }
+
+            public BasicStateValue(String[] value)
+            {
+                super(value);
+            }
+
+            public boolean isValid()
+            {
+                return isValid;
+            }
+
+            public String getInvalidText()
+            {
+                return invalidText;
+            }
+
+            public void setInvalidText(String text)
+            {
+                isValid = false;
+                invalidText = text;
+            }
+
+            public DialogField getField()
+            {
+                return DialogField.this;
+            }
+
+            public State getState()
+            {
+                return State.this;
+            }
+        }
 
         public State(DialogContext dc)
         {
-            this.dc = dc;
+            this.dialogContext = dc;
             stateFlags.copy(getFlags());
             if(dc.getRunSequence() == 1 && stateFlags.flagIsSet(Flags.PERSIST))
             {
@@ -262,10 +286,19 @@ public class DialogField implements TemplateConsumer
             stateFlags.copy(flags);
         }
 
+        public DialogFieldValue constructValueInstance()
+        {
+            return new BasicStateValue();
+        }
+
+        public DialogContext getDialogContext()
+        {
+            return dialogContext;
+        }
+
         public boolean hasRequiredValue()
         {
-            String textValue = value.getTextValue();
-            return textValue != null && textValue.length() > 0;
+            return value.hasValue();
         }
 
         public DialogFieldValue getValue()
@@ -294,7 +327,7 @@ public class DialogField implements TemplateConsumer
             {
                 Cookie cookie = new Cookie(getCookieName(), URLEncoder.encode(value.getTextValue()));
                 cookie.setMaxAge(60 * 60 * 24 * 365); // 1 year
-                dc.getHttpResponse().addCookie(cookie);
+                dialogContext.getHttpResponse().addCookie(cookie);
             }
         }
 
@@ -383,11 +416,6 @@ public class DialogField implements TemplateConsumer
     {
         defaultValue = null;
         flags = createFlags();
-    }
-
-    public DialogFieldValue constructValueInstance()
-    {
-        return new BasicFieldValue();
     }
 
     public State constructStateInstance(DialogContext dc)
@@ -1103,9 +1131,9 @@ public class DialogField implements TemplateConsumer
 		}
 
 		if (formatType == DialogField.DISPLAY_FORMAT)
-			dfValue.setValue(formatDisplayValue(textValue));
+			dfValue.setTextValue(formatDisplayValue(textValue));
 		else if (formatType == DialogField.SUBMIT_FORMAT)
-			dfValue.setValue(formatSubmitValue(textValue));
+			dfValue.setTextValue(formatSubmitValue(textValue));
 
 		if (children == null) return;
 

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: TextField.java,v 1.6 2003-05-11 17:52:25 shahid.shah Exp $
+ * $Id: TextField.java,v 1.7 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form.field.type;
@@ -64,6 +64,7 @@ import com.netspective.sparx.form.DialogContextMemberInfo;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldValidations;
+import com.netspective.sparx.form.field.DialogFieldValue;
 
 import org.apache.oro.text.perl.MalformedPerl5PatternException;
 import org.apache.oro.text.perl.Perl5Util;
@@ -107,6 +108,33 @@ public class TextField extends DialogField
         }
     }
 
+    public class TextFieldState extends State
+    {
+        public class TextFieldValue extends BasicStateValue
+        {
+            public Class getValueHolderClass()
+            {
+                return String.class;
+            }
+
+            public boolean hasValue()
+            {
+                String textValue = getTextValue();
+                return textValue != null && textValue.length() > 0;
+            }
+        }
+
+        public TextFieldState(DialogContext dc)
+        {
+            super(dc);
+        }
+
+        public DialogFieldValue constructValueInstance()
+        {
+            return new TextFieldValue();
+        }
+    }
+
     private int size = 32;
     private String displayPattern;
     private String formatPattern;
@@ -122,6 +150,11 @@ public class TextField extends DialogField
     {
         super(parent);
         initialize();
+    }
+
+    public DialogField.State constructStateInstance(DialogContext dc)
+    {
+        return new TextFieldState(dc);
     }
 
     /**
@@ -146,6 +179,11 @@ public class TextField extends DialogField
     public void setRegExpr(String regExpr)
     {
         textValidationRule.setRegExpr(regExpr);
+    }
+
+    public void setInvalidRegExMessage(String invalidRegExMessage)
+    {
+        textValidationRule.setInvalidRegExMessage(invalidRegExMessage);
     }
 
     public DialogFieldValidations constructValidationRules()

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: Dialog.java,v 1.6 2003-05-11 17:52:24 shahid.shah Exp $
+ * $Id: Dialog.java,v 1.7 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.form;
@@ -73,6 +73,9 @@ import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFields;
 import com.netspective.sparx.form.field.type.GridField;
 import com.netspective.sparx.form.field.type.CompositeField;
+import com.netspective.sparx.form.field.type.SeparatorField;
+import com.netspective.sparx.panel.AbstractPanel;
+import com.netspective.sparx.theme.Theme;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 
@@ -90,7 +93,7 @@ import com.netspective.commons.text.TextUtils;
  * For dialog objects that need more complex actions for data population, validation,
  * and execution, the <code>Dialog</code> class can be subclassed to implement customized actions.
  */
-public class Dialog
+public class Dialog extends AbstractPanel
 {
     private static final Log log = LogFactory.getLog(Dialog.class);
 
@@ -143,11 +146,10 @@ public class Dialog
     private DialogsPackage nameSpace;
     private String name;
     private String htmlFormName;
-    private ValueSource heading;
     private int layoutColumnsCount = 1;
     private String[] retainRequestParams;
     private Class dcClass = DialogContext.class;
-    private ValueSource includeJSFile = null;
+    private ValueSource includeJSFile = ValueSource.NULL_VALUE_SOURCE;
 
     /**
      * Create a dialog
@@ -259,26 +261,6 @@ public class Dialog
     public void setLoopSeparator(String loopSeparator)
     {
         loop.setLoopSeparator(loopSeparator);
-    }
-
-    /**
-     * Gets the dialog heading as a value source
-     *
-     * @return ValueSource
-     */
-    public ValueSource getHeading()
-    {
-        return heading;
-    }
-
-    /**
-     * Sets the heading of the dialog
-     *
-     * @param vs value source object
-     */
-    public void setHeading(ValueSource vs)
-    {
-        heading = vs;
     }
 
     /**
@@ -483,7 +465,39 @@ public class Dialog
         return new CompositeField(this);
     }
 
+    public CompositeField createComposite(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(CompositeField.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
+            return (CompositeField) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
+    }
+
     public void addComposite(CompositeField field)
+    {
+        addField(field);
+    }
+
+    public SeparatorField createSeparator()
+    {
+        return new SeparatorField(this);
+    }
+
+    public SeparatorField createSeparator(Class cls) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+    {
+        if(SeparatorField.class.isAssignableFrom(cls))
+        {
+            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
+            return (SeparatorField) c.newInstance(new Object[] { this });
+        }
+        else
+            throw new RuntimeException("Don't know what to do with with class: " + cls);
+    }
+
+    public void addSeparator(SeparatorField field)
     {
         addField(field);
     }
@@ -497,7 +511,7 @@ public class Dialog
     {
         if(GridField.class.isAssignableFrom(cls))
         {
-            Constructor c = cls.getConstructor(new Class[] { GridField.class });
+            Constructor c = cls.getConstructor(new Class[] { Dialog.class });
             return (GridField) c.newInstance(new Object[] { this });
         }
         else
@@ -656,7 +670,7 @@ public class Dialog
      * @param dc                        dialog context
      * @param contextPreparedAlready    flag to indicate whether or not the context has been prepared
      */
-    public void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
+    protected void render(Writer writer, DialogContext dc, boolean contextPreparedAlready) throws IOException, DialogExecuteException
     {
         if(!contextPreparedAlready)
             prepareContext(dc);
@@ -701,16 +715,23 @@ public class Dialog
         }
     }
 
-    /**
-     * Create and write the HTML for the dialog. This method calls <code>render(Writer writer, DialogContext dc, boolean contextPreparedAlready)</code>
-     * with the context flag set to <code>false</code>.
-     *
-     * @param skin dialog skin
-     */
-    public void render(NavigationContext nc, DialogSkin skin) throws IOException, DialogExecuteException
+    public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
     {
-        DialogContext dc = createContext(nc, skin);
-        render(nc.getResponse().getWriter(), dc, false);
+        render(writer, dc.getNavigationContext(), theme, flags);
+    }
+
+    public void render(Writer writer, NavigationContext nc, Theme theme, int flags) throws IOException
+    {
+        DialogContext dc = createContext(nc, theme.getDialogSkin());
+        try
+        {
+            render(nc.getResponse().getWriter(), dc, false);
+        }
+        catch (DialogExecuteException e)
+        {
+            log.error(e);
+            writer.write(e.toString());
+        }
     }
 
     public String getSubclassedDialogContextCode(String pkgPrefix)

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: TemplateContentPanel.java,v 1.3 2003-05-10 16:50:01 shahid.shah Exp $
+ * $Id: TemplateContentPanel.java,v 1.4 2003-05-13 02:13:39 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -75,9 +75,10 @@ public class TemplateContentPanel extends AbstractPanel
     {
         BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServletContext(), nc.getServlet(), nc.getRequest(), nc.getResponse(), this);
         vc.setNavigationContext(nc);
-        theme.getPanelSkin().renderFrameBegin(writer, vc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
         bodyTemplate.process(writer, vc);
-        theme.getPanelSkin().renderFrameEnd(writer, vc);
+        templatePanelSkin.renderFrameEnd(writer, vc);
     }
 
     public void render(Writer writer, DialogContext dc, Theme theme, int flags) throws IOException
@@ -85,8 +86,9 @@ public class TemplateContentPanel extends AbstractPanel
         BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(dc.getServletContext(), dc.getServlet(), dc.getRequest(), dc.getResponse(), this);
         vc.setNavigationContext(dc.getNavigationContext());
         vc.setDialogContext(dc);
-        theme.getPanelSkin().renderFrameBegin(writer, vc);
+        HtmlPanelSkin templatePanelSkin = theme.getTemplatePanelSkin();
+        templatePanelSkin.renderFrameBegin(writer, vc);
         bodyTemplate.process(writer, vc);
-        theme.getPanelSkin().renderFrameEnd(writer, vc);
+        templatePanelSkin.renderFrameEnd(writer, vc);
     }
 }

@@ -16,14 +16,16 @@ public class AbstractTheme implements Theme
     private InheritableFileResources resources;
     private boolean defaultTheme;
     private NavigationSkin navigationSkin;
-    private HtmlPanelSkin panelSkin;
-    private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel/output", false);
-    private StandardDialogSkin defaultDialogSkin = new BasicDialogSkin(this);
+    private HtmlPanelSkin tabbedPanelSkin;
+    private HtmlPanelSkin templatePanelSkin;
+    private BasicHtmlTabularReportPanelSkin defaultReportSkin = new BasicHtmlTabularReportPanelSkin(this, "panel-output", "panel/output", false);
+    private StandardDialogSkin defaultDialogSkin = new StandardDialogSkin(this, "panel-input", "panel/input", false);
 
     public AbstractTheme()
     {
         navigationSkin = constructNavigationSkin();
-        panelSkin = constructPanelSkin();
+        tabbedPanelSkin = constructPanelSkin();
+        templatePanelSkin = constructPanelSkin();
     }
 
     protected NavigationSkin constructNavigationSkin()
@@ -33,7 +35,7 @@ public class AbstractTheme implements Theme
 
     protected HtmlPanelSkin constructPanelSkin()
     {
-        return new BasicHtmlPanelSkin(this, "panel/output", false);
+        return new BasicHtmlPanelSkin(this, "panel-output", "panel/output", false);
     }
 
     public String getName()
@@ -73,9 +75,14 @@ public class AbstractTheme implements Theme
         return navigationSkin;
     }
 
-    public HtmlPanelSkin getPanelSkin()
+    public HtmlPanelSkin getTabbedPanelSkin()
     {
-        return panelSkin;
+        return tabbedPanelSkin;
+    }
+
+    public HtmlPanelSkin getTemplatePanelSkin()
+    {
+        return templatePanelSkin;
     }
 
     public HtmlTabularReportSkin getReportSkin()
