@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AuthenticatedUserValueSource.java,v 1.4 2004-08-08 22:55:16 shahid.shah Exp $
+ * $Id: AuthenticatedUserValueSource.java,v 1.5 2004-08-14 19:57:59 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value.source;
@@ -60,6 +60,8 @@ import com.netspective.commons.value.ValueSourceSpecification;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.source.AbstractValueSource;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.xdm.XmlDataModelSchema;
+import com.netspective.commons.xdm.XmlDataModelSchema.AttributeAccessor;
 import com.netspective.commons.xdm.exception.InvalidXdmEnumeratedAttributeValueException;
 import com.netspective.sparx.security.HttpLoginManager;
 import com.netspective.sparx.value.HttpServletValueContext;
@@ -156,7 +158,21 @@ public class AuthenticatedUserValueSource extends AbstractValueSource
                 return new GenericValue(authUser.getEncryptedPassword());
 
             case AttributeType.CUSTOM:
-                return new GenericValue(authUser.getAttribute(customAttrName));
+                XmlDataModelSchema schema = XmlDataModelSchema.getSchema(authUser.getClass());
+                AttributeAccessor accessor = (AttributeAccessor) schema.getAttributeAccessors().get(customAttrName);
+                if(accessor != null)
+                {
+                    try
+                    {
+                        return new GenericValue(accessor.get(null, authUser));
+                    }
+                    catch (Exception e)
+                    {
+                        log.error(e);
+                        return new GenericValue("Error accessing " + customAttrName);
+                    }
+                }
+                return new GenericValue("No accessor for " + customAttrName);
 
             default:
                 log.error("Invalid attribute type " + attrType.getValueIndex());
