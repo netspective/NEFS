@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StandardTemplateNavigationSkin.java,v 1.1 2003-11-27 19:39:46 shahid.shah Exp $
+ * $Id: StandardTemplateNavigationSkin.java,v 1.2 2003-11-30 00:34:43 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -110,7 +110,8 @@ public class StandardTemplateNavigationSkin extends AbstractThemeSkin implements
         NavigationContext nc = new NavigationContext(tree, servlet, request, response, this, navTreeId);
 
         Map tmplVars = new HashMap();
-        tmplVars.put("resourcesPath", nc.getServletRootUrl() + "resources");
+        tmplVars.put("resourcesPath", nc.getServletRootUrl() + "/resources");
+        tmplVars.put("servletPath", nc.getServletRootUrl());
         tmplVars.put("activePage", nc.getActivePage());
         tmplVars.put("activePageId", nc.getActivePage().getQualifiedName());
         tmplVars.put("theme", this.getTheme());
