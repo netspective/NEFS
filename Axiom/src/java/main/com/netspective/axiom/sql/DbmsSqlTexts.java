@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DbmsSqlTexts.java,v 1.2 2003-04-06 03:57:12 shahid.shah Exp $
+ * $Id: DbmsSqlTexts.java,v 1.3 2003-04-09 04:23:38 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
@@ -99,6 +99,11 @@ public class DbmsSqlTexts implements Cloneable
     {
         byDbms.putAll(exprs.byDbms);
     }
+
+	public DbmsSqlText removeByDbms(String dbmsId)
+	{
+		return (DbmsSqlText) byDbms.remove(dbmsId);
+	}
 
     public DbmsSqlText getByDbms(DatabasePolicy dbPolicy)
     {
