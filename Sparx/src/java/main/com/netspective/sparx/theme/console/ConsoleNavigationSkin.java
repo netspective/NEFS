@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.10 2003-05-17 17:51:30 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.11 2003-06-02 01:41:45 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -404,7 +404,7 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("      <td align=\"left\" valign=\"top\">");
         writer.write("          <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         writer.write("              <tr>");
-        writer.write("                  <td align=\"left\" valign=\"top\" nowrap>");
+        writer.write("                  <td align=\"left\" valign=\"top\">");
         writer.write("                  <div align=\"left\">");
     }
 

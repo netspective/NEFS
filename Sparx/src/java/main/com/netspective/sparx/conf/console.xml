@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.37 2003-06-01 21:47:10 shahid.shah Exp $
+  * $Id: console.xml,v 1.38 2003-06-02 01:41:45 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -26,12 +26,11 @@
                 <panels style="vertical">
                     <panel type="html">
                         <frame heading="Welcome"/>
-                        <body source="console/welcome.ftl"/>
+                        <body source="console/content/home/welcome.ftl"/>
                     </panel>
-
                     <panel type="html">
-                        <frame heading="Runtime Environment"/>
-                        <body source="console/runtime-environment.ftl"/>
+                        <frame heading="Configuration Overview"/>
+                        <body source="console/content/home/app-overview.ftl"/>
                     </panel>
                 </panels>
 
@@ -72,8 +71,16 @@
         </page>
 
         <page name="application" caption="Application">
+            <body source="console/content/home/app-overview.ftl"/>
+
+	        <page name="runtime-environment" caption="Runtime Environment">
+                <body source="console/content/framework/runtime-environment.ftl"/>
+            </page>
 	        <page name="metrics" caption="Metrics"/>
-	        <page name="configuration" caption="Configuration Properties"/>
+	        <page name="configuration" caption="Configuration Properties">
+	            <page name="servlet" caption="Servlet Config"/>
+	            <page name="application" caption="App Config"/>
+            </page>
 	        <page name="access-control" caption="Access Control"/>
         </page>
 

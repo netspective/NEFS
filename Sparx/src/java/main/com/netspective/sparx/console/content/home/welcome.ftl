@@ -12,7 +12,8 @@
     <ul>
         <li>Use the Console's built-in single password security model.
         <li>Use Servlet filters that can be wrapped around the ConsoleServlet to provide a custom authentication scheme.
-        <li>Disable the ConsoleServlet completely by commenting it out in the application's web.xml file
-        (<code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}).
+        <li>Disable the ConsoleServlet completely by commenting it out in the application's
+        <a href="application/configuration/servlet">J2EE Servlet configuration</a> file
+        (<code>${vc.servletContext.getRealPath('WEB-INF/web.xml')}</code>).
     </ul>
 </div>
