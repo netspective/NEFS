@@ -39,7 +39,6 @@
  */
 package com.netspective.medigy.model.common;
 
-import com.netspective.medigy.reference.type.FacilityType;
 import com.netspective.medigy.model.party.PartyFacilityRole;
 
 import javax.ejb.CascadeType;
@@ -65,6 +64,10 @@ public class Facility extends AbstractTopLevelEntity
     private Set<Facility> childFacilities = new HashSet<Facility>();
     private PartyFacilityRole facilityRole;
 
+    /**
+     * Facilities are not children of any table and they are related to Parties only through the
+     * {@link PartyFacilityRole}. Parties can "own", "rent", or "lease" facilities.
+     */
     public Facility()
     {
     }
