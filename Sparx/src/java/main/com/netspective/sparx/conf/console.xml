@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- *****************************************************************************************
-     * Sparx standard configuration file (designed to be included in other Sparx XDM files). *
+     * Sparx standard configuration file (designed to be included in other Sparx XDM files).
+     * $Id: console.xml,v 1.8 2003-04-05 17:08:29 shahid.shah Exp $
      ***************************************************************************************** -->
 
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
@@ -26,7 +27,7 @@
                 </page>
                 <page name="detail" caption="Detail">
                     <panels style="horizontal">
-                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="tree"/>
+                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="tree" height="320"/>
                         <panels style="vertical">
                             <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail-ancestors"/>
                             <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail"/>
