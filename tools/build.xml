@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ===================================================================
+
+Setup instructions:
+    Before running an Ant build, you must
+     - set the JAVA_HOME environment variable to the JDK root directory
+-->
+
+<project default="all">
+
+    <target name="all">
+	<echo message="Building Netspective Commons..."/>
+        <ant dir="../Commons/conf"/>
+
+	<echo message="Building Netspective Axiom..."/>
+        <ant dir="../Axiom/conf"/>
+
+	<echo message="Building Netspective Sparx..."/>
+        <ant dir="../Sparx/conf"/>
+    </target>
+
+</project>
