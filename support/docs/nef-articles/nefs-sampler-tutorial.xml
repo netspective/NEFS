@@ -123,46 +123,50 @@
     </screenshot>
 
     <para>Clicking on the <emphasis>View Page XDM Code</emphasis> link to see
-    the XML code (as shown below): </para>
+    the XML code (as shown below):</para>
 
     <screenshot>
       <graphic fileref="./resources/images/screen-sampler-show-XDM.gif" />
     </screenshot>
 
-    <calloutlist>
-      <callout arearefs="???">
+    <orderedlist>
+      <listitem>
         <para>The link to hide the currently visible XDM code. Clicking on
         this link hides the currently visible XDM code.</para>
-      </callout>
+      </listitem>
 
-      <callout arearefs="???">
+      <listitem>
         <para>Location of the currently open XDM code in the application's
         project file (<filename class="directory">WEB-INF</filename>/<filename
         class="directory">sparx</filename>/<filename>project.xml</filename>).
         Clicking on this link takes you to the <guimenu>Project</guimenu> |
         <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
         Console, with Sampler app project file being displayed in browse
-        mode.<screenshot>
+        mode.</para>
+
+        <para><screenshot>
             <graphic fileref="./resources/images/screen-sampler-view-prj-file.gif" />
           </screenshot></para>
-      </callout>
+      </listitem>
 
-      <callout arearefs="???">
+      <listitem>
         <para>Java class file being instantiated for this page. Clicking on
         this link takes you to the <guimenu>Project</guimenu> |
         <guisubmenu>Project Files</guisubmenu> section of the Sampler app's
         Console, with the selected java file
         (<classname>AppPage.java</classname> in this case) being displayed in
-        browse mode.<screenshot>
+        browse mode.</para>
+
+        <para><screenshot>
             <graphic fileref="./resources/images/screen-sampler-view-java.gif" />
           </screenshot></para>
-      </callout>
+      </listitem>
 
-      <callout arearefs="???">
+      <listitem>
         <para>XDM code (from the Sampler app project file) corresponding to
         the currently opened page.</para>
-      </callout>
-    </calloutlist>
+      </listitem>
+    </orderedlist>
   </section>
 
   <section>
