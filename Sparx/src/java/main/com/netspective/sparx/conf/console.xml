@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.9 2003-04-05 17:12:02 shahid.shah Exp $
+  * $Id: console.xml,v 1.10 2003-04-06 04:01:46 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -12,27 +12,27 @@
     <navigation-tree name="ace" class="com.netspective.sparx.console.ConsoleNavigationTree">
         <page name="home" caption="Home" default="yes" sub-heading="trying something here">
             <panels>
-                <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+                <panel class="com.netspective.sparx.console.panel.app.XdmComponentsPanel"/>
             </panels>
         </page>
         <page name="application" caption="Application">
             <page name="xdm" caption="XDM">
                 <page name="components" caption="Instances">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.XdmComponentsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.app.XdmComponentsPanel"/>
                     </panels>
                 </page>
                 <page name="structure" caption="Structure">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel"/>
+                        <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel"/>
                     </panels>
                 </page>
                 <page name="detail" caption="Detail">
                     <panels style="horizontal">
-                        <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="tree" height="320"/>
+                        <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="tree" height="320"/>
                         <panels style="vertical">
-                            <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail-ancestors"/>
-                            <panel class="com.netspective.sparx.console.panel.XdmSchemaStructurePanel" view="detail"/>
+                            <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="detail-ancestors"/>
+                            <panel class="com.netspective.sparx.console.panel.app.XdmSchemaStructurePanel" view="detail"/>
                         </panels>
                     </panels>
                 </page>
@@ -44,12 +44,12 @@
 	        <page name="value-source" caption="Value Sources">
                 <page name="documentation" caption="Documentation" heading="Value Sources Documentation">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.ValueSourcesDocumentationPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.app.ValueSourcesDocumentationPanel"/>
                     </panels>
                 </page>
                 <page name="usage" caption="Usage" heading="Value Sources Usage">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.ValueSourcesUsagePanel"/>
+                        <panel class="com.netspective.sparx.console.panel.app.ValueSourcesUsagePanel"/>
                     </panels>
                 </page>
             </page>
@@ -68,7 +68,16 @@
         </page>
         <page name="data-management" caption="Data Management">
 	        <page name="query" caption="Static Queries">
-				<page name="catalog" caption="Catalog"/>
+				<page name="catalog" caption="Catalog" heading="Static SQL Queries">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.StaticQueriesCatalogPanel"/>
+                    </panels>
+                </page>
+                <page name="detail" caption="Documentation">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.StaticQueryDocumentationPanel"/>
+                    </panels>
+                </page>
 				<page name="test" caption="Unit Test"/>
 	        </page>
 	        <page name="dynamic-query" caption="Dynamic Queries">

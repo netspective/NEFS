@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.3 2003-04-05 14:14:59 shahid.shah Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.4 2003-04-06 04:01:46 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -69,10 +69,12 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
+import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
+import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.value.ValueSource;
-import com.netspective.commons.value.Value;
 import com.netspective.commons.lang.ClassPath;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.command.Command;
 
 public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implements HtmlTabularReportSkin
 {
@@ -118,6 +120,22 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         return "<span title=\""+ ClassPath.getClassFileName(cls) +"\">" + className + "</span>";
     }
 
+    public String constructRedirect(TabularReportValueContext rc, Command command, String label, String hint, String target)
+    {
+        if(command instanceof RedirectCommand)
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("<a href=\"" + ((RedirectCommand) command).getLocation().getTextValue(rc) + "\"");
+            if(hint != null)
+                sb.append(" title=\"" + hint + "\"");
+            if(target != null)
+                sb.append(" target=\"" + target + "\"");
+            sb.append(">" + label + "</a");
+            return sb.toString();
+        }
+        return this.getClass().getName() + ".constructAction(Action action, String label, String hint) not implemented.";
+    }
+
     public String getBlankValue()
     {
         return "&nbsp;";
@@ -133,18 +151,15 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         renderFrameBegin(writer, (HtmlPanelValueContext) rc);
 
         writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
-        if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
-        {
-            if(!rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.FIRST_DATA_ROW_HAS_HEADINGS))
-                produceHeadingRow(writer, rc);
-            else
-                produceHeadingRow(writer, rc, ds);
-        }
 
-        produceDataRows(writer, rc, ds);
+        if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
+            produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
+
+        produceDataRows(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
 
         if(flags.flagIsSet(Flags.SHOW_FOOT_ROW) && rc.getCalcsCount() > 0)
-            produceFootRow(writer, rc);
+            produceFootRow(writer, (HtmlTabularReportValueContext) rc);
+
         writer.write("    </table>\n");
 
         renderFrameEnd(writer, (HtmlPanelValueContext) rc);
@@ -158,50 +173,29 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                + 1; // each column has "spacer" in between, first column as spacer before too
     }
 
-    public void produceHeadingRowDecoratorPrepend(Writer writer, TabularReportValueContext rc) throws IOException
-    {
-    }
-
-    public void produceHeadingRowDecoratorAppend(Writer writer, TabularReportValueContext rc) throws IOException
-    {
-    }
-
-    public void produceDataRowDecoratorPrepend(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds, boolean isOddRow) throws IOException
-    {
-    }
-
-    public void produceDataRowDecoratorAppend(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds, boolean isOddRow) throws IOException
-    {
-    }
-
-    public void produceHeadingRow(Writer writer, TabularReportValueContext rc) throws IOException
+    public void produceHeadingRow(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds) throws IOException
     {
         TabularReportColumns columns = rc.getColumns();
         TabularReportColumnState[] states = rc.getStates();
         int dataColsCount = columns.size();
 
-        Theme theme = ((HtmlTabularReportValueContext) rc).getActiveTheme();
-        String imgPath = ((HtmlTabularReportValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
+        Theme theme = rc.getActiveTheme();
+        String imgPath = rc.getThemeImagesRootUrl(theme) + "/" + panelStyle;
 
         String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
         String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
 
         writer.write("<tr>");
-        produceHeadingRowDecoratorPrepend(writer, rc);
 
         for(int i = 0; i < dataColsCount; i++)
         {
-            TabularReportColumn rcd = columns.getColumn(i);
             TabularReportColumnState rcs = rc.getState(i);
             if(! states[i].isVisible())
                 continue;
 
-            String colHeading = rcs.getHeading();
+            String colHeading = ds.getHeadingRowColumnData(i);
             if(colHeading != null)
             {
-                ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
-                if(headingAnchorAttrs != null)
-                    colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
                 if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
                     colHeading += sortAscImgTag;
                 if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
@@ -212,59 +206,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             else
                 writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
         }
-
-        produceHeadingRowDecoratorAppend(writer, rc);
 
         writer.write("</tr>");
     }
 
-    public void produceHeadingRow(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
-    {
-        TabularReportColumns columns = rc.getColumns();
-        TabularReportColumnState[] states = rc.getStates();
-        int dataColsCount = columns.size();
-
-        // get the first row (heading)
-        if(!ds.next()) return;
-
-        Theme theme = ((HtmlTabularReportValueContext) rc).getActiveTheme();
-        String imgPath = ((HtmlTabularReportValueContext) rc).getThemeImagesRootUrl(theme) + "/" + panelStyle;
-
-        String sortAscImgTag = " <img src=\""+ imgPath + "/column-sort-ascending.gif\" border=0>";
-        String sortDescImgTag = " <img src=\""+ imgPath + "/column-sort-descending.gif\" border=0>";
-
-        writer.write("<tr>");
-        produceHeadingRowDecoratorPrepend(writer, rc);
-
-        for(int i = 0; i < dataColsCount; i++)
-        {
-            TabularReportColumn rcd = columns.getColumn(i);
-            TabularReportColumnState rcs = rc.getState(i);
-            if(! states[i].isVisible())
-                continue;
-
-            Object heading = ds.getActiveRowColumnData(rc, rcd.getColIndex(), TabularReportColumn.GETDATAFLAGS_DEFAULT);
-            if(heading != null)
-            {
-                String colHeading = heading.toString();
-                ValueSource headingAnchorAttrs = rcd.getHeadingAnchorAttrs();
-                if(headingAnchorAttrs != null)
-                    colHeading = "<a " + headingAnchorAttrs.getValue(rc) + ">" + colHeading + "</a>";
-                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_ASCENDING))
-                    colHeading += sortAscImgTag;
-                if(rcs.getFlags().flagIsSet(TabularReportColumn.Flags.SORTED_DESCENDING))
-                    colHeading += sortDescImgTag;
-
-                writer.write("        <td class=\"report-column-heading\" nowrap>" + colHeading  + "</td>");
-            }
-            else
-                writer.write("        <td class=\"report-column-heading\" nowrap>&nbsp;&nbsp;</td>");
-        }
-
-        produceHeadingRowDecoratorAppend(writer, rc);
-    }
-
-    public int produceDataRows(Writer writer, TabularReportValueContext rc, TabularReportDataSource ds) throws IOException
+    public int produceDataRows(Writer writer, HtmlTabularReportValueContext rc, HtmlTabularReportDataSource ds) throws IOException
     {
         HtmlTabularReport defn = ((HtmlTabularReport) rc.getReport());
         TabularReportColumns columns = rc.getColumns();
@@ -286,7 +232,6 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
             isOddRow = ! isOddRow;
 
             writer.write("<tr>");
-            produceDataRowDecoratorPrepend(writer, rc, ds, isOddRow);
 
             int hiearchyCol = 0;
             int activeLevel = 0;
@@ -316,15 +261,14 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
                 if(hiearchical && (hiearchyCol == i) && activeLevel > 0)
                     style += "padding-left:" + (activeLevel * 15) + ";";
 
-                String singleRow = "<td class=\"" + (ds.isActiveRowSelected() ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style +  "\">" +
-                        (state.getFlags().flagIsSet(TabularReportColumn.Flags.WRAP_URL) ? "<a href=\"" + state.getUrl() + "\" " + state.getUrlAnchorAttrs() + ">" +
-                        data + "</a>" : data) +
+                String singleRow =
+                        "<td class=\"" +
+                            (ds.isActiveRowSelected() ? "report-column-selected" : (isOddRow ? "report-column-even" : "report-column-odd")) + "\" style=\"" + style + "\">" +
+                        data +
                         "&nbsp;</td>";
 
                 writer.write(defn.replaceOutputPatterns(rc, ds, singleRow));
             }
-
-            produceDataRowDecoratorAppend(writer, rc, ds, isOddRow);
 
             rowsWritten++;
             //TODO: Sparx 2.x conversion required
@@ -353,7 +297,7 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         return rowsWritten;
     }
 
-    public void produceFootRow(Writer writer, TabularReportValueContext rc) throws IOException
+    public void produceFootRow(Writer writer, HtmlTabularReportValueContext rc) throws IOException
     {
         int calcsCount = rc.getCalcsCount();
         if(calcsCount == 0)
