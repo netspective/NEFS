@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ValueSourceExpressionText.java,v 1.2 2003-10-26 19:07:44 shahid.shah Exp $
+ * $Id: ValueSourceExpressionText.java,v 1.3 2003-10-28 10:29:37 shahid.shah Exp $
  */
 
 package com.netspective.commons.text;
@@ -49,7 +49,7 @@ import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.exception.ValueSourceInitializeException;
 import com.netspective.commons.value.ValueSource;
 
-public class ValueSourceExpressionText extends JavaExpressionText
+public class ValueSourceExpressionText extends ExpressionText
 {
     public ValueSourceExpressionText()
     {
@@ -71,6 +71,6 @@ public class ValueSourceExpressionText extends JavaExpressionText
         {
             vs = ValueSources.getInstance().createExceptionValueSource(e);
         }
-        return vs != null ? vs.getTextValueOrBlank(vc) : super.getReplacement(vc, entireText, replaceToken);
+        return vs != null ? vs.getTextValueOrBlank(vc) : getOriginalReplacement(replaceToken);
     }
 }
