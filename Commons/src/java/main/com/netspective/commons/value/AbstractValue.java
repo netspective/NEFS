@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractValue.java,v 1.4 2003-05-13 19:51:51 shahid.shah Exp $
+ * $Id: AbstractValue.java,v 1.5 2003-06-26 04:54:09 roque.hernandez Exp $
  */
 
 package com.netspective.commons.value;
@@ -264,6 +264,62 @@ public abstract class AbstractValue implements Value
             default:
                 return 0;
         }
+    }
+
+    public boolean equals(Object o){
+
+        AbstractValue valueObject;
+
+        if (o == null)
+            return false;
+
+        try
+        {
+            valueObject = (AbstractValue) o;
+        }
+        catch (ClassCastException e)
+        {
+            return false;
+        }
+
+        if (this.getValueHolderClass() != valueObject.getValueHolderClass())
+            return false;
+
+        if ( this.value == null && valueObject.value == null)
+            return true;
+
+        if ( (this.value == null && valueObject.value != null) || (this.value != null && valueObject.value == null) )
+            return false;
+
+        if (this.getListValueType() != valueObject.getListValueType())
+            return false;
+
+        if (valueObject.getListValueType() == Value.VALUELISTTYPE_NONE)
+        {
+            return value.equals(valueObject.value);
+        }
+        else if (valueObject.getListValueType() == Value.VALUELISTTYPE_LIST)
+        {
+            List thisList = this.getListValue();
+            List valueObjectList = valueObject.getListValue();
+            for (int i = 0; i < thisList.size(); i++)
+            {
+                if (!thisList.get(i).equals(valueObjectList.get(i)))
+                    return false;
+            }
+        }
+        else if (valueObject.getListValueType() == Value.VALUELISTTYPE_STRINGARRAY)
+        {
+            String[] thisList = this.getTextValues();
+            String[] valueObjectList = valueObject.getTextValues();
+            for (int i = 0; i < thisList.length; i++)
+            {
+                if (!thisList[i].equals(valueObjectList[i]))
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     /*
