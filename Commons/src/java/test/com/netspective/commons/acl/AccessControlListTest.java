@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlListTest.java,v 1.6 2003-03-18 07:37:55 shahbaz.javeed Exp $
+ * $Id: AccessControlListTest.java,v 1.7 2003-03-20 14:57:13 shahid.shah Exp $
  */
 
 package com.netspective.commons.acl;
@@ -56,6 +56,9 @@ import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.DefaultXdmComponentItems;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.acl.AccessControlListsComponent;
+import com.netspective.commons.value.ValueSources;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.security.AuthenticatedUser;
 
 public class AccessControlListTest extends TestCase
 {
@@ -360,4 +363,23 @@ public class AccessControlListTest extends TestCase
 
 	}
 
+    public void testAuthenticatedUser() throws DataModelException, InvocationTargetException, InstantiationException, NoSuchMethodException, IllegalAccessException, IOException
+    {
+        AccessControlListsComponent aclc =
+                (AccessControlListsComponent) XdmComponentFactory.get(
+                        AccessControlListsComponent.class,
+                        new Resource(AccessControlListTest.class, RESOURCE_NAME_THREE),
+                        XdmComponentFactory.XDMCOMPFLAGS_DEFAULT);
+
+        // Verify _something_ was loaded...
+        assertNotNull(aclc);
+
+        ValueContext vc = ValueSources.getInstance().createDefaultValueContext();
+        AuthenticatedUser user = vc.createAuthenticatedUser();
+
+        user.setUserId("admin");
+        user.setUserName("Administrator");
+
+        // other tests...
+    }
 }
