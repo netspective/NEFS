@@ -172,6 +172,12 @@
             <index name="column_a_b_index" columns="column_a,column_b" unique="yes"/>
       </table>
 
+        <table name="To_Be_Deleted" abbrev="ToBDel" type="Default">
+         <description>This is a sample table that is used in the SchemaTableTest Unit Test.  Do not discard.</description>
+         <column name="auto_inc_column" primarykey="yes" type="auto-inc" descr="Auto Inc Column"/>
+         <column name="column_a" type="text" size="32" descr="Column A - for use in unit test SqlManagerQueryTest"/>
+      </table>
+
         <table name="Enum_set_Lookup" abbrev="EnumLookup" type="Enumeration">
             <enumerations>
                 <enum id="0">Zero</enum>

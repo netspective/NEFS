@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: SchemaTableTest.java,v 1.2 2003-06-26 05:06:13 roque.hernandez Exp $
+ * $Id: SchemaTableTest.java,v 1.3 2003-06-29 18:40:47 roque.hernandez Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -51,6 +51,7 @@ import com.netspective.axiom.schema.table.type.EnumerationTableRow;
 import com.netspective.axiom.schema.table.type.EnumerationTable;
 import com.netspective.axiom.schema.table.type.EnumerationTableRows;
 import com.netspective.axiom.schema.table.BasicTable;
+import com.netspective.axiom.schema.table.TablesCollection;
 import com.netspective.axiom.sql.QueryResultSet;
 import com.netspective.axiom.sql.DbmsSqlText;
 import com.netspective.axiom.sql.DbmsSqlTexts;
@@ -74,6 +75,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.lang.reflect.InvocationTargetException;
+
+import org.xml.sax.SAXException;
 
 public class SchemaTableTest extends TestCase
 {
@@ -161,9 +164,7 @@ public class SchemaTableTest extends TestCase
         assertTrue(table.isParentTable());
         assertTrue(!table2.isParentTable());
 
-        TableHierarchyReference hierarchy = table.createHierarchy();
-        assertNotNull(hierarchy);
-        assertSame(hierarchy, table.getHierarchy());
+
 
         DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
         dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
@@ -219,5 +220,88 @@ public class SchemaTableTest extends TestCase
 
     }
 
+    public void testBasicTableHierarchyRef()
+    {
+
+        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
+        TableHierarchyReference hierarchy = table.createHierarchy();
+        assertNotNull(hierarchy);
+        assertSame(hierarchy, table.getHierarchy());
+        assertNull(hierarchy.getParent());
+        hierarchy.setParent("Test-Parent");
+        assertEquals(hierarchy.getParent(), "Test-Parent");
+
+    }
+
+    public void testBasicRow() throws NamingException, SQLException
+    {
+        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.getConnProvider(this.getClass().getPackage().getName()));
+        dbvc.setDefaultDataSource(this.getClass().getPackage().getName());
+        ConnectionContext cc = dbvc.getConnection(this.getClass().getPackage().getName(), true);
+
+        Row initialRow = table.createRow();
+        QueryDefnSelect query = table.getAccessorByColumnEquality(table.getColumns().getByName("column_a"));
+        QueryResultSet qrs = query.execute(dbvc, new Object[]{"abc"}, false);
+        ResultSet rs = qrs.getResultSet();
+        if (rs.next())
+            initialRow.getColumnValues().populateValues(rs,1);
+
+        assertNotNull(initialRow.toString());
+
+    }
+
+    public void testTableTree()
+    {
+        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
+        BasicTable.BasicTableTreeNode treeNode = (BasicTable.BasicTableTreeNode) table.createTreeNode(populatedSchema.getStructure(),null,0);
+        assertSame(populatedSchema.getStructure(), treeNode.getOwner());
+        assertNotNull(treeNode.toString());
+        assertTrue(treeNode.hasChildren());
+    }
+
+    public void testTablesCollection()
+    {
+        TablesCollection tables = (TablesCollection) populatedSchema.getTables();
+
+        try
+        {
+            tables.getSole();
+            fail();
+        }
+        catch (RuntimeException e)
+        {
+            // This is good
+        }
+
+        assertNotNull(tables.toString());
+
+        Table table = tables.getByName("To_Be_Deleted");
+        assertNotNull(table);
+        tables.remove(table);
+        assertNull(tables.getByName("To_Be_Deleted"));
+    }
+
+    public void testTableQueryDefinition()
+    {
+        Table table = (Table) populatedSchema.getTables().getByName("Test_Three");
+        assertSame(table, table.getQueryDefinition().getOwner());
+        table.getQueryDefinition().setOwner(table);
+    }
+
+    /*TODO:  Need to figure out how to test BasicTable.TablePresentationTemplate
+    public void testTablePresentationTemplate()
+    {
+        BasicTable table = (BasicTable) populatedSchema.getTables().getByName("Test_Three");
+        try
+        {
+            table.getPresentation().getTemplateName(null,null,null,null);
+        }
+        catch (SAXException e)
+        {
+            e.printStackTrace();  //To change body of catch statement use Options | File Templates.
+        }
+    }*/
 
 }
