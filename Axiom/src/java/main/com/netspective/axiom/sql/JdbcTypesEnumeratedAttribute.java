@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: JdbcTypesEnumeratedAttribute.java,v 1.1 2004-07-30 16:37:17 aye.thu Exp $
+ * $Id: JdbcTypesEnumeratedAttribute.java,v 1.2 2004-07-30 16:41:21 aye.thu Exp $
  */
 package com.netspective.axiom.sql;
 
@@ -56,12 +56,10 @@ import org.apache.commons.logging.LogFactory;
 public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
 {
     private static final Log log = LogFactory.getLog(JdbcTypesEnumeratedAttribute.class);
-    private static Map map;
+    private static final Map map = createJdbcTypeMap();
 
     public String[] getValues()
     {
-        if (map == null)
-            map = createJdbcTypeMap();
         Object[] keys = map.keySet().toArray();
         String[] jdbcTypeNames = new String[keys.length];
         for (int i=0; i < keys.length; i++)
@@ -90,7 +88,7 @@ public class JdbcTypesEnumeratedAttribute extends XdmEnumeratedAttribute
      *
      * @return jdbc sql type mappings
      */
-    private Map createJdbcTypeMap()
+    private static Map createJdbcTypeMap()
     {
         // Use reflection to populate a map of int values to names
         Map map = new HashMap();
