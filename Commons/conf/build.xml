@@ -53,6 +53,9 @@ Setup instructions:
             <fileset dir="${project.lib.redist.dir}">
                 <include name="**/*.jar"/>
             </fileset>
+
+            <!-- this needs to be in the classpath because test cases have resources that need to be located -->
+            <pathelement location="${project.src.test.home}"/>
         </path>
 
         <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
@@ -135,13 +138,6 @@ Setup instructions:
             	<pathelement location="${project.build.main.classes.dir}"/>
             </classpath>
         </javac>
-        <copy todir="${project.build.test.classes.dir}">
-            <fileset dir="${project.src.test.home}">
-                <include name="**/*.xml"/>
-                <include name="**/*.xsl"/>
-                <include name="**/*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <!-- ==================== Test targets  ======================= -->
