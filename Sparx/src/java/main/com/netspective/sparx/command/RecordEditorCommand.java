@@ -72,12 +72,14 @@ import java.util.StringTokenizer;
  * Class for handling the record-editor-panel command
  *
  *
- * @version $Id: RecordEditorCommand.java,v 1.2 2004-03-01 18:49:32 aye.thu Exp $
+ * @version $Id: RecordEditorCommand.java,v 1.3 2004-03-02 07:43:20 aye.thu Exp $
  */
 public class RecordEditorCommand extends AbstractHttpServletCommand
 {
     private static final Log log = LogFactory.getLog(RecordEditorCommand.class);
-    public static final int UNLIMITED_ROWS = Integer.MAX_VALUE;
+
+
+    public static final String RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME = "record-editor";
     public static final String[] IDENTIFIERS = new String[] { "record-editor-panel" };
 
     public static final CommandDocumentation DOCUMENTATION = new CommandDocumentation(
@@ -85,7 +87,7 @@ public class RecordEditorCommand extends AbstractHttpServletCommand
             new CommandDocumentation.Parameter[]
             {
                 new CommandDocumentation.Parameter("record-editor-panel-name", true, "The fully qualified name of the record editor panel (package-name.panel-name)."),
-                new CommandDocumentation.Parameter("record-action", false, "The action to perform for the selected record."),
+                new CommandDocumentation.Parameter("command-action", false, "The action to perform for the selected record."),
                 new CommandDocumentation.Parameter("record-key", false, "The primary key of the selected record."),
             }
     );
@@ -157,6 +159,38 @@ public class RecordEditorCommand extends AbstractHttpServletCommand
     }
 
     /**
+     * Calculate the mode the record editor panel is in
+     *
+     * @return
+     */
+    public int calculateEditorPanelMode()
+    {
+        int mode = RecordEditorPanel.UNKNOWN_MODE;
+        if (recordAction == null)
+        {
+            mode = RecordEditorPanel.DEFAULT_DISPLAY_MODE;
+        }
+        else if (recordAction.equals("add"))
+        {
+            mode = RecordEditorPanel.ADD_RECORD_DISPLAY_MODE;
+        }
+        else if (recordAction.equals("edit") && recordKey != null)
+        {
+            mode = RecordEditorPanel.EDIT_RECORD_DISPLAY_MODE;
+        }
+        else if (recordAction.equals("delete") && recordKey != null)
+        {
+            mode = RecordEditorPanel.DELETE_RECORD_DISPLAY_MODE;
+        }
+        else if (recordAction.equals("manage"))
+        {
+            mode = RecordEditorPanel.MANAGE_RECORDS_DISPLAY_MODE;
+        }
+
+        return mode;
+    }
+
+    /**
      *
      *
      * @param writer
@@ -173,16 +207,17 @@ public class RecordEditorCommand extends AbstractHttpServletCommand
              throw new RuntimeException("Record editor panel '"+ getRecordEditorPanelName() + "' not found in "+ this +".");
         }
         Theme theme = nc.getActiveTheme();
-        if (recordAction != null)
-        {
-            if (!recordAction.equals("edit") && !recordAction.equals("delete"))
-                throw new RuntimeException("Record editor panel '"+ getRecordEditorPanelName() + "' can handle only edit and delete record actions.");
+        int mode = calculateEditorPanelMode();
 
-            if (recordKey == null)
-            {
-                throw new RuntimeException("Record editor panel '"+ getRecordEditorPanelName() + "' requires a record key " +
-                        "when a record action is requested.");
-            }
+        if (mode == RecordEditorPanel.UNKNOWN_MODE)
+        {
+            log.error("Unexpected mode encountered for the record editor panel '" + getRecordEditorPanelName() + "'.");
+            throw new RuntimeException("Unexpected mode encountered for the record editor panel '" + getRecordEditorPanelName() + "'.");
+        }
+
+        if (mode == RecordEditorPanel.ADD_RECORD_DISPLAY_MODE || mode == RecordEditorPanel.EDIT_RECORD_DISPLAY_MODE ||
+            mode == RecordEditorPanel.DELETE_RECORD_DISPLAY_MODE)
+        {
             // record action was defined so we need to display the requested display mode
             Dialog dialog = ePanel.getDialog();
             if (dialog == null)
@@ -202,6 +237,7 @@ public class RecordEditorCommand extends AbstractHttpServletCommand
                 throw new CommandException(e, this);
             }
         }
+        nc.setAttribute(RecordEditorPanel.DISPLAY_MODE_CONTEXT_ATTRIBUTE, new Integer(mode));
         ePanel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
 
     }
