@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AccessControlList.java,v 1.5 2003-10-11 14:31:53 shahid.shah Exp $
+ * $Id: AccessControlList.java,v 1.6 2004-01-06 05:29:33 aye.thu Exp $
  */
 
 package com.netspective.commons.acl;
@@ -48,6 +48,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.Iterator;
 
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.io.InputSourceLocator;
@@ -88,6 +90,11 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
         this.inputSourceLocator = inputSourceLocator;
     }
 
+    /**
+     * Sets the lists manager
+     *
+     * @param manager
+     */
     protected void setManager(AccessControlLists manager)
     {
         this.manager = manager;
@@ -98,11 +105,20 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
         return name;
     }
 
+    /**
+     * Sets the name of the list
+     *
+     * @param name
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Gets the qualified name of the ACL
+     * @return
+     */
     public String getQualifiedName()
     {
 		if (null == qualifiedName)
@@ -114,21 +130,72 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
 	    return qualifiedName;
     }
 
+    /**
+     * Sets the qualified name for the list
+     *
+     * @param qualifiedName
+     */
     public void setQualifiedName(String qualifiedName)
     {
         this.qualifiedName = qualifiedName;
     }
 
+    /**
+     * Gets a map of all permissions including children
+     *
+     * @return
+     */
     protected Map getPermissionsByName()
     {
         return permissionsByName;
     }
 
+    /**
+     * Gets a map of all roles including children
+     *
+     * @return
+     */
     protected Map getRolesByName()
     {
         return rolesByName;
     }
 
+    /**
+     * Gets a list of qualified names of all the registered roles in the ACL
+     *
+     * @return array of qualified names of registered roles
+     */
+    public String[] getRoleQualifiedNames()
+    {
+        String[] roleNames = new String[rolesByName.size()];
+        Object[] names = rolesByName.keySet().toArray();
+        for (int i=0; i < roleNames.length; i++)
+            roleNames[i] = (String)names[i];
+
+        return roleNames;
+    }
+
+    /**
+     * Gets a list of names of all the registered roles in the ACL
+     *
+     * @return array of names of registered roles
+     */
+    public String[] getRoleNames()
+    {
+        String[] roleNames = new String[rolesByName.size()];
+        Object[] names = rolesByName.keySet().toArray();
+        for (int i=0; i < roleNames.length; i++)
+        {
+            Role role = (Role)rolesByName.get((String)names[i]);
+            roleNames[i] = role.getName();
+        }
+        return roleNames;
+    }
+
+    /**
+     * Gets the owner of this ACL. Currently, all ACL's are their own owners.
+     * @return
+     */
     public AccessControlList getOwner()
     {
         return this;
@@ -144,23 +211,42 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
         return manager.getHighestRoleId();
     }
 
-    public void registerPermission(Permission perm)
+    /**
+     * Registers a permission for the list. This SHOULD only be used to register children permissions of
+     * other permissions.
+     *
+     * @param perm the permission object for registration
+     */
+    protected void registerPermission(Permission perm)
     {
         permissionsByName.put(perm.getQualifiedName(), perm);
         manager.registerPermission(perm);
     }
 
-    public void registerRole(Role role)
+    /**
+     * Registers a role for the ACL. This SHOULD only be used to register children roles of other roles.
+     *
+     * @param role the role object for registration
+     */
+    protected void registerRole(Role role)
     {
         rolesByName.put(role.getQualifiedName(), role);
         manager.registerRole(role);
     }
 
+    /**
+     * Creates a permission object
+     * @return
+     */
     public Permission createPermission()
     {
         return new Permission(this);
     }
 
+    /**
+     * Adds and registers a permission to the ACL
+     * @param perm
+     */
     public void addPermission(Permission perm)
     {
         permissions.add(perm);
@@ -172,12 +258,23 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
         return new Role(this);
     }
 
+    /**
+     * Adds and registers a role to the ACL
+     * @param role
+     */
     public void addRole(Role role)
     {
         roles.add(role);
         registerRole(role);
     }
 
+    /**
+     * Gets a registered permission by its qualified name
+     *
+     * @param name the permission's qualified name
+     * @return
+     * @throws PermissionNotFoundException
+     */
     public Permission getPermission(String name) throws PermissionNotFoundException
     {
         Permission result = (Permission) permissionsByName.get(name);
@@ -187,6 +284,13 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
             return result;
     }
 
+    /**
+     * Gets a registered role by its qualified name
+     *
+     * @param name the role's qualified name
+     * @return
+     * @throws RoleNotFoundException
+     */
     public Role getRole(String name) throws RoleNotFoundException
     {
         Role result = (Role) rolesByName.get(name);
@@ -196,11 +300,19 @@ public class AccessControlList implements XmlDataModelSchema.InputSourceLocatorL
             return result;
     }
 
+    /**
+     * Gets root permissions defined to the ACL. This does not include children permissions.
+     * @return
+     */
     public List getPermissions()
     {
         return permissions;
     }
 
+    /**
+     * Gets root roles belonging to the ACL. This does not include children roles.
+     * @return
+     */
     public List getRoles()
     {
         return roles;
