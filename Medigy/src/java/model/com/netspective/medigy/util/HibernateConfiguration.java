@@ -43,31 +43,28 @@
  */
 package com.netspective.medigy.util;
 
-import com.netspective.medigy.model.common.EntitySeedData;
-import com.netspective.medigy.model.common.EntitySeedDataProvider;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.ejb.Table;
+
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
 
-import javax.ejb.Table;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 public class HibernateConfiguration extends AnnotationConfiguration
 {
     private final Map<Class, Class> referenceEntitiesAndCachesMap = new HashMap<Class, Class>();
     private final Map<Class, Class> customReferenceEntitiesAndCachesMap = new HashMap<Class, Class>();
-    private final Set<Class> entitiesWithSeedDataSet = new HashSet<Class>();
 
     public HibernateConfiguration()
     {
@@ -83,7 +80,6 @@ public class HibernateConfiguration extends AnnotationConfiguration
     {
         return customReferenceEntitiesAndCachesMap;
     }
-
 
     public AnnotationConfiguration addAnnotatedClass(final Class aClass) throws MappingException
     {
@@ -133,9 +129,6 @@ public class HibernateConfiguration extends AnnotationConfiguration
             // if no cache is found, its ok since these are custom
         }
 
-        if (EntitySeedDataProvider.class.isAssignableFrom(aClass))
-            entitiesWithSeedDataSet.add(aClass);
-
         return super.addAnnotatedClass(aClass);
     }
 
@@ -166,68 +159,6 @@ public class HibernateConfiguration extends AnnotationConfiguration
                 final CachedReferenceEntity cached = (CachedReferenceEntity) x;
                 //TODO: this is kind of dumb right now, we need to do proper formatting of output, etc.
                 newDDL.add("insert into " + tableName + " (type_id, type_label) values ('" + cached.getId() + "', '" + cached.getLabel() + "')");
-            }
-        }
-        for (final Class seedDataEntityClass : entitiesWithSeedDataSet)
-        {
-            final Table tableAnn = (Table) seedDataEntityClass.getAnnotation(Table.class);
-            if (tableAnn == null)
-                throw new HibernateException(seedDataEntityClass + " does not have a Table annotation.");
-
-            final String tableName = tableAnn.name();
-            if (tableName == null)
-                throw new HibernateException(seedDataEntityClass + " does not have a name property set in the Table annotation.");
-
-            try
-            {
-                final EntitySeedDataProvider esdp = (EntitySeedDataProvider) seedDataEntityClass.newInstance();
-                final EntitySeedData esd = esdp.getEntitySeedData();
-                if (esd != null)
-                {
-                    final String[] columnNames = esd.getColumnNames();
-                    if (columnNames == null)
-                        throw new HibernateException("EntitySeedData column names are NULL for " + tableName + " " + seedDataEntityClass);
-
-                    final Object[][] data = esd.getSeedData();
-                    if (data == null || data.length == 0)
-                        throw new HibernateException("EntitySeedData data is NULL for " + tableName + " " + seedDataEntityClass);
-
-                    for (int row = 0; row < data.length; row++)
-                    {
-                        final Object[] rowData = data[row];
-                        if (columnNames.length != rowData.length)
-                            throw new HibernateException("Column names length does not match data columns length for row " + row + " of " + tableName + " " + seedDataEntityClass);
-
-                        final StringBuffer rowSql = new StringBuffer("insert into " + tableName + " (");
-                        for (int i = 0; i < columnNames.length; i++)
-                        {
-                            if (i > 0) rowSql.append(", ");
-                            rowSql.append(columnNames[i]);
-                        }
-
-                        rowSql.append(") values (");
-                        for (int column = 0; column < rowData.length; column++)
-                        {
-                            if (column != 0)
-                                rowSql.append(", ");
-                            final Object element = rowData[column];
-                            if (element == null)
-                                rowSql.append("NULL");
-                            else if (element instanceof Number)
-                                rowSql.append(element.toString());
-                            else
-                                rowSql.append("'" + element.toString().replaceAll("'", "''") + "'");
-                        }
-                        rowSql.append(")");
-                        newDDL.add(rowSql.toString());
-                    }
-                }
-                else
-                    throw new HibernateException("EntitySeedData is NULL for " + tableName + " " + seedDataEntityClass);
-            }
-            catch (Exception e)
-            {
-                throw new HibernateException(e);
             }
         }
 
