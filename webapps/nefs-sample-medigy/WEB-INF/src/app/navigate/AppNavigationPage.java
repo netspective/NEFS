@@ -39,18 +39,49 @@
  */
 
 /**
- * $Id: AppNavigationPage.java,v 1.1 2004-02-27 01:48:15 shahid.shah Exp $
+ * $Id: AppNavigationPage.java,v 1.2 2004-03-02 07:34:29 aye.thu Exp $
  */
 
 package app.navigate;
 
+import com.netspective.commons.command.CommandException;
+import com.netspective.sparx.command.RecordEditorCommand;
+import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.navigate.NavigationPage;
 import com.netspective.sparx.navigate.NavigationTree;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Writer;
 
 public class AppNavigationPage extends NavigationPage
 {
     public AppNavigationPage(NavigationTree owner)
     {
         super(owner);
+    }
+
+    public void handlePageBody(Writer writer, NavigationContext nc) throws ServletException, IOException
+    {
+        HttpServletRequest request = nc.getHttpRequest();
+        String commandSpec = request.getParameter(RecordEditorCommand.RECORD_EDITOR_COMMAND_REQUEST_PARAM_NAME);
+        if (commandSpec != null)
+        {
+            RecordEditorCommand command = new RecordEditorCommand();
+            command.setParameters(commandSpec);
+            try
+            {
+                command.handleCommand(writer, nc, false);
+            }
+            catch (CommandException e)
+            {
+                getLog().error("Command error in body", e);
+                throw new ServletException(e);
+            }
+            return;
+        }
+
+        super.handlePageBody(writer, nc);
     }
 }
