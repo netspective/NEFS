@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: DataAccessLayerGenerator.java,v 1.13 2003-09-23 04:25:06 aye.thu Exp $
+ * $Id: DataAccessLayerGenerator.java,v 1.14 2003-09-29 04:37:41 aye.thu Exp $
  */
 
 package com.netspective.axiom.schema;
@@ -309,6 +309,7 @@ public class DataAccessLayerGenerator
         private String recordsInnerClassName;
         private boolean customClass;
         private Type tableType;
+        private ClassMethod recordInnerClassDeleteChildrenMethod;
 
         public TableAccessorGenerator(Schema.TableTreeNode node, PackageClass parentClass, Block parentChildrenAssignmentsBlock)
         {
@@ -442,9 +443,15 @@ public class DataAccessLayerGenerator
             field.setAccess(Access.PRIVATE);
 
             if (node.hasChildren())
+            {
                 parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get" + classNameNoPackage + "Records(cc, retrieveGrandchildren)"));
+                parentTag.recordInnerClassDeleteChildrenMethod.newStmt(vm.newFree(fieldName + "Records.delete(cc)"));
+            }
             else
+            {
                 parentTag.recordInnerClassRetrieveChildrenMethod.newStmt(vm.newFree(fieldName + "Records" + " = get" + classNameNoPackage + "Records(cc)"));
+                parentTag.recordInnerClassDeleteChildrenMethod.newStmt(vm.newFree(fieldName + "Records.delete(cc)"));
+            }
 
             String getParentRecsByFKeyMethodName = "getParentRecordsBy" + TextUtils.xmlTextToJavaIdentifier(parentFKey.getSourceColumns().getOnlyNames("And"), true);
             method = accessorClass.newMethod(vm.newType(recordsInnerClassName), getParentRecsByFKeyMethodName);
@@ -667,6 +674,8 @@ public class DataAccessLayerGenerator
             method.addThrows("NamingException");
             method.addThrows("SQLException");
             method.addParameter(vm.newType("ConnectionContext"), "cc");
+            // TODO: Need to see if deleting the children should be a default behavior or not. If so, then this method needs to be moved below after initializing  recordInnerClassDeleteChildrenMethod
+            //method.newStmt(vm.newFree(recordInnerClassDeleteChildrenMethod + "(cc)"));
             method.newStmt(vm.newFree("table.delete(cc, row)"));
 
             method = recordInnerClass.newMethod(vm.newType(Type.BOOLEAN), "dataChangedInStorage");
@@ -712,6 +721,16 @@ public class DataAccessLayerGenerator
                     recordInnerClassRetrieveChildrenMethod.addParameter(vm.newType(Type.BOOLEAN), "retrieveGrandchildren");
                 recordInnerClassRetrieveChildrenMethod.addThrows("NamingException");
                 recordInnerClassRetrieveChildrenMethod.addThrows("SQLException");
+
+                // create a method for deleting all children
+                recordInnerClassDeleteChildrenMethod = recordInnerClass.newMethod(vm.newType(Type.VOID), "deleteChildren");
+                recordInnerClassDeleteChildrenMethod.setAccess(Access.PUBLIC);
+                recordInnerClassDeleteChildrenMethod.isFinal(true);
+                recordInnerClassDeleteChildrenMethod.addParameter(vm.newType("ConnectionContext"), "cc");
+                //if (node.hasGrandchildren())
+                //    recordInnerClassDeleteChildrenMethod.addParameter(vm.newType(Type.BOOLEAN), "retrieveGrandchildren");
+                recordInnerClassDeleteChildrenMethod.addThrows("NamingException");
+                recordInnerClassDeleteChildrenMethod.addThrows("SQLException");
             }
         }
 
@@ -765,6 +784,16 @@ public class DataAccessLayerGenerator
             method.isFinal(true);
             method.newStmt(vm.newFree("return rows.toString()"));
 
+            method = recordsInnerClass.newMethod(vm.newType(Type.VOID), "delete");
+            method.setAccess(Access.PUBLIC);
+            method.isFinal(true);
+            method.addParameter(vm.newType("ConnectionContext"), "cc");
+            method.addThrows("NamingException");
+            method.addThrows("SQLException");
+            Freeform forLoop = vm.newFree("for(int i = 0; i < cache.length; i++)");
+            forLoop.write("get(i).delete(cc)");
+            method.newStmt(forLoop);
+
             if (node.hasChildren())
             {
                 method = recordsInnerClass.newMethod(vm.newType(Type.VOID), "retrieveChildren");
@@ -775,7 +804,7 @@ public class DataAccessLayerGenerator
                     method.addParameter(vm.newType(Type.BOOLEAN), "retrieveGrandchildren");
                 method.addThrows("NamingException");
                 method.addThrows("SQLException");
-                Freeform forLoop = vm.newFree("for(int i = 0; i < cache.length; i++) ");
+                forLoop = vm.newFree("for(int i = 0; i < cache.length; i++) ");
                 if (node.hasGrandchildren())
                     forLoop.write("get(i).retrieveChildren(cc, retrieveGrandchildren)");
                 else
