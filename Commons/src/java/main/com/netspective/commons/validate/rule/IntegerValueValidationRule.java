@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: IntegerValueValidationRule.java,v 1.3 2004-03-17 17:14:51 shahbaz.javeed Exp $
+ * $Id: IntegerValueValidationRule.java,v 1.4 2004-03-22 08:39:08 aye.thu Exp $
  */
 
 package com.netspective.commons.validate.rule;
@@ -129,8 +129,8 @@ public class IntegerValueValidationRule extends BasicValidationRule
                                 new Object[] { getValueCaption(vc), new Integer(min), new Integer(max) });
             return false;
         }
-
-        if (intValue != null && ! ValidationUtils.isMultipleOf(intValue.intValue(), multipleOf))
+        // only check for multiple-of when the value is not zero
+        if (intValue != null && multipleOf != 0 && ! ValidationUtils.isMultipleOf(intValue.intValue(), multipleOf))
         {
             vc.addValidationError(value, getInvalidMultipleMessage(),
                                 new Object[] { getValueCaption(vc), new Integer(multipleOf) });
