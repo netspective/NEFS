@@ -39,7 +39,7 @@
  */
 
 /**
- * @version $Id: CommandListCommand.java,v 1.1 2003-12-05 05:30:19 aye.thu Exp $
+ * @version $Id: CommandListCommand.java,v 1.2 2003-12-08 05:11:50 aye.thu Exp $
  */
 package com.netspective.sparx.command;
 
@@ -50,7 +50,9 @@ import com.netspective.sparx.theme.basic.HtmlListPanelSkin;
 import com.netspective.sparx.panel.HtmlCommandPanel;
 import com.netspective.sparx.panel.HtmlPanel;
 import com.netspective.sparx.panel.BasicHtmlPanelValueContext;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.sparx.form.DialogContext;
+import com.netspective.sparx.value.HttpServletValueContext;
 
 import java.util.StringTokenizer;
 import java.util.List;
@@ -163,9 +165,15 @@ public class CommandListCommand extends AbstractListCommand
      * Gets the list of commands
      * @return
      */
-    public List getItems()
+    public List getItems(HttpServletValueContext vc)
     {
         return list.getItems();
+    }
+
+    public HtmlPanelValueContext getPanelContext(HttpServletValueContext vc)
+    {
+        return new BasicHtmlPanelValueContext(vc.getServlet(), vc.getRequest(),
+                vc.getResponse(), getPanel());
     }
 
     /**
@@ -183,9 +191,7 @@ public class CommandListCommand extends AbstractListCommand
     {
         Theme theme = nc.getActiveTheme();
         HtmlListPanelSkin skin = theme.getListPanelSkin();
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(),
-                nc.getResponse(), panel);
-        skin.renderHtml(writer, vc, getItems());
+        skin.renderHtml(writer, getPanelContext(nc), getItems(nc));
     }
 
     /**
@@ -204,7 +210,7 @@ public class CommandListCommand extends AbstractListCommand
         Theme theme = nc.getActiveTheme();
         HtmlCommandPanel panel = new HtmlCommandPanel();
         int activeIndex = Integer.parseInt(activeItem);
-        CommandListItem commandItem = (CommandListItem) getItems().get(activeIndex);
+        CommandListItem commandItem = (CommandListItem) getItems(nc).get(activeIndex);
         panel.setCommand(commandItem.getCommand());
         panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
     }
@@ -224,9 +230,7 @@ public class CommandListCommand extends AbstractListCommand
     {
         Theme theme = nc.getActiveTheme();
         HtmlListPanelSkin skin = theme.getListPanelSkin();
-        BasicHtmlPanelValueContext vc = new BasicHtmlPanelValueContext(nc.getServlet(), nc.getRequest(),
-                nc.getResponse(), panel);
-        skin.renderHtml(writer, vc, getItems());
+        skin.renderHtml(writer, getPanelContext(nc), getItems(nc));
     }
 
     /**
@@ -245,7 +249,7 @@ public class CommandListCommand extends AbstractListCommand
         Theme theme = nc.getActiveTheme();
         HtmlCommandPanel panel = new HtmlCommandPanel();
         int activeIndex = Integer.parseInt(activeItem);
-        CommandListItem commandItem = (CommandListItem) getItems().get(activeIndex);
+        CommandListItem commandItem = (CommandListItem) getItems(nc).get(activeIndex);
         panel.setCommand(commandItem.getCommand());
         panel.render(writer, nc, theme, HtmlPanel.RENDERFLAGS_DEFAULT);
     }

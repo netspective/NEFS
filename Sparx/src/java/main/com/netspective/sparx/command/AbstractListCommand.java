@@ -39,7 +39,7 @@
  */
 
 /**
- * @version $Id: AbstractListCommand.java,v 1.3 2003-12-05 05:30:19 aye.thu Exp $
+ * @version $Id: AbstractListCommand.java,v 1.4 2003-12-08 05:11:50 aye.thu Exp $
  */
 
 package com.netspective.sparx.command;
@@ -47,6 +47,7 @@ package com.netspective.sparx.command;
 import com.netspective.sparx.navigate.NavigationContext;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.value.HttpServletValueContext;
+import com.netspective.sparx.panel.HtmlPanelValueContext;
 import com.netspective.commons.command.CommandException;
 
 import java.io.Writer;
@@ -68,8 +69,19 @@ public abstract class AbstractListCommand extends AbstractHttpServletCommand
     /* the request parameter name for the active (selected) list item */
     public static final String ACTIVE_LIST_ITEM = "activeItem";
 
-    /* Gets the list */
-    public abstract List getItems();
+    /**
+     * Gets the list
+     * @param vc
+     * @return
+     */
+    public abstract List getItems(HttpServletValueContext vc);
+
+    /**
+     *
+     * @param vc
+     * @return
+     */
+    public abstract HtmlPanelValueContext getPanelContext(HttpServletValueContext vc);
 
     /**
      * Gets the active (selected) item from the request
