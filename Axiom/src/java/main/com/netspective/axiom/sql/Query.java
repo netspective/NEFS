@@ -47,14 +47,13 @@ import org.apache.commons.logging.LogFactory;
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.DatabasePolicies;
 import com.netspective.axiom.value.DatabaseConnValueContext;
+import com.netspective.commons.io.InputSourceLocator;
 import com.netspective.commons.text.ExpressionText;
 import com.netspective.commons.text.ValueSourceOrJavaExpressionText;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.commons.xdm.XmlDataModelSchema.InputSourceLocatorListener;
-import com.netspective.commons.io.InputSourceTracker;
-import com.netspective.commons.io.InputSourceLocator;
 
 public class Query implements InputSourceLocatorListener
 {
@@ -501,19 +500,47 @@ public class Query implements InputSourceLocatorListener
     protected QueryResultSet executeAndRecordStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId != null ? dataSourceId.getTextValue(dbvc) : null;
-        return executeAndRecordStatistics(dataSrcIdText != null
-                                          ? dbvc.getConnection(dataSrcIdText, false)
-                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                                          overrideParams, scrollable);
+        final ConnectionContext cc = dataSrcIdText != null
+                                     ? dbvc.getConnection(dataSrcIdText, false)
+                                     : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
+
+        try
+        {
+            return executeAndRecordStatistics(cc, overrideParams, scrollable);
+        }
+        catch(NamingException e)
+        {
+            cc.close();
+            throw e;
+        }
+        catch(SQLException e)
+        {
+            cc.close();
+            throw e;
+        }
     }
 
     protected QueryResultSet executeAndIgnoreStatistics(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws SQLException, NamingException
     {
         String dataSrcIdText = dataSourceId == null ? null : dataSourceId.getTextValue(dbvc);
-        return executeAndIgnoreStatistics(dataSrcIdText != null
-                                          ? dbvc.getConnection(dataSrcIdText, false)
-                                          : dbvc.getConnection(dbvc.getDefaultDataSource(), false),
-                                          overrideParams, scrollable);
+        final ConnectionContext cc = dataSrcIdText != null
+                                     ? dbvc.getConnection(dataSrcIdText, false)
+                                     : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
+        try
+        {
+            return executeAndIgnoreStatistics(cc, overrideParams, scrollable);
+        }
+        catch(NamingException e)
+        {
+            // if there was an exception it means the connection was not stored as part of the QueryResultSet so close it
+            cc.close();
+            throw e;
+        }
+        catch(SQLException e)
+        {
+            cc.close();
+            throw e;
+        }
     }
 
     public QueryResultSet execute(DatabaseConnValueContext dbvc, Object[] overrideParams, boolean scrollable) throws NamingException, SQLException
@@ -543,8 +570,15 @@ public class Query implements InputSourceLocatorListener
         final ConnectionContext cc = dataSrcIdText != null
                                      ? dbvc.getConnection(dataSrcIdText, false)
                                      : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
-        boolean result = checkRecordExistsLogStatistics(cc, overrideParams);
-        cc.close();
+        boolean result;
+        try
+        {
+            result = checkRecordExistsLogStatistics(cc, overrideParams);
+        }
+        finally
+        {
+            cc.close();
+        }
         return result;
     }
 
@@ -554,8 +588,15 @@ public class Query implements InputSourceLocatorListener
         final ConnectionContext cc = dataSrcIdText != null
                                      ? dbvc.getConnection(dataSrcIdText, false)
                                      : dbvc.getConnection(dbvc.getDefaultDataSource(), false);
-        boolean result = checkRecordExistsIgnoreStatistics(cc, overrideParams);
-        cc.close();
+        boolean result;
+        try
+        {
+            result = checkRecordExistsIgnoreStatistics(cc, overrideParams);
+        }
+        finally
+        {
+            cc.close();
+        }
         return result;
     }
 
