@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: ConsoleServlet.java,v 1.5 2003-04-10 01:27:17 shahid.shah Exp $
+ * $Id: ConsoleServlet.java,v 1.6 2003-04-13 02:37:06 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console;
@@ -62,7 +62,7 @@ import com.netspective.commons.xdm.XdmComponentFactory;
 
 public class ConsoleServlet extends HttpServlet
 {
-    protected ApplicationManager getPresentationManager() throws ServletException
+    protected ApplicationManager getApplicationManager() throws ServletException
     {
         try
         {
@@ -87,7 +87,7 @@ public class ConsoleServlet extends HttpServlet
 
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException
     {
-        ApplicationManager pm = getPresentationManager();
+        ApplicationManager pm = getApplicationManager();
 
         Theme defaultTheme = Themes.getInstance().getTheme("console");
         ConsoleNavigationTree tree = pm.getConsoleNavigationTree();

@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: BasicDbHttpServletValueContext.java,v 1.4 2003-03-28 04:10:37 shahid.shah Exp $
+ * $Id: BasicDbHttpServletValueContext.java,v 1.5 2003-04-13 02:37:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.value;
@@ -94,6 +94,16 @@ public class BasicDbHttpServletValueContext extends BasicDatabaseConnValueContex
     public Object getContextLocation()
     {
         return getHttpRequest().getRequestURI();
+    }
+
+    public Object getAttribute(String attributeId)
+    {
+        return request.getAttribute(attributeId);
+    }
+
+    public void setAttribute(String attributeId, Object attributeValue)
+    {
+        request.setAttribute(attributeId, attributeValue);
     }
 
     public HttpServletRequest getHttpRequest()

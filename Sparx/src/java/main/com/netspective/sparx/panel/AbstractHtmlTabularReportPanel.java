@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractHtmlTabularReportPanel.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: AbstractHtmlTabularReportPanel.java,v 1.2 2003-04-13 02:37:07 shahid.shah Exp $
  */
 
 package com.netspective.sparx.panel;
@@ -54,6 +54,9 @@ import com.netspective.sparx.panel.HtmlPanelFrame;
 import com.netspective.sparx.panel.HtmlPanelBanner;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
 
 public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularReportPanel
 {
@@ -145,5 +148,27 @@ public abstract class AbstractHtmlTabularReportPanel implements HtmlTabularRepor
     {
         HtmlTabularReportValueContext vc = createContext(nc, (HtmlTabularReportSkin) skin);
         vc.produceReport(writer, createDataSource(nc, vc));
+    }
+
+    public class SimpleMessageDataSource extends AbstractHtmlTabularReportDataSource
+    {
+        private ValueSource message;
+
+        public SimpleMessageDataSource(HtmlTabularReportValueContext vc, String message)
+        {
+            super(vc);
+            this.message = new StaticValueSource(message);
+        }
+
+        public SimpleMessageDataSource(HtmlTabularReportValueContext vc, ValueSource message)
+        {
+            super(vc);
+            this.message = message;
+        }
+
+        public ValueSource getNoDataFoundMessage()
+        {
+            return message;
+        }
     }
 }

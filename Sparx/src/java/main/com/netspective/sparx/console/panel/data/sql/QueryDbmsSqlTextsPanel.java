@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: QueryDbmsSqlTextsPanel.java,v 1.2 2003-04-10 23:12:07 shahid.shah Exp $
+ * $Id: QueryDbmsSqlTextsPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data;
+package com.netspective.sparx.console.panel.data.sql;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -56,32 +56,23 @@ import java.io.Writer;
 import java.io.IOException;
 
 import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.panel.HtmlSyntaxHighlightPanel;
-import com.netspective.axiom.sql.Query;
+import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDetailPanel;
 import com.netspective.axiom.sql.DbmsSqlTexts;
 import com.netspective.axiom.sql.DbmsSqlText;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
-import com.netspective.axiom.schema.Schema;
-import com.netspective.axiom.schema.Table;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.text.TextUtils;
 
-public class QueryDbmsSqlTextsPanel extends AbstractHtmlTabularReportPanel
+public class QueryDbmsSqlTextsPanel extends QueryDetailPanel
 {
     public static final HtmlTabularReport queryReport = new BasicHtmlTabularReport();
-    public static final String REQPARAMNAME_QUERY_SOURCE = "query-source";
-    public static final String REQPARAMNAME_QUERY = "selected-query-id";
-    private static final ValueSource noQueryParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_QUERY +"' parameter provided.");
 
     static
     {
@@ -106,102 +97,19 @@ public class QueryDbmsSqlTextsPanel extends AbstractHtmlTabularReportPanel
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        Query selectedQuery = null;
-
-        String queryName = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
-        if(queryName == null)
-            return new NoQueryParameterDataSource(vc);
-
-        String querySource = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY_SOURCE);
-        if(querySource == null || "static".equalsIgnoreCase(querySource))
-        {
-            selectedQuery = nc.getSqlManager().getQueries().get(queryName);
-            if(selectedQuery == null)
-                return new QueryNotFoundDataSource(vc, queryName);
-            nc.setPageHeading("Static Query: " + selectedQuery.getQualifiedName());
-        }
+        QueryDetailPanel.SelectedQuery selectedQuery = getSelectedQuery(vc);
+        if(selectedQuery.getDataSource() != null)
+            return selectedQuery.getDataSource();
         else
         {
-            String[] querySourceParams = TextUtils.split(querySource, ",", true);
-            if("dynamic".equalsIgnoreCase(querySourceParams[0]) && querySourceParams.length == 2)
-            {
-                QueryDefinition queryDefn = nc.getSqlManager().getQueryDefns().get(querySourceParams[1]);
-                if(queryDefn != null && queryName != null)
-                {
-                    selectedQuery = queryDefn.getSelects().get(queryName);
-                    if(selectedQuery == null)
-                        return new QueryNotFoundDataSource(vc, querySourceParams[1], queryName);
-                }
-                else
-                    return new QueryNotFoundDataSource(vc, querySourceParams[1], queryName);
-                nc.setPageHeading("Dynamic Query: " + queryDefn.getName() + "." + selectedQuery.getQualifiedName());
-            }
-            else if("schema".equalsIgnoreCase(querySourceParams[0]) && querySourceParams.length == 3)
-            {
-                Schema schema = nc.getSqlManager().getSchema(querySourceParams[1]);
-                Table table = schema.getTables().getByName(querySourceParams[2]);
-                QueryDefinition queryDefn = table.getQueryDefinition();
-                if(queryDefn != null && queryName != null)
-                {
-                    selectedQuery = queryDefn.getSelects().get(queryName);
-                    if(selectedQuery == null)
-                        return new QueryNotFoundDataSource(vc, querySourceParams[1], querySourceParams[2], queryName);
-                    nc.setPageHeading("Schema table query: " + schema.getName() + "." + table.getName() + "." + selectedQuery.getQualifiedName());
-                }
-                else
-                    return new QueryNotFoundDataSource(vc, querySourceParams[1], querySourceParams[2], queryName);
-            }
-            else
-                return new NoQueryParameterDataSource(vc);
+            nc.setPageHeading("Static SQL: " + selectedQuery.getQuery().getQualifiedName());
+            return new SqlTextDataSource(vc, selectedQuery);
         }
-
-        return new SqlTextDataSource(vc, selectedQuery);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
         return queryReport;
-    }
-
-    public class NoQueryParameterDataSource extends AbstractHtmlTabularReportDataSource
-    {
-        public NoQueryParameterDataSource(TabularReportValueContext reportValueContext)
-        {
-            super(reportValueContext);
-        }
-
-        public ValueSource getNoDataFoundMessage()
-        {
-            return noQueryParamAvailSource;
-        }
-    }
-
-    public class QueryNotFoundDataSource extends AbstractHtmlTabularReportDataSource
-    {
-        private ValueSource message;
-
-        public QueryNotFoundDataSource(HtmlTabularReportValueContext vc, String queryName)
-        {
-            super(vc);
-            message = new StaticValueSource("Query '"+ queryName +"' not found in static queries catalog.");
-        }
-
-        public QueryNotFoundDataSource(HtmlTabularReportValueContext vc, String queryDefnName, String queryName)
-        {
-            super(vc);
-            message = new StaticValueSource("Query '"+ queryName +"' not found in dynamic query '"+ queryDefnName +"'.");
-        }
-
-        public QueryNotFoundDataSource(HtmlTabularReportValueContext vc, String schemaName, String tableName, String queryName)
-        {
-            super(vc);
-            message = new StaticValueSource("Query '"+ queryName +"' not found in table '"+ schemaName + "." + tableName +"' dynamic query definition.");
-        }
-
-        public ValueSource getNoDataFoundMessage()
-        {
-            return message;
-        }
     }
 
     public class SqlTextDataSource extends AbstractHtmlTabularReportDataSource
@@ -210,10 +118,10 @@ public class QueryDbmsSqlTextsPanel extends AbstractHtmlTabularReportPanel
         private int activeRow = -1;
         private int lastRow;
 
-        public SqlTextDataSource(HtmlTabularReportValueContext vc, Query query)
+        public SqlTextDataSource(HtmlTabularReportValueContext vc, QueryDetailPanel.SelectedQuery selectedQuery)
         {
             super(vc);
-            DbmsSqlTexts texts = query.getSqlTexts();
+            DbmsSqlTexts texts = selectedQuery.getQuery().getSqlTexts();
             Set availableDbmsIds = new TreeSet(texts.getAvailableDbmsIds());
 
             for(Iterator i = availableDbmsIds.iterator(); i.hasNext(); )

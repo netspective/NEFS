@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.16 2003-04-10 01:27:17 shahid.shah Exp $
+  * $Id: console.xml,v 1.17 2003-04-13 02:37:06 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -89,35 +89,44 @@
 
 				<page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="selected-query-id">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.StaticQueriesCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.StaticQueriesCatalogPanel"/>
                     </panels>
                 </page>
                 <page name="detail" caption="Documentation" retain-params="selected-query-id">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.QueryDbmsSqlTextsPanel"/>
-                        <panel class="com.netspective.sparx.console.panel.data.QueryParametersPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.QueryParametersPanel"/>
                     </panels>
                 </page>
 				<page name="test" caption="Unit Test" retain-params="selected-query-id"/>
 
 	        </page>
 	        <page name="dynamic-query" caption="Dynamic Queries">
-                <page name="catalog" caption="Catalog" heading="Dynamic SQL Queries" retain-params="selected-query-defn-id" assign-state-params="selected-query-defn-id">
+                <page name="catalog" caption="Catalog" heading="Dynamic SQL Queries" retain-params="query-defn-source,selected-query-defn-id">
                     <panels>
-                        <panel class="com.netspective.sparx.console.panel.data.DynamicQueriesCatalogPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.DynamicQueriesCatalogPanel"/>
                     </panels>
                 </page>
-                <page name="detail" caption="Documentation" retain-params="selected-query-defn-id">
+                <page name="detail" caption="Documentation" retain-params="query-defn-source,selected-query-defn-id">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnFieldsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnJoinsPanel"/>
+                        <panel class="com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnSelectsPanel"/>
+                    </panels>
                 </page>
-                <page name="test" caption="Unit Test" retain-params="selected-query-defn-id"/>
+                <page name="test" caption="Unit Test" retain-params="query-defn-source,selected-query-defn-id"/>
 		        <page name="sql-comparisons" caption="SQL Comparisons"/>
 	        </page>
 	        <page name="schema" caption="Schemas">
-				<page name="catalog" caption="Catalog"/>
-				<page name="reverse-engineer" caption="Reverse Engineer"/>
+                <page name="catalog" caption="Catalog" heading="Schemas">
+                    <panels>
+                        <panel class="com.netspective.sparx.console.panel.data.schema.SchemaStructurePanel"/>
+                    </panels>
+                </page>
 	        </page>
 	        <page name="data-source" caption="Data Sources"/>
         </page>
+        <page name="tools" caption="Tools"/>
         <page name="documents" caption="Documents"/>
     </navigation-tree>
 

@@ -39,127 +39,89 @@
  */
 
 /**
- * $Id: QueryParametersPanel.java,v 1.1 2003-04-09 16:57:57 shahid.shah Exp $
+ * $Id: QueryDefnJoinsPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data;
+package com.netspective.sparx.console.panel.data.sql.dynamic;
 
-import com.netspective.sparx.navigate.NavigationContext;
-import com.netspective.sparx.panel.AbstractHtmlTabularReportPanel;
 import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.BasicHtmlTabularReport;
-import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
-import com.netspective.axiom.sql.Query;
-import com.netspective.axiom.sql.QueryParameters;
-import com.netspective.axiom.sql.QueryParameter;
-import com.netspective.commons.report.tabular.TabularReportDataSource;
-import com.netspective.commons.report.tabular.TabularReportColumn;
-import com.netspective.commons.report.tabular.TabularReportValueContext;
-import com.netspective.commons.report.tabular.column.GeneralColumn;
-import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
+import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnDetailPanel;
 import com.netspective.commons.value.ValueSource;
+import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.report.tabular.TabularReportColumn;
+import com.netspective.commons.report.tabular.TabularReportDataSource;
+import com.netspective.commons.report.tabular.column.GeneralColumn;
+import com.netspective.axiom.sql.dynamic.QueryDefnJoins;
+import com.netspective.axiom.sql.dynamic.QueryDefnJoin;
+import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 
-public class QueryParametersPanel extends AbstractHtmlTabularReportPanel
+public class QueryDefnJoinsPanel extends QueryDefnDetailPanel
 {
-    public static final HtmlTabularReport queryReport = new BasicHtmlTabularReport();
-    public static final String REQPARAMNAME_QUERY_SOURCE = "query-source";
-    public static final String REQPARAMNAME_QUERY = "selected-query-id";
-    private static final ValueSource noQueryParamAvailSource = new StaticValueSource("No '"+ REQPARAMNAME_QUERY +"' parameter provided.");
-    private static final ValueSource noParams = new StaticValueSource("Query has no parameters.");
+    public static final HtmlTabularReport queryDefnJoinsReport = new BasicHtmlTabularReport();
+    protected static final ValueSource noJoins = new StaticValueSource("Query definition has no joins.");
 
     static
     {
         TabularReportColumn column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Index"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Alias"));
+        queryDefnJoinsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Name"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Table"));
+        queryDefnJoinsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("JDBC Type"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Condition"));
+        queryDefnJoinsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Java Type"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Auto-inc"));
+        queryDefnJoinsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Implies"));
+        queryDefnJoinsReport.addColumn(column);
 
         column = new GeneralColumn();
-        column.setHeading(new StaticValueSource("Value Source Class"));
-        queryReport.addColumn(column);
+        column.setHeading(new StaticValueSource("Weight"));
+        queryDefnJoinsReport.addColumn(column);
     }
 
-    public QueryParametersPanel()
+    public QueryDefnJoinsPanel()
     {
-        getFrame().setHeading(new StaticValueSource("Query Parameters"));
+        getFrame().setHeading(new StaticValueSource("Joins"));
     }
 
     public TabularReportDataSource createDataSource(NavigationContext nc, HtmlTabularReportValueContext vc)
     {
-        // the query should be automatically assigned to the state using the "assign-state-params" method
-        String queryName = nc.getHttpRequest().getParameter(REQPARAMNAME_QUERY);
-        if(queryName == null)
-            return new NoQueryParameterDataSource(vc);
-
-        Query query = nc.getSqlManager().getQueries().get(queryName);
-        if(query == null)
-            return new QueryNotFoundDataSource(vc, queryName);
-
-        return new SqlParamsDataSource(vc, query);
+        QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn = getSelectedQueryDefn(vc);
+        if(selectedQueryDefn.getDataSource() != null)
+            return selectedQueryDefn.getDataSource();
+        else
+            return new QueryDefnJoinsDataSource(vc, selectedQueryDefn);
     }
 
     public HtmlTabularReport getReport(NavigationContext nc)
     {
-        return queryReport;
+        return queryDefnJoinsReport;
     }
 
-    public class NoQueryParameterDataSource extends AbstractHtmlTabularReportDataSource
+    public class QueryDefnJoinsDataSource extends AbstractHtmlTabularReportDataSource
     {
-        public NoQueryParameterDataSource(TabularReportValueContext reportValueContext)
-        {
-            super(reportValueContext);
-        }
-
-        public ValueSource getNoDataFoundMessage()
-        {
-            return noQueryParamAvailSource;
-        }
-    }
-
-    public class QueryNotFoundDataSource extends AbstractHtmlTabularReportDataSource
-    {
-        private String queryName;
-
-        public QueryNotFoundDataSource(HtmlTabularReportValueContext vc, String queryName)
-        {
-            super(vc);
-            this.queryName = queryName;
-        }
-
-        public ValueSource getNoDataFoundMessage()
-        {
-            return new StaticValueSource("Query '"+ queryName +"' not found.");
-        }
-    }
-
-    public class SqlParamsDataSource extends AbstractHtmlTabularReportDataSource
-    {
-        private QueryParameters params;
+        private QueryDefnJoins queryDefnJoins;
         private int activeRow = -1;
         private int lastRow;
 
-        public SqlParamsDataSource(HtmlTabularReportValueContext vc, Query query)
+        public QueryDefnJoinsDataSource(HtmlTabularReportValueContext vc, QueryDefnDetailPanel.SelectedQueryDefinition selectedQueryDefn)
         {
             super(vc);
-            params = query.getParams();
-            if(params != null)
-                lastRow = params.size() - 1;
+            queryDefnJoins = selectedQueryDefn.getQueryDefn().getJoins();
+            if(queryDefnJoins != null)
+                lastRow = queryDefnJoins.size() - 1;
             else
                 lastRow = -1;
         }
@@ -182,35 +144,42 @@ public class QueryParametersPanel extends AbstractHtmlTabularReportPanel
 
         public Object getActiveRowColumnData(int columnIndex, int flags)
         {
-            QueryParameter param = params.get(activeRow);
+            QueryDefnJoin queryDefnJoin = queryDefnJoins.get(activeRow);
 
             switch(columnIndex)
             {
                 case 0:
-                    return new Integer(activeRow + 1);
+                    return queryDefnJoin.getName();
 
                 case 1:
-                    return param.getName();
+                    return queryDefnJoin.getTable();
 
                 case 2:
-                    return new Integer(param.getSqlTypeCode());
+                    return queryDefnJoin.getCondition();
 
                 case 3:
-                    return param.getJavaType();
+                    return queryDefnJoin.shouldAutoInclude() ? "Yes" : "No";
 
                 case 4:
-                    ValueSource vs = param.getValue();
-                    if(vs != null)
-                        return vs.getSpecification();
-                    else
-                        return null;
-
-                case 5:
-                    vs = param.getValue();
-                    if(vs != null)
-                        return reportValueContext.getSkin().constructClassRef(vs.getClass());
-                    else
-                        return null;
+                    try
+                    {
+                        QueryDefnJoin[] implied = queryDefnJoin.getImpliedJoins();
+                        if(implied != null)
+                        {
+                            StringBuffer impliedJoins = new StringBuffer();
+                            for(int i = 0; i < implied.length; i++)
+                            {
+                                if(i > 0)
+                                    impliedJoins.append(", ");
+                                impliedJoins.append(implied[i]);
+                            }
+                            return impliedJoins.toString();
+                        }
+                    }
+                    catch (QueryDefinitionException e)
+                    {
+                        return e.getMessage();
+                    }
 
                 default:
                     return null;
@@ -219,7 +188,7 @@ public class QueryParametersPanel extends AbstractHtmlTabularReportPanel
 
         public ValueSource getNoDataFoundMessage()
         {
-            return noParams;
+            return noJoins;
         }
     }
 }

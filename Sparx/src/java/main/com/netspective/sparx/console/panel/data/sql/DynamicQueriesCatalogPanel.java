@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: DynamicQueriesCatalogPanel.java,v 1.2 2003-04-09 16:57:57 shahid.shah Exp $
+ * $Id: DynamicQueriesCatalogPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data;
+package com.netspective.sparx.console.panel.data.sql;
 
 import java.util.TreeSet;
 import java.util.List;
@@ -56,14 +56,17 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.panel.data.sql.dynamic.QueryDefnDetailPanel;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
 import com.netspective.commons.report.tabular.column.GeneralColumn;
 import com.netspective.commons.value.source.StaticValueSource;
+import com.netspective.commons.command.Commands;
 import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.schema.Schemas;
 import com.netspective.axiom.schema.Schema;
+import com.netspective.axiom.schema.table.TableQueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefinitions;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 
@@ -71,12 +74,10 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
 {
     public static final HtmlTabularReport catalogReport = new BasicHtmlTabularReport();
     private static final TabularReportColumn queryDefnIdColumn = new GeneralColumn();
-    public static final String REQPARAMNAME_QUERY_DEFN = "query-defn";
 
     static
     {
         queryDefnIdColumn.setHeading(new StaticValueSource("Query Definition"));
-        queryDefnIdColumn.setCommand("redirect,detail?"+ REQPARAMNAME_QUERY_DEFN +"=%{0}");
         catalogReport.addColumn(queryDefnIdColumn);
 
         GeneralColumn column = new NumericColumn();
@@ -118,7 +119,7 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         private List rows = new ArrayList();
         private int activeRow = -1;
         private int lastRow;
-        private Hierarchy hierarchy = new ActiveHierarchy();
+        private TabularReportDataSource.Hierarchy hierarchy = new ActiveHierarchy();
 
         protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
         {
@@ -224,10 +225,15 @@ public class DynamicQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
             switch(columnIndex)
             {
                 case 0:
-                    if((flags & TabularReportColumn.GETDATAFLAG_FOR_URL) != 0)
-                        return activeRowQueryDefn.getName();
+                    StringBuffer href = new StringBuffer("detail?");
+                    if(activeRowQueryDefn instanceof TableQueryDefinition)
+                        href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN_SOURCE + "=" + "schema," + ((TableQueryDefinition) activeRowQueryDefn).getOwner().getSchema().getName() +
+                                "&" + QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
                     else
-                        return reportValueContext.getSkin().constructRedirect(reportValueContext, queryDefnIdColumn.getCommand(), activeRowQueryDefn.getName(), null, null);
+                        href.append(QueryDefnDetailPanel.REQPARAMNAME_QUERY_DEFN + '=' + activeRowQueryDefn.getName());
+
+                    //return reportValueContext.getSkin().constructRedirect(reportValueContext, Commands.getInstance().getCommand("redirect," + href), activeRowQueryDefn.getName(), null, null);
+                    return "<a href=\""+ href +"\">" + activeRowQueryDefn.getName() + "</a>";
 
                 case 1:
                     return new Integer(activeRowQueryDefn.getFields().size());

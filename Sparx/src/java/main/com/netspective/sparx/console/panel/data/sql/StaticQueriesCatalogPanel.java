@@ -39,10 +39,10 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.4 2003-04-09 16:57:57 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.1 2003-04-13 02:37:06 shahid.shah Exp $
  */
 
-package com.netspective.sparx.console.panel.data;
+package com.netspective.sparx.console.panel.data.sql;
 
 import java.util.TreeSet;
 import java.util.Set;
@@ -56,6 +56,7 @@ import com.netspective.sparx.report.tabular.HtmlTabularReport;
 import com.netspective.sparx.report.tabular.AbstractHtmlTabularReportDataSource;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.navigate.NavigationContext;
+import com.netspective.sparx.console.panel.data.sql.QueryDbmsSqlTextsPanel;
 import com.netspective.commons.report.tabular.TabularReportDataSource;
 import com.netspective.commons.report.tabular.TabularReportColumn;
 import com.netspective.commons.report.tabular.column.NumericColumn;
@@ -140,7 +141,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         private List rows = new ArrayList();
         private int activeRow = -1;
         private int lastRow;
-        private Hierarchy hierarchy = new ActiveHierarchy();
+        private TabularReportDataSource.Hierarchy hierarchy = new ActiveHierarchy();
 
         protected class ActiveHierarchy implements TabularReportDataSource.Hierarchy
         {
