@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: Project.java,v 1.4 2003-06-30 15:34:26 shahid.shah Exp $
+ * $Id: Project.java,v 1.5 2003-07-02 14:02:25 shahid.shah Exp $
  */
 
 package com.netspective.sparx;
@@ -72,7 +72,6 @@ import com.netspective.sparx.form.field.DialogFieldConditionalAction;
 import com.netspective.sparx.sql.QueriesPackage;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapters;
 import com.netspective.sparx.template.freemarker.FreeMarkerConfigurationAdapter;
-import com.netspective.sparx.schema.PresentationSchema;
 import com.netspective.commons.report.tabular.TabularReport;
 import com.netspective.commons.xml.template.TemplateProducer;
 import com.netspective.commons.xml.template.TemplateContentHandler;
@@ -181,13 +180,6 @@ public class Project extends SqlManager implements NavigationTreesManager, Conso
     public com.netspective.axiom.sql.Query createQuery()
     {
         return new com.netspective.sparx.sql.Query();
-    }
-
-    /* ------------------------------------------------------------------------------------------------------------ */
-
-    public Schema createSchema()
-    {
-        return new PresentationSchema();
     }
 
     /* ------------------------------------------------------------------------------------------------------------ */
