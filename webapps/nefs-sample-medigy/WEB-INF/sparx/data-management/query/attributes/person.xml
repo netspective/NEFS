@@ -25,10 +25,6 @@
                 <panel>
                     <frame heading="Address"/>
                     <report>
-                        <record-add-caption>Add</record-add-caption>
-                        <record-add-url>nav-url-cmd:/person/summary,record-edit-add,personAttribute.address,personAttribute.personAddressTableDialog?parent_id=${request:person_id}</record-add-url>
-                        <record-edit-url>nav-url-cmd:/person/summary,record-edit-update,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-edit-url>
-                        <record-delete-url>nav-url-cmd:/person/summary,record-edit-delete,personAttribute.address,personAttribute.personAddressTableDialog?system_id=${0}</record-delete-url>
                         <column hidden="yes"/>
                         <column heading="Address Type"/>
                         <column heading="City"/>
@@ -191,7 +187,7 @@
                 <panel>
                     <frame heading="Insurance"/>
                     <banner style="horizontal">
-                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=""/>
+                        <action caption="Edit" redirect=""/>
                     </banner>
                     <report>
                         <column hidden="yes"/>
@@ -297,7 +293,7 @@
                 <panel>
                     <frame heading="Profile"/>
                     <banner style="horizontal">
-                        <action caption="Edit" icon="servlet-context-uri:/resources/icons/addIcon.gif" redirect=""/>
+                        <action caption="Edit"  redirect=""/>
                     </banner>
                     <report>
                         <column heading="Person ID" align="left"/>
