@@ -65,6 +65,8 @@ import java.util.Set;
 @Table(name = "Party")
 public class Party extends AbstractTopLevelEntity
 {
+    public static final String SYS_GLOBAL_PARTY_NAME = "SYS_GLOBAL_PARTY";
+
     private Long partyId;
     private String partyName;
 
