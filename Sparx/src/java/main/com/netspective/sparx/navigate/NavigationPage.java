@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: NavigationPage.java,v 1.6 2003-04-04 17:19:32 shahid.shah Exp $
+ * $Id: NavigationPage.java,v 1.7 2003-04-06 04:36:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.navigate;
@@ -59,6 +59,7 @@ package com.netspective.sparx.navigate;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.value.HttpServletValueContext;
 import com.netspective.sparx.panel.HtmlLayoutPanel;
 
@@ -365,14 +366,33 @@ public class NavigationPage extends NavigationPath
 
     public String getUrl(HttpServletValueContext vc)
     {
+        String result;
         ValueSource vs = getRedirect();
         if(vs == null)
         {
             HttpServletRequest request = vc.getHttpRequest();
-            return request.getContextPath() + request.getServletPath() + getQualifiedName();
+            result = request.getContextPath() + request.getServletPath() + getQualifiedName();
         }
         else
-            return vs.getTextValue(vc);
+            result = vs.getTextValue(vc);
+
+        ValueSource retainParamsVS = getRetainParams();
+        if(retainParamsVS != null)
+        {
+            String retainParamsText = retainParamsVS.getTextValue(vc);
+            String[] retainParams = TextUtils.split(retainParamsText, ",", true);
+            for(int i = 0; i < retainParams.length; i++)
+            {
+                if(i > 0 || result.indexOf('?') >= 0)
+                    result += "&";
+                else
+                    result += "?";
+
+                result += retainParams[i] + "=" + vc.getHttpRequest().getParameter(retainParams[i]);
+            }
+        }
+
+        return result;
     }
 
     public ValueSource getRetainParams()

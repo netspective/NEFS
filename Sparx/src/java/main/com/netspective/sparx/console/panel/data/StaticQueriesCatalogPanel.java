@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: StaticQueriesCatalogPanel.java,v 1.1 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: StaticQueriesCatalogPanel.java,v 1.2 2003-04-06 04:36:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.console.panel.data;
@@ -191,6 +191,7 @@ public class StaticQueriesCatalogPanel extends AbstractHtmlTabularReportPanel
         {
             return true;
         }
+
 
         public TabularReportDataSource.Hierarchy getActiveHierarchy()
         {

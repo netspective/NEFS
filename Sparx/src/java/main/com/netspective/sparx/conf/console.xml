@@ -3,7 +3,7 @@
 <!--
   *****************************************************************************************
   * Sparx standard configuration file (designed to be included in other Sparx XDM files).
-  * $Id: console.xml,v 1.10 2003-04-06 04:01:46 shahid.shah Exp $
+  * $Id: console.xml,v 1.11 2003-04-06 04:36:42 shahid.shah Exp $
   *****************************************************************************************
 -->
 
@@ -68,17 +68,17 @@
         </page>
         <page name="data-management" caption="Data Management">
 	        <page name="query" caption="Static Queries">
-				<page name="catalog" caption="Catalog" heading="Static SQL Queries">
+				<page name="catalog" caption="Catalog" heading="Static SQL Queries" retain-params="query">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.StaticQueriesCatalogPanel"/>
                     </panels>
                 </page>
-                <page name="detail" caption="Documentation">
+                <page name="detail" caption="Documentation" retain-params="query">
                     <panels>
                         <panel class="com.netspective.sparx.console.panel.data.StaticQueryDocumentationPanel"/>
                     </panels>
                 </page>
-				<page name="test" caption="Unit Test"/>
+				<page name="test" caption="Unit Test" retain-params="query"/>
 	        </page>
 	        <page name="dynamic-query" caption="Dynamic Queries">
 				<page name="catalog" caption="Catalog"/>

@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicTabbedNavigationSkin.java,v 1.6 2003-04-06 04:01:46 shahid.shah Exp $
+ * $Id: BasicTabbedNavigationSkin.java,v 1.7 2003-04-06 04:36:42 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -559,6 +559,7 @@ public class BasicTabbedNavigationSkin extends AbstractThemeSkin implements Navi
         writer.write("		</td>");
         writer.write("	</tr>");
         writer.write("</table>");
+        writer.write("Render time: " + new Long(System.currentTimeMillis() - nc.getCreationTime()));
         writer.write("</body>");
     }
 
