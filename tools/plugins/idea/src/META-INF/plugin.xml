@@ -1,0 +1,12 @@
+<idea-plugin>
+	<name>NetspectiveAppComponentsExplorer</name>
+	<description>Netspective Applications Components Explorer (ACE)</description>
+	<version>1.0</version>
+	<vendor>Netspective</vendor>
+	<idea-version min="3.0" max="3.1"/>
+	<application-components>
+		<component>
+			<implementation-class>org.netspective.intellij.ide.ace.ApplicationComponentsExplorer</implementation-class>
+		</component>
+	</application-components>
+</idea-plugin>
