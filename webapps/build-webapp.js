@@ -1,6 +1,7 @@
 /*****************************************************************************
  * Netspective Enterprise Frameworks
  * Windows Scripting Host (WSH) Application Build Launcher
+ * $Id: build-webapp.js,v 1.5 2004-07-17 17:01:06 shahid.shah Exp $
  *****************************************************************************/
 
 function addFilesToClassPath(classPath, folder)
