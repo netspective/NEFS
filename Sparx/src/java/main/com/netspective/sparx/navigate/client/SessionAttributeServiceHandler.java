@@ -90,6 +90,8 @@ public class SessionAttributeServiceHandler implements ClientServiceRequestHandl
 
     public void handleClientServiceRequest(NavigationContext nc, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ClientServiceRequestHandlerException
     {
+        httpServletResponse.setContentLength(0);
+
         String command = httpServletRequest.getHeader(REQ_HEADER_COMMAND);
         String varName = httpServletRequest.getHeader(REQ_HEADER_VAR_NAME);
         String varValue = httpServletRequest.getHeader(REQ_HEADER_VAR_VALUE);

@@ -62,6 +62,8 @@ public class AuthenticatedUserDelegatedServiceHandler implements ClientServiceRe
 
     public void handleClientServiceRequest(NavigationContext nc, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ClientServiceRequestHandlerException
     {
+        httpServletResponse.setContentLength(0);
+
         AuthenticatedUser user = nc.getAuthenticatedUser();
         if(user == null)
             log.error("Attempting to call AuthenticatedUserDelegatedServiceHandler.handleClientServiceRequest but there is no authenticated user.");
