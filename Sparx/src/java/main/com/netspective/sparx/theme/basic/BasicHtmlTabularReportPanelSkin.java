@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.11 2003-06-25 07:14:08 aye.thu Exp $
+ * $Id: BasicHtmlTabularReportPanelSkin.java,v 1.12 2003-06-27 18:39:53 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.basic;
@@ -71,7 +71,6 @@ import com.netspective.sparx.theme.Theme;
 import com.netspective.sparx.report.tabular.HtmlTabularReportValueContext;
 import com.netspective.sparx.report.tabular.HtmlTabularReportSkin;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSource;
-import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollStates;
 import com.netspective.sparx.report.tabular.HtmlTabularReportDataSourceScrollState;
 import com.netspective.sparx.command.RedirectCommand;
 import com.netspective.commons.value.ValueSource;
@@ -157,10 +156,11 @@ public class BasicHtmlTabularReportPanelSkin extends BasicHtmlPanelSkin implemen
         int panelRenderFlags = ((HtmlTabularReportValueContext) rc).getPanelRenderFlags();
         if((panelRenderFlags & HtmlPanel.RENDERFLAG_NOFRAME) == 0)
         {
+            renderFrameBegin(writer, (HtmlPanelValueContext) rc);
             writer.write("    <table class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
         }
         else
-            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getIdentifier() +"_content\" class=\"report\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
+            writer.write("    <table id=\""+ ((HtmlPanelValueContext) rc).getPanel().getIdentifier() +"_content\" class=\"report_no_frame\" width=\"100%\" border=\"0\" cellspacing=\"2\" cellpadding=\"0\">\n");
 
         if(flags.flagIsSet(Flags.SHOW_HEAD_ROW) && !rc.getReport().getFlags().flagIsSet(HtmlTabularReport.Flags.HIDE_HEADING))
             produceHeadingRow(writer, (HtmlTabularReportValueContext) rc, (HtmlTabularReportDataSource) ds);
