@@ -65,7 +65,7 @@ import com.netspective.sparx.form.DialogContextUtils;
 import com.netspective.sparx.form.DialogExecuteException;
 import com.netspective.sparx.form.handler.DialogExecuteRecordEditorHandler;
 import com.netspective.sparx.form.listener.DialogInitialPopulateListener;
-import com.netspective.sparx.panel.PanelEditor;
+import com.netspective.sparx.panel.editor.PanelEditor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -73,7 +73,7 @@ import javax.naming.NamingException;
 import java.sql.SQLException;
 
 /**
- * @version $Id: AddressDialogHandler.java,v 1.1 2004-03-03 21:31:24 aye.thu Exp $
+ * @version $Id: AddressDialogHandler.java,v 1.2 2004-03-17 23:48:27 shahbaz.javeed Exp $
  *
  */
 public class AddressDialogHandler extends DialogExecuteRecordEditorHandler implements DialogInitialPopulateListener
