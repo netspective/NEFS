@@ -41,14 +41,22 @@
 package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
+import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.util.HibernateUtil;
+
+import java.util.Set;
 
 public class TestOrganization  extends TestCase
 {
+
+
     public void testOrg()
     {
         Session session = new ProcessSession();
@@ -62,6 +70,8 @@ public class TestOrganization  extends TestCase
         final Organization org2 = new Organization();
         org2.setName("Acme Subsidiary");
 
+        // TODO: How to get the seed data back out?
+
         HibernateUtil.beginTransaction();
 
         HibernateUtil.getSession().save(org1);
@@ -70,42 +80,93 @@ public class TestOrganization  extends TestCase
         HibernateUtil.commitTransaction();
         //HibernateUtil.closeSession();
 
-        final Organization persistedOrg1 = (Organization) HibernateUtil.getSession().load(Organization.class,
+
+        final Organization parentOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
                 org1.getOrgId());
-        assertEquals(persistedOrg1.getName(), "Acme Corporation");
-        assertEquals(persistedOrg1.getPartyName(), "Acme Corporation");
+        assertEquals(parentOrg.getName(), "Acme Corporation");
+        assertEquals(parentOrg.getPartyName(), "Acme Corporation");
 
-        final Organization persistedOrg2 = (Organization) HibernateUtil.getSession().load(Organization.class,
+        final Organization childOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
                 org2.getOrgId());
-        assertEquals(persistedOrg2.getName(), "Acme Subsidiary");
-        assertEquals(persistedOrg2.getPartyName(), "Acme Subsidiary");
+        assertEquals(childOrg.getName(), "Acme Subsidiary");
+        assertEquals(childOrg.getPartyName(), "Acme Subsidiary");
 
-        /*
         HibernateUtil.beginTransaction();
-
+        // add a new role type belonging to the parent org
+        final PartyRoleType parentRoleType = new PartyRoleType();
+        parentRoleType.setLabel("Parent");
+        parentRoleType.setCode("PARENT");
+        parentRoleType.setParty(parentOrg);
+        HibernateUtil.getSession().save(parentRoleType);
+        // add a new role type belonging to the parent org
+        final PartyRoleType childRoleType = new PartyRoleType();
+        childRoleType.setLabel("Child");
+        childRoleType.setCode("CHILD");
+        childRoleType.setParty(parentOrg);
+        HibernateUtil.getSession().save(childRoleType);
+        // add a new role belonging to the parent org
         final PartyRole role1 = new PartyRole();
-        role1.setParty(persistedOrg1);
-        persistedOrg1.getPartyRoles().add(role1);
-
-
+        role1.setParty(parentOrg);
+        role1.setType(childRoleType);
+        parentOrg.getPartyRoles().add(role1);
+        HibernateUtil.getSession().update(parentOrg);
+        // add a new role belonging to the child org
         final PartyRole role2 = new PartyRole();
-        role2.setParty(persistedOrg2);
-        persistedOrg2.getPartyRoles().add(role2);
+        role2.setParty(childOrg);
+        role2.setType(childRoleType);
+        childOrg.getPartyRoles().add(role2);
+        HibernateUtil.getSession().update(childOrg);
 
-        HibernateUtil.getSession().update(persistedOrg1);
-        HibernateUtil.getSession().save(role2);
+        PartyRelationshipType relType = new PartyRelationshipType();
+        relType.setLabel("Organization Relationship");
+        relType.setCode("ORG_REL");
+        relType.setParty(parentOrg);
+        HibernateUtil.getSession().save(relType);
+
+        PartyRelationship rel = new PartyRelationship();
+        rel.setRelationshipType(relType);
+        rel.setPartyRole(role1);
+        HibernateUtil.getSession().save(rel);
+
+        rel = new PartyRelationship();
+        rel.setRelationshipType(relType);
+        rel.setPartyRole(role2);
+        HibernateUtil.getSession().save(rel);
+
 
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
         // validate that the roles are assigned to the organizations
-        final Organization updatedOrg1 = (Organization) HibernateUtil.getSession().load(Organization.class,
-                persistedOrg1.getOrgId());
-        assertEquals(1, updatedOrg1.getPartyRoles().size());
-        assertEquals(PartyRoleType.Cache.PARENT_ORGANIZATION.getEntity(),
-                ((PartyRole) updatedOrg1.getPartyRoles().toArray()[0]).getType());
-        */
-        
+        final Organization updatedParentOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
+                parentOrg.getOrgId());
+        // verify that the parent org has two role TYPEs
+        assertEquals(2, updatedParentOrg.getPartyRoleTypes().size());
+        // verify that the parent org has one role defined
+        assertEquals(1, updatedParentOrg.getPartyRoles().size());
+        assertEquals(childRoleType.getPartyRoleTypeId(),
+                ((PartyRole) updatedParentOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
+
+        final Organization updatedChildOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
+                childOrg.getOrgId());
+        // verify that the child org has one role
+        assertEquals(1, updatedChildOrg.getPartyRoles().size());
+        // verify that the child org's roles are the right ones
+        assertEquals(childRoleType.getPartyRoleTypeId(),
+                ((PartyRole) updatedChildOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
+
+        // verify that the parent org's one role has one relationship
+        Set<PartyRelationship> parentOrgRoleRelationships = ((PartyRole)updatedParentOrg.getPartyRoles().toArray()[0]).getPartyRelationships();
+        assertEquals(1, parentOrgRoleRelationships.size());
+        // verify that the child org's one role has one relationship
+        Set<PartyRelationship> childOrgRoleRelationships = ((PartyRole)updatedChildOrg.getPartyRoles().toArray()[0]).getPartyRelationships();
+        assertEquals(1, childOrgRoleRelationships.size());
+
+        // verify that the two org's respective roles are involved in the same relationship?
+        // TODO: this is getting confusing and comparing the code is not good enough
+        assertEquals(((PartyRelationship)parentOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode(),
+                ((PartyRelationship)childOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode()) ;
+
         HibernateUtil.closeSession();
     }
 }
