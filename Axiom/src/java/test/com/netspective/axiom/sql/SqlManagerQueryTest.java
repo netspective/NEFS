@@ -39,39 +39,35 @@
  */
 
 /**
- * $Id: SqlManagerQueryTest.java,v 1.6 2003-04-10 13:08:30 shahbaz.javeed Exp $
+ * $Id: SqlManagerQueryTest.java,v 1.7 2003-04-12 05:46:39 shahbaz.javeed Exp $
  */
 
 package com.netspective.axiom.sql;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.sql.ResultSet;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
+import java.util.Map;
 
 import javax.naming.NamingException;
 
 import junit.framework.TestCase;
 
-import com.netspective.commons.xdm.XmlDataModelDtd;
 import com.netspective.commons.xdm.XdmComponentFactory;
 import com.netspective.commons.xdm.exception.DataModelException;
 import com.netspective.commons.io.Resource;
 import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.value.ValueSources;
-import com.netspective.commons.value.ValueSource;
-import com.netspective.axiom.sql.dynamic.QueryDefinition;
-import com.netspective.axiom.sql.dynamic.QueryDefnSelect;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.collection.QueriesCollection;
 import com.netspective.axiom.sql.collection.QueriesPackage;
-import com.netspective.axiom.sql.collection.QueryDefinitionsCollection;
 import com.netspective.axiom.*;
 import com.netspective.axiom.policy.OracleDatabasePolicy;
+import com.netspective.axiom.policy.PostgreSqlDatabasePolicy;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.axiom.value.BasicDatabaseConnValueContext;
+import com.netspective.axiom.value.BasicDatabasePolicyValueContext;
 
 public class SqlManagerQueryTest extends TestCase
 {
@@ -80,10 +76,9 @@ public class SqlManagerQueryTest extends TestCase
 	protected SqlManager manager = null;
     protected String[] queryNames = new String[] { "statement-0", "statement-1", "bad-statement", "statement-2" };
     protected String[] fqQueryNames = new String[]{"test.statement-0", "test.statement-1", "test.bad-statement", "statement-2"};
-    protected String[] queryDefnNames = new String[] { "query-defn-1" };
-    protected String[] fqQueryDefnNames = new String[] { "query-defn-1" };
 
-	protected void setUp () throws Exception {
+	protected void setUp () throws Exception
+    {
 		super.setUp();
 
 		component =
@@ -95,8 +90,25 @@ public class SqlManagerQueryTest extends TestCase
 
 		manager = component.getManager();
 		assertEquals(this.queryNames.length, manager.getQueries().size());
-		assertEquals(this.queryDefnNames.length, manager.getQueryDefns().size());
 	}
+
+    public void testDatabaseValueContexts()
+    {
+        BasicDatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        assertNull(dbvc.getAccessControlListsManager());
+        assertNull(dbvc.getConfigurationsManager());
+        assertNull(dbvc.getSqlManager());
+        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.translateDataSourceId(TestUtils.DATASRCID_DEFAULT));
+
+        DatabasePolicy dbPolicy = new PostgreSqlDatabasePolicy();
+        BasicDatabasePolicyValueContext dbpvc = new BasicDatabasePolicyValueContext(dbPolicy);
+        assertEquals(dbPolicy, dbpvc.getDatabasePolicy());
+        assertNull(dbpvc.getSqlManager());
+
+        dbpvc = new BasicDatabasePolicyValueContext("postgres");
+        assertEquals(dbPolicy.getDbmsIdentifier(), dbpvc.getDatabasePolicy().getDbmsIdentifier());
+        assertNull(dbpvc.getSqlManager());
+    }
 
 	public void testQueriesObject()
 	{
@@ -133,18 +145,7 @@ public class SqlManagerQueryTest extends TestCase
 		assertSame(manager.getQueries(), queries);
 	}
 
-	public void testQueryDefinitionsObject()
-	{
-        QueryDefinitionsCollection queryDefns = (QueryDefinitionsCollection) manager.getQueryDefns();
-
-		Set queryDefnNames = queryDefns.getNames();
-		assertEquals(this.queryDefnNames.length, queryDefnNames.size());
-
-		for (int i = 0; i < this.queryDefnNames.length; i ++)
-			assertEquals(this.queryDefnNames[i], queryDefns.get(i).getName());
-	}
-
-	public void testQueryParameters()
+	public void testQueryParameters() throws NamingException, SQLException
 	{
 	    Query testStmt = manager.getQuery("test.statement-1");
 	    assertNotNull(testStmt);
@@ -166,17 +167,39 @@ public class SqlManagerQueryTest extends TestCase
 		assertEquals(1, columnA.getIndex());
 		assertEquals(Types.VARCHAR, columnA.getSqlTypeCode());
 		assertEquals(String.class, columnA.getJavaType());
+        assertEquals(params, columnA.getParent());
 
 		assertEquals("column_b", columnB.getName());
 		assertEquals("abc", columnB.getValue().getTextValue(null));
 		assertEquals(2, columnB.getIndex());
 		assertEquals(Types.ARRAY, columnB.getSqlTypeCode());
 		assertEquals(String.class, columnB.getJavaType());
+        assertEquals(params, columnB.getParent());
 
 		String[] expectedColBParamValues = new String[] { "abc", "def", "ghi", "jkl" };
 		String[] actualColBParamValues = columnB.getValue().getTextValues(null);
 		for (int i = 0; i < expectedColBParamValues.length; i++)
 			assertEquals(expectedColBParamValues[i], actualColBParamValues[i]);
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.connProvider);
+        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+        assertNotNull(cc);
+
+        QueryParameters.ValueRetrieveContext vrc = params.retrieve(cc);
+        Object[] bindValue = vrc.getBindValues();
+        Integer[] bindType = vrc.getBindTypes();
+
+        assertEquals(bindValue.length, bindType.length);
+        for (int i = 0; i < bindValue.length; i ++)
+        {
+            if (0 == i)
+                assertEquals("abc", bindValue[i]);
+            else
+                assertEquals(expectedColBParamValues[i - 1], bindValue[i]);
+
+            assertEquals(Types.VARCHAR, bindType[i].intValue());
+        }
 	}
 
 	public void testDbmsTexts()
@@ -286,11 +309,12 @@ public class SqlManagerQueryTest extends TestCase
 
     public void testStmt1ExecutionWithoutLogging() throws NamingException, SQLException
     {
-	    System.out.println();
         Query stmtOne = manager.getQuery("test.statement-1");
         assertNotNull(stmtOne);
         assertNotNull(stmtOne.getParams());
         assertEquals(2, stmtOne.getParams().size());
+
+        stmtOne.setDataSrc(null);
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
 	    dbvc.setConnectionProvider(TestUtils.connProvider);
@@ -324,22 +348,26 @@ public class SqlManagerQueryTest extends TestCase
 	    assertTrue(qrsOne.getExecutStmtResult());
 	    ResultSet rs = qrsOne.getResultSet();
 
-		int numRows = 0;
-	    int expectedRows = 3;
-	    while (rs.next())
-	    {
-			// column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
-			numRows ++;
-		    assertEquals(numRows, rs.getRow());
-		    assertEquals("abc", rs.getString(5));
-		    assertEquals("this", rs.getString(7));
+        int numRows = 0;
+        int expectedRows = 3;
+        int expectedNumAbc = 2;
+        int expectedNumGhi = 1;
+        int numAbc = 0;
+        int numGhi = 0;
+        while (rs.next())
+        {
+            // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
+            numRows++;
+            assertEquals(numRows, rs.getRow());
+            assertEquals("abc", rs.getString(5));
+            assertEquals("this", rs.getString(7));
 
-		    if (1 == numRows)
-		        assertEquals("ghi", rs.getString(6));
-		    else
-		        assertEquals("abc", rs.getString(6));
-	    }
-	    assertEquals(expectedRows, numRows);
+            if ("ghi".equals(rs.getString(6))) numGhi++;
+            if ("abc".equals(rs.getString(6))) numAbc++;
+        }
+        assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
 
         // Wrap up by closing connections...
         qrsOne.close(true);
@@ -347,11 +375,12 @@ public class SqlManagerQueryTest extends TestCase
 
     public void testStmt1ExecutionWithLogging() throws NamingException, SQLException
     {
-	    System.out.println();
         Query stmtOne = manager.getQuery("test.statement-1");
         assertNotNull(stmtOne);
         assertNotNull(stmtOne.getParams());
         assertEquals(2, stmtOne.getParams().size());
+
+        stmtOne.setDataSrc(null);
 
 		DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
 	    dbvc.setConnectionProvider(TestUtils.connProvider);
@@ -372,10 +401,10 @@ public class SqlManagerQueryTest extends TestCase
         assertEquals("<no locator>", qeleOne.getSource());
         assertTrue(System.currentTimeMillis() >= qeleOne.getEntryDate().getTime());
         assertTrue(System.currentTimeMillis() >= qeleOne.getInitTime());
-        assertTrue(0 >= qeleOne.getConnectionEstablishTime());
-        assertTrue(0 >= qeleOne.getBindParamsBindTime());
-        assertTrue(0 >= qeleOne.getSqlExecTime());
-        assertTrue(0 >= qeleOne.getTotalExecutionTime());
+        assertTrue(0 <= qeleOne.getConnectionEstablishTime());
+        assertTrue(0 <= qeleOne.getBindParamsBindTime());
+        assertTrue(0 <= qeleOne.getSqlExecTime());
+        assertTrue(0 <= qeleOne.getTotalExecutionTime());
 
         // More stats recorded...
         assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
@@ -392,12 +421,16 @@ public class SqlManagerQueryTest extends TestCase
         assertNull(qrsOne.getResultSet());
 
         // Verify query results...
-        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
         assertTrue(qrsOne.getExecutStmtResult());
         ResultSet rs = qrsOne.getResultSet();
 
         int numRows = 0;
         int expectedRows = 3;
+        int expectedNumAbc = 2;
+        int expectedNumGhi = 1;
+        int numAbc = 0;
+        int numGhi = 0;
         while (rs.next())
         {
             // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
@@ -406,17 +439,60 @@ public class SqlManagerQueryTest extends TestCase
             assertEquals("abc", rs.getString(5));
             assertEquals("this", rs.getString(7));
 
-            if (1 == numRows)
-                assertEquals("ghi", rs.getString(6));
-            else
-                assertEquals("abc", rs.getString(6));
+            if ("ghi".equals(rs.getString(6))) numGhi++;
+            if ("abc".equals(rs.getString(6))) numAbc++;
         }
         assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
+        qrsOne.close(false);
+
+        // More stats recorded...
+        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        dbvc.setDefaultDataSource(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE);
+        assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
+
+        assertNull(stmtOne.getDataSrc());
+        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + TestUtils.DATASRCID_DEFAULT, ValueSources.VSNOTFOUNDHANDLER_NULL));
+        assertEquals(TestUtils.DATASRCID_DEFAULT, stmtOne.getDataSrc().getTextValue(dbvc));
+
+        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qeleOne = qrsOne.getExecutionLogEntry();
+        assertTrue(qrsOne.getExecutStmtResult());
+        assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
+        assertNotNull(qeleOne);
+        assertNotNull(qrsOne.getResultSet());
+        assertFalse(stmtOne.isSqlTextHasExpressions());
+
+        // Verify query results...
+        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        assertTrue(qrsOne.getExecutStmtResult());
+        rs = qrsOne.getResultSet();
+
+        numRows = 0;
+        expectedRows = 3;
+        expectedNumAbc = 2;
+        expectedNumGhi = 1;
+        numAbc = 0;
+        numGhi = 0;
+        while (rs.next())
+        {
+            // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
+            numRows++;
+            assertEquals(numRows, rs.getRow());
+            assertEquals("abc", rs.getString(5));
+            assertEquals("this", rs.getString(7));
+
+            if ("ghi".equals(rs.getString(6))) numGhi++;
+            if ("abc".equals(rs.getString(6))) numAbc++;
+        }
+        assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
     }
 
     public void testStmt1ExecutionFailureWithoutLogging() throws NamingException, SQLException
     {
-        System.out.println();
         Query badStmt = manager.getQuery("test.bad-statement");
         assertNotNull(badStmt);
         assertNotNull(badStmt.getParams());
@@ -444,6 +520,195 @@ public class SqlManagerQueryTest extends TestCase
         assertNull(qrsOne);
     }
 
+    public void testStmt1QueryExecutionLog() throws NamingException, SQLException
+    {
+        Query stmtOne = manager.getQuery("test.statement-1");
+        assertNotNull(stmtOne);
+        assertNotNull(stmtOne.getParams());
+        assertEquals(2, stmtOne.getParams().size());
+
+        stmtOne.setDataSrc(null);
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.connProvider);
+        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+
+        // Stats recorded this time...
+        QueryResultSet qrsOne = stmtOne.executeAndRecordStatistics(cc, null, true);
+        QueryExecutionLogEntry qeleOne = qrsOne.getExecutionLogEntry();
+        assertTrue(qrsOne.getExecutStmtResult());
+        assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
+        assertNotNull(qeleOne);
+        assertNotNull(qrsOne.getResultSet());
+        qrsOne.close(false);
+        assertNull(qrsOne.getResultSet());
+
+        // Verify QueryExecutionLogEntry...
+        assertTrue(qeleOne.wasSuccessful());
+        assertEquals("<no locator>", qeleOne.getSource());
+        assertTrue(System.currentTimeMillis() >= qeleOne.getEntryDate().getTime());
+        assertTrue(System.currentTimeMillis() >= qeleOne.getInitTime());
+        assertTrue(0 <= qeleOne.getConnectionEstablishTime());
+        assertTrue(0 <= qeleOne.getBindParamsBindTime());
+        assertTrue(0 <= qeleOne.getSqlExecTime());
+        assertTrue(0 <= qeleOne.getTotalExecutionTime());
+
+        // More stats recorded...
+        assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
+        dbvc.setDefaultDataSource(TestUtils.DATASRCID_DEFAULT);
+        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+
+        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qeleOne = qrsOne.getExecutionLogEntry();
+        assertTrue(qrsOne.getExecutStmtResult());
+        assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
+        assertNotNull(qeleOne);
+        assertNotNull(qrsOne.getResultSet());
+        qrsOne.close(false);
+        assertNull(qrsOne.getResultSet());
+
+        // Verify query results...
+        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        assertTrue(qrsOne.getExecutStmtResult());
+        ResultSet rs = qrsOne.getResultSet();
+
+        int numRows = 0;
+        int expectedRows = 3;
+        int expectedNumAbc = 2;
+        int expectedNumGhi = 1;
+        int numAbc = 0;
+        int numGhi = 0;
+        while (rs.next())
+        {
+            // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
+            numRows++;
+            assertEquals(numRows, rs.getRow());
+            assertEquals("abc", rs.getString(5));
+            assertEquals("this", rs.getString(7));
+
+            if ("ghi".equals(rs.getString(6))) numGhi++;
+            if ("abc".equals(rs.getString(6))) numAbc++;
+        }
+        assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
+        qrsOne.close(false);
+
+        // More stats recorded...
+        assertEquals(TestUtils.DATASRCID_DEFAULT, dbvc.getDefaultDataSource());
+        dbvc.setDefaultDataSource(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE);
+        assertEquals(DatabaseConnValueContext.DATASRCID_DEFAULT_DATA_SOURCE, dbvc.getDefaultDataSource());
+
+        System.out.println("\nDataSrc: " + stmtOne.getDataSrc());
+        assertNull(stmtOne.getDataSrc());
+        stmtOne.setDataSrc(ValueSources.getInstance().getValueSource("static:" + TestUtils.DATASRCID_DEFAULT, ValueSources.VSNOTFOUNDHANDLER_NULL));
+        assertEquals(TestUtils.DATASRCID_DEFAULT, stmtOne.getDataSrc().getTextValue(dbvc));
+
+        qrsOne = stmtOne.executeAndRecordStatistics(dbvc, null, true);
+        qeleOne = qrsOne.getExecutionLogEntry();
+        assertTrue(qrsOne.getExecutStmtResult());
+        assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
+        assertNotNull(qeleOne);
+        assertNotNull(qrsOne.getResultSet());
+        assertFalse(stmtOne.isSqlTextHasExpressions());
+
+        // Verify query results...
+        qrsOne = stmtOne.executeAndIgnoreStatistics(dbvc, null, true);
+        assertTrue(qrsOne.getExecutStmtResult());
+        rs = qrsOne.getResultSet();
+
+        numRows = 0;
+        expectedRows = 3;
+        expectedNumAbc = 2;
+        expectedNumGhi = 1;
+        numAbc = 0;
+        numGhi = 0;
+        while (rs.next())
+        {
+            // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
+            numRows++;
+            assertEquals(numRows, rs.getRow());
+            assertEquals("abc", rs.getString(5));
+            assertEquals("this", rs.getString(7));
+
+            if ("ghi".equals(rs.getString(6))) numGhi++;
+            if ("abc".equals(rs.getString(6))) numAbc++;
+        }
+        assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
+
+        // Test QueryExecutionLog class...
+        QueryExecutionLog qelOne = stmtOne.getExecLog();
+        QueryExecutionLog.QueryExecutionStatistics qesOne = qelOne.getStatistics();
+        assertNotNull(qesOne);
+        assertTrue(3 <= qesOne.totalExecutions);
+        assertTrue(8 >= qesOne.totalExecutions);
+        assertEquals(0, qesOne.totalFailed);
+        assertTrue(0 <= qesOne.averageBindParamsTime);
+        assertTrue(0 <= qesOne.averageConnectionEstablishTime);
+        assertTrue(0 <= qesOne.averageSqlExecTime);
+        assertTrue(0 <= qesOne.averageTotalExecTime);
+    }
+
+    public void testResultSetUtilities() throws NamingException, SQLException
+    {
+        Query stmtOne = manager.getQuery("test.statement-1");
+        assertNotNull(stmtOne);
+        assertNotNull(stmtOne.getParams());
+        assertEquals(2, stmtOne.getParams().size());
+
+        stmtOne.setDataSrc(null);
+
+        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
+        dbvc.setConnectionProvider(TestUtils.connProvider);
+        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
+
+        // No stats recorded...
+        QueryResultSet qrsOne = stmtOne.executeAndIgnoreStatistics(cc, null, true);
+        QueryExecutionLogEntry qeleOne = qrsOne.getExecutionLogEntry();
+        assertTrue(qrsOne.getExecutStmtResult());
+        assertEquals("test.statement-1", qrsOne.getQuery().getQualifiedName());
+        assertNull(qeleOne);
+        assertNotNull(qrsOne.getResultSet());
+        assertNotNull(qrsOne.getResultSet());
+        assertSame(cc, qrsOne.getConnectionContext());
+
+        // Verify query results...
+        ResultSet rs = qrsOne.getResultSet();
+
+        String[] expectedColumns = new String[] { "cr_stamp", "cr_sess_id", "rec_stat_id", "system_id", "column_a", "column_b", "column_c" };
+        Map columnNames = ResultSetUtils.getColumnNamesIndexMap(rs);
+
+        assertEquals(expectedColumns.length, columnNames.size());
+        for (int i = 0; i < expectedColumns.length; i ++)
+            assertTrue(columnNames.containsKey(expectedColumns[i]));
+
+        int numRows = 0;
+        int expectedRows = 3;
+        int expectedNumAbc = 2;
+        int expectedNumGhi = 1;
+        int numAbc = 0;
+        int numGhi = 0;
+        while (rs.next())
+        {
+            // column_a = #5 since table Test is of type Default => first three fields are cr_stamp, cr_person_id etc
+            numRows++;
+            assertEquals(numRows, rs.getRow());
+            assertEquals("abc", rs.getString(5));
+            assertEquals("this", rs.getString(7));
+
+            if ("ghi".equals(rs.getString(6))) numGhi ++;
+            if ("abc".equals(rs.getString(6))) numAbc ++;
+        }
+        assertEquals(expectedRows, numRows);
+        assertEquals(expectedNumAbc, numAbc);
+        assertEquals(expectedNumGhi, numGhi);
+
+        // Wrap up by closing connections...
+        qrsOne.close(true);
+    }
+
     public void testStmt2Validity() throws DataModelException, NamingException, SQLException
     {
         Query statement2 = manager.getQuery("statement-2");
@@ -455,41 +720,6 @@ public class SqlManagerQueryTest extends TestCase
 	    String sql = sqlTexts.getByDbmsId(DatabasePolicies.DBMSID_DEFAULT).getSql();
         String flatSql = TextUtils.join(TextUtils.split(sql, " \t\n", true), " ");
 	    assertEquals("select * from test where column_a = ? and column_b = ? and column_c = 'this'", flatSql);
-    }
-
-    public void testQueryDefnValidity() throws DataModelException, InstantiationException, InvocationTargetException, NoSuchMethodException, IOException, IllegalAccessException, NamingException, SQLException
-    {
-        QueryDefinition qd1 = manager.getQueryDefinition("query-defn-1");
-        assertNotNull(qd1);
-
-        assertEquals(5, qd1.getFields().size());
-        assertEquals(5, qd1.getJoins().size());
-        assertEquals(1, qd1.getSelects().size());
-
-        QueryDefnSelect qds1 = qd1.getSelects().get("query-select-1");
-        assertNotNull(qds1);
-
-//        System.out.println(TestUtils.connProvider.getDataSourceInfo(TestUtils.DATASRCID_DEFAULT).getConnUrl());
-
-        DatabaseConnValueContext dbvc = new BasicDatabaseConnValueContext();
-        dbvc.setConnectionProvider(TestUtils.connProvider);
-        ConnectionContext cc = dbvc.getConnection(TestUtils.DATASRCID_DEFAULT, true);
-
-/*
-        System.out.println(TextUtils.getUnindentedText(testStatement1.getSqlText(cc)));
-        System.out.println(qds1.getQualifiedName());
-        System.out.println(qds1.getSqlText(cc));
-        System.out.println(component.getMetrics());
-*/
-
-        ValueSource vs = ValueSources.getInstance().getValueSource("data-sources:", ValueSources.VSNOTFOUNDHANDLER_THROW_EXCEPTION);
-//        Value value = vs.getValue(dbvc);
-//        System.out.println(value.getListValue());
-
-        String dtd = new XmlDataModelDtd().getDtd(component);
-        assertTrue(dtd != null);
-
-        //System.out.println(dtd);
     }
 
     /*
