@@ -19,8 +19,9 @@
 	<xdm:include file="data-management/query/statements.xml"/>
 	<xdm:include file="data-management/schema/schema.xml"/>
 
+    <xdm:include file="forms/dialogs.xml"/>
 
-<!-- 
+<!--
     *******************************************************************************************************************
     ** PROJECT DATA SOURCES CONFIGURATION                                                                            **
     ** ============================================================================================================= **

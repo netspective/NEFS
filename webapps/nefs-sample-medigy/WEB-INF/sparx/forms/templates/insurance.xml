@@ -44,7 +44,7 @@
 			<composite name="remittance" caption="Remittance Type">
 				<field type="select" name="remit_type" caption=" " choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 				<field type="text" name="remit_payer_id" caption="Remittance Payer ID" hint="This is used for electronic remittance">\
-					<conditional action="display" partner="remittance.remit_type" js-expr="control.options[control.selectedIndex].text == 'Electronic'"/>
+					<conditional action="display" partner-field-name="remittance.remit_type" expression="control.options[control.selectedIndex].text == 'Electronic'"/>
 				</field>
 			</composite>
 		</xdm:template>

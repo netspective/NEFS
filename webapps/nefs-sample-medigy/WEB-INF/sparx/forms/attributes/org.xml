@@ -7,7 +7,7 @@
 <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 
 			<field type="separator" heading="Address Classification"/>
@@ -24,7 +24,11 @@
 			<field type="zip-code" name="zip" caption="Zip Code"/>
 			<field type="text" name="country" caption="Country" size="16"/>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -34,7 +38,7 @@
 <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<composite name="orgType" caption="Org Type">
 				<field type="select" name="org_type_id" caption="" choices="schema-enum:Org_Type" required="yes"/>
@@ -43,7 +47,11 @@
 				</field>
 			</composite>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		
@@ -53,7 +61,7 @@
 <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 
 			<composite name="contactType" caption="Contact Type">
@@ -64,7 +72,12 @@
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" required="yes" hint="Enter the contact number, email address or other information here."/>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		
@@ -74,7 +87,7 @@
 <frame heading="create-dialog-perspective-heading:Identifier"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="org_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<composite name="identifierType" caption="Identifier">
 				<field type="select" name="identifier_type_id" caption="Identifier Type" choices="schema-enum:Org_Identifier_Type" required="yes"/>
@@ -84,7 +97,11 @@
 			</composite>
 			<field type="text" name="identifier" caption="Identifier Value" required="yes"/>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -94,12 +111,16 @@
 <frame heading="create-dialog-perspective-heading:Person ID Source"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="org_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<field type="text" name="caption" caption="Caption" required="yes"/>
 			<field type="text" name="abbrev" caption="Abbreviation"/>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -111,7 +132,11 @@
 			<xdm:include template="org.demographic-information"/>
 			<xdm:include template="org.service-information"/>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		
@@ -121,7 +146,7 @@
 <frame heading="create-dialog-perspective-heading:Organization Relationship"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<field type="select" name="rel_org_id" caption="Relation ID" choices="query:org.get-all-orgs" required="yes" prepend-blank="yes" hint="The ID of the org with which this relationship is being defined"/>
 			<composite name="relType" caption="Relationship">
@@ -136,7 +161,11 @@
 			</composite>
 			<field type="memo" name="rel_descr" caption="Description"/>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -146,7 +175,7 @@
 <frame heading="create-dialog-perspective-heading:Organization Industry"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Org ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<composite name="industry" caption="Industry">
 				<field type="select" name="org_industry_id" caption="Industry" choices="schema-enum:Org_Industry_Type" required="yes"/>
@@ -155,7 +184,11 @@
 				</field>
 			</composite>
             <director>
-                <next-actions caption="Next Action  "/>
+                <next-actions caption="Next Action  ">
+                    <items>
+<item value="page-id:/org/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 

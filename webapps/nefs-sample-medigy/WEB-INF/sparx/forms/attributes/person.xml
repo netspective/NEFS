@@ -7,7 +7,7 @@
 <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="text" name="system_id" caption="" hidden="yes"/>
 			<field type="text" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			
 			<field type="separator" heading="Address Classification"/>
@@ -24,7 +24,11 @@
 			<field type="zip-code" name="zip" caption="Zip Code"/>
 			<field type="text" name="country" caption="Country" size="16"/>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -34,7 +38,7 @@
 <frame heading="create-dialog-perspective-heading:Classification"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<field type="integer" name="org_id" caption="Org ID" required="yes"/>
 			<composite name="personType" caption="Person Type">
@@ -44,7 +48,11 @@
 				</field>
 			</composite>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		
@@ -54,7 +62,7 @@
 <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 
 			<composite name="contactType" caption="Contact Type">
@@ -65,7 +73,11 @@
 			</composite>
 			<field type="text" name="method_value" caption="Contact Information" hint="Enter the contact number, email address or other information here."/>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -75,7 +87,7 @@
 <frame heading="create-dialog-perspective-heading:Ethnicity"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<composite name="ethnicityType" caption="Ethnicity">
 				<field type="select" name="ethnicity_id" caption="Ethnicity Type" choices="schema-enum:Ethnicity_Type"/>
@@ -84,7 +96,11 @@
 				</field>
 			</composite>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -94,7 +110,7 @@
 <frame heading="create-dialog-perspective-heading:Language"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<composite name="languageType" caption="Language">
 				<field type="select" name="language_id" caption="Language Type" choices="schema-enum:Language_Type"/>
@@ -103,7 +119,11 @@
 				</field>
 			</composite>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		
@@ -114,7 +134,11 @@
 			<xdm:include template="person.personal-profile"/>
 			<xdm:include template="person.profile-demographic-information"/>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 
@@ -124,7 +148,7 @@
 <frame heading="create-dialog-perspective-heading:Personal Relationship"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Person ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			<field type="integer" name="rel_person_id" caption="Relation ID" hint="The ID of the person with which this relationship is being defined"/>
 			<composite name="relType" caption="Relationship">
@@ -139,7 +163,11 @@
 			</composite>
 			<field type="memo" name="rel_descr" caption="Description"/>
             <director>
-                <next-actions caption="Next Action "/>
+                <next-actions caption="Next Action ">
+                    <items>
+<item value="page-id:/person/summary" caption="Summary"/>
+</items>
+                </next-actions>
             </director>
 		</dialog>
 		

@@ -48,7 +48,7 @@
 				<field type="phone" name="phone" caption="Phone"/>
 			</composite>
 
-            <field type="email" name="email" caption="E-Mail"/>
+            <field type="e-mail" name="email" caption="E-Mail"/>
 			<field type="text" name="website" caption="Web Site"/>
 		</xdm:template>
 

@@ -50,7 +50,7 @@
 				<field type="text" name="license_number" caption="License Number"/>
 				<field type="select" name="license_src" caption="State" choices="schema-enum:US_State_Type" style="combo"/>
 				<field type="text" name="license_src_other" caption="Other State" size="16" max-length="16">
-					<conditional action="display" partner="driversLicense.license_src" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					<conditional action="display" partner-field-name="driversLicense.license_src" expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
 		</xdm:template>
@@ -80,7 +80,7 @@
 			<composite name="employer" caption="Org Code/Name">
 				<field type="text" name="org_code" caption="Org Code" size="16"/>
 				<field type="text" name="org_name" caption="Org Name"/>
-				<conditional action="display" partner="employer_id" js-expr="control.selectedIndex == 0"/>
+				<conditional action="display" partner-field-name="employer_id" expression="control.selectedIndex == 0"/>
 			</composite>
 
 			<field type="text" name="occupation" caption="Occupation"/>
@@ -91,14 +91,14 @@
 			<composite name="responsible" caption="Responsible Party">
 				<field type="boolean" name="self" caption="Self?"/>
 				<field type="select" name="party_id" caption="Responsible Party" choices="query:person.get-all-persons">
-					<conditional action="display" partner="responsible.self" js-expr="control.value"/>
+					<conditional action="display" partner-field-name="responsible.self" expression="control.value"/>
 				</field>
 			</composite>
 			
 			<composite name="relResp" caption="Relationship to Responsible Party">
 				<field type="select" name="rel_type_id" caption="Relationship" choices="schema-enum:Person_Relationship_Type" style="combo"/>
 				<field type="text" name="rel_descr" caption="Other Relationship" size="16">
-					<conditional action="display" partner="relationshipResponsible.rel_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					<conditional action="display" partner-field-name="relationshipResponsible.rel_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
 			<field type="select" name="care_provider_id" caption="Care Provider ID" choices="query:person.get-all-physicians"/>
@@ -111,196 +111,224 @@
 	
 		<xdm:template name="physician.license-and-provider-information">
 			<field type="separator" heading="License and Provider Numbers"/>
-			<field type="grid" name="licenses"><row name="licenseInfo_0">
+			<grid name="licenses">
+<row name="licenseInfo_0">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_0.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_0.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-				</row><row name="licenseInfo_1">
+				</row>
+<row name="licenseInfo_1">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_1.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_1.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_0.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_2">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_0.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_2">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_2.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_2.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_1.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_3">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_1.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_3">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_3.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_3.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_2.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_4">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_2.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_4">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_4.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_4.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_3.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_5">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_3.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_5">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_5.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_5.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_4.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_6">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_4.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_6">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_6.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_6.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_5.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_7">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_5.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_7">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_7.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_7.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_6.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_8">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_6.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_8">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_8.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_8.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_7.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_9">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_7.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_9">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_9.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_9.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_8.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_10">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_8.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_10">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_10.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_10.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_9.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_11">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_9.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_11">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_11.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_11.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_10.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_12">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_10.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_12">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_12.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_12.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_11.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_13">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_11.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_13">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_13.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_13.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_12.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_14">
+					<conditional action="display" partner-field-name="licenses.licenseInfo_12.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_14">
 					<field type="select" name="license_type_id" caption="License Type" choices="schema-enum:Person_License_Type" prepend-blank="yes"/>
 					<field type="text" name="license_name" caption="" size="16">
-						<conditional action="display" partner="licenses.licenseInfo_14.license_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+						<conditional action="display" partner-field-name="licenses.licenseInfo_14.license_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 					</field>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
 					<field type="integer" name="facility_id" caption="Facility ID"/>
-					<conditional action="display" partner="licenses.licenseInfo_13.license_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row></field>
+					<conditional action="display" partner-field-name="licenses.licenseInfo_13.license_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+</grid>
 
-			<field type="grid" name="stateLicenses"><row name="licenseInfo_0">
+			<grid name="stateLicenses">
+<row name="licenseInfo_0">
 					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
-				</row><row name="licenseInfo_1">
+				</row>
+<row name="licenseInfo_1">
 					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
-					<conditional action="display" partner="stateLicenses.licenseInfo_0.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_2">
+					<conditional action="display" partner-field-name="stateLicenses.licenseInfo_0.us_state_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_2">
 					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
-					<conditional action="display" partner="stateLicenses.licenseInfo_1.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_3">
+					<conditional action="display" partner-field-name="stateLicenses.licenseInfo_1.us_state_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_3">
 					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
-					<conditional action="display" partner="stateLicenses.licenseInfo_2.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="licenseInfo_4">
+					<conditional action="display" partner-field-name="stateLicenses.licenseInfo_2.us_state_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="licenseInfo_4">
 					<field type="select" name="us_state_type_id" caption="State" choices="schema-enum:US_State_Type" prepend-blank="yes"/>
 					<field type="text" name="license_number" caption="License Number" size="16"/>
 					<field type="date" name="expiration_date" caption="Expiration Date"/>
-					<conditional action="display" partner="stateLicenses.licenseInfo_3.us_state_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row></field>
+					<conditional action="display" partner-field-name="stateLicenses.licenseInfo_3.us_state_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+</grid>
 		</xdm:template>
 
 		<xdm:template name="physician.billing-information">
 			<field type="separator" heading="Billing Information"/>
-			<field type="grid" name="billing"><row name="billingInfo_0">
+			<grid name="billing">
+<row name="billingInfo_0">
 					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
 					<field type="date" name="effective_date" caption="Effective Date"/>
-				</row><row name="billingInfo_1">
+				</row>
+<row name="billingInfo_1">
 					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
 					<field type="date" name="effective_date" caption="Effective Date"/>
-					<conditional action="display" partner="billing.billingInfo_0.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="billingInfo_2">
+					<conditional action="display" partner-field-name="billing.billingInfo_0.bill_remittance_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="billingInfo_2">
 					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
 					<field type="date" name="effective_date" caption="Effective Date"/>
-					<conditional action="display" partner="billing.billingInfo_1.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="billingInfo_3">
+					<conditional action="display" partner-field-name="billing.billingInfo_1.bill_remittance_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="billingInfo_3">
 					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
 					<field type="date" name="effective_date" caption="Effective Date"/>
-					<conditional action="display" partner="billing.billingInfo_2.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row><row name="billingInfo_4">
+					<conditional action="display" partner-field-name="billing.billingInfo_2.bill_remittance_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+<row name="billingInfo_4">
 					<field type="select" name="bill_remittance_type_id" caption="Billing Type" choices="schema-enum:Bill_Remittance_Type" prepend-blank="yes"/>
 					<field type="text" name="billing_number" caption="Billing ID" size="16"/>
 					<field type="date" name="effective_date" caption="Effective Date"/>
-					<conditional action="display" partner="billing.billingInfo_3.bill_remittance_type_id" js-expr="control.selectedIndex &gt; 0"/>
-				</row></field>
+					<conditional action="display" partner-field-name="billing.billingInfo_3.bill_remittance_type_id" expression="control.selectedIndex &gt; 0"/>
+				</row>
+</grid>
 		</xdm:template>
 	
 
@@ -312,21 +340,26 @@
 
 		<xdm:template name="staff.speciality">
 			<field type="separator" heading="Specialties"/>
-			<field type="grid" name="specialties"><row name="specialityInfo_0">
+			<grid name="specialties">
+<row name="specialityInfo_0">
 					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type"/>
-				</row><row name="specialityInfo_1">
+				</row>
+<row name="specialityInfo_1">
 					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
-						<conditional action="display" partner="specialties.specialityInfo_0.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+						<conditional action="display" partner-field-name="specialties.specialityInfo_0.speciality_id" expression="control.selectedIndex &gt; 0"/>
 					</field>
-				</row><row name="specialityInfo_2">
+				</row>
+<row name="specialityInfo_2">
 					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
-						<conditional action="display" partner="specialties.specialityInfo_1.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+						<conditional action="display" partner-field-name="specialties.specialityInfo_1.speciality_id" expression="control.selectedIndex &gt; 0"/>
 					</field>
-				</row><row name="specialityInfo_3">
+				</row>
+<row name="specialityInfo_3">
 					<field type="select" name="speciality_id" caption="Speciality Type" choices="schema-enum:Staff_Speciality_Type">
-						<conditional action="display" partner="specialties.specialityInfo_2.speciality_id" js-expr="control.selectedIndex &gt; 0"/>
+						<conditional action="display" partner-field-name="specialties.specialityInfo_2.speciality_id" expression="control.selectedIndex &gt; 0"/>
 					</field>
-				</row></field>
+				</row>
+</grid>
 		</xdm:template>
 	
 

@@ -2,18 +2,20 @@
 <xdm:container xmlns:xdm="http://www.netspective.org/Framework/Commons/XMLDataModel">
 	<dialogs package="scheduling">
 
-		<dialog name="adhocquery" class="app.form.scheduling.AdhocQueryDialog"><frame heading="Adhoc Query"/>
+		<dialog name="adhocquery" class="app.form.scheduling.AdhocQueryDialog">
+<frame heading="Adhoc Query"/>
 			<field type="memo" name="sql" caption="SQL" required="yes" initial-focus="yes" rows="25" cols="120"/>
 		</dialog>
 
-		<dialog name="appointment" class="app.form.scheduling.EventDialog"><frame heading="create-data-cmd-heading:Appointment"/>
+		<dialog name="appointment" class="app.form.scheduling.EventDialog">
+<frame heading="create-dialog-perspective-heading:Appointment"/>
 			<field type="select" name="patient_id" caption="Patient" choices="query:person.get-all-patients" required="yes" prepend-blank="yes"/>
 			<field type="select" name="event_type_id" caption="Type of Visit" choices="schema-enum:Event_Type" required="yes"/>
 			<field type="memo" name="reason" caption="Reason for Visit"/>
 
 			<composite name="start_stamp" caption="Appt Date/Time">
-				<field type="date" name="start_date" caption="" required="yes" max-length="10" popup-calendar="yes"/>
-				<field type="time" name="start_time" caption="" required="yes" max-length="5"/>
+				<field type="date" name="start_date" caption="" required="yes" size="10" max-length="10" popup-calendar="yes"/>
+				<field type="time" name="start_time" caption="" required="yes" size="10" max-length="5"/>
 			</composite>
 
 			<field type="select" name="provider_id" caption="Provider" choices="query:person.get-all-physicians" required="yes" prepend-blank="yes"/>

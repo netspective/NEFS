@@ -9,7 +9,7 @@
 <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Product ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			
 			<field type="separator" heading="Address Classification"/>
@@ -33,7 +33,7 @@
 <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Product ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 
 			<composite name="contactType" caption="Contact Type">
@@ -70,7 +70,7 @@
 <frame heading="create-dialog-perspective-heading:Address"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 			
 			<field type="separator" heading="Address Classification"/>
@@ -94,7 +94,7 @@
 <frame heading="create-dialog-perspective-heading:Contact"/>
 			<field type="integer" name="system_id" caption="" hidden="yes"/>
 			<field type="integer" name="parent_id" caption="Plan ID" required="yes">
-				<conditional flags="hidden" perspective="add" action="apply-flag"/>
+				<conditional flags="hidden" perspective="add" action="apply-flags"/>
 			</field>
 
 			<composite name="contactType" caption="Contact Type">

@@ -3,14 +3,15 @@
 	<xdm:include file="templates/insurance.xml"/>
 	
 	<dialogs package="insuranceProduct">	
-		<dialog name="main" class="app.form.insurance.InsProductDialog"><frame heading="create-data-cmd-heading:Insurance Product"/>
+		<dialog name="main" class="app.form.insurance.InsProductDialog">
+<frame heading="create-dialog-perspective-heading:Insurance Product"/>
 			<field type="integer" name="product_id" caption="" hidden="yes"/>
 			<field type="select" name="org_id" caption="Org ID" choices="query:org.get-insurance-orgs" required="yes" prepend-blank="yes"/>
 			<field type="text" name="product_name" caption="Product Name" required="yes"/>
 			<composite name="productType" caption="Product Type">
 				<field type="select" name="product_type_id" caption="" choices="schema-enum:Ins_Product_Type" required="yes"/>
 				<field type="text" name="product_type" caption="">
-					<conditional action="display" partner="productType.product_type_id" js-expr="control.options[control.selectedIndex].text == 'Other'"/>
+					<conditional action="display" partner-field-name="productType.product_type_id" expression="control.options[control.selectedIndex].text == 'Other'"/>
 				</field>
 			</composite>
 
@@ -20,7 +21,8 @@
 	</dialogs>
 	
 	<dialogs package="insurancePlan">
-		<dialog name="main" class="app.form.insurance.InsPlanDialog"><frame heading="create-data-cmd-heading:Insurance Plan"/>
+		<dialog name="main" class="app.form.insurance.InsPlanDialog">
+<frame heading="create-dialog-perspective-heading:Insurance Plan"/>
 			<field type="integer" name="plan_id" caption="" hidden="yes"/>
 			<field type="select" name="product_id" caption="Insurance Product" choices="query:insurance.getProductsByOrg" required="yes" prepend-blank="yes"/>
 			<field type="text" name="plan_name" caption="Plan Name" required="yes"/>
