@@ -258,11 +258,13 @@
             </td>
             <td class="report-column-${classSuffix}">
                 <nobr>
-                <#if attrDetail.isRequired()>
-                    <b>${attrDetail.attrName}</b>
+                <#if attrDetail.isRequired()><b></#if>
+                <#if ! attrDetail.isFlagAlias()>
+                    <span title="Equivalent to ${attrDetail.declaringClass.name}.${attrDetail.javaDoc.name}(${attrDetail.attrType.name})">${attrDetail.attrName}</span>
                 <#else>
                     ${attrDetail.attrName}
                 </#if>
+                <#if attrDetail.isRequired()></b></#if>
                 </nobr>
             </td>
             <td class="report-column-${classSuffix}">
@@ -283,7 +285,13 @@
             </td>
         </tr>
             <td class="report-column-${classSuffix}" colspan=4>
-                <font color=#999999>${attrDetail.javaDoc.description?default('&nbsp;')}</font>
+                <font color=#999999>
+                <#if attrDetail.isFlagAlias()>
+                    ${attrDetail.flags.flagDefnsByName.get(attrDetail.attrName).description?default('&nbsp;')}
+                <#else>
+                    ${attrDetail.javaDoc.description?default('&nbsp;')}
+                </#if>
+                </font>
             </td>
         <tr>
         </tr>
