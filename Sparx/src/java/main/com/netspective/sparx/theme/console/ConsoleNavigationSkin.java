@@ -51,7 +51,7 @@
  */
 
 /**
- * $Id: ConsoleNavigationSkin.java,v 1.36 2003-10-22 18:58:02 shahid.shah Exp $
+ * $Id: ConsoleNavigationSkin.java,v 1.37 2003-10-24 03:28:48 shahid.shah Exp $
  */
 
 package com.netspective.sparx.theme.console;
@@ -69,7 +69,6 @@ import com.netspective.sparx.ProjectComponent;
 import com.netspective.commons.security.AuthenticatedUser;
 
 import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -443,26 +442,29 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         Theme theme = getTheme();
 
         NavigationPage page = nc.getActivePage();
-        String heading = page != null ? nc.getPageHeading() : "No active page";
+        String heading = page != null ? nc.getPageHeading() : "-";
 
-        String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
+        if(! heading.equals("-"))
+        {
+            String pageHeadingImageUrl = theme.getResourceUrl("/images/page-icons" + (page != null ? (page.getQualifiedName() + "/page-heading.gif") : "/page-heading.gif"));
 
-        writer.write("<!-- Page Header Begins -->\n");
-        writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-        writer.write("    <tr>\n");
-        writer.write("        <td align=\"left\" valign=\"middle\">\n");
-        writer.write("            <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
-        writer.write("                <tr>\n");
-        writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
-                pageHeadingImageUrl + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
-        writer.write("                    <td class=\"page-heading\">" + heading + "</td>\n");
-        writer.write("                </tr>\n");
-        writer.write("            </table>\n");
-        writer.write("        </td>\n");
-        writer.write("    </tr>\n");
-        renderPageSubHeading(writer, nc);
-        writer.write("</table>\n");
-        writer.write("<!-- Page Header Ends -->\n");
+            writer.write("<!-- Page Header Begins -->\n");
+            writer.write("<table class=\"page-heading-table\" height=\"36\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+            writer.write("    <tr>\n");
+            writer.write("        <td align=\"left\" valign=\"middle\">\n");
+            writer.write("            <table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+            writer.write("                <tr>\n");
+            writer.write("                    <td align=\"right\" class=\"page-heading-icon\"><img class=\"page-icon\" src=\"" +
+                    pageHeadingImageUrl + "\" alt=\"\" height=\"22\" width=\"22\" border=\"0\"></td>\n");
+            writer.write("                    <td class=\"page-heading\">" + heading + "</td>\n");
+            writer.write("                </tr>\n");
+            writer.write("            </table>\n");
+            writer.write("        </td>\n");
+            writer.write("    </tr>\n");
+            renderPageSubHeading(writer, nc);
+            writer.write("</table>\n");
+            writer.write("<!-- Page Header Ends -->\n");
+        }
     }
 
     /**
