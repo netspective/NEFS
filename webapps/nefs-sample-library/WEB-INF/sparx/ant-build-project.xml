@@ -42,7 +42,8 @@
                ddl="*"/>
     </target>
 
-    <target name="generate-dal" depends=".init" description="Generates typed Java classes for all tables and columns in the default database schema. This target should be executed anytime the default schema is modified.">
+    <target name="generate-dal" depends=".init" description="Generates typed Java classes for all tables and columns in the default database schema (after deleting the current DAL directory for the default schema, if present). This target should be executed anytime the default schema is modified.">
+        <delete dir="${app.WEB-INF.classes.path}/app/dal/${app.database.schema.default-name}"/>
         <sparx action="generate-dal"
                projectFile="${sparx.project.file}"
                destDir="${app.WEB-INF.classes.path}"
