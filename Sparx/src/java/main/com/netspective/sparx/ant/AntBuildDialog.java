@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AntBuildDialog.java,v 1.2 2003-07-17 14:43:20 shahid.shah Exp $
+ * $Id: AntBuildDialog.java,v 1.3 2003-07-21 14:43:31 shahid.shah Exp $
  */
 
 package com.netspective.sparx.ant;
@@ -49,8 +49,6 @@ import java.io.IOException;
 import java.io.File;
 import java.io.PrintStream;
 import java.io.ByteArrayOutputStream;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
