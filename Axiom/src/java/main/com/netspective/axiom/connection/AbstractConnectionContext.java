@@ -39,7 +39,7 @@
  */
 
 /**
- * $Id: AbstractConnectionContext.java,v 1.3 2003-03-16 21:22:05 shahid.shah Exp $
+ * $Id: AbstractConnectionContext.java,v 1.4 2003-03-17 23:22:32 shahid.shah Exp $
  */
 
 package com.netspective.axiom.connection;
@@ -59,6 +59,7 @@ import com.netspective.axiom.SqlManager;
 import com.netspective.axiom.value.DatabaseConnValueContext;
 import com.netspective.commons.acl.AccessControlListsManager;
 import com.netspective.commons.config.ConfigurationsManager;
+import com.netspective.commons.security.AuthenticatedUser;
 
 public abstract class AbstractConnectionContext implements ConnectionContext
 {
@@ -149,6 +150,11 @@ public abstract class AbstractConnectionContext implements ConnectionContext
     public ConfigurationsManager getConfigurationsManager()
     {
         return dbvc.getConfigurationsManager();
+    }
+
+    public AuthenticatedUser getAuthenticatedUser()
+    {
+        return dbvc.getAuthenticatedUser();
     }
 
     public SqlManager getSqlManager()
