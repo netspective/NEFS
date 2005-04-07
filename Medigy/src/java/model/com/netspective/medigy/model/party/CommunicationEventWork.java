@@ -35,122 +35,83 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.ContactMechanismType;
+import com.netspective.medigy.model.work.Work;
 
-import javax.ejb.CascadeType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.OneToMany;
-import javax.ejb.Table;
 import javax.ejb.OneToOne;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ejb.Table;
 
 @Entity
-@Table(name = "Comm_Event")
-public class CommunicationEvent extends AbstractDateDurationEntity
+@Table(name = "Comm_Event_Work")
+public class CommunicationEventWork
 {
-    private Long eventId;
-    private String notes;
-    private PartyRelationship partyRelationship;
-    private Set<CommunicationEventPurpose> eventPurposes = new HashSet<CommunicationEventPurpose>();
-    private ContactMechanismType contactMechanismType;
-    private Set<CommunicationEventRole> eventRoles = new HashSet<CommunicationEventRole>();
-    private Set<CommunicationEventWork> eventWorks = new HashSet<CommunicationEventWork>();
-
-    public CommunicationEvent()
-    {
-    }
+    private Long systemId;
+    private String description;
+    private CommunicationEvent event;
+    private Work work;
+    // indicates whether or not the work was started by this particular communication event
+    private Boolean startWorkInd;
 
     @Id(generate = GeneratorType.AUTO)
-    @Column(name = "comm_event_id")
-    public Long getEventId()
+    public Long getSystemId()
     {
-        return this.eventId;
+        return systemId;
     }
 
-    protected void setEventId(final Long id)
+    public void setSystemId(final Long systemId)
     {
-        this.eventId = id;
+        this.systemId = systemId;
     }
 
-    @Column(length = 1000)
-    public String getNotes()
+    public Boolean getStartWorkInd()
     {
-        return notes;
+        return startWorkInd;
     }
 
-    protected void setNotes(final String notes)
+    public void setStartWorkInd(final Boolean startWorkInd)
     {
-        this.notes = notes;
-    }
-
-    @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id", nullable = false)
-    public PartyRelationship getPartyRelationship()
-    {
-        return partyRelationship;
-    }
-
-    protected void setPartyRelationship(final PartyRelationship partyRelationship)
-    {
-        this.partyRelationship = partyRelationship;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "comm_event_id")
-    public Set<CommunicationEventPurpose> getEventPurposes()
-    {
-        return eventPurposes;
-    }
-
-    public void setEventPurposes(final Set<CommunicationEventPurpose> eventPurposes)
-    {
-        this.eventPurposes = eventPurposes;
+        this.startWorkInd = startWorkInd;
     }
 
     @OneToOne
-    @JoinColumn(name = "contact_mech_type_id")
-    public ContactMechanismType getContactMechanismType()
+    @JoinColumn(name = "work_id")
+    public Work getWork()
     {
-        return contactMechanismType;
+        return work;
     }
 
-    public void setContactMechanismType(final ContactMechanismType contactMechanismType)
+    public void setWork(final Work work)
     {
-        this.contactMechanismType = contactMechanismType;
+        this.work = work;
     }
 
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "comm_event_id")
-    public Set<CommunicationEventRole> getEventRoles()
+    public CommunicationEvent getEvent()
     {
-        return eventRoles;
+        return event;
     }
 
-    public void setEventRoles(final Set<CommunicationEventRole> eventRoles)
+    public void setEvent(final CommunicationEvent event)
     {
-        this.eventRoles = eventRoles;
+        this.event = event;
     }
 
-    @OneToMany
-    @JoinColumn(name = "comm_event_id")
-    public Set<CommunicationEventWork> getEventWorks()
+    @Column(length = 100, nullable = true)
+    public String getDescription()
     {
-        return eventWorks;
+        return description;
     }
 
-    public void setEventWorks(final Set<CommunicationEventWork> eventWorks)
+    public void setDescription(final String description)
     {
-        this.eventWorks = eventWorks;
+        this.description = description;
     }
 }
