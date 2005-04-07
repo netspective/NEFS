@@ -111,6 +111,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
 
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.GeographicBoundaryType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRelationshipType.class);
@@ -129,6 +130,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.work.Work.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
+
+        config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
 
