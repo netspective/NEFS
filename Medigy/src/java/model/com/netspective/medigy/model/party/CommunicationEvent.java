@@ -39,8 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -51,8 +51,9 @@ import javax.ejb.JoinColumn;
 import javax.ejb.ManyToOne;
 import javax.ejb.OneToMany;
 import javax.ejb.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import javax.ejb.OneToOne;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Comm_Event")
@@ -62,6 +63,8 @@ public class CommunicationEvent extends AbstractDateDurationEntity
     private String notes;
     private PartyRelationship partyRelationship;
     private Set<CommunicationEventPurpose> eventPurposes = new HashSet<CommunicationEventPurpose>();
+    private ContactMechanismType contactMechanismType;
+    private Set<CommunicationEventRole> eventRoles = new HashSet<CommunicationEventRole>();
 
     public CommunicationEvent()
     {
@@ -112,5 +115,29 @@ public class CommunicationEvent extends AbstractDateDurationEntity
     public void setEventPurposes(final Set<CommunicationEventPurpose> eventPurposes)
     {
         this.eventPurposes = eventPurposes;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "contact_mech_type_id")
+    public ContactMechanismType getContactMechanismType()
+    {
+        return contactMechanismType;
+    }
+
+    public void setContactMechanismType(final ContactMechanismType contactMechanismType)
+    {
+        this.contactMechanismType = contactMechanismType;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "comm_event_id")
+    public Set<CommunicationEventRole> getEventRoles()
+    {
+        return eventRoles;
+    }
+
+    public void setEventRoles(final Set<CommunicationEventRole> eventRoles)
+    {
+        this.eventRoles = eventRoles;
     }
 }
