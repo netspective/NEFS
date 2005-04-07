@@ -40,12 +40,13 @@ package com.netspective.medigy.model.common;
 
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
-import javax.ejb.Entity;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
 import javax.ejb.Column;
-import javax.ejb.Table;
+import javax.ejb.Entity;
+import javax.ejb.GeneratorType;
+import javax.ejb.Id;
 import javax.ejb.JoinColumn;
+import javax.ejb.Table;
+import javax.ejb.OneToOne;
 
 @Entity
 @Table(name = "Geo_Boundary")
@@ -105,6 +106,7 @@ public class GeographicBoundary extends AbstractTopLevelEntity
         this.abbreviation = abbreviation;
     }
 
+    @OneToOne            
     @JoinColumn(name = "geo_boundary_type_id")
     public GeographicBoundaryType getType()
     {
