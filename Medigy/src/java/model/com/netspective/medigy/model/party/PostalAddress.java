@@ -39,11 +39,17 @@
  */
 package com.netspective.medigy.model.party;
 
+import com.netspective.medigy.model.common.GeographicBoundary;
+
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.Inheritance;
 import javax.ejb.InheritanceJoinColumn;
 import javax.ejb.InheritanceType;
+import javax.ejb.JoinColumn;
+import javax.ejb.OneToMany;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -53,6 +59,8 @@ public class PostalAddress extends PartyContactMechanism
     private String address1;
     private String address2;
     private String directions;
+
+    private Set<GeographicBoundary> geographicBoundaries = new HashSet<GeographicBoundary>();
 
     @Column(length = 100, nullable = false)
     public String getAddress1()
@@ -85,5 +93,17 @@ public class PostalAddress extends PartyContactMechanism
     public void setDirections(final String directions)
     {
         this.directions = directions;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "geo_id")
+    public Set<GeographicBoundary> getGeographicBoundaries()
+    {
+        return geographicBoundaries;
+    }
+
+    public void setGeographicBoundaries(final Set<GeographicBoundary> geographicBoundaries)
+    {
+        this.geographicBoundaries = geographicBoundaries;
     }
 }
