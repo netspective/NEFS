@@ -47,7 +47,6 @@ import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
-import com.netspective.medigy.model.data.EntitySeedDataPopulator;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
@@ -107,6 +106,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
@@ -125,6 +125,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyFacilityRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEvent.class);        
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
 
