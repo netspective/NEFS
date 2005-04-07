@@ -38,16 +38,51 @@
  */
 package com.netspective.medigy.reference.custom;
 
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
 import javax.ejb.Column;
 import javax.ejb.Entity;
+import javax.ejb.GeneratorType;
+import javax.ejb.Id;
 import javax.ejb.Table;
 
 @Entity
-@Table(name = "Geo_Boundary_Type")        
+@Table(name = "Geo_Boundary_Type")
 public class GeographicBoundaryType extends AbstractCustomReferenceEntity
 {
+    public enum Cache implements CachedCustomReferenceEntity
+    {
+        CITY("CITY"),
+        COUNTY("COUNTY"),
+        STATE("STATE"),
+        POSTAL_CODE("ZIP"),
+        RPOVINCE("PROVINCE"),
+        TERRITORY("TERRITORY"),
+        REGION("REGION"),
+        COUNTRY("COUNTRY");
+
+        private final String code;
+        private GeographicBoundaryType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public GeographicBoundaryType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (GeographicBoundaryType) entity;
+        }
+    }
+    
     public GeographicBoundaryType()
     {
     }
