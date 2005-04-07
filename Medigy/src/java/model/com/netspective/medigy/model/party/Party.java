@@ -40,8 +40,13 @@
 
 package com.netspective.medigy.model.party;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
+import com.netspective.medigy.reference.custom.party.FacilityType;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 
 import javax.ejb.CascadeType;
 import javax.ejb.Column;
@@ -53,13 +58,8 @@ import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
 import javax.ejb.Table;
-
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
-import com.netspective.medigy.reference.custom.party.FacilityType;
-import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity()
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -95,6 +95,7 @@ public class Party extends AbstractTopLevelEntity
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
     private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
+    private Set<CommunicationEventRole> communicationEventRoles = new HashSet<CommunicationEventRole>();
 
     // All the custom reference entity types
     private Set<PartyIdentifierType> partyIdentifierTypes = new HashSet<PartyIdentifierType>();
@@ -102,6 +103,7 @@ public class Party extends AbstractTopLevelEntity
     private Set<FacilityType> facilityTypes = new HashSet<FacilityType>();
     private Set<PartyRelationshipType> partyRelationshipTypes = new HashSet<PartyRelationshipType>();
     private Set<CommunicationEventPurposeType> communicationEventPurposeTypes = new HashSet<CommunicationEventPurposeType>();
+    private Set<CommunicationEventRoleType> communicationEventRoleTypes = new HashSet<CommunicationEventRoleType>();
 
     public Party()
     {
@@ -242,5 +244,29 @@ public class Party extends AbstractTopLevelEntity
     public void setCommunicationEventPurposeTypes(Set<CommunicationEventPurposeType> communicationEventPurposeTypes)
     {
         this.communicationEventPurposeTypes = communicationEventPurposeTypes;
+    }
+
+    @OneToMany(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<CommunicationEventRoleType> getCommunicationEventRoleTypes()
+    {
+        return communicationEventRoleTypes;
+    }
+
+    public void setCommunicationEventRoleTypes(final Set<CommunicationEventRoleType> communicationEventRoleTypes)
+    {
+        this.communicationEventRoleTypes = communicationEventRoleTypes;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "party_id")
+    public Set<CommunicationEventRole> getCommunicationEventRoles()
+    {
+        return communicationEventRoles;
+    }
+
+    public void setCommunicationEventRoles(final Set<CommunicationEventRole> communicationEventRoles)
+    {
+        this.communicationEventRoles = communicationEventRoles;
     }
 }
