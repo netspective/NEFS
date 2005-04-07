@@ -62,7 +62,8 @@ public class ContactMechanismType extends AbstractReferenceEntity
         MOBILE("M", "Mobile", ""),
         EMAIL_ADDRESS("E", "Email Address", ""),
         POSTAL_ADDRESS("PA", "Postal Address", ""),
-        WEB_ADDRESS("WA", "Web Address", "");
+        WEB_ADDRESS("WA", "Web Address", ""),
+        FACE_TO_FACE("FF", "Face To Face", "");
 
         private final String code;
         private final String label;
