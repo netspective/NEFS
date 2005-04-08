@@ -40,6 +40,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.GeographicBoundary;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
 import javax.ejb.Column;
 import javax.ejb.Entity;
@@ -48,6 +49,9 @@ import javax.ejb.InheritanceJoinColumn;
 import javax.ejb.InheritanceType;
 import javax.ejb.JoinColumn;
 import javax.ejb.OneToMany;
+import javax.ejb.Transient;
+import javax.ejb.FetchType;
+import javax.ejb.Basic;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -97,6 +101,7 @@ public class PostalAddress extends PartyContactMechanism
 
     @OneToMany
     @JoinColumn(name = "geo_id")
+    @Basic(fetch = FetchType.EAGER)
     public Set<GeographicBoundary> getGeographicBoundaries()
     {
         return geographicBoundaries;
@@ -105,5 +110,95 @@ public class PostalAddress extends PartyContactMechanism
     public void setGeographicBoundaries(final Set<GeographicBoundary> geographicBoundaries)
     {
         this.geographicBoundaries = geographicBoundaries;
+    }
+
+    @Transient
+    public String getCity()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.CITY))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public String getState()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.STATE))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public String getPostalCode()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.POSTAL_CODE))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public String getCounty()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.COUNTY))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public String getProvince()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.PROVINCE))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public String getCountry()
+    {
+        GeographicBoundary[] boundaries = (GeographicBoundary[]) geographicBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = boundaries[i];
+            if (boundary.getType().equals(GeographicBoundaryType.Cache.COUNTRY))
+            {
+                return boundary.getName();
+            }
+        }
+        return null;
     }
 }
