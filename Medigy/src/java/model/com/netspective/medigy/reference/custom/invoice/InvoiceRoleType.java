@@ -39,56 +39,22 @@
 package com.netspective.medigy.reference.custom.invoice;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Entity;
 
 @Entity
-public class InvoiceItemType extends AbstractCustomReferenceEntity
+public class InvoiceRoleType extends AbstractCustomReferenceEntity
 {
-    public enum Cache implements CachedCustomReferenceEntity
-    {
-        SHIPPING("SHIP"),
-        SALES_TAX("TAX"),
-        FEE("FEE");
-
-        private final String code;
-        private InvoiceItemType entity;
-
-        Cache(final String code)
-        {
-            this.code = code;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-
-        public InvoiceItemType getEntity()
-        {
-            return entity;
-        }
-
-        public void setEntity(final CustomReferenceEntity entity)
-        {
-            this.entity = (InvoiceItemType) entity;
-        }
-    }
-
     @Id(generate = GeneratorType.AUTO)
-    public Long getInvoiceItemTypeId()
+    public Long getInvoiceRoleTypeId()
     {
         return super.getSystemId();
     }
 
-    protected void setInvoiceItemTypeId(final Long id)
+    protected void setInvoiceRoleTypeId(final Long id)
     {
         super.setSystemId(id);
     }
 }
-
-
