@@ -54,7 +54,7 @@ public class GeographicBoundaryType extends AbstractCustomReferenceEntity
         COUNTY("COUNTY"),
         STATE("STATE"),
         POSTAL_CODE("ZIP"),
-        RPOVINCE("PROVINCE"),
+        PROVINCE("PROVINCE"),
         TERRITORY("TERRITORY"),
         REGION("REGION"),
         COUNTRY("COUNTRY");
@@ -82,7 +82,7 @@ public class GeographicBoundaryType extends AbstractCustomReferenceEntity
             this.entity = (GeographicBoundaryType) entity;
         }
     }
-    
+
     public GeographicBoundaryType()
     {
     }
