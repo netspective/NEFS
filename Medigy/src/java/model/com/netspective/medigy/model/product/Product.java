@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2005 Your Corporation. All Rights Reserved.
  */
-package com.netspective.medigy.model.invoice;
+package com.netspective.medigy.model.product;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
