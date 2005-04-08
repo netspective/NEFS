@@ -42,18 +42,19 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
-import javax.persistence.Transient;
-import javax.persistence.FetchType;
-import javax.persistence.Basic;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
-import javax.persistence.Inheritance;
-import javax.persistence.Entity;
-import java.util.Set;
+import javax.persistence.Transient;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.AssociationTable;
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToMany;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -99,9 +100,12 @@ public class PostalAddress extends PartyContactMechanism
         this.directions = directions;
     }
 
-    @OneToMany
-    @JoinColumn(name = "geo_id")
-    @Basic(fetch = FetchType.EAGER)
+    @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @AssociationTable(
+        table=@Table(name="Postal_Address_Boundary"),
+        joinColumns={@JoinColumn(name="party_contact_mech_id")},
+        inverseJoinColumns={@JoinColumn(name="geo_id")}
+    )
     public Set<GeographicBoundary> getGeographicBoundaries()
     {
         return geographicBoundaries;
