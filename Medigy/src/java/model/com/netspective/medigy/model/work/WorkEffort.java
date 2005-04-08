@@ -49,7 +49,7 @@ import javax.ejb.Transient;
 import java.util.Date;
 
 @Entity
-public class Work extends AbstractTopLevelEntity
+public class WorkEffort extends AbstractTopLevelEntity
 {
     private Long workId;
     private String workName;
@@ -62,7 +62,7 @@ public class Work extends AbstractTopLevelEntity
     private EffectiveDates scheduledDates = new EffectiveDates();
     private EffectiveDates actualDates = new EffectiveDates();
 
-    public Work()
+    public WorkEffort()
     {
     }
 
