@@ -36,126 +36,58 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.invoice;
+package com.netspective.medigy.reference.custom.invoice;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.invoice.InvoiceItemType;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
-public class InvoiceItem extends AbstractTopLevelEntity
+public class InvoiceItemType extends AbstractCustomReferenceEntity
 {
-    private Long invoiceItemId;
-    private Long invoiceItemSeqId;
-    private Boolean taxableFlag;
-    private String itemDescription;
-    private Long quantity;
-    private Float unitPrice;
-
-    private InvoiceItemType type;
-    private Invoice invoice;
-    private Product product;
-
-    public InvoiceItem()
+    public enum Cache implements CachedCustomReferenceEntity
     {
+        SALES("SALES"),
+        PURCHASE("PURCHASE");
+
+        private final String code;
+        private InvoiceItemType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public InvoiceItemType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (InvoiceItemType) entity;
+        }
     }
 
-    public Long getInvoiceItemId()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getInvoiceItemTypeId()
     {
-        return invoiceItemId;
+        return super.getSystemId();
     }
 
-    protected void setInvoiceItemId(final Long invoiceItemId)
+    protected void setInvoiceItemTypeId(final Long id)
     {
-        this.invoiceItemId = invoiceItemId;
-    }
-
-    public Long getInvoiceItemSeqId()
-    {
-        return invoiceItemSeqId;
-    }
-
-    public void setInvoiceItemSeqId(final Long invoiceItemSeqId)
-    {
-        this.invoiceItemSeqId = invoiceItemSeqId;
-    }
-
-    public Boolean getTaxableFlag()
-    {
-        return taxableFlag;
-    }
-
-    public void setTaxableFlag(final Boolean taxableFlag)
-    {
-        this.taxableFlag = taxableFlag;
-    }
-
-    public String getItemDescription()
-    {
-        return itemDescription;
-    }
-
-    public void setItemDescription(final String itemDescription)
-    {
-        this.itemDescription = itemDescription;
-    }
-
-    public Long getQuantity()
-    {
-        return quantity;
-    }
-
-    public void setQuantity(final Long quantity)
-    {
-        this.quantity = quantity;
-    }
-
-    public Float getUnitPrice()
-    {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(final Float unitPrice)
-    {
-        this.unitPrice = unitPrice;
-    }
-
-    @JoinColumn(name = "invoice_item_type_id")
-    public InvoiceItemType getType()
-    {
-        return type;
-    }
-
-    public void setType(InvoiceItemType type)
-    {
-        this.type = type;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "invoice_id")
-    public Invoice getInvoice()
-    {
-        return invoice;
-    }
-
-    public void setInvoice(final Invoice invoice)
-    {
-        this.invoice = invoice;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "product_id")
-    public Product getProduct()
-    {
-        return product;
-    }
-
-    public void setProduct(final Product product)
-    {
-        this.product = product;
+        super.setSystemId(id);
     }
 }
+
+
