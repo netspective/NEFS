@@ -52,7 +52,7 @@ import java.util.Set;
 import java.util.HashSet;
 
 @Entity
-@Table(name = "Bill_Acct")        
+@Table(name = "Bill_Acct")
 public class BillingAccount extends AbstractDateDurationEntity
 {
     private Long billingAccountId;
@@ -64,6 +64,7 @@ public class BillingAccount extends AbstractDateDurationEntity
     private Set<BillingAccountRole> billingAccountRoles = new HashSet<BillingAccountRole>();
 
     @Id(generate = GeneratorType.AUTO)
+    @Column(name = "bill_acct_id")
     public Long getBillingAccountId()
     {
         return billingAccountId;
