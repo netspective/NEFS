@@ -38,21 +38,20 @@
  */
 package com.netspective.medigy.model.common;
 
-import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.ManyToMany;
-import javax.persistence.CascadeType;
-import javax.persistence.AssociationTable;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Geo_Boundary")
@@ -114,12 +113,7 @@ public class GeographicBoundary extends AbstractTopLevelEntity
         this.type = type;
     }
 
-    @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
-    @AssociationTable(
-        table=@Table(name="Postal_Address_Boundary"),
-        joinColumns={@JoinColumn(name="geo_id")},
-        inverseJoinColumns={@JoinColumn(name="party_contact_mech_id")}
-    )
+    @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "geographicBoundaries")    
     public Set<PostalAddress> getPostalAddresses()
     {
         return postalAddresses;

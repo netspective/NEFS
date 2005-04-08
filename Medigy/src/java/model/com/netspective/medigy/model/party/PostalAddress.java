@@ -100,7 +100,7 @@ public class PostalAddress extends PartyContactMechanism
         this.directions = directions;
     }
 
-    @ManyToMany(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(targetEntity= "com.netspective.medigy.model.common.GeographicBoundary", cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     @AssociationTable(
         table=@Table(name="Postal_Address_Boundary"),
         joinColumns={@JoinColumn(name="party_contact_mech_id")},
