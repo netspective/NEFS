@@ -40,11 +40,11 @@ package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
-import javax.ejb.Entity;
-import javax.ejb.Table;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
-import javax.ejb.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Column;
 
 @Entity
 @Table(name = "Comm_Event_Role_Type")

@@ -43,14 +43,14 @@
  */
 package com.netspective.medigy.model.common;
 
-import javax.ejb.Column;
-import javax.ejb.DiscriminatorColumn;
-import javax.ejb.DiscriminatorType;
-import javax.ejb.Entity;
-import javax.ejb.Id;
-import javax.ejb.Inheritance;
-import javax.ejb.InheritanceType;
-import javax.ejb.Table;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import com.netspective.medigy.reference.type.DataEncryptionType;
 

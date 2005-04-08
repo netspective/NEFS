@@ -42,11 +42,11 @@ package com.netspective.medigy.reference.custom;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.party.Party;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.Transient;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 
 public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable

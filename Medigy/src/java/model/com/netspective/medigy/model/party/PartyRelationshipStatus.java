@@ -42,14 +42,14 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.AbstractEntity;
 import com.netspective.medigy.reference.type.party.PartyRelationshipStatusType;
 
-import javax.ejb.Entity;
-import javax.ejb.Table;
-import javax.ejb.Id;
-import javax.ejb.Column;
-import javax.ejb.GeneratorType;
-import javax.ejb.OneToOne;
-import javax.ejb.CascadeType;
-import javax.ejb.JoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.GeneratorType;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "Party_Rel_Status")

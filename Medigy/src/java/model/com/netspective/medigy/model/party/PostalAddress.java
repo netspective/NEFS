@@ -42,16 +42,16 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.Inheritance;
-import javax.ejb.InheritanceJoinColumn;
-import javax.ejb.InheritanceType;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
-import javax.ejb.Transient;
-import javax.ejb.FetchType;
-import javax.ejb.Basic;
+import javax.persistence.Transient;
+import javax.persistence.FetchType;
+import javax.persistence.Basic;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Column;
+import javax.persistence.InheritanceJoinColumn;
+import javax.persistence.InheritanceType;
+import javax.persistence.Inheritance;
+import javax.persistence.Entity;
 import java.util.Set;
 import java.util.HashSet;
 

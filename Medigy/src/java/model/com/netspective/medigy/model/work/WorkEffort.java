@@ -41,11 +41,11 @@ package com.netspective.medigy.model.work;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.common.EffectiveDates;
 
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.Transient;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity

@@ -43,8 +43,8 @@
  */
 package com.netspective.medigy.reference.type;
 
-import javax.ejb.Entity;
-import javax.ejb.Table;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import com.netspective.medigy.reference.AbstractReferenceEntity;
 import com.netspective.medigy.reference.CachedReferenceEntity;

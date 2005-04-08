@@ -40,15 +40,15 @@
 
 package com.netspective.medigy.model.person;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.OneToOne;
-import javax.ejb.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 import com.netspective.medigy.reference.type.GenderType;

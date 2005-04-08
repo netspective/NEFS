@@ -42,10 +42,10 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.reference.custom.party.CaseRoleType;
 
-import javax.ejb.OneToOne;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.CascadeType;
+import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 
 public class CaseRole extends AbstractTopLevelEntity
 {

@@ -39,13 +39,13 @@
  */
 package com.netspective.medigy.model.party;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.netspective.medigy.model.common.AbstractEntity;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;

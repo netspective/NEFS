@@ -40,7 +40,7 @@ package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
-import javax.ejb.Entity;
+import javax.persistence.Entity;
 
 @Entity
 public class CaseRoleType extends AbstractCustomReferenceEntity

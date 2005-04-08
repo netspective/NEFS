@@ -39,7 +39,7 @@
  */
 package com.netspective.medigy.model.common;
 
-import javax.ejb.Transient;
+import javax.persistence.Transient;
 import java.util.Date;
 
 public abstract class AbstractDateDurationEntity extends AbstractTopLevelEntity

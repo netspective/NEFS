@@ -45,13 +45,13 @@ package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.party.Party;
 
-import javax.ejb.Entity;
-import javax.ejb.Inheritance;
-import javax.ejb.InheritanceJoinColumn;
-import javax.ejb.InheritanceType;
-import javax.ejb.Table;
-import javax.ejb.Transient;
-import javax.ejb.Column;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceJoinColumn;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Column;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)

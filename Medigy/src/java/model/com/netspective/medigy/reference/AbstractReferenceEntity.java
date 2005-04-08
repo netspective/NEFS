@@ -46,7 +46,7 @@ package com.netspective.medigy.reference;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.ejb.Id;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 public abstract class AbstractReferenceEntity implements ReferenceEntity, Serializable, Comparable

@@ -48,16 +48,16 @@ import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 
-import javax.ejb.CascadeType;
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.Inheritance;
-import javax.ejb.InheritanceType;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToMany;
-import javax.ejb.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 

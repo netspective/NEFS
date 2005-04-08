@@ -43,9 +43,9 @@
  */
 package com.netspective.medigy.model.session;
 
-import javax.ejb.Entity;
-import javax.ejb.Inheritance;
-import javax.ejb.Transient;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.Transient;
 
 @Entity
 @Inheritance(discriminatorValue = "U")

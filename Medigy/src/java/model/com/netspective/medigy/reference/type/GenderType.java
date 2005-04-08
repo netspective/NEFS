@@ -47,8 +47,8 @@ import com.netspective.medigy.reference.AbstractReferenceEntity;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
 
-import javax.ejb.Entity;
-import javax.ejb.Table;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Gender_Type")

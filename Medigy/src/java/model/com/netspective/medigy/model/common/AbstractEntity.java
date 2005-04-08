@@ -46,10 +46,10 @@ package com.netspective.medigy.model.common;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.ejb.Column;
-import javax.ejb.JoinColumn;
-import javax.ejb.ManyToOne;
-import javax.ejb.Version;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;

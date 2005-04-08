@@ -41,11 +41,11 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.party.PartyContactMechanism;
 
-import javax.ejb.Entity;
-import javax.ejb.Column;
-import javax.ejb.Inheritance;
-import javax.ejb.InheritanceType;
-import javax.ejb.InheritanceJoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.InheritanceJoinColumn;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)

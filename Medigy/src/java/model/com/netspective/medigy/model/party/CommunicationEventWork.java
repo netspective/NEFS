@@ -38,15 +38,15 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.work.Work;
+import com.netspective.medigy.model.work.WorkEffort;
 
-import javax.ejb.Column;
-import javax.ejb.Entity;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
-import javax.ejb.JoinColumn;
-import javax.ejb.OneToOne;
-import javax.ejb.Table;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Comm_Event_Work")
@@ -55,8 +55,8 @@ public class CommunicationEventWork
     private Long systemId;
     private String description;
     private CommunicationEvent event;
-    private Work work;
-    // indicates whether or not the work was started by this particular communication event
+    private WorkEffort workEffort;
+    // indicates whether or not the workEffort was started by this particular communication event
     private Boolean startWorkInd;
 
     @Id(generate = GeneratorType.AUTO)
@@ -82,14 +82,14 @@ public class CommunicationEventWork
 
     @OneToOne
     @JoinColumn(name = "work_id")
-    public Work getWork()
+    public WorkEffort getWork()
     {
-        return work;
+        return workEffort;
     }
 
-    public void setWork(final Work work)
+    public void setWork(final WorkEffort workEffort)
     {
-        this.work = work;
+        this.workEffort = workEffort;
     }
 
     @OneToOne

@@ -41,12 +41,12 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 
-import javax.ejb.Entity;
-import javax.ejb.Column;
-import javax.ejb.Id;
-import javax.ejb.GeneratorType;
-import javax.ejb.OneToMany;
-import javax.ejb.JoinColumn;
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -85,7 +85,7 @@ public class Case extends AbstractDateDurationEntity
     }
 
     @OneToMany
-    @JoinColumn(name = "case_id")        
+    @JoinColumn(name = "case_id")
     public Set<CaseRole> getCaseRoles()
     {
         return caseRoles;

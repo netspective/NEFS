@@ -43,9 +43,8 @@
  */
 package com.netspective.medigy.model.common;
 
-import javax.ejb.Column;
-import javax.ejb.GeneratorType;
-import javax.ejb.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 
 public abstract class AbstractContactMechanism extends AbstractEntity
 {

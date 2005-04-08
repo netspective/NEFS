@@ -43,23 +43,21 @@
  */
 package com.netspective.medigy.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ejb.Table;
-
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
 
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HibernateConfiguration extends AnnotationConfiguration
 {
