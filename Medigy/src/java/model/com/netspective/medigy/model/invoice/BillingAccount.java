@@ -47,10 +47,12 @@ import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
+import javax.persistence.Table;
 import java.util.Set;
 import java.util.HashSet;
 
 @Entity
+@Table(name = "Bill_Acct")        
 public class BillingAccount extends AbstractDateDurationEntity
 {
     private Long billingAccountId;

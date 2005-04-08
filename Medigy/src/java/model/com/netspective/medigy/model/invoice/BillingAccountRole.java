@@ -36,38 +36,59 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.invoice;
+package com.netspective.medigy.model.invoice;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Bill_Acct_Role_Type")        
-public class BillingAccountRoleType extends AbstractCustomReferenceEntity
+@Table(name = "Bill_Acct_Role")
+public class BillingAccountRole extends AbstractDateDurationEntity
 {
-    /**
-     * PRIMARY PAYER
-     * SECONDARY PAYER
-     * MANAGER
-     *
-     */
-    public BillingAccountRoleType()
+    // TODO: Need to decide if composite primary key or an index should be used
+    private Party party;
+    private BillingAccount billingAccount;
+    private BillingAccountRoleType roleType;
+
+    @JoinColumn(name = "bill_acct_role_type_id")
+    public BillingAccountRoleType getRoleType()
     {
+        return roleType;
     }
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getBillingAccountRoleTypeId()
+    public void setRoleType(final BillingAccountRoleType roleType)
     {
-        return super.getSystemId();
+        this.roleType = roleType;
     }
 
-    protected void setBillingAccountRoleTypeId(final Long id)
+    @ManyToOne(cascade  = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Party getParty()
     {
-        super.setSystemId(id);
+        return party;
+    }
+
+    public void setParty(final Party party)
+    {
+        this.party = party;
+    }
+
+    @ManyToOne(cascade  = CascadeType.ALL)
+    @JoinColumn(name = "billing_account_id")
+    public BillingAccount getBillingAccount()
+    {
+        return billingAccount;
+    }
+
+    public void setBillingAccount(final BillingAccount billingAccount)
+    {
+        this.billingAccount = billingAccount;
     }
 }
-
