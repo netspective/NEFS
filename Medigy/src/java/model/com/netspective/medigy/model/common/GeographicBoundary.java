@@ -39,30 +39,23 @@
 package com.netspective.medigy.model.common;
 
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
-import com.netspective.medigy.model.party.PostalAddress;
 
 import javax.ejb.Column;
 import javax.ejb.Entity;
 import javax.ejb.GeneratorType;
 import javax.ejb.Id;
 import javax.ejb.JoinColumn;
-import javax.ejb.Table;
 import javax.ejb.OneToOne;
-import javax.ejb.OneToMany;
-import java.util.Set;
-import java.util.HashSet;
+import javax.ejb.Table;
 
 @Entity
 @Table(name = "Geo_Boundary")
 public class GeographicBoundary extends AbstractTopLevelEntity
 {
     private Long geoId;
-    private String geoCode;
     private String name;
     private String abbreviation;
     private GeographicBoundaryType type;
-
-    private Set<PostalAddress> postalAddresses = new HashSet<PostalAddress>();
 
     public GeographicBoundary()
     {
@@ -77,17 +70,6 @@ public class GeographicBoundary extends AbstractTopLevelEntity
     public void setGeoId(final Long geoId)
     {
         this.geoId = geoId;
-    }
-
-    @Column(length = 10)
-    public String getGeoCode()
-    {
-        return geoCode;
-    }
-
-    public void setGeoCode(final String geoCode)
-    {
-        this.geoCode = geoCode;
     }
 
     @Column(length = 100, nullable = false)
@@ -122,17 +104,5 @@ public class GeographicBoundary extends AbstractTopLevelEntity
     public void setType(final GeographicBoundaryType type)
     {
         this.type = type;
-    }
-
-    @OneToMany
-    @JoinColumn(name = "geo_id")
-    public Set<PostalAddress> getPostalAddresses()
-    {
-        return postalAddresses;
-    }
-
-    public void setPostalAddresses(final Set<PostalAddress> postalAddresses)
-    {
-        this.postalAddresses = postalAddresses;
     }
 }
