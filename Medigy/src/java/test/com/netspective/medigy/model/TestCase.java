@@ -128,7 +128,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.work.Work.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
