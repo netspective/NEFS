@@ -38,21 +38,21 @@
  */
 package com.netspective.medigy.model.data;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.util.Hashtable;
-
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
-import com.netspective.medigy.util.HibernateUtil;
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.util.Hashtable;
 
 public class EntitySeedDataPopulator
 {
@@ -76,7 +76,23 @@ public class EntitySeedDataPopulator
 
         populatePartyRoleType();
         populatePartyRelationshipType();
+        populateGeographicBoundaries();
         HibernateUtil.commitTransaction();
+    }
+
+    protected void populateGeographicBoundaries()
+    {
+        populateEntity(session, GeographicBoundaryType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {GeographicBoundaryType.Cache.CITY.getCode(), "City", globalParty},
+                    {GeographicBoundaryType.Cache.STATE.getCode(), "State", globalParty},
+                    {GeographicBoundaryType.Cache.POSTAL_CODE.getCode(), "Postal Code", globalParty},
+                    {GeographicBoundaryType.Cache.COUNTY.getCode(), "County", globalParty},
+                    {GeographicBoundaryType.Cache.PROVINCE.getCode(), "Province", globalParty},
+                    {GeographicBoundaryType.Cache.COUNTRY.getCode(), "Country", globalParty},
+                }
+        );
     }
 
     protected void populatePartyRelationshipType() throws HibernateException
