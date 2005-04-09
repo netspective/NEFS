@@ -98,4 +98,12 @@ public class GeographicBoundaryType extends AbstractCustomReferenceEntity
     {
         super.setSystemId(id);
     }
+
+    public boolean equals(Object obj)
+    {
+        if (obj  == null || !(obj instanceof GeographicBoundaryType))
+            return false;
+        else
+            return getGeoBoundaryTypeId().equals(((GeographicBoundaryType) obj).getGeoBoundaryTypeId());
+    }
 }
