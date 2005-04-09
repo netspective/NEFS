@@ -51,6 +51,9 @@ public class ProductFeature extends AbstractTopLevelEntity
     private Long productFeatureId;
     private String description;
 
+    /**
+     * Such as product quality, color, size, brand, software feature, etc.
+     */
     public ProductFeature()
     {
     }
