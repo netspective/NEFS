@@ -40,14 +40,15 @@ package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.JoinColumn;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import java.util.Date;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Invoice  extends AbstractTopLevelEntity
@@ -58,6 +59,7 @@ public class Invoice  extends AbstractTopLevelEntity
     private String message;
 
     private Set<InvoiceItem> items = new HashSet<InvoiceItem>();
+    private Set<InvoiceRole> invoiceRoles = new HashSet<InvoiceRole>();
 
     @Id(generate = GeneratorType.AUTO)
     public Long getInvoiceId()
@@ -85,7 +87,7 @@ public class Invoice  extends AbstractTopLevelEntity
         return description;
     }
 
-    public void setDescriptionfinal(final String description)
+    public void setDescription(final String description)
     {
         this.description = description;
     }
@@ -100,8 +102,8 @@ public class Invoice  extends AbstractTopLevelEntity
         this.message = message;
     }
 
-    @OneToMany
-    @JoinColumn(name = "invoice_id")
+    @OneToMany(mappedBy = "invoice")
+    @Embedded
     public Set<InvoiceItem> getItems()
     {
         return items;
@@ -110,5 +112,17 @@ public class Invoice  extends AbstractTopLevelEntity
     public void setItems(final Set<InvoiceItem> items)
     {
         this.items = items;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "invoice_id")
+    public Set<InvoiceRole> getInvoiceRoles()
+    {
+        return invoiceRoles;
+    }
+
+    public void setInvoiceRoles(final Set<InvoiceRole> invoiceRoles)
+    {
+        this.invoiceRoles = invoiceRoles;
     }
 }

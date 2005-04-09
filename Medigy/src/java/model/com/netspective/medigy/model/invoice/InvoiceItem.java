@@ -39,14 +39,25 @@
 package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.product.Product;
+import com.netspective.medigy.model.product.ProductFeature;
 import com.netspective.medigy.reference.custom.invoice.InvoiceItemType;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"invoice_id", "invoice_item_seq_id"})})
 public class InvoiceItem extends AbstractTopLevelEntity
 {
     private Long invoiceItemId;
@@ -55,15 +66,20 @@ public class InvoiceItem extends AbstractTopLevelEntity
     private String itemDescription;
     private Long quantity;
     private Float unitPrice;
+    private Float amount;
 
     private InvoiceItemType type;
     private Invoice invoice;
     private Product product;
+    private ProductFeature productFeature;
+
+    private Set<InvoiceItem> relatedInvoiceItems = new HashSet<InvoiceItem>();
 
     public InvoiceItem()
     {
     }
 
+    @Id(generate = GeneratorType.AUTO)
     public Long getInvoiceItemId()
     {
         return invoiceItemId;
@@ -94,6 +110,12 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.taxableFlag = taxableFlag;
     }
 
+    /**
+     * Because each invoice item may be for a product, product feature, work effort, or time entry or because it may be
+     * described via an ITEM DESCRIPTION for non-standard items, the relationships to PRODUCT and PRODUCT FEATURE are
+     * both optional.
+     * @return
+     */
     public String getItemDescription()
     {
         return itemDescription;
@@ -114,6 +136,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.quantity = quantity;
     }
 
+    @Column(nullable = false)
     public Float getUnitPrice()
     {
         return unitPrice;
@@ -124,6 +147,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.unitPrice = unitPrice;
     }
 
+    @OneToOne
     @JoinColumn(name = "invoice_item_type_id")
     public InvoiceItemType getType()
     {
@@ -136,7 +160,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "invoice_id")
+    @JoinColumn(name = "invoice_id", nullable = false)
     public Invoice getInvoice()
     {
         return invoice;
@@ -157,5 +181,39 @@ public class InvoiceItem extends AbstractTopLevelEntity
     public void setProduct(final Product product)
     {
         this.product = product;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "product_feat_id")
+    public ProductFeature getProductFeature()
+    {
+        return productFeature;
+    }
+
+    public void setProductFeature(final ProductFeature productFeature)
+    {
+        this.productFeature = productFeature;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "parent_invoice_item_id")
+    public Set<InvoiceItem> getRelatedInvoiceItems()
+    {
+        return relatedInvoiceItems;
+    }
+
+    public void setRelatedInvoiceItems(final Set<InvoiceItem> relatedInvoiceItems)
+    {
+        this.relatedInvoiceItems = relatedInvoiceItems;
+    }
+
+    public Float getAmount()
+    {
+        return amount;
+    }
+
+    public void setAmount(Float amount)
+    {
+        this.amount = amount;
     }
 }

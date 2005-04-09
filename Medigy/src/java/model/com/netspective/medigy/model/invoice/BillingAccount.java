@@ -87,7 +87,7 @@ public class BillingAccount extends AbstractDateDurationEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "billing_account_id")
+    @JoinColumn(name = "bill_acct_id")
     public Set<BillingAccountRole> getBillingAccountRoles()
     {
         return billingAccountRoles;

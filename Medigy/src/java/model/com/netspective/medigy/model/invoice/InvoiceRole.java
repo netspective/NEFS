@@ -38,51 +38,51 @@
  */
 package com.netspective.medigy.model.invoice;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType;
+import com.netspective.medigy.reference.custom.invoice.InvoiceRoleType;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.UniqueConstraint;
+import java.util.Date;
 
 @Entity
-@Table(name = "Bill_Acct_Role", uniqueConstraints = {@UniqueConstraint(columnNames = {"bill_acct_id", "party_id", "bill_acct_role_type_id"})})
-public class BillingAccountRole extends AbstractDateDurationEntity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"invoice_id", "party_id", "invoice_role_type_id"})})
+public class InvoiceRole extends AbstractTopLevelEntity
 {
-    private Long billingAccountRoleId;
+    private Long invoiceRoleId;
+    private Date date;
+    private Float percentage;
+    private Invoice invoice;
     private Party party;
-    private BillingAccount billingAccount;
-    private BillingAccountRoleType roleType;
+    private InvoiceRoleType invoiceRoleType;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getBillingAccountRoleId()
+    public Long getInvoiceRoleId()
     {
-        return billingAccountRoleId;
+        return invoiceRoleId;
     }
 
-    protected void setBillingAccountRoleId(final Long billingAccountRoleId)
+    protected void setInvoiceRoleId(Long invoiceRoleId)
     {
-        this.billingAccountRoleId = billingAccountRoleId;
+        this.invoiceRoleId = invoiceRoleId;
     }
 
-    @JoinColumn(name = "bill_acct_role_type_id")
-    public BillingAccountRoleType getRoleType()
+    @JoinColumn(name = "invoice_role_type_id")
+    public InvoiceRoleType getInvoiceRoleType()
     {
-        return roleType;
+        return invoiceRoleType;
     }
 
-    public void setRoleType(final BillingAccountRoleType roleType)
+    public void setInvoiceRoleType(final InvoiceRoleType invoiceRoleType)
     {
-        this.roleType = roleType;
+        this.invoiceRoleType = invoiceRoleType;
     }
 
-    @ManyToOne(cascade  = CascadeType.ALL)
     @JoinColumn(name = "party_id")
     public Party getParty()
     {
@@ -94,15 +94,34 @@ public class BillingAccountRole extends AbstractDateDurationEntity
         this.party = party;
     }
 
-    @ManyToOne(cascade  = CascadeType.ALL)
-    @JoinColumn(name = "bill_acct_id")
-    public BillingAccount getBillingAccount()
+    @JoinColumn(name = "invoice_id")
+    public Invoice getInvoice()
     {
-        return billingAccount;
+        return invoice;
     }
 
-    public void setBillingAccount(final BillingAccount billingAccount)
+    public void setInvoice(final Invoice invoice)
     {
-        this.billingAccount = billingAccount;
+        this.invoice = invoice;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(final Date date)
+    {
+        this.date = date;
+    }
+
+    public Float getPercentage()
+    {
+        return percentage;
+    }
+
+    public void setPercentage(final Float percentage)
+    {
+        this.percentage = percentage;
     }
 }
