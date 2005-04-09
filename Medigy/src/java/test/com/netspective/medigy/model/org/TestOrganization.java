@@ -41,8 +41,10 @@
 package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
+import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
@@ -50,11 +52,111 @@ import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.util.HibernateUtil;
+import org.hibernate.Criteria;
 
 import java.util.Set;
+import java.util.List;
 
 public class TestOrganization  extends TestCase
 {
+    public void testPostalAddress()
+    {
+        Session session = new ProcessSession();
+        session.setProcessName(TestPerson.class.getName() + ".testPostalAddress()");
+        HibernateUtil.getSession().save(session);
+        SessionManager.getInstance().setActiveSession(session);
+
+        Organization org1 = new Organization();
+        org1.setOrganizationName("Acme Corporation");
+
+        /*
+        final GeographicBoundary stateGeo = new GeographicBoundary();
+        stateGeo.setType(GeographicBoundaryType.Cache.STATE.getEntity());
+        stateGeo.setName("Virginia");
+
+        final GeographicBoundary cityGeo = new GeographicBoundary();
+        cityGeo.setType(GeographicBoundaryType.Cache.CITY.getEntity());
+        cityGeo.setName("Fairfax");
+        */
+
+        PostalAddress address = new PostalAddress();
+        address.setAddress1("123 Acme Road");
+        address.setAddress2("Apt 9");
+        address.setDirections("Go straight and jump!");
+
+        HibernateUtil.beginTransaction();
+        HibernateUtil.getSession().save(org1);
+        // create the state Geographic Boundary
+        //HibernateUtil.getSession().save(stateGeo);
+        //HibernateUtil.getSession().save(cityGeo);
+
+        address.setParty(org1);
+        HibernateUtil.getSession().save(address);
+        HibernateUtil.commitTransaction();
+        HibernateUtil.closeSession();
+
+        final PostalAddress savedAddress = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
+        assertNotNull(savedAddress);
+        assertEquals(savedAddress.getAddress1(), "123 Acme Road");
+        assertEquals(savedAddress.getAddress2(), "Apt 9");
+        assertEquals(savedAddress.getDirections(), "Go straight and jump!");
+
+        HibernateUtil.beginTransaction();
+        // now relate the address with the city and state!
+        savedAddress.setCity("Fairfax");
+        savedAddress.setState("Virginia");
+        savedAddress.setPostalCode("22033");
+        savedAddress.setCounty("Fairfax County");
+        savedAddress.setCountry("USA");
+        HibernateUtil.getSession().save(savedAddress);
+
+        HibernateUtil.commitTransaction();
+        HibernateUtil.closeSession();
+
+        // load all boundaries
+        final Criteria criteria1 = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
+        List boundaryList1  = criteria1.list();
+        assertEquals(5, boundaryList1.size());
+
+        final PostalAddress savedAddress2 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
+        assertEquals(5, savedAddress2.getGeographicBoundaries().size());
+        assertNotNull(savedAddress2.getCity());
+        assertNotNull(savedAddress2.getState());
+        assertNotNull(savedAddress2.getPostalCode());
+        assertNotNull(savedAddress2.getCounty());
+        assertNotNull(savedAddress2.getCountry());
+        assertEquals("Fairfax", savedAddress2.getCity().getName());
+        assertEquals("Virginia", savedAddress2.getState().getName());
+        assertEquals("22033", savedAddress2.getPostalCode().getName());
+        assertEquals("Fairfax County", savedAddress2.getCounty().getName());
+        assertEquals("USA", savedAddress2.getCountry().getName());
+
+        HibernateUtil.beginTransaction();
+        // change the city and state now
+        savedAddress.setCity("Silver Spring");
+        savedAddress.setState("Maryland");
+        HibernateUtil.getSession().update(savedAddress2);
+        HibernateUtil.commitTransaction();
+
+        // load all boundaries
+        final Criteria criteria2 = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
+        List boundaryList2  = criteria2.list();
+        assertEquals(5, boundaryList2.size());
+
+        final PostalAddress savedAddress3 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  savedAddress2.getAddressId());
+        assertEquals(5, savedAddress3.getGeographicBoundaries().size());
+        assertNotNull(savedAddress3.getCity());
+        assertNotNull(savedAddress3.getState());
+        assertNotNull(savedAddress3.getPostalCode());
+        assertNotNull(savedAddress3.getCounty());
+        assertNotNull(savedAddress3.getCountry());
+        assertEquals("Silver Spring", savedAddress3.getCity().getName());
+        assertEquals("Maryland", savedAddress3.getState().getName());
+        assertEquals("22033", savedAddress3.getPostalCode().getName());
+        assertEquals("Fairfax County", savedAddress3.getCounty().getName());
+        assertEquals("USA", savedAddress3.getCountry().getName());
+    }
+
     public void testOrg()
     {
         Session session = new ProcessSession();
@@ -90,7 +192,7 @@ public class TestOrganization  extends TestCase
         // add a new role belonging to the parent org
         final PartyRole role1 = new PartyRole();
         role1.setParty(parentOrg);
-        role1.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
+        role1.setType(PartyRoleType.Cache.PARENT_ORG.getEntity());
         parentOrg.getPartyRoles().add(role1);
         HibernateUtil.getSession().update(parentOrg);
         // add a new role belonging to the child org
@@ -119,27 +221,38 @@ public class TestOrganization  extends TestCase
                 parentOrg.getOrgId());
         // verify that the parent org has one role defined
         assertEquals(1, updatedParentOrg.getPartyRoles().size());
-        assertEquals(PartyRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
-                ((PartyRole) updatedParentOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
+        //info("Success. Parent org has 1 role(s).");
+        final PartyRole parentOrgRole = (PartyRole) updatedParentOrg.getPartyRoles().toArray()[0];
+        assertEquals(PartyRoleType.Cache.PARENT_ORG.getEntity().getCode(),
+                parentOrgRole.getType().getCode());
+        //info("Success. Parent org's role is " + PartyRoleType.Cache.PARENT_ORG);
 
         final Organization updatedChildOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
                 childOrg.getOrgId());
         // verify that the child org has one role
         assertEquals(1, updatedChildOrg.getPartyRoles().size());
+        //info("Success. Child org has 1 role(2).");
         // verify that the child org's roles are the right ones
+        final PartyRole childOrgRole = (PartyRole) updatedChildOrg.getPartyRoles().toArray()[0];
         assertEquals(PartyRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
-                ((PartyRole) updatedChildOrg.getPartyRoles().toArray()[0]).getType().getPartyRoleTypeId());
+                childOrgRole.getType().getPartyRoleTypeId());
+        //info("Success. Child org's role is " + PartyRoleType.Cache.SUBSIDIARY);
 
         // verify that the parent org's one role has one relationship
-        Set<PartyRelationship> parentOrgRoleRelationships = ((PartyRole)updatedParentOrg.getPartyRoles().toArray()[0]).getPartyRelationships();
+        Set<PartyRelationship> parentOrgRoleRelationships = parentOrgRole.getPartyRelationships();
         assertEquals(1, parentOrgRoleRelationships.size());
+        //info("Success. Parent org's role has 1 relationship.");
         // verify that the child org's one role has one relationship
-        Set<PartyRelationship> childOrgRoleRelationships = ((PartyRole)updatedChildOrg.getPartyRoles().toArray()[0]).getPartyRelationships();
+        Set<PartyRelationship> childOrgRoleRelationships = childOrgRole.getPartyRelationships();
         assertEquals(1, childOrgRoleRelationships.size());
+        //info("Success. Child org's role has 1 relationship.");
 
         // verify that the two org's respective roles are involved in the same relationship?
-        assertEquals(((PartyRelationship)parentOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode(),
-                ((PartyRelationship)childOrgRoleRelationships.toArray()[0]).getRelationshipType().getCode()) ;
+        final PartyRelationship parentOrgRelationship = (PartyRelationship)parentOrgRoleRelationships.toArray()[0];
+        final PartyRelationship childOrgRelationship = (PartyRelationship)childOrgRoleRelationships.toArray()[0];
+        assertEquals(parentOrgRelationship.getRelationshipType().getCode(),
+                childOrgRelationship.getRelationshipType().getCode()) ;
+        //info("Success. Parent and Child org's respective role's share one relationship.");
 
         HibernateUtil.closeSession();
     }
