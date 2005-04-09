@@ -50,11 +50,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Geo_Boundary")
+@Table(name = "Geo_Boundary", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "geo_boundary_type_id"})})
 public class GeographicBoundary extends AbstractTopLevelEntity
 {
     private Long geoId;
@@ -122,5 +123,13 @@ public class GeographicBoundary extends AbstractTopLevelEntity
     public void setPostalAddresses(final Set<PostalAddress> postalAddresses)
     {
         this.postalAddresses = postalAddresses;
+    }
+
+    public boolean equals(Object obj)
+    {
+        if (obj == null || !(obj instanceof GeographicBoundary))
+            return false;
+        else
+            return getGeoId().equals(((GeographicBoundary) obj).getGeoId());
     }
 }
