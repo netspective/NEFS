@@ -8,6 +8,7 @@ import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.ReferenceEntity;
 import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import com.netspective.tool.graphviz.GraphvizDiagramEdge;
@@ -108,6 +109,8 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     {
         if (showReferenceData && partOfForeignKey != null && (isReferenceRelationship(generator, partOfForeignKey) || isCustomReferenceRelationship(generator, partOfForeignKey)))
             return partOfForeignKey.getReferencedTable().getName();
+        else if(partOfForeignKey != null && isCustomReferencePartyRelationship(generator, partOfForeignKey))
+            return partOfForeignKey.getReferencedTable().getName();
         else
             return column.getSqlType(generator.getDialect(), generator.getMapping());
     }
@@ -119,7 +122,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public boolean isIncludeEdgePort(final HibernateDiagramGenerator generator, final ForeignKey foreignKey, boolean source)
     {
-        if (showReferenceData && (isReferenceRelationship(generator, foreignKey) || isCustomReferenceRelationship(generator, foreignKey)))
+        if ((showReferenceData && (isReferenceRelationship(generator, foreignKey) || isCustomReferenceRelationship(generator, foreignKey))))
             return false;
         else
             return true;
@@ -171,6 +174,15 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public boolean includeForeignKeyEdgeInDiagram(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
-        return true;
+        if(isCustomReferencePartyRelationship(generator, foreignKey))
+            return false;
+        else
+            return true;
+    }
+
+    protected boolean isCustomReferencePartyRelationship(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
+    {
+        return CustomReferenceEntity.class.isAssignableFrom(generator.getClassForTable(foreignKey.getTable()).getMappedClass()) &&
+                   Party.class.isAssignableFrom(generator.getClassForTable(foreignKey.getReferencedTable()).getMappedClass());
     }
 }
