@@ -109,7 +109,11 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
+
+        config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.GeographicBoundaryType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
@@ -131,8 +135,13 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
 
-        config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
-
+        config.addAnnotatedClass(com.netspective.medigy.model.product.Product.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.product.ProductFeature.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.Invoice.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceItem.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccount.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccountRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
