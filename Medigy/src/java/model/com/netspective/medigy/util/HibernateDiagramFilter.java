@@ -109,7 +109,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     {
         if (showReferenceData && partOfForeignKey != null && (isReferenceRelationship(generator, partOfForeignKey) || isCustomReferenceRelationship(generator, partOfForeignKey)))
             return partOfForeignKey.getReferencedTable().getName();
-        else if(partOfForeignKey != null && isCustomReferencePartyRelationship(generator, partOfForeignKey))
+        else if(showClassStructure && partOfForeignKey != null && isCustomReferencePartyRelationship(generator, partOfForeignKey))
             return partOfForeignKey.getReferencedTable().getName();
         else
             return column.getSqlType(generator.getDialect(), generator.getMapping());
@@ -174,7 +174,7 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 
     public boolean includeForeignKeyEdgeInDiagram(final HibernateDiagramGenerator generator, final ForeignKey foreignKey)
     {
-        if(isCustomReferencePartyRelationship(generator, foreignKey))
+        if(showClassStructure && isCustomReferencePartyRelationship(generator, foreignKey))
             return false;
         else
             return true;
