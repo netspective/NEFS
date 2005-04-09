@@ -33,9 +33,7 @@
 package com.netspective.tool.hibernate.document.diagram;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.naming.NamingException;
 
@@ -45,12 +43,11 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 
+import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
 public class HibernateDiagramTableStructureNodeGenerator implements HibernateDiagramTableNodeGenerator
 {
-    private static final String COLUMN_PORT_NAME_CONSTRAINT_SUFFIX = "_CONSTR";
-
     private String name;
     private boolean showDataTypes = true;
     private boolean showConstraints = true;
@@ -63,60 +60,6 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
     public String getName()
     {
         return name;
-    }
-
-    public String getColumnDefinitionRow(final HibernateDiagramGenerator generator,
-                                         final HibernateDiagramGeneratorFilter filter,
-                                         final Column column,
-                                         final PrimaryKey partOfPrimaryKey,
-                                         final ForeignKey partOfForeignKey,
-                                         final String indent) throws SQLException, NamingException
-    {
-        String extraAttrs = "";
-        if(partOfPrimaryKey != null)
-        {
-            if(partOfForeignKey != null)
-                extraAttrs = " BGCOLOR=\"lightcyan\"";
-            else
-                extraAttrs = " BGCOLOR=\"gray90\"";
-        }
-        else if(partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey))
-            extraAttrs = " BGCOLOR=\"beige\"";
-
-        final StringBuffer result = new StringBuffer(indent + "<TR>\n");
-        result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\"" + extraAttrs + ">" + column.getName() + "</TD>\n");
-
-        if (showDataTypes)
-            result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + ">" + filter.getColumnDataType(generator, column, partOfPrimaryKey, partOfForeignKey) + "</TD>\n");
-
-        if (showConstraints)
-        {
-
-            List constraints = new ArrayList();
-            if (partOfPrimaryKey != null)
-                constraints.add("PK");
-            if (column.isUnique())
-                constraints.add("U");
-            if (column.isFormula())
-                constraints.add("F");
-            if (!column.isNullable() && partOfPrimaryKey == null)
-                constraints.add("R");
-            if (partOfForeignKey != null)
-            {
-                if (generator.isParentRelationship(partOfForeignKey))
-                    constraints.add("CK");
-                else
-                    constraints.add("FK");
-            }
-
-            if (constraints.size() > 0)
-                result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\"" + extraAttrs + ">" + constraints + "</TD>\n");
-            else
-                result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + "> </TD>\n");
-        }
-
-        result.append(indent + "</TR>\n");
-        return result.toString();
     }
 
     public GraphvizDiagramNode generateTableNode(final HibernateDiagramGenerator generator,
@@ -152,11 +95,11 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
                     }
 
                     if (primaryKeyColumns.containsColumn(column))
-                        primaryKeyRows.append(getColumnDefinitionRow(generator, filter, column, primaryKeyColumns, partOfForeignKey, indent) + "\n");
+                        primaryKeyRows.append(filter.getColumnDefinitionHtml(generator, column, primaryKeyColumns, partOfForeignKey, showDataTypes, showConstraints, indent) + "\n");
                     else if(partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey))
-                        childKeyRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
+                        childKeyRows.append(filter.getColumnDefinitionHtml(generator, column, null, partOfForeignKey, showDataTypes, showConstraints, indent) + "\n");
                     else
-                        columnRows.append(getColumnDefinitionRow(generator, filter, column, null, partOfForeignKey, indent) + "\n");
+                        columnRows.append(filter.getColumnDefinitionHtml(generator, column, null, partOfForeignKey, showDataTypes, showConstraints, indent) + "\n");
                 }
                 catch (SQLException e)
                 {
@@ -205,7 +148,7 @@ public class HibernateDiagramTableStructureNodeGenerator implements HibernateDia
             return foreignKey.getReferencedTable().getName();
 
         return filter.isIncludeEdgePort(generator, foreignKey, true) ? (foreignKey.getTable().getName() + ":" + (showConstraints
-                ? (foreignKey.getColumn(0).getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
+                ? (foreignKey.getColumn(0).getName() + HibernateDiagramFilter.COLUMN_PORT_NAME_CONSTRAINT_SUFFIX)
                 : foreignKey.getColumn(0).getName())) : foreignKey.getTable().getName();
 
     }

@@ -32,8 +32,8 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
-import org.hibernate.mapping.Table;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
@@ -50,10 +50,15 @@ public class HibernateDiagramTableNameNodeGenerator extends HibernateDiagramTabl
                                                  final PersistentClass pclass)
     {
         final Table table = pclass.getTable();
+
+        StringBuffer tableNodeLabel = new StringBuffer("<<TABLE " + filter.getEntityTableHtmlAttributes(generator, pclass) + ">\n");
+        tableNodeLabel.append("        <TR><TD " + filter.getTableNameCellHtmlAttributes(generator, pclass) + ">" + table.getName() + "</TD></TR>\n");
+        tableNodeLabel.append("    </TABLE>>");
+
         final GraphvizDiagramNode result = new GraphvizDiagramNode(generator.getGraphvizDiagramGenerator(), table.getName());
-        result.setLabel(table.getName());
-        result.setShape("box");
-        result.setFontName("Courier");
+        result.setLabel(tableNodeLabel.toString());
+        result.setShape("plaintext");
+        result.setFontName("Helvetica");
 
         return result;
     }

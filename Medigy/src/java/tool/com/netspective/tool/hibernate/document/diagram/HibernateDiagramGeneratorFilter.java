@@ -32,6 +32,10 @@
  */
 package com.netspective.tool.hibernate.document.diagram;
 
+import java.sql.SQLException;
+
+import javax.naming.NamingException;
+
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.PersistentClass;
@@ -42,6 +46,8 @@ import com.netspective.tool.graphviz.GraphvizDiagramNode;
 
 public interface HibernateDiagramGeneratorFilter
 {
+    public static final String COLUMN_PORT_NAME_CONSTRAINT_SUFFIX = "_CONSTR";
+
     public String getName();
 
     public boolean includeClassInDiagram(HibernateDiagramGenerator generator, PersistentClass pclass);
@@ -71,4 +77,11 @@ public interface HibernateDiagramGeneratorFilter
     public String getTableNameCellHtmlAttributes(HibernateDiagramGenerator generator, PersistentClass pclass);
 
     public String getEntityTableHtmlAttributes(HibernateDiagramGenerator generator, PersistentClass pclass);
+
+    public String getColumnDefinitionHtml(HibernateDiagramGenerator generator,
+                                          Column column,
+                                          PrimaryKey partOfPrimaryKey,
+                                          ForeignKey partOfForeignKey,
+                                          boolean showDataTypes, boolean showConstraints,
+                                          String indent) throws SQLException, NamingException;
 }

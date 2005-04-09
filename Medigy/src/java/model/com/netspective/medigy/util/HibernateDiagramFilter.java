@@ -1,7 +1,12 @@
 package com.netspective.medigy.util;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import javax.naming.NamingException;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
@@ -15,6 +20,7 @@ import com.netspective.tool.graphviz.GraphvizDiagramEdge;
 import com.netspective.tool.graphviz.GraphvizDiagramNode;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableNameNodeGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableNodeGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramTableStructureNodeGenerator;
 
@@ -22,16 +28,20 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
 {
     private Set commonColumns = new HashSet();
     private boolean hideCommonColumns;
+    private boolean showColumns;
     private boolean showReferenceData;
     private boolean showClassStructure;
     private final HibernateDiagramTableNodeGenerator tableDataNodeGenerator = new HibernateDiagramReferenceTableNodeGenerator("enum");
     private final HibernateDiagramTableNodeGenerator tableStructureNodeGenerator = new HibernateDiagramTableStructureNodeGenerator("app");
+    private final HibernateDiagramTableNodeGenerator tableNameNodeGenerator = new HibernateDiagramTableNameNodeGenerator("app");
 
-    public HibernateDiagramFilter(final boolean hideCommonColumns, final boolean showReferenceData, final boolean showClassStructure)
+    public HibernateDiagramFilter(final boolean showColumns, final boolean hideCommonColumns, final boolean showReferenceData, final boolean showClassStructure)
     {
+        this.showColumns = showColumns;
         this.hideCommonColumns = hideCommonColumns;
         this.showReferenceData = showReferenceData;
         this.showClassStructure = showClassStructure;
+
         commonColumns.add("version");
         commonColumns.add("create_timestamp");
         commonColumns.add("update_timestamp");
@@ -153,6 +163,9 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
     public HibernateDiagramTableNodeGenerator getTableNodeGenerator(final HibernateDiagramGenerator generator,
                                                                     final PersistentClass pclass)
     {
+        if(! showColumns)
+            return tableNameNodeGenerator;
+
         if (showReferenceData)
             return isReferenceClass(generator, pclass) ? tableDataNodeGenerator : tableStructureNodeGenerator;
         else
@@ -185,4 +198,60 @@ public class HibernateDiagramFilter implements HibernateDiagramGeneratorFilter
         return CustomReferenceEntity.class.isAssignableFrom(generator.getClassForTable(foreignKey.getTable()).getMappedClass()) &&
                    Party.class.isAssignableFrom(generator.getClassForTable(foreignKey.getReferencedTable()).getMappedClass());
     }
+
+    public String getColumnDefinitionHtml(final HibernateDiagramGenerator generator,
+                                          final Column column,
+                                          final PrimaryKey partOfPrimaryKey,
+                                          final ForeignKey partOfForeignKey,
+                                          final boolean showDataTypes,
+                                          final boolean showConstraints,
+                                          final String indent) throws SQLException, NamingException
+    {
+        String extraAttrs = "";
+        if(partOfPrimaryKey != null)
+        {
+            if(partOfForeignKey != null)
+                extraAttrs = " BGCOLOR=\"lightcyan\"";
+            else
+                extraAttrs = " BGCOLOR=\"gray90\"";
+        }
+        else if(partOfForeignKey != null && generator.isParentRelationship(partOfForeignKey))
+            extraAttrs = " BGCOLOR=\"beige\"";
+
+        final StringBuffer result = new StringBuffer(indent + "<TR>\n");
+        result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + "\"" + extraAttrs + ">" + column.getName() + "</TD>\n");
+
+        if (showDataTypes)
+            result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + ">" + getColumnDataType(generator, column, partOfPrimaryKey, partOfForeignKey) + "</TD>\n");
+
+        if (showConstraints)
+        {
+
+            List constraints = new ArrayList();
+            if (partOfPrimaryKey != null)
+                constraints.add("PK");
+            if (column.isUnique())
+                constraints.add("U");
+            if (column.isFormula())
+                constraints.add("F");
+            if (!column.isNullable() && partOfPrimaryKey == null)
+                constraints.add("R");
+            if (partOfForeignKey != null)
+            {
+                if (generator.isParentRelationship(partOfForeignKey))
+                    constraints.add("CK");
+                else
+                    constraints.add("FK");
+            }
+
+            if (constraints.size() > 0)
+                result.append(indent + indent + "<TD ALIGN=\"LEFT\" PORT=\"" + column.getName() + COLUMN_PORT_NAME_CONSTRAINT_SUFFIX + "\"" + extraAttrs + ">" + constraints + "</TD>\n");
+            else
+                result.append(indent + indent + "<TD ALIGN=\"LEFT\"" + extraAttrs + "> </TD>\n");
+        }
+
+        result.append(indent + "</TR>\n");
+        return result.toString();
+    }
+
 }
