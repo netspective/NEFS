@@ -46,6 +46,7 @@ import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
+import freemarker.template.TemplateExceptionHandler;
 
 public class FreeMarkerConfigurationAdapter
 {
@@ -64,6 +65,7 @@ public class FreeMarkerConfigurationAdapter
         configuration = new Configuration();
         configuration.setTemplateUpdateDelay(templateUpdateDelay);
         configuration.setTemplateLoader(FreeMarkerConfigurationAdapters.getInstance().getStringTemplateLoader());
+        setTemplateExceptionHandler(createTemplateExceptionHandler());
         FreeMarkerConfigurationAdapters.getInstance().configureSharedVariables(configuration);
     }
 
@@ -170,5 +172,29 @@ public class FreeMarkerConfigurationAdapter
     {
         this.baseClassPath = baseClassPath;
         updateConfiguration();
+    }
+
+    /* the following methods are provided so that XDM can manage the exception handler */
+
+    public void setTemplateExceptionHandlerType(final String name)
+    {
+        if(name.equals("IGNORE_HANDLER"))
+            configuration.setTemplateExceptionHandler(TemplateExceptionHandler.IGNORE_HANDLER);
+        else if(name.equals("RETHROW_HANDLER"))
+            configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        else if(name.equals("DEBUG_HANDLER"))
+            configuration.setTemplateExceptionHandler(TemplateExceptionHandler.DEBUG_HANDLER);
+        else
+            configuration.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);        
+    }
+
+    public TemplateExceptionHandler createTemplateExceptionHandler()
+    {
+        return TemplateExceptionHandler.RETHROW_HANDLER;
+    }
+
+    public void setTemplateExceptionHandler(final TemplateExceptionHandler handler)
+    {
+        configuration.setTemplateExceptionHandler(handler);
     }
 }
