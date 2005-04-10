@@ -41,19 +41,19 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
 import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import javax.persistence.AssociationTable;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
-import javax.persistence.ManyToMany;
-import javax.persistence.UniqueConstraint;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,12 +62,15 @@ import java.util.Set;
 @InheritanceJoinColumn(name="party_contact_mech_id")
 public class PostalAddress extends PartyContactMechanism
 {
+    private static final Log log = LogFactory.getLog(PostalAddress.class);
+
     private String address1;
     private String address2;
     private String directions;
 
-    // right now annotations doesn't support Maps so we can't save these by types
-    private Set<GeographicBoundary> geographicBoundaries = new HashSet<GeographicBoundary>();
+    //private Set<GeographicBoundary> geographicBoundaries = new HashSet<GeographicBoundary>();
+
+    private Set<PostalAddressBoundary> addressBoundaries = new HashSet<PostalAddressBoundary>();
 
     @Transient
     public Long getAddressId()
@@ -108,6 +111,19 @@ public class PostalAddress extends PartyContactMechanism
         this.directions = directions;
     }
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_contact_mech_id")
+    public Set<PostalAddressBoundary> getAddressBoundaries()
+    {
+        return addressBoundaries;
+    }
+
+    public void setAddressBoundaries(final Set<PostalAddressBoundary> addressBoundaries)
+    {
+        this.addressBoundaries = addressBoundaries;
+    }
+
+    /*
     @ManyToMany(targetEntity= "com.netspective.medigy.model.common.GeographicBoundary", cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     @AssociationTable(
         table=@Table(name = "Postal_Address_Boundary", uniqueConstraints = {@UniqueConstraint(columnNames = {"party_contact_mech_id", "geo_id"})}),
@@ -123,166 +139,122 @@ public class PostalAddress extends PartyContactMechanism
     {
         this.geographicBoundaries = geographicBoundaries;
     }
+    */
 
     @Transient
-    public void setCity(String cityName)
+    public void setCity(GeographicBoundary boundary)
     {
-        GeographicBoundary newBoundary = new GeographicBoundary();
-        newBoundary.setType(GeographicBoundaryType.Cache.CITY.getEntity());
-        newBoundary.setName(cityName);
-        setBoundry(newBoundary);
+        setBoundry(boundary);
     }
 
     @Transient
-    public void setState(String stateName)
+    public void setState(GeographicBoundary boundary)
     {
-        GeographicBoundary newBoundary = new GeographicBoundary();
-        newBoundary.setType(GeographicBoundaryType.Cache.STATE.getEntity());
-        newBoundary.setName(stateName);
-        setBoundry(newBoundary);
+        setBoundry(boundary);
     }
 
     @Transient
-    public void setPostalCode(String postalCode)
+    public void setPostalCode(GeographicBoundary boundary)
     {
-        GeographicBoundary newBoundary = new GeographicBoundary();
-        newBoundary.setType(GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
-        newBoundary.setName(postalCode);
-        setBoundry(newBoundary);
+        setBoundry(boundary);
     }
 
     @Transient
-    public void setCountry(String countryName)
+    public void setCounty(GeographicBoundary boundary)
     {
-        GeographicBoundary newBoundary = new GeographicBoundary();
-        newBoundary.setType(GeographicBoundaryType.Cache.COUNTRY.getEntity());
-        newBoundary.setName(countryName);
-        setBoundry(newBoundary);
+        setBoundry(boundary);
+    }
+    @Transient
+    public void setCountry(GeographicBoundary boundary)
+    {
+        setBoundry(boundary);
     }
 
     @Transient
-    public void setCounty(String countyName)
+    protected void setBoundry(GeographicBoundary geoBoundary)
     {
-        GeographicBoundary newBoundary = new GeographicBoundary();
-        newBoundary.setType(GeographicBoundaryType.Cache.COUNTY.getEntity());
-        newBoundary.setName(countyName);
-        setBoundry(newBoundary);
-    }
+        PostalAddressBoundary newBoundary = new PostalAddressBoundary();
+        newBoundary.setGeographicBoundary(geoBoundary);
+        newBoundary.setPostalAddress(this);
 
-    @Transient
-    protected void setBoundry(GeographicBoundary newBoundary)
-    {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        boolean boundaryTypeExists = false;
+        final Object[] boundaries = (Object[]) addressBoundaries.toArray();
+        boolean newBoundaryRelation = true;
         for (int i = 0; i < boundaries.length; i++)
         {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(newBoundary.getType()))
+            PostalAddressBoundary boundary = (PostalAddressBoundary) boundaries[i];
+            if (boundary.getGeographicBoundary().getType().equals(newBoundary.getGeographicBoundary().getType()))
             {
-                if (boundary.getName().equals(newBoundary.getName()))
+                if (boundary.getGeographicBoundary().getName().equals(newBoundary.getGeographicBoundary().getName()))
                 {
                     // already exists so  no need to do anything
-                    boundaryTypeExists = true;
+                    if (log.isDebugEnabled())
+                        log.debug("Geo Boundary Type with same name already exists. ");
                 }
                 else
                 {
-                    // a  relationship with this type already exists so replace/remove it (only if no one else is referencing it!!!)
-                    geographicBoundaries.remove(boundary);
+                    // a  relationship with this type already exists so replace it
+                    if (log.isDebugEnabled())
+                        log.debug("Geo Boundary Type already exists. Replacing... " +
+                                boundary.getGeographicBoundary().getName() +  " with " + newBoundary.getGeographicBoundary().getName());
+                    boundary.setGeographicBoundary(newBoundary.getGeographicBoundary());
+
                 }
+                newBoundaryRelation = false;
                 break;
             }
         }
-        if (!boundaryTypeExists)
-            geographicBoundaries.add(newBoundary);
+        if (newBoundaryRelation)
+            addressBoundaries.add(newBoundary);
+    }
+
+    @Transient
+    protected GeographicBoundary getPostalAddressBoundary(GeographicBoundaryType type)
+    {
+        final Object[] boundaries = (Object[]) addressBoundaries.toArray();
+        for (int i = 0; i < boundaries.length; i++)
+        {
+            GeographicBoundary boundary = ((PostalAddressBoundary) boundaries[i]).getGeographicBoundary();
+            if (boundary.getType().equals(type))
+            {
+                return boundary;
+            }
+        }
+        return null;
     }
 
     @Transient
     public GeographicBoundary getCity()
     {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.CITY.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.CITY.getEntity());
     }
 
     @Transient
     public GeographicBoundary getState()
     {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.STATE.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.STATE.getEntity());
     }
 
     @Transient
     public GeographicBoundary getPostalCode()
     {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.POSTAL_CODE.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
     }
 
     @Transient
     public GeographicBoundary getCounty()
     {
-        Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.COUNTY.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.COUNTY.getEntity());
     }
 
     @Transient
     public GeographicBoundary getProvince()
     {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.PROVINCE.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.PROVINCE.getEntity());
     }
 
     @Transient
     public GeographicBoundary getCountry()
     {
-        final Object[] boundaries = (Object[]) geographicBoundaries.toArray();
-        for (int i = 0; i < boundaries.length; i++)
-        {
-            GeographicBoundary boundary = (GeographicBoundary) boundaries[i];
-            if (boundary.getType().equals(GeographicBoundaryType.Cache.COUNTRY.getEntity()))
-            {
-                return boundary;
-            }
-        }
-        return null;
+        return getPostalAddressBoundary(GeographicBoundaryType.Cache.COUNTRY.getEntity());
     }
 }

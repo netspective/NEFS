@@ -43,20 +43,6 @@
  */
 package com.netspective.medigy.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.logging.LogManager;
-
-import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
@@ -65,6 +51,19 @@ import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
@@ -127,6 +126,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanism.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PhoneNumber.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddress.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddressBoundary.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ElectronicAddress.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyFacilityRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEvent.class);        

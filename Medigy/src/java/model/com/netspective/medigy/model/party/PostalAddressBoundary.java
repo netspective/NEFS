@@ -36,104 +36,56 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.party.PostalAddressBoundary;
-import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.GeographicBoundary;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name = "Geo_Boundary", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "geo_boundary_type_id"})})
-public class GeographicBoundary extends AbstractTopLevelEntity
+public class PostalAddressBoundary extends AbstractTopLevelEntity
 {
-    private Long geoId;
-    private String name;
-    private String abbreviation;
-    private GeographicBoundaryType type;
-
-    private Set<PostalAddressBoundary> postalAddressBoundary = new HashSet<PostalAddressBoundary>();
-
-    public GeographicBoundary()
-    {
-    }
-
-    public GeographicBoundary(String name, GeographicBoundaryType type)
-    {
-        this.name = name;
-        this.type = type;
-    }
+    private Long postalAddressBoundaryId;
+    private PostalAddress postalAddress;
+    private GeographicBoundary geographicBoundary;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getGeoId()
+    public Long getPostalAddressBoundaryId()
     {
-        return geoId;
+        return postalAddressBoundaryId;
     }
 
-    protected void setGeoId(final Long geoId)
+    public void setPostalAddressBoundaryId(final Long postalAddressBoundaryId)
     {
-        this.geoId = geoId;
+        this.postalAddressBoundaryId = postalAddressBoundaryId;
     }
 
-    @Column(length = 100, nullable = false)
-    public String getName()
+    @ManyToOne
+    @JoinColumn(name = "party_contact_mech_id")
+    public PostalAddress getPostalAddress()
     {
-        return name;
+        return postalAddress;
     }
 
-    public void setName(final String name)
+    public void setPostalAddress(final PostalAddress postalAddress)
     {
-        this.name = name;
+        this.postalAddress = postalAddress;
     }
 
-    @Column(length = 10)
-    public String getAbbreviation()
-    {
-        return abbreviation;
-    }
-
-    public void setAbbreviation(final String abbreviation)
-    {
-        this.abbreviation = abbreviation;
-    }
-
-    @JoinColumn(name = "geo_boundary_type_id", unique = false)
-    public GeographicBoundaryType getType()
-    {
-        return type;
-    }
-
-    public void setType(final GeographicBoundaryType type)
-    {
-        this.type = type;
-    }
-
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "geo_id")
-    public Set<PostalAddressBoundary> getPostalAddressBoundary()
+    public GeographicBoundary getGeographicBoundary()
     {
-        return postalAddressBoundary;
+        return geographicBoundary;
     }
 
-    public void setPostalAddressBoundary(final Set<PostalAddressBoundary> postalAddressBoundary)
+    public void setGeographicBoundary(final GeographicBoundary geographicBoundary)
     {
-        this.postalAddressBoundary = postalAddressBoundary;
-    }
-
-    public boolean equals(Object obj)
-    {
-        if (obj == null || !(obj instanceof GeographicBoundary))
-            return false;
-        else
-            return getGeoId().equals(((GeographicBoundary) obj).getGeoId());
+        this.geographicBoundary = geographicBoundary;
     }
 }
