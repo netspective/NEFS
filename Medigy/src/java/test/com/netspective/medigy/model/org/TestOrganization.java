@@ -51,14 +51,19 @@ import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Criteria;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Set;
 import java.util.List;
 
 public class TestOrganization  extends TestCase
 {
+    private static final Log log = LogFactory.getLog(PostalAddress.class);
+
     public void testPostalAddress()
     {
         Session session = new ProcessSession();
@@ -97,17 +102,37 @@ public class TestOrganization  extends TestCase
 
         final PostalAddress savedAddress = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
         assertNotNull(savedAddress);
+        assertEquals(0, savedAddress.getAddressBoundaries().size());
         assertEquals(savedAddress.getAddress1(), "123 Acme Road");
         assertEquals(savedAddress.getAddress2(), "Apt 9");
         assertEquals(savedAddress.getDirections(), "Go straight and jump!");
+        log.info("VALID: Postal Address");
 
         HibernateUtil.beginTransaction();
         // now relate the address with the city and state!
-        savedAddress.setCity("Fairfax");
-        savedAddress.setState("Virginia");
-        savedAddress.setPostalCode("22033");
-        savedAddress.setCounty("Fairfax County");
-        savedAddress.setCountry("USA");
+        final GeographicBoundary cityBoundary = new GeographicBoundary("Fairfax", GeographicBoundaryType.Cache.CITY.getEntity());
+        final GeographicBoundary stateBoundary = new GeographicBoundary("Virginia", GeographicBoundaryType.Cache.STATE.getEntity());
+        final GeographicBoundary postalCodeboundary = new GeographicBoundary("22033", GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
+        final GeographicBoundary countyBoundary = new GeographicBoundary("Fairfax County", GeographicBoundaryType.Cache.COUNTY.getEntity());
+        final GeographicBoundary countryBoundary = new GeographicBoundary("USA", GeographicBoundaryType.Cache.COUNTRY.getEntity());
+
+        HibernateUtil.getSession().save(cityBoundary);
+        HibernateUtil.getSession().save(stateBoundary);
+        HibernateUtil.getSession().save(postalCodeboundary);
+        HibernateUtil.getSession().save(countyBoundary);
+        HibernateUtil.getSession().save(countryBoundary);
+        HibernateUtil.commitTransaction();
+
+        GeographicBoundary newCityBoundary = (GeographicBoundary) HibernateUtil.getSession().load(GeographicBoundary.class,  cityBoundary.getGeoId());
+        assertNotNull(newCityBoundary);
+        HibernateUtil.beginTransaction();
+        savedAddress.setCity(newCityBoundary);
+
+        savedAddress.setState(stateBoundary);
+        savedAddress.setPostalCode(postalCodeboundary);
+        savedAddress.setCounty(countyBoundary);
+        savedAddress.setCountry(countryBoundary);
+
         HibernateUtil.getSession().save(savedAddress);
 
         HibernateUtil.commitTransaction();
@@ -117,9 +142,10 @@ public class TestOrganization  extends TestCase
         final Criteria criteria1 = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
         List boundaryList1  = criteria1.list();
         assertEquals(5, boundaryList1.size());
+        log.info("VALID: Geo Boundary count = " + boundaryList1.size());
 
         final PostalAddress savedAddress2 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
-        assertEquals(5, savedAddress2.getGeographicBoundaries().size());
+        assertEquals(5, savedAddress2.getAddressBoundaries().size());
         assertNotNull(savedAddress2.getCity());
         assertNotNull(savedAddress2.getState());
         assertNotNull(savedAddress2.getPostalCode());
@@ -130,21 +156,30 @@ public class TestOrganization  extends TestCase
         assertEquals("22033", savedAddress2.getPostalCode().getName());
         assertEquals("Fairfax County", savedAddress2.getCounty().getName());
         assertEquals("USA", savedAddress2.getCountry().getName());
+        log.info("VALID: Postal Address with geo relationships");
 
         HibernateUtil.beginTransaction();
         // change the city and state now
-        savedAddress.setCity("Silver Spring");
-        savedAddress.setState("Maryland");
+        final GeographicBoundary cityBoundary2 = new GeographicBoundary("Silver Spring", GeographicBoundaryType.Cache.CITY.getEntity());
+        final GeographicBoundary stateBoundary2 = new GeographicBoundary("Maryland", GeographicBoundaryType.Cache.STATE.getEntity());
+        HibernateUtil.getSession().save(cityBoundary2);
+        HibernateUtil.getSession().save(stateBoundary2);
+        HibernateUtil.commitTransaction();
+
+
+        HibernateUtil.beginTransaction();
+        savedAddress2.setCity(cityBoundary2);
+        savedAddress2.setState(stateBoundary2);
         HibernateUtil.getSession().update(savedAddress2);
         HibernateUtil.commitTransaction();
 
         // load all boundaries
         final Criteria criteria2 = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
         List boundaryList2  = criteria2.list();
-        assertEquals(5, boundaryList2.size());
+        assertEquals(7, boundaryList2.size());
 
         final PostalAddress savedAddress3 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  savedAddress2.getAddressId());
-        assertEquals(5, savedAddress3.getGeographicBoundaries().size());
+        assertEquals(5, savedAddress3.getAddressBoundaries().size());
         assertNotNull(savedAddress3.getCity());
         assertNotNull(savedAddress3.getState());
         assertNotNull(savedAddress3.getPostalCode());
