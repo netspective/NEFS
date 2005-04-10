@@ -39,119 +39,77 @@
 package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.invoice.InvoiceStatusType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import java.util.Collections;
+import javax.persistence.Entity;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Entity
-public class Invoice  extends AbstractTopLevelEntity
+public class InvoiceStatus extends AbstractTopLevelEntity implements Comparable
 {
-    private Long invoiceId;
-    private Date invoiceDate;
-    private String description;
-    private String message;
+    private Long invoiceStatusId;
+    private Date date;
+    private Invoice invoice;
+    private InvoiceStatusType type;
 
-    private Set<InvoiceItem> items = new HashSet<InvoiceItem>();
-    private Set<InvoiceRole> invoiceRoles = new HashSet<InvoiceRole>();
-    private Set<InvoiceStatus> invoiceStatuses = new HashSet<InvoiceStatus>();
+    public InvoiceStatus()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getInvoiceId()
+    public Long getInvoiceStatusId()
     {
-        return invoiceId;
+        return invoiceStatusId;
     }
 
-    protected void setInvoiceId(final Long invoiceId)
+    protected void setInvoiceStatusId(final Long invoiceStatusId)
     {
-        this.invoiceId = invoiceId;
+        this.invoiceStatusId = invoiceStatusId;
     }
 
-    public Date getInvoiceDate()
+    public Date getDate()
     {
-        return invoiceDate;
+        return date;
     }
 
-    public void setInvoiceDate(final Date invoiceDate)
+    public void setDate(final Date date)
     {
-        this.invoiceDate = invoiceDate;
+        this.date = date;
     }
 
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    public String getMessage()
-    {
-        return message;
-    }
-
-    public void setMessage(final String message)
-    {
-        this.message = message;
-    }
-
-    @OneToMany(mappedBy = "invoice")
-    @Embedded
-    public Set<InvoiceItem> getItems()
-    {
-        return items;
-    }
-
-    public void setItems(final Set<InvoiceItem> items)
-    {
-        this.items = items;
-    }
-
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "invoice_id")
-    public Set<InvoiceRole> getInvoiceRoles()
+    public Invoice getInvoice()
     {
-        return invoiceRoles;
+        return invoice;
     }
 
-    public void setInvoiceRoles(final Set<InvoiceRole> invoiceRoles)
+    public void setInvoice(final Invoice invoice)
     {
-        this.invoiceRoles = invoiceRoles;
+        this.invoice = invoice;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_id")
-    public Set<InvoiceStatus> getInvoiceStatuses()
+    @JoinColumn(name = "invoice_status_type_id")
+    public InvoiceStatusType getType()
     {
-        return invoiceStatuses;
+        return type;
     }
 
-    public void setInvoiceStatuses(final Set<InvoiceStatus> invoiceStatuses)
+    public void setType(final InvoiceStatusType type)
     {
-        this.invoiceStatuses = invoiceStatuses;
+        this.type = type;
     }
 
-    @Transient
-    public InvoiceStatus getCurrentInvoiceStatus()
+    public int compareTo(Object o)
     {
-        final Set<InvoiceStatus> invoiceStatuses = getInvoiceStatuses();
-        if(invoiceStatuses.size() == 0)
-            return null;
+        if(o == this)
+            return 0;
 
-        TreeSet<InvoiceStatus> inverseSorted = new TreeSet<InvoiceStatus>(Collections.reverseOrder());
-        inverseSorted.addAll(invoiceStatuses);
-        return inverseSorted.first();
+        final InvoiceStatus otherStatus = (InvoiceStatus) o;        
+        return  getDate().compareTo(otherStatus.getDate());
     }
 }
