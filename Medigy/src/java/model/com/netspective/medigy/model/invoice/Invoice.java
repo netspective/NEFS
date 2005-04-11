@@ -65,6 +65,7 @@ public class Invoice  extends AbstractTopLevelEntity
     private Set<InvoiceItem> items = new HashSet<InvoiceItem>();
     private Set<InvoiceRole> invoiceRoles = new HashSet<InvoiceRole>();
     private Set<InvoiceStatus> invoiceStatuses = new HashSet<InvoiceStatus>();
+    private Set<InvoiceTerm> invoiceTerms = new HashSet<InvoiceTerm>();
 
     @Id(generate = GeneratorType.AUTO)
     public Long getInvoiceId()
@@ -119,7 +120,7 @@ public class Invoice  extends AbstractTopLevelEntity
         this.items = items;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     public Set<InvoiceRole> getInvoiceRoles()
     {
@@ -153,5 +154,17 @@ public class Invoice  extends AbstractTopLevelEntity
         TreeSet<InvoiceStatus> inverseSorted = new TreeSet<InvoiceStatus>(Collections.reverseOrder());
         inverseSorted.addAll(invoiceStatuses);
         return inverseSorted.first();
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
+    public Set<InvoiceTerm> getInvoiceTerms()
+    {
+        return invoiceTerms;
+    }
+
+    public void setInvoiceTerms(final Set<InvoiceTerm> invoiceTerms)
+    {
+        this.invoiceTerms = invoiceTerms;
     }
 }

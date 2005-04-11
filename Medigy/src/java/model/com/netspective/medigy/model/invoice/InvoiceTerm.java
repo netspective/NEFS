@@ -39,66 +39,68 @@
 package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.invoice.InvoiceRoleType;
+import com.netspective.medigy.reference.custom.invoice.InvoiceTermType;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.OneToOne;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.OneToOne;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"invoice_id", "party_id", "invoice_role_type_id"})})
-public class InvoiceRole extends AbstractTopLevelEntity
+public class InvoiceTerm extends AbstractTopLevelEntity
 {
-    private Long invoiceRoleId;
-    private Date date;
-    private Float percentage;
+    private Long invoiceTermId;
+    private InvoiceItem invoiceItem;
     private Invoice invoice;
-    private Party party;
-    private InvoiceRoleType invoiceRoleType;
+    private Long termValue;
+    private InvoiceTermType type;
+
+    /**
+     * Some systems to record various terms and conditions on invoices, such as payment terms. Terms may
+     * sometimes apply at the item level.
+     */
+    public InvoiceTerm()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getInvoiceRoleId()
+    public Long getInvoiceTermId()
     {
-        return invoiceRoleId;
+        return invoiceTermId;
     }
 
-    protected void setInvoiceRoleId(final Long invoiceRoleId)
+    protected void setInvoiceTermId(final Long invoiceTermId)
     {
-        this.invoiceRoleId = invoiceRoleId;
+        this.invoiceTermId = invoiceTermId;
     }
+
 
     @OneToOne
-    @JoinColumn(name = "invoice_role_type_id")
-    public InvoiceRoleType getInvoiceRoleType()
+    @JoinColumn(name = "invoice_item_id", updatable = false, insertable = false)
+    public InvoiceItem getInvoiceItem()
     {
-        return invoiceRoleType;
+        return invoiceItem;
     }
 
-    public void setInvoiceRoleType(final InvoiceRoleType invoiceRoleType)
+    public void setInvoiceItem(final InvoiceItem invoiceItem)
     {
-        this.invoiceRoleType = invoiceRoleType;
+        this.invoiceItem = invoiceItem;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "party_id")
-    public Party getParty()
+    public Long getTermValue()
     {
-        return party;
+        return termValue;
     }
 
-    public void setParty(final Party party)
+    public void setTermValue(final Long termValue)
     {
-        this.party = party;
+        this.termValue = termValue;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
     public Invoice getInvoice()
     {
@@ -110,23 +112,15 @@ public class InvoiceRole extends AbstractTopLevelEntity
         this.invoice = invoice;
     }
 
-    public Date getDate()
+    @OneToOne
+    @JoinColumn(name = "invoice_term_type_id", unique = false)
+    public InvoiceTermType getType()
     {
-        return date;
+        return type;
     }
 
-    public void setDate(final Date date)
+    public void setType(final InvoiceTermType type)
     {
-        this.date = date;
-    }
-
-    public Float getPercentage()
-    {
-        return percentage;
-    }
-
-    public void setPercentage(final Float percentage)
-    {
-        this.percentage = percentage;
+        this.type = type;
     }
 }

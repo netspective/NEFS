@@ -72,6 +72,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
     private Invoice invoice;
     private Product product;
     private ProductFeature productFeature;
+    private InvoiceTerm invoiceTerm;
 
     private Set<InvoiceItem> relatedInvoiceItems = new HashSet<InvoiceItem>();
 
@@ -212,8 +213,20 @@ public class InvoiceItem extends AbstractTopLevelEntity
         return amount;
     }
 
-    public void setAmount(Float amount)
+    public void setAmount(final Float amount)
     {
         this.amount = amount;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "invoice_item_id")
+    public InvoiceTerm getInvoiceTerm()
+    {
+        return invoiceTerm;
+    }
+
+    public void setInvoiceTerm(final InvoiceTerm invoiceTerm)
+    {
+        this.invoiceTerm = invoiceTerm;
     }
 }
