@@ -42,6 +42,7 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.invoice.BillingAccountRole;
+import com.netspective.medigy.model.invoice.InvoiceRole;
 import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
 import com.netspective.medigy.reference.custom.party.FacilityType;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
@@ -98,6 +99,7 @@ public class Party extends AbstractTopLevelEntity
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
     private Set<CommunicationEventRole> communicationEventRoles = new HashSet<CommunicationEventRole>();
     private Set<BillingAccountRole> billingAccountRoles = new HashSet<BillingAccountRole>();
+    private Set<InvoiceRole> invoiceRoles = new HashSet<InvoiceRole>();
 
     // All the custom reference entity types
     private Set<PartyIdentifierType> partyIdentifierTypes = new HashSet<PartyIdentifierType>();
@@ -282,5 +284,17 @@ public class Party extends AbstractTopLevelEntity
     public void setBillingAccountRoles(final Set<BillingAccountRole> billingAccountRoles)
     {
         this.billingAccountRoles = billingAccountRoles;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<InvoiceRole> getInvoiceRoles()
+    {
+        return invoiceRoles;
+    }
+
+    public void setInvoiceRoles(final Set<InvoiceRole> invoiceRoles)
+    {
+        this.invoiceRoles = invoiceRoles;
     }
 }
