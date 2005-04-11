@@ -50,36 +50,36 @@ import javax.persistence.Entity;
 public class PaymentMethodType  extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
+    {
+        ELECTRONIC("ELECTRONIC"),
+        CASH("CASH"),
+        CERTIFIED_CHECK("CERT_CHECK"),
+        PERSONAL_CHECK("PER_CHECK"),
+        CREDIT_CARD("CREDIT");
+
+        private final String code;
+        private PaymentMethodType entity;
+
+        Cache(final String code)
         {
-            ELECTRONIC("ELECTRONIC"),
-            CASH("CASH"),
-            CERTIFIED_CHECK("CERT_CHECK"),
-            PERSONAL_CHECK("PER_CHECK"),
-            CREDIT_CARD("CREDIT");
-
-            private final String code;
-            private PaymentMethodType entity;
-
-            Cache(final String code)
-            {
-                this.code = code;
-            }
-
-            public String getCode()
-            {
-                return code;
-            }
-
-            public PaymentMethodType getEntity()
-            {
-                return entity;
-            }
-
-            public void setEntity(final CustomReferenceEntity entity)
-            {
-                this.entity = (PaymentMethodType) entity;
-            }
+            this.code = code;
         }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public PaymentMethodType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (PaymentMethodType) entity;
+        }
+    }
 
 
     public PaymentMethodType()
