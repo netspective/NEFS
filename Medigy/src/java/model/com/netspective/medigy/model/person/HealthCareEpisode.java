@@ -39,51 +39,44 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.person.IncidentType;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import java.util.Date;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-public class Incident extends AbstractTopLevelEntity
+public class HealthCareEpisode extends AbstractTopLevelEntity
 {
-    private Long incidentId;
-    private Date incidentDate;
+    private Long healthCareEpisodeId;
+    private Incident incident;
     private String description;
-    private Boolean employerRelatedInd;
-    private IncidentType type;
-
-    private Set<HealthCareEpisode> healthCareEpisodes = new HashSet<HealthCareEpisode>();
+    private Date date; // create date
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getIncidentId()
+    public Long getHealthCareEpisodeId()
     {
-        return incidentId;
+        return healthCareEpisodeId;
     }
 
-    protected void setIncidentId(final Long incidentId)
+    protected void setHealthCareEpisodeId(final Long healthCareEpisodeId)
     {
-        this.incidentId = incidentId;
+        this.healthCareEpisodeId = healthCareEpisodeId;
     }
 
-    @Column
-    public Date getIncidentDate()
+    @ManyToOne
+    @JoinColumn(name = "incident_id")
+    public Incident getIncident()
     {
-        return incidentDate;
+        return incident;
     }
 
-    public void setIncidentDate(final Date incidentDate)
+    public void setIncident(final Incident incident)
     {
-        this.incidentDate = incidentDate;
+        this.incident = incident;
     }
 
     @Column(length = 1000)
@@ -97,38 +90,13 @@ public class Incident extends AbstractTopLevelEntity
         this.description = description;
     }
 
-    @Column(nullable = false)
-    public Boolean getEmployerRelatedInd()
+    public Date getDate()
     {
-        return employerRelatedInd;
+        return date;
     }
 
-    public void setEmployerRelatedInd(final Boolean employerRelatedInd)
+    public void setDate(final Date date)
     {
-        this.employerRelatedInd = employerRelatedInd;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "incident_type_id")
-    public IncidentType getType()
-    {
-        return type;
-    }
-
-    public void setType(final IncidentType type)
-    {
-        this.type = type;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "incident_id")
-    public Set<HealthCareEpisode> getHealthCareEpisodes()
-    {
-        return healthCareEpisodes;
-    }
-
-    public void setHealthCareEpisodes(final Set<HealthCareEpisode> healthCareEpisodes)
-    {
-        this.healthCareEpisodes = healthCareEpisodes;
+        this.date = date;
     }
 }

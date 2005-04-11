@@ -118,6 +118,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.MedicalConditionType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.IncidentType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
@@ -141,6 +142,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyQualification.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Agreement.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.AgreementItem.class);
         config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.HealthCareOffering.class);
@@ -161,6 +163,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PatientMedicalCondition.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PhysicalCharacteristic.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.Incident.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.HealthCareEpisode.class);
 
         return config;
     }
