@@ -39,8 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,9 +52,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Party_Role")
@@ -67,7 +66,8 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     private Party party;
     private PartyRoleType type;
 
-    private Set<PartyRelationship> partyRelationships = new HashSet<PartyRelationship>();
+    private Set<PartyRelationship> fromPartyRelationships = new HashSet<PartyRelationship>();
+    private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
 
     public PartyRole()
     {
@@ -75,8 +75,8 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
     @Id(generate = GeneratorType.AUTO)
-            @Column(name = PartyRole.PK_COLUMN_NAME)
-            public Long getPartyRoleId()
+    @Column(name = PartyRole.PK_COLUMN_NAME)
+    public Long getPartyRoleId()
     {
         return partyRoleId;
     }
@@ -87,16 +87,26 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_role_id")
-    public Set<PartyRelationship> getPartyRelationships()
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partyRoleFrom")
+    public Set<PartyRelationship> getFromPartyRelationships()
     {
-        return partyRelationships;
+        return fromPartyRelationships;
     }
 
-    protected void setPartyRelationships(final Set<PartyRelationship> partyRelationships)
+    public void setFromPartyRelationships(final Set<PartyRelationship> fromPartyRelationships)
     {
-        this.partyRelationships = partyRelationships;
+        this.fromPartyRelationships = fromPartyRelationships;
+    }
+
+    @OneToMany(mappedBy = "partyRoleTo")
+    public Set<PartyRelationship> getToPartyRelationships()
+    {
+        return toPartyRelationships;
+    }
+
+    public void setToPartyRelationships(final Set<PartyRelationship> toPartyRelationships)
+    {
+        this.toPartyRelationships = toPartyRelationships;
     }
 
 

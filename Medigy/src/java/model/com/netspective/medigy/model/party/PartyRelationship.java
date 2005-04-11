@@ -39,8 +39,9 @@
  */
 package com.netspective.medigy.model.party;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.type.PriorityType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,10 +53,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.type.PriorityType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Party_Relationship")
@@ -65,7 +64,8 @@ public class PartyRelationship extends AbstractDateDurationEntity
 
     private Long partyRelationshipId;
     private String comment;
-    private PartyRole partyRole;
+    private PartyRole partyRoleFrom;
+    private PartyRole partyRoleTo;
     private PartyRelationshipType relationshipType;
     private PriorityType priorityType;
 
@@ -100,16 +100,29 @@ public class PartyRelationship extends AbstractDateDurationEntity
     }
 
     @ManyToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_role_id", nullable = false)
-    public PartyRole getPartyRole()
+    @JoinColumn(name = "party_role_id_from", referencedColumnName = "party_role_id", nullable = false)
+    public PartyRole getPartyRoleFrom()
     {
-        return partyRole;
+        return partyRoleFrom;
     }
 
-    public void setPartyRole(final PartyRole partyRole)
+    public void setPartyRoleFrom(final PartyRole partyRoleFrom)
     {
-        this.partyRole = partyRole;
+        this.partyRoleFrom = partyRoleFrom;
     }
+
+    @ManyToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name = "party_role_id_to", referencedColumnName = "party_role_id", nullable = false)
+    public PartyRole getPartyRoleTo()
+    {
+        return partyRoleTo;
+    }
+
+    public void setPartyRoleTo(final PartyRole partyRoleTo)
+    {
+        this.partyRoleTo = partyRoleTo;
+    }
+
 
     @Column(length = 256)
     public String getComment()
