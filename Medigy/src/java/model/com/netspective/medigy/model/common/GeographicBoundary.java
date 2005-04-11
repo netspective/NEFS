@@ -49,6 +49,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -106,6 +107,7 @@ public class GeographicBoundary extends AbstractTopLevelEntity
         this.abbreviation = abbreviation;
     }
 
+    @OneToOne
     @JoinColumn(name = "geo_boundary_type_id", unique = false)
     public GeographicBoundaryType getType()
     {
