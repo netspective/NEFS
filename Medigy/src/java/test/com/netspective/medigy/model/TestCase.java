@@ -111,6 +111,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceStatusType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
@@ -139,8 +141,10 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.product.Product.class);
         config.addAnnotatedClass(com.netspective.medigy.model.product.ProductFeature.class);
         config.addAnnotatedClass(com.netspective.medigy.model.invoice.Invoice.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceItem.class);
         config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceTerm.class);
         config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccount.class);
         config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccountRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
