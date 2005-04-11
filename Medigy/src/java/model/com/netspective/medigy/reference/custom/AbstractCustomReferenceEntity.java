@@ -73,7 +73,7 @@ public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEnti
         this.systemId = systemId;
     }
 
-    @Column(name = "code", length = 15, nullable = false)
+    @Column(name = "code", length = 15, nullable = false, unique = true)
     public String getCode()
     {
         return code;
