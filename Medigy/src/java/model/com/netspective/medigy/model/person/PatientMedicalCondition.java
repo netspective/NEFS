@@ -50,7 +50,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class MedicalCondition extends AbstractDateDurationEntity
+public class PatientMedicalCondition extends AbstractDateDurationEntity
 {
     private Long medicalConditionId;
     private Party party;
@@ -60,7 +60,7 @@ public class MedicalCondition extends AbstractDateDurationEntity
     /**
      * Only people with the PATIENT role should have this association
      */
-    public MedicalCondition()
+    public PatientMedicalCondition()
     {
     }
 
