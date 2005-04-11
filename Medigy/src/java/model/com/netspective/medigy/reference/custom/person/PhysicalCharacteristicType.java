@@ -44,7 +44,9 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Entity;
 
+@Entity
 public class PhysicalCharacteristicType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
