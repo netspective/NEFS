@@ -61,7 +61,16 @@ public class PartyRoleType extends AbstractCustomReferenceEntity
         PARENT_ORG("PORG"),
         FAMILY_MEMBER("F"),
         CONTRACTOR("C"),
-        EMPLOYEE("E") ;
+        EMPLOYEE("E"),
+
+        PATIENT("PATIENT"),
+        INSURED_DEPENDENT("INS_DEP"),
+        INSURED_CONTRACT_HOLDER("INS_PER"),
+        INSURED_ORG("INS_ORG"),
+        INSURANCE_PROVIDER("INS_PROV"),
+        HEALTH_CARE_ASSOCIATION("HL_ASSC"),
+        INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP"),
+        THIRD_PARTY_ADMINISTRATOR("THIRD_PARTY");
 
         private final String code;
         private PartyRoleType entity;

@@ -141,6 +141,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
+        //config.addAnnotatedClass(com.netspective.medigy.model.party.HealthCareOffering.class);        
 
         config.addAnnotatedClass(com.netspective.medigy.model.product.Product.class);
         config.addAnnotatedClass(com.netspective.medigy.model.product.ProductFeature.class);
@@ -156,7 +157,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.MedicalCondition.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.PatientMedicalCondition.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PhysicalCharacteristic.class);
 
         return config;

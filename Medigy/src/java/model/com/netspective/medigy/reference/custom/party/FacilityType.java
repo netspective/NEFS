@@ -57,7 +57,11 @@ public class FacilityType extends AbstractCustomReferenceEntity
         PLANT("PLANT"),
         FLOOR("FLOOR"),
         ROOM("ROOM"),
-        OFFICE("OFFICE");
+        OFFICE("OFFICE"),
+
+        HOSPITAL("HOSPITAL"),
+        CLINIC("CLINIC"),
+        MEDICAL_BUILDING("MED_BLDG");
 
         private final String code;
         private FacilityType entity;
