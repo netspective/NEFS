@@ -38,94 +38,79 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.AgreementType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
+import javax.persistence.LobType;
+import javax.persistence.Lob;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
-import java.util.Date;
-import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.Entity;
 
 @Entity
-public class Agreement extends AbstractDateDurationEntity
+public class AgreementItem  extends AbstractTopLevelEntity
 {
-    public Long agreementId;
-    private Date agreementDate;
-    private String description;
-    private AgreementType type;
-    private PartyRelationship partyRelationship;
-
-    private Set<AgreementItem> agreementItems = new HashSet<AgreementItem>();
+    private Long agreementItem;
+    private Long agreementItemSeqId;
+    private Agreement agreement;
+    private String agreementText;
+    private byte[] agreementImage;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getAgreementId()
+    public Long getAgreementItem()
     {
-        return agreementId;
+        return agreementItem;
     }
 
-    protected void setAgreementId(final Long agreementId)
+    protected void setAgreementItem(final Long agreementItem)
     {
-        this.agreementId = agreementId;
+        this.agreementItem = agreementItem;
     }
 
-    public Date getAgreementDate()
+    public Long getAgreementItemSeqId()
     {
-        return agreementDate;
+        return agreementItemSeqId;
     }
 
-    public void setAgreementDate(final Date agreementDate)
+    public void setAgreementItemSeqId(final Long agreementItemSeqId)
     {
-        this.agreementDate = agreementDate;
+        this.agreementItemSeqId = agreementItemSeqId;
     }
 
-    @Column(length = 100)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    @JoinColumn(name = "agreement_type_id")
-    public AgreementType getType()
-    {
-        return type;
-    }
-
-    public void setType(final AgreementType type)
-    {
-        this.type = type;
-    }
-
-    @JoinColumn(name = "party_relationship_id", nullable = false)
-    public PartyRelationship getPartyRelationship()
-    {
-        return partyRelationship;
-    }
-
-    public void setPartyRelationship(final PartyRelationship partyRelationship)
-    {
-        this.partyRelationship = partyRelationship;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "agreement_id")
-    public Set<AgreementItem> getAgreementItems()
+    public Agreement getAgreement()
     {
-        return agreementItems;
+        return agreement;
     }
 
-    public void setAgreementItems(final Set<AgreementItem> agreementItems)
+    public void setAgreement(final Agreement agreement)
     {
-        this.agreementItems = agreementItems;
+        this.agreement = agreement;
+    }
+
+    @Column(length = 1000)
+    public String getAgreementText()
+    {
+        return agreementText;
+    }
+
+    public void setAgreementText(final String agreementText)
+    {
+        this.agreementText = agreementText;
+    }
+
+    @Lob(type = LobType.BLOB)
+    public byte[] getAgreementImage()
+    {
+        return agreementImage;
+    }
+
+    public void setAgreementImage(final byte[] agreementImage)
+    {
+        this.agreementImage = agreementImage;
     }
 }
