@@ -96,6 +96,7 @@ public class Party extends AbstractTopLevelEntity
     private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
     private Set<PartyRelationship> fromPartyRelationships = new HashSet<PartyRelationship>();
     private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
+    private Set<PartyQualification> partyQualifications = new HashSet<PartyQualification>();
 
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
     private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
@@ -321,5 +322,16 @@ public class Party extends AbstractTopLevelEntity
     public void setToPartyRelationships(final Set<PartyRelationship> toPartyRelationships)
     {
         this.toPartyRelationships = toPartyRelationships;
+    }
+
+    @OneToMany(mappedBy = "party")
+    public Set<PartyQualification> getPartyQualifications()
+    {
+        return partyQualifications;
+    }
+
+    public void setPartyQualifications(final Set<PartyQualification> partyQualifications)
+    {
+        this.partyQualifications = partyQualifications;
     }
 }
