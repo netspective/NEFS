@@ -40,15 +40,16 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
-import javax.persistence.LobType;
-import javax.persistence.Lob;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.LobType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class AgreementItem  extends AbstractTopLevelEntity
@@ -58,6 +59,8 @@ public class AgreementItem  extends AbstractTopLevelEntity
     private Agreement agreement;
     private String agreementText;
     private byte[] agreementImage;
+
+    private AgreementItem parentAgreementItem;
 
     @Id(generate = GeneratorType.AUTO)
     public Long getAgreementItem()
@@ -112,5 +115,17 @@ public class AgreementItem  extends AbstractTopLevelEntity
     public void setAgreementImage(final byte[] agreementImage)
     {
         this.agreementImage = agreementImage;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "parent_agreement_item_id", referencedColumnName = "agreement_id")
+    public AgreementItem getParentAgreementItem()
+    {
+        return parentAgreementItem;
+    }
+
+    public void setParentAgreementItem(final AgreementItem parentAgreementItem)
+    {
+        this.parentAgreementItem = parentAgreementItem;
     }
 }
