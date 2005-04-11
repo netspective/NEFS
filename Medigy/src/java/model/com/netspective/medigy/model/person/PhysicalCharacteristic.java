@@ -45,6 +45,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Column;
 
 @Entity
 public class PhysicalCharacteristic extends AbstractDateDurationEntity
@@ -52,6 +53,7 @@ public class PhysicalCharacteristic extends AbstractDateDurationEntity
     private Long physicalCharId;
     private Person person;
     private PartyRole partyRole;
+    private Long value;
 
     @Id(generate = GeneratorType.AUTO)
     public Long getPhysicalCharId()
@@ -84,5 +86,16 @@ public class PhysicalCharacteristic extends AbstractDateDurationEntity
     public void setPartyRole(final PartyRole partyRole)
     {
         this.partyRole = partyRole;
+    }
+
+    @Column(nullable = false)
+    public Long getValue()
+    {
+        return value;
+    }
+
+    public void setValue(final Long value)
+    {
+        this.value = value;
     }
 }
