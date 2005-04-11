@@ -110,6 +110,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyQualificationType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.AgreementType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
@@ -139,9 +140,10 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyQualification.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.Agreement.class);
         config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
-        //config.addAnnotatedClass(com.netspective.medigy.model.party.HealthCareOffering.class);        
+        config.addAnnotatedClass(com.netspective.medigy.model.party.HealthCareOffering.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.product.Product.class);
         config.addAnnotatedClass(com.netspective.medigy.model.product.ProductFeature.class);
