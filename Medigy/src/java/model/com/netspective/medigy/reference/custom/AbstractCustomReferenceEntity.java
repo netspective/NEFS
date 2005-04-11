@@ -48,7 +48,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-
 public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEntity implements CustomReferenceEntity, Comparable
 {
     private Long systemId;
@@ -73,7 +72,7 @@ public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEnti
         this.systemId = systemId;
     }
 
-    @Column(name = "code", length = 15, nullable = false, unique = true)
+    @Column(name = "code", length = 15, nullable = false)
     public String getCode()
     {
         return code;
