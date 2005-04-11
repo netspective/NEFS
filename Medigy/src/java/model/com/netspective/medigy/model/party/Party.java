@@ -94,6 +94,9 @@ public class Party extends AbstractTopLevelEntity
     private String partyName;
 
     private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
+    private Set<PartyRelationship> fromPartyRelationships = new HashSet<PartyRelationship>();
+    private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
+
     private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
     private Set<PartyContactMechanism> contactMechanisms = new HashSet<PartyContactMechanism>();
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
@@ -296,5 +299,27 @@ public class Party extends AbstractTopLevelEntity
     public void setInvoiceRoles(final Set<InvoiceRole> invoiceRoles)
     {
         this.invoiceRoles = invoiceRoles;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partyRoleFrom")
+    public Set<PartyRelationship> getFromPartyRelationships()
+    {
+        return fromPartyRelationships;
+    }
+
+    public void setFromPartyRelationships(final Set<PartyRelationship> fromPartyRelationships)
+    {
+        this.fromPartyRelationships = fromPartyRelationships;
+    }
+
+    @OneToMany(mappedBy = "partyRoleTo")
+    public Set<PartyRelationship> getToPartyRelationships()
+    {
+        return toPartyRelationships;
+    }
+
+    public void setToPartyRelationships(final Set<PartyRelationship> toPartyRelationships)
+    {
+        this.toPartyRelationships = toPartyRelationships;
     }
 }

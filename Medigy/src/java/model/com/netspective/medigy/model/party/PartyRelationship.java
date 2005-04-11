@@ -64,9 +64,13 @@ public class PartyRelationship extends AbstractDateDurationEntity
 
     private Long partyRelationshipId;
     private String comment;
+
+    private Party partyFrom;
+    private Party partyTo;
+
     private PartyRole partyRoleFrom;
     private PartyRole partyRoleTo;
-    private PartyRelationshipType relationshipType;
+    private PartyRelationshipType type;
     private PriorityType priorityType;
 
     private Set<CommunicationEvent> communicationEvents = new HashSet<CommunicationEvent>();
@@ -89,14 +93,38 @@ public class PartyRelationship extends AbstractDateDurationEntity
 
     @ManyToOne(cascade={CascadeType.ALL})
     @JoinColumn(name = "party_rel_type_id", nullable = false)
-    public PartyRelationshipType getRelationshipType()
+    public PartyRelationshipType getType()
     {
-        return relationshipType;
+        return type;
     }
 
-    public void setRelationshipType(final PartyRelationshipType relationshipType)
+    public void setType(final PartyRelationshipType type)
     {
-        this.relationshipType = relationshipType;
+        this.type = type;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "party_id_from", referencedColumnName = "party_id", nullable = false)
+    public Party getPartyFrom()
+    {
+        return partyFrom;
+    }
+
+    public void setPartyFrom(final Party partyFrom)
+    {
+        this.partyFrom = partyFrom;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "party_id_to", referencedColumnName = "party_id", nullable = false)
+    public Party getPartyTo()
+    {
+        return partyTo;
+    }
+
+    public void setPartyTo(final Party partyTo)
+    {
+        this.partyTo = partyTo;
     }
 
     @ManyToOne(cascade={CascadeType.ALL})

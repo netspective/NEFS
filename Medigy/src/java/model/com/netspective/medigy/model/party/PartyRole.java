@@ -69,6 +69,13 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     private Set<PartyRelationship> fromPartyRelationships = new HashSet<PartyRelationship>();
     private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
 
+    /**
+     * This entity only stores the fact that these parties may be involved in these roles.
+     * For example,
+     * John Doe has a role called Patient. This role can be involved in two relationships:
+     * one to his health care provider organization and one to the individual health care practitioner.
+     *
+     */
     public PartyRole()
     {
 
