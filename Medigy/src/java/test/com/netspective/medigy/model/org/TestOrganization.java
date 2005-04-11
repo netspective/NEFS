@@ -166,7 +166,6 @@ public class TestOrganization  extends TestCase
         HibernateUtil.getSession().save(stateBoundary2);
         HibernateUtil.commitTransaction();
 
-
         HibernateUtil.beginTransaction();
         savedAddress2.setCity(cityBoundary2);
         savedAddress2.setState(stateBoundary2);
@@ -238,13 +237,13 @@ public class TestOrganization  extends TestCase
         HibernateUtil.getSession().update(childOrg);
 
         PartyRelationship rel = new PartyRelationship();
-        rel.setRelationshipType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
-        rel.setPartyRole(role1);
+        rel.setType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
+        rel.setPartyRoleFrom(role1);
         HibernateUtil.getSession().save(rel);
 
         rel = new PartyRelationship();
-        rel.setRelationshipType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
-        rel.setPartyRole(role2);
+        rel.setType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
+        rel.setPartyRoleFrom(role2);
         HibernateUtil.getSession().save(rel);
 
 
@@ -274,19 +273,19 @@ public class TestOrganization  extends TestCase
         //info("Success. Child org's role is " + PartyRoleType.Cache.SUBSIDIARY);
 
         // verify that the parent org's one role has one relationship
-        Set<PartyRelationship> parentOrgRoleRelationships = parentOrgRole.getPartyRelationships();
+        Set<PartyRelationship> parentOrgRoleRelationships = parentOrgRole.getFromPartyRelationships();
         assertEquals(1, parentOrgRoleRelationships.size());
         //info("Success. Parent org's role has 1 relationship.");
         // verify that the child org's one role has one relationship
-        Set<PartyRelationship> childOrgRoleRelationships = childOrgRole.getPartyRelationships();
+        Set<PartyRelationship> childOrgRoleRelationships = childOrgRole.getFromPartyRelationships();
         assertEquals(1, childOrgRoleRelationships.size());
         //info("Success. Child org's role has 1 relationship.");
 
         // verify that the two org's respective roles are involved in the same relationship?
         final PartyRelationship parentOrgRelationship = (PartyRelationship)parentOrgRoleRelationships.toArray()[0];
         final PartyRelationship childOrgRelationship = (PartyRelationship)childOrgRoleRelationships.toArray()[0];
-        assertEquals(parentOrgRelationship.getRelationshipType().getCode(),
-                childOrgRelationship.getRelationshipType().getCode()) ;
+        assertEquals(parentOrgRelationship.getType().getCode(),
+                childOrgRelationship.getType().getCode()) ;
         //info("Success. Parent and Child org's respective role's share one relationship.");
 
         HibernateUtil.closeSession();
