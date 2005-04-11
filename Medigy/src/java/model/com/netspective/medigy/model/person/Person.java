@@ -76,6 +76,7 @@ public class Person extends Party
 
     private Set<Gender> genders = new HashSet<Gender>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
+    private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<PhysicalCharacteristic>();
 
     public Person()
     {
@@ -243,6 +244,17 @@ public class Person extends Party
     public void setDeathDate(final Date deathDate)
     {
         this.deathDate = deathDate;
+    }
+
+    @OneToMany(mappedBy =  "person")
+    public Set<PhysicalCharacteristic> getPhysicalCharacteristics()
+    {
+        return physicalCharacteristics;
+    }
+
+    public void setPhysicalCharacteristics(final Set<PhysicalCharacteristic> physicalCharacteristics)
+    {
+        this.physicalCharacteristics = physicalCharacteristics;
     }
 
 

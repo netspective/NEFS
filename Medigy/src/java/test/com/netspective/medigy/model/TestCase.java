@@ -116,6 +116,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceStatusType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.MedicalConditionType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
@@ -156,6 +157,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MedicalCondition.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.PhysicalCharacteristic.class);
 
         return config;
     }
