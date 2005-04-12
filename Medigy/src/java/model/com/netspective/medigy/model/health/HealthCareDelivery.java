@@ -36,61 +36,76 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.health.HealthCareOffering;
+import com.netspective.medigy.model.health.HealthCareOffering;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name = "Health_Care_Delivery_Assc")
-public class HealthCareDeliveryAssociation extends AbstractTopLevelEntity
+public class HealthCareDelivery extends AbstractDateDurationEntity
 {
-    private Long healthCareDeliveryAsscId;
-    private HealthCareDelivery deliveryFrom;
-    private HealthCareDelivery deliveryTo;
+    private Long healthCareDeliveryId;
+    private String deliveryNotes;
+    private HealthCareOffering healthCareOffering;
+    private HealthCareEpisode healthCareEpisode;
 
-    public HealthCareDeliveryAssociation()
+    /**
+     *
+     */
+    public HealthCareDelivery()
     {
     }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryAsscId()
+    public Long getHealthCareDeliveryId()
     {
-        return healthCareDeliveryAsscId;
+        return healthCareDeliveryId;
     }
 
-    protected void setHealthCareDeliveryAsscId(final Long healthCareDeliveryAsscId)
+    protected void setHealthCareDeliveryId(final Long healthCareDeliveryId)
     {
-        this.healthCareDeliveryAsscId = healthCareDeliveryAsscId;
+        this.healthCareDeliveryId = healthCareDeliveryId;
+    }
+
+    public String getDeliveryNotes()
+    {
+        return deliveryNotes;
+    }
+
+    public void setDeliveryNotes(final String deliveryNotes)
+    {
+        this.deliveryNotes = deliveryNotes;
+
     }
 
     @ManyToOne
-    @JoinColumn(name = "delivery_id_from", referencedColumnName = "health_care_delivery_id", nullable = false)
-    public HealthCareDelivery getDeliveryFrom()
+    @JoinColumn(name = "health_care_offering_id", nullable = false)
+    public HealthCareOffering getHealthCareOffering()
     {
-        return deliveryFrom;
+        return healthCareOffering;
     }
 
-    public void setDeliveryFrom(final HealthCareDelivery deliveryFrom)
+    public void setHealthCareOffering(final HealthCareOffering healthCareOffering)
     {
-        this.deliveryFrom = deliveryFrom;
+        this.healthCareOffering = healthCareOffering;
     }
 
     @ManyToOne
-    @JoinColumn(name = "delivery_id_to", referencedColumnName = "health_care_delivery_id", nullable = false)
-    public HealthCareDelivery getDeliveryTo()
+    @JoinColumn(name = "health_care_episode_id", nullable = false)
+    public HealthCareEpisode getHealthCareEpisode()
     {
-        return deliveryTo;
+        return healthCareEpisode;
     }
 
-    public void setDeliveryTo(final HealthCareDelivery deliveryTo)
+    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
     {
-        this.deliveryTo = deliveryTo;
+        this.healthCareEpisode = healthCareEpisode;
     }
 }

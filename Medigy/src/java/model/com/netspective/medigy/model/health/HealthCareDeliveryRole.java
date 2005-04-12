@@ -36,56 +36,78 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.person;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.health.HealthCareDelivery;
+import com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType;
+import com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType;
 
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
-public class HealthCareDeliveryRoleType extends AbstractCustomReferenceEntity
+@Entity
+public class HealthCareDeliveryRole extends AbstractDateDurationEntity
 {
-    public enum Cache implements CachedCustomReferenceEntity
+    private Long healthCareDeliveryRoleId;
+    private HealthCareDelivery healthCareDelivery;
+    private Party party;
+    private HealthCareDeliveryRoleType type;
+
+    public HealthCareDeliveryRole()
     {
-        TECHNICIAN("TECH"),
-        RADIOLOGIST("RAD"),
-        PHYSICIAN("PHY"),
-        INTERN("INTERN");
-
-        private final String code;
-        private HealthCareDeliveryRoleType entity;
-
-        Cache(final String code)
-        {
-            this.code = code;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-
-        public HealthCareDeliveryRoleType getEntity()
-        {
-            return entity;
-        }
-
-        public void setEntity(final CustomReferenceEntity entity)
-        {
-            this.entity = (HealthCareDeliveryRoleType) entity;
-        }
     }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryRoleTypeId()
+    public Long getHealthCareDeliveryRoleId()
     {
-        return super.getSystemId();
+        return healthCareDeliveryRoleId;
     }
 
-    protected void setHealthCareDeliveryRoleTypeId(final Long id)
+    protected void setHealthCareDeliveryRoleId(final Long healthCareDeliveryRoleId)
     {
-        super.setSystemId(id);
+        this.healthCareDeliveryRoleId = healthCareDeliveryRoleId;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "health_care_delivery_id", nullable = false)
+    public HealthCareDelivery getHealthCareDelivery()
+    {
+        return healthCareDelivery;
+    }
+
+    public void setHealthCareDelivery(final HealthCareDelivery healthCareDelivery)
+    {
+        this.healthCareDelivery = healthCareDelivery;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Party getParty()
+    {
+        return party;
+    }
+
+    public void setParty(final Party party)
+    {
+        this.party = party;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "health_care_delivery_role_type_id", unique = false)
+    public HealthCareDeliveryRoleType getType()
+    {
+        return type;
+    }
+
+    public void setType(final HealthCareDeliveryRoleType type)
+    {
+        this.type = type;
     }
 }

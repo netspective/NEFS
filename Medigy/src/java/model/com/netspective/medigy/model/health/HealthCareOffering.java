@@ -36,75 +36,73 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.party.HealthCareOffering;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
-public class HealthCareDelivery extends AbstractDateDurationEntity
+public class HealthCareOffering extends AbstractTopLevelEntity
 {
-    private Long healthCareDeliveryId;
-    private String deliveryNotes;
-    private HealthCareOffering healthCareOffering;
-    private HealthCareEpisode healthCareEpisode;
+    private Long healthCareOfferingId;
+    //private SystemPk healthCareOfferingPk;
+    private String name;
+    private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
 
-    /**
-     *
-     */
-    public HealthCareDelivery()
+    /*
+    @EmbeddedId({
+			@AttributeOverride(name="systemId", column = {@Column(name="health_care_offr_id")} )
+			})
+    public SystemPk getHealthCareOfferingPk()
     {
+        return healthCareOfferingPk;
     }
+
+    public void setHealthCareOfferingPk(final SystemPk healthCareOfferingPk)
+    {
+        this.healthCareOfferingPk = healthCareOfferingPk;
+    }
+    */
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryId()
+    public Long getHealthCareOfferingId()
     {
-        return healthCareDeliveryId;
+        return healthCareOfferingId;
     }
 
-    protected void setHealthCareDeliveryId(final Long healthCareDeliveryId)
+    protected void setHealthCareOfferingId( final Long healthCareOfferingId)
     {
-        this.healthCareDeliveryId = healthCareDeliveryId;
+        this.healthCareOfferingId = healthCareOfferingId;
     }
 
-    public String getDeliveryNotes()
+    @Column(length = 100, nullable = false)
+    public String getName()
     {
-        return deliveryNotes;
+        return name;
     }
 
-    public void setDeliveryNotes(final String deliveryNotes)
+    public void setName(final String name)
     {
-        this.deliveryNotes = deliveryNotes;
-
+        this.name = name;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "health_care_offering_id", nullable = false)
-    public HealthCareOffering getHealthCareOffering()
+    @OneToMany
+    @JoinColumn(name = "health_care_offering_id")
+    public Set<HealthCareDelivery> getHealthCareDelivery()
     {
-        return healthCareOffering;
+        return healthCareDeliveries;
     }
 
-    public void setHealthCareOffering(final HealthCareOffering healthCareOffering)
+    public void setHealthCareDelivery(final Set<HealthCareDelivery> healthCareDeliveries)
     {
-        this.healthCareOffering = healthCareOffering;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "health_care_episode_id", nullable = false)            
-    public HealthCareEpisode getHealthCareEpisode()
-    {
-        return healthCareEpisode;
-    }
-
-    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
-    {
-        this.healthCareEpisode = healthCareEpisode;
+        this.healthCareDeliveries = healthCareDeliveries;
     }
 }

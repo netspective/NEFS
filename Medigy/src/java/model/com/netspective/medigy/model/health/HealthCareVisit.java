@@ -36,57 +36,81 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.party.Facility;
+import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.person.Person;
 
-import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
+import javax.persistence.Entity;
 
 @Entity
-public class HealthCareEpisodeOutcome extends AbstractTopLevelEntity
+public class HealthCareVisit  extends AbstractDateDurationEntity
 {
-    private Long healthCareEpisodeOutcomeId;
-    private String outcomeExplanation;
-    private HealthCareEpisode healthCareEpisode;
+    private Long healthCareVisitId;
+    private Facility facility;
+    private Person patient;
+    private PostalAddress patientAddress;
 
-    public HealthCareEpisodeOutcome()
+    public HealthCareVisit()
     {
     }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareEpisodeOutcomeId()
+    public Long getHealthCareVisitId()
     {
-        return healthCareEpisodeOutcomeId;
+        return healthCareVisitId;
     }
 
-    protected void setHealthCareEpisodeOutcomeId(final Long healthCareEpisodeOutcomeId)
+    protected void setHealthCareVisitId(final Long healthCareVisitId)
     {
-        this.healthCareEpisodeOutcomeId = healthCareEpisodeOutcomeId;
+        this.healthCareVisitId = healthCareVisitId;
     }
 
-    public String getOutcomeExplanation()
+    /**
+     * Gets the "home call" address
+     * @return
+     */
+    @JoinColumn(name = "contact_mech_id")
+    public PostalAddress getPatientAddress()
     {
-        return outcomeExplanation;
+        return patientAddress;
     }
 
-    public void setOutcomeExplanation(final String outcomeExplanation)
+    public void setPatientAddress(PostalAddress patientAddress)
     {
-        this.outcomeExplanation = outcomeExplanation;
+        this.patientAddress = patientAddress;
+    }
+
+    /**
+     * Gets the facility at which the visit occurred
+     * @return
+     */
+    @JoinColumn(name = "facility_id")
+    public Facility getFacility()
+    {
+        return facility;
+    }
+
+    public void setFacility(final Facility facility)
+    {
+        this.facility = facility;
     }
 
     @ManyToOne
-    @JoinColumn(name = "health_care_episode_id", nullable = false)        
-    public HealthCareEpisode getHealthCareEpisode()
+    @JoinColumn(name = "party_id", nullable = false)
+    public Person getPatient()
     {
-        return healthCareEpisode;
+        return patient;
     }
 
-    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
+    public void setPatient(final Person patient)
     {
-        this.healthCareEpisode = healthCareEpisode;
+        this.patient = patient;
     }
 }

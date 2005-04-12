@@ -36,75 +36,69 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.person.HealthCareDeliveryRoleType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.health.DiagnosisType;
 
-import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Entity
-public class HealthCareDeliveryRole extends AbstractDateDurationEntity
+public class Diagnosis extends AbstractTopLevelEntity
 {
-    private Long healthCareDeliveryRoleId;
-    private HealthCareDelivery healthCareDelivery;
-    private Party party;
-    private HealthCareDeliveryRoleType type;
-
-    public HealthCareDeliveryRole()
-    {
-    }
+    private Long diagnosisId;
+    private Date diagnosisDate;
+    private HealthCareEpisode healthCareEpisode;
+    private DiagnosisType type;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryRoleId()
+    public Long getDiagnosisId()
     {
-        return healthCareDeliveryRoleId;
+        return diagnosisId;
     }
 
-    protected void setHealthCareDeliveryRoleId(final Long healthCareDeliveryRoleId)
+    public void setDiagnosisId(final Long diagnosisId)
     {
-        this.healthCareDeliveryRoleId = healthCareDeliveryRoleId;
+        this.diagnosisId = diagnosisId;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "health_care_delivery_id", nullable = false)
-    public HealthCareDelivery getHealthCareDelivery()
+    @Column(nullable = false)
+    public Date getDiagnosisDate()
     {
-        return healthCareDelivery;
+        return diagnosisDate;
     }
 
-    public void setHealthCareDelivery(final HealthCareDelivery healthCareDelivery)
+    public void setDiagnosisDate(final Date diagnosisDate)
     {
-        this.healthCareDelivery = healthCareDelivery;
+        this.diagnosisDate = diagnosisDate;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_id")
-    public Party getParty()
+    @ManyToOne
+    @JoinColumn(name = "health_care_episode_id")
+    public HealthCareEpisode getHealthCareEpisode()
     {
-        return party;
+        return healthCareEpisode;
     }
 
-    public void setParty(final Party party)
+    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
     {
-        this.party = party;
+        this.healthCareEpisode = healthCareEpisode;
     }
 
-    @OneToOne
-    @JoinColumn(name = "health_care_delivery_role_type_id", unique = false)
-    public HealthCareDeliveryRoleType getType()
+    @ManyToOne
+    @JoinColumn(name = "diagnosis_type_id")
+    public DiagnosisType getType()
     {
         return type;
     }
 
-    public void setType(final HealthCareDeliveryRoleType type)
+    public void setType(final DiagnosisType type)
     {
         this.type = type;
     }

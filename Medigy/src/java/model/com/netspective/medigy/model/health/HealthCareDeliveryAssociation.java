@@ -36,85 +36,62 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.health.HealthCareDelivery;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.Date;
-import java.util.Set;
-import java.util.HashSet;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
-public class HealthCareEpisode extends AbstractTopLevelEntity
+@Table(name = "Health_Care_Delivery_Assc")
+public class HealthCareDeliveryAssociation extends AbstractTopLevelEntity
 {
-    private Long healthCareEpisodeId;
-    private Incident incident;
-    private String description;
-    private Date date; // create date
+    private Long healthCareDeliveryAsscId;
+    private HealthCareDelivery deliveryFrom;
+    private HealthCareDelivery deliveryTo;
 
-    private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
-
-    @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareEpisodeId()
+    public HealthCareDeliveryAssociation()
     {
-        return healthCareEpisodeId;
     }
 
-    protected void setHealthCareEpisodeId(final Long healthCareEpisodeId)
+    @Id(generate = GeneratorType.AUTO)
+    public Long getHealthCareDeliveryAsscId()
     {
-        this.healthCareEpisodeId = healthCareEpisodeId;
+        return healthCareDeliveryAsscId;
+    }
+
+    protected void setHealthCareDeliveryAsscId(final Long healthCareDeliveryAsscId)
+    {
+        this.healthCareDeliveryAsscId = healthCareDeliveryAsscId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "incident_id")
-    public Incident getIncident()
+    @JoinColumn(name = "delivery_id_from", referencedColumnName = "health_care_delivery_id", nullable = false)
+    public HealthCareDelivery getDeliveryFrom()
     {
-        return incident;
+        return deliveryFrom;
     }
 
-    public void setIncident(final Incident incident)
+    public void setDeliveryFrom(final HealthCareDelivery deliveryFrom)
     {
-        this.incident = incident;
+        this.deliveryFrom = deliveryFrom;
     }
 
-    @Column(length = 1000)
-    public String getDescription()
+    @ManyToOne
+    @JoinColumn(name = "delivery_id_to", referencedColumnName = "health_care_delivery_id", nullable = false)
+    public HealthCareDelivery getDeliveryTo()
     {
-        return description;
+        return deliveryTo;
     }
 
-    public void setDescription(final String description)
+    public void setDeliveryTo(final HealthCareDelivery deliveryTo)
     {
-        this.description = description;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(final Date date)
-    {
-        this.date = date;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "health_care_episode_id")
-    public Set<HealthCareDelivery> getHealthCareDeliveries()
-    {
-        return healthCareDeliveries;
-    }
-
-    public void setHealthCareDeliveries(final Set<HealthCareDelivery> healthCareDeliveries)
-    {
-        this.healthCareDeliveries = healthCareDeliveries;
+        this.deliveryTo = deliveryTo;
     }
 }
