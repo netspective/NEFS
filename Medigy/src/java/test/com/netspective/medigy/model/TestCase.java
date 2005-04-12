@@ -121,6 +121,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.IncidentType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.DiagnosisType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.DeliveryOutcomeType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
@@ -172,6 +173,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisit.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryAssociation.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.Diagnosis.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisTreatment.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.DeliveryOutcome.class);
 
         return config;
     }
