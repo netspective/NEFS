@@ -84,7 +84,7 @@ public class AgreementItem  extends AbstractTopLevelEntity
     }
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "agreement_id")
+    @JoinColumn(name = "agreement_id", nullable = false)
     public Agreement getAgreement()
     {
         return agreement;
