@@ -58,6 +58,9 @@ public class Claim extends AbstractTopLevelEntity
     private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
     private Set<ClaimStatus> claimStatuses = new HashSet<ClaimStatus>();
 
+    private Set<ClaimResubmission> resubmittedFor = new HashSet<ClaimResubmission>();
+    private Set<ClaimResubmission> resubmittedWith = new HashSet<ClaimResubmission>();
+
     @Id(generate = GeneratorType.AUTO)
     public Long getClaimId()
     {
@@ -104,4 +107,28 @@ public class Claim extends AbstractTopLevelEntity
     {
         this.claimItems = claimItems;
     }
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimFor")
+    public Set<ClaimResubmission> getResubmittedFor()
+    {
+        return resubmittedFor;
+    }
+
+    public void setResubmittedFor(final Set<ClaimResubmission> resubmittedFor)
+    {
+        this.resubmittedFor = resubmittedFor;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimWith")
+    public Set<ClaimResubmission> getResubmittedWith()
+    {
+        return resubmittedWith;
+    }
+
+    public void setResubmittedWith(final Set<ClaimResubmission> resubmittedWith)
+    {
+        this.resubmittedWith = resubmittedWith;
+    }
+    
 }

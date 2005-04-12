@@ -39,104 +39,66 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.UnitOfMeasureType;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-public class ClaimItem extends AbstractTopLevelEntity
+public class ClaimResubmission extends AbstractTopLevelEntity
 {
-    private Long claimItemId;
-    private Long claimItemSeqId;
-    private Claim claim;
-    private Float claimAmount;
-    private Float quantity;
-    private UnitOfMeasureType unitOfMeasureType;
 
-    private Set<ClaimSettlement> claimSettlements = new HashSet<ClaimSettlement>();
+    private Long claimResubmissionId;
+    private Claim claimFor;
+    private Claim claimWith;
+    private String comment;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimItemId()
+    public Long getClaimResubmissionId()
     {
-        return claimItemId;
+        return claimResubmissionId;
     }
 
-    protected void setClaimItemId(final Long claimItemId)
+    protected void setClaimResubmissionId(final Long claimResubmissionId)
     {
-        this.claimItemId = claimItemId;
-    }
-
-    public Long getClaimItemSeqId()
-    {
-        return claimItemSeqId;
-    }
-
-    public void setClaimItemSeqId(final Long claimItemSeqId)
-    {
-        this.claimItemSeqId = claimItemSeqId;
+        this.claimResubmissionId = claimResubmissionId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_id", nullable = false)
-    public Claim getClaim()
+    @JoinColumn(referencedColumnName = "claim_id", name = "claim_id_for")
+    public Claim getClaimFor()
     {
-        return claim;
+        return claimFor;
     }
 
-    public void setClaim(final Claim claim)
+    public void setClaimFor(final Claim claimFor)
     {
-        this.claim = claim;
+        this.claimFor = claimFor;
     }
 
-    @Column(nullable = false)
-    public Float getClaimAmount()
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "claim_id", name = "claim_id_with")
+    public Claim getClaimWith()
     {
-        return claimAmount;
+        return claimWith;
     }
 
-    public void setClaimAmount(final float claimAmount)
+    public void setClaimWith(final Claim claimWith)
     {
-        this.claimAmount = claimAmount;
+        this.claimWith = claimWith;
     }
 
-    public Float getQuantity()
+    @Column(length = 100)
+    public String getComment()
     {
-        return quantity;
+        return comment;
     }
 
-    public void setQuantity(final Float quantity)
+    public void setComment(final String comment)
     {
-        this.quantity = quantity;
-    }
-
-    @JoinColumn(name = "unit_of_measure_type_id")
-    public UnitOfMeasureType getUnitOfMeasure()
-    {
-        return unitOfMeasureType;
-    }
-
-    public void setUnitOfMeasure(final UnitOfMeasureType unitOfMeasureType)
-    {
-        this.unitOfMeasureType = unitOfMeasureType;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimItem")
-    public Set<ClaimSettlement> getClaimSettlements()
-    {
-        return claimSettlements;
-    }
-
-    public void setClaimSettlements(final Set<ClaimSettlement> claimSettlements)
-    {
-        this.claimSettlements = claimSettlements;
+        this.comment = comment;
     }
 }
