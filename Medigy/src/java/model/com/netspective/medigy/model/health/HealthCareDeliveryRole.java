@@ -40,17 +40,14 @@ package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.health.HealthCareDelivery;
-import com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType;
 import com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class HealthCareDeliveryRole extends AbstractDateDurationEntity
@@ -99,8 +96,8 @@ public class HealthCareDeliveryRole extends AbstractDateDurationEntity
         this.party = party;
     }
 
-    @OneToOne
-    @JoinColumn(name = "health_care_delivery_role_type_id", unique = false)
+    @ManyToOne
+    @JoinColumn(name = "health_care_del_role_type_id")
     public HealthCareDeliveryRoleType getType()
     {
         return type;

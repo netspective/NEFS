@@ -39,14 +39,16 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.health.HealthCareOffering;
-import com.netspective.medigy.model.health.HealthCareOffering;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class HealthCareDelivery extends AbstractDateDurationEntity
@@ -55,6 +57,7 @@ public class HealthCareDelivery extends AbstractDateDurationEntity
     private String deliveryNotes;
     private HealthCareOffering healthCareOffering;
     private HealthCareEpisode healthCareEpisode;
+    private Set<HealthCareDeliveryRole> healthCareDeliveryRoles = new HashSet<HealthCareDeliveryRole>();
 
     /**
      *
@@ -107,5 +110,16 @@ public class HealthCareDelivery extends AbstractDateDurationEntity
     public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
     {
         this.healthCareEpisode = healthCareEpisode;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "healthCareDelivery")
+    public Set<HealthCareDeliveryRole> getHealthCareDeliveryRoles()
+    {
+        return healthCareDeliveryRoles;
+    }
+
+    public void setHealthCareDeliveryRoles(final Set<HealthCareDeliveryRole> healthCareDeliveryRoles)
+    {
+        this.healthCareDeliveryRoles = healthCareDeliveryRoles;
     }
 }

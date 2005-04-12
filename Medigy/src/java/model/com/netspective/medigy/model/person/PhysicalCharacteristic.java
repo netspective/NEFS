@@ -40,12 +40,14 @@ package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class PhysicalCharacteristic extends AbstractDateDurationEntity
@@ -54,6 +56,7 @@ public class PhysicalCharacteristic extends AbstractDateDurationEntity
     private Person person;
     private PartyRole partyRole;
     private Long value;
+    private PhysicalCharacteristicType type;
 
     @Id(generate = GeneratorType.AUTO)
     public Long getPhysicalCharId()
@@ -97,5 +100,17 @@ public class PhysicalCharacteristic extends AbstractDateDurationEntity
     public void setValue(final Long value)
     {
         this.value = value;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "physical_char_type_id")
+    public PhysicalCharacteristicType getType()
+    {
+        return type;
+    }
+
+    public void setType(PhysicalCharacteristicType type)
+    {
+        this.type = type;
     }
 }
