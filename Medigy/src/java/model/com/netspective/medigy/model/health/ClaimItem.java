@@ -118,6 +118,7 @@ public class ClaimItem extends AbstractTopLevelEntity
         this.quantity = quantity;
     }
 
+    @ManyToOne
     @JoinColumn(name = "unit_of_measure_type_id")
     public UnitOfMeasureType getUnitOfMeasure()
     {
