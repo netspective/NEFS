@@ -45,9 +45,9 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
 
 @Entity
-public class DeliveryOutcomeType extends AbstractCustomReferenceEntity
+public class OutcomeType extends AbstractCustomReferenceEntity
 {
-    public DeliveryOutcomeType()
+    public OutcomeType()
     {
     }
 

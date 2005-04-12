@@ -39,7 +39,7 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.health.DeliveryOutcomeType;
+import com.netspective.medigy.reference.custom.health.OutcomeType;
 
 import javax.persistence.Entity;
 import javax.persistence.Column;
@@ -54,7 +54,7 @@ public class DeliveryOutcome extends AbstractTopLevelEntity
     private Long healthCareDeliveryOutcomeId;
     private HealthCareDelivery healthCareDelivery;
     private String explanation;
-    private DeliveryOutcomeType type;
+    private OutcomeType type;
 
     @Id (generate = GeneratorType.AUTO)
     public Long getHealthCareDeliveryOutcomeId()
@@ -89,13 +89,13 @@ public class DeliveryOutcome extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "delivery_outcome_type_id")
-    public DeliveryOutcomeType getType()
+    @JoinColumn(name = "outcome_type_id")
+    public OutcomeType getType()
     {
         return type;
     }
 
-    public void setType(final DeliveryOutcomeType type)
+    public void setType(final OutcomeType type)
     {
         this.type = type;
     }

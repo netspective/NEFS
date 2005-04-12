@@ -39,20 +39,19 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.health.HealthCareDelivery;
 import com.netspective.medigy.model.person.Incident;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
-import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import java.util.Date;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class HealthCareEpisode extends AbstractTopLevelEntity
@@ -64,6 +63,7 @@ public class HealthCareEpisode extends AbstractTopLevelEntity
 
     private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
     private Set<Diagnosis> diagnosises = new HashSet<Diagnosis>();
+    private Set<EpisodeOutcome> outcomes = new HashSet<EpisodeOutcome>();
 
     @Id(generate = GeneratorType.AUTO)
     public Long getHealthCareEpisodeId()
@@ -130,5 +130,16 @@ public class HealthCareEpisode extends AbstractTopLevelEntity
     public void setDiagnosises(final Set<Diagnosis> diagnosises)
     {
         this.diagnosises = diagnosises;
+    }
+
+    @OneToMany(mappedBy = "healthCareEpisode")
+    public Set<EpisodeOutcome> getOutcomes()
+    {
+        return outcomes;
+    }
+
+    public void setOutcomes(final Set<EpisodeOutcome> outcomes)
+    {
+        this.outcomes = outcomes;
     }
 }

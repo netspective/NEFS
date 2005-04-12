@@ -39,48 +39,36 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.health.HealthCareEpisode;
+import com.netspective.medigy.reference.custom.health.OutcomeType;
 
 import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class HealthCareEpisodeOutcome extends AbstractTopLevelEntity
+public class EpisodeOutcome extends AbstractTopLevelEntity
 {
-    private Long healthCareEpisodeOutcomeId;
-    private String outcomeExplanation;
+    private Long episodeOutcomeId;
     private HealthCareEpisode healthCareEpisode;
-
-    public HealthCareEpisodeOutcome()
-    {
-    }
+    private String explanation;
+    private OutcomeType type;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareEpisodeOutcomeId()
+    public Long getEpisodeOutcomeId()
     {
-        return healthCareEpisodeOutcomeId;
+        return episodeOutcomeId;
     }
 
-    protected void setHealthCareEpisodeOutcomeId(final Long healthCareEpisodeOutcomeId)
+    protected void setEpisodeOutcomeId(final Long episodeOutcomeId)
     {
-        this.healthCareEpisodeOutcomeId = healthCareEpisodeOutcomeId;
-    }
-
-    public String getOutcomeExplanation()
-    {
-        return outcomeExplanation;
-    }
-
-    public void setOutcomeExplanation(final String outcomeExplanation)
-    {
-        this.outcomeExplanation = outcomeExplanation;
+        this.episodeOutcomeId = episodeOutcomeId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "health_care_episode_id", nullable = false)
+    @JoinColumn(name = "health_care_episode_id")
     public HealthCareEpisode getHealthCareEpisode()
     {
         return healthCareEpisode;
@@ -90,4 +78,28 @@ public class HealthCareEpisodeOutcome extends AbstractTopLevelEntity
     {
         this.healthCareEpisode = healthCareEpisode;
     }
+
+    @Column(length = 2000, nullable = false)
+    public String getExplanation()
+    {
+        return explanation;
+    }
+
+    public void setExplanation(final String explanation)
+    {
+        this.explanation = explanation;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "outcome_type_id")
+    public OutcomeType getType()
+    {
+        return type;
+    }
+
+    public void setType(final OutcomeType type)
+    {
+        this.type = type;
+    }
+
 }
