@@ -39,97 +39,67 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.health.DiagnosisType;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
-public class Diagnosis extends AbstractTopLevelEntity
+public class PractitionerDiagnosis extends AbstractTopLevelEntity
 {
-    private Long diagnosisId;
-    private Date diagnosisDate;
-    private HealthCareEpisode healthCareEpisode;
-    private DiagnosisType type;
-    private Set<PractitionerDiagnosis> practitioners = new HashSet<PractitionerDiagnosis>();
-
-    private Set<DiagnosisTreatment> diagnosisTreatments = new HashSet<DiagnosisTreatment>();
+    private Long practitionerDiagnosisId;
+    private Person practitioner;
+    private PartyRoleType practitionerRole;
+    private Diagnosis diagnosis;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getDiagnosisId()
+    public Long getPractitionerDiagnosisId()
     {
-        return diagnosisId;
+        return practitionerDiagnosisId;
     }
 
-    public void setDiagnosisId(final Long diagnosisId)
+    public void setPractitionerDiagnosisId(final Long practitionerDiagnosisId)
     {
-        this.diagnosisId = diagnosisId;
-    }
-
-    @Column(nullable = false)
-    public Date getDiagnosisDate()
-    {
-        return diagnosisDate;
-    }
-
-    public void setDiagnosisDate(final Date diagnosisDate)
-    {
-        this.diagnosisDate = diagnosisDate;
+        this.practitionerDiagnosisId = practitionerDiagnosisId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "health_care_episode_id")
-    public HealthCareEpisode getHealthCareEpisode()
+    @JoinColumn(name = "party_id")
+    public Person getPractitioner()
     {
-        return healthCareEpisode;
+        return practitioner;
     }
 
-    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
+    public void setPractitioner(final Person practitioner)
     {
-        this.healthCareEpisode = healthCareEpisode;
+        this.practitioner = practitioner;
     }
 
     @ManyToOne
-    @JoinColumn(name = "diagnosis_type_id")
-    public DiagnosisType getType()
+    @JoinColumn(name = "party_role_type_id")
+    public PartyRoleType getPractitionerRole()
     {
-        return type;
+        return practitionerRole;
     }
 
-    public void setType(final DiagnosisType type)
+    public void setPractitionerRole(final PartyRoleType practitionerRole)
     {
-        this.type = type;
+        this.practitionerRole = practitionerRole;
     }
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "diagnosis_id")
-    public Set<DiagnosisTreatment> getDiagnosisTreatments()
+    public Diagnosis getDiagnosis()
     {
-        return diagnosisTreatments;
+        return diagnosis;
     }
 
-    public void setDiagnosisTreatments(final Set<DiagnosisTreatment> diagnosisTreatments)
+    public void setDiagnosis(final Diagnosis diagnosis)
     {
-        this.diagnosisTreatments = diagnosisTreatments;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
-    public Set<PractitionerDiagnosis> getPractitioners()
-    {
-        return practitioners;
-    }
-
-    public void setPractitioners(final Set<PractitionerDiagnosis> practitioners)
-    {
-        this.practitioners = practitioners;
+        this.diagnosis = diagnosis;
     }
 }
