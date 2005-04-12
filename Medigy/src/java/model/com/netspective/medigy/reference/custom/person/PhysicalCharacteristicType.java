@@ -45,8 +45,10 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Physical_Char_Type")        
 public class PhysicalCharacteristicType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity

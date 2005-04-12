@@ -45,8 +45,10 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
-@Entity        
+@Entity
+@Table(name = "Health_Care_Del_Role_Type")        
 public class HealthCareDeliveryRoleType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
