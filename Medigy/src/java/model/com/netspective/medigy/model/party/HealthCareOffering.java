@@ -39,11 +39,16 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.person.HealthCareDelivery;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 public class HealthCareOffering extends AbstractTopLevelEntity
@@ -51,6 +56,7 @@ public class HealthCareOffering extends AbstractTopLevelEntity
     private Long healthCareOfferingId;
     //private SystemPk healthCareOfferingPk;
     private String name;
+    private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
 
     /*
     @EmbeddedId({
@@ -87,5 +93,17 @@ public class HealthCareOffering extends AbstractTopLevelEntity
     public void setName(final String name)
     {
         this.name = name;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "health_care_offering_id")
+    public Set<HealthCareDelivery> getHealthCareDelivery()
+    {
+        return healthCareDeliveries;
+    }
+
+    public void setHealthCareDelivery(final Set<HealthCareDelivery> healthCareDeliveries)
+    {
+        this.healthCareDeliveries = healthCareDeliveries;
     }
 }
