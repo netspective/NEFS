@@ -35,32 +35,57 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.reference.type;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.reference;
+import com.netspective.medigy.reference.AbstractReferenceEntity;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
 
-import com.netspective.medigy.reference.type.ContactMechanismType;
-import com.netspective.medigy.reference.type.DataEncryptionType;
-import com.netspective.medigy.reference.type.GenderType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.PriorityType;
-import com.netspective.medigy.reference.type.UnitOfMeasure;
-import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
+import javax.persistence.Entity;
 
-public interface Catalog
+@Entity
+public class UnitOfMeasure extends AbstractReferenceEntity
 {
-    public Class[] ALL_REFERENCE_TYPES =
+    public enum Cache implements CachedReferenceEntity
     {
-        MaritalStatusType.class,
-        GenderType.class,
-        ContactMechanismType.class,
-        PartyFacilityRoleType.class,
-        PriorityType.class,
-        DataEncryptionType.class,
-        UnitOfMeasure.class
-    };
+        MILLIGRAMS("ml", "mg", "Milligrams");
+
+        private final String code;
+        private final String label;
+        private final String description;
+        private UnitOfMeasure entity;
+
+        private Cache(final String code, final String label, final String description)
+        {
+            this.code = code;
+            this.label = label;
+            this.description = description;
+        }
+
+        public String getId()
+        {
+            return code;
+        }
+
+        public String getLabel()
+        {
+            return label;
+        }
+
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public UnitOfMeasure getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final ReferenceEntity entity)
+        {
+            this.entity = (UnitOfMeasure) entity;
+        }
+    }
 }
