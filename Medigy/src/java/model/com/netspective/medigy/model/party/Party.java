@@ -44,11 +44,11 @@ import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.invoice.BillingAccountRole;
 import com.netspective.medigy.model.invoice.InvoiceRole;
 import com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType;
+import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 import com.netspective.medigy.reference.custom.party.FacilityType;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
-import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -302,7 +302,7 @@ public class Party extends AbstractTopLevelEntity
         this.invoiceRoles = invoiceRoles;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partyRoleFrom")
+    @OneToMany(mappedBy = "partyFrom")
     public Set<PartyRelationship> getFromPartyRelationships()
     {
         return fromPartyRelationships;
@@ -313,7 +313,7 @@ public class Party extends AbstractTopLevelEntity
         this.fromPartyRelationships = fromPartyRelationships;
     }
 
-    @OneToMany(mappedBy = "partyRoleTo")
+    @OneToMany(mappedBy = "partyTo")
     public Set<PartyRelationship> getToPartyRelationships()
     {
         return toPartyRelationships;
