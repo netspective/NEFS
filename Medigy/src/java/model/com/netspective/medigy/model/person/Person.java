@@ -44,6 +44,7 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.health.HealthCareVisit;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 

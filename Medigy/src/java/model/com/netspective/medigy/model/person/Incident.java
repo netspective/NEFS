@@ -39,6 +39,7 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.health.HealthCareEpisode;
 import com.netspective.medigy.reference.custom.person.IncidentType;
 
 import javax.persistence.Id;
