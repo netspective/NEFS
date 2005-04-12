@@ -48,6 +48,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
@@ -95,6 +96,7 @@ public class Agreement extends AbstractDateDurationEntity
         this.description = description;
     }
 
+    @ManyToOne
     @JoinColumn(name = "agreement_type_id")
     public AgreementType getType()
     {
