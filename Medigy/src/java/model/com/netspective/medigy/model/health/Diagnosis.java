@@ -47,7 +47,10 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 public class Diagnosis extends AbstractTopLevelEntity
@@ -56,6 +59,8 @@ public class Diagnosis extends AbstractTopLevelEntity
     private Date diagnosisDate;
     private HealthCareEpisode healthCareEpisode;
     private DiagnosisType type;
+
+    private Set<DiagnosisTreatment> diagnosisTreatments = new HashSet<DiagnosisTreatment>();
 
     @Id(generate = GeneratorType.AUTO)
     public Long getDiagnosisId()
@@ -101,5 +106,17 @@ public class Diagnosis extends AbstractTopLevelEntity
     public void setType(final DiagnosisType type)
     {
         this.type = type;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "diagnosis_id")
+    public Set<DiagnosisTreatment> getDiagnosisTreatments()
+    {
+        return diagnosisTreatments;
+    }
+
+    public void setDiagnosisTreatments(final Set<DiagnosisTreatment> diagnosisTreatments)
+    {
+        this.diagnosisTreatments = diagnosisTreatments;
     }
 }
