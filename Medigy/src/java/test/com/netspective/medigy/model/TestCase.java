@@ -165,6 +165,9 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.person.PhysicalCharacteristic.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Incident.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.HealthCareEpisode.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.HealthCareDelivery.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.HealthCareEpisodeOutcome.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.HealthCareVisit.class);
 
         return config;
     }

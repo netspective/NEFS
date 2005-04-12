@@ -77,6 +77,7 @@ public class Person extends Party
     private Set<Gender> genders = new HashSet<Gender>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
     private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<PhysicalCharacteristic>();
+    private Set<HealthCareVisit> healthCareVisits = new HashSet<HealthCareVisit>();
 
     public Person()
     {
@@ -257,6 +258,16 @@ public class Person extends Party
         this.physicalCharacteristics = physicalCharacteristics;
     }
 
+    @OneToMany(mappedBy = "patient")
+    public Set<HealthCareVisit> getHealthCareVisits()
+    {
+        return healthCareVisits;
+    }
+
+    public void setHealthCareVisits(final Set<HealthCareVisit> healthCareVisits)
+    {
+        this.healthCareVisits = healthCareVisits;
+    }
 
     public String toString()
     {
