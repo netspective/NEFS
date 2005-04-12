@@ -39,17 +39,22 @@
 package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.health.ClaimSettlementAmount;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.invoice.PaymentType;
 import com.netspective.medigy.reference.custom.invoice.PaymentMethodType;
+import com.netspective.medigy.reference.custom.invoice.PaymentType;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Payment extends AbstractTopLevelEntity
@@ -65,6 +70,7 @@ public class Payment extends AbstractTopLevelEntity
     private PaymentType type;
     private PaymentMethodType paymentMethodType;
 
+    private Set<ClaimSettlementAmount> settlementAmounts = new HashSet<ClaimSettlementAmount>();
 
     public Payment()
     {
@@ -123,6 +129,8 @@ public class Payment extends AbstractTopLevelEntity
         this.paymentRefNumber = paymentRefNumber;
     }
 
+
+    @ManyToOne
     @JoinColumn(name = "to_party_id", referencedColumnName = "party_id", nullable = false)
     public Party getToParty()
     {
@@ -134,6 +142,7 @@ public class Payment extends AbstractTopLevelEntity
         this.toParty = toParty;
     }
 
+    @ManyToOne
     @JoinColumn(name = "from_party_id", referencedColumnName = "party_id", nullable = false)
     public Party getFromParty()
     {
@@ -144,7 +153,7 @@ public class Payment extends AbstractTopLevelEntity
     {
         this.fromParty = fromParty;
     }
-
+    
     @OneToOne
     @JoinColumn(name = "payment_type_id", nullable = false)
     public PaymentType getType()
@@ -166,5 +175,16 @@ public class Payment extends AbstractTopLevelEntity
     public void setPaymentMethodType(final PaymentMethodType paymentMethodType)
     {
         this.paymentMethodType = paymentMethodType;
+    }
+
+    @OneToMany(mappedBy = "payment")
+    public Set<ClaimSettlementAmount> getSettlementAmounts()
+    {
+        return settlementAmounts;
+    }
+
+    public void setSettlementAmounts(final Set<ClaimSettlementAmount> settlementAmounts)
+    {
+        this.settlementAmounts = settlementAmounts;
     }
 }
