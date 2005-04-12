@@ -43,9 +43,11 @@ import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
-public class UnitOfMeasure extends AbstractReferenceEntity
+@Table(name = "Unit_Of_Measure_Type")
+public class UnitOfMeasureType extends AbstractReferenceEntity
 {
     public enum Cache implements CachedReferenceEntity
     {
@@ -54,7 +56,7 @@ public class UnitOfMeasure extends AbstractReferenceEntity
         private final String code;
         private final String label;
         private final String description;
-        private UnitOfMeasure entity;
+        private UnitOfMeasureType entity;
 
         private Cache(final String code, final String label, final String description)
         {
@@ -78,14 +80,14 @@ public class UnitOfMeasure extends AbstractReferenceEntity
             return description;
         }
 
-        public UnitOfMeasure getEntity()
+        public UnitOfMeasureType getEntity()
         {
             return entity;
         }
 
         public void setEntity(final ReferenceEntity entity)
         {
-            this.entity = (UnitOfMeasure) entity;
+            this.entity = (UnitOfMeasureType) entity;
         }
     }
 }
