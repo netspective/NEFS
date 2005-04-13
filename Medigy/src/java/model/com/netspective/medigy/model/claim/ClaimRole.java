@@ -40,12 +40,11 @@ package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.claim.Claim;
-import com.netspective.medigy.reference.custom.health.ClaimRoleType;
+import com.netspective.medigy.reference.custom.claim.ClaimRoleType;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 

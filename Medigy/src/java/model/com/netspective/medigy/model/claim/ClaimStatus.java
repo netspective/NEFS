@@ -40,7 +40,8 @@ package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.model.claim.Claim;
-import com.netspective.medigy.reference.custom.health.ClaimStatusType;
+import com.netspective.medigy.reference.custom.claim.ClaimStatusType;
+import com.netspective.medigy.reference.custom.claim.ClaimStatusType;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
