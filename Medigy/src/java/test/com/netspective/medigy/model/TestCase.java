@@ -189,6 +189,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimSettlementAmount.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimResubmission.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimServiceCode.class);
 
         return config;
     }
