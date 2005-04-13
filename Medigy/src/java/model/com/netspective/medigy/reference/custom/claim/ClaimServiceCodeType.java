@@ -36,59 +36,47 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.type.health;
+package com.netspective.medigy.reference.custom.claim;
 
-import com.netspective.medigy.reference.AbstractReferenceEntity;
-import com.netspective.medigy.reference.CachedReferenceEntity;
-import com.netspective.medigy.reference.ReferenceEntity;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "Claim_Service_Code_Type")
-public class ClaimServiceCodeType extends AbstractReferenceEntity
+@Table(name = "Claim_Service_Code_Type", uniqueConstraints = {@UniqueConstraint(columnNames = {"code", "party_id"})})
+public class ClaimServiceCodeType extends AbstractCustomReferenceEntity
 {
-    public enum Cache implements CachedReferenceEntity
+    public enum Cache implements CachedCustomReferenceEntity
     {
-        CPT_CODE("CPT", "Current Procedure Terminology", ""),
-        HCPCS_CODE("HCPCS", "HCFA Common Procedure Coding System", ""),
-        REV_CODE("REV", "Rev Codes", "");
+        CPT_CODE("CPT"),
+        HCPCS_CODE("HCPCS"),
+        REV_CODE("REV");
 
 
         private final String code;
-        private final String label;
-        private final String description;
         private ClaimServiceCodeType entity;
 
-        private Cache(final String code, final String label, final String description)
+        private Cache(final String code)
         {
             this.code = code;
-            this.label = label;
-            this.description = description;
         }
 
-        public String getId()
+        public String getCode()
         {
             return code;
         }
 
-        public String getLabel()
-        {
-            return label;
-        }
-
-        public String getDescription()
-        {
-            return description;
-        }
 
         public ClaimServiceCodeType getEntity()
         {
             return entity;
         }
 
-        public void setEntity(final ReferenceEntity entity)
+        public void setEntity(final CustomReferenceEntity entity)
         {
             this.entity = (ClaimServiceCodeType) entity;
         }

@@ -38,21 +38,20 @@
  */
 package com.netspective.medigy.model.claim;
 
-import com.netspective.medigy.reference.type.health.ClaimServiceCodeType;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.claim.ClaimItem;
+import com.netspective.medigy.reference.custom.claim.ClaimServiceCodeType;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Column;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.persistence.OneToMany;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity()
 @Table(name = "Claim_Service_Code", uniqueConstraints = {@UniqueConstraint(columnNames = {"abbreviation", "claim_service_code_type_id"})})
