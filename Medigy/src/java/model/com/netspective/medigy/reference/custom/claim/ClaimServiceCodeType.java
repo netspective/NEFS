@@ -45,6 +45,8 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
 @Table(name = "Claim_Service_Code_Type", uniqueConstraints = {@UniqueConstraint(columnNames = {"code", "party_id"})})
@@ -80,5 +82,16 @@ public class ClaimServiceCodeType extends AbstractCustomReferenceEntity
         {
             this.entity = (ClaimServiceCodeType) entity;
         }
+    }
+
+    @Id(generate = GeneratorType.AUTO)
+    public Long getClaimServiceCodeTypeId()
+    {
+        return super.getSystemId();
+    }
+
+    protected void setClaimServiceCodeTypeId(final Long id)
+    {
+        super.setSystemId(id);
     }
 }
