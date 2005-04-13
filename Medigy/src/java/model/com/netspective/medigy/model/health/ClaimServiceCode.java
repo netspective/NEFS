@@ -38,119 +38,85 @@
  */
 package com.netspective.medigy.model.health;
 
+import com.netspective.medigy.reference.type.health.ClaimServiceCodeType;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.UnitOfMeasureType;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import java.util.Set;
 import java.util.HashSet;
 
-@Entity
-public class ClaimItem extends AbstractTopLevelEntity
+@Entity()
+@Table(name = "Claim_Service_Code", uniqueConstraints = {@UniqueConstraint(columnNames = {"abbreviation", "claim_service_code_type_id"})})
+public class ClaimServiceCode extends AbstractTopLevelEntity
 {
-    private Long claimItemId;
-    private Long claimItemSeqId;
-    private Claim claim;
-    private Float claimAmount;
-    private Float quantity;
-    private UnitOfMeasureType unitOfMeasureType;
-    private ClaimServiceCode claimServiceCode;
+    private Long claimServiceCodeId;
+    private String abbreviation;
+    private String description;
+    private ClaimServiceCodeType type;
 
-    private Set<ClaimSettlement> claimSettlements = new HashSet<ClaimSettlement>();
+    private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimItemId()
+    public Long getClaimServiceCodeId()
     {
-        return claimItemId;
+        return claimServiceCodeId;
     }
 
-    protected void setClaimItemId(final Long claimItemId)
+    public void setClaimServiceCodeId(final Long claimServiceCodeId)
     {
-        this.claimItemId = claimItemId;
+        this.claimServiceCodeId = claimServiceCodeId;
     }
 
-    public Long getClaimItemSeqId()
+    @Column(length = 100, nullable = false)
+    public String getAbbreviation()
     {
-        return claimItemSeqId;
+        return abbreviation;
     }
 
-    public void setClaimItemSeqId(final Long claimItemSeqId)
+    public void setAbbreviation(final String abbreviation)
     {
-        this.claimItemSeqId = claimItemSeqId;
+        this.abbreviation = abbreviation;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "claim_id", nullable = false)
-    public Claim getClaim()
+    @Column(length = 256)
+    public String getDescription()
     {
-        return claim;
+        return description;
     }
 
-    public void setClaim(final Claim claim)
+    public void setDescription(final String description)
     {
-        this.claim = claim;
-    }
-
-    @Column(nullable = false)
-    public Float getClaimAmount()
-    {
-        return claimAmount;
-    }
-
-    public void setClaimAmount(final float claimAmount)
-    {
-        this.claimAmount = claimAmount;
-    }
-
-    public Float getQuantity()
-    {
-        return quantity;
-    }
-
-    public void setQuantity(final Float quantity)
-    {
-        this.quantity = quantity;
+        this.description = description;
     }
 
     @ManyToOne
-    @JoinColumn(name = "unit_of_measure_type_id")
-    public UnitOfMeasureType getUnitOfMeasure()
+    @JoinColumn(name = "claim_service_code_type_id")
+    public ClaimServiceCodeType getType()
     {
-        return unitOfMeasureType;
+        return type;
     }
 
-    public void setUnitOfMeasure(final UnitOfMeasureType unitOfMeasureType)
+    public void setType(final ClaimServiceCodeType type)
     {
-        this.unitOfMeasureType = unitOfMeasureType;
+        this.type = type;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimItem")
-    public Set<ClaimSettlement> getClaimSettlements()
+    @OneToMany(mappedBy = "claimServiceCode")
+    public Set<ClaimItem> getClaimItems()
     {
-        return claimSettlements;
+        return claimItems;
     }
 
-    public void setClaimSettlements(final Set<ClaimSettlement> claimSettlements)
+    public void setClaimItems(final Set<ClaimItem> claimItems)
     {
-        this.claimSettlements = claimSettlements;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "claim_service_code_id")        
-    public ClaimServiceCode getClaimServiceCode()
-    {
-        return claimServiceCode;
-    }
-
-    public void setClaimServiceCode(final ClaimServiceCode claimServiceCode)
-    {
-        this.claimServiceCode = claimServiceCode;
+        this.claimItems = claimItems;
     }
 }
