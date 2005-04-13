@@ -39,14 +39,47 @@
 package com.netspective.medigy.reference.custom.health;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 
 @Entity
 public class DiagnosisType extends AbstractCustomReferenceEntity
 {
+    public enum Cache implements CachedCustomReferenceEntity
+    {
+        ICD9_CODE("ICD9"),
+        ICD10_CODE("ICD10");
+
+
+        private final String code;
+        private DiagnosisType entity;
+
+        private Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+
+        public DiagnosisType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (DiagnosisType) entity;
+        }
+    }
+
     @Id(generate = GeneratorType.AUTO)
     public Long getDiagnosisTypeTypeId()
     {
