@@ -36,7 +36,7 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
@@ -132,7 +132,7 @@ public class Claim extends AbstractTopLevelEntity
         this.resubmittedWith = resubmittedWith;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")           
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")
     public Set<ClaimRole> getClaimRoles()
     {
         return claimRoles;

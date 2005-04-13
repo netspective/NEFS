@@ -39,8 +39,9 @@
 package com.netspective.medigy.model.invoice;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.health.ClaimSettlementAmount;
+import com.netspective.medigy.model.claim.ClaimSettlementAmount;
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.claim.ClaimSettlementAmount;
 import com.netspective.medigy.reference.custom.invoice.PaymentMethodType;
 import com.netspective.medigy.reference.custom.invoice.PaymentType;
 

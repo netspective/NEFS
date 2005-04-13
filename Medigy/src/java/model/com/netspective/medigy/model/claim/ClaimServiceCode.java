@@ -36,71 +36,88 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
+import com.netspective.medigy.reference.type.health.ClaimServiceCodeType;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.claim.ClaimItem;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
 
-@Entity
-public class ClaimSettlement extends AbstractTopLevelEntity
+@Entity()
+@Table(name = "Claim_Service_Code", uniqueConstraints = {@UniqueConstraint(columnNames = {"abbreviation", "claim_service_code_type_id"})})
+public class ClaimServiceCode extends AbstractTopLevelEntity
 {
-    private Long claimSettlementId;
-    private Date settledDate;
-    private ClaimItem claimItem;
+    private Long claimServiceCodeId;
+    private String abbreviation;
+    private String description;
+    private ClaimServiceCodeType type;
 
-    private Set<ClaimSettlementAmount> settlementAmounts = new HashSet<ClaimSettlementAmount>();
+    private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimSettlementId()
+    public Long getClaimServiceCodeId()
     {
-        return claimSettlementId;
+        return claimServiceCodeId;
     }
 
-    protected void setClaimSettlementId(final Long claimSettlementId)
+    public void setClaimServiceCodeId(final Long claimServiceCodeId)
     {
-        this.claimSettlementId = claimSettlementId;
+        this.claimServiceCodeId = claimServiceCodeId;
     }
 
-    public Date getSettledDate()
+    @Column(length = 100, nullable = false)
+    public String getAbbreviation()
     {
-        return settledDate;
+        return abbreviation;
     }
 
-    public void setSettledDate(final Date settledDate)
+    public void setAbbreviation(final String abbreviation)
     {
-        this.settledDate = settledDate;
+        this.abbreviation = abbreviation;
+    }
+
+    @Column(length = 256)
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(final String description)
+    {
+        this.description = description;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_item_id", nullable = false)
-    public ClaimItem getClaimItem()
+    @JoinColumn(name = "claim_service_code_type_id")
+    public ClaimServiceCodeType getType()
     {
-        return claimItem;
+        return type;
     }
 
-    public void setClaimItem(final ClaimItem claimItem)
+    public void setType(final ClaimServiceCodeType type)
     {
-        this.claimItem = claimItem;
+        this.type = type;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimSettlement")            
-    public Set<ClaimSettlementAmount> getSettlementAmounts()
+    @OneToMany(mappedBy = "claimServiceCode")
+    public Set<ClaimItem> getClaimItems()
     {
-        return settlementAmounts;
+        return claimItems;
     }
 
-    public void setSettlementAmounts(final Set<ClaimSettlementAmount> settlementAmounts)
+    public void setClaimItems(final Set<ClaimItem> claimItems)
     {
-        this.settlementAmounts = settlementAmounts;
+        this.claimItems = claimItems;
     }
 }

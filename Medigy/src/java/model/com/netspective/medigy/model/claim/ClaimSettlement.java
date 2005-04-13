@@ -36,72 +36,72 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.health.ClaimStatusType;
+import com.netspective.medigy.model.claim.ClaimItem;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.util.Date;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
-public class ClaimStatus extends AbstractTopLevelEntity
+public class ClaimSettlement extends AbstractTopLevelEntity
 {
-    private Long claimStatusId;
-    private Claim claim;
-    private ClaimStatusType type;
-    private Date date;
+    private Long claimSettlementId;
+    private Date settledDate;
+    private ClaimItem claimItem;
+
+    private Set<ClaimSettlementAmount> settlementAmounts = new HashSet<ClaimSettlementAmount>();
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimStatusId()
+    public Long getClaimSettlementId()
     {
-        return claimStatusId;
+        return claimSettlementId;
     }
 
-    protected void setClaimStatusId(final Long claimStatusId)
+    protected void setClaimSettlementId(final Long claimSettlementId)
     {
-        this.claimStatusId = claimStatusId;
+        this.claimSettlementId = claimSettlementId;
+    }
+
+    public Date getSettledDate()
+    {
+        return settledDate;
+    }
+
+    public void setSettledDate(final Date settledDate)
+    {
+        this.settledDate = settledDate;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_id")
-    public Claim getClaim()
+    @JoinColumn(name = "claim_item_id", nullable = false)
+    public ClaimItem getClaimItem()
     {
-        return claim;
+        return claimItem;
     }
 
-    public void setClaim(final Claim claim)
+    public void setClaimItem(final ClaimItem claimItem)
     {
-        this.claim = claim;
+        this.claimItem = claimItem;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "claim_status_type_id")
-    public ClaimStatusType getType()
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimSettlement")            
+    public Set<ClaimSettlementAmount> getSettlementAmounts()
     {
-        return type;
+        return settlementAmounts;
     }
 
-    public void setType(final ClaimStatusType type)
+    public void setSettlementAmounts(final Set<ClaimSettlementAmount> settlementAmounts)
     {
-        this.type = type;
-    }
-
-    /**
-     * Gets the date/time for when this claim status was assigned to the claim
-     * @return
-     */
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(final Date date)
-    {
-        this.date = date;
+        this.settlementAmounts = settlementAmounts;
     }
 }

@@ -36,74 +36,70 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.health.ClaimRoleType;
+import com.netspective.medigy.model.claim.Claim;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Entity;
 
 @Entity
-public class ClaimRole   extends AbstractTopLevelEntity
+public class ClaimResubmission extends AbstractTopLevelEntity
 {
-    private Long claimRoleId;
-    private Party party;
-    private Claim claim;
-    private ClaimRoleType type;
 
-    public ClaimRole()
-    {
-    }
+    private Long claimResubmissionId;
+    private Claim claimFor;
+    private Claim claimWith;
+    private String comment;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimRoleId()
+    public Long getClaimResubmissionId()
     {
-        return claimRoleId;
+        return claimResubmissionId;
     }
 
-    protected void setClaimRoleId(final Long claimRoleId)
+    protected void setClaimResubmissionId(final Long claimResubmissionId)
     {
-        this.claimRoleId = claimRoleId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "party_id")
-    public Party getParty()
-    {
-        return party;
-    }
-
-    public void setParty(final Party party)
-    {
-        this.party = party;
+        this.claimResubmissionId = claimResubmissionId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_id")
-    public Claim getClaim()
+    @JoinColumn(referencedColumnName = "claim_id", name = "claim_id_for")
+    public Claim getClaimFor()
     {
-        return claim;
+        return claimFor;
     }
 
-    public void setClaim(final Claim claim)
+    public void setClaimFor(final Claim claimFor)
     {
-        this.claim = claim;
+        this.claimFor = claimFor;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_role_type_id")        
-    public ClaimRoleType getType()
+    @JoinColumn(referencedColumnName = "claim_id", name = "claim_id_with")
+    public Claim getClaimWith()
     {
-        return type;
+        return claimWith;
     }
 
-    public void setType(final ClaimRoleType type)
+    public void setClaimWith(final Claim claimWith)
     {
-        this.type = type;
+        this.claimWith = claimWith;
+    }
+
+    @Column(length = 100)
+    public String getComment()
+    {
+        return comment;
+    }
+
+    public void setComment(final String comment)
+    {
+        this.comment = comment;
     }
 }

@@ -36,58 +36,40 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.UnitOfMeasureType;
+import com.netspective.medigy.model.claim.Claim;
+import com.netspective.medigy.reference.custom.health.ClaimStatusType;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.Date;
 
 @Entity
-public class ClaimItem extends AbstractTopLevelEntity
+public class ClaimStatus extends AbstractTopLevelEntity
 {
-    private Long claimItemId;
-    private Long claimItemSeqId;
+    private Long claimStatusId;
     private Claim claim;
-    private Float claimAmount;
-    private Float quantity;
-    private UnitOfMeasureType unitOfMeasureType;
-    private ClaimServiceCode claimServiceCode;
-
-    private Set<ClaimSettlement> claimSettlements = new HashSet<ClaimSettlement>();
+    private ClaimStatusType type;
+    private Date date;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimItemId()
+    public Long getClaimStatusId()
     {
-        return claimItemId;
+        return claimStatusId;
     }
 
-    protected void setClaimItemId(final Long claimItemId)
+    protected void setClaimStatusId(final Long claimStatusId)
     {
-        this.claimItemId = claimItemId;
-    }
-
-    public Long getClaimItemSeqId()
-    {
-        return claimItemSeqId;
-    }
-
-    public void setClaimItemSeqId(final Long claimItemSeqId)
-    {
-        this.claimItemSeqId = claimItemSeqId;
+        this.claimStatusId = claimStatusId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_id", nullable = false)
+    @JoinColumn(name = "claim_id")
     public Claim getClaim()
     {
         return claim;
@@ -98,59 +80,29 @@ public class ClaimItem extends AbstractTopLevelEntity
         this.claim = claim;
     }
 
-    @Column(nullable = false)
-    public Float getClaimAmount()
-    {
-        return claimAmount;
-    }
-
-    public void setClaimAmount(final float claimAmount)
-    {
-        this.claimAmount = claimAmount;
-    }
-
-    public Float getQuantity()
-    {
-        return quantity;
-    }
-
-    public void setQuantity(final Float quantity)
-    {
-        this.quantity = quantity;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "unit_of_measure_type_id")
-    public UnitOfMeasureType getUnitOfMeasure()
+    @JoinColumn(name = "claim_status_type_id")
+    public ClaimStatusType getType()
     {
-        return unitOfMeasureType;
+        return type;
     }
 
-    public void setUnitOfMeasure(final UnitOfMeasureType unitOfMeasureType)
+    public void setType(final ClaimStatusType type)
     {
-        this.unitOfMeasureType = unitOfMeasureType;
+        this.type = type;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimItem")
-    public Set<ClaimSettlement> getClaimSettlements()
+    /**
+     * Gets the date/time for when this claim status was assigned to the claim
+     * @return
+     */
+    public Date getDate()
     {
-        return claimSettlements;
+        return date;
     }
 
-    public void setClaimSettlements(final Set<ClaimSettlement> claimSettlements)
+    public void setDate(final Date date)
     {
-        this.claimSettlements = claimSettlements;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "claim_service_code_id")        
-    public ClaimServiceCode getClaimServiceCode()
-    {
-        return claimServiceCode;
-    }
-
-    public void setClaimServiceCode(final ClaimServiceCode claimServiceCode)
-    {
-        this.claimServiceCode = claimServiceCode;
+        this.date = date;
     }
 }

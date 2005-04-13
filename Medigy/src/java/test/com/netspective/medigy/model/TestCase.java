@@ -182,14 +182,14 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.EpisodeOutcome.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.PractitionerDiagnosis.class);
 
-        config.addAnnotatedClass(com.netspective.medigy.model.health.Claim.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimItem.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimSettlement.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimSettlementAmount.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimResubmission.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ClaimServiceCode.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.Claim.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItem.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimStatus.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimSettlement.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimSettlementAmount.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimResubmission.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimServiceCode.class);
 
         return config;
     }

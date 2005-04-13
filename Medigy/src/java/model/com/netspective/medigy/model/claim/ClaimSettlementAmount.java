@@ -36,87 +36,70 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
-import com.netspective.medigy.reference.type.health.ClaimServiceCodeType;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.invoice.Payment;
+import com.netspective.medigy.model.claim.ClaimSettlement;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Entity;
 import javax.persistence.Column;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.OneToMany;
-import java.util.Set;
-import java.util.HashSet;
 
-@Entity()
-@Table(name = "Claim_Service_Code", uniqueConstraints = {@UniqueConstraint(columnNames = {"abbreviation", "claim_service_code_type_id"})})
-public class ClaimServiceCode extends AbstractTopLevelEntity
+@Entity
+public class ClaimSettlementAmount extends AbstractTopLevelEntity
 {
-    private Long claimServiceCodeId;
-    private String abbreviation;
-    private String description;
-    private ClaimServiceCodeType type;
-
-    private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
+    private Long claimSettlementAmountId;
+    private ClaimSettlement claimSettlement;
+    private Payment payment;
+    private Float amount;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimServiceCodeId()
+    public Long getClaimSettlementAmountId()
     {
-        return claimServiceCodeId;
+        return claimSettlementAmountId;
     }
 
-    public void setClaimServiceCodeId(final Long claimServiceCodeId)
+    protected void setClaimSettlementAmountId(final Long claimSettlementAmountId)
     {
-        this.claimServiceCodeId = claimServiceCodeId;
-    }
-
-    @Column(length = 100, nullable = false)
-    public String getAbbreviation()
-    {
-        return abbreviation;
-    }
-
-    public void setAbbreviation(final String abbreviation)
-    {
-        this.abbreviation = abbreviation;
-    }
-
-    @Column(length = 256)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
+        this.claimSettlementAmountId = claimSettlementAmountId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_service_code_type_id")
-    public ClaimServiceCodeType getType()
+    @JoinColumn(name = "claim_settlement_id", nullable = false)
+    public ClaimSettlement getClaimSettlement()
     {
-        return type;
+        return claimSettlement;
     }
 
-    public void setType(final ClaimServiceCodeType type)
+    public void setClaimSettlement(final ClaimSettlement claimSettlement)
     {
-        this.type = type;
+        this.claimSettlement = claimSettlement;
     }
 
-    @OneToMany(mappedBy = "claimServiceCode")
-    public Set<ClaimItem> getClaimItems()
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    public Payment getPayment()
     {
-        return claimItems;
+        return payment;
     }
 
-    public void setClaimItems(final Set<ClaimItem> claimItems)
+    public void setPayment(final Payment payment)
     {
-        this.claimItems = claimItems;
+        this.payment = payment;
+    }
+
+    @Column(nullable = false)
+    public Float getAmount()
+    {
+        return amount;
+    }
+
+    public void setAmount(final Float amount)
+    {
+        this.amount = amount;
     }
 }

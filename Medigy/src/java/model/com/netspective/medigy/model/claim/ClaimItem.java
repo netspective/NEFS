@@ -36,69 +36,122 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.invoice.Payment;
+import com.netspective.medigy.model.claim.Claim;
+import com.netspective.medigy.reference.type.UnitOfMeasureType;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
-public class ClaimSettlementAmount extends AbstractTopLevelEntity
+public class ClaimItem extends AbstractTopLevelEntity
 {
-    private Long claimSettlementAmountId;
-    private ClaimSettlement claimSettlement;
-    private Payment payment;
-    private Float amount;
+    private Long claimItemId;
+    private Long claimItemSeqId;
+    private Claim claim;
+    private Float claimAmount;
+    private Float quantity;
+    private UnitOfMeasureType unitOfMeasureType;
+    private ClaimServiceCode claimServiceCode;
+
+    private Set<ClaimSettlement> claimSettlements = new HashSet<ClaimSettlement>();
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimSettlementAmountId()
+    public Long getClaimItemId()
     {
-        return claimSettlementAmountId;
+        return claimItemId;
     }
 
-    protected void setClaimSettlementAmountId(final Long claimSettlementAmountId)
+    protected void setClaimItemId(final Long claimItemId)
     {
-        this.claimSettlementAmountId = claimSettlementAmountId;
+        this.claimItemId = claimItemId;
+    }
+
+    public Long getClaimItemSeqId()
+    {
+        return claimItemSeqId;
+    }
+
+    public void setClaimItemSeqId(final Long claimItemSeqId)
+    {
+        this.claimItemSeqId = claimItemSeqId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_settlement_id", nullable = false)
-    public ClaimSettlement getClaimSettlement()
+    @JoinColumn(name = "claim_id", nullable = false)
+    public Claim getClaim()
     {
-        return claimSettlement;
+        return claim;
     }
 
-    public void setClaimSettlement(final ClaimSettlement claimSettlement)
+    public void setClaim(final Claim claim)
     {
-        this.claimSettlement = claimSettlement;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "payment_id")
-    public Payment getPayment()
-    {
-        return payment;
-    }
-
-    public void setPayment(final Payment payment)
-    {
-        this.payment = payment;
+        this.claim = claim;
     }
 
     @Column(nullable = false)
-    public Float getAmount()
+    public Float getClaimAmount()
     {
-        return amount;
+        return claimAmount;
     }
 
-    public void setAmount(final Float amount)
+    public void setClaimAmount(final float claimAmount)
     {
-        this.amount = amount;
+        this.claimAmount = claimAmount;
+    }
+
+    public Float getQuantity()
+    {
+        return quantity;
+    }
+
+    public void setQuantity(final Float quantity)
+    {
+        this.quantity = quantity;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "unit_of_measure_type_id")
+    public UnitOfMeasureType getUnitOfMeasure()
+    {
+        return unitOfMeasureType;
+    }
+
+    public void setUnitOfMeasure(final UnitOfMeasureType unitOfMeasureType)
+    {
+        this.unitOfMeasureType = unitOfMeasureType;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimItem")
+    public Set<ClaimSettlement> getClaimSettlements()
+    {
+        return claimSettlements;
+    }
+
+    public void setClaimSettlements(final Set<ClaimSettlement> claimSettlements)
+    {
+        this.claimSettlements = claimSettlements;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "claim_service_code_id")        
+    public ClaimServiceCode getClaimServiceCode()
+    {
+        return claimServiceCode;
+    }
+
+    public void setClaimServiceCode(final ClaimServiceCode claimServiceCode)
+    {
+        this.claimServiceCode = claimServiceCode;
     }
 }
