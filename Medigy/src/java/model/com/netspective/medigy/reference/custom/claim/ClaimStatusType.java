@@ -36,7 +36,7 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.health;
+package com.netspective.medigy.reference.custom.claim;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
@@ -45,15 +45,15 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
 
 @Entity
-public class ClaimRoleType extends AbstractCustomReferenceEntity
+public class ClaimStatusType extends AbstractCustomReferenceEntity
 {
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimRoleTypeId()
+    public Long getClaimStatusTypeId()
     {
         return super.getSystemId();
     }
 
-    protected void setClaimRoleTypeId(final Long id)
+    protected void setClaimStatusTypeId(final Long id)
     {
         super.setSystemId(id);
     }
