@@ -39,130 +39,57 @@
 package com.netspective.medigy.model.claim;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.type.UnitOfMeasureType;
+import com.netspective.medigy.reference.custom.health.DiagnosisType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.GeneratorType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.JoinColumn;
 
 @Entity
-public class ClaimItem extends AbstractTopLevelEntity
+public class ClaimItemDiagnosisCode extends AbstractTopLevelEntity
 {
-    private Long claimItemId;
-    private Long claimItemSeqId;
-    private Claim claim;
-    private Float claimAmount;
-    private Float quantity;
-    private UnitOfMeasureType unitOfMeasureType;
-    private ClaimServiceCode claimServiceCode;
+    private Long claimItemDiagnosisCode;
+    private ClaimItem claimItem;
+    private DiagnosisType diagnosisType;
 
-    private Set<ClaimSettlement> claimSettlements = new HashSet<ClaimSettlement>();
-    private Set<ClaimItemDiagnosisCode> diagnosisCodes = new HashSet<ClaimItemDiagnosisCode>();
+    public ClaimItemDiagnosisCode()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimItemId()
+    public Long getClaimItemDiagnosisCode()
     {
-        return claimItemId;
+        return claimItemDiagnosisCode;
     }
 
-    protected void setClaimItemId(final Long claimItemId)
+    public void setClaimItemDiagnosisCode(final Long claimItemDiagnosisCode)
     {
-        this.claimItemId = claimItemId;
-    }
-
-    public Long getClaimItemSeqId()
-    {
-        return claimItemSeqId;
-    }
-
-    public void setClaimItemSeqId(final Long claimItemSeqId)
-    {
-        this.claimItemSeqId = claimItemSeqId;
+        this.claimItemDiagnosisCode = claimItemDiagnosisCode;
     }
 
     @ManyToOne
-    @JoinColumn(name = "claim_id", nullable = false)
-    public Claim getClaim()
+    @JoinColumn(name = "claim_item_id", nullable = false)
+    public ClaimItem getClaimItem()
     {
-        return claim;
+        return claimItem;
     }
 
-    public void setClaim(final Claim claim)
+    public void setClaimItem(final ClaimItem claimItem)
     {
-        this.claim = claim;
-    }
-
-    @Column(nullable = false)
-    public Float getClaimAmount()
-    {
-        return claimAmount;
-    }
-
-    public void setClaimAmount(final float claimAmount)
-    {
-        this.claimAmount = claimAmount;
-    }
-
-    public Float getQuantity()
-    {
-        return quantity;
-    }
-
-    public void setQuantity(final Float quantity)
-    {
-        this.quantity = quantity;
+        this.claimItem = claimItem;
     }
 
     @ManyToOne
-    @JoinColumn(name = "unit_of_measure_type_id")
-    public UnitOfMeasureType getUnitOfMeasure()
+    @JoinColumn(name = "diagnosis_type_id", nullable = false)
+    public DiagnosisType getDiagnosisType()
     {
-        return unitOfMeasureType;
+        return diagnosisType;
     }
 
-    public void setUnitOfMeasure(final UnitOfMeasureType unitOfMeasureType)
+    public void setDiagnosisType(final DiagnosisType diagnosisType)
     {
-        this.unitOfMeasureType = unitOfMeasureType;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimItem")
-    public Set<ClaimSettlement> getClaimSettlements()
-    {
-        return claimSettlements;
-    }
-
-    public void setClaimSettlements(final Set<ClaimSettlement> claimSettlements)
-    {
-        this.claimSettlements = claimSettlements;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "claim_service_code_id")
-    public ClaimServiceCode getClaimServiceCode()
-    {
-        return claimServiceCode;
-    }
-
-    public void setClaimServiceCode(final ClaimServiceCode claimServiceCode)
-    {
-        this.claimServiceCode = claimServiceCode;
-    }
-
-    @OneToMany(mappedBy = "claimItem")
-    public Set<ClaimItemDiagnosisCode> getDiagnosisCodes()
-    {
-        return diagnosisCodes;
-    }
-
-    public void setDiagnosisCodes(final Set<ClaimItemDiagnosisCode> diagnosisCodes)
-    {
-        this.diagnosisCodes = diagnosisCodes;
+        this.diagnosisType = diagnosisType;
     }
 }
