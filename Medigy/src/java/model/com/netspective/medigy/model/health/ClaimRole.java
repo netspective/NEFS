@@ -39,108 +39,71 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.health.ClaimRoleType;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Claim extends AbstractTopLevelEntity
+public class ClaimRole   extends AbstractTopLevelEntity
 {
-    private Long claimId;
-    private Date claimSubmissionDate;
+    private Long claimRoleId;
+    private Party party;
+    private Claim claim;
+    private ClaimRoleType type;
 
-    private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
-    private Set<ClaimStatus> claimStatuses = new HashSet<ClaimStatus>();
-
-    private Set<ClaimResubmission> resubmittedFor = new HashSet<ClaimResubmission>();
-    private Set<ClaimResubmission> resubmittedWith = new HashSet<ClaimResubmission>();
-    private Set<ClaimRole> claimRoles = new HashSet<ClaimRole>();
+    public ClaimRole()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimId()
+    public Long getClaimRoleId()
     {
-        return claimId;
+        return claimRoleId;
     }
 
-    protected void setClaimId(final Long claimId)
+    protected void setClaimRoleId(final Long claimRoleId)
     {
-        this.claimId = claimId;
+        this.claimRoleId = claimRoleId;
     }
 
-    /**
-     * Gets the claim submission date
-     * @return
-     */
-    public Date getClaimSubmissionDate()
+    @ManyToOne
+    @JoinColumn(name = "party_id")
+    public Party getParty()
     {
-        return claimSubmissionDate;
+        return party;
     }
 
-    public void setClaimSubmissionDate(final Date claimSubmissionDate)
+    public void setParty(final Party party)
     {
-        this.claimSubmissionDate = claimSubmissionDate;
+        this.party = party;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")
-    public Set<ClaimStatus> getClaimStatuses()
+    @ManyToOne
+    @JoinColumn(name = "claim_id")
+    public Claim getClaim()
     {
-        return claimStatuses;
+        return claim;
     }
 
-    public void setClaimStatuses(final Set<ClaimStatus> claimStatuses)
+    public void setClaim(final Claim claim)
     {
-        this.claimStatuses = claimStatuses;
+        this.claim = claim;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")
-    public Set<ClaimItem> getClaimItems()
+    @ManyToOne
+    @JoinColumn(name = "claim_role_type_id")        
+    public ClaimRoleType getType()
     {
-        return claimItems;
+        return type;
     }
 
-    public void setClaimItems(final Set<ClaimItem> claimItems)
+    public void setType(final ClaimRoleType type)
     {
-        this.claimItems = claimItems;
+        this.type = type;
     }
-
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimFor")
-    public Set<ClaimResubmission> getResubmittedFor()
-    {
-        return resubmittedFor;
-    }
-
-    public void setResubmittedFor(final Set<ClaimResubmission> resubmittedFor)
-    {
-        this.resubmittedFor = resubmittedFor;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimWith")
-    public Set<ClaimResubmission> getResubmittedWith()
-    {
-        return resubmittedWith;
-    }
-
-    public void setResubmittedWith(final Set<ClaimResubmission> resubmittedWith)
-    {
-        this.resubmittedWith = resubmittedWith;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")           
-    public Set<ClaimRole> getClaimRoles()
-    {
-        return claimRoles;
-    }
-
-    public void setClaimRoles(final Set<ClaimRole> claimRoles)
-    {
-        this.claimRoles = claimRoles;
-    }
-
 }

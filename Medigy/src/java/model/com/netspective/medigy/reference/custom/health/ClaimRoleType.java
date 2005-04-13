@@ -36,111 +36,25 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.reference.custom.health;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
 
 @Entity
-public class Claim extends AbstractTopLevelEntity
+public class ClaimRoleType extends AbstractCustomReferenceEntity
 {
-    private Long claimId;
-    private Date claimSubmissionDate;
-
-    private Set<ClaimItem> claimItems = new HashSet<ClaimItem>();
-    private Set<ClaimStatus> claimStatuses = new HashSet<ClaimStatus>();
-
-    private Set<ClaimResubmission> resubmittedFor = new HashSet<ClaimResubmission>();
-    private Set<ClaimResubmission> resubmittedWith = new HashSet<ClaimResubmission>();
-    private Set<ClaimRole> claimRoles = new HashSet<ClaimRole>();
-
     @Id(generate = GeneratorType.AUTO)
-    public Long getClaimId()
+    public Long getClaimRoleTypeId()
     {
-        return claimId;
+        return super.getSystemId();
     }
 
-    protected void setClaimId(final Long claimId)
+    protected void setClaimRoleTypeId(final Long id)
     {
-        this.claimId = claimId;
+        super.setSystemId(id);
     }
-
-    /**
-     * Gets the claim submission date
-     * @return
-     */
-    public Date getClaimSubmissionDate()
-    {
-        return claimSubmissionDate;
-    }
-
-    public void setClaimSubmissionDate(final Date claimSubmissionDate)
-    {
-        this.claimSubmissionDate = claimSubmissionDate;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")
-    public Set<ClaimStatus> getClaimStatuses()
-    {
-        return claimStatuses;
-    }
-
-    public void setClaimStatuses(final Set<ClaimStatus> claimStatuses)
-    {
-        this.claimStatuses = claimStatuses;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")
-    public Set<ClaimItem> getClaimItems()
-    {
-        return claimItems;
-    }
-
-    public void setClaimItems(final Set<ClaimItem> claimItems)
-    {
-        this.claimItems = claimItems;
-    }
-
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimFor")
-    public Set<ClaimResubmission> getResubmittedFor()
-    {
-        return resubmittedFor;
-    }
-
-    public void setResubmittedFor(final Set<ClaimResubmission> resubmittedFor)
-    {
-        this.resubmittedFor = resubmittedFor;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claimWith")
-    public Set<ClaimResubmission> getResubmittedWith()
-    {
-        return resubmittedWith;
-    }
-
-    public void setResubmittedWith(final Set<ClaimResubmission> resubmittedWith)
-    {
-        this.resubmittedWith = resubmittedWith;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "claim")           
-    public Set<ClaimRole> getClaimRoles()
-    {
-        return claimRoles;
-    }
-
-    public void setClaimRoles(final Set<ClaimRole> claimRoles)
-    {
-        this.claimRoles = claimRoles;
-    }
-
 }
