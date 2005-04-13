@@ -45,8 +45,11 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"code", "party_id"})})
 public class InvoiceItemType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
