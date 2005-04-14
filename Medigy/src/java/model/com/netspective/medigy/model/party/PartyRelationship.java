@@ -74,7 +74,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
     private PriorityType priorityType;
 
     private Set<CommunicationEvent> communicationEvents = new HashSet<CommunicationEvent>();
-    private Set<Agreement> agreements = new HashSet<Agreement>();
+    //private Set<Agreement> agreements = new HashSet<Agreement>();
 
     public PartyRelationship()
     {
@@ -188,6 +188,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.communicationEvents = communicationEvents;
     }
 
+    /*
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_relationship_id")
     public Set<Agreement> getAgreements()
@@ -199,4 +200,5 @@ public class PartyRelationship extends AbstractDateDurationEntity
     {
         this.agreements = agreements;
     }
+    */
 }
