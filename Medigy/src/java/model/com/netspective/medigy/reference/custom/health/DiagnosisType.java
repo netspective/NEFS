@@ -81,12 +81,12 @@ public class DiagnosisType extends AbstractCustomReferenceEntity
     }
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getDiagnosisTypeTypeId()
+    public Long getDiagnosisTypeId()
     {
         return super.getSystemId();
     }
 
-    protected void setDiagnosisTypeTypeId(final Long id)
+    protected void setDiagnosisTypeId(final Long id)
     {
         super.setSystemId(id);
     }
