@@ -91,9 +91,9 @@ public class EmploymentAgreementRole implements AgreementRole
     }
 
 
-    @ManyToOne
+    @ManyToOne(targetEntity = "com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType")
     @JoinColumn(name = "emp_agree_role_type_id")
-    public EmploymentAgreementRoleType getType()
+    public AgreementRoleType getType()
     {
         return type;
     }

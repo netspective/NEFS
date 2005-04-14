@@ -38,43 +38,17 @@
  */
 package com.netspective.medigy.model.party;
 
-
+import com.netspective.medigy.reference.custom.party.AgreementRoleType;
 
 
 public interface AgreementRole
 {
+    public AgreementRoleType getType();
+    public void setType(AgreementRoleType type);    
 
     public Agreement getAgreement();
     public void setAgreement(Agreement agreement);
 
-    /*
-    @ManyToOne
-    @JoinColumn(name = "agreement_id")
-    public Agreement getAgreement()
-    {
-        return agreement;
-    }
-
-    public void setAgreement(final Agreement agreement)
-    {
-        this.agreement = agreement;
-    }
-
-    @JoinColumn(name = "agreement_role_type_id")
-    public AgreementRoleType getType()
-    {
-        return type;
-    }
-
-    public void setType(final AgreementRoleType type)
-    {
-        this.type = type;
-    }
-    */
-
-    //public AgreementRoleType getType();
-    //public void setType(AgreementRoleType type);
-
-    //public abstract Party getParty();
-    //public abstract void setParty(final Party party);
+    public Party getParty();
+    public void setParty(final Party party);
 }
