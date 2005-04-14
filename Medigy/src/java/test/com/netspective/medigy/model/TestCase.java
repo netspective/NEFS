@@ -106,11 +106,12 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
 
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyQualificationType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.AgreementType.class);
+        //config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.AgreementType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
@@ -148,8 +149,9 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyQualification.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.Agreement.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.AgreementItem.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreement.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreementItem.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreementRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareOffering.class);
@@ -185,6 +187,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroup.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroupClassification.class);
 
+        //config.addAnnotatedClass(com.netspective.medigy.model.health.InsurancePolicy.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.Claim.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItem.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimStatus.class);
@@ -194,6 +197,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimServiceCode.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItemDiagnosisCode.class);
+
 
         return config;
     }
