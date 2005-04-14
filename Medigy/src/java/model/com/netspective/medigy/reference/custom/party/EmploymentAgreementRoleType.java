@@ -40,7 +40,6 @@ package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
 import com.netspective.medigy.reference.custom.CustomReferenceEntity;
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -50,7 +49,7 @@ import javax.persistence.Column;
 
 @Entity
 @Table(name = "Emp_Agree_Role_Type")
-public class EmploymentAgreementRoleType  extends AbstractCustomReferenceEntity
+public class EmploymentAgreementRoleType  extends AgreementRoleType
 {
     public enum Cache implements CachedCustomReferenceEntity
     {
@@ -85,11 +84,11 @@ public class EmploymentAgreementRoleType  extends AbstractCustomReferenceEntity
     @Column(name = "emp_agree_role_type_id")
     public Long getEmploymentAgreementRoleTypeId()
     {
-        return super.getSystemId();
+        return super.getAgreementRoleTypeId();
     }
 
     public void setEmploymentAgreementRoleTypeId(final Long id)
     {
-        super.setSystemId(id);
+        super.setAgreementRoleTypeId(id);
     }
 }

@@ -38,63 +38,20 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
-import javax.persistence.Entity;
+import javax.persistence.Transient;
 
-@Entity
-public class AgreementType extends AbstractCustomReferenceEntity
+public class AgreementRoleType extends AbstractCustomReferenceEntity
 {
-    public enum Cache implements CachedCustomReferenceEntity
-    {
-        PATIENT_PROVIDER_AGREEMENT("PPA"),
-        EMPLOYMENT_AGREEMENT("EA"),
-        PROVIDER_NETWORK_AGREEMENT("PNA"),
-        INSURANCE_POLICY("INS"),
-        PURCHASE_AGREEMENT("PA"),
-        SALES_AGREEMENT("SALES"),
-        PARTNERSHIP_AGREEMENT("PARTNER"),
-        OTHER("OTHER");
-
-        private final String code;
-        private AgreementType entity;
-
-        Cache(final String code)
-        {
-            this.code = code;
-        }
-
-        public String getCode()
-        {
-            return code;
-        }
-
-        public AgreementType getEntity()
-        {
-            return entity;
-        }
-
-        public void setEntity(final CustomReferenceEntity entity)
-        {
-            this.entity = (AgreementType) entity;
-        }
-    }
-
-    public AgreementType()
-    {
-    }
-
-    @Id(generate = GeneratorType.AUTO)
-    public Long getAgreementTypeId()
+    
+    @Transient
+    public Long getAgreementRoleTypeId()
     {
         return super.getSystemId();
     }
 
-    protected void setAgreementTypeId(final Long id)
+    protected void setAgreementRoleTypeId(final Long id)
     {
         super.setSystemId(id);
     }
