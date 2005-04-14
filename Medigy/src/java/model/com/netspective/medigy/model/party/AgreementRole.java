@@ -40,38 +40,41 @@ package com.netspective.medigy.model.party;
 
 
 
-//@Entity
-public interface AgreementItem
-{
-    //private AgreementItem parentAgreementItem;
 
-    public Long getAgreementItemId();
-    public Long getAgreementItemSeqId();
-    public void setAgreementItemSeqId(final Long agreementItemSeqId);
+public interface AgreementRole
+{
 
     public Agreement getAgreement();
-    public void setAgreement(final Agreement agreement);
-
-    public String getAgreementText();
-    public void setAgreementText(final String text);
-    public byte[] getAgreementImage();
-    public void setAgreementImage(final byte[] agreementImage);
+    public void setAgreement(Agreement agreement);
 
     /*
-    @OneToOne
-    @JoinColumn(name = "parent_agreement_item_id", referencedColumnName = "agreement_id")
-    public AgreementItem getParentAgreementItem()
+    @ManyToOne
+    @JoinColumn(name = "agreement_id")
+    public Agreement getAgreement()
     {
-        return parentAgreementItem;
+        return agreement;
     }
 
-    public void setParentAgreementItem(final AgreementItem parentAgreementItem)
+    public void setAgreement(final Agreement agreement)
     {
-        this.parentAgreementItem = parentAgreementItem;
+        this.agreement = agreement;
     }
 
+    @JoinColumn(name = "agreement_role_type_id")
+    public AgreementRoleType getType()
+    {
+        return type;
+    }
+
+    public void setType(final AgreementRoleType type)
+    {
+        this.type = type;
+    }
     */
 
-    public AgreementItem getParentAgreementItem();
-    public void setParentAgreementItem(final AgreementItem parentAgreementItem);
+    //public AgreementRoleType getType();
+    //public void setType(AgreementRoleType type);
+
+    //public abstract Party getParty();
+    //public abstract void setParty(final Party party);
 }

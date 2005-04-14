@@ -38,96 +38,33 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.AgreementType;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
-import java.util.Date;
 import java.util.Set;
-import java.util.HashSet;
+import java.util.Date;
 
-@Entity
-public class Agreement extends AbstractDateDurationEntity
+//@Entity
+public interface Agreement
 {
-    public Long agreementId;
-    private Date agreementDate;
-    private String description;
-    private AgreementType type;
-    private PartyRelationship partyRelationship;
+    /**
+     * An agreement is a set of terms and conditions that govern the relationship between two parties (normally).
+     * The agreement roles maybe defined using either the relationship to PARTY RELATIONSHIP or the AGREEMENT ROLEs or
+     * both. For example, there may exist a customer relationship that, when formalized, is done so through an
+     * agreement. Each PARTY RELATIONSHIP may be involved in ore or more agreements. There also maybe more than two
+     * parties involved in the agreement, such as in a threee-way partnership agreement. The AGREEMENT ROLE entity would
+     * be used to store the roles associated with the agreement in this circumstance.
+     *
+     */
 
-    private Set<AgreementItem> agreementItems = new HashSet<AgreementItem>();
+    public Long getAgreementId();
+    public void setAgreementId(final Long id);
+    public Date getAgreementDate();
+    public void setAgreementDate(final Date agreementDate);
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getAgreementId()
-    {
-        return agreementId;
-    }
+    public String getDescription();
+    public void setDescription(final String description);
 
-    protected void setAgreementId(final Long agreementId)
-    {
-        this.agreementId = agreementId;
-    }
+    public Set<? extends AgreementRole> getAgreementRoles();
+    public void setAgreementRoles(Set<? extends AgreementRole> agreementRoles);
 
-    public Date getAgreementDate()
-    {
-        return agreementDate;
-    }
-
-    public void setAgreementDate(final Date agreementDate)
-    {
-        this.agreementDate = agreementDate;
-    }
-
-    @Column(length = 100)
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(final String description)
-    {
-        this.description = description;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "agreement_type_id")
-    public AgreementType getType()
-    {
-        return type;
-    }
-
-    public void setType(final AgreementType type)
-    {
-        this.type = type;
-    }
-
-    @JoinColumn(name = "party_relationship_id", nullable = false)
-    public PartyRelationship getPartyRelationship()
-    {
-        return partyRelationship;
-    }
-
-    public void setPartyRelationship(final PartyRelationship partyRelationship)
-    {
-        this.partyRelationship = partyRelationship;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "agreement_id")
-    public Set<AgreementItem> getAgreementItems()
-    {
-        return agreementItems;
-    }
-
-    public void setAgreementItems(final Set<AgreementItem> agreementItems)
-    {
-        this.agreementItems = agreementItems;
-    }
+    public Set<? extends AgreementItem> getAgreementItems();
+    public void setAgreementItems(final Set<? extends AgreementItem> agreementItems);
 }
