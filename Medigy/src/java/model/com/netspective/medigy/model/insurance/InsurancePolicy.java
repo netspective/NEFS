@@ -42,6 +42,8 @@ import com.netspective.medigy.model.party.Agreement;
 import com.netspective.medigy.model.party.AgreementRole;
 import com.netspective.medigy.model.party.AgreementItem;
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.org.Organization;
+import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 
@@ -165,13 +167,13 @@ public class InsurancePolicy implements Agreement
     }
 
     @Transient
-    public void setInsuranceProvider(final Party providerParty)
+    public void setInsuranceProvider(final Organization providerParty)
     {
         addPartyByRole(providerParty, InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getEntity());
     }
 
     @Transient
-    public void setInsuredContractHolder(final Party individualParty)
+    public void setInsuredContractHolder(final Person individualParty)
     {
         addPartyByRole(individualParty, InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
     }
@@ -188,15 +190,15 @@ public class InsurancePolicy implements Agreement
     }
 
     @Transient
-    public Party getInsuranceProvider()
+    public Organization getInsuranceProvider()
     {
-        return getPartyByRole(InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getEntity());
+        return (Organization) getPartyByRole(InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getEntity());
     }
 
     @Transient
-    public Party getInsuredContractHolder()
+    public Person getInsuredContractHolder()
     {
-        return getPartyByRole(InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
+        return (Person) getPartyByRole(InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
     }
 
     @Transient
