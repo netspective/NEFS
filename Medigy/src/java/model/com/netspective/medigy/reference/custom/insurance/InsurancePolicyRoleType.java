@@ -36,7 +36,7 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.health;
+package com.netspective.medigy.reference.custom.insurance;
 
 import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
 import com.netspective.medigy.reference.custom.CustomReferenceEntity;
@@ -52,6 +52,7 @@ public class InsurancePolicyRoleType  extends AgreementRoleType
     public enum Cache implements CachedCustomReferenceEntity
     {
         INSURANCE_PROVIDER("INS_PROV"),
+        INSURANCE_PROVIDER_AGENT("INS_PROV_AGENT"),
         INSURED_CONTRACT_HOLDER("INS_IND"),
         INSURED_DEPENDENT("INS_DEP");
 
