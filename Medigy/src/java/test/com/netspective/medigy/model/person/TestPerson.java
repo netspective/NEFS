@@ -51,7 +51,7 @@ import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.util.HibernateUtil;
@@ -146,6 +146,9 @@ public class TestPerson extends TestCase
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().setActiveSession(session);
 
+
+
+
         final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
         criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
         Party globalParty = (Party) criteria.uniqueResult();
@@ -164,11 +167,11 @@ public class TestPerson extends TestCase
 
         // assign a role to the person
         final PartyRole patientRole = new PartyRole();
-        patientRole.setType(PartyRoleType.Cache.PATIENT.getEntity());
+        patientRole.setType(PersonRoleType.Cache.PATIENT.getEntity());
         patientRole.setParty(patient);
 
         final PartyRole doctorRole = new PartyRole();
-        doctorRole.setType(PartyRoleType.Cache.INDIVIDUAL_HEALTH_CARE_PRACTITIONER.getEntity());
+        doctorRole.setType(PersonRoleType.Cache.INDIVIDUAL_HEALTH_CARE_PRACTITIONER.getEntity());
         doctorRole.setParty(doctor);
         HibernateUtil.getSession().save(patientRole);
         HibernateUtil.getSession().save(doctorRole);
