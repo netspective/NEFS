@@ -36,84 +36,96 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.insurance;
 
+import com.netspective.medigy.model.party.AgreementItem;
 import com.netspective.medigy.model.party.Agreement;
-import com.netspective.medigy.model.party.AgreementRole;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType;
-import com.netspective.medigy.reference.custom.party.AgreementRoleType;
+import com.netspective.medigy.model.insurance.InsurancePolicy;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name = "Ins_Policy_Role")        
-public class InsurancePolicyRole implements AgreementRole
+@Table(name = "Ins_Policy_Item")
+public class InsurancePolicyItem implements AgreementItem
 {
-    private Long insurancePolicyRoleId;
-    private InsurancePolicy agreement;
-    private Party party;
-    private InsurancePolicyRoleType type;
+    private InsurancePolicy insurancePolicy;
+    private Long insurancePolicyItemId;
+    private Long insurancePolicyItemSeqId;
+    private String text;
+    private byte[] image;
+    private InsurancePolicyItem parentPolicyItem;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getInsurancePolicyRoleId()
+    @Column(name = "ins_policy_item_id")
+    public Long getAgreementItemId()
     {
-        return insurancePolicyRoleId;
+        return insurancePolicyItemId;
     }
 
-    public void setInsurancePolicyRoleId(final Long insurancePolicyRoleId)
+    protected void setAgreementItemId(final Long id)
     {
-        this.insurancePolicyRoleId = insurancePolicyRoleId;
+        this.insurancePolicyItemId = id;
     }
 
-    @Transient
-    public InsurancePolicy getInsurancePolicy()
+    @Column(name = "ins_policy_item_seq_id")
+    public Long getAgreementItemSeqId()
     {
-        return (InsurancePolicy) getAgreement();
+        return insurancePolicyItemSeqId;
     }
 
-    public void setInsurancePolicy(InsurancePolicy insurancePolicy)
+    public void setAgreementItemSeqId(Long agreementItemSeqId)
     {
-        setInsurancePolicy(insurancePolicy);
+        insurancePolicyItemSeqId = agreementItemSeqId;
     }
 
-    @ManyToOne(targetEntity = "com.netspective.medigy.model.health.InsurancePolicy")
-    @JoinColumn(name = "insurance_policy_id")
+    @ManyToOne(targetEntity = "com.netspective.medigy.model.insurance.InsurancePolicy")
+    @JoinColumn(name = "ins_policy_id")
     public Agreement getAgreement()
     {
-        return agreement;
+        return insurancePolicy;
     }
 
     public void setAgreement(Agreement agreement)
     {
-        this.agreement = ((InsurancePolicy) agreement);
+        insurancePolicy = (InsurancePolicy) agreement;
     }
 
-    @JoinColumn(name = "party_id")
-    public Party getParty()
+    public String getAgreementText()
     {
-        return party;
+        return text;
     }
 
-    public void setParty(Party party)
+    public void setAgreementText(String text)
     {
-        this.party = party;
+        this.text = text;
     }
 
-    @ManyToOne(targetEntity = "com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType")
-    public AgreementRoleType getType()
+    public byte[] getAgreementImage()
     {
-        return type;
+        return image;
     }
 
-    public void setType(AgreementRoleType type)
+    public void setAgreementImage(byte[] agreementImage)
     {
-        this.type = (InsurancePolicyRoleType) type;
+        this.image = agreementImage;
+    }
+
+    @OneToOne(targetEntity = "com.netspective.medigy.model.insurance.InsurancePolicyItem")
+    @JoinColumn(name = "parent_ins_policy_item_id", referencedColumnName = "ins_policy_item_id")
+    public AgreementItem getParentAgreementItem()
+    {
+        return parentPolicyItem;
+    }
+
+    public void setParentAgreementItem(AgreementItem parentAgreementItem)
+    {
+        this.parentPolicyItem = (InsurancePolicyItem) parentAgreementItem;
     }
 }

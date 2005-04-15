@@ -36,11 +36,13 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.model.insurance;
 
 import com.netspective.medigy.model.party.Agreement;
 import com.netspective.medigy.model.party.AgreementRole;
 import com.netspective.medigy.model.party.AgreementItem;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -129,7 +131,7 @@ public class InsurancePolicy implements Agreement
         return insurancePolicyRoles;
     }
 
-    public void setAgreementRoles(Set<? extends AgreementRole> agreementRoles)
+    public void setAgreementRoles(final Set<? extends AgreementRole> agreementRoles)
     {
         this.insurancePolicyRoles = (Set<InsurancePolicyRole>) agreementRoles;
     }
@@ -141,8 +143,58 @@ public class InsurancePolicy implements Agreement
         return insurancePolicyItems;
     }
 
-    public void setAgreementItems(Set<? extends AgreementItem> agreementItems)
+    public void setAgreementItems(final Set<? extends AgreementItem> agreementItems)
     {
         this.insurancePolicyItems = (Set<InsurancePolicyItem>) agreementItems;
+    }
+
+    @Transient
+    public void setInsuranceProvider(final Party providerParty)
+    {
+        addPartyByRole(providerParty, InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getEntity());
+    }
+
+    @Transient
+    public void setInsuredContractHolder(final Party individualParty)
+    {
+        addPartyByRole(individualParty, InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
+    }
+
+    @Transient
+    protected void addPartyByRole(final Party party, final InsurancePolicyRoleType roleType)
+    {
+        InsurancePolicyRole role = new InsurancePolicyRole();
+        role.setAgreement(this);
+        role.setType(roleType);
+        role.setParty(party);
+
+        getAgreementRoles().add(role);
+    }
+
+    @Transient
+    public Party getInsuranceProvider()
+    {
+        return getPartyByRole(InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getEntity());
+    }
+
+    @Transient
+    public Party getInsuredContractHolder()
+    {
+        return getPartyByRole(InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
+    }
+
+    @Transient
+    protected Party getPartyByRole(final InsurancePolicyRoleType roleType)
+    {
+        final Object[] objects = (Object[]) getAgreementRoles().toArray();
+        for (int i = 0; i < objects.length; i++)
+        {
+            AgreementRole role = (AgreementRole) objects[i];
+            if (role.getType().equals(roleType))
+            {
+                return role.getParty();
+            }
+        }
+        return null;
     }
 }
