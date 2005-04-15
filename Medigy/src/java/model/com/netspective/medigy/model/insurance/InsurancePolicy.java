@@ -42,7 +42,8 @@ import com.netspective.medigy.model.party.Agreement;
 import com.netspective.medigy.model.party.AgreementRole;
 import com.netspective.medigy.model.party.AgreementItem;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
@@ -53,6 +54,7 @@ import javax.persistence.Table;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
@@ -65,6 +67,8 @@ public class InsurancePolicy implements Agreement
     private String policyNumber;
     private String description;
     private Date policyDate;
+    private InsurancePolicyType type;
+
     private Set<InsurancePolicyRole> insurancePolicyRoles = new HashSet<InsurancePolicyRole>();
     private Set<InsurancePolicyItem> insurancePolicyItems = new HashSet<InsurancePolicyItem>();
 
@@ -146,6 +150,18 @@ public class InsurancePolicy implements Agreement
     public void setAgreementItems(final Set<? extends AgreementItem> agreementItems)
     {
         this.insurancePolicyItems = (Set<InsurancePolicyItem>) agreementItems;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ins_policy_type_id", nullable = false)
+    public InsurancePolicyType getType()
+    {
+        return type;
+    }
+
+    public void setType(final InsurancePolicyType type)
+    {
+        this.type = type;
     }
 
     @Transient

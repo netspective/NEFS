@@ -42,8 +42,9 @@ import com.netspective.medigy.model.party.Agreement;
 import com.netspective.medigy.model.party.AgreementRole;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.insurance.InsurancePolicy;
-import com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 import com.netspective.medigy.reference.custom.party.AgreementRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
@@ -107,7 +108,7 @@ public class InsurancePolicyRole implements AgreementRole
         this.party = party;
     }
 
-    @ManyToOne(targetEntity = "com.netspective.medigy.reference.custom.health.InsurancePolicyRoleType")
+    @ManyToOne(targetEntity = "com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType")
     public AgreementRoleType getType()
     {
         return type;
