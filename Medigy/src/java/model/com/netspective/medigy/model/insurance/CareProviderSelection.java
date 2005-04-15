@@ -38,82 +38,68 @@
  */
 package com.netspective.medigy.model.insurance;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.person.Person;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Date;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-public class Enrollment extends AbstractTopLevelEntity
+public class CareProviderSelection extends AbstractDateDurationEntity
 {
-    private Long enrollmentId;
-    private Date enrolledDate;
-    private Set<EnrollmentElection> elections = new HashSet<EnrollmentElection>();
-    private Group group;
-    private Set<CareProviderSelection> careProviderSelections = new HashSet<CareProviderSelection>();
+    private Long careProviderSelectionId;
+    private Person individualHealthCarePractitioner;
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getEnrollmentId()
+    private Enrollment enrollment;
+    private Person insuredIndividual;
+
+    @Id(generate  = GeneratorType.AUTO)
+    public Long getCareProviderSelectionId()
     {
-        return enrollmentId;
+        return careProviderSelectionId;
     }
 
-    protected void setEnrollmentId(final Long enrollmentId)
+    public void setCareProviderSelectionId(final Long careProviderSelectionId)
     {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public Date getEnrolledDate()
-    {
-        return enrolledDate;
-    }
-
-    public void setEnrolledDate(final Date enrolledDate)
-    {
-        this.enrolledDate = enrolledDate;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "enrollment_id")
-    public Set<EnrollmentElection> getElections()
-    {
-        return elections;
-    }
-
-    public void setElections(final Set<EnrollmentElection> elections)
-    {
-        this.elections = elections;
+        this.careProviderSelectionId = careProviderSelectionId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
-    public Group getGroup()
+    @JoinColumn(name = "practitioner_party_id", referencedColumnName = "party_id")        
+    public Person getIndividualHealthCarePractitioner()
     {
-        return group;
+        return individualHealthCarePractitioner;
     }
 
-    public void setGroup(final Group group)
+    public void setIndividualHealthCarePractitioner(final Person individualHealthCarePractitioner)
     {
-        this.group = group;
+        this.individualHealthCarePractitioner = individualHealthCarePractitioner;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "enrollment_id")
-    public Set<CareProviderSelection> getCareProviderSelections()
+    public Enrollment getEnrollment()
     {
-        return careProviderSelections;
+        return enrollment;
     }
 
-    public void setCareProviderSelections(final Set<CareProviderSelection> careProviderSelections)
+    public void setEnrollment(final Enrollment enrollment)
     {
-        this.careProviderSelections = careProviderSelections;
+        this.enrollment = enrollment;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "insured_party_id", referencedColumnName = "party_id")
+    public Person getInsuredIndividual()
+    {
+        return insuredIndividual;
+    }
+
+    public void setInsuredIndividual(final Person insuredIndividual)
+    {
+        this.insuredIndividual = insuredIndividual;
     }
 }
