@@ -58,7 +58,7 @@ public class InsurancePolicyType extends AbstractCustomReferenceEntity
         GROUP_INSURANCE_POLICY("GROUP");
 
         private final String code;
-        private InsurancePolicyRoleType entity;
+        private InsurancePolicyType entity;
 
         Cache(final String code)
         {
@@ -70,14 +70,14 @@ public class InsurancePolicyType extends AbstractCustomReferenceEntity
             return code;
         }
 
-        public InsurancePolicyRoleType getEntity()
+        public InsurancePolicyType getEntity()
         {
             return entity;
         }
 
         public void setEntity(final CustomReferenceEntity entity)
         {
-            this.entity = (InsurancePolicyRoleType) entity;
+            this.entity = (InsurancePolicyType) entity;
         }
     }
 
