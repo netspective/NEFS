@@ -38,6 +38,8 @@
  */
 package com.netspective.medigy.model.party;
 
+import com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
@@ -46,6 +48,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.persistence.CascadeType;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Date;
@@ -119,59 +122,56 @@ public class EmploymentAgreement implements Agreement
         this.agreementItems = (Set<EmploymentAgreementItem>) agreementItems;
     }
 
-    /*
     @Transient
-    public void setEmployer(Party employerParty)
+    protected void setPartyByRole(Party party, EmploymentAgreementRoleType type)
     {
         EmploymentAgreementRole role = new EmploymentAgreementRole();
         role.setAgreement(this);
-        role.setType(EmploymentAgreementRoleType.Cache.EMPLOYER.getEntity());
-        role.setParty(employerParty);
+        role.setType(type);
+        role.setParty(party);
 
-        // TODO: Replace the employer if it already exists
+        // TODO: Replace existing party with same  role if it already exists
         getAgreementRoles().add(role);
+    }
+
+
+    @Transient
+    public void setEmployer(Party employerParty)
+    {
+        setPartyByRole(employerParty, EmploymentAgreementRoleType.Cache.EMPLOYER.getEntity());
     }
 
     @Transient
     public void setEmployee(Party employeeParty)
     {
-        EmploymentAgreementRole role = new EmploymentAgreementRole();
-        role.setAgreement(this);
-        role.setType(EmploymentAgreementRoleType.Cache.EMPLOYEE.getEntity());
-        role.setParty(employeeParty);
+        setPartyByRole(employeeParty, EmploymentAgreementRoleType.Cache.EMPLOYEE.getEntity());
+    }
 
-        // TODO: Replace the employee if it already exists
-        getAgreementRoles().add(role);
+    @Transient
+    public Party getPartyByRole(EmploymentAgreementRoleType type)
+    {
+        final Object[] objects = (Object[]) getAgreementRoles().toArray();
+        for (int i = 0; i < objects.length; i++)
+        {
+            AgreementRole role = (AgreementRole) objects[i];
+            if (role.getType().equals(type))
+            {
+                return role.getParty();
+            }
+        }
+        return null;
     }
 
     @Transient
     public Party getEmployer()
     {
-        final Object[] objects = (Object[]) getAgreementRoles().toArray();
-        for (int i = 0; i < objects.length; i++)
-        {
-            AgreementRole role = (AgreementRole) objects[i];
-            if (role.getType().equals(EmploymentAgreementRoleType.Cache.EMPLOYER.getEntity()))
-            {
-                return role.getParty();
-            }
-        }
-        return null;
+        return getPartyByRole(EmploymentAgreementRoleType.Cache.EMPLOYER.getEntity());
     }
 
     @Transient
     public Party getEmployee()
     {
-        final Object[] objects = (Object[]) getAgreementRoles().toArray();
-        for (int i = 0; i < objects.length; i++)
-        {
-            AgreementRole role = (AgreementRole) objects[i];
-            if (role.getType().equals(EmploymentAgreementRoleType.Cache.EMPLOYEE.getEntity()))
-            {
-                return role.getParty();
-            }
-        }
-        return null;
+        return getPartyByRole(EmploymentAgreementRoleType.Cache.EMPLOYEE.getEntity());
     }
-    */
+
 }
