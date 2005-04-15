@@ -39,9 +39,12 @@
 package com.netspective.medigy.model.data;
 
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
+import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,9 +77,12 @@ public class EntitySeedDataPopulator
         globalParty = new Party(Party.SYS_GLOBAL_PARTY_NAME);
         session.save(globalParty);
 
-        populatePartyRoleType();
+        populatePersonRoleType();
+        populateOrganizationRoleType();
         populatePartyRelationshipType();
+        populateInsurancePolicyType();
         populateGeographicBoundaries();
+        populateInsurancePolicyRoleType();
         HibernateUtil.commitTransaction();
     }
 
@@ -107,20 +113,52 @@ public class EntitySeedDataPopulator
         );
     }
 
-    protected void populatePartyRoleType() throws HibernateException
+    protected void populatePersonRoleType() throws HibernateException
     {
-        populateEntity(session, PartyRoleType.class, new String[] {"code", "label", "description", "party"},
+        populateEntity(session, PersonRoleType.class, new String[] {"code", "label", "description", "party"},
             new Object[][]
             {
-                {PartyRoleType.Cache.PROSPECT.getCode(), "Prospect", null, globalParty},
-                {PartyRoleType.Cache.DIVISION.getCode(), "Division", null, globalParty},
-                {PartyRoleType.Cache.OTHER_ORG_UNIT.getCode(), "Other Organization Unit", null, globalParty},
-                {PartyRoleType.Cache.DEPARTMENT.getCode(), "Department", null, globalParty},
-                {PartyRoleType.Cache.SUBSIDIARY.getCode(), "Subsidiary", null, globalParty},
-                {PartyRoleType.Cache.PARENT_ORG.getCode(), "Parent Organization", null, globalParty},
-                {PartyRoleType.Cache.FAMILY_MEMBER.getCode(), "Family Member", null, globalParty},
-                {PartyRoleType.Cache.CONTRACTOR.getCode(), "Contractor", null, globalParty},
-                {PartyRoleType.Cache.EMPLOYEE.getCode(), "Employee", null, globalParty},
+                {PersonRoleType.Cache.FAMILY_MEMBER.getCode(), "Family Member", null, globalParty},
+                {PersonRoleType.Cache.DEPENDENT.getCode(), "Dependent", null, globalParty},
+                {PersonRoleType.Cache.EMPLOYEE.getCode(), "Employee", null, globalParty},
+            }
+        );
+    }
+
+    protected void populateOrganizationRoleType() throws HibernateException
+    {
+        populateEntity(session, OrganizationRoleType.class, new String[] {"code", "label", "description", "party"},
+            new Object[][]
+            {
+                {OrganizationRoleType.Cache.PROSPECT.getCode(), "Prospect", null, globalParty},
+                {OrganizationRoleType.Cache.DIVISION.getCode(), "Division", null, globalParty},
+                {OrganizationRoleType.Cache.OTHER_ORG_UNIT.getCode(), "Other Organization Unit", null, globalParty},
+                {OrganizationRoleType.Cache.DEPARTMENT.getCode(), "Department", null, globalParty},
+                {OrganizationRoleType.Cache.SUBSIDIARY.getCode(), "Subsidiary", null, globalParty},
+                {OrganizationRoleType.Cache.PARENT_ORG.getCode(), "Parent Organization", null, globalParty},
+            }
+        );
+    }
+
+    protected void populateInsurancePolicyType() throws HibernateException
+    {
+        populateEntity(session, InsurancePolicyType.class, new String[] {"code", "label", "description", "party"},
+            new Object[][]
+            {
+                {InsurancePolicyType.Cache.INDIVIDUAL_INSURANCE_POLICY.getCode(), "Individual Insurance Policy", null, globalParty},
+                {InsurancePolicyType.Cache.GROUP_INSURANCE_POLICY.getCode(), "Group Insurance Policy", null, globalParty},
+            }
+        );
+    }
+
+    protected void populateInsurancePolicyRoleType() throws HibernateException
+    {
+        populateEntity(session, InsurancePolicyRoleType.class, new String[] {"code", "label", "description", "party"},
+            new Object[][]
+            {
+                {InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getCode(), "Insured Contract Holder", null, globalParty},
+                {InsurancePolicyRoleType.Cache.INSURED_DEPENDENT.getCode(), "Insured Dependent", null, globalParty},
+                {InsurancePolicyRoleType.Cache.INSURANCE_PROVIDER.getCode(), "Insurance Provider", null, globalParty},
             }
         );
     }
