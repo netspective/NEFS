@@ -38,41 +38,55 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Party_Role_Type")
-@Inheritance(
-    strategy=InheritanceType.SINGLE_TABLE,
-    discriminatorType=DiscriminatorType.STRING,
-    discriminatorValue="Party"
-)
-@DiscriminatorColumn(name="role_type")
-public class PartyRoleType extends AbstractCustomReferenceEntity
-{    
-    public PartyRoleType()
+@Inheritance(discriminatorValue="Organization" )
+public class OrganizationRoleType extends PartyRoleType
+{
+    public enum Cache implements CachedCustomReferenceEntity
     {
+        INSURANCE_AGENCY("INS_AGENCY"),
+        INSURANCE_BROKER("INS_BROKER"),
+
+        PROSPECT("P"),
+        DIVISION("DIV"),
+        OTHER_ORG_UNIT("OORG"),
+        DEPARTMENT("DEPT"),
+        SUBSIDIARY("SORG"),
+        PARENT_ORG("PORG"),
+        EMPLOYER("EMPLOYER"),
+        SUPPLIER("SUPPLIER"),
+
+        INSURANCE_PROVIDER("INS_PROV"),
+        HEALTH_CARE_ASSOCIATION("HL_ASSC"),
+        THIRD_PARTY_ADMINISTRATOR("THIRD_PARTY");
+
+        private final String code;
+        private OrganizationRoleType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public OrganizationRoleType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (OrganizationRoleType) entity;
+        }
     }
-
-    @Id(generate = GeneratorType.AUTO)
-    public Long getPartyRoleTypeId()
-    {
-        return super.getSystemId();
-    }
-
-    protected void setPartyRoleTypeId(final Long id)
-    {
-        super.setSystemId(id);
-    }
-
-
 }

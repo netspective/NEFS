@@ -38,41 +38,50 @@
  */
 package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Party_Role_Type")
-@Inheritance(
-    strategy=InheritanceType.SINGLE_TABLE,
-    discriminatorType=DiscriminatorType.STRING,
-    discriminatorValue="Party"
-)
-@DiscriminatorColumn(name="role_type")
-public class PartyRoleType extends AbstractCustomReferenceEntity
-{    
-    public PartyRoleType()
-    {
-    }
+@Inheritance(discriminatorValue="Person" )
+public class PersonRoleType extends PartyRoleType
+{
+    public enum Cache implements CachedCustomReferenceEntity
+   {
+       FAMILY_MEMBER("F"),
+       EMPLOYEE("E"),
+       DEPENDENT("DEP"),
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getPartyRoleTypeId()
-    {
-        return super.getSystemId();
-    }
+       PATIENT("PATIENT"),
+       INSURED_DEPENDENT("INS_DEP"),
+       INSURED_CONTRACT_HOLDER("INS_PER"),
+       INSURED_ORG("INS_ORG"),
+       INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP");
 
-    protected void setPartyRoleTypeId(final Long id)
-    {
-        super.setSystemId(id);
-    }
+       private final String code;
+       private PartyRoleType entity;
 
+       Cache(final String code)
+       {
+           this.code = code;
+       }
+
+       public String getCode()
+       {
+           return code;
+       }
+
+       public PartyRoleType getEntity()
+       {
+           return entity;
+       }
+
+       public void setEntity(final CustomReferenceEntity entity)
+       {
+           this.entity = (PartyRoleType) entity;
+       }
+   }
 
 }
