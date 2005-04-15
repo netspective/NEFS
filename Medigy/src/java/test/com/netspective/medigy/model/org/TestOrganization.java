@@ -49,16 +49,16 @@ import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PartyRoleType;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.util.HibernateUtil;
-import org.hibernate.Criteria;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 public class TestOrganization  extends TestCase
 {
@@ -226,13 +226,13 @@ public class TestOrganization  extends TestCase
         // add a new role belonging to the parent org
         final PartyRole role1 = new PartyRole();
         role1.setParty(parentOrg);
-        role1.setType(PartyRoleType.Cache.PARENT_ORG.getEntity());
+        role1.setType(OrganizationRoleType.Cache.PARENT_ORG.getEntity());
         parentOrg.getPartyRoles().add(role1);
         HibernateUtil.getSession().update(parentOrg);
         // add a new role belonging to the child org
         final PartyRole role2 = new PartyRole();
         role2.setParty(childOrg);
-        role2.setType(PartyRoleType.Cache.SUBSIDIARY.getEntity());
+        role2.setType(OrganizationRoleType.Cache.SUBSIDIARY.getEntity());
         childOrg.getPartyRoles().add(role2);
         HibernateUtil.getSession().update(childOrg);
 
@@ -257,7 +257,7 @@ public class TestOrganization  extends TestCase
         assertEquals(1, updatedParentOrg.getPartyRoles().size());
         //info("Success. Parent org has 1 role(s).");
         final PartyRole parentOrgRole = (PartyRole) updatedParentOrg.getPartyRoles().toArray()[0];
-        assertEquals(PartyRoleType.Cache.PARENT_ORG.getEntity().getCode(),
+        assertEquals(OrganizationRoleType.Cache.PARENT_ORG.getEntity().getCode(),
                 parentOrgRole.getType().getCode());
         //info("Success. Parent org's role is " + PartyRoleType.Cache.PARENT_ORG);
 
@@ -268,7 +268,7 @@ public class TestOrganization  extends TestCase
         //info("Success. Child org has 1 role(2).");
         // verify that the child org's roles are the right ones
         final PartyRole childOrgRole = (PartyRole) updatedChildOrg.getPartyRoles().toArray()[0];
-        assertEquals(PartyRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
+        assertEquals(OrganizationRoleType.Cache.SUBSIDIARY.getEntity().getPartyRoleTypeId(),
                 childOrgRole.getType().getPartyRoleTypeId());
         //info("Success. Child org's role is " + PartyRoleType.Cache.SUBSIDIARY);
 
