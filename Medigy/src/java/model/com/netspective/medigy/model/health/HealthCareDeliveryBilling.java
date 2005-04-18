@@ -38,115 +38,68 @@
  */
 package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.invoice.Invoice;
+import com.netspective.medigy.model.invoice.InvoiceItem;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.CascadeType;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-public class HealthCareDelivery extends AbstractDateDurationEntity
+public class HealthCareDeliveryBilling extends AbstractTopLevelEntity
 {
-    private Long healthCareDeliveryId;
-    private String deliveryNotes;
-    private HealthCareOffering healthCareOffering;
-    private HealthCareEpisode healthCareEpisode;
-
-    private Set<HealthCareDeliveryBilling> billings = new HashSet<HealthCareDeliveryBilling>();
-    private Set<HealthCareDeliveryRole> healthCareDeliveryRoles = new HashSet<HealthCareDeliveryRole>();
-    private Set<DeliveryOutcome> outcomes = new HashSet<DeliveryOutcome>();
-
-    /**
-     *
-     */
-    public HealthCareDelivery()
-    {
-    }
+    private Long billingId;
+    private Invoice invoice;
+    private InvoiceItem invoiceItem;
+    private HealthCareDelivery healthCareDelivery;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryId()
+    public Long getBillingId()
     {
-        return healthCareDeliveryId;
+        return billingId;
     }
 
-    protected void setHealthCareDeliveryId(final Long healthCareDeliveryId)
+    protected void setBillingId(final Long billingId)
     {
-        this.healthCareDeliveryId = healthCareDeliveryId;
-    }
-
-    public String getDeliveryNotes()
-    {
-        return deliveryNotes;
-    }
-
-    public void setDeliveryNotes(final String deliveryNotes)
-    {
-        this.deliveryNotes = deliveryNotes;
-
+        this.billingId = billingId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "health_care_offering_id", nullable = false)
-    public HealthCareOffering getHealthCareOffering()
+    @JoinColumn(name = "invoice_id")        
+    public Invoice getInvoice()
     {
-        return healthCareOffering;
+        return invoice;
     }
 
-    public void setHealthCareOffering(final HealthCareOffering healthCareOffering)
+    public void setInvoice(final Invoice invoice)
     {
-        this.healthCareOffering = healthCareOffering;
+        this.invoice = invoice;
     }
 
     @ManyToOne
-    @JoinColumn(name = "health_care_episode_id", nullable = false)
-    public HealthCareEpisode getHealthCareEpisode()
+    @JoinColumn(name = "invoice_item_id")
+    public InvoiceItem getInvoiceItem()
     {
-        return healthCareEpisode;
+        return invoiceItem;
     }
 
-    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
+    public void setInvoiceItem(final InvoiceItem invoiceItem)
     {
-        this.healthCareEpisode = healthCareEpisode;
+        this.invoiceItem = invoiceItem;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "healthCareDelivery")
-    public Set<HealthCareDeliveryRole> getHealthCareDeliveryRoles()
-    {
-        return healthCareDeliveryRoles;
-    }
-
-    public void setHealthCareDeliveryRoles(final Set<HealthCareDeliveryRole> healthCareDeliveryRoles)
-    {
-        this.healthCareDeliveryRoles = healthCareDeliveryRoles;
-    }
-
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "health_care_delivery_id")
-    public Set<DeliveryOutcome> getOutcomes()
+    public HealthCareDelivery getHealthCareDelivery()
     {
-        return outcomes;
+        return healthCareDelivery;
     }
 
-    public void setOutcomes(final Set<DeliveryOutcome> outcomes)
+    public void setHealthCareDelivery(final HealthCareDelivery healthCareDelivery)
     {
-        this.outcomes = outcomes;
-    }
-
-    @OneToMany
-    @JoinColumn(name = "health_care_delivery_id")        
-    public Set<HealthCareDeliveryBilling> getBillings()
-    {
-        return billings;
-    }
-
-    public void setBillings(final Set<HealthCareDeliveryBilling> billings)
-    {
-        this.billings = billings;
+        this.healthCareDelivery = healthCareDelivery;
     }
 }
