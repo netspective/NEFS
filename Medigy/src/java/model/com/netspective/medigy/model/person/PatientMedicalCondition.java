@@ -39,23 +39,25 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.reference.custom.person.MedicalConditionType;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Column;
 
 @Entity
 public class PatientMedicalCondition extends AbstractDateDurationEntity
 {
     private Long medicalConditionId;
-    private Party party;
+    private Person party;
     private PartyRole partyRole;
     private MedicalConditionType type;
+    private String comments;
 
     /**
      * Only people with the PATIENT role should have this association
@@ -75,16 +77,20 @@ public class PatientMedicalCondition extends AbstractDateDurationEntity
         this.medicalConditionId = medicalConditionId;
     }
 
-    public Party getParty()
+    @ManyToOne
+    @JoinColumn(name = "party_id", nullable = false)
+    public Person getParty()
     {
         return party;
     }
 
-    public void setParty(final Party party)
+    public void setParty(final Person party)
     {
         this.party = party;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "party_role_id")
     public PartyRole getPartyRole()
     {
         return partyRole;
@@ -105,5 +111,16 @@ public class PatientMedicalCondition extends AbstractDateDurationEntity
     public void setType(final MedicalConditionType type)
     {
         this.type = type;
+    }
+
+    @Column(length = 100)
+    public String getComments()
+    {
+        return comments;
+    }
+
+    public void setComments(final String comments)
+    {
+        this.comments = comments;
     }
 }

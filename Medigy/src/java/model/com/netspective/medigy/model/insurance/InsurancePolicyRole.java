@@ -51,6 +51,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Column;
 
 @Entity
 @Table(name = "Ins_Policy_Role")
@@ -62,6 +63,7 @@ public class InsurancePolicyRole implements AgreementRole
     protected InsurancePolicyRoleType type;
 
     @Id(generate = GeneratorType.AUTO)
+    @Column(name = "ins_policy_role_id")
     public Long getInsurancePolicyRoleId()
     {
         return insurancePolicyRoleId;
@@ -84,7 +86,7 @@ public class InsurancePolicyRole implements AgreementRole
     }
 
     @ManyToOne(targetEntity = "com.netspective.medigy.model.insurance.InsurancePolicy")
-    @JoinColumn(name = "insurance_policy_id")
+    @JoinColumn(name = "ins_policy_id")
     public Agreement getAgreement()
     {
         return agreement;
@@ -107,12 +109,13 @@ public class InsurancePolicyRole implements AgreementRole
     }
 
     @ManyToOne(targetEntity = "com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType")
+    @JoinColumn(name = "ins_policy_role_type_id")
     public AgreementRoleType getType()
     {
         return type;
     }
 
-    public void setType(AgreementRoleType type)
+    public void setType(final AgreementRoleType type)
     {
         this.type = (InsurancePolicyRoleType) type;
     }

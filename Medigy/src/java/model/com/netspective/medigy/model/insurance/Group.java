@@ -116,7 +116,7 @@ public class Group extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ins_policy_id")
+    @JoinColumn(name = "group_id")
     public Set<InsurancePolicy> getInsurancePolicies()
     {
         return insurancePolicies;

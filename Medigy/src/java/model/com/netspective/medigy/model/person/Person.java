@@ -45,6 +45,7 @@ package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.health.HealthCareVisit;
+import com.netspective.medigy.model.health.HealthCareEpisode;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 
@@ -79,6 +80,7 @@ public class Person extends Party
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
     private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<PhysicalCharacteristic>();
     private Set<HealthCareVisit> healthCareVisits = new HashSet<HealthCareVisit>();
+    private Set<HealthCareEpisode> healthCareEpisodes = new HashSet<HealthCareEpisode>();
 
     public Person()
     {
@@ -268,6 +270,18 @@ public class Person extends Party
     public void setHealthCareVisits(final Set<HealthCareVisit> healthCareVisits)
     {
         this.healthCareVisits = healthCareVisits;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "party_id")        
+    public Set<HealthCareEpisode> getHealthCareEpisodes()
+    {
+        return healthCareEpisodes;
+    }
+
+    public void setHealthCareEpisodes(final Set<HealthCareEpisode> healthCareEpisodes)
+    {
+        this.healthCareEpisodes = healthCareEpisodes;
     }
 
     public String toString()

@@ -49,6 +49,9 @@ import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 public class HealthCareVisit  extends AbstractDateDurationEntity
@@ -57,6 +60,10 @@ public class HealthCareVisit  extends AbstractDateDurationEntity
     private Facility facility;
     private Person patient;
     private PostalAddress patientAddress;
+
+    private Set<HealthCareVisitStatus> statuses = new HashSet<HealthCareVisitStatus>();
+    private Set<HealthCareVisitRole> roles = new HashSet<HealthCareVisitRole>();
+    private Set<VisitReason> reasons = new HashSet<VisitReason>();
 
     public HealthCareVisit()
     {
@@ -114,5 +121,41 @@ public class HealthCareVisit  extends AbstractDateDurationEntity
     public void setPatient(final Person patient)
     {
         this.patient = patient;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "visit_id")
+    public Set<HealthCareVisitStatus> getStatuses()
+    {
+        return statuses;
+    }
+
+    public void setStatuses(final Set<HealthCareVisitStatus> statuses)
+    {
+        this.statuses = statuses;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "visit_id")
+    public Set<HealthCareVisitRole> getRoles()
+    {
+        return roles;
+    }
+
+    public void setRoles(final Set<HealthCareVisitRole> roles)
+    {
+        this.roles = roles;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "visit_id")        
+    public Set<VisitReason> getReasons()
+    {
+        return reasons;
+    }
+
+    public void setReasons(final Set<VisitReason> reasons)
+    {
+        this.reasons = reasons;
     }
 }

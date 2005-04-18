@@ -39,32 +39,56 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.health.OutcomeType;
+import com.netspective.medigy.model.claim.ClaimItem;
+import com.netspective.medigy.model.claim.Claim;
 
 import javax.persistence.Entity;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
-public class DeliveryOutcome extends AbstractTopLevelEntity
+public class HealthCareDeliveryClaimSubmission extends AbstractTopLevelEntity
 {
-    private Long healthCareDeliveryOutcomeId;
+    private Long deliveryClaimSubmissionId;
+    private ClaimItem claimItem;
+    private Claim claim;
     private HealthCareDelivery healthCareDelivery;
-    private String explanation;
-    private OutcomeType type;
 
-    @Id (generate = GeneratorType.AUTO)
-    public Long getHealthCareDeliveryOutcomeId()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getDeliveryClaimSubmissionId()
     {
-        return healthCareDeliveryOutcomeId;
+        return deliveryClaimSubmissionId;
     }
 
-    protected void setHealthCareDeliveryOutcomeId(final Long healthCareDeliveryOutcomeId)
+    protected void setDeliveryClaimSubmissionId(final Long deliveryClaimSubmissionId)
     {
-        this.healthCareDeliveryOutcomeId = healthCareDeliveryOutcomeId;
+        this.deliveryClaimSubmissionId = deliveryClaimSubmissionId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "claim_id")
+    public Claim getClaim()
+    {
+        return claim;
+    }
+
+    public void setClaim(final Claim claim)
+    {
+        this.claim = claim;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "cliam_item")
+    public ClaimItem getClaimItem()
+    {
+        return claimItem;
+    }
+
+    public void setClaimItem(final ClaimItem claimItem)
+    {
+        this.claimItem = claimItem;
     }
 
     @ManyToOne
@@ -77,28 +101,5 @@ public class DeliveryOutcome extends AbstractTopLevelEntity
     public void setHealthCareDelivery(final HealthCareDelivery healthCareDelivery)
     {
         this.healthCareDelivery = healthCareDelivery;
-    }
-
-    @Column(length = 5000, nullable = false)
-    public String getExplanation()
-    {
-        return explanation;
-    }
-
-    public void setExplanation(final String explanation)
-    {
-        this.explanation = explanation;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "outcome_type_id")
-    public OutcomeType getType()
-    {
-        return type;
-    }
-
-    public void setType(final OutcomeType type)
-    {
-        this.type = type;
     }
 }

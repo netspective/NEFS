@@ -58,6 +58,7 @@ public class HealthCareDelivery extends AbstractDateDurationEntity
     private HealthCareOffering healthCareOffering;
     private HealthCareEpisode healthCareEpisode;
     private Set<HealthCareDeliveryRole> healthCareDeliveryRoles = new HashSet<HealthCareDeliveryRole>();
+    private Set<DeliveryOutcome> outcomes = new HashSet<DeliveryOutcome>();
 
     /**
      *
@@ -121,5 +122,17 @@ public class HealthCareDelivery extends AbstractDateDurationEntity
     public void setHealthCareDeliveryRoles(final Set<HealthCareDeliveryRole> healthCareDeliveryRoles)
     {
         this.healthCareDeliveryRoles = healthCareDeliveryRoles;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "health_care_delivery_id")        
+    public Set<DeliveryOutcome> getOutcomes()
+    {
+        return outcomes;
+    }
+
+    public void setOutcomes(final Set<DeliveryOutcome> outcomes)
+    {
+        this.outcomes = outcomes;
     }
 }
