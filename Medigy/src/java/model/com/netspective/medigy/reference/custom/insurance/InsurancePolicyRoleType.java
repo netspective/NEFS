@@ -45,8 +45,11 @@ import com.netspective.medigy.reference.custom.party.AgreementRoleType;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
 
 @Entity
+@Table(name = "Ins_Policy_Role_Type")
 public class InsurancePolicyRoleType  extends AgreementRoleType
 {
     public enum Cache implements CachedCustomReferenceEntity
@@ -81,6 +84,7 @@ public class InsurancePolicyRoleType  extends AgreementRoleType
     }
 
     @Id(generate = GeneratorType.AUTO)
+    @Column(name = "ins_policy_role_type_id")        
     public Long getInsurancePolicyRoleTypeId()
     {
         return super.getAgreementRoleTypeId();
