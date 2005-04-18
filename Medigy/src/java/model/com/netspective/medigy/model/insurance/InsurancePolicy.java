@@ -70,6 +70,7 @@ public class InsurancePolicy implements Agreement
     private String description;
     private Date policyDate;
     private InsurancePolicyType type;
+    private Group group;
 
     private Set<InsurancePolicyRole> insurancePolicyRoles = new HashSet<InsurancePolicyRole>();
     private Set<InsurancePolicyItem> insurancePolicyItems = new HashSet<InsurancePolicyItem>();
@@ -214,5 +215,17 @@ public class InsurancePolicy implements Agreement
             }
         }
         return null;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")        
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(final Group group)
+    {
+        this.group = group;
     }
 }

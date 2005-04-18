@@ -41,27 +41,25 @@ package com.netspective.medigy.model.insurance;
 import com.netspective.medigy.model.party.Agreement;
 import com.netspective.medigy.model.party.AgreementRole;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.insurance.InsurancePolicy;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 import com.netspective.medigy.reference.custom.party.AgreementRoleType;
-import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name = "Ins_Policy_Role")        
+@Table(name = "Ins_Policy_Role")
 public class InsurancePolicyRole implements AgreementRole
 {
     private Long insurancePolicyRoleId;
     private InsurancePolicy agreement;
     private Party party;
-    private InsurancePolicyRoleType type;
+    protected InsurancePolicyRoleType type;
 
     @Id(generate = GeneratorType.AUTO)
     public Long getInsurancePolicyRoleId()

@@ -39,6 +39,7 @@
 package com.netspective.medigy.model.insurance;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.insurance.CoverageType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -51,6 +52,14 @@ public class EnrollmentElection extends AbstractTopLevelEntity
 {
     private Long enrollmentElectionId;
     private Enrollment enrollment;
+    private CoverageType coverageType;
+
+    /**
+     * Examples of enrollment elections are dental, medical, accident, and life policies
+     */
+    public EnrollmentElection()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
     public Long getEnrollmentElectionId()
@@ -64,7 +73,7 @@ public class EnrollmentElection extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "enrollment_id")
+    @JoinColumn(name = "enrollment_id", nullable = false)
     public Enrollment getEnrollment()
     {
         return enrollment;
@@ -73,5 +82,17 @@ public class EnrollmentElection extends AbstractTopLevelEntity
     public void setEnrollment(final Enrollment enrollment)
     {
         this.enrollment = enrollment;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "coverage_type_id", nullable = false)
+    public CoverageType getCoverageType()
+    {
+        return coverageType;
+    }
+
+    public void setCoverageType(final CoverageType coverageType)
+    {
+        this.coverageType = coverageType;
     }
 }

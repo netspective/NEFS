@@ -57,8 +57,17 @@ public class Group extends AbstractTopLevelEntity
 {
     private Long groupId;
     private String description;
-    private Set<Enrollment> enrollments = new HashSet<Enrollment>();
     private Organization insuredOrganization;
+
+    private Set<Enrollment> enrollments = new HashSet<Enrollment>();
+    private Set<InsurancePolicy> insurancePolicies = new HashSet<InsurancePolicy>();
+
+    /**
+     * A group is a collection of people within an organization for whom insurance is issued.
+     */
+    public Group()
+    {
+    }
 
     @Id(generate = GeneratorType.AUTO)
     public Long getGroupId()
@@ -83,7 +92,7 @@ public class Group extends AbstractTopLevelEntity
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "group_id")        
+    @JoinColumn(name = "group_id")
     public Set<Enrollment> getEnrollments()
     {
         return enrollments;
@@ -104,5 +113,17 @@ public class Group extends AbstractTopLevelEntity
     public void setInsuredOrganization(final Organization insuredOrganization)
     {
         this.insuredOrganization = insuredOrganization;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ins_policy_id")
+    public Set<InsurancePolicy> getInsurancePolicies()
+    {
+        return insurancePolicies;
+    }
+
+    public void setInsurancePolicies(final Set<InsurancePolicy> insurancePolicies)
+    {
+        this.insurancePolicies = insurancePolicies;
     }
 }
