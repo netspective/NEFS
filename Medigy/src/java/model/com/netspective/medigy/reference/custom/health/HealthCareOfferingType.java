@@ -36,88 +36,58 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.health;
+package com.netspective.medigy.reference.custom.health;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.health.HealthCareOfferingType;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-public class HealthCareOffering extends AbstractTopLevelEntity
+public class HealthCareOfferingType extends AbstractCustomReferenceEntity
 {
-    private Long healthCareOfferingId;
-    //private SystemPk healthCareOfferingPk;
-    private String name;
-    private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
-    private HealthCareOfferingType type;
-
-    /*
-    @EmbeddedId({
-			@AttributeOverride(name="systemId", column = {@Column(name="health_care_offr_id")} )
-			})
-    public SystemPk getHealthCareOfferingPk()
+    public enum Cache implements CachedCustomReferenceEntity
     {
-        return healthCareOfferingPk;
-    }
+        SERVICE_OFFERING("SERVICE"),
+        GOOD_OFFERING("GOOD");
 
-    public void setHealthCareOfferingPk(final SystemPk healthCareOfferingPk)
-    {
-        this.healthCareOfferingPk = healthCareOfferingPk;
+
+        private final String code;
+        private HealthCareOfferingType entity;
+
+        private Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+
+        public HealthCareOfferingType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (HealthCareOfferingType) entity;
+        }
     }
-    */
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getHealthCareOfferingId()
+    public Long getHealthCareOfferingTypeId()
     {
-        return healthCareOfferingId;
+        return super.getSystemId();
     }
 
-    protected void setHealthCareOfferingId( final Long healthCareOfferingId)
+    protected void setHealthCareOfferingTypeId(final Long id)
     {
-        this.healthCareOfferingId = healthCareOfferingId;
-    }
-
-    @Column(length = 100, nullable = false)
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(final String name)
-    {
-        this.name = name;
-    }
-
-    @OneToMany
-    @JoinColumn(name = "health_care_offering_id")
-    public Set<HealthCareDelivery> getHealthCareDeliveries()
-    {
-        return healthCareDeliveries;
-    }
-
-    public void setHealthCareDeliveries(final Set<HealthCareDelivery> healthCareDeliveries)
-    {
-        this.healthCareDeliveries = healthCareDeliveries;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "health_care_offering_type_id")
-    public HealthCareOfferingType getType()
-    {
-        return type;
-    }
-
-    public void setType(HealthCareOfferingType type)
-    {
-        this.type = type;
+        super.setSystemId(id);
     }
 }
