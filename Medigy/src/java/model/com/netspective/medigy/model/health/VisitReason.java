@@ -39,68 +39,46 @@
 package com.netspective.medigy.model.health;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.person.Incident;
-import com.netspective.medigy.reference.custom.health.EpisodeType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 @Entity
-public class HealthCareEpisode extends AbstractTopLevelEntity
+public class VisitReason  extends AbstractTopLevelEntity
 {
-    private Long healthCareEpisodeId;
-    private Incident incident;
+    private Long visitReasonId;
+    private HealthCareVisit visit;
     private String description;
-    private Date date; // create date
-    private EpisodeType type;
-
-    private Set<HealthCareDelivery> healthCareDeliveries = new HashSet<HealthCareDelivery>();
-    private Set<Diagnosis> diagnosises = new HashSet<Diagnosis>();
-    private Set<EpisodeOutcome> outcomes = new HashSet<EpisodeOutcome>();
-    private Set<Symptom> symptoms = new HashSet<Symptom>();
-
-    /**
-     * INCIDENTs such as car accident, epidemic, or other event lead to HEALTH CARE EPISODEs, such as
-     * injuries or illnesses.
-     */
-    public HealthCareEpisode()
-    {
-    }
+    private HealthCareEpisode healthCareEpisode;
 
     @Id(generate = GeneratorType.AUTO)
-    @Column(name = "episode_id")
-    public Long getHealthCareEpisodeId()
+    public Long getVisitReasonId()
     {
-        return healthCareEpisodeId;
+        return visitReasonId;
     }
 
-    protected void setHealthCareEpisodeId(final Long healthCareEpisodeId)
+    protected void setVisitReasonId(final Long visitReasonId)
     {
-        this.healthCareEpisodeId = healthCareEpisodeId;
+        this.visitReasonId = visitReasonId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "incident_id")
-    public Incident getIncident()
+    @JoinColumn(name = "visit_id")
+    public HealthCareVisit getVisit()
     {
-        return incident;
+        return visit;
     }
 
-    public void setIncident(final Incident incident)
+    public void setVisit(final HealthCareVisit visit)
     {
-        this.incident = incident;
+        this.visit = visit;
     }
 
-    @Column(length = 1000)
+    @Column(length = 100, nullable = false)
     public String getDescription()
     {
         return description;
@@ -111,71 +89,15 @@ public class HealthCareEpisode extends AbstractTopLevelEntity
         this.description = description;
     }
 
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(final Date date)
-    {
-        this.date = date;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "health_care_episode_id")
-    public Set<HealthCareDelivery> getHealthCareDeliveries()
-    {
-        return healthCareDeliveries;
-    }
-
-    public void setHealthCareDeliveries(final Set<HealthCareDelivery> healthCareDeliveries)
-    {
-        this.healthCareDeliveries = healthCareDeliveries;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "healthCareEpisode")
-    public Set<Diagnosis> getDiagnosises()
-    {
-        return diagnosises;
-    }
-
-    public void setDiagnosises(final Set<Diagnosis> diagnosises)
-    {
-        this.diagnosises = diagnosises;
-    }
-
-    @OneToMany(mappedBy = "healthCareEpisode")
-    public Set<EpisodeOutcome> getOutcomes()
-    {
-        return outcomes;
-    }
-
-    public void setOutcomes(final Set<EpisodeOutcome> outcomes)
-    {
-        this.outcomes = outcomes;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "episode_id")
-    public Set<Symptom> getSymptoms()
-    {
-        return symptoms;
-    }
-
-    public void setSymptoms(final Set<Symptom> symptoms)
-    {
-        this.symptoms = symptoms;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "episode_type_id")
-    public EpisodeType getType()
+    @JoinColumn(name = "episode_id")
+    public HealthCareEpisode getHealthCareEpisode()
     {
-        return type;
+        return healthCareEpisode;
     }
 
-    public void setType(final EpisodeType type)
+    public void setHealthCareEpisode(final HealthCareEpisode healthCareEpisode)
     {
-        this.type = type;
+        this.healthCareEpisode = healthCareEpisode;
     }
 }
