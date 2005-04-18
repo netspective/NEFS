@@ -51,7 +51,6 @@ import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.Column;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -59,32 +58,19 @@ import javax.persistence.Column;
 @Table(name = "Org")
 public class Organization extends Party
 {
-    private String organizationName;
-
     public Organization()
     {
     }
 
-    public String getPartyName()
-    {
-        return getOrganizationName();
-    }
-
-    public void setPartyName(final String partyName)
-    {
-        super.setPartyName(partyName);
-        setOrganizationName(partyName);
-    }
-
-    @Column(name = "org_name", length = 256, nullable = false)
+    @Transient
     public String getOrganizationName()
     {
-        return this.organizationName;
+        return getPartyName();
     }
 
     public void setOrganizationName(final String organizationName)
     {
-        this.organizationName = organizationName;
+        super.setPartyName(organizationName);
     }
 
     @Transient
@@ -103,7 +89,7 @@ public class Organization extends Party
     {
         return "Org{" +
                 "indentifier=" + getOrgId() +
-                ",organizationName='" + organizationName + "'" +
+                ",organizationName='" + getPartyName() + "'" +
                 "}";
     }
 
