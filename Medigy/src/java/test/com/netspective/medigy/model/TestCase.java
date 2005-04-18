@@ -124,8 +124,14 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.DiagnosisType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.OutcomeType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareVisitStatusType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.SymptomType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.EpisodeType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareVisitRoleType.class);
+
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.CoverageType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimStatusType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimServiceCodeType.class);
@@ -190,13 +196,19 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.PractitionerDiagnosis.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroup.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroupClassification.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.VisitReason.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.Symptom.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitStatus.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitRole.class);
+
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicy.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicyItem.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.Enrollment.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.EnrollmentElection.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.Group.class);
-        //config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicy.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.insurance.CareProviderSelection.class);
+
         config.addAnnotatedClass(com.netspective.medigy.model.claim.Claim.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItem.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimStatus.class);
