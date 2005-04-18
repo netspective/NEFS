@@ -40,16 +40,13 @@ package com.netspective.medigy.model.insurance;
 
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.org.Organization;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
-import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
+import com.netspective.medigy.util.HibernateUtil;
 
 import java.util.Date;
 
@@ -62,9 +59,7 @@ public class TestInsurance extends TestCase
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().setActiveSession(session);
 
-        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
-        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
-        Party globalParty = (Party) criteria.uniqueResult();
+
 
         final Organization blueCross = new Organization();
         blueCross.setOrganizationName("Blue Cross Blue Shield");
@@ -77,23 +72,80 @@ public class TestInsurance extends TestCase
         HibernateUtil.getSession().save(johnDoe);
         HibernateUtil.commitTransaction();
 
-        final InsurancePolicy policy = new InsurancePolicy();
-        policy.setType(InsurancePolicyType.Cache.INDIVIDUAL_INSURANCE_POLICY.getEntity());
-        policy.setInsuranceProvider(blueCross);
-        policy.setAgreementDate(new Date());
-        policy.setInsuredContractHolder(johnDoe);
-        policy.setPolicyNumber("12345");
+        final InsurancePolicy individualPolicy = new InsurancePolicy();
+        individualPolicy.setType(InsurancePolicyType.Cache.INDIVIDUAL_INSURANCE_POLICY.getEntity());
+        individualPolicy.setInsuranceProvider(blueCross);
+        individualPolicy.setAgreementDate(new Date());
+        individualPolicy.setInsuredContractHolder(johnDoe);
+        individualPolicy.setPolicyNumber("12345");
 
-        HibernateUtil.getSession().save(policy);
+
+
+        HibernateUtil.getSession().save(individualPolicy);
         HibernateUtil.commitTransaction();
 
-        final InsurancePolicy newPolicy = (InsurancePolicy) HibernateUtil.getSession().load(InsurancePolicy.class, policy.getPolicyId());
+        final InsurancePolicy newPolicy = (InsurancePolicy) HibernateUtil.getSession().load(InsurancePolicy.class, individualPolicy.getPolicyId());
         assertEquals("12345", newPolicy.getPolicyNumber());
         assertEquals(InsurancePolicyType.Cache.INDIVIDUAL_INSURANCE_POLICY.getEntity(),
                 newPolicy.getType());
         assertEquals(blueCross, newPolicy.getInsuranceProvider());
         assertEquals(johnDoe, newPolicy.getInsuredContractHolder());
         HibernateUtil.closeSession();
+
+
+    }
+
+    public void testGroupInsurance()
+    {
+        /*
+        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
+        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
+        Party globalParty = (Party) criteria.uniqueResult();
+
+        final Organization acmeCompany = new Organization();
+        acmeCompany.setOrganizationName("ACME Company");
+
+        final Organization anthemInsurance = new Organization();
+        anthemInsurance.setOrganizationName("Anthem");
+
+        final InsurancePolicy groupPolicy = new InsurancePolicy();
+        groupPolicy.setInsuranceProvider(anthemInsurance);
+        groupPolicy.setPolicyNumber("12345");
+        groupPolicy.setType(InsurancePolicyType.Cache.GROUP_INSURANCE_POLICY.getEntity());
+
+        final Group acmeDevelopers = new Group();
+        acmeDevelopers.setInsuredOrganization(acmeCompany);
+        acmeDevelopers.setDescription("ACME Developer Group");
+        acmeDevelopers.getInsurancePolicies().add(groupPolicy);
+
+        final Enrollment currentYearEnrollment = new Enrollment();
+        currentYearEnrollment.setEnrolledDate(new Date());
+        currentYearEnrollment.setGroup(acmeDevelopers);
+
+        final CoverageType medicalCoverageType = new CoverageType();
+        medicalCoverageType.setCode("Med");
+        medicalCoverageType.setLabel("Medical");
+        medicalCoverageType.setParty(globalParty);
+
+        final CoverageType dentalCoverageType = new CoverageType();
+        dentalCoverageType.setCode("Den");
+        dentalCoverageType.setLabel("Dental");
+        dentalCoverageType.setParty(globalParty);
+
+
+        final EnrollmentElection dentalElection = new EnrollmentElection();
+        dentalElection.setCoverageType(dentalCoverageType);
+        dentalElection.setEnrollment(currentYearEnrollment);
+        currentYearEnrollment.getElections().add(dentalElection);
+
+
+        Person johnDoe = new Person();
+        johnDoe.setLastName("Doe");
+        johnDoe.setFirstName("John");
+
+        currentYearEnrollment.setInsuredContractHolder(johnDoe);
+        */
+
 
 
     }
