@@ -48,6 +48,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -61,6 +62,8 @@ public class Invoice  extends AbstractTopLevelEntity
     private Date invoiceDate;
     private String description;
     private String message;
+
+    private BillingAccount billingAccount;
 
     private Set<InvoiceItem> items = new HashSet<InvoiceItem>();
     private Set<InvoiceRole> invoiceRoles = new HashSet<InvoiceRole>();
@@ -166,5 +169,17 @@ public class Invoice  extends AbstractTopLevelEntity
     public void setInvoiceTerms(final Set<InvoiceTerm> invoiceTerms)
     {
         this.invoiceTerms = invoiceTerms;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "bill_acct_id")
+    public BillingAccount getBillingAccount()
+    {
+        return billingAccount;
+    }
+
+    public void setBillingAccount(final BillingAccount billingAccount)
+    {
+        this.billingAccount = billingAccount;
     }
 }

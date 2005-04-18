@@ -57,6 +57,7 @@ public class BillingAccount extends AbstractDateDurationEntity
 {
     private Long billingAccountId;
     private String description;
+    private Set<Invoice> invoices = new HashSet<Invoice>();
 
     //TODO: Need to add a contact mechanism that is not party related
     //private PartyContactMechanism contactMechanism;
@@ -96,5 +97,17 @@ public class BillingAccount extends AbstractDateDurationEntity
     public void setBillingAccountRoles(final Set<BillingAccountRole> billingAccountRoles)
     {
         this.billingAccountRoles = billingAccountRoles;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bill_acct_id")
+    public Set<Invoice> getInvoices()
+    {
+        return invoices;
+    }
+
+    public void setInvoices(final Set<Invoice> invoices)
+    {
+        this.invoices = invoices;
     }
 }

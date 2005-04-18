@@ -71,6 +71,7 @@ public class BillingAccountRole extends AbstractDateDurationEntity
         this.billingAccountRoleId = billingAccountRoleId;
     }
 
+    @ManyToOne
     @JoinColumn(name = "bill_acct_role_type_id")
     public BillingAccountRoleType getRoleType()
     {

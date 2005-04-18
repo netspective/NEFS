@@ -117,6 +117,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceStatusType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.PaymentType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.MedicalConditionType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType.class);
@@ -128,6 +129,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.SymptomType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.EpisodeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareVisitRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareOfferingType.class);
 
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyType.class);
@@ -200,6 +202,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.health.Symptom.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitRole.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryClaimSubmission.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryBilling.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicy.class);
         config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicyRole.class);
