@@ -38,39 +38,35 @@
  */
 package com.netspective.medigy.model.person;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Column;
 import javax.persistence.ManyToOne;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
-public class PhysicalCharacteristic extends AbstractDateDurationEntity
+public class Ethnicity extends AbstractTopLevelEntity
 {
-    private Long physicalCharId;
+    private Long ethnicityId;
     private Person person;
-    private PartyRole partyRole;
-    private Long value;
-    private PhysicalCharacteristicType type;
+    private EthnicityType type;
 
     @Id(generate = GeneratorType.AUTO)
-    public Long getPhysicalCharId()
+    public Long getEthnicityId()
     {
-        return physicalCharId;
+        return ethnicityId;
     }
 
-    protected void setPhysicalCharId(final Long physicalCharId)
+    protected void setEthnicityId(final Long ethnicityId)
     {
-        this.physicalCharId = physicalCharId;
+        this.ethnicityId = ethnicityId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_id", nullable = false)
+    @JoinColumn(name = "party_id")
     public Person getPerson()
     {
         return person;
@@ -81,36 +77,14 @@ public class PhysicalCharacteristic extends AbstractDateDurationEntity
         this.person = person;
     }
 
-    @JoinColumn(name = "party_role_id")
-    public PartyRole getPartyRole()
-    {
-        return partyRole;
-    }
-
-    public void setPartyRole(final PartyRole partyRole)
-    {
-        this.partyRole = partyRole;
-    }
-
-    @Column(nullable = false)
-    public Long getValue()
-    {
-        return value;
-    }
-
-    public void setValue(final Long value)
-    {
-        this.value = value;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "physical_char_type_id")
-    public PhysicalCharacteristicType getType()
+    @JoinColumn(name = "ethnicity_type_id")
+    public EthnicityType getType()
     {
         return type;
     }
 
-    public void setType(PhysicalCharacteristicType type)
+    public void setType(final EthnicityType type)
     {
         this.type = type;
     }

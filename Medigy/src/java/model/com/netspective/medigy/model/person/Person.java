@@ -76,6 +76,7 @@ public class Person extends Party
     private Date birthDate;
     private Date deathDate;
 
+    private Set<Ethnicity> ethnicities = new HashSet<Ethnicity>();
     private Set<Gender> genders = new HashSet<Gender>();
     private Set<MaritalStatus> maritalStatuses = new HashSet<MaritalStatus>();
     private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<PhysicalCharacteristic>();
@@ -86,10 +87,6 @@ public class Person extends Party
     {
     }
 
-    public String getPartyName()
-    {
-        return getFullName();
-    }
 
     @Transient
     public Long getPersonId()
@@ -111,6 +108,7 @@ public class Person extends Party
     public void setFirstName(final String firstName)
     {
         this.firstName = firstName;
+        setPartyName(getFullName());
     }
 
     @Column(length = 128, nullable = false)
@@ -122,6 +120,7 @@ public class Person extends Party
     public void setLastName(final String lastName)
     {
         this.lastName = lastName;
+        setPartyName(getFullName());
     }
 
     @Column(length = 96)
@@ -133,6 +132,7 @@ public class Person extends Party
     public void setMiddleName(final String middleName)
     {
         this.middleName = middleName;
+        setPartyName(getFullName());
     }
 
     @Column(name="suffix", length=5)
@@ -250,7 +250,7 @@ public class Person extends Party
         this.deathDate = deathDate;
     }
 
-    @OneToMany(mappedBy =  "person")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy =  "person")
     public Set<PhysicalCharacteristic> getPhysicalCharacteristics()
     {
         return physicalCharacteristics;
@@ -272,7 +272,7 @@ public class Person extends Party
         this.healthCareVisits = healthCareVisits;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_id")        
     public Set<HealthCareEpisode> getHealthCareEpisodes()
     {
@@ -282,6 +282,18 @@ public class Person extends Party
     public void setHealthCareEpisodes(final Set<HealthCareEpisode> healthCareEpisodes)
     {
         this.healthCareEpisodes = healthCareEpisodes;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<Ethnicity> getEthnicities()
+    {
+        return ethnicities;
+    }
+
+    public void setEthnicities(final Set<Ethnicity> ethnicities)
+    {
+        this.ethnicities = ethnicities;
     }
 
     public String toString()
