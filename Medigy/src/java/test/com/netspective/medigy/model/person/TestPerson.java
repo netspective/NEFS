@@ -131,7 +131,7 @@ public class TestPerson extends TestCase
         ssn.setParty(newPerson);
         newPerson.getPartyIdentifiers().add(ssn);
 
-        HibernateUtil.getSession().save(newPerson);
+        HibernateUtil.getSession().save(ssn);
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
@@ -140,7 +140,13 @@ public class TestPerson extends TestCase
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
         assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
+
+        // verify the ethnicites
         assertEquals(persistedPerson.getEthnicities().size(), 2);
+        assertEquals(((Ethnicity) persistedPerson.getEthnicities().toArray()[0]).getType(),
+                EthnicityType.Cache.CAUCASIAN.getEntity());
+        assertEquals(((Ethnicity) persistedPerson.getEthnicities().toArray()[1]).getType(),
+                EthnicityType.Cache.NATIVE_AMERICAN.getEntity());
 
         HibernateUtil.beginTransaction();
         final PartyRole patientRole = new PartyRole();
@@ -175,13 +181,23 @@ public class TestPerson extends TestCase
 
         final Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
         assertNotNull(updatedPerson);
-        //assertEquals(1, updatedPerson.getContactMechanisms().size());
         assertEquals(2, updatedPerson.getMaritalStatuses().size());
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
         assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getCurrentGender());
         assertEquals(birthDate, updatedPerson.getBirthDate());
 
+        // verify the Identifiers
+        assertEquals(updatedPerson.getPartyIdentifiers().size(), 1);
+        assertEquals(((PartyIdentifier) updatedPerson.getPartyIdentifiers().toArray()[0]).getType(),
+                PersonIdentifierType.Cache.SSN.getEntity());
 
+        // verify the Roles
+        assertEquals(updatedPerson.getPartyRoles().size(), 1);
+        assertEquals(((PartyRole) updatedPerson.getPartyRoles().toArray()[0]).getType(),
+                PersonRoleType.Cache.PATIENT.getEntity());
+
+
+        // verify the contact mechanisms
         assertEquals(updatedPerson.getContactMechanisms().size(), 1);
         final PartyContactMechanism pcm = (PartyContactMechanism) updatedPerson.getContactMechanisms().toArray()[0];
         assertEquals(pcm.getContactMechanism().getType(), ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity());
@@ -192,7 +208,7 @@ public class TestPerson extends TestCase
         assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[0]).getType(),
                 ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
         assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[1]).getType(),
-                ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());        
+                ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
 
         HibernateUtil.closeSession();
     }
