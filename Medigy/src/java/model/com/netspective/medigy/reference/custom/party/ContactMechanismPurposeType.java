@@ -35,80 +35,67 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
- */
-
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
  */
 package com.netspective.medigy.reference.custom.party;
 
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
-import com.netspective.medigy.reference.type.DataEncryptionType;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
-@Table(name = "Party_Identifier_Type")
-@Inheritance(
-    strategy=InheritanceType.SINGLE_TABLE,
-    discriminatorType=DiscriminatorType.STRING,
-    discriminatorValue="Party"
-)
-@DiscriminatorColumn(name="partyType")
-public class PartyIdentifierType extends AbstractCustomReferenceEntity
+@Table(name = "Contact_Mech_Purpose_Type")
+public class ContactMechanismPurposeType  extends AbstractCustomReferenceEntity
 {
-
-    private DataEncryptionType encryptionType;
-    private int maxAllowed = 1;
-
-    public PartyIdentifierType()
+    public enum Cache implements CachedCustomReferenceEntity
     {
+        HOME_ADDRESS("Home Address"),
+        WORK_ADDRESS("Work Address"),
+        HOME_EMAIL("Home Email"),
+        WORK_EMAIL("Work Email"),
+        PERSONAL_EMAIL("Personal Email"),
+        FAX_NUMBER("Fax Number"),
+        MAIN_OFFICE_NUMBER("Main office number"),
+        SECONDARY_OFFICE_NUMBER("Secondary office number");
+
+        private final String code;
+        private ContactMechanismPurposeType entity;
+
+        Cache(final String code)
+        {
+            this.code = code;
+        }
+
+        public String getCode()
+        {
+            return code;
+        }
+
+        public ContactMechanismPurposeType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (ContactMechanismPurposeType) entity;
+        }
     }
 
-    @ManyToOne
-    @JoinColumn(name = "encryption_type_id", nullable = false)
-    public DataEncryptionType getEncryptionType()
-    {
-        return encryptionType;
-    }
-
-    public void setEncryptionType(final DataEncryptionType encryptionType)
-    {
-        this.encryptionType = encryptionType;
-    }
-
-    @Column(nullable = false)
-    public int getMaxAllowed()
-    {
-        return maxAllowed;
-    }
-
-    public void setMaxAllowed(int maxAllowed)
-    {
-        this.maxAllowed = maxAllowed;
-    }
-
-    @Id(generate=GeneratorType.AUTO)
-    @Column(name = "identifier_type_id")
-    public Long getIdentifierTypeId()
+    @Id(generate = GeneratorType.AUTO)
+    @Column(name = "contact_mech_purpose_type_id")
+    public Long getContactMechanismPurposeTypeId()
     {
         return super.getSystemId();
     }
 
-    protected void setIdentifierTypeId(final Long identifierTypeId)
+    public void setContactMechanismPurposeTypeId(final Long id)
     {
-        super.setSystemId(identifierTypeId);
+        super.setSystemId(id);
     }
-
 }
