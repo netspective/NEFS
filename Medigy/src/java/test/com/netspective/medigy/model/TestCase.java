@@ -105,23 +105,27 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.session.Session.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
-
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyQualificationType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
         //config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.AgreementType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceStatusType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.PaymentType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.PaymentMethodType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PersonIdentifierType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.MedicalConditionType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.IncidentType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.EthnicityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.DiagnosisType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.OutcomeType.class);
@@ -141,16 +145,17 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
 
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.GeographicBoundaryType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.OrganizationRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PersonRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRelationshipType.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.ContactMechanism.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanism.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanismPurpose.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PhoneNumber.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddress.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddressBoundary.class);
@@ -181,6 +186,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
 
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.Ethnicity.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PatientMedicalCondition.class);
