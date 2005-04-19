@@ -45,6 +45,8 @@ import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.party.PartyContactMechanism;
+import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
@@ -52,6 +54,7 @@ import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,6 +77,9 @@ public class TestOrganization  extends TestCase
         Organization org1 = new Organization();
         org1.setOrganizationName("Acme Corporation");
 
+        HibernateUtil.beginTransaction();
+        HibernateUtil.getSession().save(org1);
+        HibernateUtil.commitTransaction();
         /*
         final GeographicBoundary stateGeo = new GeographicBoundary();
         stateGeo.setType(GeographicBoundaryType.Cache.STATE.getEntity());
@@ -88,19 +94,29 @@ public class TestOrganization  extends TestCase
         address.setAddress1("123 Acme Road");
         address.setAddress2("Apt 9");
         address.setDirections("Go straight and jump!");
+        HibernateUtil.getSession().save(address);
 
-        HibernateUtil.beginTransaction();
-        HibernateUtil.getSession().save(org1);
+        final PartyContactMechanism partyContactMech = new PartyContactMechanism();
+        partyContactMech.setNonSolicitation(true);
+        partyContactMech.setContactMechanism(address);
+        partyContactMech.setParty(org1);
+
+        final PartyContactMechanismPurpose partyContactMechPurpose = new PartyContactMechanismPurpose();
+        partyContactMechPurpose.setPartyContactMechanism(partyContactMech);
+        partyContactMechPurpose.setType(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
+        partyContactMech.getPurposes().add(partyContactMechPurpose);
+
+        HibernateUtil.getSession().save(partyContactMech);
+
         // create the state Geographic Boundary
         //HibernateUtil.getSession().save(stateGeo);
         //HibernateUtil.getSession().save(cityGeo);
 
-        address.setParty(org1);
-        HibernateUtil.getSession().save(address);
+        HibernateUtil.getSession().save(partyContactMech);
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
-        final PostalAddress savedAddress = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
+        final PostalAddress savedAddress = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getPostalAddressId());
         assertNotNull(savedAddress);
         assertEquals(0, savedAddress.getAddressBoundaries().size());
         assertEquals(savedAddress.getAddress1(), "123 Acme Road");
@@ -144,7 +160,7 @@ public class TestOrganization  extends TestCase
         assertEquals(5, boundaryList1.size());
         log.info("VALID: Geo Boundary count = " + boundaryList1.size());
 
-        final PostalAddress savedAddress2 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getAddressId());
+        final PostalAddress savedAddress2 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  address.getPostalAddressId());
         assertEquals(5, savedAddress2.getAddressBoundaries().size());
         assertNotNull(savedAddress2.getCity());
         assertNotNull(savedAddress2.getState());
@@ -177,7 +193,7 @@ public class TestOrganization  extends TestCase
         List boundaryList2  = criteria2.list();
         assertEquals(7, boundaryList2.size());
 
-        final PostalAddress savedAddress3 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  savedAddress2.getAddressId());
+        final PostalAddress savedAddress3 = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class,  savedAddress2.getPostalAddressId());
         assertEquals(5, savedAddress3.getAddressBoundaries().size());
         assertNotNull(savedAddress3.getCity());
         assertNotNull(savedAddress3.getState());

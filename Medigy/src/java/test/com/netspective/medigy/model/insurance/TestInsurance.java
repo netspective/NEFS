@@ -39,28 +39,41 @@
 package com.netspective.medigy.model.insurance;
 
 import com.netspective.medigy.model.TestCase;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.model.org.Organization;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
+import com.netspective.medigy.reference.custom.insurance.CoverageType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.util.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
 
 import java.util.Date;
 
 public class TestInsurance extends TestCase
 {
-    public void testInsurance()
+    private Party globalParty;
+
+    protected void setUp() throws Exception
     {
+        super.setUp();
+
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testPostalAddress()");
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().setActiveSession(session);
 
+        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
+        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
+        globalParty = (Party) criteria.uniqueResult();
+    }
 
-
+    public void testInsurance()
+    {
         final Organization blueCross = new Organization();
         blueCross.setOrganizationName("Blue Cross Blue Shield");
 
@@ -79,8 +92,6 @@ public class TestInsurance extends TestCase
         individualPolicy.setInsuredContractHolder(johnDoe);
         individualPolicy.setPolicyNumber("12345");
 
-
-
         HibernateUtil.getSession().save(individualPolicy);
         HibernateUtil.commitTransaction();
 
@@ -97,10 +108,6 @@ public class TestInsurance extends TestCase
 
     public void testGroupInsurance()
     {
-        /*
-        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
-        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
-        Party globalParty = (Party) criteria.uniqueResult();
 
         final Organization acmeCompany = new Organization();
         acmeCompany.setOrganizationName("ACME Company");
@@ -144,7 +151,7 @@ public class TestInsurance extends TestCase
         johnDoe.setFirstName("John");
 
         currentYearEnrollment.setInsuredContractHolder(johnDoe);
-        */
+
 
 
 
