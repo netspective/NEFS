@@ -43,25 +43,15 @@
  */
 package com.netspective.medigy.model.common;
 
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
+
 
 public abstract class AbstractContactMechanism extends AbstractEntity
 {
-    private Long contactMechId;
+    private Long contactMechanismId;
 
     public AbstractContactMechanism()
     {
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    public Long getContactMechId()
-    {
-        return contactMechId;
-    }
-
-    public void setContactMechId(final Long contactMechId)
-    {
-        this.contactMechId = contactMechId;
-    }
+   
 }
