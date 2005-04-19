@@ -128,4 +128,12 @@ public abstract class AbstractCustomReferenceEntity extends AbstractTopLevelEnti
         else
             return -1;
     }
+
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+        final CustomReferenceEntity otherType = (CustomReferenceEntity) obj;
+        return (otherType.getSystemId().longValue() == this.getSystemId().longValue());
+    }
 }
