@@ -45,15 +45,23 @@ package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.party.PartyIdentifier;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.party.PartyContactMechanism;
+import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PersonRoleType;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
@@ -80,6 +88,7 @@ public class TestPerson extends TestCase
         newPerson.setMiddleName("Bluegrass");
         newPerson.setLastName("Hackett");
 
+
         final MaritalStatus singleStatus = new MaritalStatus();
         singleStatus.setPerson(newPerson);
         singleStatus.setType(MaritalStatusType.Cache.SINGLE.getEntity());
@@ -104,6 +113,24 @@ public class TestPerson extends TestCase
         final Date birthDate = new Date();
         newPerson.setBirthDate(birthDate);
 
+        final Ethnicity ethnicity = new Ethnicity();
+        ethnicity.setType(EthnicityType.Cache.CAUCASIAN.getEntity());
+
+        final Ethnicity naEthnicity = new Ethnicity();
+        naEthnicity.setType(EthnicityType.Cache.NATIVE_AMERICAN.getEntity());
+
+        HibernateUtil.getSession().save(ethnicity);
+        HibernateUtil.getSession().save(naEthnicity);
+
+        newPerson.getEthnicities().add(ethnicity);
+        newPerson.getEthnicities().add(naEthnicity);
+
+        final PartyIdentifier ssn = new PartyIdentifier();
+        ssn.setType(PersonIdentifierType.Cache.SSN.getEntity());
+        ssn.setIdentifierValue("000-00-0000");
+        ssn.setParty(newPerson);
+        newPerson.getPartyIdentifiers().add(ssn);
+
         HibernateUtil.getSession().save(newPerson);
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
@@ -113,18 +140,38 @@ public class TestPerson extends TestCase
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
         assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
+        assertEquals(persistedPerson.getEthnicities().size(), 2);
 
         HibernateUtil.beginTransaction();
+        final PartyRole patientRole = new PartyRole();
+        patientRole.setParty(persistedPerson);
+        patientRole.setType(PersonRoleType.Cache.PATIENT.getEntity());
+        patientRole.setFromDate(new Date());
 
+        HibernateUtil.getSession().save(patientRole);
 
-        //ContactMechanism contactMechanism = new ContactMechanism();
-        //contactMechanism.setPerson(persistedPerson);
-        //persistedPerson.getContactMechanisms().add(contactMechanism);
+        final PostalAddress address = new PostalAddress();
+        address.setAddress1("123 Acme Street");
+        address.setCity("Fairfax");
+        HibernateUtil.getSession().save(address);
 
-        //HibernateUtil.getSession().save(contactMechanism);
-        //HibernateUtil.getSession().save(persistedPerson);
-        //HibernateUtil.commitTransaction();
-        //HibernateUtil.closeSession();
+        final PartyContactMechanism addressToPersonRel = new PartyContactMechanism();
+        addressToPersonRel.setParty(persistedPerson);
+        addressToPersonRel.setContactMechanism(address);
+
+        HibernateUtil.getSession().save(addressToPersonRel);
+
+        final PartyContactMechanismPurpose addressPurpose1 = new PartyContactMechanismPurpose();
+        addressPurpose1.setPartyContactMechanism(addressToPersonRel);
+        addressPurpose1.setType(ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
+        HibernateUtil.getSession().save(addressPurpose1);
+        final PartyContactMechanismPurpose addressPurpose2 = new PartyContactMechanismPurpose();
+        addressPurpose2.setPartyContactMechanism(addressToPersonRel);
+        addressPurpose2.setType(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
+        HibernateUtil.getSession().save(addressPurpose2);
+
+        HibernateUtil.commitTransaction();
+        HibernateUtil.closeSession();
 
         final Person updatedPerson = (Person) HibernateUtil.getSession().load(Person.class, persistedPerson.getPersonId());
         assertNotNull(updatedPerson);
@@ -133,6 +180,19 @@ public class TestPerson extends TestCase
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
         assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getCurrentGender());
         assertEquals(birthDate, updatedPerson.getBirthDate());
+
+
+        assertEquals(updatedPerson.getContactMechanisms().size(), 1);
+        final PartyContactMechanism pcm = (PartyContactMechanism) updatedPerson.getContactMechanisms().toArray()[0];
+        assertEquals(pcm.getContactMechanism().getType(), ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity());
+        assertEquals(((PostalAddress)pcm.getContactMechanism()).getAddress1(), "123 Acme Street");
+        assertEquals(((PostalAddress)pcm.getContactMechanism()).getCity().getName(), "Fairfax");
+
+        assertEquals(pcm.getPurposes().size(), 2);
+        assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[0]).getType(),
+                ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
+        assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[1]).getType(),
+                ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());        
 
         HibernateUtil.closeSession();
     }
