@@ -66,7 +66,7 @@ public class PostalAddressBoundary extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_contact_mech_id")
+    @JoinColumn(name = "contact_mech_id")
     public PostalAddress getPostalAddress()
     {
         return postalAddress;

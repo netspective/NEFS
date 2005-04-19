@@ -39,16 +39,16 @@
  */
 package com.netspective.medigy.model.party;
 
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import javax.persistence.GeneratorType;
 
 @Entity
 public class PartyIdentifier extends AbstractEntity
@@ -63,7 +63,7 @@ public class PartyIdentifier extends AbstractEntity
 
     }
 
-    @Id
+    @Id(generate = GeneratorType.AUTO)
     public Long getIdentifierId()
     {
         return identifierId;
@@ -81,30 +81,30 @@ public class PartyIdentifier extends AbstractEntity
         return party;
     }
 
-    protected void setParty(final Party party)
+    public void setParty(final Party party)
     {
         this.party = party;
     }
 
-    @OneToOne
-    @JoinColumn(name = "identifier_type_id")
+    @ManyToOne
+    @JoinColumn(name = "identifier_type_id", nullable = false)
     public PartyIdentifierType getType()
     {
         return type;
     }
 
-    protected void setType(final PartyIdentifierType type)
+    public void setType(final PartyIdentifierType type)
     {
         this.type = type;
     }
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     public String getIdentifierValue()
     {
         return identifierValue;
     }
 
-    protected void setIdentifierValue(final String identifierValue)
+    public void setIdentifierValue(final String identifierValue)
     {
         this.identifierValue = identifierValue;
     }

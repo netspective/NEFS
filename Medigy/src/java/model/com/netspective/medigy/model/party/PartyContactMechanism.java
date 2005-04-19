@@ -39,6 +39,8 @@
  */
 package com.netspective.medigy.model.party;
 
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,11 +48,10 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.ContactMechanismType;
+import javax.persistence.OneToMany;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "Party_Contact_Mech")
@@ -59,9 +60,10 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     private Long partyContactMechanismId;
     private String comment;
     private boolean nonSolicitation;
-
     private Party party;
-    private ContactMechanismType type;
+    private ContactMechanism contactMechanism;
+
+    private Set<PartyContactMechanismPurpose> purposes = new HashSet<PartyContactMechanismPurpose>();
 
     public PartyContactMechanism()
     {
@@ -113,15 +115,27 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
         this.nonSolicitation = nonSolicitation;
     }
 
-    @OneToOne
-    @JoinColumn(name = "contact_mech_type_id")
-    public ContactMechanismType getType()
+    @ManyToOne
+    @JoinColumn(name = "contact_mech_id", nullable = false)
+    public ContactMechanism getContactMechanism()
     {
-        return type;
+        return contactMechanism;
     }
 
-    public void setType(final ContactMechanismType type)
+    public void setContactMechanism(final ContactMechanism contactMechanism)
     {
-        this.type = type;
+        this.contactMechanism = contactMechanism;
+    }
+
+    @OneToMany
+    @JoinColumn(name = "party_contact_mech_id")        
+    public Set<PartyContactMechanismPurpose> getPurposes()
+    {
+        return purposes;
+    }
+
+    public void setPurposes(final Set<PartyContactMechanismPurpose> purposes)
+    {
+        this.purposes = purposes;
     }
 }

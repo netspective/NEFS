@@ -39,6 +39,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyQualificationType;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -51,6 +52,7 @@ public class PartyQualification extends AbstractDateDurationEntity
 {
     private Long partyQualificationId;
     private Party party;
+    private PartyQualificationType type;
 
     public PartyQualification()
     {
@@ -78,5 +80,17 @@ public class PartyQualification extends AbstractDateDurationEntity
     public void setParty(final Party party)
     {
         this.party = party;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "party_qualification_type_id")
+    public PartyQualificationType getType()
+    {
+        return type;
+    }
+
+    public void setType(final PartyQualificationType type)
+    {
+        this.type = type;
     }
 }

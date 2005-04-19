@@ -41,26 +41,27 @@ package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.GeographicBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="party_contact_mech_id")
-public class PostalAddress extends PartyContactMechanism
+@InheritanceJoinColumn(name="contact_mech_id")
+public class PostalAddress extends ContactMechanism
 {
     private static final Log log = LogFactory.getLog(PostalAddress.class);
 
@@ -72,10 +73,20 @@ public class PostalAddress extends PartyContactMechanism
 
     private Set<PostalAddressBoundary> addressBoundaries = new HashSet<PostalAddressBoundary>();
 
-    @Transient
-    public Long getAddressId()
+    public PostalAddress()
     {
-        return super.getPartyContactMechanismId();
+        this.type = ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity();
+    }
+
+    @Transient
+    public Long getPostalAddressId()
+    {
+        return getContactMechanismId();
+    }
+
+    public void setPostalAddressId(final Long postalAddressId)
+    {
+        setContactMechanismId(postalAddressId);
     }
 
     @Column(length = 100, nullable = false)
@@ -112,7 +123,7 @@ public class PostalAddress extends PartyContactMechanism
     }
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_contact_mech_id")
+    @JoinColumn(name = "contact_mech_id")
     public Set<PostalAddressBoundary> getAddressBoundaries()
     {
         return addressBoundaries;

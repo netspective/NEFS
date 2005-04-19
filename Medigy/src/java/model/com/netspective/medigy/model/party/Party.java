@@ -133,7 +133,7 @@ public class Party extends AbstractTopLevelEntity
         this.partyId = partyId;
     }
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     public String getPartyName()
     {
         return this.partyName;

@@ -38,67 +38,54 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
-import com.netspective.medigy.reference.type.ContactMechanismType;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Valid_Contact_Mech_Role")
-public class ValidContactMechanismRole extends AbstractTopLevelEntity
+public class PartyContactMechanismPurpose extends AbstractDateDurationEntity
 {
-    private Long systemId;
-    private ContactMechanismType contactMechanismType;
-    private CommunicationEventRoleType communicationEventRoleType;
+    private Long purposeId;
+    private PartyContactMechanism partyContactMechanism;
+    private ContactMechanismPurposeType type;
 
-    /**
-     * Identifies what types of COMMUNICATION EVENT ROLE TYPEs are valid for what types of
-     * CONTACT MECHANISM TYPEs. For example, a "caller" and a "receiver" may be valid for a "phone"
-     * contact mechanism type only.
-     */
-    public ValidContactMechanismRole()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getPurposeId()
     {
+        return purposeId;
     }
 
-    @Id(generate  = GeneratorType.AUTO)
-    public Long getSystemId()
+    protected void setPurposeId(final Long purposeId)
     {
-        return systemId;
-    }
-
-    protected void setSystemId(final Long systemId)
-    {
-        this.systemId = systemId;
+        this.purposeId = purposeId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "contact_mech_type_id")
-    public ContactMechanismType getContactMechanismType()
+    @JoinColumn(name = "party_contact_mech_id")
+    public PartyContactMechanism getPartyContactMechanism()
     {
-        return contactMechanismType;
+        return partyContactMechanism;
     }
 
-    public void setContactMechanismType(final ContactMechanismType contactMechanismType)
+    public void setPartyContactMechanism(final PartyContactMechanism partyContactMechanism)
     {
-        this.contactMechanismType = contactMechanismType;
+        this.partyContactMechanism = partyContactMechanism;
     }
 
     @ManyToOne
-    @JoinColumn(name  = "comm_event_role_type_id")
-    public CommunicationEventRoleType getCommunicationEventRoleType()
+    @JoinColumn(name = "contact_mech_purpose_type_id")
+    public ContactMechanismPurposeType getType()
     {
-        return communicationEventRoleType;
+        return type;
     }
 
-    public void setCommunicationEventRoleType(final CommunicationEventRoleType communicationEventRoleType)
+    public void setType(final ContactMechanismPurposeType type)
     {
-        this.communicationEventRoleType = communicationEventRoleType;
+        this.type = type;
     }
-
 }

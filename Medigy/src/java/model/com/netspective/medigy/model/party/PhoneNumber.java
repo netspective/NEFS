@@ -39,19 +39,19 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.party.PartyContactMechanism;
-
-import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.InheritanceJoinColumn;
+import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="party_contact_mech_id")
-public class PhoneNumber extends PartyContactMechanism
+@InheritanceJoinColumn(name="contact_mech_id")
+public class PhoneNumber extends ContactMechanism
 {
+
     private String countryCode;
     private String areaCode;
     private String number;
@@ -59,6 +59,17 @@ public class PhoneNumber extends PartyContactMechanism
 
     public PhoneNumber()
     {
+    }
+
+    @Transient
+    public Long getPhoneNumberId()
+    {
+        return super.getContactMechanismId();
+    }
+
+    protected void setPhoneNumberId(final Long phoneNumberId)
+    {
+        setContactMechanismId(phoneNumberId);
     }
 
     @Column(length = 5)

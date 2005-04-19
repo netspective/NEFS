@@ -39,23 +39,33 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.party.PartyContactMechanism;
-
-import javax.persistence.Entity;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.InheritanceJoinColumn;
+import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="party_contact_mech_id")
-public class ElectronicAddress extends PartyContactMechanism
+@InheritanceJoinColumn(name="contact_mech_id")
+public class ElectronicAddress extends ContactMechanism
 {
     private String electronicAddress;
 
     public ElectronicAddress()
     {
+    }
+
+    @Transient
+    public Long getElectronicAddressId()
+    {
+        return getContactMechanismId();
+    }
+
+    protected void setElectronicAddressId(final Long electronicAddressId)
+    {
+        setContactMechanismId(electronicAddressId);
     }
 
     @Column(length = 256)

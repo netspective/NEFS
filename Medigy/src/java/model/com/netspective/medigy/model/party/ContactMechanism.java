@@ -35,70 +35,77 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
+ * @author Shahid N. Shah
+ */
+
+/*
+ * Copyright (c) 2005 Your Corporation. All Rights Reserved.
  */
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Valid_Contact_Mech_Role")
-public class ValidContactMechanismRole extends AbstractTopLevelEntity
+@Table(name = "Contact_Mech")
+@Inheritance(strategy=InheritanceType.JOINED)        
+public class ContactMechanism extends AbstractTopLevelEntity
 {
-    private Long systemId;
-    private ContactMechanismType contactMechanismType;
-    private CommunicationEventRoleType communicationEventRoleType;
+    private Long contactMechanismId;
+    protected ContactMechanismType type;
 
-    /**
-     * Identifies what types of COMMUNICATION EVENT ROLE TYPEs are valid for what types of
-     * CONTACT MECHANISM TYPEs. For example, a "caller" and a "receiver" may be valid for a "phone"
-     * contact mechanism type only.
-     */
-    public ValidContactMechanismRole()
+    private Set<PartyContactMechanism> partyContactMechanisms = new HashSet<PartyContactMechanism>();
+
+    public ContactMechanism()
     {
     }
 
-    @Id(generate  = GeneratorType.AUTO)
-    public Long getSystemId()
+    @Id(generate = GeneratorType.AUTO)
+    @Column(name = "contact_mech_id")
+    public Long getContactMechanismId()
     {
-        return systemId;
+        return contactMechanismId;
     }
 
-    protected void setSystemId(final Long systemId)
+    protected void setContactMechanismId(final Long contactMechanismId)
     {
-        this.systemId = systemId;
+        this.contactMechanismId = contactMechanismId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "contact_mech_type_id")
-    public ContactMechanismType getContactMechanismType()
+    @JoinColumn(name = "contact_mech_type_id", nullable = false)
+    public ContactMechanismType getType()
     {
-        return contactMechanismType;
+        return type;
     }
 
-    public void setContactMechanismType(final ContactMechanismType contactMechanismType)
+    public void setType(final ContactMechanismType type)
     {
-        this.contactMechanismType = contactMechanismType;
+        this.type = type;
     }
 
-    @ManyToOne
-    @JoinColumn(name  = "comm_event_role_type_id")
-    public CommunicationEventRoleType getCommunicationEventRoleType()
+    @OneToMany
+    @JoinColumn(name = "contact_mech_id")
+    public Set<PartyContactMechanism> getPartyContactMechanisms()
     {
-        return communicationEventRoleType;
+        return partyContactMechanisms;
     }
 
-    public void setCommunicationEventRoleType(final CommunicationEventRoleType communicationEventRoleType)
+    public void setPartyContactMechanisms(final Set<PartyContactMechanism> partyContactMechanisms)
     {
-        this.communicationEventRoleType = communicationEventRoleType;
+        this.partyContactMechanisms = partyContactMechanisms;
     }
-
 }
