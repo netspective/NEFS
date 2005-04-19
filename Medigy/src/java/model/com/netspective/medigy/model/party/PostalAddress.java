@@ -159,6 +159,13 @@ public class PostalAddress extends ContactMechanism
     }
 
     @Transient
+    public void setCity(String cityName)
+    {
+        setBoundry(new GeographicBoundary(cityName, GeographicBoundaryType.Cache.CITY.getEntity()));
+    }
+
+
+    @Transient
     public void setState(GeographicBoundary boundary)
     {
         setBoundry(boundary);

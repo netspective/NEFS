@@ -46,6 +46,7 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 
 @Entity
 public class PostalAddressBoundary extends AbstractTopLevelEntity
@@ -77,7 +78,7 @@ public class PostalAddressBoundary extends AbstractTopLevelEntity
         this.postalAddress = postalAddress;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "geo_id")
     public GeographicBoundary getGeographicBoundary()
     {
