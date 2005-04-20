@@ -98,6 +98,10 @@
         </junit>
     </target>
 
+    <target name="clean" depends="setup-project-properties">
+        <delete dir="${project.build.classes.dir}"/>
+    </target>
+
     <target name="targets">
         <echo message="The following targets are available:"/>
         <echo message="  clean         Clean build and jar directories"/>
