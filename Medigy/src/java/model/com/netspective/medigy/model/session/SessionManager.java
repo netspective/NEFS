@@ -43,6 +43,9 @@
  */
 package com.netspective.medigy.model.session;
 
+import java.util.Stack;
+import java.util.EmptyStackException;
+
 public class SessionManager
 {
     private static final SessionManager INSTANCE = new SessionManager();
@@ -52,19 +55,43 @@ public class SessionManager
         return INSTANCE;
     }
 
-    private final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
+    private final ThreadLocal<Stack<Session>> threadSession = new ThreadLocal<Stack<Session>>();
 
     public SessionManager()
     {
+        threadSession.set(new Stack<Session>());
     }
 
+    /**
+     * Gets (peeks) the session from the stack
+     * @return
+     */
     public Session getActiveSession()
     {
-        return threadSession.get();
+        try
+        {
+            return threadSession.get().peek();
+        }
+        catch (EmptyStackException e)
+        {
+            return null;
+        }
     }
 
-    public void setActiveSession(final Session session)
+    /**
+     * Pushes the new session onto the stack
+     * @param session
+     */
+    public void pushActiveSession(final Session session)
     {
-        threadSession.set(session);
+        threadSession.get().push(session);
+    }
+
+    /**
+     * Pops the active session from the stack
+     */
+    public void popActiveSession()
+    {
+        threadSession.get().pop();
     }
 }
