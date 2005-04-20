@@ -24,13 +24,26 @@
         <property name="project.build.classes.dir" value="${project.build.dir}/classes/"/>
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.build.dir" value="${project.lib.dir}/build"/>
+        <property name="project.lib.runtime.dir" value="${project.lib.dir}/runtime"/>
         <property name="project.lib.test.dir" value="${project.lib.dir}/test"/>
 
-        <property name="project.test.output.name" value="test-medigy-result"/>
+        <property name="project.test.output.name" value="test-reports"/>
         <property name="project.output.jar-name" value="medigy.jar"/>
 
-        <path id="project.class.path">
+        <path id="project.build.class.path">
             <fileset dir="${project.lib.build.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${project.lib.runtime.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+        <path id="project.test.class.path">
+            <fileset dir="${project.lib.build.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${project.lib.runtime.dir}">
                 <include name="**/*.jar"/>
             </fileset>
             <fileset dir="${project.lib.test.dir}">
@@ -60,13 +73,13 @@
 
     <target name="compile-main" depends="init">
         <javac srcdir="${project.src.main.home}:${project.src.tool.home}" destdir="${project.build.classes.dir}"
-            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+            debug="on" optimize="true" deprecation="off" classpathref="project.build.class.path">
         </javac>
     </target>
 
     <target name="compile-test" depends="compile-main">
         <javac srcdir="${project.src.test.home}" destdir="${project.build.classes.dir}"
-            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+            debug="on" optimize="true" deprecation="off" classpathref="project.test.class.path">
             <classpath>
                 <pathelement location="${project.build.classes.dir}"/>
             </classpath>
@@ -88,7 +101,7 @@
     <target name="test" depends="compile-test">
         <junit filtertrace="yes" fork="true">
             <classpath>
-                <path refid="project.class.path"/>
+                <path refid="project.test.class.path"/>
                 <pathelement location="${project.build.classes.dir}"/>
             </classpath>
 
