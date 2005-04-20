@@ -49,6 +49,7 @@ import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.reference.type.PriorityType;
 import com.netspective.medigy.reference.type.UnitOfMeasureType;
+import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
 
 public interface Catalog
@@ -61,6 +62,7 @@ public interface Catalog
         PartyFacilityRoleType.class,
         PriorityType.class,
         DataEncryptionType.class,
-        UnitOfMeasureType.class
+        UnitOfMeasureType.class,
+        LanguageType.class
     };
 }
