@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project default="jar">
+
+    <property file="build.properties"/>
+
+    <target name="setup-project-properties">
+        <buildnumber file="build.number"/>
+
+        <property name="project.conf.home" value="${project.home}/conf"/>
+        <property name="project.resources.home" value="${project.home}/resources"/>
+        <property name="project.documents.home" value="${project.home}/documents"/>
+        <property name="project.src.main.home" value="${project.home}/src/java/model"/>
+        <property name="project.src.tool.home" value="${project.home}/src/java/tool"/>
+        <property name="project.src.test.home" value="${project.home}/src/java/test"/>
+        <property name="project.documents.javadoc-html.home" value="${project.documents.home}/java-doc"/>
+        <property name="project.documents.javadoc-xml.home" value="${project.resources.home}/java-doc-xml"/>
+
+        <property name="project.change-log.name" value="change-log"/>
+        <property name="project.build.log.class.package" value="${project.package.base}"/>
+        <property name="project.build.log.class.name" value="BuildLog"/>
+
+        <property name="project.build.dir" value="${project.home}/build"/>
+        <property name="project.build.classes.dir" value="${project.build.dir}/classes/"/>
+        <property name="project.lib.dir" value="${project.home}/lib"/>
+        <property name="project.lib.build.dir" value="${project.lib.dir}/build"/>
+        <property name="project.lib.test.dir" value="${project.lib.dir}/test"/>
+
+        <property name="project.test.output.name" value="test-medigy-result"/>
+        <property name="project.output.jar-name" value="medigy.jar"/>
+
+        <path id="project.class.path">
+            <fileset dir="${project.lib.build.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${project.lib.test.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+
+            <!-- this needs to be in the classpath because test cases have resources that need to be located -->
+            <pathelement location="${project.src.test.home}"/>
+        </path>
+
+        <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
+        <property name="ClassPathTask-class-name" value="com.netspective.commons.ant.ClassPathTask"/>
+
+        <available property="GenerateBuildLogClassTask-available" classname="${GenerateBuildLogClassTask-class-name}"/>
+        <available property="ClassPathTask-available" classname="${ClassPathTask-class-name}"/>
+    </target>
+
+    <target name="init-build-dir" depends="setup-project-properties">
+        <delete dir="${project.build.classes.dir}"/>
+        <mkdir dir="${project.build.classes.dir}"/>
+    </target>
+
+    <target name="init" depends="init-build-dir">
+    </target>
+
+    <!-- ==================== Compile targets  ======================= -->
+
+    <target name="compile-main" depends="init">
+        <javac srcdir="${project.src.main.home}:${project.src.tool.home}" destdir="${project.build.classes.dir}"
+            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+        </javac>
+    </target>
+
+    <target name="compile-test" depends="compile-main">
+        <javac srcdir="${project.src.test.home}" destdir="${project.build.classes.dir}"
+            debug="on" optimize="true" deprecation="off" classpathref="project.class.path">
+            <classpath>
+                <pathelement location="${project.build.classes.dir}"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- ==================== Packaging targets  ======================= -->
+
+    <target name="jar" depends="compile-main">
+        <!-- create the jar -->
+        <jar jarfile="${project.lib.dir}/${project.output.jar-name}" basedir="${project.build.classes.dir}">
+            <include name="**/*"/>
+        </jar>
+    </target>
+
+
+    <!-- ==================== Test targets  ======================= -->
+
+    <target name="test" depends="compile-test">
+        <junit filtertrace="yes" fork="true">
+            <classpath>
+                <path refid="project.class.path"/>
+                <pathelement location="${project.build.classes.dir}"/>
+            </classpath>
+
+            <formatter type="xml" usefile="true"/>
+
+            <test name="${project.package.base}.model.TestSuite" outfile="${project.test.output.name}"/>
+        </junit>
+    </target>
+
+    <target name="targets">
+        <echo message="The following targets are available:"/>
+        <echo message="  clean         Clean build and jar directories"/>
+        <echo message="  jar           Create JAR"/>
+        <echo message="  compile-main  Compile Medigy"/>
+        <echo message="  compile-test  Compile Medigy test cases"/>
+    </target>
+
+</project>
