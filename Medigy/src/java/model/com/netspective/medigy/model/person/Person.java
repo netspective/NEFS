@@ -82,6 +82,8 @@ public class Person extends Party
     private Set<PhysicalCharacteristic> physicalCharacteristics = new HashSet<PhysicalCharacteristic>();
     private Set<HealthCareVisit> healthCareVisits = new HashSet<HealthCareVisit>();
     private Set<HealthCareEpisode> healthCareEpisodes = new HashSet<HealthCareEpisode>();
+    private Set<Language> languages = new HashSet<Language>();
+
 
     public Person()
     {
@@ -294,6 +296,30 @@ public class Person extends Party
     public void setEthnicities(final Set<Ethnicity> ethnicities)
     {
         this.ethnicities = ethnicities;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<Language> getLanguages()
+    {
+        return languages;
+    }
+
+    public void setLanguages(final Set<Language> languages)
+    {
+        this.languages = languages;
+    }
+
+    @Transient
+    public Language getPrimaryLanguage()
+    {
+        final Object[] langList = languages.toArray();
+        for (int i=0; i < langList.length; i++)
+        {
+            if (((Language)langList[i]).getPrimaryInd().booleanValue())
+                return ((Language)langList[i]);
+        }
+        return null;
     }
 
     public String toString()
