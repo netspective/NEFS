@@ -50,7 +50,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -129,7 +128,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
         this.party = party;
     }
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "party_role_type_id")
     public PartyRoleType getType()
     {
@@ -151,7 +150,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
     @Override
-            public String toString()
+    public String toString()
     {
         return "PartyRole{" +
                 "party_role_id=" + partyRoleId +
