@@ -39,12 +39,15 @@
 package com.netspective.medigy.model.data;
 
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
-import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PersonRoleType;
+import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -71,11 +74,18 @@ public class EntitySeedDataPopulator
 
     public void populateSeedData() throws HibernateException
     {
+        com.netspective.medigy.model.session.Session session = new ProcessSession();
+        session.setProcessName(EntitySeedDataPopulator.class.getName());
+
+        HibernateUtil.beginTransaction();        
+        HibernateUtil.getSession().save(session);
+        SessionManager.getInstance().pushActiveSession(session);
+
         if (log.isInfoEnabled())
             log.info("Initializing with seed data");
-        HibernateUtil.beginTransaction();
         globalParty = new Party(Party.SYS_GLOBAL_PARTY_NAME);
-        session.save(globalParty);
+        // session won't work in here since it hasn't been created
+        HibernateUtil.getSession().save(globalParty);
 
         populatePersonRoleType();
         populateOrganizationRoleType();
@@ -83,7 +93,9 @@ public class EntitySeedDataPopulator
         populateInsurancePolicyType();
         populateGeographicBoundaries();
         populateInsurancePolicyRoleType();
+        populatePersonIdentifierType();
         HibernateUtil.commitTransaction();
+        SessionManager.getInstance().popActiveSession();
     }
 
     protected void populateGeographicBoundaries()
@@ -97,6 +109,17 @@ public class EntitySeedDataPopulator
                     {GeographicBoundaryType.Cache.COUNTY.getCode(), "County", globalParty},
                     {GeographicBoundaryType.Cache.PROVINCE.getCode(), "Province", globalParty},
                     {GeographicBoundaryType.Cache.COUNTRY.getCode(), "Country", globalParty},
+                }
+        );
+    }
+
+    protected void populatePersonIdentifierType() throws HibernateException
+    {
+        populateEntity(session, PersonIdentifierType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {PersonIdentifierType.Cache.SSN.getCode(), "SSN", globalParty},
+                    {PersonIdentifierType.Cache.DRIVERS_LICENSE.getCode(), "Driver's License", globalParty},
                 }
         );
     }

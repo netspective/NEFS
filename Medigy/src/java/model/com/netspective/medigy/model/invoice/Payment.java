@@ -38,10 +38,9 @@
  */
 package com.netspective.medigy.model.invoice;
 
+import com.netspective.medigy.model.claim.ClaimSettlementAmount;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.claim.ClaimSettlementAmount;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.claim.ClaimSettlementAmount;
 import com.netspective.medigy.reference.custom.invoice.PaymentMethodType;
 import com.netspective.medigy.reference.custom.invoice.PaymentType;
 
@@ -50,9 +49,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -155,7 +153,7 @@ public class Payment extends AbstractTopLevelEntity
         this.fromParty = fromParty;
     }
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "payment_type_id", nullable = false)
     public PaymentType getType()
     {
@@ -167,6 +165,7 @@ public class Payment extends AbstractTopLevelEntity
         this.type = type;
     }
 
+    @ManyToOne
     @JoinColumn(name = "payment_method_type_id")
     public PaymentMethodType getPaymentMethodType()
     {
