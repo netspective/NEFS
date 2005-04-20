@@ -72,7 +72,7 @@ public class TestOrganization  extends TestCase
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testPostalAddress()");
         HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().setActiveSession(session);
+        SessionManager.getInstance().pushActiveSession(session);
 
         Organization org1 = new Organization();
         org1.setOrganizationName("Acme Corporation");
@@ -205,6 +205,7 @@ public class TestOrganization  extends TestCase
         assertEquals("22033", savedAddress3.getPostalCode().getName());
         assertEquals("Fairfax County", savedAddress3.getCounty().getName());
         assertEquals("USA", savedAddress3.getCountry().getName());
+        SessionManager.getInstance().popActiveSession();
     }
 
     public void testOrg()
@@ -212,7 +213,7 @@ public class TestOrganization  extends TestCase
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testOrg()");
         HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().setActiveSession(session);
+        SessionManager.getInstance().pushActiveSession(session);
 
         Organization org1 = new Organization();
         org1.setOrganizationName("Acme Corporation");
@@ -305,5 +306,6 @@ public class TestOrganization  extends TestCase
         //info("Success. Parent and Child org's respective role's share one relationship.");
 
         HibernateUtil.closeSession();
+        SessionManager.getInstance().popActiveSession();
     }
 }

@@ -39,37 +39,35 @@
 package com.netspective.medigy.model.insurance;
 
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.model.org.Organization;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.model.person.TestPerson;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.insurance.CoverageType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.util.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
 
 import java.util.Date;
 
 public class TestInsurance extends TestCase
 {
-    private Party globalParty;
 
     protected void setUp() throws Exception
     {
         super.setUp();
 
         Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testPostalAddress()");
+        session.setProcessName(TestInsurance.class.getName() + "." + this.getName());
         HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().setActiveSession(session);
+        SessionManager.getInstance().pushActiveSession(session);
+    }
 
-        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
-        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
-        globalParty = (Party) criteria.uniqueResult();
+    protected void tearDown() throws Exception
+    {
+        super.tearDown();
+        SessionManager.getInstance().popActiveSession();
     }
 
     public void testInsurance()
@@ -132,12 +130,12 @@ public class TestInsurance extends TestCase
         final CoverageType medicalCoverageType = new CoverageType();
         medicalCoverageType.setCode("Med");
         medicalCoverageType.setLabel("Medical");
-        medicalCoverageType.setParty(globalParty);
+        medicalCoverageType.setParty(Party.Cache.SYS_GLOBAL_PARTY.getEntity());
 
         final CoverageType dentalCoverageType = new CoverageType();
         dentalCoverageType.setCode("Den");
         dentalCoverageType.setLabel("Dental");
-        dentalCoverageType.setParty(globalParty);
+        dentalCoverageType.setParty(Party.Cache.SYS_GLOBAL_PARTY.getEntity());
 
 
         final EnrollmentElection dentalElection = new EnrollmentElection();

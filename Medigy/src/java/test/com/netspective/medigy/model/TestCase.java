@@ -63,11 +63,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
-    protected static final File DEFAULT_DB_DIR = new File("C:\\temp\\medigy-test-db-08");
+    protected static File DEFAULT_DB_DIR;
+    protected static final String DEFAULT_DB_DIR_PREFIX = "C:\\temp\\medigy-test-db-";
+
 
     protected String getClassNameWithoutPackage()
     {
@@ -187,6 +190,7 @@ public abstract class TestCase extends junit.framework.TestCase
 
         config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Ethnicity.class);
+        config.addAnnotatedClass(com.netspective.medigy.model.person.Language.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
         config.addAnnotatedClass(com.netspective.medigy.model.person.PatientMedicalCondition.class);
@@ -249,6 +253,8 @@ public abstract class TestCase extends junit.framework.TestCase
     protected void setUp() throws Exception
     {
         super.setUp();
+
+        DEFAULT_DB_DIR =  new File(DEFAULT_DB_DIR_PREFIX + new Random().nextInt(10));
         DEFAULT_DB_DIR.mkdirs();
 
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
@@ -259,7 +265,7 @@ public abstract class TestCase extends junit.framework.TestCase
                              hibernateConfiguration).initialize();
 
         // Generate the DDL into a file so we can review it
-        final SchemaExport se = new SchemaExport(hibernateConfiguration);
+        SchemaExport se = new SchemaExport(hibernateConfiguration);
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
         se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".ddl");
@@ -288,5 +294,16 @@ public abstract class TestCase extends junit.framework.TestCase
     {
         super.tearDown();
         HibernateUtil.closeSession();
+        /*
+        // clean up the database by removing all the files
+        File[] files = DEFAULT_DB_DIR.listFiles();
+        for (int i = 0; i < files.length; i++)
+        {
+            File file = files[i];
+            if (!file.delete())
+                throw new Exception("Failed to delete generated database file: " + file.getName());
+        }
+        DEFAULT_DB_DIR.delete();
+        */
     }
 }

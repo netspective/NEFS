@@ -63,7 +63,7 @@ public class TestInvoice  extends TestCase
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testInvoice()");
         HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().setActiveSession(session);
+        SessionManager.getInstance().pushActiveSession(session);
 
         final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
         criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));

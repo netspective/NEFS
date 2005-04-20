@@ -38,47 +38,18 @@
  */
 package com.netspective.medigy.model;
 
-import junit.framework.Test;
-import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.org.TestOrganization;
-import com.netspective.medigy.model.insurance.TestInsurance;
+import com.netspective.medigy.model.person.TestPerson;
+import junit.framework.Test;
 
 public class TestSuite extends junit.framework.TestSuite
 {
     public static Test suite()
     {
         TestSuite suite= new TestSuite();
-        suite.addTest(
-            new TestPerson()
-            {
-                protected void runTest()
-                {                    
-                    testPerson();
-                    testPersonRelationships();
-                }
-            }
-        );
-
-        suite.addTest(
-            new TestOrganization()
-            {
-                protected void runTest()
-                {
-                    testOrg();
-                    testPostalAddress();
-                }
-            }
-        );
-
-        suite.addTest(
-            new TestInsurance()
-            {
-                protected void runTest()
-                {
-                    testInsurance();
-                }
-            }
-        );
+        suite.addTest(new junit.framework.TestSuite(TestPerson.class));
+        suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
+        
         return suite;
     }
 }
