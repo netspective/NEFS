@@ -4,6 +4,7 @@ Library                             Required By
 ----------------------------------  ------------------------
 asm-1.5.3.jar                       Hibernate
 asm-attrs-1.5.3.jar                 Hibernate
+bcel-5.1.jar                        Medigy
 cglib-2.1.jar                       Hibernate
 commons-collections-2.1.1.jar       Medigy
 commons-logging-1.0.4.jar           Medigy
