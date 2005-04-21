@@ -96,5 +96,15 @@ public class GenderType extends AbstractReferenceEntity
         {
             this.entity = (GenderType) entity;
         }
+
+        public static GenderType getEntity(String code)
+        {
+            for (GenderType.Cache gender : GenderType.Cache.values())
+            {
+                if (gender.getId().equals(code))
+                    return gender.getEntity();
+            }
+            return null;
+        }
     }
 }

@@ -79,6 +79,16 @@ public class EthnicityType extends AbstractCustomReferenceEntity
         {
             this.entity = (EthnicityType) entity;
         }
+
+        public static EthnicityType getEntity(String code)
+        {
+            for (EthnicityType.Cache ethnicity : EthnicityType.Cache.values())
+            {
+                if (ethnicity.getCode().equals(code))
+                    return ethnicity.getEntity();
+            }
+            return null;
+        }
     }
 
     @Id(generate = GeneratorType.AUTO)

@@ -38,9 +38,9 @@
  */
 package com.netspective.medigy.reference.type;
 
+import com.netspective.medigy.reference.AbstractReferenceEntity;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
-import com.netspective.medigy.reference.AbstractReferenceEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -49,6 +49,7 @@ import javax.persistence.Table;
 @Table(name = "Language_Type")        
 public class LanguageType extends AbstractReferenceEntity
 {
+
     public enum Cache implements CachedReferenceEntity
     {
         ENGLISH("ENG", "English", ""),
@@ -92,5 +93,16 @@ public class LanguageType extends AbstractReferenceEntity
         {
             this.entity = (LanguageType) entity;
         }
+
+        public static LanguageType getEntity(String code)
+        {
+            for (LanguageType.Cache language : LanguageType.Cache.values())
+            {
+                if (language.getId().equals(code))
+                    return language.getEntity();
+            }
+            return null;
+        }
     }
+
 }

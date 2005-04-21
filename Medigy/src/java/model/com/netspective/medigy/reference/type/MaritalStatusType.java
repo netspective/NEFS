@@ -97,5 +97,15 @@ public class MaritalStatusType extends AbstractReferenceEntity
         {
             this.entity = (MaritalStatusType) entity;
         }
+
+        public static MaritalStatusType getEntity(String code)
+        {
+            for (MaritalStatusType.Cache ethnicity : MaritalStatusType.Cache.values())
+            {
+                if (ethnicity.getId().equals(code))
+                    return ethnicity.getEntity();
+            }
+            return null;
+        }
     }
 }
