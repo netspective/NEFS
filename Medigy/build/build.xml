@@ -27,7 +27,8 @@
         <property name="project.lib.runtime.dir" value="${project.lib.dir}/runtime"/>
         <property name="project.lib.test.dir" value="${project.lib.dir}/test"/>
 
-        <property name="project.test.output.name" value="test-reports"/>
+        <property name="project.test.output.dir" value="test-reports"/>
+        <property name="project.test.output.file-prefix" value="test-reports"/>
         <property name="project.output.jar-name" value="medigy.jar"/>
 
         <path id="project.build.class.path">
@@ -101,6 +102,9 @@
     <!-- ==================== Test targets  ======================= -->
 
     <target name="test" depends="compile-test">
+        <delete dir="${project.test.output.dir}"/>
+        <mkdir dir="${project.test.output.dir}"/>
+
         <junit filtertrace="yes" fork="true">
             <classpath>
                 <path refid="project.test.class.path"/>
@@ -109,7 +113,7 @@
 
             <formatter type="xml" usefile="true"/>
 
-            <test name="${project.package.base}.model.TestSuite" outfile="${project.test.output.name}"/>
+            <test name="${project.package.base}.model.TestSuite" todir="${project.test.output.dir}" outfile="${project.test.output.file-prefix}"/>
         </junit>
     </target>
 
