@@ -61,12 +61,41 @@ import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class TestPerson extends TestCase
 {
+    public void testPersonFacade()
+    {
+        Session session = new ProcessSession();
+        session.setProcessName(TestPerson.class.getName() + ".testPersonFacade()");
+        SessionManager.getInstance().pushActiveSession(session);
+        HibernateUtil.getSession().save(session);
+
+        HibernateUtil.beginTransaction();
+
+        com.netspective.medigy.dto.Person newPerson = new com.netspective.medigy.dto.PersonImpl();
+        newPerson.setFirstName("Ryan");
+        newPerson.setMiddleName("Bluegrass");
+        newPerson.setLastName("Hackett");
+        newPerson.setMaritalStatus(MaritalStatusType.Cache.SINGLE.getId());
+        newPerson.setGender(GenderType.Cache.MALE.getId());
+
+        PersonFacade personFacade = new PersonFacadeImpl();
+        personFacade.addPerson(newPerson);
+        HibernateUtil.commitTransaction();
+
+        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, newPerson.getPersonId());
+        assertEquals(persistedPerson.getFirstName(), "Ryan");
+        assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
+        assertEquals(persistedPerson.getLastName(), "Hackett");
+        assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
+    }
+
     public void testPerson()
     {
         Session session = new ProcessSession();
