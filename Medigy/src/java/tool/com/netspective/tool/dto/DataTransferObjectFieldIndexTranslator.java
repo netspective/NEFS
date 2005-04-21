@@ -38,7 +38,7 @@
  */
 package com.netspective.tool.dto;
 
-public interface DtoFieldNameTranslator
+public interface DataTransferObjectFieldIndexTranslator
 {
-    public String getTranslatedName(String fieldName);
+    public int getTranslatedIndex(String fieldName);
 }

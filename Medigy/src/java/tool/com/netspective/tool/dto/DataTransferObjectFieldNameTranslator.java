@@ -38,9 +38,7 @@
  */
 package com.netspective.tool.dto;
 
-import java.sql.ResultSet;
-
-public interface DtoIndexedResultSetAssignable
+public interface DataTransferObjectFieldNameTranslator
 {
-    public void setFieldsToColumnsByIndex(ResultSet rs, DtoFieldIndexTranslator translator);
+    public String getTranslatedName(String fieldName);
 }

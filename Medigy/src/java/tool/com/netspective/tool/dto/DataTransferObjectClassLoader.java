@@ -103,32 +103,32 @@ import java.sql.ResultSet;
  * public void setDouble(double value);
  * public void setObject(Object value);
  * <p/>
- * public void setColumnsByName(ResultSet rs, DtoFieldIndexTranslator translator);
- * public void setColumnsByName(ResultSet rs, DtoFieldNameTranslator translator);
+ * public void setColumnsByName(ResultSet rs, DataTransferObjectFieldIndexTranslator translator);
+ * public void setColumnsByName(ResultSet rs, DataTransferObjectFieldNameTranslator translator);
  * }
  * <p/>
  * If the programmer defines the above two interfaces (they can also be combined into one if desired), then a call like
  * the following will automatically generate a class on the fly:
  * <p/>
  * final String className = "com.netspective.commons.lang.BeanGeneratorTestImpl";
- * DtoObjectClassLoader bgcl = DtoObjectClassLoader.getInstance(className, new Class[]
+ * DataTransferObjectClassLoader bgcl = DataTransferObjectClassLoader.getInstance(className, new Class[]
  * { BeanGeneratorTestInterface.class, BeanGeneratorTestMutableInterface.class });
  * <p/>
  * The auto-generated class that can manage the values as fields and the special handlers setColumnsByName(ResultSet, ?)
  * will automatically assign values to the fields using the items in the ResultSet using optional name or index
  * translators. The index version is the fastest.
  */
-public class DtoObjectClassLoader  extends ClassLoader
+public class DataTransferObjectClassLoader  extends ClassLoader
 {
-    private static final Log log = LogFactory.getLog(DtoObjectClassLoader.class);
+    private static final Log log = LogFactory.getLog(DataTransferObjectClassLoader.class);
     private static final Map INSTANCES = new HashMap();
 
-    public static synchronized DtoObjectClassLoader getInstance(final String className, final Class[] interfaces) throws IOException, ClassNotFoundException
+    public static synchronized DataTransferObjectClassLoader getInstance(final String className, final Class[] interfaces) throws IOException, ClassNotFoundException
     {
-        DtoObjectClassLoader bgcl = (DtoObjectClassLoader) INSTANCES.get(className);
+        DataTransferObjectClassLoader bgcl = (DataTransferObjectClassLoader) INSTANCES.get(className);
         if(bgcl == null)
         {
-            bgcl = new DtoObjectClassLoader(interfaces[0].getClassLoader(), className, interfaces);
+            bgcl = new DataTransferObjectClassLoader(interfaces[0].getClassLoader(), className, interfaces);
             INSTANCES.put(className, bgcl);
         }
 
@@ -139,7 +139,7 @@ public class DtoObjectClassLoader  extends ClassLoader
     private final Class[] interfaces;
     private final Class generatedClass;
 
-    public DtoObjectClassLoader(String className, Class[] interfaces) throws IOException, ClassNotFoundException
+    public DataTransferObjectClassLoader(String className, Class[] interfaces) throws IOException, ClassNotFoundException
     {
         this.className = className;
         this.interfaces = interfaces;
@@ -147,7 +147,7 @@ public class DtoObjectClassLoader  extends ClassLoader
         this.generatedClass = defineClass(className, byteCode, 0, byteCode.length);
     }
 
-    public DtoObjectClassLoader(ClassLoader parent, String className, Class[] interfaces) throws IOException, ClassNotFoundException
+    public DataTransferObjectClassLoader(ClassLoader parent, String className, Class[] interfaces) throws IOException, ClassNotFoundException
     {
         super(parent);
         this.className = className;
@@ -186,7 +186,7 @@ public class DtoObjectClassLoader  extends ClassLoader
             {
                 SingleFieldBytecodeGenerator generator = (SingleFieldBytecodeGenerator) mutatorIter.next();
                 if(generator instanceof IndexMappedResultSetMutatorBytecodeGenerator)
-                    interfaceNames.add(DtoIndexedResultSetAssignable.class.getName());
+                    interfaceNames.add(DataTransferObjectIndexedResultSetAssignable.class.getName());
             }
         }
 
@@ -371,7 +371,7 @@ public class DtoObjectClassLoader  extends ClassLoader
         {
             final InstructionList il = new InstructionList();
             final MethodGen method = new MethodGen(Constants.ACC_PUBLIC, Type.VOID, new Type[]{
-                new ObjectType("java.sql.ResultSet"), new ObjectType(DtoFieldIndexTranslator.class.getName())
+                new ObjectType("java.sql.ResultSet"), new ObjectType(DataTransferObjectFieldIndexTranslator.class.getName())
             }, new String[]{"rs", "mapper"}, beanMethod.method.getName(), className, il, constantsPool);
 
             BranchInstruction ifle = null;
@@ -395,7 +395,7 @@ public class DtoObjectClassLoader  extends ClassLoader
                     ifle.setTarget(start);
 
                 il.append(new PUSH(constantsPool, field.getFieldName()));
-                il.append(instructionFactory.createInvoke(DtoFieldIndexTranslator.class.getName(), "getTranslatedIndex", Type.INT, new Type[]{
+                il.append(instructionFactory.createInvoke(DataTransferObjectFieldIndexTranslator.class.getName(), "getTranslatedIndex", Type.INT, new Type[]{
                     Type.STRING
                 }, Constants.INVOKEINTERFACE));
                 il.append(InstructionFactory.createStore(Type.INT, 3));
@@ -436,7 +436,7 @@ public class DtoObjectClassLoader  extends ClassLoader
         {
             final InstructionList il = new InstructionList();
             final MethodGen method = new MethodGen(Constants.ACC_PUBLIC, Type.VOID, new Type[]{
-                new ObjectType("java.sql.ResultSet"), new ObjectType(DtoFieldNameTranslator.class.getName())
+                new ObjectType("java.sql.ResultSet"), new ObjectType(DataTransferObjectFieldNameTranslator.class.getName())
             }, new String[]{"rs", "mapper"}, beanMethod.method.getName(), className, il, constantsPool);
 
             BranchInstruction ifNullBranch = null;
@@ -460,7 +460,7 @@ public class DtoObjectClassLoader  extends ClassLoader
                     ifNullBranch.setTarget(start);
 
                 il.append(new PUSH(constantsPool, field.getFieldName()));
-                il.append(instructionFactory.createInvoke(DtoFieldIndexTranslator.class.getName(), "getTranslatedName", Type.STRING, new Type[]{
+                il.append(instructionFactory.createInvoke(DataTransferObjectFieldIndexTranslator.class.getName(), "getTranslatedName", Type.STRING, new Type[]{
                     Type.STRING
                 }, Constants.INVOKEINTERFACE));
                 il.append(InstructionFactory.createStore(Type.OBJECT, 3));
@@ -509,12 +509,12 @@ public class DtoObjectClassLoader  extends ClassLoader
                     this.fieldName = methodName.substring(3);
                     this.generator = new SimpleFieldMutatorSingleFieldBytecodeGenerator(this);
                 }
-                else if(parameterTypes.length == 2 && parameterTypes[0].equals(ResultSet.class) && parameterTypes[1].equals(DtoFieldIndexTranslator.class))
+                else if(parameterTypes.length == 2 && parameterTypes[0].equals(ResultSet.class) && parameterTypes[1].equals(DataTransferObjectFieldIndexTranslator.class))
                 {
                     this.fieldName = null;
                     this.generator = new IndexMappedResultSetMutatorBytecodeGenerator(this, classFields);
                 }
-                else if(parameterTypes.length == 2 && parameterTypes[0].equals(ResultSet.class) && parameterTypes[1].equals(DtoFieldNameTranslator.class))
+                else if(parameterTypes.length == 2 && parameterTypes[0].equals(ResultSet.class) && parameterTypes[1].equals(DataTransferObjectFieldNameTranslator.class))
                 {
                     this.fieldName = null;
                     this.generator = new NameMappedResultSetMutatorBytecodeGenerator(this, classFields);
