@@ -40,6 +40,9 @@
 
 package com.netspective.medigy.model.person;
 
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.type.GenderType;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,9 +52,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.type.GenderType;
 
 @Entity
 @Table(name = "Person_Gender")
@@ -88,7 +88,7 @@ public class Gender extends AbstractDateDurationEntity implements Comparable
         return person;
     }
 
-    protected void setPerson(final Person person)
+    public void setPerson(final Person person)
     {
         this.person = person;
     }

@@ -43,7 +43,9 @@
  */
 package com.netspective.medigy.model.person;
 
-import java.util.Date;
+import com.netspective.medigy.model.common.AbstractEntity;
+import com.netspective.medigy.model.common.EffectiveDates;
+import com.netspective.medigy.reference.type.MaritalStatusType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,10 +56,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.model.common.EffectiveDates;
-import com.netspective.medigy.reference.type.MaritalStatusType;
+import java.util.Date;
 
 @Entity
 @Table(name = "Person_Mar_Stat")
@@ -94,7 +93,7 @@ public class MaritalStatus extends AbstractEntity implements Comparable
         return person;
     }
 
-    protected void setPerson(final Person person)
+    public void setPerson(final Person person)
     {
         this.person = person;
     }
