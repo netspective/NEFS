@@ -6,6 +6,7 @@ asm-1.5.3.jar                       Hibernate
 asm-attrs-1.5.3.jar                 Hibernate
 bcel-5.1.jar                        DataTransferObject tool
 cglib-2.1.jar                       Hibernate
+commons-beanutils-1.7.0.jar         Medigy
 commons-collections-2.1.1.jar       Medigy
 commons-logging-1.0.4.jar           Medigy
 dom4j-1.6.jar                       Hibernate
