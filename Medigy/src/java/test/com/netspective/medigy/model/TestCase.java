@@ -44,13 +44,15 @@
 package com.netspective.medigy.model;
 
 import com.netspective.medigy.util.HibernateConfiguration;
-import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
+import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -63,13 +65,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.LogManager;
 
 public abstract class TestCase extends junit.framework.TestCase
 {
+    private static final Log log = LogFactory.getLog(TestCase.class);
+
     protected static File DEFAULT_DB_DIR;
-    protected static final String DEFAULT_DB_DIR_PREFIX = "C:\\temp\\medigy-test-db-";
+    protected static final String DEFAULT_DB_DIR_SUFFIX = "setup";
 
 
     protected String getClassNameWithoutPackage()
@@ -247,15 +250,33 @@ public abstract class TestCase extends junit.framework.TestCase
         final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(configuration, gdg, filter);
         hdg.generate();
         gdg.generateDOTSource(dotFileName);
-        Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
+
+        if (System.getProperty("os.name").contains("Windows"))
+            Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
     }
 
     protected void setUp() throws Exception
     {
         super.setUp();
 
-        DEFAULT_DB_DIR =  new File(DEFAULT_DB_DIR_PREFIX + new Random().nextInt(10));
-        DEFAULT_DB_DIR.mkdirs();
+        String systemTempDir = System.getProperty("java.io.tmpdir");
+        String systemFileSep = System.getProperty("file.separator");
+
+        DEFAULT_DB_DIR = new File(systemTempDir + systemFileSep + getClassNameWithoutPackage());
+        log.info(DEFAULT_DB_DIR.getAbsolutePath());
+        /*
+        if (DEFAULT_DB_DIR.exists())
+        {
+            // clean up previous incarnations
+            File[] files = DEFAULT_DB_DIR.listFiles();
+            for (int i = 0; i < files.length; i++)
+            {
+                File file = files[i];
+                if (!file.delete())
+                    throw new RuntimeException("Failed to delete previously generated database file: " + file.getName());
+            }
+        }
+        */
 
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
@@ -268,25 +289,27 @@ public abstract class TestCase extends junit.framework.TestCase
         SchemaExport se = new SchemaExport(hibernateConfiguration);
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
-        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + ".ddl");
+        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
+
 
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the first version is good for software engineers
         generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-se",
+                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-se",
                 new HibernateDiagramFilter(true, true, true, true));
 
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the second version is good for software engineers looking for general table structure (no column information)
         generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-set",
+                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-set",
                 new HibernateDiagramFilter(false, true, true, true));
 
         // the third version is good for database administrators (simple ERD)
         generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + "/" + "medigy-" + dialectShortName + "-erd",
+                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-erd",
                 new HibernateDiagramFilter(true, false, false, false));
+
 
     }
 
@@ -294,16 +317,5 @@ public abstract class TestCase extends junit.framework.TestCase
     {
         super.tearDown();
         HibernateUtil.closeSession();
-        /*
-        // clean up the database by removing all the files
-        File[] files = DEFAULT_DB_DIR.listFiles();
-        for (int i = 0; i < files.length; i++)
-        {
-            File file = files[i];
-            if (!file.delete())
-                throw new Exception("Failed to delete generated database file: " + file.getName());
-        }
-        DEFAULT_DB_DIR.delete();
-        */
     }
 }
