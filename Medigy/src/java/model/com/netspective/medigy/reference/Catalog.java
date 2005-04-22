@@ -63,6 +63,7 @@ public interface Catalog
         PriorityType.class,
         DataEncryptionType.class,
         UnitOfMeasureType.class,
-        LanguageType.class
+        LanguageType.class,
+        ModelVersion.class
     };
 }

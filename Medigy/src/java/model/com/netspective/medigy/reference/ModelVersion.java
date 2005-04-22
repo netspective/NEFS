@@ -45,4 +45,45 @@ import javax.persistence.Table;
 @Table(name = "Model_Version")
 public class ModelVersion extends AbstractReferenceEntity
 {
+    public enum Cache implements CachedReferenceEntity
+    {
+        VER_1_0_0("1.0.0", "", "");
+        private final String code;
+        private final String label;
+        private final String description;
+        private ModelVersion entity;
+
+        private Cache(final String code, final String label, final String description)
+        {
+            this.code = code;
+            this.label = label;
+            this.description = description;
+        }
+
+        public String getId()
+        {
+            return code;
+        }
+
+        public String getLabel()
+        {
+            return label;
+        }
+
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public ModelVersion getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final ReferenceEntity entity)
+        {
+            this.entity = (ModelVersion) entity;
+        }
+
+    }
 }
