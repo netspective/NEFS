@@ -55,6 +55,7 @@ public class PartyRelationshipType extends AbstractCustomReferenceEntity
 {
     public enum Cache implements CachedCustomReferenceEntity
     {
+        PARENT_CHILD("FAMILY"),
         ORGANIZATION_ROLLUP("ORG_ROLLUP"),
         PARTNERSHIP("PARTNER"),
         CUSTOMER_RELATIONSHIP("CUST_REL"),
