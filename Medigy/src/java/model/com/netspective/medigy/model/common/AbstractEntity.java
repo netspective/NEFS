@@ -43,21 +43,19 @@
  */
 package com.netspective.medigy.model.common;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.SessionManager;
 
-import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Version;
-
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
+import java.io.Serializable;
+import java.util.Date;
 
 public abstract class AbstractEntity implements Serializable
 {
     private RecordStatusType recordStatus = RecordStatusType.ACTIVE;
-    private int version = 0;
+    private int lockVersion = 0;
     private Date createTimestamp = new Date();
     private Date updateTimestamp;
     private Session createSession = SessionManager.getInstance().getActiveSession();
@@ -74,14 +72,14 @@ public abstract class AbstractEntity implements Serializable
     }
 
     @Version
-    public int getVersion()
+    public int getLockVersion()
     {
-        return version;
+        return lockVersion;
     }
 
-    public void setVersion(int version)
+    public void setLockVersion(int lockVersion)
     {
-        this.version = version;
+        this.lockVersion = lockVersion;
     }
 
     public Date getCreateTimestamp()
