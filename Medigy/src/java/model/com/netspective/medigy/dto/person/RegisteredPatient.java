@@ -42,5 +42,16 @@ import java.io.Serializable;
 
 public interface RegisteredPatient
 {
-    public Serializable getPatientId(); 
+    /**
+     * Gets the Id of the newly registered patient
+     * @return
+     */
+    public Serializable getPatientId();
+
+    /**
+     * Gets the input parameters given to the patient registration service
+     *
+     * @return
+     */
+    public RegisterPatientParameters getRegisterPatientParameters();
 }

@@ -56,7 +56,7 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
 {
     private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
-    public RegisteredPatient registerPatient(RegisterPatientParameters patientParameters)
+    public RegisteredPatient registerPatient(final RegisterPatientParameters patientParameters)
     {
         final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
         final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
@@ -79,6 +79,11 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
                 public Serializable getPatientId()
                 {
                     return patientId;
+                }
+
+                public RegisterPatientParameters getRegisterPatientParameters()
+                {
+                    return patientParameters;
                 }
             };
             if (log.isInfoEnabled())
