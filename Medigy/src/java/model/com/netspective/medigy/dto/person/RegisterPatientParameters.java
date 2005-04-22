@@ -66,4 +66,42 @@ public interface RegisterPatientParameters
 
     public String getMaritalStatus();
 
+    public String getEmployerName();
+
+    public String getSsn();
+
+    public String[] getEthnicities();
+
+    public String[] getLanguages();
+
+    public String getDriversLicenseNumber();
+
+    public String getResponsiblePartyLastName();
+
+    public String getResponsiblePartyFirstName();
+
+    public String getResponsiblePartyId();
+
+    public String getResponsiblePartyRelationship();
+
+    public String getHomePhone();
+
+    public String getWorkPhone();
+
+    public String getMobilePhone();
+
+    public String getStreetAddress();
+
+    public String getCity();
+
+    public String getState();
+
+    public String getPostalCode();
+
+    public String getCountry();
+
+    public String getPrimaryCareProviderId();
+
+    public String getPrimaryCareProviderName();
+
 }
