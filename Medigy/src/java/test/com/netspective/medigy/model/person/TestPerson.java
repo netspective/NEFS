@@ -43,15 +43,16 @@
  */
 package com.netspective.medigy.model.person;
 
+import com.netspective.medigy.dto.person.AddPatientData;
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.model.party.PartyContactMechanism;
 import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.party.PartyIdentifier;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
@@ -60,36 +61,45 @@ import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.util.HibernateUtil;
-import com.netspective.medigy.service.person.PersonFacade;
-import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
+import com.netspective.tool.dto.DataTransferObjectUtil;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class TestPerson extends TestCase
 {
-    public void testPersonFacade()
+    public void testPatientRegistration()
     {
         Session session = new ProcessSession();
         session.setProcessName(TestPerson.class.getName() + ".testPersonFacade()");
         SessionManager.getInstance().pushActiveSession(session);
         HibernateUtil.getSession().save(session);
 
+        AddPatientData patientData = null;
+        try
+        {
+            patientData = (AddPatientData) DataTransferObjectUtil.getImplementation(AddPatientData.class);
+        }
+        catch (Exception e)
+        {
+            fail(e.getMessage());
+        }
+
         HibernateUtil.beginTransaction();
+        patientData.setFirstName("Ryan");
+        patientData.setMiddleName("Bluegrass");
+        patientData.setLastName("Hackett");
+        patientData.setMaritalStatus(MaritalStatusType.Cache.SINGLE.getId());
+        patientData.setGender(GenderType.Cache.MALE.getId());
 
-        com.netspective.medigy.dto.Person newPerson = new com.netspective.medigy.dto.PersonImpl();
-        newPerson.setFirstName("Ryan");
-        newPerson.setMiddleName("Bluegrass");
-        newPerson.setLastName("Hackett");
-        newPerson.setMaritalStatus(MaritalStatusType.Cache.SINGLE.getId());
-        newPerson.setGender(GenderType.Cache.MALE.getId());
-
-        PersonFacade personFacade = new PersonFacadeImpl();
-        personFacade.addPerson(newPerson);
+        PatientRegistrationService service = ServiceLocator.getInstance().getPatientRegistrationService();
+        service.registerPatient(patientData);
         HibernateUtil.commitTransaction();
 
-        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, newPerson.getPersonId());
+        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, patientData.getPersonId());
         assertEquals(persistedPerson.getFirstName(), "Ryan");
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
