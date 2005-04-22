@@ -38,24 +38,47 @@
  */
 package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.dto.Person;
+import com.netspective.medigy.dto.person.AddPatientData;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.model.person.Gender;
+import com.netspective.medigy.model.person.MaritalStatus;
+import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.service.ServiceLocator;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class PatientRegistrationServiceImpl implements PatientRegistrationService
 {
-    private PersonFacade personFacade;
+    private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
-    public PersonFacade getPersonFacade()
+    public void registerPatient(AddPatientData patientData)
     {
-        return personFacade;
-    }
+        final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
+        final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
 
-    public void setPersonFacade(final PersonFacade personFacade)
-    {
-        this.personFacade = personFacade;
-    }
+        Person person = new Person();
+        try
+        {
+            BeanUtils.copyProperties(person, patientData);
 
-    public void registerPatient(Person person)
-    {
-        personFacade.addPerson(person);     
+            Gender gender = referenceEntityService.getGender(patientData.getGender());
+            gender.setPerson(person);
+            MaritalStatus maritalStatus = referenceEntityService.getMaritalStatus(patientData.getMaritalStatus());
+            maritalStatus.setPerson(person);
+
+            person.getGenders().add(gender);
+            person.getMaritalStatuses().add(maritalStatus);
+            personFacade.addPerson(person);
+            patientData.setPersonId((Long) person.getPersonId());
+            if (log.isInfoEnabled())
+                log.info("New PERSON created with id = " + patientData.getPersonId());
+
+        }
+        catch (Exception e)
+        {
+            log.error(ExceptionUtils.getStackTrace(e));
+        }
     }
 }

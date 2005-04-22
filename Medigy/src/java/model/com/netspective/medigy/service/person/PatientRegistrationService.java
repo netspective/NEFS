@@ -38,9 +38,9 @@
  */
 package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.dto.Person;
+import com.netspective.medigy.dto.person.AddPatientData;
 
 public interface PatientRegistrationService
 {
-    public void registerPatient(Person person);
+    public void registerPatient(AddPatientData person);
 }

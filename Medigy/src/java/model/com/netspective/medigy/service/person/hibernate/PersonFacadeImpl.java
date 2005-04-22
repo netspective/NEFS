@@ -38,13 +38,10 @@
  */
 package com.netspective.medigy.service.person.hibernate;
 
-import com.netspective.medigy.dto.Person;
-import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.dto.person.AddPatientData;
+import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
-import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.MaritalStatus;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -57,61 +54,25 @@ public class PersonFacadeImpl implements PersonFacade
 {
     private static final Log log = LogFactory.getLog(PersonFacadeImpl.class);
 
-    private ReferenceEntityLookupService referenceEntityService;
-
-    public PersonFacadeImpl()
+    
+    public AddPatientData[] listPersonByLastName(final String lastName, boolean exactMatch)
     {
-    }
-
-    public ReferenceEntityLookupService getReferenceEntityService()
-    {
-        return referenceEntityService;
-    }
-
-    public void setReferenceEntityService(ReferenceEntityLookupService referenceEntityService)
-    {
-        this.referenceEntityService = referenceEntityService;
-    }
-
-    public Person[] listPersonByLastName(final String lastName, boolean exactMatch)
-    {
-        Criteria criteria = HibernateUtil.getSession().createCriteria(Person.class);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(AddPatientData.class);
         if (!exactMatch)
             criteria.add(Expression.like("lastName", lastName));
         else
             criteria.add(Expression.eq("lastName", lastName));
         List list = criteria.list();
-        return list != null ? (Person[]) list.toArray(new Person[0]) : null;
+        return list != null ? (AddPatientData[]) list.toArray(new AddPatientData[0]) : null;
     }
 
-    public Person getPersonById(final Serializable id)
+    public AddPatientData getPersonById(final Serializable id)
     {
-        return (Person) HibernateUtil.getSession().load(Person.class, id);
+        return (AddPatientData) HibernateUtil.getSession().load(AddPatientData.class, id);
     }
 
     public void addPerson(Person person)
     {
-        com.netspective.medigy.model.person.Person modelPerson = new com.netspective.medigy.model.person.Person();
-
-        try
-        {
-            BeanUtils.copyProperties(person, modelPerson);
-
-            Gender gender = referenceEntityService.getGender(person.getGender());
-            gender.setPerson(modelPerson);
-            MaritalStatus maritalStatus = referenceEntityService.getMaritalStatus(person.getMaritalStatus());
-            maritalStatus.setPerson(modelPerson);
-            
-            modelPerson.getGenders().add(gender);
-            modelPerson.getMaritalStatuses().add(maritalStatus);
-            Serializable id = HibernateUtil.getSession().save(modelPerson);
-            if (log.isInfoEnabled())
-                log.info("New PERSON created with id = " + id);
-
-        }
-        catch (Exception e)
-        {
-            log.error(e);
-        }
+        HibernateUtil.getSession().save(person);
     }
 }
