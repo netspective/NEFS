@@ -36,11 +36,14 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.dto;
+package com.netspective.medigy.dto.person;
 
 import java.util.Date;
 
-public interface Person
+/**
+ * Interface for DTO containing data specific to the Add Patient service
+ */
+public interface AddPatientData
 {
     public Long getPersonId();
 
