@@ -129,6 +129,7 @@ public class EntitySeedDataPopulator
         populateEntity(session, PartyRelationshipType.class, new String[] {"code", "label", "party"},
                 new Object[][]
                 {
+                    {PartyRelationshipType.Cache.PARENT_CHILD.getCode(), "Parent-Child", globalParty},
                     {PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getCode(), "Organization Rollup", globalParty},
                     {PartyRelationshipType.Cache.PARTNERSHIP.getCode(), "Partnership", globalParty},
                     {PartyRelationshipType.Cache.CUSTOMER_RELATIONSHIP.getCode(), "Customer Relationship", globalParty},
@@ -141,6 +142,8 @@ public class EntitySeedDataPopulator
         populateEntity(session, PersonRoleType.class, new String[] {"code", "label", "description", "party"},
             new Object[][]
             {
+                {PersonRoleType.Cache.PARENT.getCode(), "Parent", null, globalParty},
+                {PersonRoleType.Cache.CHILD.getCode(), "Child", null, globalParty},
                 {PersonRoleType.Cache.FAMILY_MEMBER.getCode(), "Family Member", null, globalParty},
                 {PersonRoleType.Cache.DEPENDENT.getCode(), "Dependent", null, globalParty},
                 {PersonRoleType.Cache.EMPLOYEE.getCode(), "Employee", null, globalParty},
