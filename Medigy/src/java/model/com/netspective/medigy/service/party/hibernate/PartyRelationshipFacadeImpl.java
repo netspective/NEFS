@@ -36,56 +36,25 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.person;
+package com.netspective.medigy.service.party.hibernate;
 
-import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.ValidPartyRelationshipRole;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.util.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
 
 import java.util.List;
 
-
-public class TestPersonRelationshipFacade extends TestCase
+public class PartyRelationshipFacadeImpl implements PartyRelationshipFacade
 {
-    /**
-     * Validate the VALID_PARTY_RELATIONSHIP_ROLE table, Add two roles associated with one relationship and verify by
-     *  reading it back out using the  PartyRelationshipFacade 
-     */
-    public void testPersonRelationshipFacade()
+    public List getValidPartyRolesByRelationshipType(PartyRelationshipType type)
     {
-        Session session = new ProcessSession();
-        session.setProcessName(TestPersonRelationshipFacade.class.getName() + ".testPersonRelationshipFacade()");
-        SessionManager.getInstance().pushActiveSession(session);
-        HibernateUtil.getSession().save(session);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(ValidPartyRelationshipRole.class);
+        Criteria relationshipCriteria = criteria.createCriteria("partyRelationshipType");
+        relationshipCriteria.add(Expression.eq("code", type.getCode()));
 
-        //
-        HibernateUtil.beginTransaction();
-        final ValidPartyRelationshipRole parentMapping = new ValidPartyRelationshipRole();
-        parentMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PARENT_CHILD.getEntity());
-        parentMapping.setPartyRoleType(PersonRoleType.Cache.PARENT.getEntity());
-        HibernateUtil.getSession().save(parentMapping);
-
-        final ValidPartyRelationshipRole childMapping = new ValidPartyRelationshipRole();
-        childMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PARENT_CHILD.getEntity());
-        childMapping.setPartyRoleType(PersonRoleType.Cache.CHILD.getEntity());
-        HibernateUtil.getSession().save(childMapping);
-        HibernateUtil.commitTransaction();
-
-        PartyRelationshipType relType = PartyRelationshipType.Cache.PARENT_CHILD.getEntity();
-        PartyRelationshipFacade facade = new PartyRelationshipFacadeImpl();
-        List validList = facade.getValidPartyRolesByRelationshipType(relType);
-        assertEquals(validList.size(), 2);
-
-        ValidPartyRelationshipRole validRelRole = (ValidPartyRelationshipRole) validList.toArray()[0];
-        assertEquals(validRelRole.getPartyRoleType(), PersonRoleType.Cache.PARENT.getEntity());
-        validRelRole = (ValidPartyRelationshipRole) validList.toArray()[1];
-        assertEquals(validRelRole.getPartyRoleType(), PersonRoleType.Cache.CHILD.getEntity());
+        return criteria.list();
     }
 }

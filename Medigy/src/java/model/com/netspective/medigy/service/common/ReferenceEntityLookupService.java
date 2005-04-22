@@ -42,15 +42,19 @@ import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.Gender;
 import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.MaritalStatus;
+import com.netspective.medigy.model.person.PersonRole;
 
 public interface ReferenceEntityLookupService
 {
-    public Language getLanguage(final String code, boolean primary) throws UnknownReferenceTypeException;
+    public Language getLanguage(final String code) throws UnknownReferenceTypeException;
 
     public Gender getGender(final String genderCode) throws UnknownReferenceTypeException;
 
     public Ethnicity getEthnicity(final String ethnicityCode) throws UnknownReferenceTypeException;
 
     public MaritalStatus getMaritalStatus(String statusCode) throws UnknownReferenceTypeException;
+
+    public PersonRole getPersonRole(String roleCode) throws UnknownReferenceTypeException;
+
 
 }

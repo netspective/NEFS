@@ -42,7 +42,9 @@ import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.Gender;
 import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
+import com.netspective.medigy.model.person.PersonRole;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
@@ -57,10 +59,9 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
      * Gets a new language object based on the code
      *
      * @param code      Language code
-     * @param primary   Whether or not the language is the primary one
      * @return
      */
-    public Language getLanguage(final String code, boolean primary) throws UnknownReferenceTypeException
+    public Language getLanguage(final String code) throws UnknownReferenceTypeException
     {
         final LanguageType type = LanguageType.Cache.getEntity(code);
         if (type == null)
@@ -68,7 +69,6 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
 
         Language language = new Language();
         language.setType(type);
-        language.setPrimaryInd(primary);
         return language;
     }
 
@@ -126,5 +126,21 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
         MaritalStatus status = new MaritalStatus();
         status.setType(type);
         return status;
+    }
+
+    public PersonRole getPersonRole(String roleCode) throws UnknownReferenceTypeException
+    {
+        PersonRoleType  type = PersonRoleType.Cache.getEntity(roleCode);
+        if (type == null)
+        {
+            final Criteria criteria = HibernateUtil.getSession().createCriteria(PersonRoleType.class);
+            criteria.add(Expression.eq("code", roleCode));
+            type = (PersonRoleType) criteria.uniqueResult();
+            if (type == null)
+                throw new UnknownReferenceTypeException();
+        }
+        PersonRole role = new PersonRole();
+        role.setType(type);
+        return role;
     }
 }

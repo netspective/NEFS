@@ -40,11 +40,14 @@ package com.netspective.medigy.service.person;
 
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.Gender;
+import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
-import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.model.person.PersonRole;
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.common.ReferenceEntityLookupService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -73,7 +76,37 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
 
             person.getGenders().add(gender);
             person.getMaritalStatuses().add(maritalStatus);
+
+            // add the languages
+            final String[] languages = patientParameters.getLanguages();
+            if (languages != null && languages.length > 0)
+            {
+                for (int i = 0; i < languages.length; i++)
+                {
+                    Language lang = referenceEntityService.getLanguage(languages[i]);
+                    person.addLanguage(lang);
+                }
+            }
+
+            // add the ethnicities
+            final String[] ethnicities = patientParameters.getEthnicities();
+            for (int i = 0; i < ethnicities.length; i++)
+            {
+                Ethnicity ethnicity = referenceEntityService.getEthnicity(ethnicities[i]);
+                person.addEthnicity(ethnicity);
+            }
+
+            // ADD
             personFacade.addPerson(person);
+
+            String respLastName = patientParameters.getResponsiblePartyLastName();
+            if (respLastName != null)
+            {
+                // responsible party processing
+                final PersonRole personRole = referenceEntityService.getPersonRole(patientParameters.getResponsiblePartyRelationship());
+                personRole.setParty(person);
+
+            }
             final Long patientId = (Long) person.getPersonId();
             final RegisteredPatient patient = new RegisteredPatient() {
                 public Serializable getPatientId()
