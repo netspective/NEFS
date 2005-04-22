@@ -55,6 +55,7 @@ import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
@@ -116,6 +117,101 @@ public class TestPerson extends TestCase
                 public String getMaritalStatus()
                 {
                     return MaritalStatusType.Cache.SINGLE.getId();
+                }
+
+                public String getEmployerName()
+                {
+                    return null;
+                }
+
+                public String getSsn()
+                {
+                    return "111111111";
+                }
+
+                public String[] getEthnicities()
+                {
+                    return new String[] { EthnicityType.Cache.AFRICAN_AMERICAN.getCode(), EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getCode() };
+                }
+
+                public String[] getLanguages()
+                {
+                    return new String[] { LanguageType.Cache.ENGLISH.getId(), LanguageType.Cache.SPANISH.getId() };
+                }
+
+                public String getDriversLicenseNumber()
+                {
+                    return "999999999";
+                }
+
+                public String getResponsiblePartyLastName()
+                {
+                    return "Hackett";
+                }
+
+                public String getResponsiblePartyFirstName()
+                {
+                    return "Bob";
+                }
+
+                public String getResponsiblePartyId()
+                {
+                    return null;
+                }
+
+                public String getResponsiblePartyRelationship()
+                {
+                    return PartyRelationshipType.Cache.PARENT_CHILD.getCode();
+                }
+
+                public String getHomePhone()
+                {
+                    return "703-123-4567";
+                }
+
+                public String getWorkPhone()
+                {
+                    return "800-123-4567";
+                }
+
+                public String getMobilePhone()
+                {
+                    return "301-123-4567";
+                }
+
+                public String getStreetAddress()
+                {
+                    return "123 Penny Lane";
+                }
+
+                public String getCity()
+                {
+                    return "Manchester";
+                }
+
+                public String getState()
+                {
+                    return "KY";
+                }
+
+                public String getPostalCode()
+                {
+                    return "12345";
+                }
+
+                public String getCountry()
+                {
+                    return "USA";
+                }
+
+                public String getPrimaryCareProviderName()
+                {
+                    return null;
+                }
+
+                public String getPrimaryCareProviderId()
+                {
+                    return null;
                 }
             };
         }
