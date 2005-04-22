@@ -38,7 +38,7 @@
  */
 package com.netspective.medigy.service.person.hibernate;
 
-import com.netspective.medigy.dto.person.AddPatientData;
+import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
@@ -55,20 +55,20 @@ public class PersonFacadeImpl implements PersonFacade
     private static final Log log = LogFactory.getLog(PersonFacadeImpl.class);
 
     
-    public AddPatientData[] listPersonByLastName(final String lastName, boolean exactMatch)
+    public RegisterPatientParameters[] listPersonByLastName(final String lastName, boolean exactMatch)
     {
-        Criteria criteria = HibernateUtil.getSession().createCriteria(AddPatientData.class);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(RegisterPatientParameters.class);
         if (!exactMatch)
             criteria.add(Expression.like("lastName", lastName));
         else
             criteria.add(Expression.eq("lastName", lastName));
         List list = criteria.list();
-        return list != null ? (AddPatientData[]) list.toArray(new AddPatientData[0]) : null;
+        return list != null ? (RegisterPatientParameters[]) list.toArray(new RegisterPatientParameters[0]) : null;
     }
 
-    public AddPatientData getPersonById(final Serializable id)
+    public RegisterPatientParameters getPersonById(final Serializable id)
     {
-        return (AddPatientData) HibernateUtil.getSession().load(AddPatientData.class, id);
+        return (RegisterPatientParameters) HibernateUtil.getSession().load(RegisterPatientParameters.class, id);
     }
 
     public void addPerson(Person person)

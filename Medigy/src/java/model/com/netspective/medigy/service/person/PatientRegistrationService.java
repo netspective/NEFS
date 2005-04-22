@@ -38,9 +38,13 @@
  */
 package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.dto.person.AddPatientData;
+import com.netspective.medigy.dto.person.RegisterPatientParameters;
+import com.netspective.medigy.dto.person.RegisteredPatient;
 
 public interface PatientRegistrationService
 {
-    public void registerPatient(AddPatientData person);
+    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+
+    // TODO: Put a validator and return a list of errors/warnings
+    public boolean isValid(RegisterPatientParameters person);
 }

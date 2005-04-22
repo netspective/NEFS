@@ -36,65 +36,34 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.dto.person;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.MaritalStatus;
-import com.netspective.medigy.service.common.ReferenceEntityLookupService;
-import com.netspective.medigy.service.ServiceLocator;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.Date;
 
-import java.io.Serializable;
-
-public class PatientRegistrationServiceImpl implements PatientRegistrationService
+/**
+ * Interface for DTO containing data specific to the Add Patient service
+ */
+public interface RegisterPatientParameters
 {
-    private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
-    public RegisteredPatient registerPatient(RegisterPatientParameters patientParameters)
-    {
-        final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
-        final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
+    public String getFirstName();
 
-        Person person = new Person();
-        try
-        {
-            BeanUtils.copyProperties(person, patientParameters);
 
-            Gender gender = referenceEntityService.getGender(patientParameters.getGender());
-            gender.setPerson(person);
-            MaritalStatus maritalStatus = referenceEntityService.getMaritalStatus(patientParameters.getMaritalStatus());
-            maritalStatus.setPerson(person);
+    public String getLastName();
 
-            person.getGenders().add(gender);
-            person.getMaritalStatuses().add(maritalStatus);
-            personFacade.addPerson(person);
-            final Long patientId = (Long) person.getPersonId();
-            final RegisteredPatient patient = new RegisteredPatient() {
-                public Serializable getPatientId()
-                {
-                    return patientId;
-                }
-            };
-            if (log.isInfoEnabled())
-                log.info("New PERSON created with id = " + patient.getPatientId());
-           return patient;
-        }
-        catch (Exception e)
-        {
-            log.error(ExceptionUtils.getStackTrace(e));
-        }
-        return null;
-    }
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person)
-    {
-        return false;
-    }
+    public String getMiddleName();
+
+
+    public String getSuffix();
+
+
+    public Date getBirthDate();
+
+
+    public String getGender();
+
+
+    public String getMaritalStatus();
+
 }

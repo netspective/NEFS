@@ -38,43 +38,9 @@
  */
 package com.netspective.medigy.dto.person;
 
-import java.util.Date;
+import java.io.Serializable;
 
-/**
- * Interface for DTO containing data specific to the Add Patient service
- */
-public interface AddPatientData
+public interface RegisteredPatient
 {
-    public Long getPersonId();
-
-    public void setPersonId(Long id);
-
-    public String getFirstName();
-
-    public void setFirstName(String firstName);
-
-    public String getLastName();
-
-    public void setLastName(String lastName);
-
-    public String getMiddleName();
-
-    public void setMiddleName(String middleName);
-
-    public String getSuffix();
-
-    public void setSuffix(String suffix);
-
-    public Date getBirthDate();
-
-    public void setBirthDate(Date birthDate);
-
-    public String getGender();
-
-    public void setGender(String gender);
-
-    public String getMaritalStatus();
-
-    public void setMaritalStatus(String status);
-
+    public Serializable getPatientId(); 
 }

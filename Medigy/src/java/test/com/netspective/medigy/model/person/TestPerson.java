@@ -43,7 +43,8 @@
  */
 package com.netspective.medigy.model.person;
 
-import com.netspective.medigy.dto.person.AddPatientData;
+import com.netspective.medigy.dto.person.RegisterPatientParameters;
+import com.netspective.medigy.dto.person.RegisteredPatient;
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.PartyContactMechanism;
 import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
@@ -64,7 +65,6 @@ import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.util.HibernateUtil;
-import com.netspective.tool.dto.DataTransferObjectUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -78,10 +78,46 @@ public class TestPerson extends TestCase
         SessionManager.getInstance().pushActiveSession(session);
         HibernateUtil.getSession().save(session);
 
-        AddPatientData patientData = null;
+        RegisterPatientParameters patientParameters = null;
         try
         {
-            patientData = (AddPatientData) DataTransferObjectUtil.getImplementation(AddPatientData.class);
+            patientParameters = new RegisterPatientParameters() {
+
+                public String getFirstName()
+                {
+                    return "Ryan";
+                }
+
+                public String getLastName()
+                {
+                    return "Hackett";
+                }
+
+                public String getMiddleName()
+                {
+                    return "Bluegrass";
+                }
+
+                public String getSuffix()
+                {
+                    return null;
+                }
+
+                public Date getBirthDate()
+                {
+                    return new Date();
+                }
+
+                public String getGender()
+                {
+                    return GenderType.Cache.MALE.getId();
+                }
+
+                public String getMaritalStatus()
+                {
+                    return MaritalStatusType.Cache.SINGLE.getId();
+                }
+            };
         }
         catch (Exception e)
         {
@@ -89,17 +125,11 @@ public class TestPerson extends TestCase
         }
 
         HibernateUtil.beginTransaction();
-        patientData.setFirstName("Ryan");
-        patientData.setMiddleName("Bluegrass");
-        patientData.setLastName("Hackett");
-        patientData.setMaritalStatus(MaritalStatusType.Cache.SINGLE.getId());
-        patientData.setGender(GenderType.Cache.MALE.getId());
-
         PatientRegistrationService service = ServiceLocator.getInstance().getPatientRegistrationService();
-        service.registerPatient(patientData);
+        final RegisteredPatient registeredPatient = service.registerPatient(patientParameters);
         HibernateUtil.commitTransaction();
 
-        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, patientData.getPersonId());
+        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, registeredPatient.getPatientId());
         assertEquals(persistedPerson.getFirstName(), "Ryan");
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
