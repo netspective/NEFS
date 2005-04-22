@@ -45,6 +45,7 @@ package com.netspective.medigy.model.common;
 
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
+import com.netspective.medigy.reference.ModelVersion;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -56,6 +57,7 @@ public abstract class AbstractEntity implements Serializable
 {
     private RecordStatusType recordStatus = RecordStatusType.ACTIVE;
     private int lockVersion = 0;
+    private ModelVersion modelVersion;
     private Date createTimestamp = new Date();
     private Date updateTimestamp;
     private Session createSession = SessionManager.getInstance().getActiveSession();
@@ -124,5 +126,17 @@ public abstract class AbstractEntity implements Serializable
     public void setUpdateSession(final Session updateSession)
     {
         this.updateSession = updateSession;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "type_id")        
+    public ModelVersion getModelVersion()
+    {
+        return modelVersion;
+    }
+
+    public void setModelVersion(ModelVersion modelVersion)
+    {
+        this.modelVersion = modelVersion;
     }
 }
