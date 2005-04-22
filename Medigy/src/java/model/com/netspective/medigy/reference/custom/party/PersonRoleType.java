@@ -49,19 +49,21 @@ import javax.persistence.Inheritance;
 public class PersonRoleType extends PartyRoleType
 {
     public enum Cache implements CachedCustomReferenceEntity
-   {
-       FAMILY_MEMBER("F"),
-       EMPLOYEE("E"),
-       DEPENDENT("DEP"),
+    {
+        CHILD("CHILD"),
+        PARENT("PARENT"),
+        FAMILY_MEMBER("F"),
+        EMPLOYEE("E"),
+        DEPENDENT("DEP"),
 
-       PATIENT("PATIENT"),
-       INSURED_DEPENDENT("INS_DEP"),
-       INSURED_CONTRACT_HOLDER("INS_PER"),
-       INSURED_ORG("INS_ORG"),
-       INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP");
+        PATIENT("PATIENT"),
+        INSURED_DEPENDENT("INS_DEP"),
+        INSURED_CONTRACT_HOLDER("INS_PER"),
+        INSURED_ORG("INS_ORG"),
+        INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP");
 
        private final String code;
-       private PartyRoleType entity;
+       private PersonRoleType entity;
 
        Cache(final String code)
        {
@@ -73,15 +75,25 @@ public class PersonRoleType extends PartyRoleType
            return code;
        }
 
-       public PartyRoleType getEntity()
+       public PersonRoleType getEntity()
        {
            return entity;
        }
 
        public void setEntity(final CustomReferenceEntity entity)
        {
-           this.entity = (PartyRoleType) entity;
+           this.entity = (PersonRoleType) entity;
        }
+
+        public static PersonRoleType getEntity(String code)
+        {
+            for (PersonRoleType.Cache role : PersonRoleType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
    }
 
 }
