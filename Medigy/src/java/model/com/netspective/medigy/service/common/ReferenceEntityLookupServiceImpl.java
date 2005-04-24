@@ -38,13 +38,13 @@
  */
 package com.netspective.medigy.service.common;
 
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.Gender;
 import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
-import com.netspective.medigy.model.person.PersonRole;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
-import com.netspective.medigy.reference.custom.party.PersonRoleType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
@@ -102,6 +102,7 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
         if (cacheType == null)
         {
             final Criteria criteria = HibernateUtil.getSession().createCriteria(EthnicityType.class);
+            System.out.println(criteria.list().size());
             criteria.add(Expression.eq("code", ethnicityCode));
             cacheType = (EthnicityType) criteria.uniqueResult();
             if (cacheType == null)
@@ -128,7 +129,7 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
         return status;
     }
 
-    public PersonRole getPersonRole(String roleCode) throws UnknownReferenceTypeException
+    public PartyRole getPersonRole(String roleCode) throws UnknownReferenceTypeException
     {
         PersonRoleType  type = PersonRoleType.Cache.getEntity(roleCode);
         if (type == null)
@@ -139,7 +140,7 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
             if (type == null)
                 throw new UnknownReferenceTypeException();
         }
-        PersonRole role = new PersonRole();
+        PartyRole role = new PartyRole();
         role.setType(type);
         return role;
     }

@@ -52,10 +52,12 @@ import org.hibernate.MappingException;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.mapping.PersistentClass;
 
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +81,63 @@ public class HibernateConfiguration extends AnnotationConfiguration
         return customReferenceEntitiesAndCachesMap;
     }
 
+    public void registerReferenceEntitiesAndCaches()
+    {
+        final Iterator classMappings = getClassMappings();
+        while (classMappings.hasNext())
+        {            
+            Class aClass = ((PersistentClass) classMappings.next()).getMappedClass(); //(Class) classMappings.next();
+            if (ReferenceEntity.class.isAssignableFrom(aClass))
+            {
+                boolean foundCache = false;
+                for (final Class ic : aClass.getClasses())
+                {
+                    if (CachedReferenceEntity.class.isAssignableFrom(ic))
+                    {
+                        if (ic.isEnum())
+                        {
+                            referenceEntitiesAndCachesMap.put(aClass, ic);
+                            foundCache = true;
+                        }
+                        else
+                            throw new HibernateException(ic + " must be an enum since " + aClass + " is a " + ReferenceEntity.class.getName());
+
+                        break;
+                    }
+
+                }
+
+                if (!foundCache)
+                    throw new HibernateException(aClass + " is marked as a ReferenceEntity but does not contain a ReferenceEntityCache enum.");
+
+                // TODO: find out how to ensure the new mapping for reference type is immutable and read only
+                // final PersistentClass pClass = getClassMapping(aClass.getLabel());
+            }
+            else if (CustomReferenceEntity.class.isAssignableFrom(aClass))
+            {
+                for (final Class ic : aClass.getClasses())
+                {
+                    if (CachedCustomReferenceEntity.class.isAssignableFrom(ic))
+                    {
+                        if (ic.isEnum())
+                        {
+                            customReferenceEntitiesAndCachesMap.put(aClass, ic);
+                        }
+                        else
+                            throw new HibernateException(ic + " must be an enum since " + aClass + " is a " +
+                                    CachedCustomReferenceEntity.class.getName());
+
+                        break;
+                    }
+                }
+                // if no cache is found, its ok since these are custom
+            }
+        }
+    }
+
     public AnnotationConfiguration addAnnotatedClass(final Class aClass) throws MappingException
     {
+        /*
         if (ReferenceEntity.class.isAssignableFrom(aClass))
         {
             boolean foundCache = false;
@@ -126,7 +183,7 @@ public class HibernateConfiguration extends AnnotationConfiguration
             }
             // if no cache is found, its ok since these are custom
         }
-
+        */
         return super.addAnnotatedClass(aClass);
     }
 
@@ -146,19 +203,21 @@ public class HibernateConfiguration extends AnnotationConfiguration
         for (String s : existingDDL)
             newDDL.add(s);
 
-        for (final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
-        {
-            final Class refEntityClass = entry.getKey();
-            final Class refEntityCacheEnum = entry.getValue();
-            final String tableName = ((Table) refEntityClass.getAnnotation(Table.class)).name();
-
-            for (final Object x : refEntityCacheEnum.getEnumConstants())
+            for (final Map.Entry<Class, Class> entry : referenceEntitiesAndCachesMap.entrySet())
             {
-                final CachedReferenceEntity cached = (CachedReferenceEntity) x;
-                //TODO: this is kind of dumb right now, we need to do proper formatting of output, etc.
-                newDDL.add("insert into " + tableName + " (type_id, type_label) values ('" + cached.getId() + "', '" + cached.getLabel() + "')");
+                final Class refEntityClass = entry.getKey();
+                final Class refEntityCacheEnum = entry.getValue();
+
+                final String tableName = ((Table) refEntityClass.getAnnotation(Table.class)).name();
+
+                for (final Object x : refEntityCacheEnum.getEnumConstants())
+                {
+                    final CachedReferenceEntity cached = (CachedReferenceEntity) x;
+                    //TODO: this is kind of dumb right now, we need to do proper formatting of output, etc.
+                    newDDL.add("insert into " + tableName + " (type_id, type_label) values ('" + cached.getId() + "', '" + cached.getLabel() + "')");
+                }
             }
-        }
+       
 
         return newDDL.toArray(new String[newDDL.size()]);
     }

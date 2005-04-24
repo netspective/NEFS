@@ -72,7 +72,7 @@ public class CoverageLevel extends AbstractTopLevelEntity
         return enrollmentElections;
     }
 
-    public void setEnrollmentElection(final Set<EnrollmentElection> enrollmentElections)
+    public void setEnrollmentElections(final Set<EnrollmentElection> enrollmentElections)
     {
         this.enrollmentElections = enrollmentElections;
     }

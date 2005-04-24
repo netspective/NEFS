@@ -38,18 +38,21 @@
  */
 package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 
 import java.io.Serializable;
 
 public interface PersonFacade
 {
-    public RegisterPatientParameters[] listPersonByLastName(final String lastName, boolean exactMatch);
+    public Person[] listPersonByLastName(final String lastName, boolean exactMatch);
 
     // TODO: The primary keys are left as SERIALIZABLE for now
-    public RegisterPatientParameters getPersonById(final Serializable id);
+    public Person getPersonById(final Serializable id);
 
     public void addPerson(Person person);
+    public Person addPerson(String lastName, String firstName);
 
+    public PartyRole addPersonRole(Person person, PersonRoleType type);
 }

@@ -54,7 +54,7 @@ import javax.persistence.Table;
 @Inheritance(
     strategy=InheritanceType.SINGLE_TABLE,
     discriminatorType=DiscriminatorType.STRING,
-    discriminatorValue="Party"
+    discriminatorValue="Party"        
 )
 @DiscriminatorColumn(name="role_type")
 public class PartyRoleType extends AbstractCustomReferenceEntity

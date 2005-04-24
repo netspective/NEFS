@@ -46,8 +46,9 @@ import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -94,8 +95,22 @@ public class EntitySeedDataPopulator
         populateGeographicBoundaries();
         populateInsurancePolicyRoleType();
         populatePersonIdentifierType();
+        populateEthnicityTypes();
         HibernateUtil.commitTransaction();
         SessionManager.getInstance().popActiveSession();
+    }
+    protected void populateEthnicityTypes()
+    {
+        populateEntity(session, EthnicityType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {EthnicityType.Cache.AFRICAN_AMERICAN.getCode(), "African American", globalParty},
+                    {EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getCode(), "Asian/Pacific Islander", globalParty},
+                    {EthnicityType.Cache.CAUCASIAN.getCode(), "Caucasian", globalParty},
+                    {EthnicityType.Cache.HISPANIC.getCode(), "Hispanic", globalParty},
+                    {EthnicityType.Cache.NATIVE_AMERICAN.getCode(), "Native American", globalParty},
+                }
+        );
     }
 
     protected void populateGeographicBoundaries()
@@ -129,7 +144,7 @@ public class EntitySeedDataPopulator
         populateEntity(session, PartyRelationshipType.class, new String[] {"code", "label", "party"},
                 new Object[][]
                 {
-                    {PartyRelationshipType.Cache.PARENT_CHILD.getCode(), "Parent-Child", globalParty},
+                    {PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getCode(), "Parent-Child", globalParty},
                     {PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getCode(), "Organization Rollup", globalParty},
                     {PartyRelationshipType.Cache.PARTNERSHIP.getCode(), "Partnership", globalParty},
                     {PartyRelationshipType.Cache.CUSTOMER_RELATIONSHIP.getCode(), "Customer Relationship", globalParty},

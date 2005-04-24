@@ -38,8 +38,9 @@
  */
 package com.netspective.medigy.service.person.hibernate;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
@@ -54,25 +55,81 @@ public class PersonFacadeImpl implements PersonFacade
 {
     private static final Log log = LogFactory.getLog(PersonFacadeImpl.class);
 
-    
-    public RegisterPatientParameters[] listPersonByLastName(final String lastName, boolean exactMatch)
+
+    /**
+     * Lists all patients with the same last name
+     *
+     * @param lastName
+     * @param exactMatch
+     * @return
+     */
+    public Person[] listPersonByLastName(final String lastName, boolean exactMatch)
     {
-        Criteria criteria = HibernateUtil.getSession().createCriteria(RegisterPatientParameters.class);
+        Criteria criteria = HibernateUtil.getSession().createCriteria(Person.class);
         if (!exactMatch)
             criteria.add(Expression.like("lastName", lastName));
         else
             criteria.add(Expression.eq("lastName", lastName));
         List list = criteria.list();
-        return list != null ? (RegisterPatientParameters[]) list.toArray(new RegisterPatientParameters[0]) : null;
+        return list != null ? (Person[]) list.toArray(new Person[0]) : null;
     }
 
-    public RegisterPatientParameters getPersonById(final Serializable id)
+    /**
+     * Gets the person from the database based on the party ID
+     * @param id
+     * @return
+     */
+    public Person getPersonById(final Serializable id)
     {
-        return (RegisterPatientParameters) HibernateUtil.getSession().load(RegisterPatientParameters.class, id);
+        return (Person) HibernateUtil.getSession().load(Person.class, id);
     }
 
-    public void addPerson(Person person)
+    /**
+     * Adds the person in the database. Any related entities will also be added based on the cascade types.
+     *
+     * @param person
+     */
+    public void addPerson(final Person person)
     {
         HibernateUtil.getSession().save(person);
+    }
+
+    /**
+     * Adds a person in the database using the passed in name values
+     * @param lastName
+     * @param firstName
+     * @return Person
+     */
+    public Person addPerson(final String lastName, final String firstName)
+    {
+        final Person person = new Person();
+        person.setLastName(lastName);
+        person.setFirstName(firstName);
+        addPerson(person);
+        return person;
+    }
+
+    /**
+     * Creates new person (party) role and adds it to the person. If the person record already exists then
+     * this will go ahead and create the role in the database.
+     *
+     * @param person    already existing Person
+     * @param type
+     * @return PersonRole
+     */
+    public PartyRole addPersonRole(final Person person, final PersonRoleType type)
+    {
+        final PartyRole respPartyRole = new PartyRole();
+        respPartyRole.setType(type);
+        respPartyRole.setParty(person);
+        person.addPartyRole(respPartyRole);
+
+        // if the person record already exists then go ahead and create the role in the database
+        // but if the person record doesn't exist yet, don't write to the database yet and
+        // let the cascade events of the person adding handle it
+        if (person.getPartyId() != null)
+            HibernateUtil.getSession().save(respPartyRole);
+
+        return respPartyRole;
     }
 }

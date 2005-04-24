@@ -56,9 +56,9 @@ import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PersonRoleType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
@@ -66,12 +66,16 @@ import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.util.HibernateUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class TestPerson extends TestCase
 {
+    private static final Log log = LogFactory.getLog(TestPerson.class);
+
     public void testPatientRegistration()
     {
         Session session = new ProcessSession();
@@ -129,12 +133,12 @@ public class TestPerson extends TestCase
                     return "111111111";
                 }
 
-                public String[] getEthnicities()
+                public String[] getEthnicityCodes()
                 {
                     return new String[] { EthnicityType.Cache.AFRICAN_AMERICAN.getCode(), EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getCode() };
                 }
 
-                public String[] getLanguages()
+                public String[] getLanguageCodes()
                 {
                     return new String[] { LanguageType.Cache.ENGLISH.getId(), LanguageType.Cache.SPANISH.getId() };
                 }
@@ -159,9 +163,9 @@ public class TestPerson extends TestCase
                     return null;
                 }
 
-                public String getResponsiblePartyRelationship()
+                public String getResponsiblePartyRole()
                 {
-                    return PartyRelationshipType.Cache.PARENT_CHILD.getCode();
+                    return PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getCode();
                 }
 
                 public String getHomePhone()
@@ -230,6 +234,20 @@ public class TestPerson extends TestCase
         assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
         assertEquals(persistedPerson.getLastName(), "Hackett");
         assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
+        log.info("Names verified");
+        assertEquals(persistedPerson.getLanguages().size(), 2);
+        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.ENGLISH.getEntity()), true);
+        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.SPANISH.getEntity()), true);
+        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.GERMAN.getEntity()), false);
+        log.info("Languages verified");
+        assertEquals(persistedPerson.getEthnicities().size(), 2);
+        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.CAUCASIAN.getEntity()), false);
+        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.AFRICAN_AMERICAN.getEntity()), true);
+        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getEntity()), true);
+        log.info("Ethnicities verified");
+
+        
+
     }
 
     public void testPerson()
@@ -314,10 +332,8 @@ public class TestPerson extends TestCase
 
         // verify the ethnicites
         assertEquals(persistedPerson.getEthnicities().size(), 2);
-        assertEquals(((Ethnicity) persistedPerson.getEthnicities().toArray()[0]).getType(),
-                EthnicityType.Cache.CAUCASIAN.getEntity());
-        assertEquals(((Ethnicity) persistedPerson.getEthnicities().toArray()[1]).getType(),
-                EthnicityType.Cache.NATIVE_AMERICAN.getEntity());
+        assertTrue(persistedPerson.hasEthnicity(EthnicityType.Cache.CAUCASIAN.getEntity()));
+        assertTrue(persistedPerson.hasEthnicity(EthnicityType.Cache.NATIVE_AMERICAN.getEntity()));
 
         HibernateUtil.beginTransaction();
         final PartyRole patientRole = new PartyRole();

@@ -39,14 +39,19 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.TestCase;
+import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.ValidPartyRelationshipRole;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.PersonRoleType;
+import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 import com.netspective.medigy.util.HibernateUtil;
 
 import java.util.List;
@@ -56,7 +61,7 @@ public class TestPersonRelationshipFacade extends TestCase
 {
     /**
      * Validate the VALID_PARTY_RELATIONSHIP_ROLE table, Add two roles associated with one relationship and verify by
-     *  reading it back out using the  PartyRelationshipFacade 
+     *  reading it back out using the  PartyRelationshipFacade
      */
     public void testPersonRelationshipFacade()
     {
@@ -68,17 +73,17 @@ public class TestPersonRelationshipFacade extends TestCase
         //
         HibernateUtil.beginTransaction();
         final ValidPartyRelationshipRole parentMapping = new ValidPartyRelationshipRole();
-        parentMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PARENT_CHILD.getEntity());
+        parentMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
         parentMapping.setPartyRoleType(PersonRoleType.Cache.PARENT.getEntity());
         HibernateUtil.getSession().save(parentMapping);
 
         final ValidPartyRelationshipRole childMapping = new ValidPartyRelationshipRole();
-        childMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PARENT_CHILD.getEntity());
+        childMapping.setPartyRelationshipType(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
         childMapping.setPartyRoleType(PersonRoleType.Cache.CHILD.getEntity());
         HibernateUtil.getSession().save(childMapping);
         HibernateUtil.commitTransaction();
 
-        PartyRelationshipType relType = PartyRelationshipType.Cache.PARENT_CHILD.getEntity();
+        PartyRelationshipType relType = PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity();
         PartyRelationshipFacade facade = new PartyRelationshipFacadeImpl();
         List validList = facade.getValidPartyRolesByRelationshipType(relType);
         assertEquals(validList.size(), 2);
@@ -87,5 +92,65 @@ public class TestPersonRelationshipFacade extends TestCase
         assertEquals(validRelRole.getPartyRoleType(), PersonRoleType.Cache.PARENT.getEntity());
         validRelRole = (ValidPartyRelationshipRole) validList.toArray()[1];
         assertEquals(validRelRole.getPartyRoleType(), PersonRoleType.Cache.CHILD.getEntity());
+
+
+    }
+
+    public void testPartyRelationship()
+    {
+        Session session = new ProcessSession();
+        session.setProcessName(TestPersonRelationshipFacade.class.getName() + ".testPartyRelationship()");
+        SessionManager.getInstance().pushActiveSession(session);
+        HibernateUtil.getSession().save(session);
+
+        // Adding two patients in this test
+        PersonFacade pFacade = new PersonFacadeImpl();
+        Person patientA = pFacade.addPerson("Hackett", "Brian");
+        Person mom = pFacade.addPerson("Hackett", "Mom");
+        Person dad = pFacade.addPerson("Hackett", "Dad");
+        Person patientB = pFacade.addPerson("Hackett", "Sister");
+
+        final PartyRole patientARole = pFacade.addPersonRole(patientA, PersonRoleType.Cache.PATIENT.getEntity());
+        final PartyRole patientBRole = pFacade.addPersonRole(patientB, PersonRoleType.Cache.PATIENT.getEntity());
+        final PartyRole momRole = pFacade.addPersonRole(mom, PatientResponsiblePartyRoleType.Cache.PARENT.getEntity());
+        final PartyRole dadRole = pFacade.addPersonRole(dad, PatientResponsiblePartyRoleType.Cache.PARENT.getEntity());
+
+        PartyRelationshipFacade facade = new PartyRelationshipFacadeImpl();
+        final PartyRelationship patientAMomRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientARole, momRole);
+        final PartyRelationship patientBMomRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientBRole, momRole);
+        final PartyRelationship patientADadRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientARole, dadRole);
+        final PartyRelationship patientBDadRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientBRole, dadRole);
+
+        final PartyRelationship savedPatientAMomRel = (PartyRelationship) HibernateUtil.getSession().load(PartyRelationship.class, patientAMomRel.getPartyRelationshipId());
+        assertEquals(savedPatientAMomRel.getType(), PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
+        assertEquals(savedPatientAMomRel.getPartyFrom(), patientA);
+        assertEquals(savedPatientAMomRel.getPartyTo(), mom);
+
+        final PartyRelationship savedPatientBMomRel = (PartyRelationship) HibernateUtil.getSession().load(PartyRelationship.class, patientBMomRel.getPartyRelationshipId());
+        assertEquals(savedPatientBMomRel.getType(), PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
+        assertEquals(savedPatientBMomRel.getPartyFrom(), patientB);
+        assertEquals(savedPatientBMomRel.getPartyTo(), mom);
+
+        final PartyRelationship savedPatientADadRel = (PartyRelationship) HibernateUtil.getSession().load(PartyRelationship.class, patientADadRel.getPartyRelationshipId());
+        assertEquals(savedPatientADadRel.getType(), PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
+        assertEquals(savedPatientADadRel.getPartyFrom(), patientA);
+        assertEquals(savedPatientADadRel.getPartyTo(), dad);
+
+        final PartyRelationship savedPatientBDadRel = (PartyRelationship) HibernateUtil.getSession().load(PartyRelationship.class, patientBDadRel.getPartyRelationshipId());
+        assertEquals(savedPatientBDadRel.getType(), PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity());
+        assertEquals(savedPatientBDadRel.getPartyFrom(), patientB);
+        assertEquals(savedPatientBDadRel.getPartyTo(), dad);
+
+        final List aList = facade.listPatientResponsiblePartyRelationship(patientA);
+        assertEquals(aList.size(), 2);
+        assertEquals(((PartyRelationship) aList.toArray()[0]).getPartyTo(), mom);
+        assertEquals(((PartyRelationship) aList.toArray()[1]).getPartyTo(), dad);
+
+        final List bList = facade.listPatientResponsiblePartyRelationship(patientB);
+        assertEquals(bList.size(), 2);
+        assertEquals(((PartyRelationship) bList.toArray()[0]).getPartyTo(), mom);
+        assertEquals(((PartyRelationship) bList.toArray()[1]).getPartyTo(), dad);
+
+
     }
 }

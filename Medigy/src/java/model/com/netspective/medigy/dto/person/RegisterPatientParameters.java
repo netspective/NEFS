@@ -70,9 +70,9 @@ public interface RegisterPatientParameters
 
     public String getSsn();
 
-    public String[] getEthnicities();
+    public String[] getEthnicityCodes();
 
-    public String[] getLanguages();
+    public String[] getLanguageCodes();
 
     public String getDriversLicenseNumber();
 
@@ -82,7 +82,7 @@ public interface RegisterPatientParameters
 
     public String getResponsiblePartyId();
 
-    public String getResponsiblePartyRelationship();
+    public String getResponsiblePartyRole();
 
     public String getHomePhone();
 

@@ -40,14 +40,18 @@ package com.netspective.medigy.service.person;
 
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.Gender;
 import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
 import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.model.person.PersonRole;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -59,26 +63,64 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
 {
     private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
+    protected void registerResponsibleParty(final Person person, final RegisterPatientParameters patientParameters)
+    {
+        // TODO: Need to add  dynamic service lookup soon!
+        final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
+        final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
+        final PartyRelationshipFacade partyRelFacade = ServiceLocator.getInstance().getPartyRelationshipFacade();
+
+        // Create a patient role for the new patient
+        final PartyRole patientRole = personFacade.addPersonRole(person, PersonRoleType.Cache.PATIENT.getEntity());
+
+        String respLastName = patientParameters.getResponsiblePartyLastName();
+        if (respLastName != null)
+        {
+            Person respParty = null;
+            // if the responsible party ID is available then the person already exists
+            if (patientParameters.getResponsiblePartyId() != null)
+            {
+                respParty = personFacade.getPersonById(patientParameters.getResponsiblePartyId());
+            }
+            else
+            {
+                respParty = new Person();
+                respParty.setLastName(patientParameters.getResponsiblePartyLastName());
+                respParty.setFirstName(patientParameters.getResponsiblePartyFirstName());
+                personFacade.addPerson(respParty);
+            }
+            // responsible party processing
+            final PatientResponsiblePartyRoleType entity = PatientResponsiblePartyRoleType.Cache.getEntity(patientParameters.getResponsiblePartyRole());
+            final PartyRole respPartyRole = personFacade.addPersonRole(respParty, entity);
+
+            // create a relationship between the patient and this person through the roles
+            partyRelFacade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientRole, respPartyRole);
+        }
+
+    }
+
     public RegisteredPatient registerPatient(final RegisterPatientParameters patientParameters)
     {
         final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
         final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
+        final PartyRelationshipFacade partyRelFacade = ServiceLocator.getInstance().getPartyRelationshipFacade();
 
         Person person = new Person();
         try
         {
             BeanUtils.copyProperties(person, patientParameters);
 
+            assert  patientParameters.getGender() != null;  // REQUIREMENT
             Gender gender = referenceEntityService.getGender(patientParameters.getGender());
             gender.setPerson(person);
             MaritalStatus maritalStatus = referenceEntityService.getMaritalStatus(patientParameters.getMaritalStatus());
             maritalStatus.setPerson(person);
-
             person.getGenders().add(gender);
             person.getMaritalStatuses().add(maritalStatus);
 
             // add the languages
-            final String[] languages = patientParameters.getLanguages();
+            final String[] languages = patientParameters.getLanguageCodes();
+            assert languages != null && languages.length > 0 : languages;   // REQUIREMENT
             if (languages != null && languages.length > 0)
             {
                 for (int i = 0; i < languages.length; i++)
@@ -89,24 +131,21 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             }
 
             // add the ethnicities
-            final String[] ethnicities = patientParameters.getEthnicities();
+            final String[] ethnicities = patientParameters.getEthnicityCodes();
+            assert ethnicities != null && ethnicities.length > 0 : ethnicities; // REQUIREMENT
             for (int i = 0; i < ethnicities.length; i++)
             {
                 Ethnicity ethnicity = referenceEntityService.getEthnicity(ethnicities[i]);
                 person.addEthnicity(ethnicity);
             }
 
-            // ADD
+            person.setSsn(patientParameters.getSsn());
+            person.setDriversLicenseNumber(patientParameters.getDriversLicenseNumber());
+            // Finally add the person
             personFacade.addPerson(person);
 
-            String respLastName = patientParameters.getResponsiblePartyLastName();
-            if (respLastName != null)
-            {
-                // responsible party processing
-                final PersonRole personRole = referenceEntityService.getPersonRole(patientParameters.getResponsiblePartyRelationship());
-                personRole.setParty(person);
+            registerResponsibleParty(person, patientParameters);
 
-            }
             final Long patientId = (Long) person.getPersonId();
             final RegisteredPatient patient = new RegisteredPatient() {
                 public Serializable getPatientId()

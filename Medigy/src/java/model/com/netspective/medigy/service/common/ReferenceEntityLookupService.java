@@ -38,11 +38,11 @@
  */
 package com.netspective.medigy.service.common;
 
-import com.netspective.medigy.model.person.Language;
-import com.netspective.medigy.model.person.Gender;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Ethnicity;
+import com.netspective.medigy.model.person.Gender;
+import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
-import com.netspective.medigy.model.person.PersonRole;
 
 public interface ReferenceEntityLookupService
 {
@@ -54,7 +54,7 @@ public interface ReferenceEntityLookupService
 
     public MaritalStatus getMaritalStatus(String statusCode) throws UnknownReferenceTypeException;
 
-    public PersonRole getPersonRole(String roleCode) throws UnknownReferenceTypeException;
+    public PartyRole getPersonRole(String roleCode) throws UnknownReferenceTypeException;
 
 
 }

@@ -41,10 +41,13 @@ package com.netspective.medigy.reference.custom.party;
 import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
 
 @Entity
 public class CaseRoleType extends AbstractCustomReferenceEntity
 {
+    @Id(generate = GeneratorType.AUTO)
     public Long getCaseRoleTypeId()
     {
         return super.getSystemId();

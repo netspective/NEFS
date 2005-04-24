@@ -49,6 +49,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.NestableRuntimeException;
 
@@ -61,7 +62,20 @@ public class HibernateUtil
 
     public static void setConfiguration(Configuration cfg) throws HibernateException
     {
-        sessionFactory = cfg.buildSessionFactory();
+        try
+        {
+            sessionFactory = cfg.buildSessionFactory();
+        }
+        catch (MappingException e)
+        {
+            throw e;
+        }
+    }
+
+    public static void closeSessionFactory()
+    {
+        if (sessionFactory != null)
+            sessionFactory.close();
     }
 
     public static Session getSession()

@@ -36,30 +36,61 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.health;
+package com.netspective.medigy.reference.custom.person;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 
+/**
+ * When a patient is registered, a responsible party is recorded. This responsible party could be "self" or
+ * another person who is related to the patient in some way. This type class is for describing the role
+ * of this responsible person who is not the patient.
+ */
 @Entity
-public class SymptomType extends AbstractCustomReferenceEntity
+@Inheritance(discriminatorValue="PatientResponsibleParty")
+public class PatientResponsiblePartyRoleType extends PersonRoleType
 {
-
-    public SymptomType()
+    public enum Cache implements CachedCustomReferenceEntity
     {
-    }
+        PARENT("PARENT"),           // parent of the patient
+        LEGAL_GUARDIAN("GUARD"),    // legal guardian of the patient
+        SIBLING("SIB"),             // sibling of the patient
+        RELATIVE("REL");            // relative of the patient
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getSymptomTypeId()
-    {
-        return super.getSystemId();
-    }
+        private final String code;
+        private PatientResponsiblePartyRoleType entity;
 
-    public void setSymptomTypeId(final Long id)
-    {
-        super.setSystemId(id);
-    }
+        Cache(final String code)
+        {
+           this.code = code;
+        }
+
+        public String getCode()
+        {
+           return code;
+        }
+
+        public PatientResponsiblePartyRoleType getEntity()
+        {
+           return entity;
+        }
+
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+           this.entity = (PatientResponsiblePartyRoleType) entity;
+        }
+
+        public static PatientResponsiblePartyRoleType getEntity(String code)
+        {
+            for (PatientResponsiblePartyRoleType.Cache role : PatientResponsiblePartyRoleType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
+   }
 }

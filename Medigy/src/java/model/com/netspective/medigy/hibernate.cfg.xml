@@ -1,0 +1,174 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+        <mapping package="com.netspective.medigy.reference.custom"/>
+		<mapping class="com.netspective.medigy.reference.custom.GeographicBoundaryType"/>
+        <mapping package="com.netspective.medigy.reference.custom.claim"/>
+        <mapping class="com.netspective.medigy.reference.custom.claim.ClaimRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.claim.ClaimServiceCodeType"/>
+        <mapping class="com.netspective.medigy.reference.custom.claim.ClaimStatusType"/>
+
+        <mapping package="com.netspective.medigy.reference.custom.health"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.DiagnosisType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.EpisodeType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.HealthCareOfferingType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.HealthCareVisitRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.HealthCareVisitStatusType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.OutcomeType"/>
+        <mapping class="com.netspective.medigy.reference.custom.health.SymptomType"/>
+
+        <mapping package="com.netspective.medigy.reference.custom.insurance"/>
+        <mapping class="com.netspective.medigy.reference.custom.insurance.CoverageType"/>
+        <mapping class="com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.insurance.InsurancePolicyType"/>
+
+        <mapping package="com.netspective.medigy.reference.custom.invoice"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.InvoiceItemType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.InvoiceRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.InvoiceStatusType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.InvoiceTermType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.PaymentMethodType"/>
+        <mapping class="com.netspective.medigy.reference.custom.invoice.PaymentType"/>
+
+        <mapping package="com.netspective.medigy.reference.custom.party"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.PartyRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.AgreementType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.CaseRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.CommunicationEventRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.FacilityType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.OrganizationRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.PartyIdentifierType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.PartyQualificationType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.PartyRelationshipType"/>
+
+        <mapping package="com.netspective.medigy.reference.custom.person"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.EthnicityType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.IncidentType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.MedicalConditionType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.PersonIdentifierType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.PersonRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType"/>
+
+        <mapping package="com.netspective.medigy.model.party"/>
+        <!--mapping class="com.netspective.medigy.model.party.Case"/-->
+        <!--mapping class="com.netspective.medigy.model.party.CaseRole"/-->
+        <mapping class="com.netspective.medigy.model.party.CommunicationEvent"/>
+        <mapping class="com.netspective.medigy.model.party.CommunicationEventPurpose"/>
+        <mapping class="com.netspective.medigy.model.party.CommunicationEventRole"/>
+        <mapping class="com.netspective.medigy.model.party.CommunicationEventWork"/>
+        <mapping class="com.netspective.medigy.model.party.ContactMechanism"/>
+        <mapping class="com.netspective.medigy.model.party.ElectronicAddress"/>
+        <mapping class="com.netspective.medigy.model.party.EmploymentAgreement"/>
+        <mapping class="com.netspective.medigy.model.party.EmploymentAgreementItem"/>
+        <mapping class="com.netspective.medigy.model.party.EmploymentAgreementRole"/>
+        <mapping class="com.netspective.medigy.model.party.Facility"/>
+        <mapping class="com.netspective.medigy.model.party.Party"/>
+        <mapping class="com.netspective.medigy.model.party.PartyContactMechanism"/>
+        <mapping class="com.netspective.medigy.model.party.PartyContactMechanismPurpose"/>
+        <mapping class="com.netspective.medigy.model.party.PartyFacilityRole"/>
+        <mapping class="com.netspective.medigy.model.party.PartyIdentifier"/>
+        <mapping class="com.netspective.medigy.model.party.PartyQualification"/>
+        <mapping class="com.netspective.medigy.model.party.PartyRelationship"/>
+        <!--mapping class="com.netspective.medigy.model.party.PartyRelationshipStatus"/-->
+        <mapping class="com.netspective.medigy.model.party.PartyRole"/>
+        <mapping class="com.netspective.medigy.model.party.PhoneNumber"/>
+        <mapping class="com.netspective.medigy.model.party.PostalAddress"/>
+        <mapping class="com.netspective.medigy.model.party.PostalAddressBoundary"/>
+        <mapping class="com.netspective.medigy.model.party.ValidContactMechanismRole"/>
+        <mapping class="com.netspective.medigy.model.party.ValidPartyRelationshipRole"/>
+
+        <mapping package="com.netspective.medigy.model.claim"/>
+        <mapping class="com.netspective.medigy.model.claim.Claim"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimItem"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimItemDiagnosisCode"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimResubmission"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimRole"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimServiceCode"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimSettlement"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimSettlementAmount"/>
+        <mapping class="com.netspective.medigy.model.claim.ClaimStatus"/>
+
+        <mapping package="com.netspective.medigy.model.common"/>
+        <mapping class="com.netspective.medigy.model.common.GeographicBoundary"/>
+
+        <mapping package="com.netspective.medigy.model.health"/>
+        <mapping class="com.netspective.medigy.model.health.DeliveryOutcome"/>
+        <mapping class="com.netspective.medigy.model.health.Diagnosis"/>
+        <mapping class="com.netspective.medigy.model.health.DiagnosisRelatedGroup"/>
+        <mapping class="com.netspective.medigy.model.health.DiagnosisRelatedGroupClassification"/>
+        <mapping class="com.netspective.medigy.model.health.DiagnosisTreatment"/>
+        <mapping class="com.netspective.medigy.model.health.EpisodeOutcome"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareDelivery"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareDeliveryAssociation"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareDeliveryBilling"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareDeliveryClaimSubmission"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareDeliveryRole"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareEpisode"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareOffering"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareVisit"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareVisitRole"/>
+        <mapping class="com.netspective.medigy.model.health.HealthCareVisitStatus"/>
+        <mapping class="com.netspective.medigy.model.health.PractitionerDiagnosis"/>
+        <mapping class="com.netspective.medigy.model.health.ProviderOffering"/>
+        <mapping class="com.netspective.medigy.model.health.Symptom"/>
+        <mapping class="com.netspective.medigy.model.health.VisitReason"/>
+
+        <mapping package="com.netspective.medigy.model.insurance"/>
+        <mapping class="com.netspective.medigy.model.insurance.CareProviderSelection"/>
+        <mapping class="com.netspective.medigy.model.insurance.CoverageLevel"/>
+        <mapping class="com.netspective.medigy.model.insurance.Enrollment"/>
+        <mapping class="com.netspective.medigy.model.insurance.EnrollmentElection"/>
+        <mapping class="com.netspective.medigy.model.insurance.Group"/>
+        <mapping class="com.netspective.medigy.model.insurance.InsurancePolicy"/>
+        <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyItem"/>
+        <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyRole"/>
+        <!--mapping class="com.netspective.medigy.model.insurance.InsuranceProvider"/-->
+        <mapping class="com.netspective.medigy.model.insurance.InsuredDependent"/>
+
+        <mapping package="com.netspective.medigy.model.invoice"/>
+        <mapping class="com.netspective.medigy.model.invoice.BillingAccount"/>
+        <mapping class="com.netspective.medigy.model.invoice.BillingAccountRole"/>
+        <mapping class="com.netspective.medigy.model.invoice.Invoice"/>
+        <mapping class="com.netspective.medigy.model.invoice.InvoiceItem"/>
+        <mapping class="com.netspective.medigy.model.invoice.InvoiceRole"/>
+        <mapping class="com.netspective.medigy.model.invoice.InvoiceStatus"/>
+        <mapping class="com.netspective.medigy.model.invoice.InvoiceTerm"/>
+        <mapping class="com.netspective.medigy.model.invoice.Payment"/>
+        <mapping class="com.netspective.medigy.model.invoice.PaymentApplication"/>
+
+        <mapping package="com.netspective.medigy.model.org"/>
+        <mapping class="com.netspective.medigy.model.org.Organization"/>
+
+        <mapping package="com.netspective.medigy.model.person"/>
+        <mapping class="com.netspective.medigy.model.person.Person"/>
+        <mapping class="com.netspective.medigy.model.person.Ethnicity"/>
+        <mapping class="com.netspective.medigy.model.person.Gender"/>
+        <mapping class="com.netspective.medigy.model.person.Incident"/>
+        <mapping class="com.netspective.medigy.model.person.Language"/>
+        <mapping class="com.netspective.medigy.model.person.MaritalStatus"/>
+        <mapping class="com.netspective.medigy.model.person.PatientMedicalCondition"/>
+        <mapping class="com.netspective.medigy.model.person.PhysicalCharacteristic"/>
+
+        <mapping package="com.netspective.medigy.model.product"/>
+        <mapping class="com.netspective.medigy.model.product.Product"/>
+        <mapping class="com.netspective.medigy.model.product.ProductFeature"/>
+
+        <mapping package="com.netspective.medigy.model.session"/>
+        <mapping class="com.netspective.medigy.model.session.Session"/>
+        <mapping class="com.netspective.medigy.model.session.EndUserSession"/>
+        <mapping class="com.netspective.medigy.model.session.ProcessSession"/>
+
+        <mapping package="com.netspective.medigy.model.work"/>
+        <mapping class="com.netspective.medigy.model.work.WorkEffort"/>
+
+	</session-factory>
+</hibernate-configuration>

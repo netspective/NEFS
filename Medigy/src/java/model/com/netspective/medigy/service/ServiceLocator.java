@@ -44,6 +44,8 @@ import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
+import com.netspective.medigy.service.party.PartyRelationshipFacade;
+import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
 
 public class ServiceLocator
 {
@@ -54,6 +56,7 @@ public class ServiceLocator
     private ReferenceEntityLookupService referenceEntityLookupService = new ReferenceEntityLookupServiceImpl();
     private PatientRegistrationService patientRegistrationService = new PatientRegistrationServiceImpl();
     private PersonFacade personFacade = new PersonFacadeImpl();
+    private PartyRelationshipFacade partyRelatonshipFacade = new PartyRelationshipFacadeImpl();
 
     private ServiceLocator()
     {
@@ -78,5 +81,10 @@ public class ServiceLocator
     public PersonFacade getPersonFacade()
     {
         return personFacade;
+    }
+
+    public PartyRelationshipFacade getPartyRelationshipFacade()
+    {
+        return partyRelatonshipFacade;  
     }
 }

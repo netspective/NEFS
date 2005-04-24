@@ -38,23 +38,71 @@
  */
 package com.netspective.medigy.service.party.hibernate;
 
+import com.netspective.medigy.model.party.PartyRelationship;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.ValidPartyRelationshipRole;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import com.netspective.medigy.util.HibernateUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
 
+import java.util.Date;
 import java.util.List;
 
 public class PartyRelationshipFacadeImpl implements PartyRelationshipFacade
 {
+    private static Log log = LogFactory.getLog(PartyRelationshipFacadeImpl.class);
+
     public List getValidPartyRolesByRelationshipType(PartyRelationshipType type)
     {
         Criteria criteria = HibernateUtil.getSession().createCriteria(ValidPartyRelationshipRole.class);
         Criteria relationshipCriteria = criteria.createCriteria("partyRelationshipType");
         relationshipCriteria.add(Expression.eq("code", type.getCode()));
 
+        return criteria.list();
+    }
+
+    public PartyRelationship addPartyRelationship(PartyRelationshipType entity, PartyRole fromRole, PartyRole toRole)
+    {
+        PartyRelationship rel = new PartyRelationship();
+        rel.setType(entity);
+        rel.setPartyRoleFrom(fromRole);
+        rel.setPartyRoleTo(toRole);
+        rel.setPartyFrom(fromRole.getParty());
+        rel.setPartyTo(toRole.getParty());
+        rel.setFromDate(new Date());
+
+        HibernateUtil.getSession().save(rel);
+        if(log.isInfoEnabled())
+            log.info("New party relationship created: id = " + rel.getPartyRelationshipId());
+        return rel;
+    }
+
+
+    public List listPartyRelationshipsByTypeAndFromRole(PartyRelationshipType type, PartyRole fromRole)
+    {
+        Criteria criteria = HibernateUtil.getSession().createCriteria(PartyRelationship.class).createCriteria("partyRelationshipType");
+        criteria.add(Expression.eq("code", type.getCode()));
+        criteria.createCriteria("fromPartyRole").add(Expression.eq("partyRoleId", fromRole.getPartyRoleId()));
+        return criteria.list();
+    }
+
+    /**
+     * Lists all relationships where the party is the responsible party for a patient
+     *
+     * @param patient
+     * @return List of Party Relationships
+     */
+    public List listPatientResponsiblePartyRelationship(Party patient)
+    {
+        Criteria criteria = HibernateUtil.getSession().createCriteria(PartyRelationship.class);
+        Criteria partyRelTypeCriteria = criteria.createCriteria("partyRelationshipType");
+        partyRelTypeCriteria.add(Expression.eq("code", PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getCode()));
+        criteria.createCriteria("fromParty").add(Expression.eq("partyId", patient.getPartyId()));
         return criteria.list();
     }
 }

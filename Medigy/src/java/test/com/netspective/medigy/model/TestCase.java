@@ -46,7 +46,6 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
-import com.netspective.medigy.util.HibernateDiagramFilter;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
@@ -107,7 +106,9 @@ public abstract class TestCase extends junit.framework.TestCase
         for (final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
             config.addAnnotatedClass(c);
 
-
+        config.configure("com/netspective/medigy/hibernate.cfg.xml");
+        config.registerReferenceEntitiesAndCaches();
+        /*
         config.addAnnotatedClass(com.netspective.medigy.model.session.Session.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
         config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
@@ -118,7 +119,6 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyQualificationType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
-        //config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.AgreementType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
@@ -153,7 +153,8 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.GeographicBoundaryType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.OrganizationRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PersonRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PersonRoleType.class);
+        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType.class);
         config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRelationshipType.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.ContactMechanism.class);
         config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
@@ -237,7 +238,7 @@ public abstract class TestCase extends junit.framework.TestCase
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimRole.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimServiceCode.class);
         config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItemDiagnosisCode.class);
-
+        */
 
         return config;
     }
@@ -293,7 +294,7 @@ public abstract class TestCase extends junit.framework.TestCase
         se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
 
-
+        /*
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the first version is good for software engineers
         generateDiagram(hibernateConfiguration,
@@ -310,7 +311,7 @@ public abstract class TestCase extends junit.framework.TestCase
         generateDiagram(hibernateConfiguration,
                 DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-erd",
                 new HibernateDiagramFilter(true, false, false, false));
-
+        */
 
     }
 

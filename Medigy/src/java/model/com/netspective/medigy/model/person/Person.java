@@ -44,10 +44,14 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.model.party.PartyIdentifier;
 import com.netspective.medigy.model.health.HealthCareVisit;
 import com.netspective.medigy.model.health.HealthCareEpisode;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.reference.type.LanguageType;
+import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -298,6 +302,30 @@ public class Person extends Party
         this.ethnicities = ethnicities;
     }
 
+    @Transient
+    public void addEthnicity(final Ethnicity ethnicity)
+    {
+        ethnicities.add(ethnicity);
+    }
+
+    /**
+     * Checks to see if the person's ethnicities contains the passed in type
+     * @param type
+     * @return
+     */
+    @Transient
+    public boolean hasEthnicity(final EthnicityType type)
+    {
+        final Object[] array = ethnicities.toArray();
+        for (int i = 0; i < array.length; i++)
+        {
+            Ethnicity ethnicity = (Ethnicity) array[i];
+            if (ethnicity.getType().equals(type))
+                return true;
+        }
+        return false;
+    }
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_id")
     public Set<Language> getLanguages()
@@ -311,6 +339,29 @@ public class Person extends Party
     }
 
     @Transient
+    public void addLanguage(final Language language)
+    {
+        languages.add(language);
+    }
+
+    /**
+     * Checks to see if the person's languages contains the language type
+     * @param type
+     * @return
+     */
+    @Transient
+    public boolean speaksLanguage(final LanguageType type)
+    {
+        final Object[] langList = languages.toArray();
+        for (int i=0; i < langList.length; i++)
+        {
+            if (((Language)langList[i]).getType().equals(type))
+                return true;
+        }
+        return false;
+    }
+
+    @Transient
     public Language getPrimaryLanguage()
     {
         final Object[] langList = languages.toArray();
@@ -320,6 +371,44 @@ public class Person extends Party
                 return ((Language)langList[i]);
         }
         return null;
+    }
+
+    /**
+     * Adds a language to the list of person's languages and sets it to be the primary
+     * language. If a primary language  already exists in the list then its' primary
+     * flag is turned off and the new one is set to be the primary.
+     * @param language
+     */
+    @Transient
+    public void setPrimaryLanguage(final Language language)
+    {
+        final Language prime = getPrimaryLanguage();
+        if (prime != null)
+        {
+            prime.setPrimaryInd(new Boolean(false));
+        }
+        language.setPrimaryInd(new Boolean(true));
+        addLanguage(language);
+    }
+
+    @Transient
+    public void setSsn(final String ssn)
+    {
+        final PartyIdentifier identifier = new PartyIdentifier();
+        identifier.setType(PersonIdentifierType.Cache.SSN.getEntity());
+        identifier.setIdentifierValue(ssn);
+        identifier.setParty(this);
+        getPartyIdentifiers().add(identifier);
+    }
+
+    @Transient
+    public void setDriversLicenseNumber(final String number)
+    {
+        final PartyIdentifier identifier = new PartyIdentifier();
+        identifier.setType(PersonIdentifierType.Cache.DRIVERS_LICENSE.getEntity());
+        identifier.setIdentifierValue(number);
+        identifier.setParty(this);
+        getPartyIdentifiers().add(identifier);
     }
 
     public String toString()

@@ -64,6 +64,6 @@ public interface Catalog
         DataEncryptionType.class,
         UnitOfMeasureType.class,
         LanguageType.class,
-        ModelVersion.class
+        ModelVersion.class,
     };
 }

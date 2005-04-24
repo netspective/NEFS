@@ -77,21 +77,20 @@
  */
 package com.netspective.medigy.util;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Expression;
-
 import com.netspective.medigy.model.data.EntitySeedDataPopulator;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.CachedReferenceEntity;
 import com.netspective.medigy.reference.ReferenceEntity;
 import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
 import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
+
+import java.util.List;
+import java.util.Map;
 
 public class ModelInitializer
 {
@@ -127,7 +126,6 @@ public class ModelInitializer
                 populateSeedData();
                 break;
         }
-
         initSystemGlobalPartyEntity();
         initCustomReferenceEntityCaches();
     }
@@ -140,6 +138,7 @@ public class ModelInitializer
 
     public Party readSystemGlobalPropertyEntity()
     {
+
         final Criteria criteria = session.createCriteria(Party.class);
         criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
         return (Party) criteria.uniqueResult();
@@ -149,7 +148,7 @@ public class ModelInitializer
     {
         final Party entity = readSystemGlobalPropertyEntity();
         if (entity == null)
-            throw new RuntimeException("The " + Party.SYS_GLOBAL_PARTY_NAME + " entity MUST exist before trying to " +
+             throw new RuntimeException("The " + Party.SYS_GLOBAL_PARTY_NAME + " entity MUST exist before trying to " +
                     "access related built-in custom reference entities.");
 
         Party.Cache.SYS_GLOBAL_PARTY.setEntity(entity);

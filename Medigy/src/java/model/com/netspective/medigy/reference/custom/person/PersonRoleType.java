@@ -36,30 +36,65 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.health;
+package com.netspective.medigy.reference.custom.person;
 
-import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 
 @Entity
-public class SymptomType extends AbstractCustomReferenceEntity
+@Inheritance(discriminatorValue="Person" )
+public class PersonRoleType extends PartyRoleType
 {
-
-    public SymptomType()
+    public enum Cache implements CachedCustomReferenceEntity
     {
-    }
+        CHILD("CHILD"),
+        PARENT("PARENT"),
+        FAMILY_MEMBER("F"),
+        EMPLOYEE("E"),
+        DEPENDENT("DEP"),
 
-    @Id(generate = GeneratorType.AUTO)
-    public Long getSymptomTypeId()
-    {
-        return super.getSystemId();
-    }
+        PATIENT("PATIENT"),
+        INSURED_DEPENDENT("INS_DEP"),
+        INSURED_CONTRACT_HOLDER("INS_PER"),
+        INSURED_ORG("INS_ORG"),
+        INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP");
 
-    public void setSymptomTypeId(final Long id)
-    {
-        super.setSystemId(id);
-    }
+       private final String code;
+       private PersonRoleType entity;
+
+       Cache(final String code)
+       {
+           this.code = code;
+       }
+
+       public String getCode()
+       {
+           return code;
+       }
+
+       public PersonRoleType getEntity()
+       {
+           return entity;
+       }
+
+       public void setEntity(final CustomReferenceEntity entity)
+       {
+           this.entity = (PersonRoleType) entity;
+       }
+
+        public static PersonRoleType getEntity(String code)
+        {
+            for (PersonRoleType.Cache role : PersonRoleType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
+   }
+
 }

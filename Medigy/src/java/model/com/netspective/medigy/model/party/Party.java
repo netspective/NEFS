@@ -60,6 +60,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -154,6 +155,28 @@ public class Party extends AbstractTopLevelEntity
     public void setPartyRoles(final Set<PartyRole> partyRoles)
     {
         this.partyRoles = partyRoles;
+    }
+
+    @Transient
+    public void addPartyRole(final PartyRole role)
+    {
+        this.partyRoles.add(role);
+    }
+
+    /**
+     * Checks to see if the party has a role with the passed in type
+     * @param type
+     * @return
+     */
+    @Transient
+    public boolean hasPartyRole(final PartyRoleType type)
+    {
+        for (PartyRole role: this.partyRoles)
+        {
+            if (role.getType().equals(type))
+                return true;
+        }
+        return false;
     }
 
     @OneToMany(cascade = CascadeType.ALL)

@@ -38,6 +38,9 @@
  */
 package com.netspective.medigy.service.party;
 
+import com.netspective.medigy.model.party.PartyRelationship;
+import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 
 import java.util.List;
@@ -45,4 +48,10 @@ import java.util.List;
 public interface PartyRelationshipFacade
 {
     public List getValidPartyRolesByRelationshipType(final PartyRelationshipType type);
+
+    public PartyRelationship addPartyRelationship(PartyRelationshipType type, PartyRole fromRole, PartyRole toRole);
+
+    public List listPartyRelationshipsByTypeAndFromRole(PartyRelationshipType type, PartyRole fromRole);
+
+    public List listPatientResponsiblePartyRelationship(Party patient);
 }
