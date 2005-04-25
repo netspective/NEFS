@@ -132,7 +132,7 @@
         <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyItem"/>
         <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyRole"/>
         <!--mapping class="com.netspective.medigy.model.insurance.InsuranceProvider"/-->
-        <mapping class="com.netspective.medigy.model.insurance.InsuredDependent"/>
+        <!--mapping class="com.netspective.medigy.model.insurance.InsuredDependent"/-->
 
         <mapping package="com.netspective.medigy.model.invoice"/>
         <mapping class="com.netspective.medigy.model.invoice.BillingAccount"/>
