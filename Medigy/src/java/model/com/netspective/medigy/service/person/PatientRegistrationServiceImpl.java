@@ -41,14 +41,14 @@ package com.netspective.medigy.service.person;
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.person.Ethnicity;
 import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.Language;
 import com.netspective.medigy.model.person.MaritalStatus;
 import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.reference.custom.person.PersonRoleType;
-import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
@@ -125,8 +125,7 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             {
                 for (int i = 0; i < languages.length; i++)
                 {
-                    Language lang = referenceEntityService.getLanguage(languages[i]);
-                    person.addLanguage(lang);
+                    person.addLanguage(LanguageType.Cache.getEntity(languages[i]));
                 }
             }
 
@@ -135,8 +134,7 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             assert ethnicities != null && ethnicities.length > 0 : ethnicities; // REQUIREMENT
             for (int i = 0; i < ethnicities.length; i++)
             {
-                Ethnicity ethnicity = referenceEntityService.getEthnicity(ethnicities[i]);
-                person.addEthnicity(ethnicity);
+                person.addEthnicity(EthnicityType.Cache.getEntity(ethnicities[i]));
             }
 
             person.setSsn(patientParameters.getSsn());

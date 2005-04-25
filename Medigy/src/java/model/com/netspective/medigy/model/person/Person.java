@@ -52,6 +52,7 @@ import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -212,6 +213,25 @@ public class Person extends Party
     }
 
     @Transient
+    public void addGender(final GenderType type)
+    {
+        addGender(type, null, null);
+    }
+
+    @Transient
+    public void addGender(final GenderType type, final Date fromDate, final Date throughDate)
+    {
+        final Gender gender = new Gender();
+        gender.setType(type);
+        gender.setPerson(this);
+        if (fromDate != null)
+            gender.setFromDate(fromDate);
+        if (throughDate != null)
+            gender.setThroughDate(throughDate);
+        this.genders.add(gender);
+    }
+
+    @Transient
     public GenderType getCurrentGender()
     {
         final Set<Gender> genders = getGenders();
@@ -246,6 +266,25 @@ public class Person extends Party
         this.maritalStatuses = maritalStatuses;
     }
 
+    @Transient
+    public void addMaritalStatus(final MaritalStatusType type)
+    {
+        addMaritalStatus(type, null, null);
+    }
+
+    @Transient
+    public void addMaritalStatus(final MaritalStatusType type, final Date fromDate, final Date throughDate)
+    {
+        final MaritalStatus status = new MaritalStatus();
+        status.setType(type);
+        status.setPerson(this);
+        if (fromDate != null)
+            status.setFromDate(fromDate);
+        if (throughDate != null)
+            status.setThroughDate(throughDate);
+        this.maritalStatuses.add(status);
+    }
+
     public Date getDeathDate()
     {
         return deathDate;
@@ -265,6 +304,16 @@ public class Person extends Party
     public void setPhysicalCharacteristics(final Set<PhysicalCharacteristic> physicalCharacteristics)
     {
         this.physicalCharacteristics = physicalCharacteristics;
+    }
+
+    @Transient
+    public void addPhysicalCharacteristic(final PhysicalCharacteristicType type, final Long value)
+    {
+        final PhysicalCharacteristic pc = new PhysicalCharacteristic();
+        pc.setType(type);
+        pc.setPerson(this);
+        pc.setValue(value);
+        this.physicalCharacteristics.add(pc);
     }
 
     @OneToMany(mappedBy = "patient")
@@ -303,8 +352,11 @@ public class Person extends Party
     }
 
     @Transient
-    public void addEthnicity(final Ethnicity ethnicity)
+    public void addEthnicity(final EthnicityType type)
     {
+        final Ethnicity ethnicity = new Ethnicity();
+        ethnicity.setType(type);
+        ethnicity.setPerson(this);
         ethnicities.add(ethnicity);
     }
 
@@ -339,9 +391,30 @@ public class Person extends Party
     }
 
     @Transient
-    public void addLanguage(final Language language)
+    public void addLanguage(final LanguageType type)
     {
-        languages.add(language);
+        addLanguage(type, false);
+    }
+
+    /**
+     * Creates a new language object of the passed in type and adds it to the language list of the person
+     * @param type
+     * @param isPrimary
+     */
+    @Transient
+    public void addLanguage(final LanguageType type, boolean isPrimary)
+    {
+        final Language lang = new Language();
+        lang.setType(type);
+        lang.setPerson(this);
+        lang.setPrimaryInd(isPrimary);
+
+        if (getPrimaryLanguage() != null)
+        {
+            // if there is an existing primary language then clear that one
+            getPrimaryLanguage().setPrimaryInd(false);
+        }
+        languages.add(lang);
     }
 
     /**
@@ -371,24 +444,6 @@ public class Person extends Party
                 return ((Language)langList[i]);
         }
         return null;
-    }
-
-    /**
-     * Adds a language to the list of person's languages and sets it to be the primary
-     * language. If a primary language  already exists in the list then its' primary
-     * flag is turned off and the new one is set to be the primary.
-     * @param language
-     */
-    @Transient
-    public void setPrimaryLanguage(final Language language)
-    {
-        final Language prime = getPrimaryLanguage();
-        if (prime != null)
-        {
-            prime.setPrimaryInd(new Boolean(false));
-        }
-        language.setPrimaryInd(new Boolean(true));
-        addLanguage(language);
     }
 
     @Transient
@@ -423,7 +478,7 @@ public class Person extends Party
                 ", deathdate= '" + deathDate + "'" + 
                 ", gender='" + getCurrentGender().getTypeLabel() + "'" +
                 ", maritalStatuses=" + maritalStatuses +
-                //", contactMechanisms=" + getContactMechanisms() +
+                //", contactMechanisms=" + getPartyContactMechanisms() +
                 "}";
     }
 }

@@ -116,7 +116,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
@@ -128,7 +128,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
         this.party = party;
     }
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "party_role_type_id")
     public PartyRoleType getType()
     {

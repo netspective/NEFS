@@ -40,6 +40,7 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,6 +51,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -127,7 +129,7 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
         this.contactMechanism = contactMechanism;
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_contact_mech_id")        
     public Set<PartyContactMechanismPurpose> getPurposes()
     {
@@ -137,5 +139,22 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     public void setPurposes(final Set<PartyContactMechanismPurpose> purposes)
     {
         this.purposes = purposes;
+    }
+
+    /**
+     * Checks to see if the contact mechanism is for a particular purpose
+     * (e.g. "Home Address" or "Mailing Address")
+     * @param type
+     * @return
+     */
+    @Transient
+    public boolean hasPurpose(final ContactMechanismPurposeType type)
+    {
+        for (PartyContactMechanismPurpose pcm : purposes)
+        {
+            if (pcm.getType().equals(type))
+                return true;
+        }
+        return false;
     }
 }

@@ -106,7 +106,15 @@ public abstract class TestCase extends junit.framework.TestCase
         for (final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
             config.addAnnotatedClass(c);
 
-        config.configure("com/netspective/medigy/hibernate.cfg.xml");
+        try
+        {
+            config.configure("com/netspective/medigy/hibernate.cfg.xml");
+        }
+        catch (HibernateException e)
+        {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         config.registerReferenceEntitiesAndCaches();
         /*
         config.addAnnotatedClass(com.netspective.medigy.model.session.Session.class);

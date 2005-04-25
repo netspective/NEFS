@@ -100,9 +100,9 @@ public class PartyRelationshipFacadeImpl implements PartyRelationshipFacade
     public List listPatientResponsiblePartyRelationship(Party patient)
     {
         Criteria criteria = HibernateUtil.getSession().createCriteria(PartyRelationship.class);
-        Criteria partyRelTypeCriteria = criteria.createCriteria("partyRelationshipType");
+        Criteria partyRelTypeCriteria = criteria.createCriteria("type");
         partyRelTypeCriteria.add(Expression.eq("code", PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getCode()));
-        criteria.createCriteria("fromParty").add(Expression.eq("partyId", patient.getPartyId()));
+        criteria.createCriteria("partyFrom").add(Expression.eq("partyId", patient.getPartyId()));
         return criteria.list();
     }
 }

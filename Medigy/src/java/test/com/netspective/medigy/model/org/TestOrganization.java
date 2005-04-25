@@ -42,19 +42,21 @@ package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.common.GeographicBoundary;
+import com.netspective.medigy.model.party.PartyContactMechanism;
+import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
-import com.netspective.medigy.model.party.PartyContactMechanism;
-import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.service.party.PartyRelationshipFacade;
+import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -65,12 +67,12 @@ import java.util.Set;
 
 public class TestOrganization  extends TestCase
 {
-    private static final Log log = LogFactory.getLog(PostalAddress.class);
+    private static final Log log = LogFactory.getLog(TestOrganization.class);
 
     public void testPostalAddress()
     {
         Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testPostalAddress()");
+        session.setProcessName(TestOrganization.class.getName() + ".testPostalAddress()");
         HibernateUtil.getSession().save(session);
         SessionManager.getInstance().pushActiveSession(session);
 
@@ -79,7 +81,6 @@ public class TestOrganization  extends TestCase
 
         HibernateUtil.beginTransaction();
         HibernateUtil.getSession().save(org1);
-        HibernateUtil.commitTransaction();
         /*
         final GeographicBoundary stateGeo = new GeographicBoundary();
         stateGeo.setType(GeographicBoundaryType.Cache.STATE.getEntity());
@@ -105,12 +106,6 @@ public class TestOrganization  extends TestCase
         partyContactMechPurpose.setPartyContactMechanism(partyContactMech);
         partyContactMechPurpose.setType(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
         partyContactMech.getPurposes().add(partyContactMechPurpose);
-
-        HibernateUtil.getSession().save(partyContactMech);
-
-        // create the state Geographic Boundary
-        //HibernateUtil.getSession().save(stateGeo);
-        //HibernateUtil.getSession().save(cityGeo);
 
         HibernateUtil.getSession().save(partyContactMech);
         HibernateUtil.commitTransaction();
@@ -240,29 +235,24 @@ public class TestOrganization  extends TestCase
         assertEquals(childOrg.getPartyName(), "Acme Subsidiary");
 
         HibernateUtil.beginTransaction();
+
+        final PartyRelationshipFacade relFacade = new PartyRelationshipFacadeImpl();
+
         // add a new role belonging to the parent org
         final PartyRole role1 = new PartyRole();
         role1.setParty(parentOrg);
         role1.setType(OrganizationRoleType.Cache.PARENT_ORG.getEntity());
         parentOrg.getPartyRoles().add(role1);
-        HibernateUtil.getSession().update(parentOrg);
+        HibernateUtil.getSession().save(role1);
         // add a new role belonging to the child org
         final PartyRole role2 = new PartyRole();
         role2.setParty(childOrg);
         role2.setType(OrganizationRoleType.Cache.SUBSIDIARY.getEntity());
         childOrg.getPartyRoles().add(role2);
-        HibernateUtil.getSession().update(childOrg);
+        HibernateUtil.getSession().save(role2);
 
-        PartyRelationship rel = new PartyRelationship();
-        rel.setType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
-        rel.setPartyRoleFrom(role1);
-        HibernateUtil.getSession().save(rel);
-
-        rel = new PartyRelationship();
-        rel.setType(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity());
-        rel.setPartyRoleFrom(role2);
-        HibernateUtil.getSession().save(rel);
-
+        relFacade.addPartyRelationship(PartyRelationshipType.Cache.ORGANIZATION_ROLLUP.getEntity(),
+                role1, role2);
 
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();

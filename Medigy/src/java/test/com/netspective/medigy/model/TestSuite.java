@@ -40,6 +40,7 @@ package com.netspective.medigy.model;
 
 import com.netspective.medigy.model.org.TestOrganization;
 import com.netspective.medigy.model.person.TestPerson;
+import com.netspective.medigy.model.person.TestPersonRelationshipFacade;
 import junit.framework.Test;
 
 public class TestSuite extends junit.framework.TestSuite
@@ -48,6 +49,7 @@ public class TestSuite extends junit.framework.TestSuite
     {
         TestSuite suite= new TestSuite();
         suite.addTest(new junit.framework.TestSuite(TestPerson.class));
+        suite.addTest(new junit.framework.TestSuite(TestPersonRelationshipFacade.class));
         suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
         
         return suite;

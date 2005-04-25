@@ -49,7 +49,6 @@ import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.PartyContactMechanism;
 import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.party.PartyIdentifier;
-import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
@@ -58,7 +57,6 @@ import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
-import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
@@ -265,62 +263,21 @@ public class TestPerson extends TestCase
         newPerson.setMiddleName("Bluegrass");
         newPerson.setLastName("Hackett");
 
-
-        final MaritalStatus singleStatus = new MaritalStatus();
-        singleStatus.setPerson(newPerson);
-        singleStatus.setType(MaritalStatusType.Cache.SINGLE.getEntity());
         calendar.set(1990, 6, 14);
-        singleStatus.setThroughDate(calendar.getTime());
+        newPerson.addMaritalStatus(MaritalStatusType.Cache.SINGLE.getEntity(), calendar.getTime(), new Date());
+        newPerson.addMaritalStatus(MaritalStatusType.Cache.MARRIED.getEntity(), new Date(), null);
+        newPerson.addGender(GenderType.Cache.MALE.getEntity());
 
-        final MaritalStatus marriedStatus = new MaritalStatus();
-        marriedStatus.setPerson(newPerson);
-        marriedStatus.setType(MaritalStatusType.Cache.MARRIED.getEntity());
-        marriedStatus.setFromDate(calendar.getTime());
-
-        newPerson.getMaritalStatuses().add(singleStatus);
-        newPerson.getMaritalStatuses().add(marriedStatus);
-
-        final Gender gender = new Gender();
-        gender.setPerson(newPerson);
-        gender.setType(GenderType.Cache.MALE.getEntity());
-        calendar.set(1970, 6, 14);
-        gender.setFromDate(calendar.getTime());
-        newPerson.getGenders().add(gender);
-
-        final Date birthDate = new Date();
-        newPerson.setBirthDate(birthDate);
-
-        final Ethnicity ethnicity = new Ethnicity();
-        ethnicity.setType(EthnicityType.Cache.CAUCASIAN.getEntity());
-
-        final Ethnicity naEthnicity = new Ethnicity();
-        naEthnicity.setType(EthnicityType.Cache.NATIVE_AMERICAN.getEntity());
-
-        HibernateUtil.getSession().save(ethnicity);
-        HibernateUtil.getSession().save(naEthnicity);
-
-        newPerson.getEthnicities().add(ethnicity);
-        newPerson.getEthnicities().add(naEthnicity);
-
+        newPerson.setBirthDate(calendar.getTime());
+        newPerson.addEthnicity(EthnicityType.Cache.CAUCASIAN.getEntity());
+        newPerson.addEthnicity(EthnicityType.Cache.NATIVE_AMERICAN.getEntity());
 
         // Add languages
-        final Language englishLanguage = new Language();
-        englishLanguage.setType(LanguageType.Cache.ENGLISH.getEntity());
-        englishLanguage.setPerson(newPerson);
-        englishLanguage.setPrimaryInd(new Boolean(true));
+        newPerson.addLanguage(LanguageType.Cache.ENGLISH.getEntity(), true);
+        newPerson.addLanguage(LanguageType.Cache.SPANISH.getEntity(), false);
+        newPerson.setSsn("000-00-0000");
 
-        final Language spanishLanguage = new Language(LanguageType.Cache.SPANISH.getEntity());
-        englishLanguage.setPerson(newPerson);
-        englishLanguage.setPrimaryInd(new Boolean(false));
-
-
-        final PartyIdentifier ssn = new PartyIdentifier();
-        ssn.setType(PersonIdentifierType.Cache.SSN.getEntity());
-        ssn.setIdentifierValue("000-00-0000");
-        ssn.setParty(newPerson);
-        newPerson.getPartyIdentifiers().add(ssn);
-
-        HibernateUtil.getSession().save(ssn);
+        HibernateUtil.getSession().save(newPerson);
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
 
@@ -336,13 +293,6 @@ public class TestPerson extends TestCase
         assertTrue(persistedPerson.hasEthnicity(EthnicityType.Cache.NATIVE_AMERICAN.getEntity()));
 
         HibernateUtil.beginTransaction();
-        final PartyRole patientRole = new PartyRole();
-        patientRole.setParty(persistedPerson);
-        patientRole.setType(PersonRoleType.Cache.PATIENT.getEntity());
-        patientRole.setFromDate(new Date());
-
-        HibernateUtil.getSession().save(patientRole);
-
         final PostalAddress address = new PostalAddress();
         address.setAddress1("123 Acme Street");
         address.setCity("Fairfax");
@@ -371,99 +321,25 @@ public class TestPerson extends TestCase
         assertEquals(2, updatedPerson.getMaritalStatuses().size());
         assertEquals(MaritalStatusType.Cache.MARRIED.getEntity(), updatedPerson.getCurrentMaritalStatus());
         assertEquals(GenderType.Cache.MALE.getEntity(), updatedPerson.getCurrentGender());
-        assertEquals(birthDate, updatedPerson.getBirthDate());
+        assertEquals(calendar.getTime(), updatedPerson.getBirthDate());
 
         // verify the Identifiers
         assertEquals(updatedPerson.getPartyIdentifiers().size(), 1);
         assertEquals(((PartyIdentifier) updatedPerson.getPartyIdentifiers().toArray()[0]).getType(),
                 PersonIdentifierType.Cache.SSN.getEntity());
 
-        // verify the Roles
-        assertEquals(updatedPerson.getPartyRoles().size(), 1);
-        assertEquals(((PartyRole) updatedPerson.getPartyRoles().toArray()[0]).getType(),
-                PersonRoleType.Cache.PATIENT.getEntity());
-
-
         // verify the contact mechanisms
-        assertEquals(updatedPerson.getContactMechanisms().size(), 1);
-        final PartyContactMechanism pcm = (PartyContactMechanism) updatedPerson.getContactMechanisms().toArray()[0];
+        assertEquals(updatedPerson.getPartyContactMechanisms().size(), 1);
+        final PartyContactMechanism pcm = (PartyContactMechanism) updatedPerson.getPartyContactMechanisms().toArray()[0];
         assertEquals(pcm.getContactMechanism().getType(), ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity());
         assertEquals(((PostalAddress)pcm.getContactMechanism()).getAddress1(), "123 Acme Street");
         assertEquals(((PostalAddress)pcm.getContactMechanism()).getCity().getName(), "Fairfax");
 
         assertEquals(pcm.getPurposes().size(), 2);
-        assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[0]).getType(),
-                ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
-        assertEquals(((PartyContactMechanismPurpose) pcm.getPurposes().toArray()[1]).getType(),
-                ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
+        assertTrue(pcm.hasPurpose(ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity()));
+        assertTrue(pcm.hasPurpose(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity()));
 
         HibernateUtil.closeSession();
         SessionManager.getInstance().popActiveSession();
-    }
-
-    public void testPersonRelationships()
-    {
-        /*
-        HibernateUtil.beginTransaction();
-
-        Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testPersonRelationships()");
-        HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().setActiveSession(session);
-
-        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
-        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
-        Party globalParty = (Party) criteria.uniqueResult();
-
-        Person patient = new Person();
-        patient.setFirstName("Ryan");
-        patient.setMiddleName("Bluegrass");
-        patient.setLastName("Hackett");
-
-        Person doctor = new Person();
-        doctor.setFirstName("John");
-        doctor.setLastName("House");
-
-        HibernateUtil.getSession().save(patient);
-        HibernateUtil.getSession().save(doctor);
-
-        // assign a role to the person
-        final PartyRole patientRole = new PartyRole();
-        patientRole.setType(PersonRoleType.Cache.PATIENT.getEntity());
-        patientRole.setParty(patient);
-
-        final PartyRole doctorRole = new PartyRole();
-        doctorRole.setType(PersonRoleType.Cache.INDIVIDUAL_HEALTH_CARE_PRACTITIONER.getEntity());
-        doctorRole.setParty(doctor);
-        HibernateUtil.getSession().save(patientRole);
-        HibernateUtil.getSession().save(doctorRole);
-        HibernateUtil.commitTransaction();
-
-         HibernateUtil.beginTransaction();
-        PartyRelationshipType patientDoctorRelationType = new PartyRelationshipType();
-        patientDoctorRelationType.setCode("PAT_DOC_REL");
-        patientDoctorRelationType.setLabel("Patient practitioner relationship");
-        patientDoctorRelationType.setParty(globalParty);
-        HibernateUtil.getSession().save(patientDoctorRelationType);
-
-        final PartyRelationship relationship = new PartyRelationship();
-        relationship.setType(patientDoctorRelationType);
-        relationship.setPartyRoleFrom(patientRole);
-        relationship.setPartyRoleTo(doctorRole);
-        relationship.setPartyFrom(patient);
-        relationship.setPartyTo(doctor);
-
-        HibernateUtil.getSession().save(relationship);
-        HibernateUtil.commitTransaction();
-
-        PartyRelationship savedRelationship = (PartyRelationship) HibernateUtil.getSession().load(PartyRelationship.class, relationship.getPartyRelationshipId());
-        assertEquals(savedRelationship.getType(), patientDoctorRelationType);
-        assertEquals(savedRelationship.getPartyRoleFrom(), patientRole);
-        assertEquals(savedRelationship.getPartyRoleTo(), doctorRole);
-        assertEquals(savedRelationship.getPartyRoleFrom().getParty(), patient);
-        assertEquals(savedRelationship.getPartyRoleTo().getParty(), doctor);
-        assertEquals(savedRelationship.getPartyFrom(), patient);
-        assertEquals(savedRelationship.getPartyTo(), doctor);
-        */
     }
 }

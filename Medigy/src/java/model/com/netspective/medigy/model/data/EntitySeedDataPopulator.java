@@ -42,14 +42,18 @@ import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.claim.ClaimServiceCodeType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.reference.custom.party.FacilityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.util.HibernateConfiguration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -60,17 +64,20 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class EntitySeedDataPopulator
 {
     private final Log log = LogFactory.getLog(EntitySeedDataPopulator.class);
 
     private Session session;
+    private HibernateConfiguration configuration;
     private Party globalParty;
 
-    public EntitySeedDataPopulator(final Session session)
+    public EntitySeedDataPopulator(final Session session, final HibernateConfiguration configuration)
     {
         this.session = session;
+        this.configuration = configuration;
     }
 
     public void populateSeedData() throws HibernateException
@@ -85,20 +92,59 @@ public class EntitySeedDataPopulator
         if (log.isInfoEnabled())
             log.info("Initializing with seed data");
         globalParty = new Party(Party.SYS_GLOBAL_PARTY_NAME);
-        // session won't work in here since it hasn't been created
         HibernateUtil.getSession().save(globalParty);
 
-        populatePersonRoleType();
-        populateOrganizationRoleType();
-        populatePartyRelationshipType();
-        populateInsurancePolicyType();
-        populateGeographicBoundaries();
-        populateInsurancePolicyRoleType();
-        populatePersonIdentifierType();
-        populateEthnicityTypes();
+        for(final Map.Entry<Class, Class> entry : configuration.getCustomReferenceEntitiesAndCachesMap().entrySet())
+        {
+            final Class aClass = entry.getKey();
+            CachedCustomReferenceEntity[] cachedEntities = (CachedCustomReferenceEntity[]) entry.getValue().getEnumConstants();
+            Object[][] data = new Object[cachedEntities.length][3];
+            int i=0;
+            for(final CachedCustomReferenceEntity c : cachedEntities)
+            {
+                data[i][0] = c.getCode();
+                data[i][1] = c.getCode(); // LABEL
+                data[i][2] = globalParty;
+                i++;
+            }
+            if (log.isInfoEnabled())
+                log.info(aClass.getCanonicalName() + " cached enums addded.");
+            populateEntity(HibernateUtil.getSession(), aClass, new String[] {"code", "label", "party"}, data);
+        }
         HibernateUtil.commitTransaction();
         SessionManager.getInstance().popActiveSession();
     }
+
+    protected void populateFacilityTypes()
+    {
+        populateEntity(session, FacilityType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {FacilityType.Cache.BUILDING.getCode(), "Building", globalParty},
+                    {FacilityType.Cache.CLINIC.getCode(), "Clinic", globalParty},
+                    {FacilityType.Cache.FLOOR.getCode(), "Floor", globalParty},
+                    {FacilityType.Cache.HOSPITAL.getCode(), "Hospital", globalParty},
+                    {FacilityType.Cache.MEDICAL_BUILDING.getCode(), "Medical Building", globalParty},
+                    {FacilityType.Cache.OFFICE.getCode(), "Office", globalParty},
+                    {FacilityType.Cache.PLANT.getCode(), "Plant", globalParty},
+                    {FacilityType.Cache.ROOM.getCode(), "Room", globalParty},
+                    {FacilityType.Cache.WAREHOUSE.getCode(), "Warehouse", globalParty},
+                }
+        );
+    }
+
+    protected void populateClaimServiceCodeTypes()
+    {
+        populateEntity(session, ClaimServiceCodeType.class, new String[] {"code", "label", "party"},
+                new Object[][]
+                {
+                    {ClaimServiceCodeType.Cache.CPT_CODE.getCode(), "Building", globalParty},
+                    {ClaimServiceCodeType.Cache.HCPCS_CODE.getCode(), "Clinic", globalParty},
+                    {ClaimServiceCodeType.Cache.REV_CODE.getCode(), "Floor", globalParty},
+                }
+        );
+    }
+
     protected void populateEthnicityTypes()
     {
         populateEntity(session, EthnicityType.class, new String[] {"code", "label", "party"},

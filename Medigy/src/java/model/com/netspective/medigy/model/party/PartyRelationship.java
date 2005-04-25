@@ -51,7 +51,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -92,7 +91,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.partyRelationshipId = partyRelationshipId;
     }
 
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "party_rel_type_id", nullable = false)
     public PartyRelationshipType getType()
     {
@@ -128,7 +127,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.partyTo = partyTo;
     }
 
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "party_role_id_from", referencedColumnName = "party_role_id", nullable = false)
     public PartyRole getPartyRoleFrom()
     {
@@ -140,7 +139,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.partyRoleFrom = partyRoleFrom;
     }
 
-    @ManyToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "party_role_id_to", referencedColumnName = "party_role_id", nullable = false)
     public PartyRole getPartyRoleTo()
     {
@@ -164,7 +163,7 @@ public class PartyRelationship extends AbstractDateDurationEntity
         this.comment = comment;
     }
 
-    @OneToOne(cascade={CascadeType.ALL})
+    @ManyToOne
     @JoinColumn(name = "priority_id")
     public PriorityType getPriority()
     {

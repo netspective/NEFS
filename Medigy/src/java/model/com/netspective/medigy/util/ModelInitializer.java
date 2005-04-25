@@ -132,7 +132,7 @@ public class ModelInitializer
 
     public void populateSeedData()
     {
-        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(session);
+        EntitySeedDataPopulator populator = new EntitySeedDataPopulator(session, hibernateConfiguration);
         populator.populateSeedData();
     }
 
@@ -222,9 +222,7 @@ public class ModelInitializer
                 if(code.equals(c.getCode()))
                 {
                     final CustomReferenceEntity record = c.getEntity();
-                    if(record != null)
-                        log.error(c.getClass().getName() + " enum '" + c + "' is bound to multiple rows.");
-                    else
+                    if(record == null)
                         c.setEntity(entity);
                     break;
                 }
