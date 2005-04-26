@@ -39,22 +39,24 @@
 package com.netspective.medigy.service.common;
 
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.person.Ethnicity;
-import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.Language;
-import com.netspective.medigy.model.person.MaritalStatus;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.type.GenderType;
+import com.netspective.medigy.reference.type.LanguageType;
+import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.service.Service;
 
-public interface ReferenceEntityLookupService
+public interface ReferenceEntityLookupService extends Service
 {
-    public Language getLanguage(final String code) throws UnknownReferenceTypeException;
+    public LanguageType getLanguageType(final String code) throws UnknownReferenceTypeException;
 
-    public Gender getGender(final String genderCode) throws UnknownReferenceTypeException;
+    public GenderType getGenderType(final String genderCode) throws UnknownReferenceTypeException;
 
-    public Ethnicity getEthnicity(final String ethnicityCode) throws UnknownReferenceTypeException;
+    public EthnicityType getEthnicityType(final String ethnicityCode) throws UnknownReferenceTypeException;
 
-    public MaritalStatus getMaritalStatus(String statusCode) throws UnknownReferenceTypeException;
+    public MaritalStatusType getMaritalStatusType(String statusCode) throws UnknownReferenceTypeException;
 
     public PartyRole getPersonRole(String roleCode) throws UnknownReferenceTypeException;
 
-
+    public ContactMechanismPurposeType getContactMechanismPurposeType(String purposeCode)  throws UnknownReferenceTypeException;
 }

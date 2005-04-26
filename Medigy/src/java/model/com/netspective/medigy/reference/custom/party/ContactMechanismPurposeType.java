@@ -44,9 +44,9 @@ import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
 import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Contact_Mech_Purpose_Type")
@@ -84,6 +84,16 @@ public class ContactMechanismPurposeType  extends AbstractCustomReferenceEntity
         public void setEntity(final CustomReferenceEntity entity)
         {
             this.entity = (ContactMechanismPurposeType) entity;
+        }
+
+        public static ContactMechanismPurposeType getEntity(String code)
+        {
+            for (ContactMechanismPurposeType.Cache geo : ContactMechanismPurposeType.Cache.values())
+            {
+                if (geo.getCode().equals(code))
+                    return geo.getEntity();
+            }
+            return null;
         }
     }
 

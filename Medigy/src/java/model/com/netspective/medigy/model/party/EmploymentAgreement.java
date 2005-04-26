@@ -86,7 +86,14 @@ public class EmploymentAgreement implements Agreement
 
     public void setAgreementRoles(final Set<? extends AgreementRole> agreementRoles)
     {
-        this.agreementRoles = (Set<EmploymentAgreementRole>) agreementRoles;
+        this.agreementRoles = new HashSet<EmploymentAgreementRole>();
+        for (AgreementRole role : agreementRoles)
+        {
+            if (role instanceof EmploymentAgreementRole)
+            {
+                this.agreementRoles.add((EmploymentAgreementRole) role);
+            }
+        }
     }
 
 
@@ -117,9 +124,16 @@ public class EmploymentAgreement implements Agreement
         return agreementItems;
     }
 
-    public void setAgreementItems(final Set<? extends AgreementItem> agreementItems)
+    public void setAgreementItems(final Set<? extends AgreementItem> items)
     {
-        this.agreementItems = (Set<EmploymentAgreementItem>) agreementItems;
+        this.agreementItems = new HashSet<EmploymentAgreementItem>();
+        for (AgreementItem item : items)
+        {
+            if (item instanceof EmploymentAgreementItem)
+            {
+                this.agreementItems.add((EmploymentAgreementItem) item);
+            }
+        }
     }
 
     @Transient

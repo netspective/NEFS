@@ -43,16 +43,17 @@
  */
 package com.netspective.medigy.model.person;
 
+import com.netspective.medigy.model.health.HealthCareEpisode;
+import com.netspective.medigy.model.health.HealthCareVisit;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
-import com.netspective.medigy.model.health.HealthCareVisit;
-import com.netspective.medigy.model.health.HealthCareEpisode;
-import com.netspective.medigy.reference.type.GenderType;
-import com.netspective.medigy.reference.type.MaritalStatusType;
-import com.netspective.medigy.reference.type.LanguageType;
-import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType;
+import com.netspective.medigy.reference.type.GenderType;
+import com.netspective.medigy.reference.type.LanguageType;
+import com.netspective.medigy.reference.type.MaritalStatusType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -447,13 +448,52 @@ public class Person extends Party
     }
 
     @Transient
+    protected String getPartyIdentifierValue(final PartyIdentifierType type)
+    {
+        // this assumes that there is only one type of identifier each
+        for (PartyIdentifier pi: partyIdentifiers)
+        {
+            if (pi.getType().equals(type))
+            {
+                return pi.getIdentifierValue();
+            }
+        }
+        return null;
+    }
+
+    @Transient
+    public boolean hasPartyIdentifier(final PartyIdentifierType type)
+    {
+        for (PartyIdentifier pi: partyIdentifiers)
+        {
+            if (pi.getType().equals(type))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transient
+    public String getSsn()
+    {
+        return getPartyIdentifierValue(PersonIdentifierType.Cache.SSN.getEntity());
+    }
+
+    @Transient
     public void setSsn(final String ssn)
     {
         final PartyIdentifier identifier = new PartyIdentifier();
         identifier.setType(PersonIdentifierType.Cache.SSN.getEntity());
         identifier.setIdentifierValue(ssn);
         identifier.setParty(this);
-        getPartyIdentifiers().add(identifier);
+        partyIdentifiers.add(identifier);
+    }
+
+    @Transient
+    public String getDriversLicenseNumber()
+    {
+        return getPartyIdentifierValue(PersonIdentifierType.Cache.DRIVERS_LICENSE.getEntity());
     }
 
     @Transient
@@ -463,9 +503,10 @@ public class Person extends Party
         identifier.setType(PersonIdentifierType.Cache.DRIVERS_LICENSE.getEntity());
         identifier.setIdentifierValue(number);
         identifier.setParty(this);
-        getPartyIdentifiers().add(identifier);
+        partyIdentifiers.add(identifier);
     }
 
+    
     public String toString()
     {
         return "person{" +
@@ -481,4 +522,6 @@ public class Person extends Party
                 //", contactMechanisms=" + getPartyContactMechanisms() +
                 "}";
     }
+
+
 }

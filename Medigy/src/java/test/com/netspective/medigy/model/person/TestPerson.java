@@ -43,11 +43,11 @@
  */
 package com.netspective.medigy.model.person;
 
+import com.netspective.medigy.dto.party.AddPostalAddressParameters;
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.party.PartyContactMechanism;
-import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
 import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.session.ProcessSession;
@@ -57,12 +57,13 @@ import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
-import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.party.AddContactMechanismService;
 import com.netspective.medigy.service.person.PatientRegistrationService;
+import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -123,7 +124,17 @@ public class TestPerson extends TestCase
 
                 public String getEmployerName()
                 {
-                    return null;
+                    return "Netspective";
+                }
+
+                public String getEmployerId()
+                {
+                    return "1";
+                }
+
+                public String getOccupation()
+                {
+                    return "Consultant";
                 }
 
                 public String getSsn()
@@ -181,9 +192,14 @@ public class TestPerson extends TestCase
                     return "301-123-4567";
                 }
 
-                public String getStreetAddress()
+                public String getStreetAddress1()
                 {
                     return "123 Penny Lane";
+                }
+
+                public String getStreetAddress2()
+                {
+                    return null;
                 }
 
                 public String getCity()
@@ -223,7 +239,7 @@ public class TestPerson extends TestCase
         }
 
         HibernateUtil.beginTransaction();
-        PatientRegistrationService service = ServiceLocator.getInstance().getPatientRegistrationService();
+        PatientRegistrationService service = (PatientRegistrationService) ServiceLocator.getInstance().getService(PatientRegistrationService.class);
         final RegisteredPatient registeredPatient = service.registerPatient(patientParameters);
         HibernateUtil.commitTransaction();
 
@@ -244,7 +260,11 @@ public class TestPerson extends TestCase
         assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getEntity()), true);
         log.info("Ethnicities verified");
 
-        
+        assertEquals(persistedPerson.getSsn(),  "111111111");
+        assertEquals(persistedPerson.getDriversLicenseNumber(), "999999999");
+
+
+
 
     }
 
@@ -262,6 +282,7 @@ public class TestPerson extends TestCase
         newPerson.setFirstName("Ryan");
         newPerson.setMiddleName("Bluegrass");
         newPerson.setLastName("Hackett");
+
 
         calendar.set(1990, 6, 14);
         newPerson.addMaritalStatus(MaritalStatusType.Cache.SINGLE.getEntity(), calendar.getTime(), new Date());
@@ -293,25 +314,53 @@ public class TestPerson extends TestCase
         assertTrue(persistedPerson.hasEthnicity(EthnicityType.Cache.NATIVE_AMERICAN.getEntity()));
 
         HibernateUtil.beginTransaction();
-        final PostalAddress address = new PostalAddress();
-        address.setAddress1("123 Acme Street");
-        address.setCity("Fairfax");
-        HibernateUtil.getSession().save(address);
+        final AddContactMechanismService addContactService = (AddContactMechanismService) ServiceLocator.getInstance().getService(AddContactMechanismService.class);
+        addContactService.addPostalAddress(new AddPostalAddressParameters() {
+            public Party getParty()
+            {
+                return persistedPerson;
+            }
 
-        final PartyContactMechanism addressToPersonRel = new PartyContactMechanism();
-        addressToPersonRel.setParty(persistedPerson);
-        addressToPersonRel.setContactMechanism(address);
+            public String getStreet1()
+            {
+                return "123 Acme Street";
+            }
 
-        HibernateUtil.getSession().save(addressToPersonRel);
+            public String getStreet2()
+            {
+                return null;
+            }
 
-        final PartyContactMechanismPurpose addressPurpose1 = new PartyContactMechanismPurpose();
-        addressPurpose1.setPartyContactMechanism(addressToPersonRel);
-        addressPurpose1.setType(ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
-        HibernateUtil.getSession().save(addressPurpose1);
-        final PartyContactMechanismPurpose addressPurpose2 = new PartyContactMechanismPurpose();
-        addressPurpose2.setPartyContactMechanism(addressToPersonRel);
-        addressPurpose2.setType(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity());
-        HibernateUtil.getSession().save(addressPurpose2);
+            public String getCity()
+            {
+                return "Fairfax";
+            }
+
+            public String getState()
+            {
+                return "VA";
+            }
+
+            public String getPostalCode()
+            {
+                return "22033";
+            }
+
+            public String getCounty()
+            {
+                return "Fairfax County";
+            }
+
+            public String getCountry()
+            {
+                return "USA";
+            }
+
+            public String getPurpose()
+            {
+                return ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity().getCode();
+            }
+        });
 
         HibernateUtil.commitTransaction();
         HibernateUtil.closeSession();
@@ -330,14 +379,12 @@ public class TestPerson extends TestCase
 
         // verify the contact mechanisms
         assertEquals(updatedPerson.getPartyContactMechanisms().size(), 1);
-        final PartyContactMechanism pcm = (PartyContactMechanism) updatedPerson.getPartyContactMechanisms().toArray()[0];
-        assertEquals(pcm.getContactMechanism().getType(), ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity());
-        assertEquals(((PostalAddress)pcm.getContactMechanism()).getAddress1(), "123 Acme Street");
-        assertEquals(((PostalAddress)pcm.getContactMechanism()).getCity().getName(), "Fairfax");
+        final PersonFacade pFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        final PostalAddress homeAddress = pFacade.getHomeAddress(updatedPerson);
+        assertEquals(homeAddress.getAddress1(), "123 Acme Street");
+        assertEquals(homeAddress.getCity().getName(), "Fairfax");
+        assertEquals(homeAddress.getState().getName(), "VA");
 
-        assertEquals(pcm.getPurposes().size(), 2);
-        assertTrue(pcm.hasPurpose(ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity()));
-        assertTrue(pcm.hasPurpose(ContactMechanismPurposeType.Cache.WORK_ADDRESS.getEntity()));
 
         HibernateUtil.closeSession();
         SessionManager.getInstance().popActiveSession();

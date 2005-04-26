@@ -36,16 +36,19 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.dto.insurance;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.service.Service;
+import com.netspective.medigy.model.person.Person;
 
-public interface PatientRegistrationService extends Service
+import java.util.Date;
+
+public interface SelectCareProviderParameters
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    public Person getInsuredIndividual();
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+    public Person getCareProvider();
+
+    public Date getFromDate();
+
+    public Date getThroughDate();
 }

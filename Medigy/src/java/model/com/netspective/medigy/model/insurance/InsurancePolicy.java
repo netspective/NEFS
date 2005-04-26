@@ -140,7 +140,12 @@ public class InsurancePolicy implements Agreement
 
     public void setAgreementRoles(final Set<? extends AgreementRole> agreementRoles)
     {
-        this.insurancePolicyRoles = (Set<InsurancePolicyRole>) agreementRoles;
+        this.insurancePolicyRoles = new HashSet<InsurancePolicyRole>();
+        for (AgreementRole role : agreementRoles)
+        {
+            if (role instanceof InsurancePolicyRole)
+                this.insurancePolicyRoles.add((InsurancePolicyRole) role);
+        }
     }
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -152,7 +157,12 @@ public class InsurancePolicy implements Agreement
 
     public void setAgreementItems(final Set<? extends AgreementItem> agreementItems)
     {
-        this.insurancePolicyItems = (Set<InsurancePolicyItem>) agreementItems;
+        this.insurancePolicyItems = new HashSet<InsurancePolicyItem>();
+        for (AgreementItem item : agreementItems)
+        {
+            if (item instanceof InsurancePolicyItem)
+                this.insurancePolicyItems.add((InsurancePolicyItem) item);
+        }
     }
 
     @ManyToOne

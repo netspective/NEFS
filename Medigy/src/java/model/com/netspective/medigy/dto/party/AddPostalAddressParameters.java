@@ -36,16 +36,28 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.dto.party;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.service.Service;
+import com.netspective.medigy.model.party.Party;
 
-public interface PatientRegistrationService extends Service
+public interface AddPostalAddressParameters
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    public Party getParty();
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+    public String getStreet1();
+
+    public String getStreet2();
+
+    public String getCity();
+
+    public String getState();
+
+    public String getPostalCode();
+
+    public String getCounty();
+
+    public String getCountry();
+
+    // TODO: Make this into multiple purposes
+    public String getPurpose();
 }

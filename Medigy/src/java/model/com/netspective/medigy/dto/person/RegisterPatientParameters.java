@@ -68,6 +68,10 @@ public interface RegisterPatientParameters
 
     public String getEmployerName();
 
+    public String getEmployerId();
+
+    public String getOccupation();
+
     public String getSsn();
 
     public String[] getEthnicityCodes();
@@ -90,7 +94,9 @@ public interface RegisterPatientParameters
 
     public String getMobilePhone();
 
-    public String getStreetAddress();
+    public String getStreetAddress1();
+
+    public String getStreetAddress2();
 
     public String getCity();
 

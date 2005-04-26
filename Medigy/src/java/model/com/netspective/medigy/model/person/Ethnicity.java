@@ -66,7 +66,7 @@ public class Ethnicity extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_id")
+    @JoinColumn(name = "party_id", nullable = false)
     public Person getPerson()
     {
         return person;
@@ -78,7 +78,7 @@ public class Ethnicity extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "ethnicity_type_id")
+    @JoinColumn(name = "ethnicity_type_id", nullable = false)
     public EthnicityType getType()
     {
         return type;

@@ -46,6 +46,17 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
+import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.party.PartyRelationshipFacade;
+import com.netspective.medigy.service.party.AddContactMechanismService;
+import com.netspective.medigy.service.party.AddContactMechanismServiceImpl;
+import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
+import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.person.PatientRegistrationService;
+import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
+import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
 import com.netspective.tool.graphviz.GraphvizLayoutType;
 import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
@@ -116,138 +127,6 @@ public abstract class TestCase extends junit.framework.TestCase
             throw new RuntimeException(e);
         }
         config.registerReferenceEntitiesAndCaches();
-        /*
-        config.addAnnotatedClass(com.netspective.medigy.model.session.Session.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.session.ProcessSession.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.session.EndUserSession.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.EmploymentAgreementRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.CommunicationEventPurposeType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.FacilityType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyQualificationType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyIdentifierType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceItemType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceTermType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.InvoiceStatusType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.PaymentType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.PaymentMethodType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.invoice.BillingAccountRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.Facility.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PersonIdentifierType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.MedicalConditionType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.IncidentType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.EthnicityType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareDeliveryRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.DiagnosisType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.OutcomeType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareVisitStatusType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.SymptomType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.EpisodeType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareVisitRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.health.HealthCareOfferingType.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.InsurancePolicyType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.insurance.CoverageType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimStatusType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.claim.ClaimServiceCodeType.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.model.common.GeographicBoundary.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.GeographicBoundaryType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.OrganizationRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PersonRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType.class);
-        config.addAnnotatedClass(com.netspective.medigy.reference.custom.party.PartyRelationshipType.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.ContactMechanism.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.Party.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyIdentifier.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyRelationship.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanism.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyContactMechanismPurpose.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PhoneNumber.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddress.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PostalAddressBoundary.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.ElectronicAddress.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyFacilityRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEvent.class);        
-        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventPurpose.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.PartyQualification.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.ValidContactMechanismRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.ValidPartyRelationshipRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreement.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreementItem.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.EmploymentAgreementRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.work.WorkEffort.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.party.CommunicationEventWork.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareOffering.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.model.product.Product.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.product.ProductFeature.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.Invoice.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceItem.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.InvoiceTerm.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccount.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.BillingAccountRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.invoice.Payment.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.org.Organization.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.model.person.Person.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.Ethnicity.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.Language.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.MaritalStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.Gender.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.PatientMedicalCondition.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.PhysicalCharacteristic.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.person.Incident.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareEpisode.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDelivery.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisit.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryAssociation.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.Diagnosis.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisTreatment.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.DeliveryOutcome.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.EpisodeOutcome.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.PractitionerDiagnosis.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroup.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.DiagnosisRelatedGroupClassification.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.VisitReason.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.Symptom.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareVisitRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryClaimSubmission.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.HealthCareDeliveryBilling.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.health.ProviderOffering.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicy.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicyRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.InsurancePolicyItem.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.Enrollment.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.EnrollmentElection.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.Group.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.insurance.CareProviderSelection.class);
-
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.Claim.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItem.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimStatus.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimSettlement.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimSettlementAmount.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimResubmission.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimRole.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimServiceCode.class);
-        config.addAnnotatedClass(com.netspective.medigy.model.claim.ClaimItemDiagnosisCode.class);
-        */
-
         return config;
     }
 
@@ -265,6 +144,15 @@ public abstract class TestCase extends junit.framework.TestCase
             Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
     }
 
+    protected void loadServiceLocator()
+    {
+        ServiceLocator.getInstance().loadService(PersonFacade.class, new PersonFacadeImpl());
+        ServiceLocator.getInstance().loadService(ReferenceEntityLookupService.class, new ReferenceEntityLookupServiceImpl());
+        ServiceLocator.getInstance().loadService(PartyRelationshipFacade.class, new PartyRelationshipFacadeImpl());
+        ServiceLocator.getInstance().loadService(PatientRegistrationService.class, new PatientRegistrationServiceImpl());
+        ServiceLocator.getInstance().loadService(AddContactMechanismService.class, new AddContactMechanismServiceImpl());
+    }
+
     protected void setUp() throws Exception
     {
         super.setUp();
@@ -274,19 +162,7 @@ public abstract class TestCase extends junit.framework.TestCase
 
         DEFAULT_DB_DIR = new File(systemTempDir + systemFileSep + getClassNameWithoutPackage());
         log.info(DEFAULT_DB_DIR.getAbsolutePath());
-        /*
-        if (DEFAULT_DB_DIR.exists())
-        {
-            // clean up previous incarnations
-            File[] files = DEFAULT_DB_DIR.listFiles();
-            for (int i = 0; i < files.length; i++)
-            {
-                File file = files[i];
-                if (!file.delete())
-                    throw new RuntimeException("Failed to delete previously generated database file: " + file.getName());
-            }
-        }
-        */
+        loadServiceLocator();
 
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);

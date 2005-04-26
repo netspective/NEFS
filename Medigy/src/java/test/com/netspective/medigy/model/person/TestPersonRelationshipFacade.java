@@ -47,10 +47,9 @@ import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.service.person.PersonFacade;
-import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 import com.netspective.medigy.util.HibernateUtil;
 
 import java.util.List;
@@ -104,9 +103,11 @@ public class TestPersonRelationshipFacade extends TestCase
         SessionManager.getInstance().pushActiveSession(session);
         HibernateUtil.getSession().save(session);
 
+        final PersonFacade pFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        final PartyRelationshipFacade facade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
+
         HibernateUtil.beginTransaction();
         // Adding two patients in this test
-        PersonFacade pFacade = new PersonFacadeImpl();
         Person patientA = pFacade.addPerson("Hackett", "Brian");
         Person mom = pFacade.addPerson("Hackett", "Mom");
         Person dad = pFacade.addPerson("Hackett", "Dad");
@@ -117,7 +118,6 @@ public class TestPersonRelationshipFacade extends TestCase
         final PartyRole momRole = pFacade.addPersonRole(mom, PatientResponsiblePartyRoleType.Cache.PARENT.getEntity());
         final PartyRole dadRole = pFacade.addPersonRole(dad, PatientResponsiblePartyRoleType.Cache.PARENT.getEntity());
 
-        PartyRelationshipFacade facade = new PartyRelationshipFacadeImpl();
         final PartyRelationship patientAMomRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientARole, momRole);
         final PartyRelationship patientBMomRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientBRole, momRole);
         final PartyRelationship patientADadRel = facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientARole, dadRole);

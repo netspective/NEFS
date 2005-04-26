@@ -38,29 +38,16 @@
  */
 package com.netspective.medigy.service;
 
-import com.netspective.medigy.service.common.ReferenceEntityLookupService;
-import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
-import com.netspective.medigy.service.person.PatientRegistrationService;
-import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
-import com.netspective.medigy.service.person.PersonFacade;
-import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ServiceLocator
 {
     private static ServiceLocator serviceLocator = new ServiceLocator();
-
-    // Either do this here or let the framework call setters for these variables with the implementation
-    // classes through some configuration file
-    private ReferenceEntityLookupService referenceEntityLookupService = new ReferenceEntityLookupServiceImpl();
-    private PatientRegistrationService patientRegistrationService = new PatientRegistrationServiceImpl();
-    private PersonFacade personFacade = new PersonFacadeImpl();
-    private PartyRelationshipFacade partyRelatonshipFacade = new PartyRelationshipFacadeImpl();
+    private Map<Class, Service> serviceMap = new HashMap<Class, Service>();
 
     private ServiceLocator()
     {
-
     }
 
     public static ServiceLocator getInstance()
@@ -68,23 +55,20 @@ public class ServiceLocator
         return serviceLocator;
     }
 
-    public ReferenceEntityLookupService getReferenceEntityLookupService()
+    public Service getService(final Class serviceInterface)
     {
-        return referenceEntityLookupService;
+        return (Service) serviceMap.get(serviceInterface);
     }
 
-    public PatientRegistrationService getPatientRegistrationService()
+    /**
+     * Loads a service implementation.
+     *
+     * @param serviceInterface
+     * @param serviceImpl
+     */
+    public void loadService(final Class serviceInterface, final Service serviceImpl)
     {
-        return patientRegistrationService;
+        serviceMap.put(serviceInterface, serviceImpl);
     }
 
-    public PersonFacade getPersonFacade()
-    {
-        return personFacade;
-    }
-
-    public PartyRelationshipFacade getPartyRelationshipFacade()
-    {
-        return partyRelatonshipFacade;  
-    }
 }

@@ -38,14 +38,29 @@
  */
 package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.service.Service;
+import com.netspective.medigy.dto.person.RegisteredProvider;
+import com.netspective.medigy.dto.person.RegisterHealthCareProviderParameters;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 
-public interface PatientRegistrationService extends Service
+public class RegisterHealthCareProviderServiceImpl implements RegisterHealthCareProviderService
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    public RegisteredProvider register(final RegisterHealthCareProviderParameters params)
+    {
+        final Person person = new Person();
+        person.setLastName(params.getLastName());
+        person.setFirstName(params.getFirstName());
+        person.setMiddleName(params.getMiddleName());
+        person.setSuffix(params.getSuffix());
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+        HibernateUtil.getSession().save(person);
+
+        final PersonFacade personFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        personFacade.addPersonRole(person, PersonRoleType.Cache.INDIVIDUAL_HEALTH_CARE_PRACTITIONER.getEntity());
+
+
+        return null;
+    }
 }

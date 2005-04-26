@@ -42,13 +42,12 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.AbstractEntity;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.GeneratorType;
 
 @Entity
 public class PartyIdentifier extends AbstractEntity
@@ -74,7 +73,7 @@ public class PartyIdentifier extends AbstractEntity
         this.identifierId = identifierId;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {

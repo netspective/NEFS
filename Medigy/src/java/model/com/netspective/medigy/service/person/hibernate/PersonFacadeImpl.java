@@ -39,8 +39,13 @@
 package com.netspective.medigy.service.person.hibernate;
 
 import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.party.PartyContactMechanism;
+import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
@@ -50,6 +55,7 @@ import org.hibernate.criterion.Expression;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class PersonFacadeImpl implements PersonFacade
 {
@@ -132,4 +138,33 @@ public class PersonFacadeImpl implements PersonFacade
 
         return respPartyRole;
     }
+
+    /**
+     * Gets the home address for the person. Returns null if none is found
+     * @param person
+     * @return
+     */
+    public PostalAddress getHomeAddress(final Person person)
+    {
+        final Set<PartyContactMechanism> partyContactMechanisms = person.getPartyContactMechanisms();
+        for (PartyContactMechanism pcm : partyContactMechanisms)
+        {
+            if (pcm.getContactMechanism().getType().equals(ContactMechanismType.Cache.POSTAL_ADDRESS.getEntity()))
+            {
+                final Set<PartyContactMechanismPurpose> purposes = pcm.getPurposes();
+                for (PartyContactMechanismPurpose purpose : purposes)
+                {
+                    if (purpose.getType().equals(ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity()))
+                    {
+                        Criteria criteria = HibernateUtil.getSession().createCriteria(PostalAddress.class);
+                        criteria.add(Expression.eq("contactMechanismId", pcm.getContactMechanism().getContactMechanismId()));
+                        return (PostalAddress) criteria.uniqueResult();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
 }

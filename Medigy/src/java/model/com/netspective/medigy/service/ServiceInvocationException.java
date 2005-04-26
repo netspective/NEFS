@@ -36,16 +36,26 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.service;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.service.Service;
-
-public interface PatientRegistrationService extends Service
+public class ServiceInvocationException extends RuntimeException
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    public ServiceInvocationException()
+    {        
+    }
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+    public ServiceInvocationException(String message)
+    {
+        super(message);
+    }
+
+    public ServiceInvocationException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    public ServiceInvocationException(Throwable cause)
+    {
+        super(cause);
+    }
 }

@@ -108,7 +108,7 @@ public class GeographicBoundary extends AbstractTopLevelEntity
     }
 
     @ManyToOne
-    @JoinColumn(name = "geo_boundary_type_id", unique = false)
+    @JoinColumn(name = "geo_boundary_type_id", nullable = false)
     public GeographicBoundaryType getType()
     {
         return type;

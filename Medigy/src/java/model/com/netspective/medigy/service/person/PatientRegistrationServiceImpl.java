@@ -38,21 +38,21 @@
  */
 package com.netspective.medigy.service.person;
 
+import com.netspective.medigy.dto.party.AddPostalAddressParameters;
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.MaritalStatus;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
-import com.netspective.medigy.reference.type.LanguageType;
+import com.netspective.medigy.reference.type.GenderType;
+import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.service.party.AddContactMechanismService;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -63,12 +63,18 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
 {
     private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
+    /**
+     * Registers a responsible party associated with a new patient. This is a sub-task belonging to the
+     * patient registration process.
+     *
+     * @param person
+     * @param patientParameters
+     */
     protected void registerResponsibleParty(final Person person, final RegisterPatientParameters patientParameters)
     {
-        // TODO: Need to add  dynamic service lookup soon!
-        final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
-        final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
-        final PartyRelationshipFacade partyRelFacade = ServiceLocator.getInstance().getPartyRelationshipFacade();
+        final ReferenceEntityLookupService referenceEntityService = (ReferenceEntityLookupService) ServiceLocator.getInstance().getService(ReferenceEntityLookupService.class);
+        final PersonFacade personFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        final PartyRelationshipFacade partyRelFacade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
 
         // Create a patient role for the new patient
         final PartyRole patientRole = personFacade.addPersonRole(person, PersonRoleType.Cache.PATIENT.getEntity());
@@ -96,27 +102,105 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             // create a relationship between the patient and this person through the roles
             partyRelFacade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(), patientRole, respPartyRole);
         }
+    }
 
+    /**
+     * Registers a primary care provider relationship with the patient. This assumes that the primary care provider already
+     * exists.
+     * @param patient
+     * @param patientParameters
+     */
+    protected void registerPrimaryCareProvider(final Person patient, final RegisterPatientParameters patientParameters)
+    {
+        final ReferenceEntityLookupService referenceEntityService = (ReferenceEntityLookupService) ServiceLocator.getInstance().getService(ReferenceEntityLookupService.class);
+        final PersonFacade personFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        final PartyRelationshipFacade partyRelFacade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
+
+        patientParameters.getPrimaryCareProviderId();
+
+        //partyRelFacade.addPartyRelationship(PartyRelationshipType.Cache..getEntity(), patientRole, respPartyRole);
+    }
+
+    protected void registerPostalAddress(final Person patient, final RegisterPatientParameters patientParameters)
+    {
+        final AddContactMechanismService contactMechService = (AddContactMechanismService) ServiceLocator.getInstance().getService(AddContactMechanismService.class);
+
+        try
+        {
+            contactMechService.addPostalAddress(new AddPostalAddressParameters() {
+                public Party getParty()
+                {
+                    return patient;
+                }
+
+                public String getStreet1()
+                {
+                    return patientParameters.getStreetAddress1();
+                }
+
+                public String getStreet2()
+                {
+                    return patientParameters.getStreetAddress2();
+                }
+
+                public String getCity()
+                {
+                    return patientParameters.getCity();
+                }
+
+                public String getState()
+                {
+                    return patientParameters.getState();
+                }
+
+                public String getPostalCode()
+                {
+                    return patientParameters.getPostalCode();
+                }
+
+                public String getCounty()
+                {
+                    return null;
+                }
+
+                public String getCountry()
+                {
+                    return patientParameters.getCountry();
+                }
+
+                public String getPurpose()
+                {
+                    return null;
+                    //return patientParameters.getAddressPurpose();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            log.error(e);
+        }
     }
 
     public RegisteredPatient registerPatient(final RegisterPatientParameters patientParameters)
     {
-        final ReferenceEntityLookupService referenceEntityService = ServiceLocator.getInstance().getReferenceEntityLookupService();
-        final PersonFacade personFacade = ServiceLocator.getInstance().getPersonFacade();
-        final PartyRelationshipFacade partyRelFacade = ServiceLocator.getInstance().getPartyRelationshipFacade();
+        final ReferenceEntityLookupService referenceEntityService = (ReferenceEntityLookupService) ServiceLocator.getInstance().getService(ReferenceEntityLookupService.class);
+        final PersonFacade personFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+        //final PartyRelationshipFacade partyRelFacade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
+
 
         Person person = new Person();
         try
         {
-            BeanUtils.copyProperties(person, patientParameters);
+            person.setLastName(patientParameters.getLastName());
+            person.setFirstName(patientParameters.getFirstName());
+            person.setMiddleName(patientParameters.getMiddleName());
+
 
             assert  patientParameters.getGender() != null;  // REQUIREMENT
-            Gender gender = referenceEntityService.getGender(patientParameters.getGender());
-            gender.setPerson(person);
-            MaritalStatus maritalStatus = referenceEntityService.getMaritalStatus(patientParameters.getMaritalStatus());
-            maritalStatus.setPerson(person);
-            person.getGenders().add(gender);
-            person.getMaritalStatuses().add(maritalStatus);
+            final GenderType genderType = referenceEntityService.getGenderType(patientParameters.getGender());
+            final MaritalStatusType maritalStatusType = referenceEntityService.getMaritalStatusType(patientParameters.getMaritalStatus());
+            person.addMaritalStatus(maritalStatusType);
+            person.addGender(genderType);
 
             // add the languages
             final String[] languages = patientParameters.getLanguageCodes();
@@ -125,7 +209,7 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             {
                 for (int i = 0; i < languages.length; i++)
                 {
-                    person.addLanguage(LanguageType.Cache.getEntity(languages[i]));
+                    person.addLanguage(referenceEntityService.getLanguageType(languages[i]));
                 }
             }
 
@@ -134,13 +218,20 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             assert ethnicities != null && ethnicities.length > 0 : ethnicities; // REQUIREMENT
             for (int i = 0; i < ethnicities.length; i++)
             {
-                person.addEthnicity(EthnicityType.Cache.getEntity(ethnicities[i]));
+                person.addEthnicity(referenceEntityService.getEthnicityType(ethnicities[i]));
             }
 
-            person.setSsn(patientParameters.getSsn());
-            person.setDriversLicenseNumber(patientParameters.getDriversLicenseNumber());
+
+            if (patientParameters.getSsn() != null)
+                person.setSsn(patientParameters.getSsn());
+            if (patientParameters.getDriversLicenseNumber() != null)
+                person.setDriversLicenseNumber(patientParameters.getDriversLicenseNumber());
+                
             // Finally add the person
             personFacade.addPerson(person);
+
+            assert patientParameters.getStreetAddress1() != null;
+            registerPostalAddress(person, patientParameters);
 
             registerResponsibleParty(person, patientParameters);
 

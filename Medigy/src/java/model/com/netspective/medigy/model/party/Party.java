@@ -99,8 +99,8 @@ public class Party extends AbstractTopLevelEntity
     private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
     private Set<PartyQualification> partyQualifications = new HashSet<PartyQualification>();
 
-    private Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
-    private Set<PartyContactMechanism> partyContactMechanisms = new HashSet<PartyContactMechanism>();
+    protected Set<PartyIdentifier> partyIdentifiers = new HashSet<PartyIdentifier>();
+    protected Set<PartyContactMechanism> partyContactMechanisms = new HashSet<PartyContactMechanism>();
     private Set<PartyFacilityRole> partyFacilityRoles = new HashSet<PartyFacilityRole>();
     private Set<CommunicationEventRole> communicationEventRoles = new HashSet<CommunicationEventRole>();
     private Set<BillingAccountRole> billingAccountRoles = new HashSet<BillingAccountRole>();

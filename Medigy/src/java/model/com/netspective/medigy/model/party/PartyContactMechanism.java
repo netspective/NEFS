@@ -94,7 +94,7 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
         this.comment = comment;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "party_id", nullable = false)
     public Party getParty()
     {
@@ -117,7 +117,7 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
         this.nonSolicitation = nonSolicitation;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_mech_id", nullable = false)
     public ContactMechanism getContactMechanism()
     {
@@ -139,6 +139,15 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
     public void setPurposes(final Set<PartyContactMechanismPurpose> purposes)
     {
         this.purposes = purposes;
+    }
+
+    @Transient
+    public void addPurpose(final ContactMechanismPurposeType type)
+    {
+        final PartyContactMechanismPurpose purpose = new PartyContactMechanismPurpose();
+        purpose.setType(type);
+        purpose.setPartyContactMechanism(this);
+        purposes.add(purpose);
     }
 
     /**

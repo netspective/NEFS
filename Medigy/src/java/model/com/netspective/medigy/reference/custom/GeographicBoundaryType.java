@@ -81,6 +81,16 @@ public class GeographicBoundaryType extends AbstractCustomReferenceEntity
         {
             this.entity = (GeographicBoundaryType) entity;
         }
+
+        public static GeographicBoundaryType getEntity(String code)
+        {
+            for (GeographicBoundaryType.Cache geo : GeographicBoundaryType.Cache.values())
+            {
+                if (geo.getCode().equals(code))
+                    return geo.getEntity();
+            }
+            return null;
+        }
     }
 
     public GeographicBoundaryType()

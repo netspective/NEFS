@@ -39,12 +39,14 @@
 package com.netspective.medigy.service.person;
 
 import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.service.Service;
 
 import java.io.Serializable;
 
-public interface PersonFacade
+public interface PersonFacade extends Service
 {
     public Person[] listPersonByLastName(final String lastName, boolean exactMatch);
 
@@ -55,4 +57,8 @@ public interface PersonFacade
     public Person addPerson(String lastName, String firstName);
 
     public PartyRole addPersonRole(Person person, PersonRoleType type);
+
+    public PostalAddress getHomeAddress(Person person);
+
+
 }

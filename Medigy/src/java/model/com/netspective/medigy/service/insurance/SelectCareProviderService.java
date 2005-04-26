@@ -36,16 +36,29 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.service.insurance;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
+import com.netspective.medigy.dto.insurance.CareProviderSelectionData;
+import com.netspective.medigy.dto.insurance.SelectCareProviderParameters;
 import com.netspective.medigy.service.Service;
+import com.netspective.medigy.model.org.Organization;
 
-public interface PatientRegistrationService extends Service
+import java.util.List;
+
+public interface SelectCareProviderService extends Service
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    /**
+     * Select a health care practitioner as the primary care provider for a person
+     * @param params
+     * @return
+     */
+    public CareProviderSelectionData selectCareProvider(final SelectCareProviderParameters params);
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+    /**
+     * Lists people who have "health care practitioner" roles and am associated with a health care provider
+     * organization.
+     *
+     * @return
+     */
+    public List listCareProviders(final Organization providerOrganization);
 }

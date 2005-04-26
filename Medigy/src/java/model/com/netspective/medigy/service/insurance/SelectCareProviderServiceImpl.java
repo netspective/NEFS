@@ -36,16 +36,43 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.service.insurance;
 
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.service.Service;
+import com.netspective.medigy.dto.insurance.CareProviderSelectionData;
+import com.netspective.medigy.dto.insurance.SelectCareProviderParameters;
+import com.netspective.medigy.model.insurance.CareProviderSelection;
+import com.netspective.medigy.model.org.Organization;
+import com.netspective.medigy.util.HibernateUtil;
 
-public interface PatientRegistrationService extends Service
+import java.io.Serializable;
+import java.util.List;
+
+public class SelectCareProviderServiceImpl implements SelectCareProviderService
 {
-    public RegisteredPatient registerPatient(RegisterPatientParameters person);
+    public CareProviderSelectionData selectCareProvider(final SelectCareProviderParameters params)
+    {
+        final CareProviderSelection cps = new CareProviderSelection();
+        cps.setInsuredIndividual(params.getInsuredIndividual());
+        cps.setIndividualHealthCarePractitioner(params.getCareProvider());
+        cps.setFromDate(params.getFromDate());
+        cps.setThroughDate(params.getThroughDate());
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person);
+        HibernateUtil.getSession().save(cps);
+        return new CareProviderSelectionData() {
+            public SelectCareProviderParameters getSelectCareProviderParameters()
+            {
+                return params;
+            }
+
+            public Serializable getCareProviderSelectionId()
+            {
+                return cps.getCareProviderSelectionId();
+            }
+        };
+    }
+
+    public List listCareProviders(final Organization providerOrganization)
+    {
+        return null;
+    }
 }

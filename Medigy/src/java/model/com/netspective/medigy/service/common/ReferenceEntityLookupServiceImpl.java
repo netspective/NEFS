@@ -39,10 +39,7 @@
 package com.netspective.medigy.service.common;
 
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.person.Ethnicity;
-import com.netspective.medigy.model.person.Gender;
-import com.netspective.medigy.model.person.Language;
-import com.netspective.medigy.model.person.MaritalStatus;
+import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
@@ -56,39 +53,34 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
 {
 
     /**
-     * Gets a new language object based on the code
+     * Gets the language type based on the code
      *
      * @param code      Language code
      * @return
      */
-    public Language getLanguage(final String code) throws UnknownReferenceTypeException
+    public LanguageType getLanguageType(final String code) throws UnknownReferenceTypeException
     {
         final LanguageType type = LanguageType.Cache.getEntity(code);
         if (type == null)
             throw new UnknownReferenceTypeException();
-
-        Language language = new Language();
-        language.setType(type);
-        return language;
+        return type;
     }
 
     /**
-     * Gets a new gender object based on the code
+     * Gets the gender type based on the code
      * @param genderCode
      * @return
      */
-    public Gender getGender(final String genderCode) throws UnknownReferenceTypeException
+    public GenderType getGenderType(final String genderCode) throws UnknownReferenceTypeException
     {
         final GenderType type = GenderType.Cache.getEntity(genderCode);
         if (type == null)
             throw new UnknownReferenceTypeException();
-        Gender gender = new Gender();
-        gender.setType(type);
-        return gender;
+        return type;
     }
 
     /**
-     * Gets the ethnicity model object based on the code. This will look at static cached items
+     * Gets the ethnicity type based on the code. This will look at static cached items
      * first and only when no match is found it will query the underlying DB to get the
      * reference entity.
      *
@@ -96,37 +88,32 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
      * @return
      * @throws UnknownReferenceTypeException
      */
-    public Ethnicity getEthnicity(final String ethnicityCode) throws UnknownReferenceTypeException
+    public EthnicityType getEthnicityType(final String ethnicityCode) throws UnknownReferenceTypeException
     {
-        EthnicityType cacheType = EthnicityType.Cache.getEntity(ethnicityCode);
-        if (cacheType == null)
+        EthnicityType type = EthnicityType.Cache.getEntity(ethnicityCode);
+        if (type == null)
         {
             final Criteria criteria = HibernateUtil.getSession().createCriteria(EthnicityType.class);
-            System.out.println(criteria.list().size());
             criteria.add(Expression.eq("code", ethnicityCode));
-            cacheType = (EthnicityType) criteria.uniqueResult();
-            if (cacheType == null)
+            type = (EthnicityType) criteria.uniqueResult();
+            if (type == null)
                 throw new UnknownReferenceTypeException();
         }
-        Ethnicity ethnicity = new Ethnicity();
-        ethnicity.setType(cacheType);
-        return ethnicity;
+        return type;
     }
 
     /**
-     * Gets the marital status model object based on the code.
+     * Gets the marital status type based on the code.
      * @param statusCode
      * @return
      * @throws UnknownReferenceTypeException
      */
-    public MaritalStatus getMaritalStatus(String statusCode) throws UnknownReferenceTypeException
+    public MaritalStatusType getMaritalStatusType(String statusCode) throws UnknownReferenceTypeException
     {
         final MaritalStatusType type = MaritalStatusType.Cache.getEntity(statusCode);
         if (type == null)
             throw new UnknownReferenceTypeException();
-        MaritalStatus status = new MaritalStatus();
-        status.setType(type);
-        return status;
+        return type;
     }
 
     public PartyRole getPersonRole(String roleCode) throws UnknownReferenceTypeException
@@ -143,5 +130,19 @@ public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupSe
         PartyRole role = new PartyRole();
         role.setType(type);
         return role;
+    }
+
+    public ContactMechanismPurposeType getContactMechanismPurposeType(String purposeCode) throws UnknownReferenceTypeException
+    {
+        ContactMechanismPurposeType  type = ContactMechanismPurposeType.Cache.getEntity(purposeCode);
+        if (type == null)
+        {
+            final Criteria criteria = HibernateUtil.getSession().createCriteria(ContactMechanismPurposeType.class);
+            criteria.add(Expression.eq("code", purposeCode));
+            type = (ContactMechanismPurposeType) criteria.uniqueResult();
+            if (type == null)
+                throw new UnknownReferenceTypeException();
+        }
+        return type;
     }
 }

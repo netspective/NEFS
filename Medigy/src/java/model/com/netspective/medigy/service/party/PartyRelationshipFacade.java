@@ -42,10 +42,11 @@ import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
+import com.netspective.medigy.service.Service;
 
 import java.util.List;
 
-public interface PartyRelationshipFacade
+public interface PartyRelationshipFacade extends Service
 {
     public List getValidPartyRolesByRelationshipType(final PartyRelationshipType type);
 
