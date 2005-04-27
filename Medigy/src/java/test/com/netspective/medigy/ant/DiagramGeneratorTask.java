@@ -57,6 +57,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 public class DiagramGeneratorTask extends Task
 {
@@ -71,7 +72,11 @@ public class DiagramGeneratorTask extends Task
     private String hbm2ddlAuto;
     private String dialectClass;
 
-    private String graphvizLocation;
+    private String hibernateConfigFile;
+
+    private String diagramNamePrefix;
+    private String graphVizCommandSpec;
+    private String outputFileTypes;
 
     public void execute() throws BuildException
     {
@@ -86,7 +91,6 @@ public class DiagramGeneratorTask extends Task
         {
             throw new BuildException(e);
         }
-
     }
 
     protected HibernateConfiguration getHibernateConfiguration() throws HibernateException, FileNotFoundException, IOException
@@ -106,14 +110,15 @@ public class DiagramGeneratorTask extends Task
         for (final Class c : com.netspective.medigy.reference.Catalog.ALL_REFERENCE_TYPES)
             config.addAnnotatedClass(c);
 
-        config.configure("/com/netspective/medigy/hibernate.cfg.xml");
+        config.configure(hibernateConfigFile);
         config.registerReferenceEntitiesAndCaches();
         return config;
     }
 
     protected void generateDiagram(final Configuration configuration,
-                                       final String fileName,
-                                       final HibernateDiagramGeneratorFilter filter) throws IOException
+                                    final String fileName,
+                                    final HibernateDiagramGeneratorFilter filter,
+                                    final String[] fileTypes) throws IOException
     {
         final File dotFileName = new File(fileName + ".dot");
         final GraphvizDiagramGenerator gdg = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
@@ -121,8 +126,11 @@ public class DiagramGeneratorTask extends Task
         hdg.generate();
         gdg.generateDOTSource(dotFileName);
 
-        if (System.getProperty("os.name").contains("Windows"))
-            Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
+        for (String type : fileTypes)
+        {
+            if (System.getProperty("os.name").contains("Windows"))
+                Runtime.getRuntime().exec(graphVizCommandSpec + fileName + "." + type + " " + dotFileName);
+        }
     }
 
     protected void generateModelDiagrams(final HibernateConfiguration hibernateConfiguration) throws IOException
@@ -132,22 +140,50 @@ public class DiagramGeneratorTask extends Task
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
 
+        int i = 0;        
+        final StringTokenizer tokenizer = new StringTokenizer(outputFileTypes, ",");
+        final String[] typeList = new String[tokenizer.countTokens()];
+        while (tokenizer.hasMoreTokens())
+        {
+            typeList[i++] = tokenizer.nextToken();
+        }
+        
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the first version is good for software engineers
         generateDiagram(hibernateConfiguration,
-                outDir.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-se",
-                new HibernateDiagramFilter(true, true, true, true));
+                outDir.getAbsolutePath() + systemFileSep + diagramNamePrefix + dialectShortName + "-se",
+                new HibernateDiagramFilter(true, true, true, true), typeList);
 
         // Generate a DOT (GraphViz) diagram so we can visualize the DDL
         // the second version is good for software engineers looking for general table structure (no column information)
         generateDiagram(hibernateConfiguration,
-                outDir.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-set",
-                new HibernateDiagramFilter(false, true, true, true));
+                outDir.getAbsolutePath() + systemFileSep + diagramNamePrefix + dialectShortName + "-set",
+                new HibernateDiagramFilter(false, true, true, true), typeList);
 
         // the third version is good for database administrators (simple ERD)
         generateDiagram(hibernateConfiguration,
-                outDir.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-erd",
-                new HibernateDiagramFilter(true, false, false, false));
+                outDir.getAbsolutePath() + systemFileSep + diagramNamePrefix + dialectShortName + "-erd",
+                new HibernateDiagramFilter(true, false, false, false), typeList);
+    }
+
+    public void setHibernateConfigFile(String hibernateConfigFile)
+    {
+        this.hibernateConfigFile = hibernateConfigFile;
+    }
+
+    public void setDiagramNamePrefix(String diagramNamePrefix)
+    {
+        this.diagramNamePrefix = diagramNamePrefix;
+    }
+
+    public void setGraphVizCommandSpec(String graphVizCommandSpec)
+    {
+        this.graphVizCommandSpec = graphVizCommandSpec;
+    }
+
+    public void setOutputFileTypes(String outputFileTypes)
+    {
+        this.outputFileTypes = outputFileTypes;
     }
 
     public void setDialectClass(String dialectClass)
@@ -188,11 +224,6 @@ public class DiagramGeneratorTask extends Task
     public void setHbm2ddlAuto(final String hbm2ddlAuto)
     {
         this.hbm2ddlAuto = hbm2ddlAuto;
-    }
-
-    public void setGraphvizLocation(final String graphvizLocation)
-    {
-        this.graphvizLocation = graphvizLocation;
     }
 
 }

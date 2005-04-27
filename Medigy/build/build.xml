@@ -130,7 +130,11 @@
         <diagram dialectClass="org.hibernate.dialect.HSQLDialect" driverClass="org.hsqldb.jdbcDriver"
             jdbcUrl="jdbc:hsqldb:${project.home}/diagram/db"
             userName="sa" showSql="false" hbm2ddlAuto="create-drop"
-            outputDir="${project.home}/diagram"/>
+            outputDir="${project.home}/diagram"
+            diagramNamePrefix="medigy-"
+            hibernateConfigFile="/com/netspective/medigy/hibernate.cfg.xml"
+            graphVizCommandSpec="c:\Windows\system32\cmd.exe /c C:\PROGRA~1\ATT\Graphviz\bin\dot.exe -Tpng -o"
+            outputFileTypes="png"/>
     </target>
 
     <!-- ==================== Test targets  ======================= -->
