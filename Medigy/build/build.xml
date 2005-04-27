@@ -30,6 +30,8 @@
         <property name="project.test.output.dir" value="test-reports"/>
         <property name="project.test.output.file-prefix" value="test-reports"/>
         <property name="project.output.jar-name" value="medigy.jar"/>
+        <property name="project.coverage.dir" value="${project.home}/coverage"/>
+        <property name="project.coverage.enabled" value="${emma.enabled}"/>
 
         <path id="project.build.class.path">
             <fileset dir="${project.lib.build.dir}">
@@ -39,7 +41,7 @@
                 <include name="**/*.jar"/>
             </fileset>
         </path>
-
+        
         <path id="project.test.class.path">
             <fileset dir="${project.lib.build.dir}">
                 <include name="**/*.jar"/>
@@ -52,8 +54,9 @@
             </fileset>
 
             <!-- this needs to be in the classpath because test cases have resources that need to be located -->
-            <pathelement location="${project.src.test.home}"/>
+            <pathelement location="${project.src.test.home}"/>            
         </path>
+        <taskdef resource="emma_ant.properties" classpathref="project.test.class.path" />
 
         <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
         <property name="ClassPathTask-class-name" value="com.netspective.commons.ant.ClassPathTask"/>
@@ -67,7 +70,14 @@
         <mkdir dir="${project.build.classes.dir}"/>
     </target>
 
-    <target name="init" depends="init-build-dir">
+    <target name="init-emma-dir" depends="setup-project-properties">
+         <!-- override this to enable emma -->
+        <property name="project.coverage.instr.dir" value="${project.coverage.dir}/instr"/>
+        <mkdir dir="${project.coverage.instr.dir}"/>
+    </target>
+
+    <target name="init" depends="init-build-dir,init-emma-dir">
+
     </target>
 
     <!-- ==================== Compile targets  ======================= -->
@@ -83,6 +93,13 @@
             debug="on" optimize="true" deprecation="off" classpathref="project.build.class.path">
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
+
+        <emma enabled="${project.coverage.enabled}">
+            <instr instrpath="${project.build.classes.dir}" destdir="${project.coverage.instr.dir}" metadatafile="${project.coverage.dir}/metadata.emma"
+                    merge="true">
+                <!--<filter excludes="*TestCase" />-->
+            </instr>
+        </emma>
     </target>
 
     <target name="compile-test" depends="compile-main">
@@ -113,14 +130,29 @@
 
         <junit filtertrace="yes" fork="true">
             <classpath>
+                <pathelement location="${project.coverage.instr.dir}" />
                 <path refid="project.test.class.path"/>
                 <pathelement location="${project.build.classes.dir}"/>
             </classpath>
+
+            <jvmarg value="-Demma.coverage.out.file=${project.coverage.dir}/coverage.emma" />
+            <jvmarg value="-Demma.coverage.out.merge=false" />
 
             <formatter type="xml" usefile="true"/>
 
             <test name="${project.package.base}.model.TestSuite" todir="${project.test.output.dir}" outfile="${project.test.output.file-prefix}"/>
         </junit>
+        
+        <emma enabled="${project.coverage.enabled}">
+            <report sourcepath="${project.src.main.home}:${project.src.tool.home}" sort="+block,+name,+method,+class"
+                metrics="method:70,block:80,line:80,class:100">
+                <fileset dir="${project.coverage.dir}" includes="*.emma" />
+                <txt outfile="${project.coverage.dir}/coverage.txt" depth="package"
+                    columns="class,method,block,line,name"/>
+                <html outfile="${project.coverage.dir}/coverage.html" depth="method"
+                    columns="name,class,method,block,line"/>
+            </report>
+        </emma>
     </target>
 
     <target name="clean" depends="setup-project-properties">
