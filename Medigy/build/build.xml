@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<project default="jar">
+<project name="medigy" default="jar">
 
     <property file="build.properties"/>
 
@@ -58,11 +58,8 @@
         </path>
         <taskdef resource="emma_ant.properties" classpathref="project.test.class.path" />
 
-        <property name="GenerateBuildLogClassTask-class-name" value="com.netspective.commons.ant.GenerateBuildLogClassTask"/>
-        <property name="ClassPathTask-class-name" value="com.netspective.commons.ant.ClassPathTask"/>
-
-        <available property="GenerateBuildLogClassTask-available" classname="${GenerateBuildLogClassTask-class-name}"/>
-        <available property="ClassPathTask-available" classname="${ClassPathTask-class-name}"/>
+        <property name="GenerateModelDiagramTask-class-name" value="com.netspective.medigy.ant.DiagramGeneratorTask"/>
+        <available property="GenerateModelDiagramTask-available" classname="${GenerateModelDiagramTask-class-name}"/>
     </target>
 
     <target name="init-build-dir" depends="setup-project-properties">
@@ -121,6 +118,20 @@
         </jar>
     </target>
 
+
+    <!-- ===================== Model Diagram Target ==================== -->
+    <target name="diagram" unless="GenerateModelDiagramTask-available" depends="compile-test">
+        <taskdef name="diagram" classname="${GenerateModelDiagramTask-class-name}"  >
+            <classpath>
+                <path refid="project.test.class.path"/>
+                <pathelement location="${project.build.classes.dir}"/>
+            </classpath>
+        </taskdef>
+        <diagram dialectClass="org.hibernate.dialect.HSQLDialect" driverClass="org.hsqldb.jdbcDriver"
+            jdbcUrl="jdbc:hsqldb:${project.home}/diagram/db"
+            userName="sa" showSql="false" hbm2ddlAuto="create-drop"
+            outputDir="${project.home}/diagram"/>
+    </target>
 
     <!-- ==================== Test targets  ======================= -->
 
