@@ -143,7 +143,7 @@
         <delete dir="${project.test.output.dir}"/>
         <mkdir dir="${project.test.output.dir}"/>
 
-        <junit filtertrace="yes" fork="true">
+        <junit filtertrace="yes" fork="true" maxmemory="128m" >
             <classpath>
                 <pathelement location="${project.coverage.instr.dir}" />
                 <path refid="project.test.class.path"/>
