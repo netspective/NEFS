@@ -117,7 +117,7 @@ public class PartyContactMechanism extends AbstractDateDurationEntity
         this.nonSolicitation = nonSolicitation;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "contact_mech_id", nullable = false)
     public ContactMechanism getContactMechanism()
     {

@@ -38,24 +38,77 @@
  */
 package com.netspective.medigy.model;
 
-import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.person.TestPersonRelationshipFacade;
-import com.netspective.medigy.model.org.TestOrganization;
-import com.netspective.medigy.service.person.TestPersonFacade;
-import com.netspective.medigy.service.party.TestAddContactMechanismService;
-import junit.framework.Test;
+import com.netspective.medigy.util.HibernateUtil;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.SessionManager;
+import org.dbunit.database.DatabaseConnection;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
+import org.hibernate.cfg.Environment;
 
-public class TestSuite extends junit.framework.TestSuite
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
+public abstract class DbUnitTestCase extends TestCase
 {
-    public static Test suite()
+    protected void setUp() throws Exception
     {
-        TestSuite suite= new TestSuite();
-        suite.addTest(new junit.framework.TestSuite(TestPerson.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonRelationshipFacade.class));
-        suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonFacade.class));
-        suite.addTest(new junit.framework.TestSuite(TestAddContactMechanismService.class));
+        super.setUp();
 
-        return suite;
+        // setup a person here so that we can add a contact information for him/her
+        Session session = new ProcessSession();
+        session.setProcessName(getClass().getName() + "." + getName());
+        SessionManager.getInstance().pushActiveSession(session);
+        HibernateUtil.getSession().save(session);
+
+        IDatabaseConnection dbUnitConn = null;
+        dbUnitConn = getDbUnitConnection();
+        DatabaseOperation.REFRESH.execute(dbUnitConn, getDataSet());
+        dbUnitConn.getConnection().commit();
+        dbUnitConn.close();
+        dbUnitConn.getConnection().close();
     }
+
+    protected IDataSet getDataSet() throws Exception
+    {
+        InputStream stream = Environment.class.getResourceAsStream(getDataSetFile());
+		if (stream == null) 
+            stream = Thread.currentThread().getContextClassLoader().getResourceAsStream( getDataSetFile() );
+		if (stream == null)
+			throw new RuntimeException(getDataSetFile() + " not found");
+
+        return new FlatXmlDataSet(stream);
+    }
+
+    protected void tearDown() throws Exception
+    {
+        SessionManager.getInstance().popActiveSession();
+        DatabaseOperation.NONE.execute(getDbUnitConnection(), getDataSet());
+        super.tearDown();
+    }
+
+    /**
+     * This method returns a DbUnit database connection
+     * based on the schema name
+     */
+    protected IDatabaseConnection getDbUnitConnection() throws Exception
+    {
+        IDatabaseConnection connection = new DatabaseConnection(HibernateUtil.getNewConnection());
+        return connection;
+    }
+
+    protected void extractFullDataset(final String datasetFileName) throws Exception
+    {
+       // database connection
+        IDatabaseConnection connection = getDbUnitConnection();
+
+        // full database export
+        IDataSet fullDataSet = connection.createDataSet();
+        FlatXmlDataSet.write(fullDataSet, new FileOutputStream(datasetFileName));
+   }
+
+    public abstract String getDataSetFile();
 }

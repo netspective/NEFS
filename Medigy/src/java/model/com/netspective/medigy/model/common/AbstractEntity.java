@@ -57,7 +57,8 @@ public abstract class AbstractEntity implements Serializable
 {
     private RecordStatusType recordStatus = RecordStatusType.ACTIVE;
     private int lockVersion = 0;
-    private ModelVersion modelVersion;
+    private ModelVersion createVersion;
+    private ModelVersion updateVersion;
     private Date createTimestamp = new Date();
     private Date updateTimestamp;
     private Session createSession = SessionManager.getInstance().getActiveSession();
@@ -129,14 +130,26 @@ public abstract class AbstractEntity implements Serializable
     }
 
     @ManyToOne
-    @JoinColumn(name = "type_id")        
-    public ModelVersion getModelVersion()
+    @JoinColumn(referencedColumnName = "type_id", name = "create_version_id")
+    public ModelVersion getCreateVersion()
     {
-        return modelVersion;
+        return createVersion;
     }
 
-    public void setModelVersion(ModelVersion modelVersion)
+    public void setCreateVersion(ModelVersion createVersion)
     {
-        this.modelVersion = modelVersion;
+        this.createVersion = createVersion;
+    }
+
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "type_id", name = "update_version_id")        
+    public ModelVersion getUpdateVersion()
+    {
+        return updateVersion;
+    }
+
+    public void setUpdateVersion(ModelVersion updateVersion)
+    {
+        this.updateVersion = updateVersion;
     }
 }

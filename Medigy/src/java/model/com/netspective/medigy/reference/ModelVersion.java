@@ -42,7 +42,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Model_Version")
+@Table(name = "Model_Metadata")
 public class ModelVersion extends AbstractReferenceEntity
 {
     public enum Cache implements CachedReferenceEntity

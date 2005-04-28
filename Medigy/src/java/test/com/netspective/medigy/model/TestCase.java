@@ -43,28 +43,23 @@
  */
 package com.netspective.medigy.model;
 
+import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.common.ReferenceEntityLookupService;
+import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
+import com.netspective.medigy.service.party.AddContactMechanismService;
+import com.netspective.medigy.service.party.AddContactMechanismServiceImpl;
+import com.netspective.medigy.service.party.PartyRelationshipFacade;
+import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import com.netspective.medigy.service.person.PatientRegistrationService;
+import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
+import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
-import com.netspective.medigy.service.ServiceLocator;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.AddContactMechanismService;
-import com.netspective.medigy.service.party.AddContactMechanismServiceImpl;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
-import com.netspective.medigy.service.common.ReferenceEntityLookupService;
-import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
-import com.netspective.medigy.service.person.PersonFacade;
-import com.netspective.medigy.service.person.PatientRegistrationService;
-import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
-import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
-import com.netspective.tool.graphviz.GraphvizDiagramGenerator;
-import com.netspective.tool.graphviz.GraphvizLayoutType;
-import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGenerator;
-import com.netspective.tool.hibernate.document.diagram.HibernateDiagramGeneratorFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -123,25 +118,11 @@ public abstract class TestCase extends junit.framework.TestCase
         }
         catch (HibernateException e)
         {
-            e.printStackTrace();
+            log.error(e);
             throw new RuntimeException(e);
         }
         config.registerReferenceEntitiesAndCaches();
         return config;
-    }
-
-    protected void generateDiagram(final Configuration configuration,
-                                   final String fileName,
-                                   final HibernateDiagramGeneratorFilter filter) throws IOException
-    {
-        final File dotFileName = new File(fileName + ".dot");
-        final GraphvizDiagramGenerator gdg = new GraphvizDiagramGenerator("MEDIGY", true, GraphvizLayoutType.DOT);
-        final HibernateDiagramGenerator hdg = new HibernateDiagramGenerator(configuration, gdg, filter);
-        hdg.generate();
-        gdg.generateDOTSource(dotFileName);
-
-        if (System.getProperty("os.name").contains("Windows"))
-            Runtime.getRuntime().exec("c:\\Windows\\system32\\cmd.exe /c C:\\PROGRA~1\\ATT\\Graphviz\\bin\\dot.exe -Tpng -o" + fileName + ".png " + dotFileName);
     }
 
     protected void loadServiceLocator()
@@ -177,26 +158,6 @@ public abstract class TestCase extends junit.framework.TestCase
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
         se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
-
-        /*
-        // Generate a DOT (GraphViz) diagram so we can visualize the DDL
-        // the first version is good for software engineers
-        generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-se",
-                new HibernateDiagramFilter(true, true, true, true));
-
-        // Generate a DOT (GraphViz) diagram so we can visualize the DDL
-        // the second version is good for software engineers looking for general table structure (no column information)
-        generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-set",
-                new HibernateDiagramFilter(false, true, true, true));
-
-        // the third version is good for database administrators (simple ERD)
-        generateDiagram(hibernateConfiguration,
-                DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + "-erd",
-                new HibernateDiagramFilter(true, false, false, false));
-        */
-
     }
 
     protected void tearDown() throws Exception
@@ -204,4 +165,6 @@ public abstract class TestCase extends junit.framework.TestCase
         super.tearDown();
         HibernateUtil.closeSession();
     }
+
+   
 }

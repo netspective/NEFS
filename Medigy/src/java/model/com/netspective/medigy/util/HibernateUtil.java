@@ -50,13 +50,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.MappingException;
+import org.hibernate.connection.ConnectionProviderFactory;
+import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.exception.NestableRuntimeException;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class HibernateUtil
 {
     private static final Log log = LogFactory.getLog(HibernateUtil.class);
     private static SessionFactory sessionFactory;
+    private static ConnectionProvider connectionProvider;
     private static final ThreadLocal<Session> threadSession = new ThreadLocal<Session>();
     private static final ThreadLocal<Transaction> threadTransaction = new ThreadLocal<Transaction>();
 
@@ -65,10 +71,24 @@ public class HibernateUtil
         try
         {
             sessionFactory = cfg.buildSessionFactory();
+            connectionProvider = ConnectionProviderFactory.newConnectionProvider(cfg.getProperties());
         }
         catch (MappingException e)
         {
             throw e;
+        }
+    }
+    
+    public static Connection getNewConnection()
+    {
+        try
+        {
+            return connectionProvider.getConnection();
+        }
+        catch (SQLException e)
+        {
+            log.error(e);
+            throw new NestableRuntimeException(e);
         }
     }
 

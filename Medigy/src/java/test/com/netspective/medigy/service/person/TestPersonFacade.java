@@ -36,26 +36,51 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model;
+package com.netspective.medigy.service.person;
 
-import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.person.TestPersonRelationshipFacade;
-import com.netspective.medigy.model.org.TestOrganization;
-import com.netspective.medigy.service.person.TestPersonFacade;
-import com.netspective.medigy.service.party.TestAddContactMechanismService;
-import junit.framework.Test;
+import com.netspective.medigy.model.DbUnitTestCase;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.service.ServiceLocator;
 
-public class TestSuite extends junit.framework.TestSuite
+public class TestPersonFacade extends DbUnitTestCase
 {
-    public static Test suite()
-    {
-        TestSuite suite= new TestSuite();
-        suite.addTest(new junit.framework.TestSuite(TestPerson.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonRelationshipFacade.class));
-        suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonFacade.class));
-        suite.addTest(new junit.framework.TestSuite(TestAddContactMechanismService.class));
+    private PersonFacade personFacade;
 
-        return suite;
+    protected void setUp() throws Exception
+    {
+        super.setUp();
+
+        personFacade =  (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
+    }
+
+    public String getDataSetFile()
+    {
+        return "/com/netspective/medigy/service/person/TestPersonFacade.xml";
+    }
+
+    public void testListPersonByLastName() throws Exception
+    {
+        Person[] personList = personFacade.listPersonByLastName("d%", false);
+        assertNotNull(personList);
+        assertEquals(personList.length, 1);
+        assertEquals(personList[0].getFirstName(), "John");
+        assertEquals(personList[0].getLastName(), "Doe");
+        assertEquals(personList[0].getMiddleName(), "D");
+
+        personList = personFacade.listPersonByLastName("Doe", true);
+        assertNotNull(personList);
+        assertEquals(personList.length, 1);
+        assertEquals(personList[0].getFirstName(), "John");
+        assertEquals(personList[0].getLastName(), "Doe");
+        assertEquals(personList[0].getMiddleName(), "D");
+
+        personList = personFacade.listPersonByLastName("%", false);
+        assertNotNull(personList);
+        assertEquals(personList.length, 2);
+        assertEquals(personList[0].getFirstName(), "John");
+        assertEquals(personList[0].getLastName(), "Doe");
+        assertEquals(personList[0].getMiddleName(), "D");
+        assertEquals(personList[1].getFirstName(), "Brian");
+        assertEquals(personList[1].getLastName(), "Hackett");
     }
 }

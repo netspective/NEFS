@@ -64,6 +64,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.persistence.FetchType;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -296,7 +297,7 @@ public class Person extends Party
         this.deathDate = deathDate;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy =  "person")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy =  "person")
     public Set<PhysicalCharacteristic> getPhysicalCharacteristics()
     {
         return physicalCharacteristics;
@@ -328,7 +329,7 @@ public class Person extends Party
         this.healthCareVisits = healthCareVisits;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "party_id")        
     public Set<HealthCareEpisode> getHealthCareEpisodes()
     {

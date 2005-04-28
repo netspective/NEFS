@@ -44,8 +44,6 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.dto.party.AddPostalAddressParameters;
-import com.netspective.medigy.dto.person.RegisterPatientParameters;
-import com.netspective.medigy.dto.person.RegisteredPatient;
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
@@ -54,7 +52,6 @@ import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.type.GenderType;
@@ -62,7 +59,6 @@ import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.party.AddContactMechanismService;
-import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
@@ -74,199 +70,6 @@ import java.util.Date;
 public class TestPerson extends TestCase
 {
     private static final Log log = LogFactory.getLog(TestPerson.class);
-
-    public void testPatientRegistration()
-    {
-        Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testPersonFacade()");
-        SessionManager.getInstance().pushActiveSession(session);
-        HibernateUtil.getSession().save(session);
-
-        RegisterPatientParameters patientParameters = null;
-        try
-        {
-            patientParameters = new RegisterPatientParameters() {
-
-                public String getFirstName()
-                {
-                    return "Ryan";
-                }
-
-                public String getLastName()
-                {
-                    return "Hackett";
-                }
-
-                public String getMiddleName()
-                {
-                    return "Bluegrass";
-                }
-
-                public String getSuffix()
-                {
-                    return null;
-                }
-
-                public Date getBirthDate()
-                {
-                    return new Date();
-                }
-
-                public String getGender()
-                {
-                    return GenderType.Cache.MALE.getId();
-                }
-
-                public String getMaritalStatus()
-                {
-                    return MaritalStatusType.Cache.SINGLE.getId();
-                }
-
-                public String getEmployerName()
-                {
-                    return "Netspective";
-                }
-
-                public String getEmployerId()
-                {
-                    return "1";
-                }
-
-                public String getOccupation()
-                {
-                    return "Consultant";
-                }
-
-                public String getSsn()
-                {
-                    return "111111111";
-                }
-
-                public String[] getEthnicityCodes()
-                {
-                    return new String[] { EthnicityType.Cache.AFRICAN_AMERICAN.getCode(), EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getCode() };
-                }
-
-                public String[] getLanguageCodes()
-                {
-                    return new String[] { LanguageType.Cache.ENGLISH.getId(), LanguageType.Cache.SPANISH.getId() };
-                }
-
-                public String getDriversLicenseNumber()
-                {
-                    return "999999999";
-                }
-
-                public String getResponsiblePartyLastName()
-                {
-                    return "Hackett";
-                }
-
-                public String getResponsiblePartyFirstName()
-                {
-                    return "Bob";
-                }
-
-                public String getResponsiblePartyId()
-                {
-                    return null;
-                }
-
-                public String getResponsiblePartyRole()
-                {
-                    return PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getCode();
-                }
-
-                public String getHomePhone()
-                {
-                    return "703-123-4567";
-                }
-
-                public String getWorkPhone()
-                {
-                    return "800-123-4567";
-                }
-
-                public String getMobilePhone()
-                {
-                    return "301-123-4567";
-                }
-
-                public String getStreetAddress1()
-                {
-                    return "123 Penny Lane";
-                }
-
-                public String getStreetAddress2()
-                {
-                    return null;
-                }
-
-                public String getCity()
-                {
-                    return "Manchester";
-                }
-
-                public String getState()
-                {
-                    return "KY";
-                }
-
-                public String getPostalCode()
-                {
-                    return "12345";
-                }
-
-                public String getCountry()
-                {
-                    return "USA";
-                }
-
-                public String getPrimaryCareProviderName()
-                {
-                    return null;
-                }
-
-                public String getPrimaryCareProviderId()
-                {
-                    return null;
-                }
-            };
-        }
-        catch (Exception e)
-        {
-            fail(e.getMessage());
-        }
-
-        HibernateUtil.beginTransaction();
-        PatientRegistrationService service = (PatientRegistrationService) ServiceLocator.getInstance().getService(PatientRegistrationService.class);
-        final RegisteredPatient registeredPatient = service.registerPatient(patientParameters);
-        HibernateUtil.commitTransaction();
-
-        final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, registeredPatient.getPatientId());
-        assertEquals(persistedPerson.getFirstName(), "Ryan");
-        assertEquals(persistedPerson.getMiddleName(), "Bluegrass");
-        assertEquals(persistedPerson.getLastName(), "Hackett");
-        assertEquals(persistedPerson.getPartyName(), "Ryan Bluegrass Hackett");
-        log.info("Names verified");
-        assertEquals(persistedPerson.getLanguages().size(), 2);
-        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.ENGLISH.getEntity()), true);
-        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.SPANISH.getEntity()), true);
-        assertEquals(persistedPerson.speaksLanguage(LanguageType.Cache.GERMAN.getEntity()), false);
-        log.info("Languages verified");
-        assertEquals(persistedPerson.getEthnicities().size(), 2);
-        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.CAUCASIAN.getEntity()), false);
-        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.AFRICAN_AMERICAN.getEntity()), true);
-        assertEquals(persistedPerson.hasEthnicity(EthnicityType.Cache.ASIAN_PACIFIC_ISLANDER.getEntity()), true);
-        log.info("Ethnicities verified");
-
-        assertEquals(persistedPerson.getSsn(),  "111111111");
-        assertEquals(persistedPerson.getDriversLicenseNumber(), "999999999");
-
-
-
-
-    }
 
     public void testPerson()
     {

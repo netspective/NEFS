@@ -63,20 +63,21 @@ public class PersonFacadeImpl implements PersonFacade
 
 
     /**
-     * Lists all patients with the same last name
+     * Lists all patients with the same last name. This query is not case sensitive.
      *
-     * @param lastName
-     * @param exactMatch
+     * @param lastName      exact last name or partial last name
+     * @param exactMatch    whether or not the name search should be an exact match
      * @return
      */
     public Person[] listPersonByLastName(final String lastName, boolean exactMatch)
     {
         Criteria criteria = HibernateUtil.getSession().createCriteria(Person.class);
         if (!exactMatch)
-            criteria.add(Expression.like("lastName", lastName));
+            criteria.add(Expression.like("lastName", lastName).ignoreCase());
         else
-            criteria.add(Expression.eq("lastName", lastName));
+            criteria.add(Expression.eq("lastName", lastName).ignoreCase());
         List list = criteria.list();
+
         return list != null ? (Person[]) list.toArray(new Person[0]) : null;
     }
 
