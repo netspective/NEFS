@@ -38,11 +38,11 @@
  */
 package com.netspective.medigy.dto.party;
 
-import com.netspective.medigy.model.party.Party;
+import java.io.Serializable;
 
 public interface AddPostalAddressParameters
 {
-    public Party getParty();
+    public Serializable getPartyId();
 
     public String getStreet1();
 
@@ -51,6 +51,8 @@ public interface AddPostalAddressParameters
     public String getCity();
 
     public String getState();
+
+    public String getProvince();
 
     public String getPostalCode();
 

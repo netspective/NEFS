@@ -35,135 +35,128 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
-package com.netspective.medigy.model.party;
+package com.netspective.medigy.model.contact;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import java.util.Set;
 import java.util.HashSet;
 
 @Entity
-@Table(name = "Party_Contact_Mech")
-public class PartyContactMechanism extends AbstractDateDurationEntity
+@Inheritance(strategy = InheritanceType.JOINED )
+public class Province extends GeographicBoundary
 {
-    private Long partyContactMechanismId;
-    private String comment;
-    private boolean nonSolicitation;
-    private Party party;
-    private ContactMechanism contactMechanism;
+    private Country country;
+    private Set<City> cities = new HashSet<City>();
 
-    private Set<PartyContactMechanismPurpose> purposes = new HashSet<PartyContactMechanismPurpose>();
-
-    public PartyContactMechanism()
+    public Province()
     {
+        setType(GeographicBoundaryType.Cache.PROVINCE.getEntity());
     }
 
-    @Id(generate = GeneratorType.AUTO)
-    @Column(name = "party_contact_mech_id")
-    public Long getPartyContactMechanismId()
+    @Transient
+    public Long getProvinceId()
     {
-        return partyContactMechanismId;
+        return getGeoId();
     }
 
-    protected void setPartyContactMechanismId(final Long partyContactMechanismId)
+    public void setProvinceId(final Long id)
     {
-        this.partyContactMechanismId = partyContactMechanismId;
-    }
-
-    @Column(length = 1000)
-    public String getComment()
-    {
-        return comment;
-    }
-
-    public void setComment(final String comment)
-    {
-        this.comment = comment;
+        setGeoId(id);
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_id", nullable = false)
-    public Party getParty()
+    @JoinColumn(name = "country_id", referencedColumnName = "geo_id")
+    public Country getCountry()
     {
-        return party;
+        return country;
     }
 
-    public void setParty(final Party party)
+    public void setCountry(final Country country)
     {
-        this.party = party;
-    }
-
-    @Column(name = "non_solicitation_ind")
-    public boolean isNonSolicitation()
-    {
-        return nonSolicitation;
-    }
-
-    public void setNonSolicitation(boolean nonSolicitation)
-    {
-        this.nonSolicitation = nonSolicitation;
-    }
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "contact_mech_id", nullable = false)
-    public ContactMechanism getContactMechanism()
-    {
-        return contactMechanism;
-    }
-
-    public void setContactMechanism(final ContactMechanism contactMechanism)
-    {
-        this.contactMechanism = contactMechanism;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_contact_mech_id")        
-    public Set<PartyContactMechanismPurpose> getPurposes()
-    {
-        return purposes;
-    }
-
-    public void setPurposes(final Set<PartyContactMechanismPurpose> purposes)
-    {
-        this.purposes = purposes;
+        this.country = country;
     }
 
     @Transient
-    public void addPurpose(final ContactMechanismPurposeType type)
+    public String getProvinceName()
     {
-        final PartyContactMechanismPurpose purpose = new PartyContactMechanismPurpose();
-        purpose.setType(type);
-        purpose.setPartyContactMechanism(this);
-        purposes.add(purpose);
+        return getName();
     }
 
-    /**
-     * Checks to see if the contact mechanism is for a particular purpose
-     * (e.g. "Home Address" or "Mailing Address")
-     * @param type
-     * @return
-     */
-    @Transient
-    public boolean hasPurpose(final ContactMechanismPurposeType type)
+    public void setProvinceName(final String name)
     {
-        for (PartyContactMechanismPurpose pcm : purposes)
+        setName(name);
+    }
+
+    @Transient
+    public String getProvinceAbbreviation()
+    {
+        return getAbbreviation();
+    }
+
+    public void setProvinceAbbreviation(final String abbrev)
+    {
+        setAbbreviation(abbrev);
+    }
+
+    @OneToMany(mappedBy = "province", cascade = CascadeType.ALL)
+    public Set<City> getCities()
+    {
+        return cities;
+    }
+
+    public void setCities(final Set<City> cities)
+    {
+        this.cities = cities;
+    }
+
+    @Transient
+    public void addCity(final City city)
+    {
+        this.cities.add(city);
+    }
+
+    @Transient
+    public void addCity(final String cityName)
+    {
+        final City city = new City(cityName);
+        city.setProvince(this);
+        this.cities.add(city);
+    }
+
+    @Transient
+    public City getCityByName(final String cityName)
+    {
+        for (City city: cities)
         {
-            if (pcm.getType().equals(type))
-                return true;
+            if (city.getCityName().equals(cityName))
+                return city;
+        }
+        return null;
+    }
+    
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+        final Province testProvince = (Province) obj;
+        if ((getProvinceName() != null && testProvince.getProvinceName() != null &&
+             getProvinceName().equals(testProvince.getProvinceName())) &&
+            (getProvinceAbbreviation() != null && getProvinceAbbreviation().equals(testProvince.getProvinceAbbreviation())) &&
+            (getCountry() != null && getCountry().equals(testProvince.getCountry())))
+        {
+            return true;
         }
         return false;
     }
+
 }

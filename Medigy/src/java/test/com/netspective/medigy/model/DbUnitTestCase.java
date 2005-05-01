@@ -39,9 +39,6 @@
 package com.netspective.medigy.model;
 
 import com.netspective.medigy.util.HibernateUtil;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.SessionManager;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.IDataSet;
@@ -58,11 +55,7 @@ public abstract class DbUnitTestCase extends TestCase
     {
         super.setUp();
 
-        // setup a person here so that we can add a contact information for him/her
-        Session session = new ProcessSession();
-        session.setProcessName(getClass().getName() + "." + getName());
-        SessionManager.getInstance().pushActiveSession(session);
-        HibernateUtil.getSession().save(session);
+
 
         IDatabaseConnection dbUnitConn = null;
         dbUnitConn = getDbUnitConnection();
@@ -75,7 +68,7 @@ public abstract class DbUnitTestCase extends TestCase
     protected IDataSet getDataSet() throws Exception
     {
         InputStream stream = Environment.class.getResourceAsStream(getDataSetFile());
-		if (stream == null) 
+		if (stream == null)
             stream = Thread.currentThread().getContextClassLoader().getResourceAsStream( getDataSetFile() );
 		if (stream == null)
 			throw new RuntimeException(getDataSetFile() + " not found");
@@ -85,7 +78,6 @@ public abstract class DbUnitTestCase extends TestCase
 
     protected void tearDown() throws Exception
     {
-        SessionManager.getInstance().popActiveSession();
         DatabaseOperation.NONE.execute(getDbUnitConnection(), getDataSet());
         super.tearDown();
     }

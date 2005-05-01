@@ -36,106 +36,11 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.model.common;
+package com.netspective.medigy.dto.party;
 
-import com.netspective.medigy.model.party.PostalAddressBoundary;
-import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratorType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Table(name = "Geo_Boundary", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "geo_boundary_type_id"})})
-public class GeographicBoundary extends AbstractTopLevelEntity
+public interface AddPhoneParameters extends BasicPhoneParameters
 {
-    private Long geoId;
-    private String name;
-    private String abbreviation;
-    private GeographicBoundaryType type;
-
-    private Set<PostalAddressBoundary> postalAddressBoundary = new HashSet<PostalAddressBoundary>();
-
-    public GeographicBoundary()
-    {
-    }
-
-    public GeographicBoundary(String name, GeographicBoundaryType type)
-    {
-        this.name = name;
-        this.type = type;
-    }
-
-    @Id(generate = GeneratorType.AUTO)
-    public Long getGeoId()
-    {
-        return geoId;
-    }
-
-    protected void setGeoId(final Long geoId)
-    {
-        this.geoId = geoId;
-    }
-
-    @Column(length = 100, nullable = false)
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(final String name)
-    {
-        this.name = name;
-    }
-
-    @Column(length = 10)
-    public String getAbbreviation()
-    {
-        return abbreviation;
-    }
-
-    public void setAbbreviation(final String abbreviation)
-    {
-        this.abbreviation = abbreviation;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "geo_boundary_type_id", nullable = false)
-    public GeographicBoundaryType getType()
-    {
-        return type;
-    }
-
-    public void setType(final GeographicBoundaryType type)
-    {
-        this.type = type;
-    }
-
-    @OneToMany
-    @JoinColumn(name = "geo_id")
-    public Set<PostalAddressBoundary> getPostalAddressBoundary()
-    {
-        return postalAddressBoundary;
-    }
-
-    public void setPostalAddressBoundary(final Set<PostalAddressBoundary> postalAddressBoundary)
-    {
-        this.postalAddressBoundary = postalAddressBoundary;
-    }
-
-    public boolean equals(Object obj)
-    {
-        if (obj == null || !(obj instanceof GeographicBoundary))
-            return false;
-        else
-            return getGeoId().equals(((GeographicBoundary) obj).getGeoId());
-    }
+    public Serializable getPartyId();
 }

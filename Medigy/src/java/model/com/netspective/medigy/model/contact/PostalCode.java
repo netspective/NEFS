@@ -35,85 +35,66 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
-package com.netspective.medigy.model.party;
+package com.netspective.medigy.model.contact;
 
-import com.netspective.medigy.reference.type.ContactMechanismType;
+import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public class PhoneNumber extends ContactMechanism
+@Inheritance(strategy = InheritanceType.JOINED )
+public class PostalCode extends GeographicBoundary
 {
+    private State state;
 
-    private String countryCode;
-    private String areaCode;
-    private String number;
-    private String extension;
-
-    public PhoneNumber()
+    public PostalCode()
     {
-        this.type = ContactMechanismType.Cache.PHONE.getEntity();
+        setType(GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
+    }
+
+    public PostalCode(final String code)
+    {
+        setType(GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
+        setCodeValue(code);
     }
 
     @Transient
-    public Long getPhoneNumberId()
+    public Long getPostalCodeId()
     {
-        return super.getContactMechanismId();
+        return getGeoId();
     }
 
-    protected void setPhoneNumberId(final Long phoneNumberId)
+    protected void setPostalCodeId(final Long id)
     {
-        setContactMechanismId(phoneNumberId);
+        setGeoId(id);
     }
 
-    @Column(length = 5)
-    public String getCountryCode()
+    @ManyToOne
+    @JoinColumn(name = "state_id", referencedColumnName = "geo_id", nullable = false)
+    public State getState()
     {
-        return countryCode;
+        return state;
     }
 
-    public void setCountryCode(final String countryCode)
+    public void setState(final State state)
     {
-        this.countryCode = countryCode;
+        this.state = state;
     }
 
-    @Column(length = 5)
-    public String getAreaCode()
+    @Transient
+    public String getCodeValue()
     {
-        return areaCode;
+        return getName();
     }
 
-    public void setAreaCode(final String areaCode)
+    public void setCodeValue(final String code)
     {
-        this.areaCode = areaCode;
-    }
-
-    @Column(length = 7)
-    public String getNumber()
-    {
-        return number;
-    }
-
-    public void setNumber(final String number)
-    {
-        this.number = number;
-    }
-
-    @Column(length = 5)
-    public String getExtension()
-    {
-        return extension;
-    }
-
-    public void setExtension(final String extension)
-    {
-        this.extension = extension;
+        setName(code);
     }
 }

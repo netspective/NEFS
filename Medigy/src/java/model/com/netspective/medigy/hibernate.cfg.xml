@@ -98,7 +98,14 @@
         <mapping class="com.netspective.medigy.model.claim.ClaimStatus"/>
 
         <mapping package="com.netspective.medigy.model.common"/>
-        <mapping class="com.netspective.medigy.model.common.GeographicBoundary"/>
+        <mapping class="com.netspective.medigy.model.contact.GeographicBoundary"/>
+        <mapping class="com.netspective.medigy.model.contact.City"/>
+        <mapping class="com.netspective.medigy.model.contact.County"/>       
+        <mapping class="com.netspective.medigy.model.contact.State"/>
+        <mapping class="com.netspective.medigy.model.contact.Province"/>
+        <mapping class="com.netspective.medigy.model.contact.PostalCode"/>
+        <mapping class="com.netspective.medigy.model.contact.Country"/>
+        <mapping class="com.netspective.medigy.model.contact.GeographicBoundaryAssociationn"/>
 
         <mapping package="com.netspective.medigy.model.health"/>
         <mapping class="com.netspective.medigy.model.health.DeliveryOutcome"/>

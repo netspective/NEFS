@@ -35,135 +35,58 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
-package com.netspective.medigy.model.party;
+package com.netspective.medigy.model.contact;
 
-import com.netspective.medigy.model.common.AbstractDateDurationEntity;
-import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import java.util.Set;
-import java.util.HashSet;
 
 @Entity
-@Table(name = "Party_Contact_Mech")
-public class PartyContactMechanism extends AbstractDateDurationEntity
+@Table(name = "Geo_Boundary_Assc")
+public class GeographicBoundaryAssociation extends AbstractTopLevelEntity
 {
-    private Long partyContactMechanismId;
-    private String comment;
-    private boolean nonSolicitation;
-    private Party party;
-    private ContactMechanism contactMechanism;
-
-    private Set<PartyContactMechanismPurpose> purposes = new HashSet<PartyContactMechanismPurpose>();
-
-    public PartyContactMechanism()
-    {
-    }
+    private Long geoAsscId;
+    private GeographicBoundary geoBoundary;
+    private GeographicBoundary parentGeoBoundary;
 
     @Id(generate = GeneratorType.AUTO)
-    @Column(name = "party_contact_mech_id")
-    public Long getPartyContactMechanismId()
+    public Long getGeoAsscId()
     {
-        return partyContactMechanismId;
+        return geoAsscId;
     }
 
-    protected void setPartyContactMechanismId(final Long partyContactMechanismId)
+    protected void setGeoAsscId(final Long geoAsscId)
     {
-        this.partyContactMechanismId = partyContactMechanismId;
-    }
-
-    @Column(length = 1000)
-    public String getComment()
-    {
-        return comment;
-    }
-
-    public void setComment(final String comment)
-    {
-        this.comment = comment;
+        this.geoAsscId = geoAsscId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_id", nullable = false)
-    public Party getParty()
+    @JoinColumn(name = "geo_id", referencedColumnName = "geo_id")
+    public GeographicBoundary getGeographicBoundary()
     {
-        return party;
+        return geoBoundary;
     }
 
-    public void setParty(final Party party)
+    public void setGeographicBoundary(final GeographicBoundary geoBoundary)
     {
-        this.party = party;
+        this.geoBoundary = geoBoundary;
     }
 
-    @Column(name = "non_solicitation_ind")
-    public boolean isNonSolicitation()
+    @ManyToOne
+    @JoinColumn(name = "parent_geo_id", referencedColumnName = "geo_id")
+    public GeographicBoundary getParentGeographicBoundary()
     {
-        return nonSolicitation;
+        return parentGeoBoundary;
     }
 
-    public void setNonSolicitation(boolean nonSolicitation)
+    public void setParentGeographicBoundary(final GeographicBoundary parentGeoBoundary)
     {
-        this.nonSolicitation = nonSolicitation;
-    }
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "contact_mech_id", nullable = false)
-    public ContactMechanism getContactMechanism()
-    {
-        return contactMechanism;
-    }
-
-    public void setContactMechanism(final ContactMechanism contactMechanism)
-    {
-        this.contactMechanism = contactMechanism;
-    }
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "party_contact_mech_id")        
-    public Set<PartyContactMechanismPurpose> getPurposes()
-    {
-        return purposes;
-    }
-
-    public void setPurposes(final Set<PartyContactMechanismPurpose> purposes)
-    {
-        this.purposes = purposes;
-    }
-
-    @Transient
-    public void addPurpose(final ContactMechanismPurposeType type)
-    {
-        final PartyContactMechanismPurpose purpose = new PartyContactMechanismPurpose();
-        purpose.setType(type);
-        purpose.setPartyContactMechanism(this);
-        purposes.add(purpose);
-    }
-
-    /**
-     * Checks to see if the contact mechanism is for a particular purpose
-     * (e.g. "Home Address" or "Mailing Address")
-     * @param type
-     * @return
-     */
-    @Transient
-    public boolean hasPurpose(final ContactMechanismPurposeType type)
-    {
-        for (PartyContactMechanismPurpose pcm : purposes)
-        {
-            if (pcm.getType().equals(type))
-                return true;
-        }
-        return false;
+        this.parentGeoBoundary = parentGeoBoundary;
     }
 }

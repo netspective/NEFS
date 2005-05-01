@@ -45,7 +45,6 @@ package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.dto.party.AddPostalAddressParameters;
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
 import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.session.ProcessSession;
@@ -58,12 +57,13 @@ import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
-import com.netspective.medigy.service.party.AddContactMechanismService;
+import com.netspective.medigy.service.contact.AddContactMechanismService;
 import com.netspective.medigy.service.person.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -119,9 +119,9 @@ public class TestPerson extends TestCase
         HibernateUtil.beginTransaction();
         final AddContactMechanismService addContactService = (AddContactMechanismService) ServiceLocator.getInstance().getService(AddContactMechanismService.class);
         addContactService.addPostalAddress(new AddPostalAddressParameters() {
-            public Party getParty()
+            public Serializable getPartyId()
             {
-                return persistedPerson;
+                return persistedPerson.getPartyId();
             }
 
             public String getStreet1()
@@ -142,6 +142,11 @@ public class TestPerson extends TestCase
             public String getState()
             {
                 return "VA";
+            }
+
+            public String getProvince()
+            {
+                return null;
             }
 
             public String getPostalCode()

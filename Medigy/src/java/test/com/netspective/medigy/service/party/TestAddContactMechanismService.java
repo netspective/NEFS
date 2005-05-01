@@ -39,21 +39,30 @@
 package com.netspective.medigy.service.party;
 
 import com.netspective.medigy.dto.party.AddPostalAddressParameters;
+import com.netspective.medigy.dto.party.NewPostalAddress;
 import com.netspective.medigy.model.DbUnitTestCase;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyContactMechanism;
 import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
+import com.netspective.medigy.model.party.PostalAddress;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.contact.AddContactMechanismService;
 import com.netspective.medigy.util.HibernateUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class TestAddContactMechanismService extends DbUnitTestCase
 {
+    private static final Log log = LogFactory.getLog(TestAddContactMechanismService.class);
+
     private AddContactMechanismService service;
 
     protected void setUp() throws Exception
@@ -72,11 +81,12 @@ public class TestAddContactMechanismService extends DbUnitTestCase
     {
         // the dataset inserted this person
         final Person p = (Person) HibernateUtil.getSession().load(Person.class, new Long(2));
+        assertEquals(p.getPartyContactMechanisms().size(), 0);
 
-        service.addPostalAddress(new AddPostalAddressParameters() {
-                public Party getParty()
+        final NewPostalAddress address = service.addPostalAddress(new AddPostalAddressParameters() {
+                public Serializable getPartyId()
                 {
-                    return p;
+                    return p.getPartyId();
                 }
 
                 public String getStreet1()
@@ -97,6 +107,11 @@ public class TestAddContactMechanismService extends DbUnitTestCase
                 public String getState()
                 {
                     return "VA";
+                }
+
+                public String getProvince()
+                {
+                    return null;
                 }
 
                 public String getPostalCode()
@@ -122,7 +137,13 @@ public class TestAddContactMechanismService extends DbUnitTestCase
 
         // first check the relationship table between the actual contact mechanism and the party
         Criteria criteria = HibernateUtil.getSession().createCriteria(PartyContactMechanism.class);
+        criteria.createCriteria("party").add(Restrictions.eq("partyId", p.getPartyId()));
         List partyContactMechList = criteria.list();
+        Object[] objects = partyContactMechList.toArray();
+        for (int i=0; i < objects.length; i++)
+        {
+            log.info(((PartyContactMechanism)objects[i]).getContactMechanism().getContactMechanismId());
+        }
         assertEquals(partyContactMechList.size(), 1);
         PartyContactMechanism partyContactMechanism = ((PartyContactMechanism)partyContactMechList.toArray()[0]);
         final Party party = partyContactMechanism.getParty();
@@ -132,6 +153,16 @@ public class TestAddContactMechanismService extends DbUnitTestCase
         final PartyContactMechanismPurpose purpose = (PartyContactMechanismPurpose) partyContactMechanism.getPurposes().toArray()[0];
         assertEquals(purpose.getType(), ContactMechanismPurposeType.Cache.HOME_ADDRESS.getEntity());
 
+        // verify the contact mchanism data
+        final PostalAddress ps = (PostalAddress) HibernateUtil.getSession().load(PostalAddress.class, address.getPostalAddressId());
+        assertEquals(ps.getAddress1(), "123 Acme Road");
+        assertEquals(ps.getAddress2(), "Suite 100");
+        assertEquals(5, ps.getAddressBoundaries().size());
+        assertEquals(ps.getCity().getName(), "Fairfax");
+        assertEquals(ps.getState().getName(), "VA");
+        assertEquals(ps.getPostalCode().getName(), "22033");
+        assertEquals(ps.getCounty().getName(), "Fairfax County");
+        assertEquals(ps.getCountry().getName(), "USA");
     }
 
     public void testAddEmail()

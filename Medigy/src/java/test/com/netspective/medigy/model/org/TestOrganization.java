@@ -41,7 +41,12 @@
 package com.netspective.medigy.model.org;
 
 import com.netspective.medigy.model.TestCase;
-import com.netspective.medigy.model.common.GeographicBoundary;
+import com.netspective.medigy.model.contact.City;
+import com.netspective.medigy.model.contact.Country;
+import com.netspective.medigy.model.contact.County;
+import com.netspective.medigy.model.contact.GeographicBoundary;
+import com.netspective.medigy.model.contact.PostalCode;
+import com.netspective.medigy.model.contact.State;
 import com.netspective.medigy.model.party.PartyContactMechanism;
 import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.party.PartyRelationship;
@@ -51,7 +56,6 @@ import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.session.ProcessSession;
 import com.netspective.medigy.model.session.Session;
 import com.netspective.medigy.model.session.SessionManager;
-import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
@@ -81,15 +85,6 @@ public class TestOrganization  extends TestCase
 
         HibernateUtil.beginTransaction();
         HibernateUtil.getSession().save(org1);
-        /*
-        final GeographicBoundary stateGeo = new GeographicBoundary();
-        stateGeo.setType(GeographicBoundaryType.Cache.STATE.getEntity());
-        stateGeo.setName("Virginia");
-
-        final GeographicBoundary cityGeo = new GeographicBoundary();
-        cityGeo.setType(GeographicBoundaryType.Cache.CITY.getEntity());
-        cityGeo.setName("Fairfax");
-        */
 
         PostalAddress address = new PostalAddress();
         address.setAddress1("123 Acme Road");
@@ -121,11 +116,11 @@ public class TestOrganization  extends TestCase
 
         HibernateUtil.beginTransaction();
         // now relate the address with the city and state!
-        final GeographicBoundary cityBoundary = new GeographicBoundary("Fairfax", GeographicBoundaryType.Cache.CITY.getEntity());
-        final GeographicBoundary stateBoundary = new GeographicBoundary("Virginia", GeographicBoundaryType.Cache.STATE.getEntity());
-        final GeographicBoundary postalCodeboundary = new GeographicBoundary("22033", GeographicBoundaryType.Cache.POSTAL_CODE.getEntity());
-        final GeographicBoundary countyBoundary = new GeographicBoundary("Fairfax County", GeographicBoundaryType.Cache.COUNTY.getEntity());
-        final GeographicBoundary countryBoundary = new GeographicBoundary("USA", GeographicBoundaryType.Cache.COUNTRY.getEntity());
+        final City cityBoundary = new City("Fairfax");
+        final State stateBoundary = new State("Virginia", "VA");
+        final PostalCode postalCodeboundary = new PostalCode("22033");
+        final County countyBoundary = new County("Fairfax County");
+        final Country countryBoundary = new Country("United States of America", "USA");
 
         HibernateUtil.getSession().save(cityBoundary);
         HibernateUtil.getSession().save(stateBoundary);
@@ -134,7 +129,7 @@ public class TestOrganization  extends TestCase
         HibernateUtil.getSession().save(countryBoundary);
         HibernateUtil.commitTransaction();
 
-        GeographicBoundary newCityBoundary = (GeographicBoundary) HibernateUtil.getSession().load(GeographicBoundary.class,  cityBoundary.getGeoId());
+        City newCityBoundary = (City) HibernateUtil.getSession().load(City.class,  cityBoundary.getCityId());
         assertNotNull(newCityBoundary);
         HibernateUtil.beginTransaction();
         savedAddress.setCity(newCityBoundary);
@@ -171,8 +166,8 @@ public class TestOrganization  extends TestCase
 
         HibernateUtil.beginTransaction();
         // change the city and state now
-        final GeographicBoundary cityBoundary2 = new GeographicBoundary("Silver Spring", GeographicBoundaryType.Cache.CITY.getEntity());
-        final GeographicBoundary stateBoundary2 = new GeographicBoundary("Maryland", GeographicBoundaryType.Cache.STATE.getEntity());
+        final City cityBoundary2 = new City("Silver Spring");
+        final State stateBoundary2 = new State("Maryland", "MD");
         HibernateUtil.getSession().save(cityBoundary2);
         HibernateUtil.getSession().save(stateBoundary2);
         HibernateUtil.commitTransaction();

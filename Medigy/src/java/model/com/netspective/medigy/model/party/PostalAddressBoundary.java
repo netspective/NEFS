@@ -39,15 +39,18 @@
 package com.netspective.medigy.model.party;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
-import com.netspective.medigy.model.common.GeographicBoundary;
+import com.netspective.medigy.model.contact.GeographicBoundary;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.CascadeType;
 
+/**
+ * Relationship class for relating postal addresses with various geographic boundaries
+ * such as city, state, and zip.
+ */
 @Entity
 public class PostalAddressBoundary extends AbstractTopLevelEntity
 {
@@ -78,7 +81,7 @@ public class PostalAddressBoundary extends AbstractTopLevelEntity
         this.postalAddress = postalAddress;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "geo_id")
     public GeographicBoundary getGeographicBoundary()
     {
@@ -88,5 +91,22 @@ public class PostalAddressBoundary extends AbstractTopLevelEntity
     public void setGeographicBoundary(final GeographicBoundary geographicBoundary)
     {
         this.geographicBoundary = geographicBoundary;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+            return false;
+
+        final PostalAddressBoundary compareBoundary = (PostalAddressBoundary) obj;
+        if (this.getPostalAddressBoundaryId() != null &&
+            this.getPostalAddressBoundaryId().equals(compareBoundary.getPostalAddressBoundaryId()))
+            return true;
+        else if (this.getPostalAddress().equals(compareBoundary.getPostalAddress()) &&
+            this.getGeographicBoundary().equals(compareBoundary.getGeographicBoundary()))
+            return true;
+
+        return false;
     }
 }

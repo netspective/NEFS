@@ -35,85 +35,25 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
-package com.netspective.medigy.model.party;
+package com.netspective.medigy.dto.party;
 
-import com.netspective.medigy.reference.type.ContactMechanismType;
+import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Transient;
-
-@Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-public class PhoneNumber extends ContactMechanism
+/**
+ * Interface for containing relevant data from outcome of adding a new postal address
+ */
+public interface NewPostalAddress
 {
+    /**
+     * Gets the unique ID of the newly added postal address
+     * @return
+     */
+    public Serializable getPostalAddressId();
 
-    private String countryCode;
-    private String areaCode;
-    private String number;
-    private String extension;
-
-    public PhoneNumber()
-    {
-        this.type = ContactMechanismType.Cache.PHONE.getEntity();
-    }
-
-    @Transient
-    public Long getPhoneNumberId()
-    {
-        return super.getContactMechanismId();
-    }
-
-    protected void setPhoneNumberId(final Long phoneNumberId)
-    {
-        setContactMechanismId(phoneNumberId);
-    }
-
-    @Column(length = 5)
-    public String getCountryCode()
-    {
-        return countryCode;
-    }
-
-    public void setCountryCode(final String countryCode)
-    {
-        this.countryCode = countryCode;
-    }
-
-    @Column(length = 5)
-    public String getAreaCode()
-    {
-        return areaCode;
-    }
-
-    public void setAreaCode(final String areaCode)
-    {
-        this.areaCode = areaCode;
-    }
-
-    @Column(length = 7)
-    public String getNumber()
-    {
-        return number;
-    }
-
-    public void setNumber(final String number)
-    {
-        this.number = number;
-    }
-
-    @Column(length = 5)
-    public String getExtension()
-    {
-        return extension;
-    }
-
-    public void setExtension(final String extension)
-    {
-        this.extension = extension;
-    }
+    /**
+     * Gets the input parameters passed to the service
+     * @return
+     */
+    public AddPostalAddressParameters getAddPostalAddressParameters();
 }

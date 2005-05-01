@@ -38,6 +38,8 @@
  */
 package com.netspective.medigy.dto.person;
 
+import com.netspective.medigy.dto.party.BasicPhoneParameters;
+
 import java.util.Date;
 
 /**
@@ -88,7 +90,7 @@ public interface RegisterPatientParameters
 
     public String getResponsiblePartyRole();
 
-    public String getHomePhone();
+    public BasicPhoneParameters getHomePhone();
 
     public String getWorkPhone();
 

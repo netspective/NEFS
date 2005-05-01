@@ -46,8 +46,8 @@ package com.netspective.medigy.model;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
 import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
-import com.netspective.medigy.service.party.AddContactMechanismService;
-import com.netspective.medigy.service.party.AddContactMechanismServiceImpl;
+import com.netspective.medigy.service.contact.AddContactMechanismService;
+import com.netspective.medigy.service.contact.AddContactMechanismServiceImpl;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.service.person.PatientRegistrationService;
@@ -57,6 +57,9 @@ import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;
+import com.netspective.medigy.model.session.Session;
+import com.netspective.medigy.model.session.ProcessSession;
+import com.netspective.medigy.model.session.SessionManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
@@ -158,13 +161,20 @@ public abstract class TestCase extends junit.framework.TestCase
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
         se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
+
+        // setup a person here so that we can add a contact information for him/her
+        Session session = new ProcessSession();
+        session.setProcessName(getClass().getName() + "." + getName());
+        SessionManager.getInstance().pushActiveSession(session);
+        HibernateUtil.getSession().save(session);
     }
 
     protected void tearDown() throws Exception
     {
         super.tearDown();
+        SessionManager.getInstance().popActiveSession();
         HibernateUtil.closeSession();
     }
 
-   
+
 }

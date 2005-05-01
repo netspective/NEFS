@@ -38,10 +38,11 @@
  */
 package com.netspective.medigy.service.person;
 
+import com.netspective.medigy.dto.party.AddPhoneParameters;
 import com.netspective.medigy.dto.party.AddPostalAddressParameters;
+import com.netspective.medigy.dto.party.BasicPhoneParameters;
 import com.netspective.medigy.dto.person.RegisterPatientParameters;
 import com.netspective.medigy.dto.person.RegisteredPatient;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
@@ -51,7 +52,7 @@ import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.service.ServiceLocator;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
-import com.netspective.medigy.service.party.AddContactMechanismService;
+import com.netspective.medigy.service.contact.AddContactMechanismService;
 import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -128,9 +129,9 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
         try
         {
             contactMechService.addPostalAddress(new AddPostalAddressParameters() {
-                public Party getParty()
+                public Serializable getPartyId()
                 {
-                    return patient;
+                    return patient.getPartyId();
                 }
 
                 public String getStreet1()
@@ -151,6 +152,11 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
                 public String getState()
                 {
                     return patientParameters.getState();
+                }
+
+                public String getProvince()
+                {
+                    return null;
                 }
 
                 public String getPostalCode()
@@ -196,31 +202,18 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             person.setMiddleName(patientParameters.getMiddleName());
 
 
-            assert  patientParameters.getGender() != null;  // REQUIREMENT
             final GenderType genderType = referenceEntityService.getGenderType(patientParameters.getGender());
             final MaritalStatusType maritalStatusType = referenceEntityService.getMaritalStatusType(patientParameters.getMaritalStatus());
             person.addMaritalStatus(maritalStatusType);
             person.addGender(genderType);
 
             // add the languages
-            final String[] languages = patientParameters.getLanguageCodes();
-            assert languages != null && languages.length > 0 : languages;   // REQUIREMENT
-            if (languages != null && languages.length > 0)
-            {
-                for (int i = 0; i < languages.length; i++)
-                {
-                    person.addLanguage(referenceEntityService.getLanguageType(languages[i]));
-                }
-            }
+            for (String language : patientParameters.getLanguageCodes())
+                person.addLanguage(referenceEntityService.getLanguageType(language));
 
             // add the ethnicities
-            final String[] ethnicities = patientParameters.getEthnicityCodes();
-            assert ethnicities != null && ethnicities.length > 0 : ethnicities; // REQUIREMENT
-            for (int i = 0; i < ethnicities.length; i++)
-            {
-                person.addEthnicity(referenceEntityService.getEthnicityType(ethnicities[i]));
-            }
-
+            for (String ethnicity : patientParameters.getEthnicityCodes())
+                person.addEthnicity(referenceEntityService.getEthnicityType(ethnicity));
 
             if (patientParameters.getSsn() != null)
                 person.setSsn(patientParameters.getSsn());
@@ -229,14 +222,14 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
                 
             // Finally add the person
             personFacade.addPerson(person);
-
-            assert patientParameters.getStreetAddress1() != null;
             registerPostalAddress(person, patientParameters);
-
             registerResponsibleParty(person, patientParameters);
 
+            registerHomePhone(person, patientParameters);
+
             final Long patientId = (Long) person.getPersonId();
-            final RegisteredPatient patient = new RegisteredPatient() {
+            final RegisteredPatient patient = new RegisteredPatient()
+            {
                 public Serializable getPatientId()
                 {
                     return patientId;
@@ -258,9 +251,60 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
         return null;
     }
 
-    // TODO: Put a validator and return a list of errors/warnings
-    public boolean isValid(RegisterPatientParameters person)
+    private void registerHomePhone(final Person person, final RegisterPatientParameters patientParameters)
     {
+        final BasicPhoneParameters phoneParams = patientParameters.getHomePhone();
+        final AddContactMechanismService contactMechService = (AddContactMechanismService) ServiceLocator.getInstance().getService(AddContactMechanismService.class);
+
+        contactMechService.addPhone(new AddPhoneParameters() {
+            public Serializable getPartyId()
+            {
+                return person;
+            }
+
+            public String getCountryCode()
+            {
+                return phoneParams.getCountryCode();
+            }
+
+            public String getCityCode()
+            {
+                return phoneParams.getCityCode();
+            }
+
+            public String getAreaCode()
+            {
+                return phoneParams.getAreaCode();
+            }
+
+            public String getNumber()
+            {
+                return phoneParams.getNumber();
+            }
+
+            public String getExtension()
+            {
+                return phoneParams.getExtension();
+            }
+
+            public String getPurpose()
+            {
+                return phoneParams.getPurpose();
+            }
+        });
+    }
+
+    // TODO: Put a validator and return a list of errors/warnings
+    public boolean isValid(RegisterPatientParameters patientParameters)
+    {
+        assert  patientParameters.getGender() != null;  // REQUIREMENT
+        final String[] languageCodes = patientParameters.getLanguageCodes();
+        assert languageCodes != null && languageCodes.length > 0 : languageCodes;   // REQUIREMENT
+        final String[] ethnicities = patientParameters.getEthnicityCodes();
+        assert ethnicities != null && ethnicities.length > 0 : ethnicities; // REQUIREMENT
+        assert patientParameters.getStreetAddress1() != null;
+        assert patientParameters.getHomePhone() != null;
+        assert patientParameters.getResponsiblePartyLastName() != null;
         return false;
     }
 }

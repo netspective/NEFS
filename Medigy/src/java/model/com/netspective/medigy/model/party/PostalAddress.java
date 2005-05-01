@@ -39,7 +39,12 @@
  */
 package com.netspective.medigy.model.party;
 
-import com.netspective.medigy.model.common.GeographicBoundary;
+import com.netspective.medigy.model.contact.City;
+import com.netspective.medigy.model.contact.Country;
+import com.netspective.medigy.model.contact.County;
+import com.netspective.medigy.model.contact.GeographicBoundary;
+import com.netspective.medigy.model.contact.PostalCode;
+import com.netspective.medigy.model.contact.State;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
 import org.apache.commons.logging.Log;
@@ -48,9 +53,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -60,7 +63,6 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="contact_mech_id")
 public class PostalAddress extends ContactMechanism
 {
     private static final Log log = LogFactory.getLog(PostalAddress.class);
@@ -122,7 +124,7 @@ public class PostalAddress extends ContactMechanism
         this.directions = directions;
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_mech_id")
     public Set<PostalAddressBoundary> getAddressBoundaries()
     {
@@ -135,7 +137,7 @@ public class PostalAddress extends ContactMechanism
     }
 
     /*
-    @ManyToMany(targetEntity= "com.netspective.medigy.model.common.GeographicBoundary", cascade ={CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(targetEntity= "com.netspective.medigy.model.contact.GeographicBoundary", cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     @AssociationTable(
         table=@Table(name = "Postal_Address_Boundary", uniqueConstraints = {@UniqueConstraint(columnNames = {"party_contact_mech_id", "geo_id"})}),
         joinColumns={@JoinColumn(name="party_contact_mech_id")},
@@ -152,8 +154,14 @@ public class PostalAddress extends ContactMechanism
     }
     */
 
+    /**
+     * Sets the relationship between the postal address and the CITY geo boundary. This assumes
+     * that the geo boundary already exists and is not a new one (meaning a cascade won't be done
+     * to create this boundary)
+     * @param boundary
+     */
     @Transient
-    public void setCity(GeographicBoundary boundary)
+    public void setCity(City boundary)
     {
         setBoundry(boundary);
     }
@@ -161,29 +169,53 @@ public class PostalAddress extends ContactMechanism
     @Transient
     public void setCity(String cityName)
     {
-        setBoundry(new GeographicBoundary(cityName, GeographicBoundaryType.Cache.CITY.getEntity()));
+        setBoundry(new City(cityName));
     }
 
-
+    /**
+     * Sets the relationship between the postal address and the STATE geo boundary. This assumes
+     * that the geo boundary already exists and is not a new one (meaning a cascade won't be done
+     * to create this boundary)
+     * @param boundary
+     */
     @Transient
-    public void setState(GeographicBoundary boundary)
+    public void setState(State boundary)
     {
         setBoundry(boundary);
     }
 
+    /**
+     * Sets the relationship between the postal address and the POSTAL CODE geo boundary. This assumes
+     * that the geo boundary already exists and is not a new one (meaning a cascade won't be done
+     * to create this boundary)
+     * @param boundary
+     */
     @Transient
-    public void setPostalCode(GeographicBoundary boundary)
+    public void setPostalCode(PostalCode boundary)
     {
         setBoundry(boundary);
     }
 
+    /**
+     * Sets the relationship between the postal address and the COUNTY geo boundary. This assumes
+     * that the geo boundary already exists and is not a new one (meaning a cascade won't be done
+     * to create this boundary)
+     * @param boundary
+     */
     @Transient
-    public void setCounty(GeographicBoundary boundary)
+    public void setCounty(County boundary)
     {
         setBoundry(boundary);
     }
+
+    /**
+     * Sets the relationship between the postal address and the COUNTRY geo boundary. This assumes
+     * that the geo boundary already exists and is not a new one (meaning a cascade won't be done
+     * to create this boundary)
+     * @param boundary
+     */
     @Transient
-    public void setCountry(GeographicBoundary boundary)
+    public void setCountry(Country boundary)
     {
         setBoundry(boundary);
     }
@@ -191,20 +223,21 @@ public class PostalAddress extends ContactMechanism
     @Transient
     protected void setBoundry(GeographicBoundary geoBoundary)
     {
+        // create the new relationship object
         PostalAddressBoundary newBoundary = new PostalAddressBoundary();
         newBoundary.setGeographicBoundary(geoBoundary);
         newBoundary.setPostalAddress(this);
 
-        final Object[] boundaries = (Object[]) addressBoundaries.toArray();
+        // check to see if there is already a relationship to a geo boundary of the same TYPE (e.g. a postal address
+        // cannot be associated with two cities at the same time)
         boolean newBoundaryRelation = true;
-        for (int i = 0; i < boundaries.length; i++)
+        for (PostalAddressBoundary boundary : addressBoundaries)
         {
-            PostalAddressBoundary boundary = (PostalAddressBoundary) boundaries[i];
             if (boundary.getGeographicBoundary().getType().equals(newBoundary.getGeographicBoundary().getType()))
             {
                 if (boundary.getGeographicBoundary().getName().equals(newBoundary.getGeographicBoundary().getName()))
                 {
-                    // already exists so  no need to do anything
+                    // relationship already exists so  no need to do anything
                     if (log.isDebugEnabled())
                         log.debug("Geo Boundary Type with same name already exists. ");
                 }
@@ -215,7 +248,6 @@ public class PostalAddress extends ContactMechanism
                         log.debug("Geo Boundary Type already exists. Replacing... " +
                                 boundary.getGeographicBoundary().getName() +  " with " + newBoundary.getGeographicBoundary().getName());
                     boundary.setGeographicBoundary(newBoundary.getGeographicBoundary());
-
                 }
                 newBoundaryRelation = false;
                 break;
@@ -274,5 +306,14 @@ public class PostalAddress extends ContactMechanism
     public GeographicBoundary getCountry()
     {
         return getPostalAddressBoundary(GeographicBoundaryType.Cache.COUNTRY.getEntity());
+    }
+
+    @Transient
+    public void addPostalAddressBoundary(final GeographicBoundary boundary)
+    {
+        final PostalAddressBoundary pab  = new PostalAddressBoundary();
+        pab.setGeographicBoundary(boundary);
+        pab.setPostalAddress(this);
+        addressBoundaries.add(pab);
     }
 }
