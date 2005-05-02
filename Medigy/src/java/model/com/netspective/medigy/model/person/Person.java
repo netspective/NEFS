@@ -551,7 +551,6 @@ public class Person extends Party
         {
             if (role.getType().equals(PersonRoleType.Cache.PATIENT.getEntity()))
             {
-                role.getToPartyRelationships().size());
                 for (PartyRelationship relationship : role.getFromPartyRelationships())
                 {
                     if (relationship.getType().equals(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity()) &&
