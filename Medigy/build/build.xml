@@ -4,33 +4,35 @@
 
     <property file="build.properties"/>
 
-    <target name="setup-project-properties">
+    <!-- if we're running under LuntBuild the artifactsDir will already point to the location we're publishing artifacts -->
+    <target name="setup-default-artifactsDir" unless="artifactsDir">
+        <property name="artifactsDir" value="${project.home}/build/artifacts"/>
+        <mkdir dir="${artifactsDir}"/>
+    </target>
+
+    <!-- if we're running under LuntBuild the junitHtmlReportDir will already point to the location we're publishing JUnit HTML reports -->
+    <target name="setup-default-junitHtmlReportDir" depends="setup-default-artifactsDir" unless="junitHtmlReportDir">
+        <property name="junitHtmlReportDir" value="${artifactsDir}/junit"/>
+        <mkdir dir="${junitHtmlReportDir}"/>
+    </target>
+
+    <target name="setup-project-properties" depends="setup-default-artifactsDir,setup-default-junitHtmlReportDir">
         <buildnumber file="build.number"/>
 
         <property name="project.conf.home" value="${project.home}/conf"/>
-        <property name="project.resources.home" value="${project.home}/resources"/>
-        <property name="project.documents.home" value="${project.home}/documents"/>
         <property name="project.src.main.home" value="${project.home}/src/java/model"/>
         <property name="project.src.tool.home" value="${project.home}/src/java/tool"/>
         <property name="project.src.test.home" value="${project.home}/src/java/test"/>
-        <property name="project.documents.javadoc-html.home" value="${project.documents.home}/java-doc"/>
-        <property name="project.documents.javadoc-xml.home" value="${project.resources.home}/java-doc-xml"/>
 
-        <property name="project.change-log.name" value="change-log"/>
-        <property name="project.build.log.class.package" value="${project.package.base}"/>
-        <property name="project.build.log.class.name" value="BuildLog"/>
+        <property name="project.build.classes.dir" value="${artifactsDir}/classes"/>
 
-        <property name="project.build.dir" value="${project.home}/build"/>
-        <property name="project.build.classes.dir" value="${project.build.dir}/classes/"/>
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.build.dir" value="${project.lib.dir}/build"/>
         <property name="project.lib.runtime.dir" value="${project.lib.dir}/runtime"/>
         <property name="project.lib.test.dir" value="${project.lib.dir}/test"/>
 
-        <property name="project.test.output.dir" value="test-reports"/>
-        <property name="project.test.output.file-prefix" value="test-reports"/>
         <property name="project.output.jar-name" value="medigy.jar"/>
-        <property name="project.coverage.dir" value="${project.home}/coverage"/>
+        <property name="project.coverage.dir" value="${artifactsDir}/coverage"/>
         <property name="project.coverage.enabled" value="${emma.enabled}"/>
 
         <path id="project.build.class.path">
@@ -130,7 +132,7 @@
         <diagram dialectClass="org.hibernate.dialect.HSQLDialect" driverClass="org.hsqldb.jdbcDriver"
             jdbcUrl="jdbc:hsqldb:${project.home}/diagram/db"
             userName="sa" showSql="false" hbm2ddlAuto="create-drop"
-            outputDir="${project.home}/diagram"
+            outputDir="${artifactsDir}/model-db"
             diagramNamePrefix="medigy-"
             hibernateConfigFile="/com/netspective/medigy/hibernate.cfg.xml"
             graphVizCommandSpec="c:\Windows\system32\cmd.exe /c C:\PROGRA~1\ATT\Graphviz\bin\dot.exe -Tpng -o"
@@ -140,9 +142,6 @@
     <!-- ==================== Test targets  ======================= -->
 
     <target name="test" depends="compile-test">
-        <delete dir="${project.test.output.dir}"/>
-        <mkdir dir="${project.test.output.dir}"/>
-
         <junit filtertrace="yes" fork="true" maxmemory="128m" >
             <classpath>
                 <pathelement location="${project.coverage.instr.dir}" />
@@ -155,9 +154,16 @@
 
             <formatter type="xml" usefile="true"/>
 
-            <test name="${project.package.base}.model.TestSuite" todir="${project.test.output.dir}" outfile="${project.test.output.file-prefix}"/>
+            <test name="${project.package.base}.model.TestSuite" todir="${junitHtmlReportDir}"/>
         </junit>
-        
+
+        <junitreport todir="${junitHtmlReportDir}">
+            <fileset dir="${junitHtmlReportDir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="noframes" todir="${junitHtmlReportDir}"/>
+        </junitreport>
+
         <emma enabled="${project.coverage.enabled}">
             <report sourcepath="${project.src.main.home}:${project.src.tool.home}" sort="+block,+name,+method,+class"
                 metrics="method:70,block:80,line:80,class:100">
