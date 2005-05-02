@@ -97,13 +97,14 @@ public class InsurancePolicyRole implements AgreementRole
         this.agreement = ((InsurancePolicy) agreement);
     }
 
+    @ManyToOne
     @JoinColumn(name = "party_id")
     public Party getParty()
     {
         return party;
     }
 
-    public void setParty(Party party)
+    public void setParty(final Party party)
     {
         this.party = party;
     }

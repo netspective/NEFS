@@ -48,8 +48,8 @@ import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.service.ServiceLocator;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.util.PartyRelationshipFacade;
+import com.netspective.medigy.service.util.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 
 import java.util.List;

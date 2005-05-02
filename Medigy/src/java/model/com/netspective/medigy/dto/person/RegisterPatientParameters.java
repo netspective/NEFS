@@ -38,8 +38,6 @@
  */
 package com.netspective.medigy.dto.person;
 
-import com.netspective.medigy.dto.party.BasicPhoneParameters;
-
 import java.util.Date;
 
 /**
@@ -47,69 +45,195 @@ import java.util.Date;
  */
 public interface RegisterPatientParameters
 {
-
+    /**
+     * Gets the patient's first name. REQUIRED.
+     * @return
+     */
     public String getFirstName();
 
-
+    /**
+     * Gets the patient's last name. REQUIRED.
+     * @return
+     */
     public String getLastName();
 
-
+    /**
+     * Gets the patient's middle name.
+     * @return
+     */
     public String getMiddleName();
 
-
+    /**
+     * Gets the patient's suffix name.
+     * @return
+     */
     public String getSuffix();
 
-
+    /**
+     * Get's the patient's birth date. REQUIRED.
+     * @return
+     */
     public Date getBirthDate();
 
-
+    /**
+     * Gets the patients gender. REQUIRED.
+     * @return
+     * @see com.netspective.medigy.reference.type.GenderType#getTypeId()
+     */
     public String getGender();
 
-
+    /**
+     * Gets the patient's marital status. REQUIRED.
+     * @return
+     * @see com.netspective.medigy.reference.type.MaritalStatusType#getTypeId()
+     */
     public String getMaritalStatus();
 
-    public String getEmployerName();
-
-    public String getEmployerId();
-
-    public String getOccupation();
-
+    /**
+     * Get's the patient's social security number
+     * @return
+     */
     public String getSsn();
 
-    public String[] getEthnicityCodes();
-
-    public String[] getLanguageCodes();
-
+    /**
+     * Gets the patient's driver license number
+     * @return
+     */
     public String getDriversLicenseNumber();
 
+    /**
+     * Get's the patient's employer name
+     * @return
+     */
+    public String getEmployerName();
+
+    /**
+     * Get's the patient's employer unique ID
+     * @return
+     */
+    public String getEmployerId();
+
+    /**
+     * Get's the patient's employment title
+     * @return
+     */
+    public String getOccupation();
+
+    /**
+     * Get's the patient's ethnicity list. The first one is considered the primary one.
+     * @return
+     * @see com.netspective.medigy.reference.custom.person.EthnicityType#getCode()
+     */
+    public String[] getEthnicityCodes();
+
+    /**
+     * Gets the patient's spoken languages. The first one is considered the primary language.
+     * @return
+     * @see com.netspective.medigy.reference.type.LanguageType#getTypeId()
+     */
+    public String[] getLanguageCodes();
+
+    /**
+     * Get's the responsible party's last name. REQUIRED.
+     * @return
+     */
     public String getResponsiblePartyLastName();
 
+    /**
+     * Get's the responsible party's first name. REQUIRED.
+     * @return
+     */
     public String getResponsiblePartyFirstName();
 
+    public String getResponsiblePartySuffix();
+
+    /**
+     * Get's the responsible party's unique ID
+     * @return
+     */
     public String getResponsiblePartyId();
 
+    /**
+     * Get's the relationship of the responsible party to the patient
+     * @return
+     * @see com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType#getCode()
+     */
     public String getResponsiblePartyRole();
 
-    public BasicPhoneParameters getHomePhone();
+    public String getHomePhoneCountryCode();    // optional
+    public String getHomePhoneCityCode();       // optional
+    public String getHomePhoneAreaCode();
+    public String getHomePhoneNumber();
 
-    public String getWorkPhone();
+    public String getWorkPhoneCountryCode();    // optional
+    public String getWorkPhoneCityCode();       // optional
+    public String getWorkPhoneAreaCode();
+    public String getWorkPhoneNumber();
 
-    public String getMobilePhone();
+    public String getMobilePhoneCountryCode();  // optional
+    public String getMobilePhoneCityCode();     // optional
+    public String getMobilePhoneAreaCode();
+    public String getMobilePhoneNumber();
 
     public String getStreetAddress1();
-
     public String getStreetAddress2();
-
     public String getCity();
-
+    public String getCounty();
+    public String getProvince();
     public String getState();
-
     public String getPostalCode();
-
     public String getCountry();
 
+    /**
+     * Get's the patient's primary care provider ID
+     * @return
+     */
     public String getPrimaryCareProviderId();
 
-    public String getPrimaryCareProviderName();
+    /**
+     * Get's the patient's primary care provider last name
+     * @return
+     */
+    public String getPrimaryCareProviderLastName();
 
+    /**
+     * Gets the patient's primary care provider first name
+     * @return
+     */
+    public String getPrimaryCareProviderFirstName();
+
+    /**
+     * Gets the list of insurance policy numbers. The first one is considered
+     * the primary insurance policy.
+     * @return
+     */
+    public String[] getInsurancePolicyNumbers();
+
+    /**
+     * Gets the list of insurance policy providers.
+     * @return
+     */
+    public String[] getInsurancePolicyProvider();
+
+    /**
+     * Gets the type of insurance policy
+     * @return
+     * @see com.netspective.medigy.reference.custom.insurance.InsurancePolicyType#getCode() 
+     */
+    public String[] getInsurancePolicyTypes();
+    public String[] getInsurancePolicyHolderLastNames();
+    public String[] getInsurancePolicyHolderFirstNames();
+    public String[] getInsurancePolicyHolderSuffix();
+    /**
+     * Gets the list of ID of the insurance policy holders
+     * @return
+     */
+    public String[] getInsurancePolicyHolderId();
+
+    /**
+     * Gets the list of roles (relationship to the patient) of the insurance policy
+     * holder.
+     * @return
+     */
+    public String[] getInsurancePolicyHolderRole();
 }

@@ -52,15 +52,11 @@ import com.netspective.medigy.model.party.PartyContactMechanismPurpose;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
-import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import com.netspective.medigy.service.util.PartyRelationshipFacade;
+import com.netspective.medigy.service.util.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -75,11 +71,6 @@ public class TestOrganization  extends TestCase
 
     public void testPostalAddress()
     {
-        Session session = new ProcessSession();
-        session.setProcessName(TestOrganization.class.getName() + ".testPostalAddress()");
-        HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().pushActiveSession(session);
-
         Organization org1 = new Organization();
         org1.setOrganizationName("Acme Corporation");
 
@@ -172,11 +163,9 @@ public class TestOrganization  extends TestCase
         HibernateUtil.getSession().save(stateBoundary2);
         HibernateUtil.commitTransaction();
 
-        HibernateUtil.beginTransaction();
         savedAddress2.setCity(cityBoundary2);
         savedAddress2.setState(stateBoundary2);
-        HibernateUtil.getSession().update(savedAddress2);
-        HibernateUtil.commitTransaction();
+        HibernateUtil.closeSession();
 
         // load all boundaries
         final Criteria criteria2 = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
@@ -195,16 +184,10 @@ public class TestOrganization  extends TestCase
         assertEquals("22033", savedAddress3.getPostalCode().getName());
         assertEquals("Fairfax County", savedAddress3.getCounty().getName());
         assertEquals("USA", savedAddress3.getCountry().getName());
-        SessionManager.getInstance().popActiveSession();
     }
 
     public void testOrg()
     {
-        Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testOrg()");
-        HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().pushActiveSession(session);
-
         Organization org1 = new Organization();
         org1.setOrganizationName("Acme Corporation");
 
@@ -291,6 +274,5 @@ public class TestOrganization  extends TestCase
         //info("Success. Parent and Child org's respective role's share one relationship.");
 
         HibernateUtil.closeSession();
-        SessionManager.getInstance().popActiveSession();
     }
 }

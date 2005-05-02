@@ -40,7 +40,13 @@ package com.netspective.medigy.dto.party;
 
 import java.io.Serializable;
 
-public interface AddPhoneParameters extends BasicPhoneParameters
+public interface AddPhoneParameters
 {
     public Serializable getPartyId();
+    public String getCountryCode();
+    public String getCityCode();
+    public String getAreaCode();
+    public String getNumber();
+    public String getExtension();
+    public String getPurpose();
 }

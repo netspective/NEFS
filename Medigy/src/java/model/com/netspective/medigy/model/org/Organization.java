@@ -47,14 +47,12 @@ import com.netspective.medigy.model.party.Party;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="partyId")
 @Table(name = "Org")
 public class Organization extends Party
 {

@@ -41,6 +41,7 @@ package com.netspective.medigy.service.common;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
@@ -48,6 +49,8 @@ import com.netspective.medigy.service.Service;
 
 public interface ReferenceEntityLookupService extends Service
 {
+    public InsurancePolicyType getInsurancePolicyType(final String code) throws UnknownReferenceTypeException;
+
     public LanguageType getLanguageType(final String code) throws UnknownReferenceTypeException;
 
     public GenderType getGenderType(final String genderCode) throws UnknownReferenceTypeException;

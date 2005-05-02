@@ -79,6 +79,16 @@ public class InsurancePolicyType extends AbstractCustomReferenceEntity
         {
             this.entity = (InsurancePolicyType) entity;
         }
+
+        public static InsurancePolicyType getEntity(final String code)
+        {
+            for (InsurancePolicyType.Cache role : InsurancePolicyType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
     }
 
     @Id(generate = GeneratorType.AUTO)

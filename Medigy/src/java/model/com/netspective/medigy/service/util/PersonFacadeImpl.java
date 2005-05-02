@@ -36,7 +36,7 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person.hibernate;
+package com.netspective.medigy.service.util;
 
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.PostalAddress;
@@ -46,7 +46,7 @@ import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.type.ContactMechanismType;
-import com.netspective.medigy.service.person.PersonFacade;
+import com.netspective.medigy.service.util.PersonFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -36,29 +36,23 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.person;
+package com.netspective.medigy.service.util;
 
+import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.party.PostalAddress;
-import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.model.party.Party;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.service.Service;
 
-import java.io.Serializable;
+import java.util.List;
 
-public interface PersonFacade extends Service
+public interface PartyRelationshipFacade extends Service
 {
-    public Person[] listPersonByLastName(final String lastName, boolean exactMatch);
+    public List getValidPartyRolesByRelationshipType(final PartyRelationshipType type);
 
-    // TODO: The primary keys are left as SERIALIZABLE for now
-    public Person getPersonById(final Serializable id);
+    public PartyRelationship addPartyRelationship(PartyRelationshipType type, PartyRole fromRole, PartyRole toRole);
 
-    public void addPerson(Person person);
-    public Person addPerson(String lastName, String firstName);
+    public List listPartyRelationshipsByTypeAndFromRole(PartyRelationshipType type, PartyRole fromRole);
 
-    public PartyRole addPersonRole(Person person, PersonRoleType type);
-
-    public PostalAddress getHomeAddress(Person person);
-
-
+    public List listPatientResponsiblePartyRelationship(Party patient);
 }

@@ -36,14 +36,13 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.party.hibernate;
+package com.netspective.medigy.service.util;
 
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.party.ValidPartyRelationshipRole;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

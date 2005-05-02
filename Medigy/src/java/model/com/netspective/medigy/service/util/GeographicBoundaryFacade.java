@@ -36,78 +36,41 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.contact;
+package com.netspective.medigy.service.util;
 
-import com.netspective.medigy.model.contact.GeographicBoundaryAssociation;
 import com.netspective.medigy.model.contact.GeographicBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
-import com.netspective.medigy.util.HibernateUtil;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
-public class GeographicBoundaryFacadeImpl implements GeographicBoundaryFacade
+/**
+ * Interface class for geographic boundary related activities. Implementing classes
+ * will be used by service layer classes to perform higher level functions.
+ */
+public interface GeographicBoundaryFacade
 {
     /**
      * Adds a new geographic boundary who has no parents
-     *
-     * @param boundaryName
+     * @param name
      * @param type
+     * @return Unique ID for the new geographic boundary
      */
-    public GeographicBoundary addGeographicBoundary(String boundaryName, GeographicBoundaryType type)
-    {
-        return addGeographicBoundary(boundaryName, type, null);
-    }
+    public GeographicBoundary addGeographicBoundary(String name, GeographicBoundaryType type);
 
     /**
      * Add a new geographic boundary
-     *
-     * @param boundaryName    Name of the geographic boundary
-     * @param type    The geo boundary type
-     * @param parentBoundaries The geo boundaries to which this new one belongs to
+     * @param name      Name of the geographic boundary
+     * @param type      The geo boundary type
+     * @param parents   The geo boundaries to which this new one belongs to
      */
-    public GeographicBoundary addGeographicBoundary(String boundaryName, GeographicBoundaryType type,
-                                                    GeographicBoundary[] parentBoundaries)
-    {
-        if (boundaryName == null || boundaryName.length() == 0)
-            return null;
-        // check to see if this geographic boundary already exists
-        GeographicBoundary geo = getGeographicBoundary(boundaryName, type);
-
-        /*
-        if (geo == null)
-        {
-            // this is a new geo boundary then
-            geo = new GeographicBoundary();
-            geo.setName(boundaryName);
-            geo.setType(type);
-            HibernateUtil.getSession().save(geo);
-
-            // need to asscoiate it with its parents
-            if (parentBoundaries != null && parentBoundaries.length > 0)
-            {
-                for (GeographicBoundary parentGeo: parentBoundaries)
-                    addGeographicBoundaryAssociation(geo, parentGeo);
-            }
-        }
-        */
-        return geo;
-
-    }
+    public GeographicBoundary addGeographicBoundary(String name, GeographicBoundaryType type, GeographicBoundary[] parents);
 
     /**
      * List all geographic boundaries of the same type
-     *
      * @param type
      * @return
      */
-    public List listGeographicBoundaries(GeographicBoundaryType type)
-    {
-        Criteria criteria = HibernateUtil.getSession().createCriteria(GeographicBoundary.class);
-        criteria.createAlias("type", "type").add(Restrictions.eq("type.code", type.getCode()));
-        return criteria.list();
-    }
+    public List listGeographicBoundaries(GeographicBoundaryType type);
 
     /**
      * Gets a geographic boundary by its name and type. The name will be a case insensitive
@@ -115,34 +78,20 @@ public class GeographicBoundaryFacadeImpl implements GeographicBoundaryFacade
      *
      * @param name
      * @param type
-     * @return the new geo boundary
+     * @return      an existing geo boundary and Null if it doesn't exist
      */
-    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type)
-    {
-        return getGeographicBoundary(name, type, false);
-    }
+    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type);
 
-    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type, boolean addIfNew)
-    {
-        Criteria criteria =
-                HibernateUtil.getSession().createCriteria(GeographicBoundary.class).add(Restrictions.eq("name", name).ignoreCase());
-        criteria.createAlias("type", "type").add(Restrictions.eq("type.code", type.getCode()));
-        GeographicBoundary boundary = (GeographicBoundary) criteria.uniqueResult();
+    /**
+     * Gets a geographic boundary by its name and type. The name will be a case insensitive
+     * exact match. Also if one doesn't exist, a new one will be created and returned.
+     * @param name
+     * @param type
+     * @param addIfNew
+     * @return
+     */
+    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type,
+                                                    boolean addIfNew);
 
-        if (boundary == null)
-            boundary = addGeographicBoundary(name, type);
-        return boundary;
-    }
-
-
-    public GeographicBoundaryAssociation addGeographicBoundaryAssociation(final GeographicBoundary boundary,
-                                                 final GeographicBoundary parentBoundary)
-    {
-        final GeographicBoundaryAssociation assc = new  GeographicBoundaryAssociation();
-        assc.setGeographicBoundary(boundary);
-        assc.setParentGeographicBoundary(boundary);
-        HibernateUtil.getSession().save(assc);
-        return assc;
-    }
-
+    
 }

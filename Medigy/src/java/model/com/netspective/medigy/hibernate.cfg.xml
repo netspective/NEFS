@@ -106,7 +106,7 @@
         <mapping class="com.netspective.medigy.model.contact.Province"/>
         <mapping class="com.netspective.medigy.model.contact.PostalCode"/>
         <mapping class="com.netspective.medigy.model.contact.Country"/>
-        <!--mapping class="com.netspective.medigy.model.contact.GeographicBoundaryAssociationn"/-->
+        <!--mapping class="com.netspective.medigy.model.contact.GeographicBoundaryAssociation"/-->
 
         <mapping package="com.netspective.medigy.model.health"/>
         <mapping class="com.netspective.medigy.model.health.DeliveryOutcome"/>
@@ -129,7 +129,7 @@
         <mapping class="com.netspective.medigy.model.health.ProviderOffering"/>
         <mapping class="com.netspective.medigy.model.health.Symptom"/>
         <mapping class="com.netspective.medigy.model.health.VisitReason"/>
-        <!--mapping class="com.netspective.medigy.model.health.HealthCareLicense"/-->
+        <mapping class="com.netspective.medigy.model.health.HealthCareLicense"/>
 
         <mapping package="com.netspective.medigy.model.insurance"/>
         <mapping class="com.netspective.medigy.model.insurance.CareProviderSelection"/>

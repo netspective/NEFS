@@ -36,67 +36,33 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.contact;
+package com.netspective.medigy.service.util;
 
-import com.netspective.medigy.model.contact.GeographicBoundary;
-import com.netspective.medigy.model.contact.GeographicBoundaryAssociation;
-import com.netspective.medigy.reference.custom.GeographicBoundaryType;
+import com.netspective.medigy.model.party.PartyRole;
+import com.netspective.medigy.model.party.PostalAddress;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.service.Service;
 
-import java.util.List;
+import java.io.Serializable;
 
-public interface GeographicBoundaryFacade extends Service
+/**
+ * Interface for Person related activities. Implementation classes will be used by the
+ * service layer to perform more higher level functions.
+ */
+public interface PersonFacade extends Service
 {
-    /**
-     * Adds a new geographic boundary who has no parents
-     * @param name
-     * @param type
-     * @return Unique ID for the new geographic boundary
-     */
-    public GeographicBoundary addGeographicBoundary(String name, GeographicBoundaryType type);
+    public Person[] listPersonByLastName(final String lastName, boolean exactMatch);
 
-    /**
-     * Add a new geographic boundary
-     * @param name      Name of the geographic boundary
-     * @param type      The geo boundary type
-     * @param parents   The geo boundaries to which this new one belongs to
-     */
-    public GeographicBoundary addGeographicBoundary(String name, GeographicBoundaryType type, GeographicBoundary[] parents);
+    // TODO: The primary keys are left as SERIALIZABLE for now
+    public Person getPersonById(final Serializable id);
 
-    /**
-     * List all geographic boundaries of the same type
-     * @param type
-     * @return
-     */
-    public List listGeographicBoundaries(GeographicBoundaryType type);
+    public void addPerson(Person person);
+    public Person addPerson(String lastName, String firstName);
 
-    /**
-     * Gets a geographic boundary by its name and type. The name will be a case insensitive
-     * exact match.
-     *
-     * @param name
-     * @param type
-     * @return      an existing geo boundary and Null if it doesn't exist
-     */
-    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type);
+    public PartyRole addPersonRole(Person person, PersonRoleType type);
 
-    /**
-     * Gets a geographic boundary by its name and type. The name will be a case insensitive
-     * exact match. Also if one doesn't exist, a new one will be created and returned.
-     * @param name
-     * @param type
-     * @param addIfNew
-     * @return
-     */
-    public GeographicBoundary getGeographicBoundary(String name, GeographicBoundaryType type,
-                                                    boolean addIfNew);
+    public PostalAddress getHomeAddress(Person person);
 
-    /**
-     * Associate a geographic boundary to other boundaries
-     * @param boundary
-     * @param parentBoundary
-     * @return the association object
-     */
-    public GeographicBoundaryAssociation addGeographicBoundaryAssociation(final GeographicBoundary boundary,
-                                                 final GeographicBoundary parentBoundary);
+
 }

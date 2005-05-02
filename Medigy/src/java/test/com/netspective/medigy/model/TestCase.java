@@ -44,16 +44,16 @@
 package com.netspective.medigy.model;
 
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.util.PersonFacade;
 import com.netspective.medigy.service.common.ReferenceEntityLookupService;
 import com.netspective.medigy.service.common.ReferenceEntityLookupServiceImpl;
 import com.netspective.medigy.service.contact.AddContactMechanismService;
 import com.netspective.medigy.service.contact.AddContactMechanismServiceImpl;
-import com.netspective.medigy.service.party.PartyRelationshipFacade;
-import com.netspective.medigy.service.party.hibernate.PartyRelationshipFacadeImpl;
+import com.netspective.medigy.service.util.PartyRelationshipFacade;
+import com.netspective.medigy.service.util.PartyRelationshipFacadeImpl;
 import com.netspective.medigy.service.person.PatientRegistrationService;
 import com.netspective.medigy.service.person.PatientRegistrationServiceImpl;
-import com.netspective.medigy.service.person.PersonFacade;
-import com.netspective.medigy.service.person.hibernate.PersonFacadeImpl;
+import com.netspective.medigy.service.util.PersonFacadeImpl;
 import com.netspective.medigy.util.HibernateConfiguration;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.util.ModelInitializer;

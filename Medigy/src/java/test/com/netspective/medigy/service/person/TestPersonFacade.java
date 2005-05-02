@@ -41,6 +41,7 @@ package com.netspective.medigy.service.person;
 import com.netspective.medigy.model.DbUnitTestCase;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.util.PersonFacade;
 
 public class TestPersonFacade extends DbUnitTestCase
 {

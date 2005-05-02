@@ -43,6 +43,7 @@ import com.netspective.medigy.dto.person.RegisterHealthCareProviderParameters;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.util.HibernateUtil;
 import com.netspective.medigy.service.ServiceLocator;
+import com.netspective.medigy.service.util.PersonFacade;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
 
 public class RegisterHealthCareProviderServiceImpl implements RegisterHealthCareProviderService

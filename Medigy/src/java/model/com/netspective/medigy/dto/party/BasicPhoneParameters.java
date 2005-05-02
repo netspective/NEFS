@@ -38,8 +38,11 @@
  */
 package com.netspective.medigy.dto.party;
 
+import java.io.Serializable;
+
 public interface BasicPhoneParameters
 {
+    public Serializable getPartyId();
     public String getCountryCode();
     public String getCityCode();
     public String getAreaCode();

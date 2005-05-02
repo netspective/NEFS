@@ -82,7 +82,6 @@ public class AddContactMechanismServiceImpl implements AddContactMechanismServic
 
     public NewPostalAddress addPostalAddress(final AddPostalAddressParameters param)  throws ServiceInvocationException
     {
-        final GeographicBoundaryFacade geoFacade = (GeographicBoundaryFacade) ServiceLocator.getInstance().getService(GeographicBoundaryFacade.class);
         final Party party = (Party) HibernateUtil.getSession().load(Party.class, param.getPartyId());
 
         final PostalAddress address = new PostalAddress();

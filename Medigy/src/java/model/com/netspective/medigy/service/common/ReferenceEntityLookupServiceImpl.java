@@ -42,15 +42,31 @@ import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
+import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Restrictions;
 
 public class ReferenceEntityLookupServiceImpl implements ReferenceEntityLookupService
 {
+
+    public InsurancePolicyType getInsurancePolicyType(final String code) throws UnknownReferenceTypeException
+    {
+        InsurancePolicyType type = InsurancePolicyType.Cache.getEntity(code);
+        if (type == null)
+        {
+            final Criteria criteria = HibernateUtil.getSession().createCriteria(InsurancePolicyType.class);
+            criteria.add(Restrictions.eq("code", code));
+            type = (InsurancePolicyType) criteria.uniqueResult();
+            if (type == null)
+                throw new UnknownReferenceTypeException();
+        }
+        return type;
+    }
 
     /**
      * Gets the language type based on the code

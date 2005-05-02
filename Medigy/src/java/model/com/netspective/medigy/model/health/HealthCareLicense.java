@@ -36,23 +36,100 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.service.party;
+package com.netspective.medigy.model.health;
 
-import com.netspective.medigy.model.party.PartyRelationship;
-import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
-import com.netspective.medigy.service.Service;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.model.person.Person;
+import com.netspective.medigy.model.contact.GeographicBoundary;
+import com.netspective.medigy.reference.custom.health.HealthCareLicenseType;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratorType;
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
-public interface PartyRelationshipFacade extends Service
+@Entity
+public class HealthCareLicense extends AbstractDateDurationEntity
 {
-    public List getValidPartyRolesByRelationshipType(final PartyRelationshipType type);
+    private Long licenseId;
+    private String licenseNumber;
+    private String description;
+    private Person person;
+    private GeographicBoundary geographicBoundary;
+    private HealthCareLicenseType type;
 
-    public PartyRelationship addPartyRelationship(PartyRelationshipType type, PartyRole fromRole, PartyRole toRole);
+    @Id(generate = GeneratorType.AUTO)
+    public Long getLicenseId()
+    {
+        return licenseId;
+    }
 
-    public List listPartyRelationshipsByTypeAndFromRole(PartyRelationshipType type, PartyRole fromRole);
+    protected void setLicenseId(final Long licenseId)
+    {
+        this.licenseId = licenseId;
+    }
 
-    public List listPatientResponsiblePartyRelationship(Party patient);
+    @Column(length = 50, nullable = false)
+    public String getLicenseNumber()
+    {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(final String licenseNumber)
+    {
+        this.licenseNumber = licenseNumber;
+    }
+
+    @Column(length = 256)
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(final String description)
+    {
+        this.description = description;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "party_id", nullable = false)
+    public Person getPerson()
+    {
+        return person;
+    }
+
+    public void setPerson(final Person person)
+    {
+        this.person = person;
+    }
+
+    /**
+     * Gets the geographic boundary where this license is valid
+     * @return
+     */
+    @ManyToOne
+    @JoinColumn(name = "geo_id")
+    public GeographicBoundary getGeographicBoundary()
+    {
+        return geographicBoundary;
+    }
+
+    public void setGeographicBoundary(final GeographicBoundary geographicBoundary)
+    {
+        this.geographicBoundary = geographicBoundary;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "license_type_id", nullable = false)
+    public HealthCareLicenseType getType()
+    {
+        return type;
+    }
+
+    public void setType(final HealthCareLicenseType type)
+    {
+        this.type = type;
+    }
 }

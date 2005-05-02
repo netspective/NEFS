@@ -44,6 +44,7 @@
 package com.netspective.medigy.model.person;
 
 import com.netspective.medigy.model.health.HealthCareEpisode;
+import com.netspective.medigy.model.health.HealthCareLicense;
 import com.netspective.medigy.model.health.HealthCareVisit;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
@@ -58,13 +59,16 @@ import com.netspective.medigy.reference.type.MaritalStatusType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceJoinColumn;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.LobType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-import javax.persistence.FetchType;
+import javax.persistence.UniqueConstraint;
+import javax.persistence.Table;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -73,7 +77,7 @@ import java.util.TreeSet;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-@InheritanceJoinColumn(name="partyId")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames={"firstName", "lastName", "birthDate"})})
 public class Person extends Party
 {
     private String firstName;
@@ -82,6 +86,7 @@ public class Person extends Party
     private String suffix;
     private Date birthDate;
     private Date deathDate;
+    private byte[] photo;
 
     private Set<Ethnicity> ethnicities = new HashSet<Ethnicity>();
     private Set<Gender> genders = new HashSet<Gender>();
@@ -90,12 +95,11 @@ public class Person extends Party
     private Set<HealthCareVisit> healthCareVisits = new HashSet<HealthCareVisit>();
     private Set<HealthCareEpisode> healthCareEpisodes = new HashSet<HealthCareEpisode>();
     private Set<Language> languages = new HashSet<Language>();
-
+    private Set<HealthCareLicense> licenses = new HashSet<HealthCareLicense>();
 
     public Person()
     {
     }
-
 
     @Transient
     public Long getPersonId()
@@ -507,7 +511,41 @@ public class Person extends Party
         partyIdentifiers.add(identifier);
     }
 
-    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
+    public Set<HealthCareLicense> getLicenses()
+    {
+        return licenses;
+    }
+
+    public void setLicenses(final Set<HealthCareLicense> licenses)
+    {
+        this.licenses = licenses;
+    }
+
+    @Transient
+    public void addLicense(final HealthCareLicense healthCareLicense)
+    {
+        healthCareLicense.setPerson(this);
+        getLicenses().add(healthCareLicense);
+    }
+
+    @Lob(type = LobType.BLOB)
+    public byte[] getPhoto()
+    {
+        return photo;
+    }
+
+    public void setPhoto(final byte[] photo)
+    {
+        this.photo = photo;
+    }
+
+    @Transient
+    public Person getResponsibleParty()
+    {
+        return null;
+    }
+
     public String toString()
     {
         return "person{" +

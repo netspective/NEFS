@@ -39,19 +39,19 @@
 package com.netspective.medigy.model.contact;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.health.HealthCareLicense;
 import com.netspective.medigy.model.party.PostalAddressBoundary;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,8 +65,9 @@ public abstract class GeographicBoundary extends AbstractTopLevelEntity
     private GeographicBoundaryType type;
 
     private Set<PostalAddressBoundary> postalAddressBoundary = new HashSet<PostalAddressBoundary>();
-    private Set<GeographicBoundaryAssociation> parentBoundaryAssociations = new HashSet<GeographicBoundaryAssociation>();
-    private Set<GeographicBoundaryAssociation> childBoundaryAssociations = new HashSet<GeographicBoundaryAssociation>();
+    //private Set<GeographicBoundaryAssociation> parentBoundaryAssociations = new HashSet<GeographicBoundaryAssociation>();
+    //private Set<GeographicBoundaryAssociation> childBoundaryAssociations = new HashSet<GeographicBoundaryAssociation>();
+    private Set<HealthCareLicense> licenses = new HashSet<HealthCareLicense>();
 
     public GeographicBoundary()
     {
@@ -137,56 +138,16 @@ public abstract class GeographicBoundary extends AbstractTopLevelEntity
         this.postalAddressBoundary = postalAddressBoundary;
     }
 
-    /**
-     * Gets all the boundary associations where the current boundary acts as the
-     * parent
-     * @return
-     */
     @OneToMany
-    @JoinColumn(referencedColumnName = "parent_geo_id", name = "geo_id")
-    public Set<GeographicBoundaryAssociation> getParentBoundaryAssociations()
+    @JoinColumn(name = "geo_id")        
+    public Set<HealthCareLicense> getLicenses()
     {
-        return parentBoundaryAssociations;
+        return licenses;
     }
 
-    protected void setParentBoundaryAssociations(final Set<GeographicBoundaryAssociation> parentBoundaryAssociations)
+    public void setLicenses(Set<HealthCareLicense> licenses)
     {
-        this.parentBoundaryAssociations = parentBoundaryAssociations;
-    }
-
-    @Transient
-    public void addParentBoundaryAssociation(final GeographicBoundary boundary)
-    {
-        final GeographicBoundaryAssociation assc = new  GeographicBoundaryAssociation();
-        assc.setGeographicBoundary(boundary);
-        assc.setParentGeographicBoundary(this);
-        this.parentBoundaryAssociations.add(assc);
-    }
-
-    @OneToMany
-    @JoinColumn(name = "geo_id")
-    public Set<GeographicBoundaryAssociation> getChildBoundaryAssociations()
-    {
-        return childBoundaryAssociations;
-    }
-
-    protected void setChildBoundaryAssociations(final Set<GeographicBoundaryAssociation> childBoundaryAssociations)
-    {
-        this.childBoundaryAssociations = childBoundaryAssociations;
-    }
-
-    /**
-     * Adds a boundary association where current boundary acts as the child and the passed in
-     * boundary acts as the parent.
-     * @param boundary
-     */
-    @Transient
-    public void addChildBoundaryAssociation(final GeographicBoundary boundary)
-    {
-        final GeographicBoundaryAssociation assc = new  GeographicBoundaryAssociation();
-        assc.setGeographicBoundary(this);
-        assc.setParentGeographicBoundary(boundary);
-        this.childBoundaryAssociations.add(assc);
+        this.licenses = licenses;
     }
 
     public boolean equals(Object obj)

@@ -190,12 +190,19 @@ public class InsurancePolicy implements Agreement
     }
 
     @Transient
+    public void addInsuredDependent(final Person dependent)
+    {
+        addPartyByRole(dependent, InsurancePolicyRoleType.Cache.INSURED_DEPENDENT.getEntity());
+    }
+
+    @Transient
     protected void addPartyByRole(final Party party, final InsurancePolicyRoleType roleType)
     {
         InsurancePolicyRole role = new InsurancePolicyRole();
         role.setAgreement(this);
         role.setType(roleType);
         role.setParty(party);
+        party.getInsurancePolicyRoles().add(role);
 
         getAgreementRoles().add(role);
     }

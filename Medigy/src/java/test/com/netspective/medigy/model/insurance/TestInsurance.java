@@ -42,9 +42,6 @@ import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.org.Organization;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.insurance.CoverageType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.util.HibernateUtil;
@@ -53,22 +50,6 @@ import java.util.Date;
 
 public class TestInsurance extends TestCase
 {
-
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-
-        Session session = new ProcessSession();
-        session.setProcessName(TestInsurance.class.getName() + "." + this.getName());
-        HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().pushActiveSession(session);
-    }
-
-    protected void tearDown() throws Exception
-    {
-        super.tearDown();
-        SessionManager.getInstance().popActiveSession();
-    }
 
     public void testInsurance()
     {
@@ -79,6 +60,10 @@ public class TestInsurance extends TestCase
         johnDoe.setFirstName("John");
         johnDoe.setLastName("Doe");
 
+        final Person patient = new Person();
+        patient.setLastName("Doe");
+        patient.setFirstName("Jane");
+
         HibernateUtil.getSession().save(blueCross);
         HibernateUtil.getSession().save(johnDoe);
         HibernateUtil.commitTransaction();
@@ -88,6 +73,7 @@ public class TestInsurance extends TestCase
         individualPolicy.setInsuranceProvider(blueCross);
         individualPolicy.setAgreementDate(new Date());
         individualPolicy.setInsuredContractHolder(johnDoe);
+        individualPolicy.addInsuredDependent(patient);
         individualPolicy.setPolicyNumber("12345");
 
         HibernateUtil.getSession().save(individualPolicy);
