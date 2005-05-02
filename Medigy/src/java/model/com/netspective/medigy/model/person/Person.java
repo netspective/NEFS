@@ -48,10 +48,14 @@ import com.netspective.medigy.model.health.HealthCareLicense;
 import com.netspective.medigy.model.health.HealthCareVisit;
 import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.party.PartyIdentifier;
+import com.netspective.medigy.model.party.PartyRelationship;
+import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
+import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.EthnicityType;
 import com.netspective.medigy.reference.custom.person.PersonIdentifierType;
 import com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType;
+import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
@@ -543,6 +547,30 @@ public class Person extends Party
     @Transient
     public Person getResponsibleParty()
     {
+        for (PartyRole role : getPartyRoles())
+        {
+            if (role.getType().equals(PersonRoleType.Cache.PATIENT.getEntity()))
+            {
+                role.getToPartyRelationships().size());
+                for (PartyRelationship relationship : role.getFromPartyRelationships())
+                {
+                    if (relationship.getType().equals(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity()) &&
+                        relationship.getPartyTo() instanceof Person)
+                    {
+                        return (Person) relationship.getPartyTo();
+                    }
+                }
+                for (PartyRelationship relationship : role.getToPartyRelationships())
+                {
+                    if (relationship.getType().equals(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity()) &&
+                        relationship.getPartyFrom() instanceof Person)
+                    {
+                        return (Person) relationship.getPartyFrom();
+                    }
+                }
+
+            }
+        }
         return null;
     }
 
@@ -563,4 +591,14 @@ public class Person extends Party
     }
 
 
+    @Transient
+    public PartyRole getPartyRoleByType(final PersonRoleType type)
+    {
+        for (PartyRole role : getPartyRoles())
+        {
+            if (role.getType().equals(type))
+                return role;
+        }
+        return null;
+    }
 }

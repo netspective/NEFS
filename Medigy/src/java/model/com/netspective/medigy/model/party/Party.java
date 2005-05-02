@@ -166,6 +166,15 @@ public class Party extends AbstractTopLevelEntity
         this.partyRoles.add(role);
     }
 
+    @Transient
+    public void addPartyRole(final PartyRoleType type)
+    {
+        final PartyRole partyRole = new PartyRole();
+        partyRole.setType(type);
+        partyRole.setParty(this);
+        getPartyRoles().add(partyRole);
+    }
+
     /**
      * Checks to see if the party has a role with the passed in type
      * @param type

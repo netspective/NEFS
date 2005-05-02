@@ -42,7 +42,6 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.AbstractDateDurationEntity;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
@@ -93,7 +92,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partyRoleFrom")
+    @OneToMany(mappedBy = "partyRoleFrom")
     public Set<PartyRelationship> getFromPartyRelationships()
     {
         return fromPartyRelationships;
@@ -129,7 +128,7 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
     }
 
     @ManyToOne
-    @JoinColumn(name = "party_role_type_id")
+    @JoinColumn(name = "party_role_type_id", nullable = false)
     public PartyRoleType getType()
     {
         return type;
@@ -147,6 +146,20 @@ public class PartyRole extends AbstractDateDurationEntity implements Comparable
 
         final PartyRole otherRole = (PartyRole) o;
         return ((PartyRoleType) getType()).compareTo(otherRole.getType());
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj == null || !(obj instanceof PartyRole))
+            return false;
+        final PartyRole compareRole = (PartyRole) obj;
+        if (getPartyRoleId() != null && compareRole.getPartyRoleId() != null &&
+            getPartyRoleId().longValue() == compareRole.getPartyRoleId().longValue())
+        {
+            return  true;
+        }
+        return false;
     }
 
     @Override
