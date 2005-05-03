@@ -144,9 +144,9 @@ public abstract class TestCase extends junit.framework.TestCase
         final String systemTempDir = System.getProperty("java.io.tmpdir");
         final String systemFileSep = System.getProperty("file.separator");
 
-        final String testDbDir = System.getProperty("project.test.db.dir", systemTempDir + systemFileSep + getClassNameWithoutPackage());
+        final String testDbDir = System.getProperty("project.test.db.dir", systemTempDir);
 
-        databaseDirectory = new File(testDbDir);
+        databaseDirectory = new File(testDbDir + systemFileSep + getClassNameWithoutPackage());
         System.out.println("Database directory: " + databaseDirectory.getAbsolutePath());
         loadServiceLocator();
 
