@@ -79,8 +79,7 @@ public abstract class TestCase extends junit.framework.TestCase
 {
     private static final Log log = LogFactory.getLog(TestCase.class);
 
-    protected static File DEFAULT_DB_DIR;
-    protected static final String DEFAULT_DB_DIR_SUFFIX = "setup";
+    protected File databaseDirectory;
 
 
     protected String getClassNameWithoutPackage()
@@ -105,7 +104,7 @@ public abstract class TestCase extends junit.framework.TestCase
         final Properties hibProperties = new Properties();
         hibProperties.setProperty(Environment.DIALECT, HSQLDialect.class.getName());
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".driver_class", "org.hsqldb.jdbcDriver");
-        hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".url", "jdbc:hsqldb:" + DEFAULT_DB_DIR + "/db");
+        hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".url", "jdbc:hsqldb:" + databaseDirectory + "/db");
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".username", "sa");
         hibProperties.setProperty(Environment.CONNECTION_PREFIX + ".password", "");
         hibProperties.setProperty(Environment.HBM2DDL_AUTO, "create-drop");
@@ -139,13 +138,16 @@ public abstract class TestCase extends junit.framework.TestCase
 
     protected void setUp() throws Exception
     {
+        System.out.println("here in setup");
         super.setUp();
 
-        String systemTempDir = System.getProperty("java.io.tmpdir");
-        String systemFileSep = System.getProperty("file.separator");
+        final String systemTempDir = System.getProperty("java.io.tmpdir");
+        final String systemFileSep = System.getProperty("file.separator");
 
-        DEFAULT_DB_DIR = new File(systemTempDir + systemFileSep + getClassNameWithoutPackage());
-        log.info(DEFAULT_DB_DIR.getAbsolutePath());
+        final String testDbDir = System.getProperty("project.test.db.dir", systemTempDir + systemFileSep + getClassNameWithoutPackage());
+
+        databaseDirectory = new File(testDbDir);
+        System.out.println("Database directory: " + databaseDirectory.getAbsolutePath());
         loadServiceLocator();
 
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
@@ -159,7 +161,7 @@ public abstract class TestCase extends junit.framework.TestCase
         SchemaExport se = new SchemaExport(hibernateConfiguration);
         final String dialectName = hibernateConfiguration.getProperties().getProperty(Environment.DIALECT);
         final String dialectShortName = dialectName.substring(dialectName.lastIndexOf('.') + 1);
-        se.setOutputFile(DEFAULT_DB_DIR.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
+        se.setOutputFile(databaseDirectory.getAbsolutePath() + systemFileSep + "medigy-" + dialectShortName + ".ddl");
         se.create(false, false);
 
         // setup a person here so that we can add a contact information for him/her

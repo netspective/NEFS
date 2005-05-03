@@ -12,7 +12,7 @@
 
     <!-- if we're running under LuntBuild the junitHtmlReportDir will already point to the location we're publishing JUnit HTML reports -->
     <target name="setup-default-junitHtmlReportDir" depends="setup-default-artifactsDir" unless="junitHtmlReportDir">
-        <property name="junitHtmlReportDir" value="${artifactsDir}/junit"/>
+        <property name="junitHtmlReportDir" value="${artifactsDir}/test/junit"/>
         <mkdir dir="${junitHtmlReportDir}"/>
     </target>
 
@@ -25,6 +25,7 @@
         <property name="project.src.test.home" value="${project.home}/src/java/test"/>
 
         <property name="project.build.classes.dir" value="${artifactsDir}/classes"/>
+        <property name="project.test.db.dir" value="${artifactsDir}/test/db"/>
 
         <property name="project.lib.dir" value="${project.home}/lib"/>
         <property name="project.lib.build.dir" value="${project.lib.dir}/build"/>
@@ -32,7 +33,7 @@
         <property name="project.lib.test.dir" value="${project.lib.dir}/test"/>
 
         <property name="project.output.jar-name" value="medigy.jar"/>
-        <property name="project.coverage.dir" value="${artifactsDir}/coverage"/>
+        <property name="project.coverage.dir" value="${artifactsDir}/test/coverage"/>
         <property name="project.coverage.enabled" value="${emma.enabled}"/>
 
         <path id="project.build.class.path">
@@ -153,7 +154,7 @@
             <jvmarg value="-Demma.coverage.out.merge=false" />
 
             <formatter type="xml" usefile="true"/>
-
+            <sysproperty key="project.test.db.dir" value="${project.test.db.dir}"/>
             <test name="${project.package.base}.model.TestSuite" todir="${junitHtmlReportDir}"/>
         </junit>
 
@@ -177,7 +178,7 @@
     </target>
 
     <target name="clean" depends="setup-project-properties">
-        <delete dir="${project.build.classes.dir}"/>
+        <delete dir="${artifactsDir}"/>
     </target>
 
     <target name="targets">
