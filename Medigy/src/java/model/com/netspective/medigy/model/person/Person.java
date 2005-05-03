@@ -59,6 +59,7 @@ import com.netspective.medigy.reference.custom.person.PersonRoleType;
 import com.netspective.medigy.reference.type.GenderType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.MaritalStatusType;
+import com.netspective.medigy.reference.type.party.PartyType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -103,6 +104,7 @@ public class Person extends Party
 
     public Person()
     {
+        setPartyType(PartyType.Cache.PERSON.getEntity());
     }
 
     @Transient

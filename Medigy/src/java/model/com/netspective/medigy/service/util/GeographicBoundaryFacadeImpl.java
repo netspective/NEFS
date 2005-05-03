@@ -39,7 +39,6 @@
 package com.netspective.medigy.service.util;
 
 import com.netspective.medigy.model.contact.GeographicBoundary;
-import com.netspective.medigy.model.contact.GeographicBoundaryAssociation;
 import com.netspective.medigy.reference.custom.GeographicBoundaryType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -81,7 +80,7 @@ public class GeographicBoundaryFacadeImpl implements GeographicBoundaryFacade
             // this is a new geo boundary then
             geo = new GeographicBoundary();
             geo.setName(boundaryName);
-            geo.setType(type);
+            geo.setPartyType(type);
             HibernateUtil.getSession().save(geo);
 
             // need to asscoiate it with its parents

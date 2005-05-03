@@ -82,6 +82,12 @@ public class TestPartyRelationshipFacade extends DbUnitTestCase
         PartyRelationshipFacade facade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
         facade.addPartyRelationship(PartyRelationshipType.Cache.PATIENT_RESPONSIBLE_PARTY.getEntity(),
             roleA, roleB);
+        HibernateUtil.closeSession();
+
+        Person patient = (Person) HibernateUtil.getSession().load(Person.class, new Long(2));
+        Person respParty = patient.getResponsibleParty();
+        assertNotNull(respParty);
+        assertEquals(personB.getPersonId().longValue(), respParty.getPersonId().longValue());
 
         final List relationships = HibernateUtil.getSession().createCriteria(PartyRelationship.class).list();
         assertEquals(1, relationships.size());

@@ -50,6 +50,8 @@ import com.netspective.medigy.reference.custom.party.FacilityType;
 import com.netspective.medigy.reference.custom.party.PartyIdentifierType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.party.PartyRoleType;
+import com.netspective.medigy.reference.custom.party.PartyClassificationType;
+import com.netspective.medigy.reference.type.party.PartyType;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -62,6 +64,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -94,7 +97,9 @@ public class Party extends AbstractTopLevelEntity
 
     private Long partyId;
     private String partyName;
+    private PartyType partyType;
 
+    private Set<PartyClassification> partyClassifications = new HashSet<PartyClassification>();
     private Set<PartyRole> partyRoles = new HashSet<PartyRole>();
     private Set<PartyRelationship> fromPartyRelationships = new HashSet<PartyRelationship>();
     private Set<PartyRelationship> toPartyRelationships = new HashSet<PartyRelationship>();
@@ -148,6 +153,50 @@ public class Party extends AbstractTopLevelEntity
         this.partyName = partyName;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "party_type_id", nullable = true)
+    public PartyType getPartyType()
+    {
+        return partyType;
+    }
+
+    public void setPartyType(final PartyType partyType)
+    {
+        this.partyType = partyType;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "party_id")
+    public Set<PartyClassification> getPartyClassifications()
+    {
+        return partyClassifications;
+    }
+
+    public void setPartyClassifications(final Set<PartyClassification> partyClassifications)
+    {
+        this.partyClassifications = partyClassifications;
+    }
+
+    @Transient
+    public void addPartyClassification(final PartyClassificationType type)
+    {
+        final PartyClassification classification = new PartyClassification();
+        classification.setType(type);
+        classification.setParty(this);
+        getPartyClassifications().add(classification);
+    }
+
+    @Transient
+    public PartyClassification getPartyClassification(final PartyClassificationType type)
+    {
+        for (PartyClassification pc : getPartyClassifications())
+        {
+            if (pc.getType().equals(type))
+            return pc;
+        }
+        return null;
+    }
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_id")
     public Set<PartyRole> getPartyRoles()
@@ -176,7 +225,7 @@ public class Party extends AbstractTopLevelEntity
     }
 
     /**
-     * Checks to see if the party has a role with the passed in type
+     * Checks to see if the party has a role with the passed in partyType
      * @param type
      * @return
      */

@@ -35,96 +35,64 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.reference.type.party;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.org;
-
-import com.netspective.medigy.model.insurance.Group;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.type.party.PartyType;
-import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
+import com.netspective.medigy.reference.AbstractReferenceEntity;
+import com.netspective.medigy.reference.CachedReferenceEntity;
+import com.netspective.medigy.reference.ReferenceEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "Org")
-public class Organization extends Party
+@Table(name = "Party_Type")
+public class PartyType extends AbstractReferenceEntity
 {
-    private Set<Group> groups = new HashSet<Group>();
-
-    public Organization()
+    public enum Cache implements CachedReferenceEntity
     {
-        setPartyType(PartyType.Cache.ORGANIZATION.getEntity());
+        PERSON("P", "Person", ""),
+        ORGANIZATION("O", "Organization", "");
+
+        private final String code;
+        private final String label;
+        private final String description;
+        private PartyType entity;
+
+        private Cache(final String code, final String label, final String description)
+        {
+            this.code = code;
+            this.label = label;
+            this.description = description;
+        }
+
+        public String getId()
+        {
+            return code;
+        }
+
+        public String getLabel()
+        {
+            return label;
+        }
+
+        public String getDescription()
+        {
+            return description;
+        }
+
+        public PartyType getEntity()
+        {
+            return entity;
+        }
+
+        public void setEntity(final ReferenceEntity entity)
+        {
+            this.entity = (PartyType) entity;
+        }
     }
 
-    @Transient
-    public String getOrganizationName()
+    public PartyType()
     {
-        return getPartyName();
     }
-
-    public void setOrganizationName(final String organizationName)
-    {
-        super.setPartyName(organizationName);
-    }
-
-    @Transient
-    public Long getOrgId()
-    {
-        return super.getPartyId();
-    }
-
-    public void setOrgId(final Long orgId)
-    {
-        super.setPartyId(orgId);
-    }
-
-    @OneToMany(mappedBy = "insuredOrganization")
-    public Set<Group> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups(final Set<Group> groups)
-    {
-        this.groups = groups;
-    }
-
-    @Transient
-    public void addGroup(final Group group)
-    {
-        getGroups().add(group);
-    }
-
-    /**
-     * Checks to see if this organization is classified as an Insurance company
-     * @return
-     */
-    @Transient
-    public boolean isInsuranceProvider()
-    {
-        return getPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity()) != null ? true : false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Org{" +
-                "indentifier=" + getOrgId() +
-                ",organizationName='" + getPartyName() + "'" +
-                "}";
-    }
-
 }

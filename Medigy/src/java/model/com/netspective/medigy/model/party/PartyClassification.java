@@ -35,96 +35,57 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.model.party;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.org;
-
-import com.netspective.medigy.model.insurance.Group;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.type.party.PartyType;
-import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
+import com.netspective.medigy.model.common.AbstractDateDurationEntity;
+import com.netspective.medigy.reference.custom.party.PartyClassificationType;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "Org")
-public class Organization extends Party
+public class PartyClassification extends AbstractDateDurationEntity
 {
-    private Set<Group> groups = new HashSet<Group>();
+    private Long partyClassificationId;
+    private Party party;
+    private PartyClassificationType type;
 
-    public Organization()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getPartyClassificationId()
     {
-        setPartyType(PartyType.Cache.ORGANIZATION.getEntity());
+        return partyClassificationId;
     }
 
-    @Transient
-    public String getOrganizationName()
+    protected void setPartyClassificationId(final Long partyClassificationId)
     {
-        return getPartyName();
+        this.partyClassificationId = partyClassificationId;
     }
 
-    public void setOrganizationName(final String organizationName)
+    @ManyToOne
+    @JoinColumn(name = "party_id")
+    public Party getParty()
     {
-        super.setPartyName(organizationName);
+        return party;
     }
 
-    @Transient
-    public Long getOrgId()
+    public void setParty(final Party party)
     {
-        return super.getPartyId();
+        this.party = party;
     }
 
-    public void setOrgId(final Long orgId)
+    @ManyToOne
+    @JoinColumn(name = "party_classification_type_id")
+    public PartyClassificationType getType()
     {
-        super.setPartyId(orgId);
+        return type;
     }
 
-    @OneToMany(mappedBy = "insuredOrganization")
-    public Set<Group> getGroups()
+    public void setType(PartyClassificationType type)
     {
-        return groups;
+        this.type = type;
     }
-
-    public void setGroups(final Set<Group> groups)
-    {
-        this.groups = groups;
-    }
-
-    @Transient
-    public void addGroup(final Group group)
-    {
-        getGroups().add(group);
-    }
-
-    /**
-     * Checks to see if this organization is classified as an Insurance company
-     * @return
-     */
-    @Transient
-    public boolean isInsuranceProvider()
-    {
-        return getPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity()) != null ? true : false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Org{" +
-                "indentifier=" + getOrgId() +
-                ",organizationName='" + getPartyName() + "'" +
-                "}";
-    }
-
 }

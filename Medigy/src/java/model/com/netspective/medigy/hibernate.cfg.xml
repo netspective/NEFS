@@ -49,6 +49,7 @@
         <mapping class="com.netspective.medigy.reference.custom.party.PartyIdentifierType"/>
         <mapping class="com.netspective.medigy.reference.custom.party.PartyQualificationType"/>
         <mapping class="com.netspective.medigy.reference.custom.party.PartyRelationshipType"/>
+        <mapping class="com.netspective.medigy.reference.custom.party.PartyClassificationType"/>
 
         <mapping package="com.netspective.medigy.reference.custom.person"/>
         <mapping class="com.netspective.medigy.reference.custom.person.EthnicityType"/>
@@ -58,7 +59,11 @@
         <mapping class="com.netspective.medigy.reference.custom.person.PersonRoleType"/>
         <mapping class="com.netspective.medigy.reference.custom.person.PhysicalCharacteristicType"/>
         <mapping class="com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType"/>
+        <mapping class="com.netspective.medigy.reference.custom.person.PersonClassificationType"/>
 
+        <mapping package="com.netspective.medigy.reference.custom.org"/>
+        <mapping class="com.netspective.medigy.reference.custom.org.OrganizationClassificationType"/>
+        
         <mapping package="com.netspective.medigy.model.party"/>
         <!--mapping class="com.netspective.medigy.model.party.Case"/-->
         <!--mapping class="com.netspective.medigy.model.party.CaseRole"/-->
@@ -73,6 +78,7 @@
         <mapping class="com.netspective.medigy.model.party.EmploymentAgreementRole"/>
         <mapping class="com.netspective.medigy.model.party.Facility"/>
         <mapping class="com.netspective.medigy.model.party.Party"/>
+        <mapping class="com.netspective.medigy.model.party.PartyClassification"/>
         <mapping class="com.netspective.medigy.model.party.PartyContactMechanism"/>
         <mapping class="com.netspective.medigy.model.party.PartyContactMechanismPurpose"/>
         <mapping class="com.netspective.medigy.model.party.PartyFacilityRole"/>
@@ -131,6 +137,11 @@
         <mapping class="com.netspective.medigy.model.health.VisitReason"/>
         <mapping class="com.netspective.medigy.model.health.HealthCareLicense"/>
 
+        <mapping package="com.netspective.medigy.model.product"/>
+        <mapping class="com.netspective.medigy.model.product.Product"/>
+        <mapping class="com.netspective.medigy.model.product.ProductCategory"/>
+        <mapping class="com.netspective.medigy.model.product.ProductFeature"/>
+
         <mapping package="com.netspective.medigy.model.insurance"/>
         <mapping class="com.netspective.medigy.model.insurance.CareProviderSelection"/>
         <mapping class="com.netspective.medigy.model.insurance.CoverageLevel"/>
@@ -140,8 +151,8 @@
         <mapping class="com.netspective.medigy.model.insurance.InsurancePolicy"/>
         <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyItem"/>
         <mapping class="com.netspective.medigy.model.insurance.InsurancePolicyRole"/>
-        <!--mapping class="com.netspective.medigy.model.insurance.InsuranceProvider"/-->
-        <!--mapping class="com.netspective.medigy.model.insurance.InsuredDependent"/-->
+        <mapping class="com.netspective.medigy.model.insurance.InsuranceProduct"/>
+
 
         <mapping package="com.netspective.medigy.model.invoice"/>
         <mapping class="com.netspective.medigy.model.invoice.BillingAccount"/>
@@ -166,10 +177,6 @@
         <mapping class="com.netspective.medigy.model.person.MaritalStatus"/>
         <mapping class="com.netspective.medigy.model.person.PatientMedicalCondition"/>
         <mapping class="com.netspective.medigy.model.person.PhysicalCharacteristic"/>
-
-        <mapping package="com.netspective.medigy.model.product"/>
-        <mapping class="com.netspective.medigy.model.product.Product"/>
-        <mapping class="com.netspective.medigy.model.product.ProductFeature"/>
 
         <mapping package="com.netspective.medigy.model.session"/>
         <mapping class="com.netspective.medigy.model.session.Session"/>

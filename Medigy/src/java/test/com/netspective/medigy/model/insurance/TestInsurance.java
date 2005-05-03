@@ -44,6 +44,7 @@ import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.insurance.CoverageType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
+import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
 import com.netspective.medigy.util.HibernateUtil;
 
 import java.util.Date;
@@ -53,8 +54,10 @@ public class TestInsurance extends TestCase
 
     public void testInsurance()
     {
+        // create the insurance company
         final Organization blueCross = new Organization();
         blueCross.setOrganizationName("Blue Cross Blue Shield");
+        blueCross.addPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity());
 
         final Person johnDoe = new Person();
         johnDoe.setFirstName("John");
@@ -72,7 +75,7 @@ public class TestInsurance extends TestCase
         individualPolicy.setType(InsurancePolicyType.Cache.INDIVIDUAL_INSURANCE_POLICY.getEntity());
         individualPolicy.setInsuranceProvider(blueCross);
         individualPolicy.setAgreementDate(new Date());
-        individualPolicy.setInsuredContractHolder(johnDoe);
+        individualPolicy.setPolicyHolder(johnDoe);
         individualPolicy.addInsuredDependent(patient);
         individualPolicy.setPolicyNumber("12345");
 
@@ -100,9 +103,9 @@ public class TestInsurance extends TestCase
         anthemInsurance.setOrganizationName("Anthem");
 
         final InsurancePolicy groupPolicy = new InsurancePolicy();
+        groupPolicy.setType(InsurancePolicyType.Cache.GROUP_INSURANCE_POLICY.getEntity());
         groupPolicy.setInsuranceProvider(anthemInsurance);
         groupPolicy.setPolicyNumber("12345");
-        groupPolicy.setType(InsurancePolicyType.Cache.GROUP_INSURANCE_POLICY.getEntity());
 
         final Group acmeDevelopers = new Group();
         acmeDevelopers.setInsuredOrganization(acmeCompany);

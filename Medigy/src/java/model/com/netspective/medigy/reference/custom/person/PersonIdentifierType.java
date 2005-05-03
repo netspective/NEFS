@@ -77,6 +77,16 @@ public class PersonIdentifierType extends PartyIdentifierType
         {
             this.entity = (PersonIdentifierType) entity;
         }
+
+        public static PersonIdentifierType getEntity(String code)
+        {
+            for (PersonIdentifierType.Cache role : PersonIdentifierType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
     }
 
     public PersonIdentifierType()

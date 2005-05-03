@@ -48,6 +48,7 @@ import com.netspective.medigy.model.party.PartyRole;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 import com.netspective.medigy.reference.custom.party.ContactMechanismPurposeType;
+import com.netspective.medigy.reference.custom.party.OrganizationRoleType;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
@@ -63,6 +64,8 @@ import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.io.Serializable;
 
@@ -73,6 +76,10 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
 {
     private static final Log log = LogFactory.getLog(PatientRegistrationServiceImpl.class);
 
+    private static Serializable getPrimaryKey(String keyString)
+    {
+        return Long.parseLong(keyString);
+    }
 
     protected void registerInsuranceInformation(final Person person, final RegisterPatientParameters params) throws UnknownReferenceTypeException
     {
@@ -83,6 +90,8 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
         final String[] contractHolderIds = params.getInsurancePolicyHolderId();
         final String[] contractHolderLastNames = params.getInsurancePolicyHolderLastNames();
         final String[] contractHolderFirstNames = params.getInsurancePolicyHolderFirstNames();
+        final String[] policyProviders = params.getInsurancePolicyProviders();
+        final String[] policyProviderIds = params.getInsurancePolicyProviderIds();
 
         for (int i=0; i < policyNumbers.length; i++)
         {
@@ -91,28 +100,60 @@ public class PatientRegistrationServiceImpl implements PatientRegistrationServic
             final String contractHolderId = contractHolderIds[i];
             final String contractHolderFirstName = contractHolderFirstNames[i];
             final String contractHolderLastName = contractHolderLastNames[i];
+            final String policyProvider = policyProviders[i];
+            final String policyProviderId = policyProviderIds[i];
 
+            Person policyHolder = null;
             if (contractHolderId == null && contractHolderLastName != null)
             {
                 // create a new contract holder but check if this is the same person as the responsible party
                 if (params.getResponsiblePartyLastName().equals(contractHolderLastName) &&
                     params.getResponsiblePartyFirstName().equals(contractHolderFirstName))
                 {
-                    
+                    // TODO:
                 }
-
+                else
+                {
+                    policyHolder = new Person();
+                    policyHolder.setLastName(contractHolderLastName);
+                    policyHolder.setFirstName(contractHolderFirstName);
+                    HibernateUtil.getSession().save(policyHolder);
+                }
+            }
+            else
+            {
+                // NOTE: this will throw HibernateException if the ID doesnt exist
+                policyHolder = (Person) HibernateUtil.getSession().load(Person.class,
+                        getPrimaryKey(contractHolderId));
             }
 
-                Organization providerOrg = null;
-            Person contractHolder = null;
+            Organization providerOrg = null;
+            if (policyProviderId != null)
+            {
+                providerOrg = (Organization) HibernateUtil.getSession().load(Organization.class,
+                        getPrimaryKey(policyProviderId));
+            }
+            else
+            {
+                providerOrg = new Organization();
+                providerOrg.setOrganizationName(policyProvider);
+                providerOrg.addPartyRole(OrganizationRoleType.Cache.INSURANCE_PROVIDER.getEntity());
+                HibernateUtil.getSession().save(providerOrg);
+            }
 
             boolean newPolicy = false;
+
+            Criteria criteria = HibernateUtil.getSession().createCriteria(InsurancePolicy.class);
+            criteria.add(Restrictions.eq("policyNumber", policyNumbers[i]));
+            Criteria providerCriteria = criteria.createCriteria("insuranceProvider");
+            providerCriteria.add(Restrictions.eq("partyId", providerOrg.getPartyId()));
+            Criteria policyHolderCriteria = criteria.createCriteria("pol");
 
             InsurancePolicy policy = new InsurancePolicy();
             policy.setType(type);
             policy.setPolicyNumber(policyNumbers[i]);
             policy.setInsuranceProvider(providerOrg);
-            policy.setInsuredContractHolder(contractHolder);
+            policy.setPolicyHolder(policyHolder);
             policy.addInsuredDependent(person);
 
             if (newPolicy)

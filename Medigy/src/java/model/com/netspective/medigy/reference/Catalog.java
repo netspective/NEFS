@@ -51,11 +51,13 @@ import com.netspective.medigy.reference.type.PriorityType;
 import com.netspective.medigy.reference.type.UnitOfMeasureType;
 import com.netspective.medigy.reference.type.LanguageType;
 import com.netspective.medigy.reference.type.party.PartyFacilityRoleType;
+import com.netspective.medigy.reference.type.party.PartyType;
 
 public interface Catalog
 {
     public Class[] ALL_REFERENCE_TYPES =
     {
+        PartyType.class,
         MaritalStatusType.class,
         GenderType.class,
         ContactMechanismType.class,

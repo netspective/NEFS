@@ -35,78 +35,31 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Aye Thu
  */
-package com.netspective.medigy.model.party;
+package com.netspective.medigy.reference.custom.party;
 
-import com.netspective.medigy.model.common.AbstractEntity;
-import com.netspective.medigy.reference.type.party.PartyRelationshipStatusType;
+import com.netspective.medigy.reference.custom.AbstractCustomReferenceEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.persistence.GeneratorType;
-import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorType;
 
 @Entity
-@Table(name = "Party_Rel_Status")
-public class PartyRelationshipStatus extends AbstractEntity implements Comparable
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE, discriminatorType = DiscriminatorType.STRING, discriminatorValue = "Party")
+public abstract class PartyClassificationType extends AbstractCustomReferenceEntity
 {
-    private Long identifier;
 
-    private PartyRelationship partyRelationship;
-    private PartyRelationshipStatusType type;
-
-    public PartyRelationshipStatus()
+    @Id(generate = GeneratorType.AUTO)
+    public Long getClassificationTypeId()
     {
-
+        return getSystemId();
     }
 
-    @Id(generate=GeneratorType.AUTO)
-    @Column(name = "party_rel_stat_id")
-    public Long getIdentifier()
+    protected void setClassificationTypeId(final Long id)
     {
-        return identifier;
-    }
-
-    protected void setIdentifier(final Long identifier)
-    {
-        this.identifier = identifier;
-    }
-
-    @OneToOne(cascade={CascadeType.ALL})
-    @JoinColumn(name = "party_rel_id")
-    public PartyRelationship getPartyRelationship()
-    {
-        return partyRelationship;
-    }
-
-    protected void setPartyRelationship(final PartyRelationship partyRelationship)
-    {
-        this.partyRelationship = partyRelationship;
-    }
-
-    @OneToOne
-    @JoinColumn(name = "party_rel_stat_type_id")
-    public PartyRelationshipStatusType getType()
-    {
-        return type;
-    }
-
-    public void setType(PartyRelationshipStatusType type)
-    {
-        this.type = type;
-    }
-
-    public int compareTo(Object o)
-    {
-        if(o == this)
-            return 0;
-
-        final PartyRelationshipStatus otherStatus = (PartyRelationshipStatus) o;
-        return ((PartyRelationshipStatusType) getType()).compareTo(otherStatus.getType());
+        setSystemId(id);
     }
 }

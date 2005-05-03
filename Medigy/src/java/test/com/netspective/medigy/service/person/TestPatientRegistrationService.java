@@ -295,9 +295,14 @@ public class TestPatientRegistrationService extends TestCase
                     return new String[]  { "12345", "ABC-12345" } ;
                 }
 
-                public String[] getInsurancePolicyProvider()
+                public String[] getInsurancePolicyProviders()
                 {
                     return new String[]  { "Blue Cross Blue Shield", "Anthem" };
+                }
+
+                public String[] getInsurancePolicyProviderIds()
+                {
+                    return new String[0];
                 }
 
                 public String[] getInsurancePolicyTypes()

@@ -35,96 +35,26 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.service.util;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.org;
+import com.netspective.medigy.model.insurance.InsurancePolicy;
+import com.netspective.medigy.model.org.Organization;
 
-import com.netspective.medigy.model.insurance.Group;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.type.party.PartyType;
-import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
+import java.io.Serializable;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "Org")
-public class Organization extends Party
+public interface InsurancePolicyFacade
 {
-    private Set<Group> groups = new HashSet<Group>();
+    public InsurancePolicy getIndividualInsurancePolicy(final String policyNumber);
 
-    public Organization()
-    {
-        setPartyType(PartyType.Cache.ORGANIZATION.getEntity());
-    }
-
-    @Transient
-    public String getOrganizationName()
-    {
-        return getPartyName();
-    }
-
-    public void setOrganizationName(final String organizationName)
-    {
-        super.setPartyName(organizationName);
-    }
-
-    @Transient
-    public Long getOrgId()
-    {
-        return super.getPartyId();
-    }
-
-    public void setOrgId(final Long orgId)
-    {
-        super.setPartyId(orgId);
-    }
-
-    @OneToMany(mappedBy = "insuredOrganization")
-    public Set<Group> getGroups()
-    {
-        return groups;
-    }
-
-    public void setGroups(final Set<Group> groups)
-    {
-        this.groups = groups;
-    }
-
-    @Transient
-    public void addGroup(final Group group)
-    {
-        getGroups().add(group);
-    }
+    public List listInsurancePoliciesByProvider(final Organization org);
 
     /**
-     * Checks to see if this organization is classified as an Insurance company
+     * Lists all insurance policies associated with the person.This person can be
+     * either the policy holder or an insured dependent.
+     * @param personId
      * @return
      */
-    @Transient
-    public boolean isInsuranceProvider()
-    {
-        return getPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity()) != null ? true : false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Org{" +
-                "indentifier=" + getOrgId() +
-                ",organizationName='" + getPartyName() + "'" +
-                "}";
-    }
-
+    public List listInsurancePolicies(final Serializable personId);
 }

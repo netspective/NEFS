@@ -38,28 +38,29 @@
  */
 package com.netspective.medigy.model.insurance;
 
-import com.netspective.medigy.model.party.Agreement;
-import com.netspective.medigy.model.party.AgreementRole;
-import com.netspective.medigy.model.party.AgreementItem;
-import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.org.Organization;
+import com.netspective.medigy.model.party.Agreement;
+import com.netspective.medigy.model.party.AgreementItem;
+import com.netspective.medigy.model.party.AgreementRole;
+import com.netspective.medigy.model.party.Party;
 import com.netspective.medigy.model.person.Person;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyRoleType;
 import com.netspective.medigy.reference.custom.insurance.InsurancePolicyType;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-import javax.persistence.Id;
-import javax.persistence.GeneratorType;
-import javax.persistence.Column;
-import javax.persistence.Table;
-import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Date;
 
 @Entity
 @Table(name = "Ins_Policy")
@@ -70,7 +71,7 @@ public class InsurancePolicy implements Agreement
     private String description;
     private Date policyDate;
     private InsurancePolicyType type;
-    private Group group;
+    private InsuranceProduct insuranceProduct;
 
     private Set<InsurancePolicyRole> insurancePolicyRoles = new HashSet<InsurancePolicyRole>();
     private Set<InsurancePolicyItem> insurancePolicyItems = new HashSet<InsurancePolicyItem>();
@@ -87,7 +88,7 @@ public class InsurancePolicy implements Agreement
         this.policyId = id;
     }
 
-    @Column(name = "policy_date")
+    @Column(name = "policy_effective_date")
     public Date getAgreementDate()
     {
         return policyDate;
@@ -148,7 +149,7 @@ public class InsurancePolicy implements Agreement
         }
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ins_policy_id")
     public Set<InsurancePolicyItem> getAgreementItems()
     {
@@ -184,7 +185,7 @@ public class InsurancePolicy implements Agreement
     }
 
     @Transient
-    public void setInsuredContractHolder(final Person individualParty)
+    public void setPolicyHolder(final Person individualParty)
     {
         addPartyByRole(individualParty, InsurancePolicyRoleType.Cache.INSURED_CONTRACT_HOLDER.getEntity());
     }
@@ -234,15 +235,31 @@ public class InsurancePolicy implements Agreement
         return null;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")        
-    public Group getGroup()
+    @Transient
+    protected Set<Party> getPartiesByRole(final InsurancePolicyRoleType roleType)
     {
-        return group;
+        final Set<Party> partyList = new HashSet<Party>();
+        final Object[] objects = (Object[]) getAgreementRoles().toArray();
+        for (int i = 0; i < objects.length; i++)
+        {
+            AgreementRole role = (AgreementRole) objects[i];
+            if (role.getType().equals(roleType))
+            {
+                partyList.add(role.getParty());
+            }
+        }
+        return partyList;
     }
 
-    public void setGroup(final Group group)
+    @ManyToOne
+    @JoinColumn(name = "product_id")        
+    public InsuranceProduct getInsuranceProduct()
     {
-        this.group = group;
+        return insuranceProduct;
+    }
+
+    public void setInsuranceProduct(final InsuranceProduct insuranceProduct)
+    {
+        this.insuranceProduct = insuranceProduct;
     }
 }

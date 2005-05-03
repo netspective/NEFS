@@ -36,64 +36,39 @@
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
  */
-package com.netspective.medigy.reference.custom.party;
+package com.netspective.medigy.model.insurance;
 
-import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
-import com.netspective.medigy.reference.custom.CustomReferenceEntity;
+import com.netspective.medigy.model.product.Product;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.persistence.Inheritance;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Inheritance(discriminatorValue="Person" )
-public class PersonRoleType extends PartyRoleType
+@Inheritance(discriminatorValue = "Insurance")        
+public class InsuranceProduct extends Product
 {
-    public enum Cache implements CachedCustomReferenceEntity
+    private Set<InsurancePolicy> insurancePolicies = new HashSet<InsurancePolicy>();
+
+    @OneToMany
+    @JoinColumn(name = "product_id")
+    public Set<InsurancePolicy> getInsurancePolicies()
     {
-        CHILD("CHILD"),
-        PARENT("PARENT"),
-        FAMILY_MEMBER("F"),
-        EMPLOYEE("E"),
-        DEPENDENT("DEP"),
+        return insurancePolicies;
+    }
 
-        PATIENT("PATIENT"),
-        INSURED_DEPENDENT("INS_DEP"),
-        INSURED_CONTRACT_HOLDER("INS_PER"),
-        INSURED_ORG("INS_ORG"),
-        INDIVIDUAL_HEALTH_CARE_PRACTITIONER("IND_HCP");
+    public void setInsurancePolicies(final Set<InsurancePolicy> insurancePolicies)
+    {
+        this.insurancePolicies = insurancePolicies;
+    }
 
-       private final String code;
-       private PersonRoleType entity;
-
-       Cache(final String code)
-       {
-           this.code = code;
-       }
-
-       public String getCode()
-       {
-           return code;
-       }
-
-       public PersonRoleType getEntity()
-       {
-           return entity;
-       }
-
-       public void setEntity(final CustomReferenceEntity entity)
-       {
-           this.entity = (PersonRoleType) entity;
-       }
-
-        public static PersonRoleType getEntity(String code)
-        {
-            for (PersonRoleType.Cache role : PersonRoleType.Cache.values())
-            {
-                if (role.getCode().equals(code))
-                    return role.getEntity();
-            }
-            return null;
-        }
-   }
-
+    @Transient
+    public void addInsurancePolicy(final InsurancePolicy policy)
+    {
+        getInsurancePolicies().add(policy);
+    }
 }

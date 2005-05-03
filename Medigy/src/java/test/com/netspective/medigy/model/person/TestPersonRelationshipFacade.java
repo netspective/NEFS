@@ -41,9 +41,6 @@ package com.netspective.medigy.model.person;
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.PartyRelationship;
 import com.netspective.medigy.model.party.PartyRole;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.party.PartyRelationshipType;
 import com.netspective.medigy.reference.custom.person.PatientResponsiblePartyRoleType;
 import com.netspective.medigy.reference.custom.person.PersonRoleType;
@@ -98,11 +95,6 @@ public class TestPersonRelationshipFacade extends TestCase
 
     public void testPartyRelationship()
     {
-        Session session = new ProcessSession();
-        session.setProcessName(TestPersonRelationshipFacade.class.getName() + ".testPartyRelationship()");
-        SessionManager.getInstance().pushActiveSession(session);
-        HibernateUtil.getSession().save(session);
-
         final PersonFacade pFacade = (PersonFacade) ServiceLocator.getInstance().getService(PersonFacade.class);
         final PartyRelationshipFacade facade = (PartyRelationshipFacade) ServiceLocator.getInstance().getService(PartyRelationshipFacade.class);
 
@@ -154,6 +146,5 @@ public class TestPersonRelationshipFacade extends TestCase
         assertEquals(((PartyRelationship) bList.toArray()[0]).getPartyTo(), mom);
         assertEquals(((PartyRelationship) bList.toArray()[1]).getPartyTo(), dad);
 
-        SessionManager.getInstance().popActiveSession();
     }
 }

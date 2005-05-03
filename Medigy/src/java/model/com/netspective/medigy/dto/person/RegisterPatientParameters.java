@@ -213,12 +213,13 @@ public interface RegisterPatientParameters
      * Gets the list of insurance policy providers.
      * @return
      */
-    public String[] getInsurancePolicyProvider();
+    public String[] getInsurancePolicyProviders();
+    public String[] getInsurancePolicyProviderIds();
 
     /**
      * Gets the type of insurance policy
      * @return
-     * @see com.netspective.medigy.reference.custom.insurance.InsurancePolicyType#getCode() 
+     * @see com.netspective.medigy.reference.custom.insurance.InsurancePolicyType#getCode()
      */
     public String[] getInsurancePolicyTypes();
     public String[] getInsurancePolicyHolderLastNames();

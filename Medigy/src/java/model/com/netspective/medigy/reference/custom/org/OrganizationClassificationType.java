@@ -35,96 +35,62 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.reference.custom.org;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.org;
-
-import com.netspective.medigy.model.insurance.Group;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.type.party.PartyType;
-import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
+import com.netspective.medigy.reference.custom.party.PartyClassificationType;
+import com.netspective.medigy.reference.custom.CachedCustomReferenceEntity;
+import com.netspective.medigy.reference.custom.CustomReferenceEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
 
+/**
+ * Classification type class for grouping organizations. For example,
+ * "minority owned business", "manufacturer", and "insurance".
+ */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "Org")
-public class Organization extends Party
+@Inheritance(discriminatorValue = "Org")
+public class OrganizationClassificationType extends PartyClassificationType
 {
-    private Set<Group> groups = new HashSet<Group>();
-
-    public Organization()
+    public enum Cache implements CachedCustomReferenceEntity
     {
-        setPartyType(PartyType.Cache.ORGANIZATION.getEntity());
-    }
+        INSURANCE("Insurance"),
+        EMPLOYER("Employer"),
+        FACILITY_SITE("Facility/Site");
 
-    @Transient
-    public String getOrganizationName()
-    {
-        return getPartyName();
-    }
+        private final String code;
+        private OrganizationClassificationType entity;
 
-    public void setOrganizationName(final String organizationName)
-    {
-        super.setPartyName(organizationName);
-    }
+        Cache(final String code)
+        {
+            this.code = code;
+        }
 
-    @Transient
-    public Long getOrgId()
-    {
-        return super.getPartyId();
-    }
+        public String getCode()
+        {
+            return this.code;
+        }
 
-    public void setOrgId(final Long orgId)
-    {
-        super.setPartyId(orgId);
-    }
+        public OrganizationClassificationType getEntity()
+        {
+            return entity;
+        }
 
-    @OneToMany(mappedBy = "insuredOrganization")
-    public Set<Group> getGroups()
-    {
-        return groups;
-    }
+        public void setEntity(final CustomReferenceEntity entity)
+        {
+            this.entity = (OrganizationClassificationType) entity;
+        }
 
-    public void setGroups(final Set<Group> groups)
-    {
-        this.groups = groups;
-    }
-
-    @Transient
-    public void addGroup(final Group group)
-    {
-        getGroups().add(group);
-    }
-
-    /**
-     * Checks to see if this organization is classified as an Insurance company
-     * @return
-     */
-    @Transient
-    public boolean isInsuranceProvider()
-    {
-        return getPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity()) != null ? true : false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Org{" +
-                "indentifier=" + getOrgId() +
-                ",organizationName='" + getPartyName() + "'" +
-                "}";
+        public static OrganizationClassificationType getEntity(String code)
+        {
+            for (OrganizationClassificationType.Cache role : OrganizationClassificationType.Cache.values())
+            {
+                if (role.getCode().equals(code))
+                    return role.getEntity();
+            }
+            return null;
+        }
     }
 
 }

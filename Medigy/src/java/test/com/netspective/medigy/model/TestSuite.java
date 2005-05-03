@@ -38,12 +38,13 @@
  */
 package com.netspective.medigy.model;
 
+import com.netspective.medigy.model.contact.TestGeographicBoundary;
+import com.netspective.medigy.model.org.TestOrganization;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.person.TestPersonRelationshipFacade;
-import com.netspective.medigy.model.org.TestOrganization;
-import com.netspective.medigy.model.contact.TestGeographicBoundary;
-import com.netspective.medigy.service.person.TestPersonFacade;
 import com.netspective.medigy.service.party.TestAddContactMechanismService;
+import com.netspective.medigy.service.person.TestPersonFacade;
+import com.netspective.medigy.service.util.TestInsurancePolicyFacade;
 import junit.framework.Test;
 
 public class TestSuite extends junit.framework.TestSuite
@@ -57,7 +58,7 @@ public class TestSuite extends junit.framework.TestSuite
         suite.addTest(new junit.framework.TestSuite(TestPersonFacade.class));
         suite.addTest(new junit.framework.TestSuite(TestGeographicBoundary.class));
         suite.addTest(new junit.framework.TestSuite(TestAddContactMechanismService.class));
-
+        suite.addTest(new junit.framework.TestSuite(TestInsurancePolicyFacade.class));
         return suite;
     }
 }

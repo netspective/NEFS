@@ -35,96 +35,80 @@
  * CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR INABILITY TO USE THE SOFTWARE, EVEN
  * IF HE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
  *
- * @author Shahid N. Shah
  */
+package com.netspective.medigy.model.product;
 
-/*
- * Copyright (c) 2005 Your Corporation. All Rights Reserved.
- */
-package com.netspective.medigy.model.org;
+import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
-import com.netspective.medigy.model.insurance.Group;
-import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.reference.type.party.PartyType;
-import com.netspective.medigy.reference.custom.org.OrganizationClassificationType;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.GeneratorType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Categories are groupings of insurance products. For example,
+ * Health Insurance would be a main category and it can have children categories which are
+ * "group health insurance" and "individual health insurance" and various insurance products
+ * can exist for these.
+ */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
-@Table(name = "Org")
-public class Organization extends Party
+public class ProductCategory extends AbstractTopLevelEntity
 {
-    private Set<Group> groups = new HashSet<Group>();
+    private Long insuranceProductCategoryId;
+    private String description;
+    private ProductCategory parentCategory;
+    private Set<Product> products = new HashSet<Product>();
 
-    public Organization()
+    @Id(generate = GeneratorType.AUTO)
+    @Column(name = "product_category_id")
+    public Long getProductCategoryId()
     {
-        setPartyType(PartyType.Cache.ORGANIZATION.getEntity());
+        return insuranceProductCategoryId;
     }
 
-    @Transient
-    public String getOrganizationName()
+    protected void setProductCategoryId(final Long insuranceProductCategoryId)
     {
-        return getPartyName();
+        this.insuranceProductCategoryId = insuranceProductCategoryId;
     }
 
-    public void setOrganizationName(final String organizationName)
+    @Column(length = 256, nullable = false)
+    public String getDescription()
     {
-        super.setPartyName(organizationName);
+        return description;
     }
 
-    @Transient
-    public Long getOrgId()
+    public void setDescription(String description)
     {
-        return super.getPartyId();
+        this.description = description;
     }
 
-    public void setOrgId(final Long orgId)
+    @ManyToOne
+    @JoinColumn(name = "parent_product_category_id", referencedColumnName = "product_category_id")
+    public ProductCategory getParentCategory()
     {
-        super.setPartyId(orgId);
+        return parentCategory;
     }
 
-    @OneToMany(mappedBy = "insuredOrganization")
-    public Set<Group> getGroups()
+    public void setParentCategory(ProductCategory parentCategory)
     {
-        return groups;
+        this.parentCategory = (ProductCategory) parentCategory;
     }
 
-    public void setGroups(final Set<Group> groups)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_category_id")
+    public Set<Product> getProducts()
     {
-        this.groups = groups;
+        return products;
     }
 
-    @Transient
-    public void addGroup(final Group group)
+    public void setProducts(final Set<Product> products)
     {
-        getGroups().add(group);
+        this.products = products;
     }
-
-    /**
-     * Checks to see if this organization is classified as an Insurance company
-     * @return
-     */
-    @Transient
-    public boolean isInsuranceProvider()
-    {
-        return getPartyClassification(OrganizationClassificationType.Cache.INSURANCE.getEntity()) != null ? true : false;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Org{" +
-                "indentifier=" + getOrgId() +
-                ",organizationName='" + getPartyName() + "'" +
-                "}";
-    }
-
 }
