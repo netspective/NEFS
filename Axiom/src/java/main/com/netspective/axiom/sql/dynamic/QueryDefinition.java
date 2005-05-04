@@ -97,6 +97,7 @@ public class QueryDefinition implements QueriesNameSpace
     private QueryDefnFieldsValueSource fieldsValueSource = new QueryDefnFieldsValueSource(this);
     private QueryDefnSelectsValueSource selectsValueSource = new QueryDefnSelectsValueSource(this);
     private static int DEFAULT_QUERY_DEFINITION_COUNTER = 0;
+    private boolean generateCommentsInQueries = false;
 
     public QueryDefinition()
     {
@@ -181,6 +182,16 @@ public class QueryDefinition implements QueriesNameSpace
     public QueryDefnSqlWhereExpressions getWhereExpressions()
     {
         return defaultWhereExprs;
+    }
+
+    public boolean isGenerateCommentsInQueries()
+    {
+        return generateCommentsInQueries;
+    }
+
+    public void setGenerateCommentsInQueries(boolean generateCommentsInQueries)
+    {
+        this.generateCommentsInQueries = generateCommentsInQueries;
     }
 
     public QueryFieldSortInfo[] getFieldsFromDelimitedNames(String names, String delim) throws QueryDefnFieldNotFoundException

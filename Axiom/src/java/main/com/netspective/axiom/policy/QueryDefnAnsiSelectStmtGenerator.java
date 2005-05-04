@@ -190,7 +190,7 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
             if(fc != fromLast)
                 sql.append(",");
             String comments = (String) fromClauseComments.get(fc);
-            if(comments != null)
+            if(queryDefn.isGenerateCommentsInQueries() && comments != null)
             {
                 sql.append(" ");
                 sql.append(comments);

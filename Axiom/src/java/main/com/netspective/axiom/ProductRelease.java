@@ -52,7 +52,7 @@ public class ProductRelease implements Product
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
     public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 0;
+    public static final int PRODUCT_VERSION_MINOR = 1;
 
     public ProductRelease()
     {
