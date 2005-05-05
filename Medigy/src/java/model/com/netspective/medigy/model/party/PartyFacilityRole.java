@@ -45,7 +45,6 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
@@ -90,7 +89,7 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
         this.party = party;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "party_fac_role_type_id")
     public PartyFacilityRoleType getType()
     {
@@ -103,7 +102,7 @@ public class PartyFacilityRole extends AbstractTopLevelEntity
     }
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "facility_id")
     public Facility getFacility()
     {

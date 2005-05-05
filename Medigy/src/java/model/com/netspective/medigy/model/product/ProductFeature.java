@@ -38,18 +38,24 @@
  */
 package com.netspective.medigy.model.product;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
+import com.netspective.medigy.model.invoice.InvoiceItem;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class ProductFeature extends AbstractTopLevelEntity
 {
     private Long productFeatureId;
     private String description;
+    private Set<InvoiceItem> invoiceItems = new HashSet<InvoiceItem>();
 
     /**
      * Such as product quality, color, size, brand, software feature, etc.
@@ -70,6 +76,7 @@ public class ProductFeature extends AbstractTopLevelEntity
         this.productFeatureId = productFeatureId;
     }
 
+    @Column(length = 256, nullable = false)
     public String getDescription()
     {
         return description;
@@ -80,4 +87,16 @@ public class ProductFeature extends AbstractTopLevelEntity
         this.description = description;
     }
 
+    @OneToMany(mappedBy = "productFeature")
+    public Set<InvoiceItem> getInvoiceItems()
+    {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(final Set<InvoiceItem> invoiceItems)
+    {
+        this.invoiceItems = invoiceItems;
+    }
+
+    
 }

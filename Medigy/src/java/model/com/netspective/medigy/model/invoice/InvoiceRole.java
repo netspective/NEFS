@@ -48,7 +48,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Id;
 import javax.persistence.GeneratorType;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 import java.util.Date;
 
@@ -74,7 +73,7 @@ public class InvoiceRole extends AbstractTopLevelEntity
         this.invoiceRoleId = invoiceRoleId;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "invoice_role_type_id")
     public InvoiceRoleType getInvoiceRoleType()
     {

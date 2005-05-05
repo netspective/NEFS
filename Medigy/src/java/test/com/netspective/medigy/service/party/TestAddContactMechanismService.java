@@ -69,7 +69,6 @@ public class TestAddContactMechanismService extends DbUnitTestCase
     {
         super.setUp();
         service = (AddContactMechanismService) ServiceLocator.getInstance().getService(AddContactMechanismService.class);
-
     }
 
     public String getDataSetFile()

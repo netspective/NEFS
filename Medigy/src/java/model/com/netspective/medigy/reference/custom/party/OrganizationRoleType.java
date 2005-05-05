@@ -53,6 +53,7 @@ public class OrganizationRoleType extends PartyRoleType
         INSURANCE_AGENCY("INS_AGENCY"),
         INSURANCE_BROKER("INS_BROKER"),
 
+        GROUP("G"),
         PROSPECT("P"),
         DIVISION("DIV"),
         OTHER_ORG_UNIT("OORG"),

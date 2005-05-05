@@ -39,10 +39,13 @@
 package com.netspective.medigy.model;
 
 import com.netspective.medigy.model.contact.TestGeographicBoundary;
+import com.netspective.medigy.model.invoice.TestInvoice;
 import com.netspective.medigy.model.org.TestOrganization;
+import com.netspective.medigy.model.party.TestPartyRelationship;
 import com.netspective.medigy.model.person.TestPerson;
 import com.netspective.medigy.model.person.TestPersonRelationshipFacade;
 import com.netspective.medigy.service.party.TestAddContactMechanismService;
+import com.netspective.medigy.service.person.TestPatientRegistrationService;
 import com.netspective.medigy.service.person.TestPersonFacade;
 import com.netspective.medigy.service.util.TestInsurancePolicyFacade;
 import junit.framework.Test;
@@ -52,13 +55,21 @@ public class TestSuite extends junit.framework.TestSuite
     public static Test suite()
     {
         TestSuite suite= new TestSuite();
+        
+        // test the model classes
+        suite.addTest(new junit.framework.TestSuite(TestPartyRelationship.class));
         suite.addTest(new junit.framework.TestSuite(TestPerson.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonRelationshipFacade.class));
-        suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
-        suite.addTest(new junit.framework.TestSuite(TestPersonFacade.class));
         suite.addTest(new junit.framework.TestSuite(TestGeographicBoundary.class));
+        suite.addTest(new junit.framework.TestSuite(TestOrganization.class));
+        suite.addTest(new junit.framework.TestSuite(TestInvoice.class));
+        
+        // test services and facades
+        suite.addTest(new junit.framework.TestSuite(TestPersonRelationshipFacade.class));
+        suite.addTest(new junit.framework.TestSuite(TestPersonFacade.class));        
         suite.addTest(new junit.framework.TestSuite(TestAddContactMechanismService.class));
         suite.addTest(new junit.framework.TestSuite(TestInsurancePolicyFacade.class));
+        //suite.addTest(new junit.framework.TestSuite(TestPatientRegistrationService.class));
+        
         return suite;
     }
 }

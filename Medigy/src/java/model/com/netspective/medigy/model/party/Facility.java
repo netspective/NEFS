@@ -48,8 +48,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +63,7 @@ public class Facility extends AbstractTopLevelEntity
     private FacilityType type;
     // children childFacilities (e.g Rooms on a Floor, offices in a building)
     private Set<Facility> childFacilities = new HashSet<Facility>();
-    private PartyFacilityRole facilityRole;
+    private Set<PartyFacilityRole> facilityRole = new HashSet<PartyFacilityRole>();
 
     /**
      * Facilities are not children of any table and they are related to Parties only through the
@@ -105,7 +105,7 @@ public class Facility extends AbstractTopLevelEntity
         this.squareFootage = squareFootage;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "facility_type_id")
     public FacilityType getType()
     {
@@ -129,14 +129,14 @@ public class Facility extends AbstractTopLevelEntity
         this.childFacilities = childFacilities;
     }
 
-    @OneToOne
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "facility_id")
-    public PartyFacilityRole getFacilityRole()
+    public Set<PartyFacilityRole> getFacilityRole()
     {
         return facilityRole;
     }
 
-    public void setFacilityRole(final PartyFacilityRole facilityRole)
+    public void setFacilityRole(final Set<PartyFacilityRole> facilityRole)
     {
         this.facilityRole = facilityRole;
     }

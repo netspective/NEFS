@@ -51,7 +51,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.OneToOne;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -118,7 +117,7 @@ public class CommunicationEvent extends AbstractDateDurationEntity
         this.eventPurposes = eventPurposes;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "contact_mech_type_id")
     public ContactMechanismType getContactMechanismType()
     {

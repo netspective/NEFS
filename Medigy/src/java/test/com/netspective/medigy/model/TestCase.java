@@ -80,7 +80,7 @@ public abstract class TestCase extends junit.framework.TestCase
     private static final Log log = LogFactory.getLog(TestCase.class);
 
     protected File databaseDirectory;
-
+    protected boolean initializeModelData = true;
 
     protected String getClassNameWithoutPackage()
     {
@@ -153,7 +153,8 @@ public abstract class TestCase extends junit.framework.TestCase
         final HibernateConfiguration hibernateConfiguration = getHibernateConfiguration();
         HibernateUtil.setConfiguration(hibernateConfiguration);
 
-        new ModelInitializer(HibernateUtil.getSession(),
+        if (initializeModelData)
+            new ModelInitializer(HibernateUtil.getSession(),
                              ModelInitializer.SeedDataPopulationType.AUTO,
                              hibernateConfiguration).initialize();
 

@@ -239,6 +239,17 @@ public class Party extends AbstractTopLevelEntity
         }
         return false;
     }
+    
+    @Transient
+    public PartyRole getPartyRole(final PartyRoleType type)
+    {
+        for (PartyRole role: this.partyRoles)
+        {
+            if (role.getType().equals(type))
+                return role;
+        }
+        return null;
+    }
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "party_id")

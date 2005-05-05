@@ -46,7 +46,6 @@ import javax.persistence.GeneratorType;
 import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
 import java.util.Date;
 
 @Entity
@@ -94,7 +93,7 @@ public class InvoiceStatus extends AbstractTopLevelEntity implements Comparable
         this.invoice = invoice;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "invoice_status_type_id")
     public InvoiceStatusType getType()
     {

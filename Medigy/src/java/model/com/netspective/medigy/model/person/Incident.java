@@ -47,7 +47,7 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import java.util.Date;
@@ -109,7 +109,7 @@ public class Incident extends AbstractTopLevelEntity
         this.employerRelatedInd = employerRelatedInd;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "incident_type_id")
     public IncidentType getType()
     {

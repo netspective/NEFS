@@ -78,7 +78,7 @@ public class InvoiceTerm extends AbstractTopLevelEntity
     }
 
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "invoice_item_id", updatable = false, insertable = false)
     public InvoiceItem getInvoiceItem()
     {
@@ -100,7 +100,7 @@ public class InvoiceTerm extends AbstractTopLevelEntity
         this.termValue = termValue;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "invoice_id")
     public Invoice getInvoice()
     {
@@ -112,7 +112,7 @@ public class InvoiceTerm extends AbstractTopLevelEntity
         this.invoice = invoice;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "invoice_term_type_id", unique = false)
     public InvoiceTermType getType()
     {

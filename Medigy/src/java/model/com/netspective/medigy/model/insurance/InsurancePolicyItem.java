@@ -47,7 +47,6 @@ import javax.persistence.Id;
 import javax.persistence.GeneratorType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
 
@@ -117,7 +116,7 @@ public class InsurancePolicyItem implements AgreementItem
         this.image = agreementImage;
     }
 
-    @OneToOne(targetEntity = "com.netspective.medigy.model.insurance.InsurancePolicyItem")
+    @ManyToOne(targetEntity = "com.netspective.medigy.model.insurance.InsurancePolicyItem")
     @JoinColumn(name = "parent_ins_policy_item_id", referencedColumnName = "ins_policy_item_id")
     public AgreementItem getParentAgreementItem()
     {

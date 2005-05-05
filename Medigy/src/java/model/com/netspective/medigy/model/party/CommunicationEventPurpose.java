@@ -45,7 +45,6 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
@@ -99,7 +98,7 @@ public class CommunicationEventPurpose extends AbstractTopLevelEntity
         this.communicationEvent = communicationEvent;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "comm_event_purpose_type_id")
     public CommunicationEventPurposeType getType()
     {

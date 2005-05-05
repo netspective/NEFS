@@ -38,82 +38,68 @@
  */
 package com.netspective.medigy.model.invoice;
 
+import com.netspective.medigy.model.DbUnitTestCase;
 import com.netspective.medigy.model.TestCase;
 import com.netspective.medigy.model.party.Party;
-import com.netspective.medigy.model.person.TestPerson;
-import com.netspective.medigy.model.session.ProcessSession;
-import com.netspective.medigy.model.session.Session;
-import com.netspective.medigy.model.session.SessionManager;
 import com.netspective.medigy.reference.custom.invoice.InvoiceStatusType;
 import com.netspective.medigy.reference.custom.invoice.InvoiceTermType;
 import com.netspective.medigy.util.HibernateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Expression;
 
 import java.util.Date;
 
-public class TestInvoice  extends TestCase
+public class TestInvoice  extends DbUnitTestCase
 {
     private static final Log log = LogFactory.getLog(TestInvoice.class);
 
     public void testInvoice()
     {
-        Session session = new ProcessSession();
-        session.setProcessName(TestPerson.class.getName() + ".testInvoice()");
-        HibernateUtil.getSession().save(session);
-        SessionManager.getInstance().pushActiveSession(session);
-
-        final Criteria criteria = HibernateUtil.getSession().createCriteria(Party.class);
-        criteria.add(Expression.eq("partyName", Party.SYS_GLOBAL_PARTY_NAME));
-        Party globalParty = (Party) criteria.uniqueResult();
-
-
         final Invoice invoice = new Invoice();
         invoice.setDescription("New invoice");
-
-        HibernateUtil.beginTransaction();
-        HibernateUtil.getSession().save(invoice);
 
         final InvoiceTermType termType = new InvoiceTermType();
         termType.setCode("PAYMENT");
         termType.setLabel("Payment - net days");
-        termType.setParty(globalParty);
+        termType.setParty(Party.Cache.SYS_GLOBAL_PARTY.getEntity());
         HibernateUtil.getSession().save(termType);
 
         final InvoiceTerm term = new InvoiceTerm();
         term.setInvoice(invoice);
         term.setType(termType);
         term.setTermValue(new Long(30));
-        HibernateUtil.getSession().save(term);
-        HibernateUtil.commitTransaction();
-
-        InvoiceTerm savedInvoiceTerm = (InvoiceTerm) HibernateUtil.getSession().load(InvoiceTerm.class, term.getInvoiceTermId());
+        invoice.getInvoiceTerms().add(term);
+        HibernateUtil.getSession().save(invoice);
+        HibernateUtil.closeSession();
+        
+        final Invoice newInvoice = (Invoice) HibernateUtil.getSession().load(Invoice.class, invoice.getInvoiceId());
+        assertEquals(1, newInvoice.getInvoiceTerms().size());
+        InvoiceTerm savedInvoiceTerm = (InvoiceTerm) newInvoice.getInvoiceTerms().toArray()[0];
         assertEquals(savedInvoiceTerm.getTermValue(), new Long(30));
         assertEquals(savedInvoiceTerm.getInvoice().getInvoiceId(), invoice.getInvoiceId());
 
-        HibernateUtil.beginTransaction();
         final InvoiceStatus status = new InvoiceStatus();
         status.setType(InvoiceStatusType.Cache.SENT.getEntity());
         status.setDate(new Date());
-        status.setInvoice(invoice);
-        invoice.getInvoiceStatuses().add(status);
+        status.setInvoice(newInvoice);
+        newInvoice.getInvoiceStatuses().add(status);
 
         final InvoiceStatus voidStatus = new InvoiceStatus();
         voidStatus.setType(InvoiceStatusType.Cache.VOID.getEntity());
         voidStatus.setDate(new Date());
-        voidStatus.setInvoice(invoice);
-        invoice.getInvoiceStatuses().add(voidStatus);
+        voidStatus.setInvoice(newInvoice);
+        newInvoice.getInvoiceStatuses().add(voidStatus);
+ 
+        HibernateUtil.getSession().flush();
+        HibernateUtil.closeSession();
 
-        HibernateUtil.getSession().save(status);
-        HibernateUtil.commitTransaction();
-
-        Invoice savedInvoice = (Invoice) HibernateUtil.getSession().load(Invoice.class, invoice.getInvoiceId());
-        assertEquals(savedInvoice.getDescription(), "New invoice");
+        final Long invoiceId = newInvoice.getInvoiceId();
+        Invoice savedInvoice = (Invoice) HibernateUtil.getSession().load(Invoice.class, invoiceId);
+        assertEquals("New invoice", savedInvoice.getDescription());
         log.info("VALID: Invoice");
         assertEquals(2, savedInvoice.getInvoiceStatuses().size());
         log.info("VALID: Invoice status count");
+        //assertEquals(voidStatus.getInvoiceStatusId(), savedInvoice.getCurrentInvoiceStatus().getInvoiceStatusId());
         assertEquals(savedInvoice.getCurrentInvoiceStatus().getType(), InvoiceStatusType.Cache.VOID.getEntity());
         log.info("VALID: Current Invoice status type");
         assertEquals(1, savedInvoice.getInvoiceTerms().size());
@@ -121,5 +107,11 @@ public class TestInvoice  extends TestCase
         assertEquals(((InvoiceTerm) savedInvoice.getInvoiceTerms().toArray()[0]).getType(), termType);
         log.info("VALID: Invoice term type");
         HibernateUtil.closeSession();
+    }
+
+    @Override
+    public String getDataSetFile()
+    {
+        return "/com/netspective/medigy/model/invoice/TestInvoice.xml";
     }
 }

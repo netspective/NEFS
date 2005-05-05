@@ -45,7 +45,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -80,7 +80,7 @@ public class CommunicationEventWork
         this.startWorkInd = startWorkInd;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "work_id")
     public WorkEffort getWork()
     {
@@ -92,7 +92,7 @@ public class CommunicationEventWork
         this.workEffort = workEffort;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "comm_event_id")
     public CommunicationEvent getEvent()
     {

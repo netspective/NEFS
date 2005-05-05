@@ -50,7 +50,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.HashSet;
@@ -72,9 +71,9 @@ public class InvoiceItem extends AbstractTopLevelEntity
     private Invoice invoice;
     private Product product;
     private ProductFeature productFeature;
-    private InvoiceTerm invoiceTerm;
+    private Set<InvoiceTerm> invoiceTerms = new HashSet<InvoiceTerm>();
 
-    private Set<InvoiceItem> relatedInvoiceItems = new HashSet<InvoiceItem>();
+    private InvoiceItem parentInvoiceItem;
 
     public InvoiceItem()
     {
@@ -148,7 +147,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.unitPrice = unitPrice;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "invoice_item_type_id")
     public InvoiceItemType getType()
     {
@@ -172,7 +171,7 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.invoice = invoice;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     public Product getProduct()
     {
@@ -196,16 +195,16 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.productFeature = productFeature;
     }
 
-    @OneToMany
-    @JoinColumn(name = "parent_invoice_item_id")
-    public Set<InvoiceItem> getRelatedInvoiceItems()
+    @ManyToOne
+    @JoinColumn(name = "parent_invoice_item_id", referencedColumnName = "invoice_item_id")
+    public InvoiceItem getRelatedInvoiceItems()
     {
-        return relatedInvoiceItems;
+        return parentInvoiceItem;
     }
 
-    public void setRelatedInvoiceItems(final Set<InvoiceItem> relatedInvoiceItems)
+    public void setRelatedInvoiceItems(final InvoiceItem relatedInvoiceItem)
     {
-        this.relatedInvoiceItems = relatedInvoiceItems;
+        this.parentInvoiceItem = relatedInvoiceItem;
     }
 
     public Float getAmount()
@@ -218,15 +217,15 @@ public class InvoiceItem extends AbstractTopLevelEntity
         this.amount = amount;
     }
 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "invoice_item_id")
-    public InvoiceTerm getInvoiceTerm()
+    public Set<InvoiceTerm> getInvoiceTerms()
     {
-        return invoiceTerm;
+        return invoiceTerms;
     }
 
-    public void setInvoiceTerm(final InvoiceTerm invoiceTerm)
+    public void setInvoiceTerms(final Set<InvoiceTerm> invoiceTerm)
     {
-        this.invoiceTerm = invoiceTerm;
+        this.invoiceTerms = invoiceTerm;
     }
 }

@@ -44,7 +44,6 @@ import com.netspective.medigy.reference.custom.party.CommunicationEventRoleType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Id;
@@ -72,7 +71,7 @@ public class CommunicationEventRole extends AbstractTopLevelEntity
         this.communicationEventRoleId = communicationEventRoleId;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "comm_event_role_type_id")
     public CommunicationEventRoleType getType()
     {

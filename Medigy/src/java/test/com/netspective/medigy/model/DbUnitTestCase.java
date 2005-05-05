@@ -53,10 +53,10 @@ public abstract class DbUnitTestCase extends TestCase
 {
     protected void setUp() throws Exception
     {
+        // NOTE: This will disable the SYS GLOBAL party creation and creation of all the reference entities!!!
+        initializeModelData = false;
+        
         super.setUp();
-
-
-
         IDatabaseConnection dbUnitConn = null;
         dbUnitConn = getDbUnitConnection();
         DatabaseOperation.REFRESH.execute(dbUnitConn, getDataSet());

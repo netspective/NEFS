@@ -3,6 +3,7 @@
  */
 package com.netspective.medigy.model.product;
 
+import com.netspective.medigy.model.invoice.InvoiceItem;
 import com.netspective.medigy.model.org.Organization;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 
@@ -14,7 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE, discriminatorValue = "General")
@@ -29,7 +34,8 @@ public class Product extends AbstractTopLevelEntity
     private Organization organization;
 
     private ProductCategory productCategory;
-
+    private Set<InvoiceItem> invoiceItems = new HashSet<InvoiceItem>();
+    
     @Id(generate = GeneratorType.AUTO)
     public Long getProductId()
     {
@@ -117,4 +123,16 @@ public class Product extends AbstractTopLevelEntity
         this.productCategory = productCategory;
     }
 
+    @OneToMany(mappedBy = "product")
+    public Set<InvoiceItem> getInvoiceItems()
+    {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(final Set<InvoiceItem> invoiceItems)
+    {
+        this.invoiceItems = invoiceItems;
+    }
+
+    
 }

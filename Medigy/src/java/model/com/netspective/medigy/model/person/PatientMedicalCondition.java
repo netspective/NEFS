@@ -47,7 +47,6 @@ import javax.persistence.GeneratorType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Column;
 
 @Entity
@@ -101,7 +100,7 @@ public class PatientMedicalCondition extends AbstractDateDurationEntity
         this.partyRole = partyRole;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "medical_condition_type_id")
     public MedicalConditionType getType()
     {

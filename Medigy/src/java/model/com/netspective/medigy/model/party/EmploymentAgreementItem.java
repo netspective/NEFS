@@ -49,7 +49,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.LobType;
-import javax.persistence.OneToOne;
 
 @Entity
 @Table(name = "Emp_Agreement_Item")
@@ -117,7 +116,7 @@ public class EmploymentAgreementItem  extends AbstractTopLevelEntity implements 
         this.agreementImage = agreementImage;
     }
 
-    @OneToOne(targetEntity = "com.netspective.medigy.model.party.EmploymentAgreementItem")
+    @ManyToOne(targetEntity = "com.netspective.medigy.model.party.EmploymentAgreementItem")
     @JoinColumn(name = "parent_emp_agreement_item_id", referencedColumnName = "emp_agreement_item_id")
     public AgreementItem getParentAgreementItem()
     {

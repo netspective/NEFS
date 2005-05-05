@@ -42,7 +42,6 @@ package com.netspective.medigy.model.party;
 import com.netspective.medigy.model.common.AbstractTopLevelEntity;
 import com.netspective.medigy.reference.custom.party.CaseRoleType;
 
-import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.CascadeType;
@@ -53,7 +52,7 @@ public class CaseRole extends AbstractTopLevelEntity
     private Case workCase;
     private Party party;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "party_id")
     public Party getParty()
     {

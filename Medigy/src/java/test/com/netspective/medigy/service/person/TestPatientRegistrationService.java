@@ -358,10 +358,8 @@ public class TestPatientRegistrationService extends TestCase
             fail(e.getMessage());
         }
 
-        HibernateUtil.beginTransaction();
         PatientRegistrationService service = (PatientRegistrationService) ServiceLocator.getInstance().getService(PatientRegistrationService.class);
         final RegisteredPatient registeredPatient = service.registerPatient(patientParameters);
-        HibernateUtil.commitTransaction();
 
         final Person persistedPerson = (Person) HibernateUtil.getSession().load(Person.class, registeredPatient.getPatientId());
         assertEquals(persistedPerson.getFirstName(), "Ryan");
