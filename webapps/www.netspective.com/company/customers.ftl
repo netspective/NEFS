@@ -4,7 +4,7 @@ Our products and services give System Integrators the competitive edge.
 <p>
 <table class="data-table">
     <tr>
-        <td><img src="${resourcesPath}/images/company/eop-logo.jpg"/></td>
+        <td></td>
         <td>
         The Executive Office of the President engaged Netspective's Professional Services group to perform architecture
         and applications assessments for the GSA and OMB. Netspective used the <a href="services/neap">Enterprise
