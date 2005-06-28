@@ -899,7 +899,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(summarizeErrors)
             writer.write(errorMsgsHtml.toString());
 
-        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action=\"" + actionURL + "\" method='post' " +
                      encType + " onsubmit='return(activeDialog.isValid())'>\n" +
                      dc.getStateHiddens() + "\n" +
                      fieldsHtml +
