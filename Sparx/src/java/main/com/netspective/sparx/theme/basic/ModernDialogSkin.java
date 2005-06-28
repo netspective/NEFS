@@ -44,6 +44,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationContext;
 import com.netspective.sparx.form.Dialog;
 import com.netspective.sparx.form.DialogContext;
@@ -1555,7 +1556,7 @@ public class ModernDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(isSummarizeErrors())
             writer.write(errorMsgsHtml.toString());
 
-        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + TextUtils.getInstance().escapeHTML(actionURL) + "' method='post' " +
                      encType + " onsubmit='return(activeDialog.isValid())'>\n" +
                      dc.getStateHiddens() + "\n" +
                      fieldsHtml +

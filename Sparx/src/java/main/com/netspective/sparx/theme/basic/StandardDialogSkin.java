@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.netspective.commons.text.TextUtils;
 import com.netspective.commons.validate.ValidationContext;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 import com.netspective.sparx.form.Dialog;
@@ -899,7 +900,7 @@ public class StandardDialogSkin extends BasicHtmlPanelSkin implements DialogSkin
         if(summarizeErrors)
             writer.write(errorMsgsHtml.toString());
 
-        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + actionURL + "' method='post' " +
+        writer.write("<form id='" + dialogName + "' name='" + dialogName + "' action='" + TextUtils.getInstance().escapeHTML(actionURL) + "' method='post' " +
                      encType + " onsubmit='return(activeDialog.isValid())'>\n" +
                      dc.getStateHiddens() + "\n" +
                      fieldsHtml +
