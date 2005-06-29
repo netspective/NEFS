@@ -841,14 +841,15 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
      */
     public String getStateHiddens()
     {
+        final TextUtils textUtils = TextUtils.getInstance();
         ServletRequest request = getRequest();
 
         StringBuffer hiddens = new StringBuffer();
-        hiddens.append("<input type='hidden' name='" + dialog.getDialogStateIdentifierParamName() + "' value='" + state.getIdentifier() + "'>\n");
+        hiddens.append("<input type='hidden' name='" + dialog.getDialogStateIdentifierParamName() + "' value='" + textUtils.escapeHTML(state.getIdentifier()) + "'>\n");
 
         String pageCmd = request.getParameter(AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME);
         if(pageCmd != null)
-            hiddens.append("<input type='hidden' name='" + AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME + "' value='" + pageCmd + "'>\n");
+            hiddens.append("<input type='hidden' name='" + AbstractHttpServletCommand.PAGE_COMMAND_REQUEST_PARAM_NAME + "' value='" + textUtils.escapeHTML(pageCmd) + "'>\n");
 
         // this hidden field should be filled in by the 'triggering' form field before submission of the form
         hiddens.append("<input type=\"hidden\" name=\"" + dialog.getDialogValidateTriggerFieldParamName() + "\" value=\"\"/>");
@@ -857,7 +858,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                                         ? request.getParameter(dialog.getPostExecuteRedirectUrlParamName())
                                         : request.getParameter(DialogContext.DEFAULT_REDIRECT_PARAM_NAME));
         if(redirectUrlParamValue != null)
-            hiddens.append("<input type='hidden' name='" + dialog.getPostExecuteRedirectUrlParamName() + "' value='" + redirectUrlParamValue + "'>\n");
+            hiddens.append("<input type='hidden' name='" + dialog.getPostExecuteRedirectUrlParamName() + "' value='" + textUtils.escapeHTML(redirectUrlParamValue) + "'>\n");
 
         Set retainedParams = null;
         if(retainReqParams != null)
@@ -873,7 +874,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                 hiddens.append("<input type='hidden' name='");
                 hiddens.append(paramName);
                 hiddens.append("' value='");
-                hiddens.append(paramValue);
+                hiddens.append(textUtils.escapeHTML(paramValue.toString()));
                 hiddens.append("'>\n");
                 retainedParams.add(paramName);
             }
@@ -895,7 +896,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                     hiddens.append("<input type='hidden' name='");
                     hiddens.append(paramName);
                     hiddens.append("' value='");
-                    hiddens.append(request.getParameter(paramName) != null ? request.getParameter(paramName) : "");
+                    hiddens.append(request.getParameter(paramName) != null ? textUtils.escapeHTML(request.getParameter(paramName)) : "");
                     hiddens.append("'>\n");
                 }
             }
@@ -913,7 +914,7 @@ public class DialogContext extends BasicDbHttpServletValueContext implements Htm
                     hiddens.append("<input type='hidden' name='");
                     hiddens.append(paramName);
                     hiddens.append("' value='");
-                    hiddens.append(request.getParameter(paramName) != null ? request.getParameter(paramName) : "");
+                    hiddens.append(request.getParameter(paramName) != null ? textUtils.escapeHTML(request.getParameter(paramName)) : "");
                     hiddens.append("'>\n");
                 }
             }
