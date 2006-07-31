@@ -4,7 +4,10 @@ var calendarsById = new Array();
 function calendarDateSelected(calendar, date)
 {
     calendar.fieldControl.value = date; // just update the date in the input field.
-    calendar.callCloseHandler();
+    if(calendar.dateClicked)
+    {
+        calendar.callCloseHandler();
+    }
 }
 
 // And this gets called when the end-user clicks on the _selected_ date,
