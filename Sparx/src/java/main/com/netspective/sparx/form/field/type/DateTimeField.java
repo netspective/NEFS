@@ -53,6 +53,7 @@ import com.netspective.sparx.theme.Theme;
 
 public class DateTimeField extends TextField
 {
+    public static final String INCLUDED_CALENDAR_JAVASCRIPT_INCLUDES_ATTR_NAME = "includedCalendarJavascriptIncludes";
     public static final Flags.FlagDefn[] DATE_TIME_FIELD_FLAG_DEFNS = new Flags.FlagDefn[TextField.TEXT_FIELD_FLAG_DEFNS.length + 5];
 
     static
@@ -412,12 +413,28 @@ public class DateTimeField extends TextField
         if(getDataType().getValueIndex() != DataType.TIME_ONLY)
         {
             Theme theme = dc.getSkin().getTheme();
-            writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/calendar.js") + "'></script>\n");
-            writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/lang/calendar-en.js") + "'></script>\n");
-            writer.write("<script src='" + theme.getResourceUrl("/scripts/calendar-helper.js") + "'></script>\n");
+            
+            if(notIncludedScriptsDuringRequest(dc))
+            {
+                writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/calendar.js") + "'></script>\n");
+                writer.write("<script src='" + theme.getResourceUrl("/jscalendar-0.9.6/lang/calendar-en.js") + "'></script>\n");
+                writer.write("<script src='" + theme.getResourceUrl("/scripts/calendar-helper.js") + "'></script>\n");
+                
+                markScriptsIncluded(dc);
+            }
 
             writer.write("<span style='cursor:hand' onclick='showCalendar(\"" + getQualifiedName() + "\", \"" + getClientCalendarFormat() + "\")'>" +
                          "<img src='" + theme.getResourceUrl("/images/calendar.gif") + "' title='Select from Calendar' border=0 alt='calendar'></span>");
         }
+    }
+
+    private boolean notIncludedScriptsDuringRequest(DialogContext dc)
+    {
+        return dc.getAttribute(INCLUDED_CALENDAR_JAVASCRIPT_INCLUDES_ATTR_NAME) == null;
+    }
+
+    private void markScriptsIncluded(DialogContext dc)
+    {
+        dc.setAttribute(INCLUDED_CALENDAR_JAVASCRIPT_INCLUDES_ATTR_NAME, Boolean.TRUE);
     }
 }
