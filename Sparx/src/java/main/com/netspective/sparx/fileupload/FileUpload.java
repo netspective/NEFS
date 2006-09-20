@@ -354,6 +354,8 @@ public class FileUpload
     public String[] getParameterValues(String name)
     {
         Object val = map.get(name);
+        if(val == null)
+            return null;
         if(val instanceof String)
         {
             return new String[]{(String) val};
