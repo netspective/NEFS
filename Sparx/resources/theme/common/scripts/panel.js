@@ -102,15 +102,16 @@ function Browser()
     this.dom = document.getElementById? true : false;
     this.ie5 = (this.ver.indexOf("MSIE 5")>-1 && this.dom)? true : false;
     this.ie6 = (this.ver.indexOf("MSIE 6")>-1 && this.dom)? true : false;
+    this.ie7 = (this.ver.indexOf("MSIE 7")>-1 && this.dom)? true : false;
     this.ie4 = (document.all && !this.dom)? true : false;
-    this.ie = this.ie4 || this.ie5 || this.ie6;
+    this.ie = this.ie4 || this.ie5 || this.ie6 || this.ie7;
     this.mac = this.agent.indexOf("Mac") > -1;
     this.opera5 = this.agent.indexOf("Opera 5") > -1;
     this.ns6 = (this.dom && parseInt(this.ver) >= 5) ? true : false;
     this.ns4 = (document.layers && !this.dom)? true : false;
-    this.browser = (this.ie6 || this.ie5 || this.ie4 || this.ns4 || this.ns6 || this.opera5 || this.dom);
+    this.browser = (this.ie7 || this.ie6 || this.ie5 || this.ie4 || this.ns4 || this.ns6 || this.opera5 || this.dom);
 
-    if (this.ie5 || this.ie6 || this.ns6)
+    if (this.ie5 || this.ie6 || this.ie7 || this.ns6)
     {
         this.getElement = Browser_getControl_Dom;
     }
