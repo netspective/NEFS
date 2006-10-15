@@ -108,9 +108,9 @@ public class XdmComponentFactory
      * @param file  The file to obtain the content from
      * @param flags Whether or not to allow reloading if the input source has changed and other flags
      */
-    public static XdmComponent get(Class componentClass, File file, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, NoSuchMethodException
+    public static XdmComponent get(Class componentClass, File file, int flags, boolean forceReload) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, NoSuchMethodException
     {
-        XdmComponent component = getCachedComponent(file.getAbsolutePath(), flags);
+        XdmComponent component = forceReload ? null : getCachedComponent(file.getAbsolutePath(), flags);
         if(component != null)
             return component;
 
@@ -177,12 +177,12 @@ public class XdmComponentFactory
      * is used to locate the resource. If the resource is actually a file, then this method locates the resource, creates
      * a File object and calls get(componentClass, File, true).
      */
-    public static XdmComponent get(Class componentClass, Resource resource, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException
+    public static XdmComponent get(Class componentClass, Resource resource, int flags, boolean forceReload) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException
     {
         // if the resource resolves to an actual file, just treat it as a normal file
         File resourceFile = resource.getFile();
         if(resourceFile != null)
-            return get(componentClass, resourceFile, flags);
+            return get(componentClass, resourceFile, flags, forceReload);
 
         // if we get to here, the resource is being loaded remotely or through a JAR or other source so it's not a physical file
         XdmParseContext pc = null;
@@ -241,7 +241,7 @@ public class XdmComponentFactory
      * Factory method for obtaining a particular component from a file that can be found in the classpath (including
      * JARs and ZIPs on the classpath).
      */
-    public static XdmComponent get(Class componentClass, String fileName, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, FileNotFoundException
+    public static XdmComponent get(Class componentClass, String fileName, int flags, boolean forceReload) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException, FileNotFoundException
     {
         FileFind.FileFindResults ffResults = FileFind.findInClasspath(fileName, FileFind.FINDINPATHFLAG_SEARCH_INSIDE_ARCHIVES_LAST);
         if(ffResults.isFileFound())
@@ -252,7 +252,7 @@ public class XdmComponentFactory
                 ZipEntry zipEntry = zipFile.getEntry(ffResults.getSearchFileName());
                 String systemId = ffResults.getFoundFile().getAbsolutePath() + "!" + ffResults.getSearchFileName();
 
-                XdmComponent component = getCachedComponent(systemId, flags);
+                XdmComponent component = forceReload ? null : getCachedComponent(systemId, flags);
                 if(component != null)
                     return component;
 
@@ -290,7 +290,7 @@ public class XdmComponentFactory
                 return component;
             }
             else
-                return get(componentClass, ffResults.getFoundFile(), flags);
+                return get(componentClass, ffResults.getFoundFile(), flags, forceReload);
         }
         else
             throw new FileNotFoundException("File '" + fileName + "' not found in classpath. Searched: " + TextUtils.getInstance().join(ffResults.getSearchPaths(), ", "));

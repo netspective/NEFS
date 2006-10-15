@@ -112,6 +112,7 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
     public static final String REQATTRNAME_RENDER_START_TIME = NavigationControllerServlet.class.getName() + ".START_TIME";
     public static final String PROPNAME_INIT_COUNT = "SERVLET_INITIALIZATION_COUNT";
     public static final String REQPARAMNAME_COMMAND_ONLY = "command-only";
+    public static final String REQPARAMNAME_FORCE_PROJECT_RELOAD = "_force-reload";
 
     public static Set getAllControllerServlets()
     {
@@ -572,10 +573,12 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
             if(getRuntimeEnvironmentFlags().flagIsSet(RuntimeEnvironmentFlags.DEVELOPMENT | RuntimeEnvironmentFlags.FRAMEWORK_DEVELOPMENT))
                 compFlags |= XdmComponentFactory.XDMCOMPFLAG_ALLOWRELOAD;
 
+            final boolean forceReload = isForcedReloadOfProjectRequested();
+
             // never store the ProjectComponent instance since it may change if it needs to be reloaded
             // (always use the factory get() method)
             ProjectComponent projectComponent =
-                    (ProjectComponent) XdmComponentFactory.get(projectComponentClass, projectSourceFileName, compFlags);
+                    (ProjectComponent) XdmComponentFactory.get(projectComponentClass, projectSourceFileName, compFlags, forceReload);
 
             if(lastProjectComponentRetrievedId != projectComponent.hashCode())
             {
@@ -629,6 +632,29 @@ public class NavigationControllerServlet extends HttpServlet implements RuntimeE
         {
             throw new NestableRuntimeException(e);
         }
+    }
+
+    protected boolean isForcedReloadOfProjectRequested()
+    {
+        final Object request = REQUEST.get();
+        final boolean result;
+        if(request != null)
+        {
+            // if the request parameter is given it means we want a reload
+
+            final HttpServletRequest httpRequest = ((HttpServletRequest) request);
+            if(httpRequest.getParameter(REQPARAMNAME_FORCE_PROJECT_RELOAD) != null)
+            {
+                // if we have already requested a reload during one of our project calls don't keep reloading
+                if(httpRequest.getAttribute(REQPARAMNAME_FORCE_PROJECT_RELOAD) == null)
+                {
+                    httpRequest.setAttribute(REQPARAMNAME_FORCE_PROJECT_RELOAD, Boolean.TRUE);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public Project getProject()

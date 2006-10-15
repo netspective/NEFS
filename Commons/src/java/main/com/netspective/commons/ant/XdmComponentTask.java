@@ -271,9 +271,9 @@ public abstract class XdmComponentTask extends Task
         try
         {
             if(projectFile != null)
-                component = XdmComponentFactory.get(componentClass, projectFile, flags);
+                component = XdmComponentFactory.get(componentClass, projectFile, flags, false);
             else if(xdmResource != null)
-                component = XdmComponentFactory.get(componentClass, xdmResource, flags);
+                component = XdmComponentFactory.get(componentClass, xdmResource, flags, false);
         }
         catch(Exception e)
         {
