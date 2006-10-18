@@ -1531,8 +1531,12 @@ public class DialogField implements TemplateConsumer, XmlDataModelSchema.InputSo
                 // append function signature
                 if(script != null)
                 {
-                    jsBuffer.append("field.customHandlers." + eventName + " = new Function(\"field\", \"control\", \"" +
-                                    jsObject.getJsExpr().getTextValue(dc) + "\");\n");
+                    if(jsObject.getEvent().getValueIndex() == DialogFieldClientJavascript.ControlEvent.FINALIZE_DEFN)
+                        jsBuffer.append("field.customHandlers." + eventName + " = new Function(\"dialog\", \"field\", \"" +
+                                        jsObject.getJsExpr().getTextValue(dc) + "\");\n");
+                    else
+                        jsBuffer.append("field.customHandlers." + eventName + " = new Function(\"field\", \"control\", \"" +
+                                        jsObject.getJsExpr().getTextValue(dc) + "\");\n");
                     jsBuffer.append("field.customHandlers." + eventName + "Type = '" + jsObject.getType().getValue() + "';\n");
                 }
             }
