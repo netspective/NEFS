@@ -34,6 +34,8 @@ package com.netspective.sparx.navigate;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -72,5 +74,168 @@ public interface NavigationSkin extends ThemeSkin
      * @param nc     The current navigation context
      */
     public void renderPageFooter(Writer writer, NavigationContext nc) throws IOException;
+
+    public interface Resource
+    {
+        public void render(final Writer writer, final NavigationContext nc) throws IOException;
+    }
+
+    public class StyleSheet implements Resource
+    {
+        private String href;
+        private HtmlResourceScopeAttribute scope = new HtmlResourceScopeAttribute(HtmlResourceScopeAttribute.THEME);
+
+        public StyleSheet()
+        {
+        }
+
+        public String getHref()
+        {
+            return href;
+        }
+
+        public void setHref(String href)
+        {
+            this.href = href;
+        }
+
+        public HtmlResourceScopeAttribute getScope()
+        {
+            return scope;
+        }
+
+        public void setScope(HtmlResourceScopeAttribute scope)
+        {
+            this.scope = scope;
+        }
+
+        public void render(final Writer writer, final NavigationContext nc) throws IOException
+        {
+            switch(scope.getValueIndex())
+            {
+                case HtmlResourceScopeAttribute.THEME:
+                    writer.write("	<link rel=\"stylesheet\" href=\"" + nc.getThemeResourceUrl(href) + "\" type=\"text/css\">\n");
+                    break;
+
+                case HtmlResourceScopeAttribute.APP:
+                    writer.write("	<link rel=\"stylesheet\" href=\"" + nc.getRootUrl() + href + "\" type=\"text/css\">\n");
+                    break;
+
+                case HtmlResourceScopeAttribute.CUSTOM:
+                    writer.write("	<link rel=\"stylesheet\" href=\"" + href + "\" type=\"text/css\">\n");
+            }
+        }
+    }
+
+    public class Script implements Resource
+    {
+        private String src;
+        private HtmlResourceScopeAttribute scope = new HtmlResourceScopeAttribute(HtmlResourceScopeAttribute.THEME);
+
+        public Script()
+        {
+        }
+
+        public String getSrc()
+        {
+            return src;
+        }
+
+        public void setSrc(final String source)
+        {
+            this.src = source;
+        }
+
+        public HtmlResourceScopeAttribute getScope()
+        {
+            return scope;
+        }
+
+        public void setScope(HtmlResourceScopeAttribute scope)
+        {
+            this.scope = scope;
+        }
+
+        public void render(final Writer writer, final NavigationContext nc) throws IOException
+        {
+            switch(scope.getValueIndex())
+            {
+                case HtmlResourceScopeAttribute.THEME:
+                    writer.write("  <script src=\"" + nc.getThemeResourceUrl(src) + "\" language=\"JavaScript1.2\"></script>\n");
+                    break;
+
+                case HtmlResourceScopeAttribute.APP:
+                    writer.write("  <script src=\"" + nc.getRootUrl() + src + "\" language=\"JavaScript1.2\"></script>\n");
+                    break;
+
+                case HtmlResourceScopeAttribute.CUSTOM:
+                    writer.write("  <script src=\"" + src + "\" language=\"JavaScript1.1\"></script>\n");
+            }
+        }
+    }
+
+    public class Resources
+    {
+        private List resources = new ArrayList();
+
+        public Resources()
+        {
+        }
+
+        public StyleSheet createStyleSheet()
+        {
+            return new StyleSheet();
+        }
+
+        public void addStyleSheet(final StyleSheet script)
+        {
+            resources.add(script);
+        }
+
+        public Script createScript()
+        {
+            return new Script();
+        }
+
+        public void addScript(final Script script)
+        {
+            resources.add(script);
+        }
+
+        public List getResources()
+        {
+            return resources;
+        }
+
+        public void registerThemeScript(final String src)
+        {
+            final Script script = createScript();
+            script.setSrc(src);
+            addScript(script);
+        }
+
+        public void registerThemeStyleSheet(final String href)
+        {
+            final StyleSheet sheet = createStyleSheet();
+            sheet.setHref(href);
+            addStyleSheet(sheet);
+        }
+
+        public void registerAppScript(final String src)
+        {
+            final Script script = createScript();
+            script.setSrc(src);
+            script.setScope(new HtmlResourceScopeAttribute(HtmlResourceScopeAttribute.APP));
+            addScript(script);
+        }
+
+        public void registerAppStyleSheet(final String href)
+        {
+            final StyleSheet sheet = createStyleSheet();
+            sheet.setHref(href);
+            sheet.setScope(new HtmlResourceScopeAttribute(HtmlResourceScopeAttribute.APP));
+            addStyleSheet(sheet);
+        }
+    }
 
 }

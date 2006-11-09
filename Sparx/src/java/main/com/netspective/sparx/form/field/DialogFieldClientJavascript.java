@@ -112,7 +112,7 @@ public class DialogFieldClientJavascript
     public static class ControlEvent extends XdmEnumeratedAttribute
     {
         private static final String[] VALUES = new String[]{
-            "is-valid", "value-changed", "click", "key-press", "get-focus", "lose-focus"
+            "is-valid", "value-changed", "click", "key-press", "get-focus", "lose-focus", "finalize-defn"
         };
 
         public static final int IS_VALID = 0;
@@ -121,6 +121,7 @@ public class DialogFieldClientJavascript
         public static final int KEY_PRESS = 3;
         public static final int GET_FOCUS = 4;
         public static final int LOSE_FOCUS = 5;
+        public static final int FINALIZE_DEFN = 6;
 
         public ControlEvent()
         {

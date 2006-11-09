@@ -80,7 +80,7 @@ function getControl_NS4(dialog, id)
 // based on which browser is currently running, get the control using the appropriate function
 function getControl(dialog, id)
 {
-	if (browser.ie5 || browser.ie6 || browser.ns6)
+	if (browser.ie5 || browser.ie6 || browser.ie7 || browser.ns6)
 	{
 		return getControl_Dom(dialog, id);
 	}
@@ -291,13 +291,15 @@ var FLDFLAG_CREATEADJACENTAREA_HIDDEN          = FLDFLAG_SUBMIT_ONBLUR * 2;
 var FLDFLAG_STARTCUSTOM                        = FLDFLAG_CREATEADJACENTAREA_HIDDEN * 2; // all DialogField "children" will use this
 
 // These constants MUST be kept identical to what is in com.netspective.sparx.form.field.SelectField
-var SELECTSTYLE_RADIO      = 0;
-var SELECTSTYLE_COMBO      = 1;
-var SELECTSTYLE_LIST       = 2;
-var SELECTSTYLE_MULTICHECK = 3;
-var SELECTSTYLE_MULTILIST  = 4;
-var SELECTSTYLE_MULTIDUAL  = 5;
-var SELECTSTYLE_POPUP      = 6;
+var SELECTSTYLE_RADIO        = 0;
+var SELECTSTYLE_COMBO        = 1;
+var SELECTSTYLE_LIST         = 2;
+var SELECTSTYLE_MULTICHECK   = 3;
+var SELECTSTYLE_MULTILIST    = 4;
+var SELECTSTYLE_MULTIDUAL    = 5;
+var SELECTSTYLE_POPUP        = 6;
+var SELECTSTYLE_TEXT         = 7;
+var SELECTSTYLE_AUTOCOMPLETE = 8;
 
 var DATE_DTTYPE_DATEONLY = 0;
 var DATE_DTTYPE_TIMEONLY = 1;
@@ -316,18 +318,18 @@ function DialogField(type, id, name, qualifiedName, caption, flags)
 	this.caption = caption;
 	this.customHandlers = new FieldType("Custom", null, null, null, null, null, null, null);
 	this.flags = flags;
-	this.dependentConditions = new Array();
+    this.dependentConditions = new Array();
 	this.style = null;
 	this.requiresPreSubmit = false;
 	this.currentlyVisible = true;
 	this.encryption = null;
 
-	this.fieldIndex = -1;
+    this.fieldIndex = -1;
 	this.prevFieldIndex = -1;
 	this.nextFieldIndex = -1;
 
 	// the remaining are object-based methods
-	if (browser.ie5 || browser.ie6 || browser.ns6)
+	if (browser.ie5 || browser.ie6 || browser.ie7 || browser.ns6)
 	{
 		this.getControl = DialogField_getControl_Dom;
 		this.getControlByQualifiedName = DialogField_getControlByQualifiedName_Dom;
@@ -524,7 +526,7 @@ function DialogField_finalizeContents(dialog)
 	if(this.style != null && this.style == SELECTSTYLE_MULTIDUAL)
 		this.requiresPreSubmit = true;
 
-	if(this.dependentConditions.length > 0)
+    if(this.dependentConditions.length > 0)
 		this.evaluateConditionals(dialog);
 
 	if((this.flags & FLDFLAG_INITIAL_FOCUS) != 0)
@@ -536,7 +538,7 @@ function DialogField_finalizeContents(dialog)
 			alert("Unable to find control '"+this.controlId+"' in DialogField.finalizeContents() -- trying to set initial focus");
 		else
 		{
-			if(browser.ie5 || browser.ie6)
+			if(browser.ie5 || browser.ie6 || browser.ie7)
 			{
 				if (control.isContentEditable && field.isVisible())
 					control.focus();
@@ -548,6 +550,10 @@ function DialogField_finalizeContents(dialog)
 			}
 		}
 	}
+
+    // we only support "extends" for finalizeDefn, not "override"
+    if(this.customHandlers.finalizeDefn)
+        this.customHandlers.finalizeDefn(dialog, this);
 }
 
 function DialogField_evaluateConditionals(dialog)
@@ -903,7 +909,7 @@ function DialogFieldConditionalClear_evaluate(dialog, control)
 
 	var condSource = dialog.fieldsByQualName[this.source];
 	if(eval(this.expression) == true)
-	{	    
+	{
         condSource.setValue('');
 	}
 }

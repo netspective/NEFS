@@ -64,10 +64,27 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
     private int sidebarWidth = 125;
     private boolean showAuthenticatedUser = true;
     private boolean showErrorHeader;
+    private Resources resources = createResources();
 
     public ConsoleNavigationSkin(Theme theme, String name)
     {
         super(theme, name);
+
+        resources.registerThemeStyleSheet("/css/general.css");
+        resources.registerThemeStyleSheet("/css/navigation.css");
+        resources.registerThemeStyleSheet("/css/panel-input.css");
+        resources.registerThemeStyleSheet("/css/panel-output.css");
+        resources.registerThemeStyleSheet("/css/panel-content-dialog.css");
+        resources.registerThemeStyleSheet("/css/panel-content-report.css");
+        resources.registerThemeStyleSheet("/css/panel-content-text.css");
+        resources.registerThemeStyleSheet("/css/syntax-highlight.css");
+        resources.registerThemeStyleSheet("/jscalendar-0.9.6/calendar-win2k-1.css");
+        resources.registerThemeStyleSheet("/css/docbook.css");
+        resources.registerThemeStyleSheet("/css/capxous.css");
+
+        resources.registerThemeScript("/scripts/panel.js");
+        resources.registerThemeScript("/scripts/dialog.js");
+        resources.registerThemeScript("/scripts/popup.js");
     }
 
     public boolean isRenderSidebarAsAnchors()
@@ -125,6 +142,21 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         return new NavigationContext(tree, servlet, request, response, this, navTreeId);
     }
 
+    public Resources createResources()
+    {
+        return new Resources();
+    }
+
+    public Resources getResources()
+    {
+        return resources;
+    }
+
+    public void addResources(Resources resources)
+    {
+        // not really required, just there for XDM
+    }
+
     public void renderPageMetaData(Writer writer, NavigationContext nc) throws IOException
     {
         NavigationPage activePage = nc.getActivePage();
@@ -134,26 +166,15 @@ public class ConsoleNavigationSkin extends AbstractThemeSkin implements Navigati
         writer.write("<head>\n");
         writer.write("<title>" + (activePage != null ? nc.getPageTitle() : "") + "</title>\n");
 
-        Theme theme = getTheme();
+        final List resources = this.resources.getResources();
 
-        writer.write("	<link rel=\"SHORTCUT ICON\" href=\"" + theme.getResourceUrl("/images/favicon.ico") + "\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/general.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/navigation.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-input.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-output.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-dialog.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-report.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/panel-content-text.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/syntax-highlight.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/jscalendar-0.9.6/calendar-win2k-1.css") + "\" type=\"text/css\">\n");
-        writer.write("	<link rel=\"stylesheet\" href=\"" + theme.getResourceUrl("/css/docbook.css") + "\" type=\"text/css\">\n");
+        for(int r = 0; r < resources.size(); r++)
+            ((Resource) resources.get(r)).render(writer, nc);
+
+        if(this.resources != null)
+
         if(activePage.getCustomCssFile() != null)
-            writer.write("	<link rel=\"stylesheet\" href=\"" + activePage.getCustomCssFile().getTextValue(nc) + "\" type=\"text/css\">\n");
-
-        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/panel.js") + "\" language=\"JavaScript1.1\"></script>\n");
-        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/dialog.js") + "\" language=\"JavaScript1.2\"></script>\n");
-        writer.write("  <script src=\"" + theme.getResourceUrl("/scripts/popup.js") + "\" language=\"JavaScript1.2\"></script>\n");
-
+                writer.write("	<link rel=\"stylesheet\" href=\"" + activePage.getCustomCssFile().getTextValue(nc) + "\" type=\"text/css\">\n");
         if(activePage.getCustomJsFile() != null)
             writer.write("  <script src=\"" + activePage.getCustomJsFile().getTextValue(nc) + "\" language=\"JavaScript1.2\"></script>\n");
         writer.write("</head>\n");

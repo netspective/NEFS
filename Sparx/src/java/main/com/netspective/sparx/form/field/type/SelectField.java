@@ -102,9 +102,10 @@ public class SelectField extends TextField
         public static final int MULTIDUAL = 5;
         public static final int POPUP = 6;
         public static final int TEXT = 7;
+        public static final int AUTOCOMPLETE = 8;
 
         public static final String[] VALUES = new String[]{
-            "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text"
+            "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text", "autocomplete"
         };
 
         public Style()
@@ -350,6 +351,10 @@ public class SelectField extends TextField
             case Style.TEXT:
                 getFlags().setFlag(Flags.SEND_CHOICES_TO_CLIENT);
                 break;
+
+            case Style.AUTOCOMPLETE:
+                // this is usually all handle by the javascript code
+                break;
         }
     }
 
@@ -537,7 +542,7 @@ public class SelectField extends TextField
     {
         // we do this first because popups don't want to pull in all the data at once like other select styles do
         final int styleValueIndex = style.getValueIndex();
-        if(styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT)
+        if(styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT || styleValueIndex == Style.AUTOCOMPLETE)
         {
             renderPopupControlHtml(writer, dc);
             return;
@@ -723,7 +728,8 @@ public class SelectField extends TextField
     public String getCustomJavaScriptDefn(DialogContext dc)
     {
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
-        buf.append("field.style = " + getStyle().getValueIndex() + ";\n");
+        final int index = getStyle().getValueIndex();
+        buf.append("field.style = " + index + ";\n");
 
         if(dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.SEND_CHOICES_TO_CLIENT))
         {
