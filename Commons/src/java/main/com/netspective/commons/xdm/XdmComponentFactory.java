@@ -100,6 +100,11 @@ public class XdmComponentFactory
         component.addedToCache(componentsBySystemId, key, flags);
     }
 
+    public static XdmComponent get(Class componentClass, File file, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, FileNotFoundException, NoSuchMethodException
+    {
+        return get(componentClass,  file, flags, false);
+    }
+
     /**
      * Factory method for obtaining a particular component from a file. This method will load the appropriate
      * component file and cache it for future use. If, after caching, the file's input source has changed the file
@@ -172,6 +177,11 @@ public class XdmComponentFactory
             component.getWarnings().addAll(pc.getWarnings());
     }
 
+    public static XdmComponent get(Class componentClass, Resource resource, int flags) throws DataModelException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, NoSuchMethodException
+    {
+        return get(componentClass,  resource, flags);
+    }
+    
     /**
      * Factory method for obtaining a particular component from a resource. The ClassLoader of the given componentClass
      * is used to locate the resource. If the resource is actually a file, then this method locates the resource, creates
