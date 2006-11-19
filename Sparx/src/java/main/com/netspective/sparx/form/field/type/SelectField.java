@@ -45,11 +45,13 @@ import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.value.source.StaticValueSource;
 import com.netspective.commons.xdm.XdmBitmaskedFlagsAttribute;
 import com.netspective.commons.xdm.XdmEnumeratedAttribute;
+import com.netspective.commons.text.TextUtils;
 import com.netspective.sparx.form.DialogContext;
 import com.netspective.sparx.form.field.DialogField;
 import com.netspective.sparx.form.field.DialogFieldFlags;
 import com.netspective.sparx.form.field.DialogFieldPopup;
 import com.netspective.sparx.form.field.DialogFieldValue;
+import com.netspective.sparx.form.field.type.MemoField.Wrap;
 import com.netspective.sparx.navigate.NavigationPage;
 
 public class SelectField extends TextField
@@ -103,9 +105,10 @@ public class SelectField extends TextField
         public static final int POPUP = 6;
         public static final int TEXT = 7;
         public static final int AUTOCOMPLETE = 8;
+        public static final int MULTIAUTOCOMPLETE = 9;
 
         public static final String[] VALUES = new String[]{
-            "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text", "autocomplete"
+            "radio", "combo", "list", "multicheck", "multilist", "multidual", "popup", "text", "autocomplete", "multiautocomplete"
         };
 
         public Style()
@@ -127,7 +130,8 @@ public class SelectField extends TextField
             int style = getValueIndex();
             return style == MULTICHECK ||
                    style == MULTILIST ||
-                   style == MULTIDUAL;
+                   style == MULTIDUAL ||
+                   style == MULTIAUTOCOMPLETE;
         }
     }
 
@@ -276,6 +280,9 @@ public class SelectField extends TextField
     private ValueSource multiDualCaptionRight = new StaticValueSource("Selected");
     private String controlSeparator = "<br>";
     private int maxItemPerRow = 1;
+    private int autoCompleteRows = -1, autoCompleteCols = -1;
+    private Wrap autoCompleteWordWrap = new Wrap(Wrap.SOFT);
+    private String multiAutoCompleteDelim = ";";
 
     public SelectField()
     {
@@ -355,6 +362,10 @@ public class SelectField extends TextField
             case Style.AUTOCOMPLETE:
                 // this is usually all handle by the javascript code
                 break;
+
+            case Style.MULTIAUTOCOMPLETE:
+                // this is usually all handle by the javascript code
+                break;
         }
     }
 
@@ -396,6 +407,46 @@ public class SelectField extends TextField
     public void setControlSeparator(String controlSeparator)
     {
         this.controlSeparator = controlSeparator;
+    }
+
+    public int getAutoCompleteCols()
+    {
+        return autoCompleteCols;
+    }
+
+    public void setAutoCompleteCols(int autoCompleteCols)
+    {
+        this.autoCompleteCols = autoCompleteCols;
+    }
+
+    public int getAutoCompleteRows()
+    {
+        return autoCompleteRows;
+    }
+
+    public void setAutoCompleteRows(int autoCompleteRows)
+    {
+        this.autoCompleteRows = autoCompleteRows;
+    }
+
+    public Wrap getAutoCompleteWordWrap()
+    {
+        return autoCompleteWordWrap;
+    }
+
+    public void setAutoCompleteWordWrap(Wrap autoCompleteWordWrap)
+    {
+        this.autoCompleteWordWrap = autoCompleteWordWrap;
+    }
+
+    public String getMultiAutoCompleteDelim()
+    {
+        return multiAutoCompleteDelim;
+    }
+
+    public void setMultiAutoCompleteDelim(String multiAutoCompleteDelim)
+    {
+        this.multiAutoCompleteDelim = multiAutoCompleteDelim;
     }
 
     /**
@@ -507,6 +558,41 @@ public class SelectField extends TextField
         super.renderControlHtml(writer, dc);
     }
 
+    protected void renderAutoCompleteMemo(Writer writer, DialogContext dc) throws IOException
+    {
+        if(isInputHidden(dc))
+        {
+            writer.write(getHiddenControlHtml(dc));
+            return;
+        }
+
+        final String id = getHtmlFormControlId();
+
+        final DialogField.State state = dc.getFieldStates().getState(this);
+        String textValue = state.getValue().getTextValue();
+
+        if(textValue == null)
+            textValue = "";
+        else
+            textValue = TextUtils.getInstance().escapeHTML(textValue);
+
+        if(isReadOnly(dc))
+        {
+            String valueStr = textValue != null ? TextUtils.getInstance().escapeHTML(textValue) : "";
+            writer.write("<input type='hidden' name='" + id + "' value=\"" + valueStr + "\">" + valueStr);
+        }
+        else
+        {
+            writer.write("<textarea maxlength=\"" + getMaxLength() + "\" id=\"" + id + "\" name=\"" + id + "\" rows=\"" + autoCompleteRows + "\" cols=\"" + autoCompleteCols + "\" wrap=\"" +
+                         autoCompleteWordWrap.getValue() + "\"" + (isRequired(dc)
+                                                       ? " class=\"" + dc.getSkin().getControlAreaRequiredStyleClass() + "\" "
+                                                       : " ") +
+                         dc.getSkin().getDefaultControlAttrs() +
+                         ">" + (textValue != null ? TextUtils.getInstance().escapeHTML(textValue) : "") + "</textarea>");
+        }
+
+    }
+
     public String getHiddenControlHtml(DialogContext dc, PresentationValue.Items choices, boolean showCaptions)
     {
         String id = getHtmlFormControlId();
@@ -542,9 +628,18 @@ public class SelectField extends TextField
     {
         // we do this first because popups don't want to pull in all the data at once like other select styles do
         final int styleValueIndex = style.getValueIndex();
-        if(styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT || styleValueIndex == Style.AUTOCOMPLETE)
+        if(styleValueIndex == Style.POPUP || styleValueIndex == Style.TEXT)
         {
             renderPopupControlHtml(writer, dc);
+            return;
+        }
+
+        if(styleValueIndex == Style.AUTOCOMPLETE || styleValueIndex == Style.MULTIAUTOCOMPLETE)
+        {
+            if(getAutoCompleteRows() > 0 || getAutoCompleteCols() > 0)
+                renderAutoCompleteMemo(writer, dc);
+            else
+                renderPopupControlHtml(writer, dc);
             return;
         }
 
@@ -730,6 +825,9 @@ public class SelectField extends TextField
         StringBuffer buf = new StringBuffer(super.getCustomJavaScriptDefn(dc));
         final int index = getStyle().getValueIndex();
         buf.append("field.style = " + index + ";\n");
+
+        if(style.getValueIndex() == Style.MULTIAUTOCOMPLETE)
+            buf.append("field.multiAutoCompleteDelim = \"" + multiAutoCompleteDelim + "\";\n");        
 
         if(dc.getFieldStates().getState(this).getStateFlags().flagIsSet(Flags.SEND_CHOICES_TO_CLIENT))
         {
