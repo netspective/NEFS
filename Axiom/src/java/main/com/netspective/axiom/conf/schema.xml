@@ -136,6 +136,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(1)</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">bit</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">bit</define>
+            <define dbms="h2" xdm:replace-template-expressions="no">bit</define>
         </sql-ddl>
         <jdbc-type>BOOLEAN</jdbc-type>
         <presentation>
@@ -153,6 +154,7 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">clob</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">text</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">object</define>
+            <define dbms="h2" xdm:replace-template-expressions="no">object</define>
             <define dbms="postgres" xdm:replace-template-expressions="no">bytea</define>
         </sql-ddl>
         <jdbc-type>CLOB</jdbc-type>
@@ -231,14 +233,17 @@
         <sql-ddl>
             <define dbms="ansi" xdm:replace-template-expressions="no">date</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">timestamp</define>
+            <define dbms="h2" xdm:replace-template-expressions="no">timestamp</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">datetime</define>
             <define dbms="postgres" xdm:replace-template-expressions="no">timestamp</define>
             <define dbms="oracle" xdm:replace-template-expressions="no">timestamp</define>
             <default dbms="oracle">SYSTIMESTAMP</default>
             <default dbms="hsqldb">'now'</default>
+            <default dbms="h2">'now'</default>
         </sql-ddl>
         <value-defn>
             <default dbms="hsqldb">now()</default>
+            <default dbms="h2">now()</default>
             <default dbms="oracle">SYSTIMESTAMP</default>
         </value-defn>
 
@@ -358,6 +363,8 @@
             <define dbms="oracle" xdm:replace-template-expressions="no">number(16)</define>
             <define dbms="mssql" xdm:replace-template-expressions="no">integer IDENTITY</define>
             <define dbms="hsqldb" xdm:replace-template-expressions="no">integer IDENTITY</define>
+            <define dbms="h2" xdm:replace-template-expressions="no">IDENTITY</define>
+            <define-ref dbms="h2" xdm:replace-template-expressions="no">integer</define-ref>
             <define-ref dbms="mssql" xdm:replace-template-expressions="no">integer</define-ref>
             <define-ref dbms="hsqldb" xdm:replace-template-expressions="no">integer</define-ref>
         </sql-ddl>
