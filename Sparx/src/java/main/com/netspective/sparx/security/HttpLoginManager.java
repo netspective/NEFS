@@ -566,6 +566,7 @@ public class HttpLoginManager implements XmlDataModelSchema.InputSourceLocatorLi
             if(!ldc.getDialogState().isInExecuteMode())
             {
                 // we're not in execute mode so we need to present the login dialog
+                nc.getResponse().setContentType("text/html");
                 nc.getSkin().renderPageMetaData(writer, nc);
                 ldc.getSkin().renderHtml(writer, ldc);
                 return LoginDialogMode.GET_INPUT;
