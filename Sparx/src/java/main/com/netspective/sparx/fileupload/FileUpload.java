@@ -36,8 +36,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletInputStream;
@@ -365,5 +368,25 @@ public class FileUpload
             List vals = (List) val;
             return (String[]) vals.toArray(new String[vals.size()]);
         }
+    }
+    
+    /**
+     * Returns a Map of String names as keys, String arrays as values 
+     * containing all of the request.
+     *
+     * @return Map of String names as keys, String arrays as values
+     */
+    public Map getParameterMap()
+    {
+    	Map ret = new Hashtable();
+    	
+    	for(Enumeration e = getParameterNames(); e.hasMoreElements(); )
+    	{
+    		String name = (String)e.nextElement();
+    		String[] values = getParameterValues(name);
+    		ret.put(name, values);
+    	}
+    	
+    	return ret;
     }
 }

@@ -34,6 +34,7 @@
 package com.netspective.sparx.fileupload;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -104,4 +105,16 @@ public class FileUploadWrapper extends HttpServletRequestWrapper
     {
         return mreq.getParameterValues(name);
     }
+
+
+    /**
+     * Returns a Map of String names as keys, String arrays as values 
+     * containing all of the request.
+     *
+     * @return Map of String names as keys, String arrays as values
+     */
+    public Map getParameterMap()
+	{
+		return mreq.getParameterMap();
+	}
 }
