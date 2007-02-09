@@ -133,21 +133,29 @@ public class FileFind
     {
         try
         {
-            ZipFile zf = new ZipFile(jarFile);
-            if(zf.getEntry(fileName) != null) return true;
-            if(perhapsDirectory)
+            final ZipFile zf = new ZipFile(jarFile);
+            try
             {
-                if(!fileName.endsWith("/")) fileName = fileName + "/";
-                String name;
-                for(Enumeration en = zf.entries(); en.hasMoreElements();)
+                if (zf.getEntry(fileName) != null) return true;
+                if (perhapsDirectory)
                 {
-                    name = ((ZipEntry) en.nextElement()).getName();
-                    if(name.startsWith(fileName)) return true;
+                    if (!fileName.endsWith("/")) fileName = fileName + "/";
+                    String name;
+                    for (Enumeration en = zf.entries(); en.hasMoreElements();)
+                    {
+                        name = ((ZipEntry) en.nextElement()).getName();
+                        if (name.startsWith(fileName)) return true;
+                    }
                 }
             }
+            finally
+            {
+                zf.close();
+            }
         }
-        catch(Exception e)
+        catch (IOException e)
         {
+            // in case the file is not found, we don't want to create an error
         }
         return false;
     }
