@@ -73,7 +73,7 @@ public class SocialSecurityField extends TextField
         }
     }
 
-    public class State extends TextField.State
+    public class State extends TextFieldState
     {
         public State(DialogContext dc, DialogField field)
         {
