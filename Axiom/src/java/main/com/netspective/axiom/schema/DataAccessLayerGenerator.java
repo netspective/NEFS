@@ -408,7 +408,7 @@ public class DataAccessLayerGenerator
 
             this.customClass = false;
             this.tableType = vm.newType(Table.class.getName());
-            if(node.getTable().getClass().getClass() != BasicTable.class)
+            if(BasicTable.class != node.getTable().getClass())
             {
                 tableType = vm.newType(node.getTable().getClass().getName());
                 customClass = true;
