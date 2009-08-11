@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project relativePaths="true" version="4">
+  <component name="AntConfiguration">
+    <defaultAnt bundledAnt="true" />
+    <buildFile url="file://$PROJECT_DIR$/../../../Axiom/conf/build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
+    <buildFile url="file://$PROJECT_DIR$/../../../Commons/conf/build.xml">
+      <additionalClassPath />
+      <antReference projectDefault="true" />
+      <customJdkName value="" />
+      <maximumHeapSize value="128" />
+      <maximumStackSize value="32" />
+      <properties />
+    </buildFile>
+  </component>
+  <component name="BuildJarProjectSettings">
+    <option name="BUILD_JARS_ON_MAKE" value="false" />
+  </component>
+  <component name="CodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <option name="BRACE_STYLE" value="2" />
+        <option name="CLASS_BRACE_STYLE" value="2" />
+        <option name="METHOD_BRACE_STYLE" value="2" />
+        <option name="ELSE_ON_NEW_LINE" value="true" />
+        <option name="WHILE_ON_NEW_LINE" value="true" />
+        <option name="CATCH_ON_NEW_LINE" value="true" />
+        <option name="FINALLY_ON_NEW_LINE" value="true" />
+        <option name="INSERT_INNER_CLASS_IMPORTS" value="true" />
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="25" />
+        <option name="IMPORT_LAYOUT_TABLE">
+          <value>
+            <package name="java" withSubpackages="true" />
+            <emptyLine />
+            <package name="javax" withSubpackages="true" />
+            <emptyLine />
+            <package name="org" withSubpackages="true" />
+            <emptyLine />
+            <package name="com.netspective" withSubpackages="true" />
+            <emptyLine />
+            <package name="" withSubpackages="true" />
+          </value>
+        </option>
+        <option name="TERNARY_OPERATION_WRAP" value="1" />
+        <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
+        <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
+        <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
+        <option name="ARRAY_INITIALIZER_WRAP" value="1" />
+        <option name="ARRAY_INITIALIZER_LBRACE_ON_NEXT_LINE" value="true" />
+        <option name="ARRAY_INITIALIZER_RBRACE_ON_NEXT_LINE" value="true" />
+        <option name="JD_ADD_BLANK_AFTER_PARM_COMMENTS" value="true" />
+        <option name="JD_ADD_BLANK_AFTER_RETURN" value="true" />
+        <ADDITIONAL_INDENT_OPTIONS fileType="java">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="js">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="sql">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="xml">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+      </value>
+    </option>
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+  </component>
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <option name="DEPLOY_AFTER_MAKE" value="0" />
+    <resourceExtensions>
+      <entry name=".+\.(properties|xml|html)" />
+      <entry name=".+\.(gif|png|jpeg|jpg)" />
+    </resourceExtensions>
+  </component>
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+  <component name="EclipseCompilerSettings">
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="true" />
+    <option name="DEPRECATION" value="false" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="MAXIMUM_HEAP_SIZE" value="128" />
+  </component>
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="PRINT_LINE_NUMBERS" value="false" />
+    <option name="OPEN_IN_BROWSER" value="false" />
+    <option name="OUTPUT_DIRECTORY" />
+  </component>
+  <component name="InspectionProjectProfileManager">
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+    <profiles>
+      <profile version="1.0" is_locked="false">
+        <option name="myName" value="Project Default" />
+        <option name="myLocal" value="false" />
+      </profile>
+    </profiles>
+    <list size="4">
+      <item index="0" class="java.lang.String" itemvalue="INFO" />
+      <item index="1" class="java.lang.String" itemvalue="WARNING" />
+      <item index="2" class="java.lang.String" itemvalue="ERROR" />
+      <item index="3" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+    </list>
+  </component>
+  <component name="JavacSettings">
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="DEPRECATION" value="false" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+    <option name="MAXIMUM_HEAP_SIZE" value="128" />
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="JikesSettings">
+    <option name="JIKES_PATH" value="" />
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="DEPRECATION" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="IS_EMACS_ERRORS_MODE" value="true" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+  </component>
+  <component name="Monitor.Log4jWindowPlugin">
+    <option name="table.default.font.family" value="Lucida Sans Typewriter" />
+    <option name="tree.default.font.size" value="8" />
+    <option name="tree.default.font.family" value="Tahoma" />
+    <option name="table.default.font.size" value="10" />
+  </component>
+  <component name="ProjectDetails">
+    <option name="projectName" value="Netspective Frameworks IDEA 4.0" />
+  </component>
+  <component name="ProjectFileVersion" converted="true" />
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/NEFS.iml" filepath="$PROJECT_DIR$/NEFS.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_4" assert-keyword="true" jdk-15="false" project-jdk-name="1.6" project-jdk-type="JavaSDK" />
+  <component name="RmicSettings">
+    <option name="IS_EANABLED" value="false" />
+    <option name="DEBUGGING_INFO" value="true" />
+    <option name="GENERATE_NO_WARNINGS" value="false" />
+    <option name="GENERATE_IIOP_STUBS" value="false" />
+    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+  </component>
+  <component name="libraryTable">
+    <library name="Sparx Redistributables">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/freemarker.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/httpunit.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/js.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/jtidy.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/jwebunit.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/nekohtml.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/radeox.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/servlet.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/syntax.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="Commons Redistributables">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/activation.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/ant-optional.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/ant.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/clover.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-cli.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-collections.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-discovery.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-jexl.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-jxpath.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-lang.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-logging.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-pool.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/jenesis.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/jta.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/junit.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/log4j.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/mail.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/oro.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xalan.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xerces.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xml-apis.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/XmlDoclet.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="Axiom Redistributables">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/commons-dbcp.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/hsqldb.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/mysql.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/zql.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+  </component>
+  <component name="uidesigner-configuration">
+    <option name="INSTRUMENT_CLASSES" value="true" />
+    <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />
+  </component>
+</project>
+
