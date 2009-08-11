@@ -46,7 +46,7 @@ public class Db2DatabasePolicy extends AnsiDatabasePolicy
     public Db2DatabasePolicy()
     {
         setName("db2");
-        setAliases("DB2/6000,DB2/NT");
+        setAliases("DB2/6000,DB2/NT,DB2/LINUXX8664");
     }
 
     public SqlDdlFormats createDdlFormats()
