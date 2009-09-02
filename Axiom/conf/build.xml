@@ -6,7 +6,7 @@ Setup instructions:
      - set the JAVA_HOME environment variable to the JDK root directory
 -->
 
-<project default="all">
+<project default="all" id="Netspective Axiom">
 
     <property environment="env"/>
     <property file="build.properties"/>
