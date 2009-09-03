@@ -63,12 +63,12 @@ public class InComparison extends BinaryOpComparison
             if(values == null || values.length == 0)
                 return null;
             bindCount = values.length;
-            statement.addParam(vs);
+            statement.addParam(vs, cond.getBindJdbcType());
         }
         else
         {
             bindCount = 1;
-            statement.addParam(vs);
+            statement.addParam(vs, cond.getBindJdbcType());
         }
 
 

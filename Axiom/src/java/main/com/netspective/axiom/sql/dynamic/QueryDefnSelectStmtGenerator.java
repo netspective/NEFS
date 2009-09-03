@@ -34,17 +34,27 @@ package com.netspective.axiom.sql.dynamic;
 
 import java.util.List;
 
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
+import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.commons.value.ValueContext;
 import com.netspective.commons.value.ValueSource;
 
 public interface QueryDefnSelectStmtGenerator
 {
+    public interface BindParamHandler
+    {
+        void handle(final QueryParameter param, final ValueSource bindParam);
+    }
+
     public QueryDefnSelect getQuerySelect();
 
     public List getBindParams();
+    public List getBindParamJdbcTypes();
+    public List getBindParamHandlers();
 
-    public void addParam(ValueSource bindParam);
+    public void addParam(final ValueSource bindParam, final JdbcTypesEnumeratedAttribute jdbcType);
+    public void addParam(final ValueSource bindParam, final BindParamHandler handler);
 
     public String generateSql(ValueContext vc) throws QueryDefinitionException;
 

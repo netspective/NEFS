@@ -229,17 +229,17 @@ public class HttpServletResponseCache
             if(contentType != null) res.setContentType(contentType);
             if(locale != null) res.setLocale(locale);
             // Write cookies
-            Enumeration enum = cookies.elements();
-            while(enum.hasMoreElements())
+            Enumeration cookieElems = cookies.elements();
+            while(cookieElems.hasMoreElements())
             {
-                Cookie c = (Cookie) enum.nextElement();
+                Cookie c = (Cookie) cookieElems.nextElement();
                 res.addCookie(c);
             }
             // Write standard headers
-            enum = headers.keys();
-            while(enum.hasMoreElements())
+            cookieElems = headers.keys();
+            while(cookieElems.hasMoreElements())
             {
-                String name = (String) enum.nextElement();
+                String name = (String) cookieElems.nextElement();
                 Vector values = (Vector) headers.get(name); // may have multiple values
                 Enumeration enum2 = values.elements();
                 while(enum2.hasMoreElements())

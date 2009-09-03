@@ -79,7 +79,7 @@ public class BinaryOpComparison implements SqlComparison
     public String getWhereCondExpr(ValueContext vc, QueryDefnSelect select, QueryDefnSelectStmtGenerator statement, QueryDefnCondition cond) throws QueryDefinitionException
     {
         String retString = "";
-        statement.addParam(cond.getValue());
+        statement.addParam(cond.getValue(), cond.getBindJdbcType());
         String bindExpression = cond.getBindExpr();
 
         if(bindExpression != null && bindExpression.length() > 0)

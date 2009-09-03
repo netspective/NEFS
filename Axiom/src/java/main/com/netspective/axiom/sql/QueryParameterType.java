@@ -64,6 +64,7 @@ public class QueryParameterType
     public static final QueryParameterType TEXT = new QueryParameterType("text", Types.VARCHAR, String.class);
     private static final Map typesMapByIdentifier = new HashMap();
     private static final Map typesMapByJdbcType = new HashMap();
+    private static final Map typesMapByClass = new HashMap();
     private static String[] typeIdentifiers;
 
     private String identifier;
@@ -102,6 +103,7 @@ public class QueryParameterType
     {
         typesMapByIdentifier.put(type.getIdentifier(), type);
         typesMapByJdbcType.put(new Integer(type.getJdbcType()), type);
+        typesMapByClass.put(type.getClass(), type);
         typeIdentifiers = (String[]) typesMapByIdentifier.keySet().toArray(new String[typesMapByIdentifier.size()]);
     }
 
@@ -129,6 +131,14 @@ public class QueryParameterType
     public final static QueryParameterType get(int jdbcType)
     {
         return (QueryParameterType) typesMapByJdbcType.get(new Integer(jdbcType));
+    }
+
+    /**
+     * Gets the query parameter type by its Class type (java.lang.Class)
+     */
+    public final static QueryParameterType get(Class cls)
+    {
+        return (QueryParameterType) typesMapByClass.get(cls);
     }
 
     /**

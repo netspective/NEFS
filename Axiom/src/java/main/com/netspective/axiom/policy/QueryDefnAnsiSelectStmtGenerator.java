@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.netspective.axiom.DatabasePolicy;
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.QueryDefinition;
 import com.netspective.axiom.sql.dynamic.QueryDefnConditions;
 import com.netspective.axiom.sql.dynamic.QueryDefnField;
@@ -66,6 +67,8 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
     private List fromClauseComments = new ArrayList();
     private List whereJoinClause = new ArrayList();
     private List bindParams = new ArrayList();
+    private List bindParamJdbcTypes = new ArrayList();
+    private List bindParamHandlers = new ArrayList();
 
     protected QueryDefnAnsiSelectStmtGenerator(DatabasePolicy policy, QueryDefnSelect select)
     {
@@ -87,6 +90,16 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
     public List getBindParams()
     {
         return bindParams;
+    }
+
+    public List getBindParamJdbcTypes()
+    {
+        return bindParamJdbcTypes;
+    }
+
+    public List getBindParamHandlers()
+    {
+        return bindParamHandlers;
     }
 
     public void addJoin(QueryDefnField field) throws QueryDefinitionException
@@ -130,9 +143,18 @@ class QueryDefnAnsiSelectStmtGenerator implements QueryDefnSelectStmtGenerator
         }
     }
 
-    public void addParam(ValueSource bindParam)
+    public void addParam(ValueSource bindParam, final JdbcTypesEnumeratedAttribute jdbcType)
     {
         bindParams.add(bindParam);
+        bindParamJdbcTypes.add(jdbcType);
+        bindParamHandlers.add(null);
+    }
+
+    public void addParam(final ValueSource bindParam, final BindParamHandler handler)
+    {
+        bindParams.add(bindParam);
+        bindParamJdbcTypes.add(null);
+        bindParamHandlers.add(handler);
     }
 
     public String generateSql(ValueContext vc) throws QueryDefinitionException

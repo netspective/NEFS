@@ -2,7 +2,7 @@
 <project relativePaths="true" version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
-    <buildFile url="file://$PROJECT_DIR$/../../../Axiom/conf/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/../../../Commons/conf/build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -10,7 +10,7 @@
       <maximumStackSize value="32" />
       <properties />
     </buildFile>
-    <buildFile url="file://$PROJECT_DIR$/../../../Commons/conf/build.xml">
+    <buildFile url="file://$PROJECT_DIR$/../../../Axiom/conf/build.xml">
       <additionalClassPath />
       <antReference projectDefault="true" />
       <customJdkName value="" />
@@ -32,6 +32,8 @@
         <option name="WHILE_ON_NEW_LINE" value="true" />
         <option name="CATCH_ON_NEW_LINE" value="true" />
         <option name="FINALLY_ON_NEW_LINE" value="true" />
+        <option name="GENERATE_FINAL_LOCALS" value="true" />
+        <option name="GENERATE_FINAL_PARAMETERS" value="true" />
         <option name="INSERT_INNER_CLASS_IMPORTS" value="true" />
         <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="25" />
         <option name="IMPORT_LAYOUT_TABLE">
@@ -83,6 +85,15 @@
           <option name="LABEL_INDENT_SIZE" value="0" />
           <option name="LABEL_INDENT_ABSOLUTE" value="false" />
         </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="scala">
+          <option name="INDENT_SIZE" value="2" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="2" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="sql">
           <option name="INDENT_SIZE" value="2" />
           <option name="CONTINUATION_INDENT_SIZE" value="8" />
@@ -112,6 +123,15 @@
       <entry name=".+\.(properties|xml|html)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
     </resourceExtensions>
+    <wildcardResourcePatterns>
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
+      <entry name="?*.html" />
+      <entry name="?*.gif" />
+      <entry name="?*.png" />
+      <entry name="?*.jpeg" />
+      <entry name="?*.jpg" />
+    </wildcardResourcePatterns>
   </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
@@ -210,59 +230,31 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
   </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
     <library name="Sparx Redistributables">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/freemarker.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/httpunit.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/js.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/jtidy.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/jwebunit.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/nekohtml.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/radeox.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/servlet.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Sparx/lib/redist/syntax.jar!/" />
+        <root url="file://$PROJECT_DIR$/../../../Sparx/lib/redist" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/../../../Sparx/lib/redist" recursive="false" />
     </library>
     <library name="Commons Redistributables">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/activation.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/ant-optional.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/ant.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/clover.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-cli.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-collections.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-discovery.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-jexl.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-jxpath.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-lang.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-logging.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/commons-pool.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/jenesis.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/jta.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/junit.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/log4j.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/mail.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/oro.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xalan.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xerces.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/xml-apis.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Commons/lib/redist/XmlDoclet.jar!/" />
+        <root url="file://$PROJECT_DIR$/../../../Commons/lib/redist" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/../../../Commons/lib/redist" recursive="false" />
     </library>
     <library name="Axiom Redistributables">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/commons-dbcp.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/hsqldb.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/mysql.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../../Axiom/lib/redist/zql.jar!/" />
+        <root url="file://$PROJECT_DIR$/../../../Axiom/lib/redist" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
+      <jarDirectory url="file://$PROJECT_DIR$/../../../Axiom/lib/redist" recursive="false" />
     </library>
   </component>
   <component name="uidesigner-configuration">

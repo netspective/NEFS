@@ -52,7 +52,7 @@ public class StartsWithComparisonIgnoreCase extends BinaryOpComparison
         ConcatenateValueSource value = new ConcatenateValueSource(null, cond.getValue(), "%");
         // pass the original value source specification to the new one
         value.initialize(cond.getValue().getSpecification());
-        statement.addParam(value);
+        statement.addParam(value, cond.getBindJdbcType());
         String retString = "";
         String bindExpression = cond.getBindExpr();
         if(bindExpression != null && bindExpression.length() > 0)

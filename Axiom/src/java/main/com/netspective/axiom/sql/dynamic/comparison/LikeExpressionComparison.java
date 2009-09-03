@@ -74,7 +74,7 @@ public class LikeExpressionComparison extends BinaryOpComparison
         {
             bindParam = cond.getValue();
         }
-        statement.addParam(bindParam);
+        statement.addParam(bindParam, cond.getBindJdbcType());
         String retString = "";
         String bindExpression = cond.getBindExpr();
         if(bindExpression != null && bindExpression.length() > 0)

@@ -45,6 +45,7 @@ import com.netspective.axiom.sql.dynamic.comparison.DynamicComparison;
 import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparison;
 import com.netspective.axiom.sql.dynamic.comparison.EndsWithComparisonIgnoreCase;
 import com.netspective.axiom.sql.dynamic.comparison.InComparison;
+import com.netspective.axiom.sql.dynamic.comparison.InLiteralComparison;
 import com.netspective.axiom.sql.dynamic.comparison.IsDefinedComparison;
 import com.netspective.axiom.sql.dynamic.comparison.LikeExpressionComparison;
 import com.netspective.axiom.sql.dynamic.comparison.StartsWithComparison;
@@ -72,6 +73,7 @@ public class SqlComparisonFactory
         registerComparison(new EndsWithComparison(), null);
         registerComparison(new EndsWithComparisonIgnoreCase(), null);
         registerComparison(new InComparison(), null);
+        registerComparison(new InLiteralComparison(), null);
         registerComparison(new IsDefinedComparison(), null);
         registerComparison(new BinaryOpComparison("greater-than", "greater than", "general", ">"), new String[]{
             "gt", ">"

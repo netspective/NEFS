@@ -51,7 +51,7 @@ public class DateComparison extends BinaryOpComparison
 
     public String getWhereCondExpr(ValueContext vc, QueryDefnSelect select, QueryDefnSelectStmtGenerator statement, QueryDefnCondition cond) throws QueryDefinitionException
     {
-        statement.addParam(new ConcatenateValueSource(null, cond.getValue(), null));
+        statement.addParam(new ConcatenateValueSource(null, cond.getValue(), null), cond.getBindJdbcType());
         String retString = "";
         String bindExpression = cond.getBindExpr();
         if(bindExpression != null && bindExpression.length() > 0)

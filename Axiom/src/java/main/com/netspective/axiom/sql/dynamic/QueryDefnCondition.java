@@ -32,19 +32,18 @@
  */
 package com.netspective.axiom.sql.dynamic;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnSqlComparisonNotFoundException;
-import com.netspective.commons.value.Value;
-import com.netspective.commons.value.ValueContext;
-import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.script.BeanScript;
 import com.netspective.commons.script.Script;
 import com.netspective.commons.script.ScriptContext;
 import com.netspective.commons.script.ScriptException;
 import com.netspective.commons.text.TextUtils;
+import com.netspective.commons.value.Value;
+import com.netspective.commons.value.ValueContext;
+import com.netspective.commons.value.ValueSource;
 import com.netspective.commons.xdm.XmlDataModelSchema;
 
 /**
@@ -73,6 +72,7 @@ public class QueryDefnCondition
     private boolean joinOnly = true; // use only the join condition from the field (changed to false if comparison is provided)
     private String bindExpr;
     private QueryDefnConditions nestedConditions;
+    private JdbcTypesEnumeratedAttribute bindJdbcType;
 
     public QueryDefnCondition(QueryDefinition owner)
     {
@@ -88,6 +88,7 @@ public class QueryDefnCondition
         value = parentCondition.value;
         removeIfValueNull = parentCondition.removeIfValueNull;
         bindExpr = parentCondition.bindExpr;
+        bindJdbcType = parentCondition.bindJdbcType;
         joinOnly = parentCondition.joinOnly;
 
         // right now we're not allowing nested conditions to have dynamic include/exclude capability
@@ -113,6 +114,16 @@ public class QueryDefnCondition
     public void setBindExpr(String bindExpr)
     {
         this.bindExpr = bindExpr;
+    }
+
+    public JdbcTypesEnumeratedAttribute getBindJdbcType()
+    {
+        return bindJdbcType;
+    }
+
+    public void setBindJdbcType(final JdbcTypesEnumeratedAttribute bindJdbcType)
+    {
+        this.bindJdbcType = bindJdbcType;
     }
 
     public QueryDefnField getField()

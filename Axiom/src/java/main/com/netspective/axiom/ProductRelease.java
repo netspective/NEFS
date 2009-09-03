@@ -51,8 +51,8 @@ public class ProductRelease implements Product
     public static final String PRODUCT_ID = "netspective-axiom";
 
     public static final int PRODUCT_RELEASE_NUMBER = 7;
-    public static final int PRODUCT_VERSION_MAJOR = 2;
-    public static final int PRODUCT_VERSION_MINOR = 3;
+    public static final int PRODUCT_VERSION_MAJOR = 3;
+    public static final int PRODUCT_VERSION_MINOR = 0;
 
     public ProductRelease()
     {

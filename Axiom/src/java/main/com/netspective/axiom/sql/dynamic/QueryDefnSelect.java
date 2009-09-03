@@ -42,9 +42,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.axiom.sql.DbmsSqlText;
+import com.netspective.axiom.sql.JdbcTypesEnumeratedAttribute;
 import com.netspective.axiom.sql.Query;
 import com.netspective.axiom.sql.QueryParameter;
 import com.netspective.axiom.sql.QueryParameters;
+import com.netspective.axiom.sql.dynamic.QueryDefnSelectStmtGenerator.BindParamHandler;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefinitionException;
 import com.netspective.axiom.sql.dynamic.exception.QueryDefnFieldNotFoundException;
 import com.netspective.commons.value.ValueSource;
@@ -256,14 +258,27 @@ public class QueryDefnSelect extends Query
                 return null;
             }
 
-            List bindParams = selectStmt.getBindParams();
+            final List bindParams = selectStmt.getBindParams();
             if(bindParams != null)
             {
-                QueryParameters params = createParams();
+                final List bindParamJdcbcTypes = selectStmt.getBindParamJdbcTypes();
+                final List bindParamhandlers = selectStmt.getBindParamHandlers();
+
+                final QueryParameters params = createParams();
                 for(int i = 0; i < bindParams.size(); i++)
                 {
-                    QueryParameter param = params.createParam();
-                    param.setValue((ValueSource) bindParams.get(i));
+                    final QueryParameter param = params.createParam();
+
+                    final BindParamHandler handler = (BindParamHandler) bindParamhandlers.get(i);
+                    if(handler != null)
+                        handler.handle(param, (ValueSource) bindParams.get(i));
+                    else
+                    {
+                        param.setValue((ValueSource) bindParams.get(i));
+                        final JdbcTypesEnumeratedAttribute jcbcType = (JdbcTypesEnumeratedAttribute) bindParamJdcbcTypes.get(i);
+                        if(jcbcType != null)
+                            param.setSqlTypeCode(jcbcType.getJdbcValue());
+                    }
                     params.addParam(param);
                 }
                 addParams(params);

@@ -34,7 +34,9 @@ package com.netspective.axiom.sql;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.Date;
 
 import com.netspective.axiom.ConnectionContext;
 import com.netspective.commons.value.Value;
@@ -219,16 +221,59 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
                     case Types.DOUBLE:
                         stmt.setDouble(paramNum, sv.getDoubleValue());
                         break;
+
+                    case Types.DATE:
+                        stmt.setDate(paramNum, new java.sql.Date(((Date) sv.getValueForSqlBindParam()).getTime()));
+                        break;
+
+                    case Types.TIME:
+                        stmt.setTime(paramNum, new java.sql.Time(((Date) sv.getValueForSqlBindParam()).getTime()));
+                        break;
+
+                    case Types.TIMESTAMP:
+                        stmt.setTimestamp(paramNum, new Timestamp(((Date) sv.getValueForSqlBindParam()).getTime()));
+                        break;
+
+                    case Types.FLOAT:
+                        stmt.setLong(paramNum, sv.getLongValue());
+                        break;
+
+                    case Types.BOOLEAN:
+                        stmt.setBoolean(paramNum, sv.getBooleanValue());
+                        break;
+
+                    default:
+                        // assume the caller knows what they're doing
+                        stmt.setObject(paramNum, sv.getValueForSqlBindParam(), sqlType);
                 }
             }
         }
         else
         {
-            String[] textValues = value.getTextValues(cc);
+            final String[] textValues = value.getTextValues(cc);
             for(int q = 0; q < textValues.length; q++)
             {
-                int paramNum = vac.getNextParamNum();
-                stmt.setObject(paramNum, textValues[q]);
+                final int paramNum = vac.getNextParamNum();
+                final String textValue = textValues[q];
+                if(sqlType == Types.VARCHAR)
+                    stmt.setString(paramNum, textValue);
+                else
+                {
+                    switch(sqlType)
+                    {
+                        case Types.INTEGER:
+                            stmt.setInt(paramNum, Integer.parseInt(textValue));
+                            break;
+
+                        case Types.DOUBLE:
+                            stmt.setDouble(paramNum, Double.parseDouble(textValue));
+                            break;
+
+                        default:
+                            // assume the caller knows what they're doing
+                            stmt.setObject(paramNum, textValue, sqlType);
+                    }
+                }
             }
         }
     }
@@ -251,6 +296,10 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
                     case Types.DOUBLE:
                         vrc.addBindValue(new Double(sv.getDoubleValue()), sqlType);
                         break;
+
+                    default:
+                        // assume the caller knows what they're doing
+                        vrc.addBindValue(sv.getValue(), sqlType);
                 }
             }
         }
@@ -258,7 +307,7 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
         {
             String[] textValues = value.getTextValues(cc);
             for(int q = 0; q < textValues.length; q++)
-                vrc.addBindValue(textValues[q], Types.VARCHAR);
+                vrc.addBindValue(textValues[q], sqlType);
         }
     }
 
@@ -276,10 +325,12 @@ public class QueryParameter implements XmlDataModelSchema.ConstructionFinalizeLi
             text.append(((Value) ov).getValueForSqlBindParam());
             text.append(" (java: ");
             text.append(ov != null ? ov.getClass().getName() : "<NULL>");
-            text.append(", sql: ");
+            text.append(", sqlType: ");
             text.append(sqlType);
-            text.append(", ");
-            text.append(QueryParameterType.get(sqlType));
+            text.append(", QueryParameterType ");
+            final QueryParameterType parameterType = QueryParameterType.get(sqlType);
+            text.append(parameterType.getJdbcType());
+            text.append(" ('"+ parameterType.getIdentifier() +"', "+ parameterType.getJavaClass().getName() +")");
             text.append(")");
         }
         else
